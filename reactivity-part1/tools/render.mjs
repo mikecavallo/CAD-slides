@@ -21,9 +21,14 @@ const OUT = path.join(ROOT, 'build/segments');
 fs.mkdirSync(OUT, { recursive: true });
 
 const shared = ['video/lib.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
+// which scene file registers each scene id (files are not always named after their chapter)
+const SCENE_FILE = {};
+for (const f of fs.readdirSync(path.join(ROOT, 'video/scenes')).filter(f => f.endsWith('.js'))) {
+  const src = fs.readFileSync(path.join(ROOT, 'video/scenes', f), 'utf8');
+  for (const m of src.matchAll(/registerScene\('([^']+)'/g)) SCENE_FILE[m[1]] = src;
+}
 function segHash(seg) {
-  const file = path.join(ROOT, `video/scenes/${seg.chapter}.js`);
-  const code = seg.kind === 'bumper' ? '' : (fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '');
+  const code = seg.kind === 'bumper' ? '' : (SCENE_FILE[seg.id] || '');
   const { start, audio, ...rest } = seg;
   return crypto.createHash('sha1').update(shared + code + JSON.stringify(rest) + fps).digest('hex').slice(0, 16);
 }

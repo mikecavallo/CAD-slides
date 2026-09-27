@@ -1,0 +1,479 @@
+{
+ "title": "Parked for a later video",
+ "chapters": [
+  {
+   "id": "ch00",
+   "title": "Welcome",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "ch00s01",
+     "heading": "",
+     "visual_concept": "Cold open. Starts calm on the swirl background with a minimal line-art walk: a green dotted path and Lucide icons. Then a hard cut to the barking-dog photo for the explosion, and eye icons for the staring street. Quick, slightly tense pacing with fast eases.",
+     "assets": [
+      "bg_swirl.jpg",
+      "photo_reactivity.jpg",
+      "icon:footprints",
+      "icon:dog",
+      "icon:eye"
+     ],
+     "beats": [
+      {
+       "say": "Picture a quiet morning walk. Your dog's sniffing along, life is good. Then you see it: another dog, turning the corner up ahead.",
+       "show": "A green dotted path draws left to right as a dog icon trots along it, leaving a footprints trail; then a second dog icon pops in at the far corner of the path.",
+       "onscreen": ""
+      },
+      {
+       "say": "Your stomach drops. Your hand tightens on the leash. A second later, your sweet couch potato is barking, lunging and spinning like a dog you've never met.",
+       "show": "Hard cut: photo_reactivity.jpg fills the frame with a fast punch-in zoom, a two-frame shake, and three sound-wave arcs pulsing beside the dog's mouth.",
+       "onscreen": ""
+      },
+      {
+       "say": "People stare. And you cross the street with your face on fire, wondering what you did wrong.",
+       "show": "The photo dims and three eye icons blink open around its edges, one after another.",
+       "onscreen": "Sound familiar?"
+      }
+     ]
+    },
+    {
+     "id": "ch00s02",
+     "heading": "You're in the right place",
+     "visual_concept": "Calm reset in brand green with slow, soft easing. A heart draws in, then a dog icon's red alert badge morphs into a green heart badge. The brand title card builds: logo top right, green Part 1 corner tab, Rubik heading on the accent bar. Then three promise rows with the lesson's three recurring icons: heart, repeat arrows, and a mini stress cup about a quarter full, drawn from diagram:stress-cup so it matches the ch08 cup. These same three icons return at the very end in ch10s02.",
+     "assets": [
+      "bg_swirl.jpg",
+      "logo.png",
+      "icon:heart",
+      "icon:dog",
+      "icon:repeat",
+      "diagram:stress-cup"
+     ],
+     "beats": [
+      {
+       "say": "If that sounds like your life, I want you to hear this first. You're not a bad owner. And you don't have a bad dog.",
+       "show": "The screen settles to the clean swirl and a green heart icon draws itself in the center with a soft glow.",
+       "onscreen": "Not a bad owner. Not a bad dog."
+      },
+      {
+       "say": "You have a dog who's having a hard time. And that's something we can work on together.",
+       "show": "Under the heart, a dog icon appears with a small red alert badge; the badge morphs into a green heart badge.",
+       "onscreen": "A dog having a hard time"
+      },
+      {
+       "say": "Welcome to Part One. Before we change anything, let's understand what's going on inside your dog.",
+       "show": "The title card builds: logo.png settles top right, 'Understanding reactivity and aggression' writes on in green over the accent bar, and a green 'Part 1' corner tab slides in.",
+       "onscreen": "Understanding reactivity and aggression"
+      },
+      {
+       "say": "By the end, you'll understand three things: what your dog is feeling, what the behavior does for them, and why some days are worse. The feeling, the function and the full cup.",
+       "show": "Three rows stagger in beneath the title with green icons, one per phrase: heart 'The feeling', repeat arrows 'The function', mini stress cup 'The full cup'.",
+       "onscreen": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch08",
+   "title": "Stress and recovery over time",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "ch08s01",
+     "heading": "Threshold",
+     "visual_concept": "Opens with the two jogger calendar cards from ch07s05 returning, then the chapter heading with three small icons for its three ideas: a dashed line, a mini stress cup and a clock. Then the new teaching diagram: a dashed horizontal threshold line across the screen, a soft green zone below with a brain icon, a soft red zone above with a zap icon. A calculator icon with a math problem greys out for the long division analogy. Ends with a 'Train here' arrow into the green zone. Build the threshold zones once, with one dashed stroke and one 'Threshold' label style; that exact line returns on the ch08s02 bar, the stress cup, every ch08 chart and the ch09 card 02 icon.",
+     "assets": [
+      "bg_swirl.jpg",
+      "icon:calendar",
+      "icon:footprints",
+      "diagram:stress-cup",
+      "icon:clock",
+      "diagram:threshold-zones",
+      "icon:brain",
+      "icon:zap",
+      "icon:calculator",
+      "icon:triangle-alert"
+     ],
+     "beats": [
+      {
+       "say": "So why is Monday fine and Thursday a disaster? Three ideas: threshold, stress stacking up, and how slowly stress drains away.",
+       "show": "The two jogger calendar cards from ch07s05 slide back in, Monday with its green check and Thursday with its red alert, then move aside as 'Stress and recovery over time' writes on with three small icons beneath it: a dashed line, a cup, a clock.",
+       "onscreen": "Stress and recovery over time"
+      },
+      {
+       "say": "First idea, threshold: the line between coping and not coping. Under it, your dog can notice the trigger and still think: hear you, take a treat, make choices.",
+       "show": "A dashed line draws across the screen labeled 'Threshold'; the zone below tints soft green and a brain icon appears there labeled 'Thinking brain'.",
+       "onscreen": "Under the line: thinking"
+      },
+      {
+       "say": "Over it, the thinking brain goes offline and big feelings grab the wheel. That's fight, flight or freeze for a scared dog, and road rage for a frustrated one.",
+       "show": "The zone above tints soft red and a zap icon appears labeled 'Feelings in charge', with small tags: fight, flight, freeze, road rage.",
+       "onscreen": "Over the line: feelings take over"
+      },
+      {
+       "say": "Imagine doing long division while a bear chases you down the street. You're not being stubborn. That part of your brain isn't available.",
+       "show": "A calculator icon showing '952 ÷ 17 = ?' appears in the red zone and greys out as an alert icon flashes beside it.",
+       "onscreen": "Not stubborn. Unavailable."
+      },
+      {
+       "say": "That's why a sit falls apart mid-lunge. Your dog isn't ignoring you, they can't take it in. Training happens under the line.",
+       "show": "A green arrow points down into the green zone with the caption 'Train here'.",
+       "onscreen": "Training happens under the line"
+      }
+     ]
+    },
+    {
+     "id": "ch08s02",
+     "heading": "Getting close to threshold",
+     "visual_concept": "Left: the threshold zones from ch08s01 compressed into a vertical bar, green zone below, red zone above, the same dashed 'Threshold' line. A small dog-icon marker climbs toward the dashed line as each group of warning signs ticks into a checklist on the right. When distance is added, the marker drops back into the green and an 'Add distance' flag sits just under the line. A ruler icon and the green 'Try this' badge close the scene.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:threshold-zones",
+      "icon:dog",
+      "icon:cookie",
+      "icon:ear-off",
+      "icon:eye",
+      "icon:scan-eye",
+      "icon:undo-2",
+      "icon:ruler",
+      "icon:notebook-pen"
+     ],
+     "beats": [
+      {
+       "say": "How can you tell your dog is getting close? They stop taking food, or suddenly snatch it, and they stop hearing their name.",
+       "show": "The threshold zones compress into a vertical bar on the left with a small dog marker low in the green; on the right, two signs tick in, cookie 'Stops taking food' and ear-off 'Stops hearing you', and the marker climbs a step.",
+       "onscreen": "Signs they're getting close"
+      },
+      {
+       "say": "Their eyes lock on and won't let go. The body goes tense, the mouth closes tight, and their weight shifts forward.",
+       "show": "Three more signs tick in, eye 'Fixed stare', 'Tense body, closed mouth', 'Weight forward', and the dog marker climbs again.",
+       "onscreen": ""
+      },
+      {
+       "say": "They start to pull. Or their head's on a swivel, scanning everything for the next thing.",
+       "show": "Two more signs tick in, 'Pulling' and scan-eye 'Scanning', and the dog marker sits just under the dashed threshold line.",
+       "onscreen": ""
+      },
+      {
+       "say": "When you see these, don't wait for the explosion. Add distance right away, because staying under the line beats coming back down.",
+       "show": "An undo-2 icon appears and the dog marker drops back into the green, with a green flag reading 'Add distance' planted just under the dashed line.",
+       "onscreen": "Your cue to add distance"
+      },
+      {
+       "say": "Jot down how far away the trigger was at that first sign. It shifts day to day, so never go hunting for triggers to test it.",
+       "show": "A ruler icon slides in under the bar with the label 'Your dog's distance', and a small green 'Try this' badge with a notebook-pen icon pins to the top left corner.",
+       "onscreen": "Note your dog's distance"
+      }
+     ]
+    },
+    {
+     "id": "ch08s03",
+     "heading": "Stress stacks up",
+     "visual_concept": "A large cup outline with the same dashed threshold line drawn well below the rim, so crossing the line never reads as overflowing. A thin grey base layer already sits in the bottom. Colored layers pour in, one per trigger, and the jogger's pour crosses the dashed line and flushes the liquid red. Then the layout morphs instead of swapping: the cup slides to the left edge and shrinks, and its fill level becomes the starting point of a line chart of stress across one day, with spikes that settle only partway, each starting higher, until the jogger spike crosses the dashed threshold. The small cup stays at the chart's left edge as a gauge. A faint grey ghost line shows the same jogger staying under on a calm day. A small inset shows stacking all at once.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:stress-cup",
+      "chart:stress-day",
+      "icon:bell",
+      "icon:truck",
+      "shape:skateboard",
+      "icon:footprints"
+     ],
+     "beats": [
+      {
+       "say": "The second idea: stress stacks up. Think of a cup, and every stressful thing pours a little in.",
+       "show": "A large cup outline draws in at center with a dashed line well below the rim labeled 'Threshold', and a thin grey base layer already sitting in the bottom.",
+       "onscreen": "Stress stacks up"
+      },
+      {
+       "say": "The doorbell at breakfast, pour. The garbage truck roaring past, pour. A skateboard rattling by on your walk, and the cup fills higher.",
+       "show": "Three colored layers pour into the cup one after another, labeled 'Doorbell', 'Garbage truck', 'Skateboard'.",
+       "onscreen": ""
+      },
+      {
+       "say": "Then comes the jogger. On a calm day, no big deal. But today the cup was nearly full, so it tips over the line.",
+       "show": "A small pour labeled 'Jogger' tips in; the level crosses the dashed Threshold line and the whole liquid flushes red with a small splash.",
+       "onscreen": "One drop too many"
+      },
+      {
+       "say": "It wasn't only the jogger. It was a full cup, including things you can't see, like poor sleep or a sore hip. That's trigger stacking, and that's your Thursday.",
+       "show": "The grey base layer lights up with the label 'Poor sleep, sore hip', then a bracket wraps every layer with the label 'Trigger stacking'.",
+       "onscreen": "Trigger stacking"
+      },
+      {
+       "say": "On a graph, each trigger makes stress spike, and before it can drift back down, the next one lands on top.",
+       "show": "The cup slides to the left edge and shrinks, and its fill level becomes the start of a stress line that draws rightward, 'Stress' up the side, 'Morning' to 'Evening' along the bottom, with spikes at a bell, a truck and a skateboard that each settle only partway.",
+       "onscreen": "One day of stress"
+      },
+      {
+       "say": "Each spike starts higher, until the jogger tips it over. From outside, it looks like a meltdown over one jogger. From inside, it was the whole day.",
+       "show": "The same dashed threshold line appears across the chart and the jogger spike crosses it in red, while a faint grey ghost line shows the same spike staying under on a calm day.",
+       "onscreen": "Small things add up"
+      },
+      {
+       "say": "It can stack all at once, too. A dog, a skateboard and a shouting kid in the same ten seconds.",
+       "show": "A small inset chart pops in beside the first: three spikes bunched together that shoot straight over the line.",
+       "onscreen": "Over time, or all at once"
+      }
+     ]
+    },
+    {
+     "id": "ch08s04",
+     "heading": "Up fast, down slow",
+     "visual_concept": "The chart zooms into a single spike: a steep rise and a long, slow tail back to baseline. A startle callback to ch07s02 uses alert, heart and clock icons. Two speed labels attach to the curve, then a two-day chart shows yesterday's leftover stress raising today's starting point. Do not label any specific hour count.",
+     "assets": [
+      "bg_swirl.jpg",
+      "chart:recovery-curve",
+      "icon:triangle-alert",
+      "icon:heart",
+      "icon:clock",
+      "diagram:stress-cup"
+     ],
+     "beats": [
+      {
+       "say": "And the third idea, the part most people never hear: stress goes up fast, but comes down slowly.",
+       "show": "The chart resets to a single spike: a steep climb and a long, slow tail back down to baseline.",
+       "onscreen": "Up fast, down slow"
+      },
+      {
+       "say": "Remember that friend who yelled boo? You were laughing a second later. But your heart kept pounding for a good while after.",
+       "show": "An alert icon flashes, then a heart icon keeps pulsing beside a clock icon as its hand sweeps around.",
+       "onscreen": ""
+      },
+      {
+       "say": "Same for your dog. Adrenaline hits in seconds, but cortisol, a slower stress hormone, lingers. A big scare can take hours, sometimes days, to settle.",
+       "show": "Two labels attach to the curve: 'Adrenaline: fast' at the peak and 'Full recovery: hours, sometimes days' along the tail.",
+       "onscreen": "Hours, sometimes days"
+      },
+      {
+       "say": "So yesterday's scare can still be in the cup on today's walk. If Wednesday was a vet visit, Thursday starts half full before you leave the house.",
+       "show": "A two-day chart draws in two steps. On the first sentence, a day-one spike labeled 'Wednesday: vet' leaves a tail that stays raised. On the second, day two starts higher and the jogger spike crosses the dashed threshold, labeled 'Thursday: jogger'.",
+       "onscreen": "Yesterday is still in the cup"
+      }
+     ]
+    },
+    {
+     "id": "ch08s05",
+     "heading": "Empty the cup",
+     "visual_concept": "The cup returns nearly full and drains as decompression icons tick in. A one-week calendar strip shows two hard days sliding apart with a green rest day between them. The level settles well below the dashed threshold line, then a single cup with a question mark and the green 'Try this' badge close the chapter.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:stress-cup",
+      "icon:footprints",
+      "icon:bone",
+      "icon:puzzle",
+      "icon:moon",
+      "icon:calendar",
+      "icon:circle-help",
+      "icon:notebook-pen"
+     ],
+     "beats": [
+      {
+       "say": "After a big scare or a busy day, plan a decompression day to drain the cup: sniffing games, chews, food puzzles, naps. And yes, skipping the walk is okay.",
+       "show": "The cup returns filled near the dashed line and drains as four icons tick in: footprints 'Sniffing games', bone 'Chewing', puzzle 'Food puzzle', moon 'Rest'; a small tag adds 'Skipping a walk is okay'.",
+       "onscreen": "Plan decompression days"
+      },
+      {
+       "say": "And don't stack hard days back to back. If Saturday is grooming, Sunday isn't the day for the street fair.",
+       "show": "A week calendar strip appears; two red 'Hard day' blocks sit side by side, then slide apart as a green rest day slips in between them.",
+       "onscreen": "Space out the hard days"
+      },
+      {
+       "say": "An emptier cup means more room before the line, and more chances for your dog to succeed.",
+       "show": "The cup's level settles well below the threshold line, leaving a green gap labeled 'Room to learn'.",
+       "onscreen": "Room to learn"
+      },
+      {
+       "say": "Before every walk, ask yourself one question: what's already in my dog's cup today?",
+       "show": "Everything clears except a single mini stress cup at center with a green question mark above it, and a small green 'Try this' badge with a notebook-pen icon pins to the top left corner.",
+       "onscreen": "What's in the cup today?"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch09",
+   "title": "Your key takeaways",
+   "slide_refs": [
+    15
+   ],
+   "scenes": [
+    {
+     "id": "ch09s01",
+     "heading": "Your key takeaways",
+     "visual_concept": "Deck slide 15 layout: six numbered cards, 01 to 06, in three rows of two with green numbers, as on the deck. Cards fill one at a time with the deck's takeaway text and a small callback icon from the chapter it came from.",
+     "assets": [
+      "bg_swirl.jpg",
+      "logo.png",
+      "icon:alarm-smoke",
+      "diagram:threshold-zones",
+      "icon:clipboard-list"
+     ],
+     "beats": [
+      {
+       "say": "Let's pull it all together. Six things I want you to take with you.",
+       "show": "The heading 'Your key takeaways' writes on and six faint numbered cards, 01 to 06, appear in three rows of two.",
+       "onscreen": "Your key takeaways"
+      },
+      {
+       "say": "One, reactivity is an emotional response, not disobedience. Your dog isn't being stubborn. Their smoke alarm is going off.",
+       "show": "Card 01 fills with 'Reactivity is an emotional response, not disobedience.' and a small smoke alarm icon.",
+       "onscreen": "Emotion, not disobedience"
+      },
+      {
+       "say": "Two, read the threshold. Under the line, your dog can learn what you're teaching. Over it, they can only practice the reaction.",
+       "show": "Card 02 fills with 'Read the threshold: under it they learn, over it they can't.' and a mini dashed line icon.",
+       "onscreen": "Under it they learn"
+      },
+      {
+       "say": "Three, every dog has their own list of triggers. Get specific. And if you only do one thing this week, start that list.",
+       "show": "Card 03 fills with 'Every dog has their own list of triggers. Get specific.' and a clipboard icon, which pulses once.",
+       "onscreen": "Get specific"
+      }
+     ]
+    },
+    {
+     "id": "ch09s02",
+     "heading": "",
+     "visual_concept": "The six-card grid continues. Cards 04 to 06 fill with mini stress cup, dashboard light and stethoscope callback icons, then help icons and a shield join card 06 and all six glow together.",
+     "assets": [
+      "bg_swirl.jpg",
+      "logo.png",
+      "diagram:stress-cup",
+      "diagram:dashboard-light",
+      "icon:stethoscope",
+      "icon:users",
+      "icon:shield"
+     ],
+     "beats": [
+      {
+       "say": "Four, stress stacks up, over time or all at once. When a walk goes wrong, look at the whole day, and the day before.",
+       "show": "Card 04 fills with 'Stress stacks up: over time, or all at once.' and a mini stress cup icon.",
+       "onscreen": "Stress stacks up"
+      },
+      {
+       "say": "Five, aggression is communication, so never punish a growl. Don't tape over the warning light. Thank it, give space, and go fix the engine.",
+       "show": "Card 05 fills with 'Aggression is communication. Never punish a growl.' and a small dashboard light icon.",
+       "onscreen": "Never punish a growl"
+      },
+      {
+       "say": "And six. If there are bites, if things are escalating, or if you're scared of your own dog, you don't have to do this alone.",
+       "show": "Card 06 fills with 'Bites or escalation? See a force-free pro and rule out pain.'",
+       "onscreen": "You don't have to do this alone"
+      },
+      {
+       "say": "Work with a force-free pro, someone who trains without pain or fear, and have your vet rule out pain. Some dogs also need medication from your vet or a veterinary behaviorist, a vet who specializes in behavior. That's not failure.",
+       "show": "A users icon and a stethoscope icon pop in side by side on card 06.",
+       "onscreen": "Get force-free help"
+      },
+      {
+       "say": "Meanwhile, keep everyone safe with gates and supervision. Never leave kids alone with any dog, especially one who's warned or bitten. And ask your pro about muzzle training, done kindly.",
+       "show": "A shield icon joins card 06, and all six cards glow softly together.",
+       "onscreen": "Keep everyone safe now"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch10",
+   "title": "Where to go from here",
+   "slide_refs": [
+    16
+   ],
+   "scenes": [
+    {
+     "id": "ch10s01",
+     "heading": "Where to go from here",
+     "visual_concept": "Deck slide 16 layout: three numbered white step cards built left to right, each with an icon and the deck's small uppercase module tag. The lawn path from ch03s03 fades in behind card 1: the worn path stops darkening while a fresh green dotted path draws beside it. Card 2 flips out two small definition cards with a mini equation, trigger first and then cookie, and a distance slider.",
+     "assets": [
+      "bg_swirl.jpg",
+      "icon:shield",
+      "diagram:lawn-path",
+      "icon:heart",
+      "icon:cookie",
+      "icon:move-horizontal",
+      "icon:map",
+      "icon:footprints",
+      "icon:house",
+      "icon:bone",
+      "icon:dog"
+     ],
+     "beats": [
+      {
+       "say": "Understanding the why is where it all starts, and you've just done it. Changing it takes three steps.",
+       "show": "The heading 'Where to go from here' writes on with the subline 'Understanding the why comes first.' and three outlined step cards appear.",
+       "onscreen": "Where to go from here"
+      },
+      {
+       "say": "Step one, manage first, so everyone stays safe and your dog stops rehearsing. Remember that lawn? Management keeps the old path from getting deeper while we build a new one.",
+       "show": "Card 1 fills with a shield icon, 'Manage first' and the tag 'MANAGEMENT', while a tiny worn lawn path behind it stops darkening and a fresh green dotted path draws beside it.",
+       "onscreen": "1. Manage first"
+      },
+      {
+       "say": "Step two, change the emotion, because feelings drive the behavior. We use two tools together.",
+       "show": "Card 2 fills with a heart icon, 'Change the emotion' and the tag 'TRAINING FOUNDATIONS'.",
+       "onscreen": "2. Change the emotion"
+      },
+      {
+       "say": "Counterconditioning means every time the trigger appears, something wonderful follows, usually great food, until the trigger itself feels like good news. And no, you're not rewarding barking. At the right distance, there isn't any.",
+       "show": "A small card flips out under card 2: 'Counterconditioning: trigger means good things', with a mini equation in this order: alert-triangle icon, then cookie, equals heart.",
+       "onscreen": ""
+      },
+      {
+       "say": "Desensitization means starting so far away, or so quietly, that your dog stays relaxed, then building up bit by bit. It's the opposite of flooding.",
+       "show": "A second small card flips out beside it, 'Desensitization: start easy, build slowly', with a distance slider moving from far to closer in small steps.",
+       "onscreen": ""
+      },
+      {
+       "say": "Step three, your situation, with practical setups for walks, visitors, guarding, and dogs who clash with other dogs.",
+       "show": "Card 3 fills with a map icon, 'Then your situation' and the tag 'THE PLAYBOOKS', with four small icons: footprints, house, bone, dog.",
+       "onscreen": "3. Then your situation"
+      }
+     ]
+    },
+    {
+     "id": "ch10s02",
+     "heading": "",
+     "visual_concept": "Emotional close on the swirl. A progress line climbs with small amber dips. The opening photo returns with the three icons promised in ch00s02, heart, repeat arrows and the mini stress cup, floating in as labels. A green heart, then the brand sign-off with logo and website.",
+     "assets": [
+      "bg_swirl.jpg",
+      "chart:progress-line",
+      "photo_reactivity.jpg",
+      "icon:heart",
+      "icon:repeat",
+      "diagram:stress-cup",
+      "logo.png"
+     ],
+     "beats": [
+      {
+       "say": "With the right plan, reactivity can get a whole lot better. I won't call it a cure, and some dogs will always need a little management. That's okay.",
+       "show": "The step cards fade and a progress line starts drawing from the bottom left, climbing upward.",
+       "onscreen": "It can get a lot better"
+      },
+      {
+       "say": "It won't be a straight line. You'll have great weeks and rough days, and now you know why. We're after progress, not perfection.",
+       "show": "The line finishes with a few small dips highlighted in amber while the overall upward trend glows green.",
+       "onscreen": "Progress, not perfection"
+      },
+      {
+       "say": "Think back to that first walk. Next time a dog turns that corner and yours goes off, you won't see a bad dog. You'll see a feeling, a function, and maybe a full cup.",
+       "show": "photo_reactivity.jpg returns softly and three labels float in over it with their icons: heart 'Feeling', repeat arrows 'Function', mini stress cup 'Full cup'.",
+       "onscreen": "Feeling. Function. Full cup."
+      },
+      {
+       "say": "Your dog isn't giving you a hard time. They're having a hard time. And now you know how to start helping.",
+       "show": "The photo fades and a green heart icon draws itself at center of the swirl.",
+       "onscreen": "They're having a hard time"
+      },
+      {
+       "say": "Thank you for being the kind of owner who wants to understand. See you in the next lesson, here at Calling All Dogs.",
+       "show": "The Calling All Dogs logo scales in at center with 'Training for all breeds!' and callingalldogsny.com beneath it.",
+       "onscreen": "See you in the next lesson"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

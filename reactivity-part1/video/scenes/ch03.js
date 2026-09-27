@@ -1,860 +1,857 @@
-// Chapter 3: Reactive or aggressive?
-// Scenes: ch03s01 (split screen that becomes a Venn), ch03s02 (statement: a reactive dog CAN become aggressive),
-// ch03s03 (ways 1 and 2: the loop and the lawn path), ch03s04 (ways 3 and 4: skipped warnings, frustration),
-// ch03s05 (never punish a growl: dashboard light, iceberg, action plan).
+/*
+ * Chapter 04: Why it happens
+ *   ch04s01  Why it happens                 photo + the owner's question, then the mixing bowl with seven empty chips
+ *   ch04s02  Nature and early life          genetics (born sensitive, bred for a job), the socialization window
+ *   ch04s03  Age                            bowl shifts up, life-stage ruler: adolescence, social maturity, senior
+ *   ch04s04  Past experiences and tools     one bad moment, harsh tools, other dogs predict pain, not dominance, be kind
+ *   ch04s05  Frustration, pain and the mix  barrier photo, patience battery, vet first, the full bowl, not your fault
+ *
+ * The mixing bowl is one shared part. Every scene rebuilds it with the ingredients already added, so the
+ * recipe fills up across the chapter: an empty "?" chip lights up, hops into the bowl and lands with a splash.
+ */
 (function () {
-  const GREEN = '#619537', GREEN_DARK = '#3f6b22', GREEN_LIGHT = '#b8d99a', RED = '#b8452d', AMBER = '#d9912b';
+  const C = {
+    green: '#619537', greenDark: '#3f6b22', greenDeep: '#2c4a17', greenLight: '#b8d99a', pale: '#e8f1dc',
+    mist: '#f3f8ec', olive: '#4b5a1e', ink: '#212121', inkSoft: '#4a4a4a', muted: '#7a7a7a', line: '#d9ddd3',
+    red: '#b8452d', redPale: '#f8e3dd', amber: '#d9912b', amberPale: '#fbefd9', amberText: '#a8650f',
+  };
 
-  const css = `
-    .c3-card { position:absolute; display:flex; align-items:center; gap:24px; padding:0 30px; background:#fff; border-radius:26px;
-      border:1px solid #e6e9e1; box-shadow:var(--shadow-soft); }
-    .c3-card .ib { flex:0 0 auto; width:88px; height:88px; border-radius:50%; display:grid; place-items:center; }
-    .c3-card .ib svg { width:48px; height:48px; }
-    .c3-card .ib.amber { background:var(--amber-pale); color:#b8761a; }
-    .c3-card .ib.red { background:var(--red-pale); color:var(--red); }
-    .c3-card .k { font:700 26px/1 var(--font-body); letter-spacing:5px; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap; }
-    .c3-card .t { margin-top:12px; font:700 52px/1 var(--font-head); color:var(--ink); white-space:nowrap; }
-    .c3-or { position:absolute; width:76px; height:76px; border-radius:50%; background:#fff; border:4px solid var(--green);
-      color:var(--green-dark); display:grid; place-items:center; font:700 30px/1 var(--font-head); box-shadow:var(--shadow-soft); }
-    .c3-bub { position:absolute; padding:18px 30px; border-radius:28px; color:#fff; font:700 36px/1.12 var(--font-body);
-      white-space:nowrap; box-shadow:0 12px 28px rgba(30,30,20,0.22); }
-    .c3-bub .tail { position:absolute; width:30px; height:30px; background:inherit; bottom:-13px; transform:rotate(45deg); border-radius:0 0 7px 0; }
-    .c3-bub.amber { background:#c47d1c; }
-    .c3-bub.red { background:var(--red); }
-    .c3-pill { position:absolute; display:inline-flex; align-items:center; gap:14px; padding:16px 32px; border-radius:999px;
-      background:var(--green); color:#fff; font:700 34px/1 var(--font-body); white-space:nowrap; box-shadow:0 12px 26px rgba(44,74,23,0.24); }
-    .c3-pill svg { width:36px; height:36px; }
+  // the recipe: seven ingredients from the deck plus "many other factors"
+  const ING = [
+    { name: 'Genetics and temperament', icon: 'dna', col: '#619537' },
+    { name: 'Socialization', icon: 'users', col: '#3f6b22' },
+    { name: 'Age', icon: 'hourglass', col: '#4b5a1e' },
+    { name: 'Past experiences', icon: 'zap', col: '#d9912b' },
+    { name: 'Training tools', icon: 'link', col: '#b8452d' },
+    { name: 'Leash and barrier frustration', icon: 'fence', col: '#cf6a2c' },
+    { name: 'Pain or medical issues', icon: 'stethoscope', col: '#2c4a17' },
+    { name: 'Many other factors', icon: 'ellipsis', col: '#8fb03a' },
+  ];
+  // bowl-local coordinates: origin at the centre of the rim ellipse (rx 260, ry 50)
+  const SLOT = [-150, -130, -110, -90, -70, -50, -30].map(d => {
+    const r = (d * Math.PI) / 180;
+    return [Math.round(420 * Math.cos(r)), Math.round(60 + 420 * Math.sin(r))];
+  });
+  SLOT.push([0, -250]); // the smaller dotted "+" chip (many other factors) hovers inside the arc
+  const SPOT = [[-172, 2], [-60, -4], [60, -4], [172, 2], [-118, -72], [118, -72], [0, -78], [0, -162]];
+  const BODY = 'M -260 0 C -260 150 -150 232 0 232 C 150 232 260 150 260 0 A 260 50 0 0 1 -260 0 Z';
+  const STD = { cx: 1480, y: 600, s: 0.78 }; // bowl placement in scenes 2 to 5
+  const CAP_Y = 830;
+  let uid = 0;
 
-    .c3-stmt { position:absolute; font:800 90px/1.16 var(--font-head); color:var(--ink); text-transform:uppercase; letter-spacing:0.5px; }
-    .c3-stmt .ln { display:block; white-space:nowrap; margin-bottom:22px; }
-    .c3-stmt .w { position:relative; display:inline-block; }
-    .c3-stmt .g { color:var(--green); }
-    .c3-stmt .ch { display:inline-block; }
-    .c3-stmt .ul { position:absolute; left:-4px; right:-4px; bottom:-4px; height:15px; background:var(--green); border-radius:4px; }
-    .c3-notwill { display:inline-block; vertical-align:middle; margin-left:30px; margin-top:-14px; padding:14px 26px; border-radius:999px;
-      background:var(--green-pale); color:var(--green-deep); font:700 34px/1 var(--font-body); text-transform:none; letter-spacing:0; }
-    .c3-four { position:absolute; font:700 46px/1.1 var(--font-head); color:var(--ink); white-space:nowrap; }
-    .c3-tc { position:absolute; width:84px; height:84px; border-radius:50%; background:#fff; border:5px solid var(--green); box-shadow:var(--shadow-soft); }
-
-    .c3-strip { position:absolute; height:40px; }
-    .c3-strip .dot { position:absolute; width:32px; height:32px; box-sizing:border-box; border-radius:50%; background:#fff; border:4px solid var(--green-light); }
-    .c3-strip .lb { position:absolute; padding:7px 18px; border-radius:999px; background:#fff; border:2px solid var(--green);
-      font:700 26px/1 var(--font-body); color:var(--green-dark); white-space:nowrap; }
-    .c3-title { position:absolute; font:700 56px/1.12 var(--font-head); color:var(--ink); }
-    .c3-title .n { color:var(--green); }
-    .c3-sub { position:absolute; border-left:8px solid var(--green-light); padding:6px 0 6px 28px; font:600 40px/1.3 var(--font-body); color:var(--ink); }
-
-    .c3-node { position:absolute; width:116px; height:116px; border-radius:50%; display:grid; place-items:center; box-shadow:var(--shadow-soft); }
-    .c3-node svg { width:58px; height:58px; }
-    .c3-node.amber { background:#fff4e2; color:#b8761a; border:4px solid #f0cf9c; }
-    .c3-node.red { background:#fbece8; color:var(--red); border:4px solid #eebcaf; }
-    .c3-node.green { background:var(--green-mist); color:var(--green-dark); border:4px solid var(--green-light); }
-    .c3-nlab { position:absolute; font:700 32px/1.2 var(--font-body); color:var(--ink); white-space:nowrap; }
-    .c3-nlab.r { text-align:right; }
-    .c3-nlab.c { text-align:center; }
-    .c3-count { position:absolute; display:flex; align-items:center; gap:30px; padding:0 40px; background:#fff; border-radius:26px;
-      border:1px solid #e6e9e1; box-shadow:var(--shadow-soft); }
-    .c3-count .ib { flex:0 0 auto; width:100px; height:100px; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; }
-    .c3-count .ib svg { width:54px; height:54px; }
-    .c3-count .col { display:flex; flex-direction:column; gap:10px; }
-    .c3-count .num { position:relative; width:220px; height:120px; }
-    .c3-count .num span { position:absolute; left:0; top:0; font:800 124px/0.97 var(--font-head); color:var(--green); }
-    .c3-count .lab { font:600 30px/1 var(--font-body); color:var(--ink-soft); white-space:nowrap; }
-
-    .c3-x { position:absolute; }
-    .c3-glab { position:absolute; text-align:center; font:700 34px/1 var(--font-head); color:var(--green-dark); white-space:nowrap; }
-    .c3-tlab { position:absolute; text-align:center; font:600 26px/1 var(--font-body); color:var(--ink-soft); white-space:nowrap; }
-    .c3-redir { position:absolute; text-align:center; font:700 46px/1 var(--font-head); color:var(--red); white-space:nowrap; }
-    .c3-newp { position:absolute; display:inline-flex; align-items:center; gap:12px; padding:14px 26px 14px 20px; border-radius:999px; background:#fff;
-      color:var(--green-dark); font:700 30px/1 var(--font-body); white-space:nowrap; box-shadow:0 10px 24px rgba(40,60,20,0.18); }
-    .c3-newp svg { width:34px; height:34px; }
-
-    .c3-bigh { position:absolute; font:700 80px/1.06 var(--font-head); color:var(--green); white-space:nowrap; letter-spacing:-0.5px; }
-    .c3-tape { position:absolute; width:270px; height:88px; background:linear-gradient(180deg, #f5ecd4 0%, #e8d9b2 100%);
-      clip-path:polygon(0% 10%, 3% 0%, 6% 12%, 9% 2%, 12% 0%, 88% 0%, 91% 8%, 94% 0%, 97% 12%, 100% 4%, 100% 90%, 97% 100%, 94% 88%, 91% 100%, 88% 94%, 12% 100%, 9% 90%, 6% 100%, 3% 88%, 0% 96%); }
-    .c3-tape::after { content:''; position:absolute; left:8%; right:8%; top:30%; height:10px; background:rgba(255,255,255,0.45); border-radius:5px; }
-    .c3-cap { position:absolute; font:700 64px/1.14 var(--font-head); color:var(--ink); }
-    .c3-emo { position:absolute; text-align:center; font:700 36px/1 var(--font-head); color:var(--green-deep); white-space:nowrap; }
-    .c3-emo.big { font-size:48px; }
-    .c3-growl { position:absolute; padding:16px 32px; border-radius:28px; background:var(--green); color:#fff; font:700 36px/1.1 var(--font-body);
-      white-space:nowrap; }
-    .c3-ghost { position:absolute; border-radius:28px; border:4px dashed #8fb96a; }
-    .c3-q { position:absolute; font:700 76px/1.1 var(--font-head); color:var(--ink); white-space:nowrap; }
-    .c3-q .nw { position:relative; display:inline-block; }
-    .c3-q .strike { position:absolute; left:-6px; right:-6px; top:52%; height:9px; margin-top:-4px; background:var(--red); border-radius:5px; }
-    .c3-plan { background:#fff; border-radius:26px; border:1px solid #e6e9e1; box-shadow:var(--shadow-soft); padding:64px 44px 42px; }
-    .c3-try { position:absolute; display:flex; align-items:center; gap:12px; padding:14px 26px 14px 18px; border-radius:999px; background:var(--green);
-      color:#fff; font:700 26px/1 var(--font-body); letter-spacing:3px; text-transform:uppercase; white-space:nowrap; box-shadow:0 10px 22px rgba(44,74,23,0.26); }
-    .c3-try svg { width:32px; height:32px; }
+  const CSS = `
+  .c4-layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+  .c4-bowl { position: absolute; }
+  .c4-caprow { position: absolute; display: flex; justify-content: center; }
+  .c4-cap { display: inline-flex; align-items: center; gap: 16px; padding: 10px 32px 10px 10px; border-radius: 999px; background: #fff;
+    box-shadow: var(--shadow-soft); border: 1px solid #e6e9e1; font: 700 30px/1 var(--font-body); color: var(--ink); white-space: nowrap; }
+  .c4-dot { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; color: #fff; flex: 0 0 auto; }
+  .c4-dot svg { width: 28px; height: 28px; stroke-width: 2.3; }
+  .c4-q { position: absolute; display: inline-flex; align-items: center; gap: 28px; padding: 28px 48px 28px 28px; border-radius: 30px;
+    background: #fff; box-shadow: var(--shadow); border: 1px solid #e6e9e1; }
+  .c4-q::after { content: ''; position: absolute; left: 76px; bottom: -28px; width: 0; height: 0;
+    border-right: 36px solid transparent; border-top: 30px solid #fff; }
+  .c4-qico { width: 96px; height: 96px; border-radius: 50%; background: var(--green-pale); color: var(--green); display: grid; place-items: center; flex: 0 0 auto; }
+  .c4-qico svg { width: 54px; height: 54px; stroke-width: 2; }
+  .c4-qt { font: 600 58px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
+  .c4-q.alt { padding: 20px 40px 20px 20px; gap: 22px; }
+  .c4-q.alt::after { left: auto; right: 76px; border-right: none; border-left: 36px solid transparent; }
+  .c4-q.alt .c4-qico { width: 76px; height: 76px; background: var(--amber-pale); color: var(--amber); }
+  .c4-q.alt .c4-qico svg { width: 44px; height: 44px; }
+  .c4-q.alt .c4-qt { font-size: 46px; color: var(--ink-soft); }
+  .c4-big { position: absolute; font: 600 54px/1.16 var(--font-head); color: var(--ink); }
+  .c4-mix { position: absolute; font: 600 56px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
+  .c4-card { position: absolute; background: #fff; border-radius: 26px; box-shadow: var(--shadow-soft); border: 1px solid #e6e9e1; }
+  .c4-badge { position: absolute; border-radius: 50%; display: grid; place-items: center; }
+  .c4-badge svg { width: 54%; height: 54%; stroke-width: 2.1; }
+  .c4-tag { position: absolute; display: inline-flex; align-items: center; gap: 18px; padding: 14px 34px 14px 16px; border-radius: 999px;
+    background: #fff; box-shadow: var(--shadow-soft); border: 1px solid #e6e9e1; font: 500 36px/1 var(--font-body); color: var(--ink); white-space: nowrap; }
+  .c4-tag .ic { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--green-pale); color: var(--green-dark); }
+  .c4-tag .ic svg { width: 32px; height: 32px; stroke-width: 2.2; }
+  .c4-tag b { font-weight: 700; }
+  .c4-sub { position: absolute; font: 700 40px/1.1 var(--font-head); color: var(--green-dark); white-space: nowrap; }
+  .c4-row { position: absolute; display: flex; align-items: center; gap: 24px; padding: 0 28px 0 16px; height: 96px; border-radius: 24px;
+    background: #fff; box-shadow: var(--shadow-soft); border: 1px solid #e6e9e1; font: 700 36px/1 var(--font-body); color: var(--ink); white-space: nowrap; }
+  .c4-row .ic { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; }
+  .c4-row .ic svg { width: 36px; height: 36px; stroke-width: 2.2; }
+  .c4-lab { position: absolute; font: 600 28px/1.2 var(--font-body); color: var(--ink-soft); white-space: nowrap; text-align: center; }
+  .c4-red { display: inline-flex; align-items: center; padding: 16px 32px; border-radius: 999px; border: 3px solid var(--red); background: #fff;
+    color: var(--red); font: 700 34px/1 var(--font-body); white-space: nowrap; }
+  .c4-wrap { position: absolute; display: flex; flex-wrap: wrap; gap: 20px 22px; }
+  .c4-up { display: inline-flex; align-items: center; gap: 12px; padding: 12px 26px 12px 14px; border-radius: 999px; background: var(--red-pale);
+    color: var(--red); font: 700 30px/1 var(--font-body); white-space: nowrap; }
+  .c4-up svg { width: 34px; height: 34px; stroke-width: 2.6; }
+  .c4-call { position: absolute; padding-left: 30px; border-left: 10px solid var(--green); }
+  .c4-call .t1 { font: 700 58px/1.1 var(--font-head); white-space: nowrap; }
+  .c4-call .t2 { font: 500 40px/1.3 var(--font-body); color: var(--ink); white-space: nowrap; margin-top: 8px; }
+  .c4-band { position: absolute; height: 90px; border-radius: 22px; display: flex; align-items: center; padding-left: 26px;
+    font: 700 32px/1 var(--font-body); white-space: nowrap; border: 3px solid; }
+  .c4-sign { position: absolute; font: 700 72px/1 var(--font-head); color: var(--muted); text-align: center; width: 80px; }
+  .c4-eqlab { position: absolute; font: 700 30px/1.2 var(--font-body); color: var(--ink); white-space: nowrap; text-align: center; width: 240px; }
+  .c4-best { position: absolute; font: 700 92px/1.1 var(--font-head); color: var(--green); white-space: nowrap; }
+  .c4-qpill { position: absolute; display: flex; align-items: center; gap: 18px; height: 80px; padding: 0 28px 0 16px; border-radius: 999px;
+    background: #fff; box-shadow: var(--shadow-soft); border: 1px solid #e6e9e1; font: 600 34px/1 var(--font-body); color: var(--ink); white-space: nowrap; }
+  .c4-qpill .ck { width: 50px; height: 50px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
+  .c4-qpill .ck svg { width: 30px; height: 30px; stroke-width: 3; }
+  .c4-vet { position: absolute; display: flex; align-items: center; gap: 20px; padding: 0 36px 0 22px; height: 116px; border-radius: 30px;
+    background: var(--green); color: #fff; font: 700 44px/1 var(--font-head); white-space: nowrap; box-shadow: var(--shadow); }
+  .c4-vet .vi { width: 76px; height: 76px; border-radius: 50%; background: rgba(255,255,255,0.18); display: grid; place-items: center; }
+  .c4-vet .vi svg { width: 44px; height: 44px; stroke-width: 2.2; }
+  .c4-final { position: absolute; display: flex; justify-content: center; align-items: center; gap: 30px; }
+  .c4-final .ft { font: 700 88px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
+  .c4-final .ft b { color: var(--green); font-weight: 700; }
+  .c4-heart { position: absolute; display: grid; place-items: center; }
   `;
-  const style = () => K.el('style', null, css);
-  // a mid-beat moment: at least `min` s after the cue, else a fraction of the beat, but never later than `limit`
-  const mid = (t, L, frac, min, limit) => Math.min(t + Math.max(min, frac * L), limit);
-  // time a reveal to a phrase inside beat i's narration (by its position in the text), leading by `lead` s
-  const sayAt = ctx => (i, phrase, lead = 0.3, fb = 0.5) => Math.max(ctx.cue(i), window.phraseTime(ctx, i, phrase, fb) - lead);
-  const clamp = (t, lo, hi) => Math.max(lo, Math.min(t, hi));
-  const box = (parent, cls, html, o) => {
+  const style = stage => stage.appendChild(K.el('style', null, CSS));
+
+  // ------------------------------------------------------------------ small builders
+  /** Lucide icon drawn inside an svg, centred on (x, y) at `size` px. */
+  function svgIcon(parent, name, x, y, size, attrs = {}) {
+    const k = size / 24;
+    const outer = K.group(parent); // untransformed wrapper, safe to animate with GSAP
+    const g = K.group(outer, Object.assign({ transform: `translate(${x - size / 2} ${y - size / 2}) scale(${k})`, fill: 'none', stroke: C.ink, 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, attrs));
+    g.innerHTML = (window.ICONS || {})[name] || '';
+    return outer;
+  }
+  /** Scene time at which `phrase` is spoken in beat i (estimated from its position in the narration). */
+  const phraseAt = (ctx, i, phrase, fb = 0.5) => window.phraseTime(ctx, i, phrase, fb);
+  /** Full-canvas group so a whole view can be faded out at once. */
+  function layer(stage) {
+    const d = K.el('div', 'c4-layer');
+    stage.appendChild(d);
+    return d;
+  }
+  /** Absolutely positioned div with markup text. */
+  function put(parent, cls, html, o) {
     const n = K.el('div', cls, html == null ? null : K.md(html));
-    K.place(n, o || {});
+    n.style.left = o.x + 'px';
+    n.style.top = o.y + 'px';
+    if (o.w) n.style.width = o.w + 'px';
+    if (o.size) n.style.fontSize = o.size + 'px';
+    if (o.color) n.style.color = o.color;
+    if (o.align) n.style.textAlign = o.align;
     parent.appendChild(n);
     return n;
-  };
-  // Crossfade: old content lifts out quickly, new content rises into the same slot.
-  const swap = (tl, from, to, t) => {
-    tl.to(from, { opacity: 0, y: -24, duration: 0.3, ease: 'power2.out' }, t - 0.05);
-    tl.fromTo(to, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, t + 0.25);
-  };
-
-  // The shared warning ladder (same six rungs as ch01s03).
-  const LADDER = [
-    { t: 'Subtle stress signals', icon: 'eye-off' },
-    { t: 'Stiffening, hard stare', icon: 'eye' },
-    { t: 'Growl', icon: 'volume-2' },
-    { t: 'Snarl, lip lift', icon: 'triangle-alert' },
-    { t: 'Snap', icon: 'zap' },
-    { t: 'Bite', icon: 'octagon-alert' },
-  ];
-
-  // ------------------------------------------------------------------ shared: the "four ways" timeline strip
-  // The four circles from ch03s02, now a thin strip pinned across the top (x 100 to 1820). Each circle lights
-  // with its short label as its way is taught. Returns {wrap, steps, cns, light(i, t), settle(i, t)}.
-  const WAYS = ['Works', 'Practice', 'Warnings lost', 'Boils over'];
-  const SDX = [0, 480, 960, 1440]; // dot offsets inside the strip; each label chip sits on the line after its dot
-  const DONE_BORDER = '#d9ddd3', DONE_INK = '#4a4a4a';
-  function strip(stage, tl, o) {
-    const wrap = box(stage, 'c3-strip', null, { x: 100, y: o.y, w: 1720, h: 40 });
-    const svg = K.svg(wrap, { x: 0, y: 0, w: 1720, h: 40 });
-    const base = K.line(svg, 16, 20, 1710, 20, { stroke: GREEN_LIGHT, 'stroke-width': 4 });
-    const head = K.path(svg, 'M 1698 9 L 1711 20 L 1698 31', { stroke: GREEN_LIGHT, 'stroke-width': 4 });
-    const done = o.done || [];
-    const last = done.length ? Math.max(...done) : 0;
-    const prog = K.line(svg, 16, 20, SDX[last] + 16, 20, { stroke: GREEN, 'stroke-width': 4 });
-    const steps = WAYS.map((w, i) => {
-      const dot = box(wrap, 'dot', null, { x: SDX[i], y: 4 });
-      const lb = box(wrap, 'lb', w, { x: SDX[i] + 54, y: -2 });
-      if (done.includes(i)) {
-        Object.assign(dot.style, { background: GREEN, borderColor: GREEN });
-        Object.assign(lb.style, { color: DONE_INK, borderColor: DONE_BORDER });
-      } else lb.style.opacity = 0;
-      return { dot, lb };
-    });
-    const light = (i, t) => {
-      if (i > 0) tl.to(prog, { attr: { x2: SDX[i] + 16 }, duration: 0.5, ease: 'power2.inOut' }, t - 0.35);
-      tl.to(steps[i].dot, { backgroundColor: GREEN, borderColor: GREEN, boxShadow: '0 0 0 9px rgba(97,149,55,0.22)', scale: 1.2, duration: 0.45, ease: 'back.out(2)' }, t);
-      tl.fromTo(steps[i].lb, { opacity: 0, x: -14, scale: 0.9 }, { opacity: 1, x: 0, scale: 1, duration: 0.5, ease: 'power3.out' }, t + 0.1);
-    };
-    const settle = (i, t) => {
-      tl.to(steps[i].dot, { boxShadow: '0 0 0 0px rgba(97,149,55,0)', scale: 1, duration: 0.4, ease: 'power2.out' }, t);
-      tl.to(steps[i].lb, { color: DONE_INK, borderColor: DONE_BORDER, duration: 0.4 }, t);
-    };
-    return { wrap, steps, base, head, light, settle };
+  }
+  /** Round icon badge centred on (cx, cy). */
+  function badge(parent, name, cx, cy, size, bg, fg) {
+    const b = K.el('div', 'c4-badge');
+    Object.assign(b.style, { left: cx - size / 2 + 'px', top: cy - size / 2 + 'px', width: size + 'px', height: size + 'px', background: bg, color: fg });
+    b.appendChild(K.icon(name));
+    parent.appendChild(b);
+    return b;
+  }
+  /** Centred text label at (cx, y). */
+  function label(parent, html, cx, y, o = {}) {
+    const w = o.w ?? 400;
+    const n = put(parent, o.cls || 'c4-lab', html, { x: cx - w / 2, y, w, size: o.size, color: o.color, align: 'center' });
+    if (o.weight) n.style.fontWeight = o.weight;
+    return n;
   }
 
-  // A drawn leash in the Lucide stroke style (hand loop, slack cord, clip): Lucide has no leash icon.
-  const LEASH = '<path d="M9.6 9.6C6.2 11.4 1.8 8.4 2.6 4.8C3.4 1.4 8.2 1.4 9.2 4.4C9.8 6.2 9.9 8 9.6 9.6z"/>' +
-    '<path d="M9.6 9.6c1.8 3.6 7.6-0.6 9.4 3c0.9 1.8-0.6 2.8-0.6 4"/><rect x="16.3" y="17.2" width="4.2" height="5" rx="1.6"/>';
+  // ------------------------------------------------------------------ the mixing bowl
+  /**
+   * Mixing bowl with ingredient tokens and the ring of hovering "?" chips.
+   * o: {cx, y (rim centre), s (scale), filled (ingredients already in the bowl)}
+   */
+  function makeBowl(stage, o) {
+    const s = o.s, id = 'c4b' + ++uid;
+    const VX = 470, VT = 460, VW = 940, VH = 760;
+    const wrap = K.el('div', 'c4-bowl');
+    Object.assign(wrap.style, { left: o.cx - VX * s + 'px', top: o.y - VT * s + 'px', width: VW * s + 'px', height: VH * s + 'px', transformOrigin: `${VX * s}px ${VT * s}px` });
+    stage.appendChild(wrap);
+    const svg = K.svgEl('svg', { viewBox: `${-VX} ${-VT} ${VW} ${VH}`, width: VW * s, height: VH * s }, wrap);
+    svg.style.overflow = 'visible';
+    const defs = K.svgEl('defs', {}, svg);
+    defs.innerHTML = `
+      <radialGradient id="${id}g" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#e2f1cd" stop-opacity="1"/>
+        <stop offset="0.5" stop-color="#cfe6b4" stop-opacity="0.6"/>
+        <stop offset="1" stop-color="#cfe6b4" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#74aa48"/><stop offset="1" stop-color="#4a7a29"/>
+      </linearGradient>
+      <linearGradient id="${id}i" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#cadfb3"/><stop offset="1" stop-color="#ecf4e2"/>
+      </linearGradient>
+      <clipPath id="${id}c"><path d="${BODY}"/></clipPath>
+      <filter id="${id}f" x="-50%" y="-300%" width="200%" height="700%"><feGaussianBlur stdDeviation="9"/></filter>
+      <filter id="${id}t" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#28401a" flood-opacity="0.25"/></filter>`;
+    const glow = K.circle(svg, 0, -40, 440, { fill: `url(#${id}g)`, opacity: 0 });
+    K.svgEl('ellipse', { cx: 0, cy: 246, rx: 226, ry: 22, fill: C.greenDeep, opacity: 0.2, filter: `url(#${id}f)` }, svg);
+    const bodyAll = K.group(svg);
+    K.svgEl('ellipse', { cx: 0, cy: 0, rx: 267, ry: 57, fill: 'none', stroke: '#b3c2a1', 'stroke-width': 2.5 }, bodyAll);
+    K.svgEl('ellipse', { cx: 0, cy: 0, rx: 260, ry: 50, fill: `url(#${id}i)`, stroke: '#fff', 'stroke-width': 12 }, bodyAll);
+    const tokG = K.group(bodyAll);
+    const front = K.group(bodyAll);
+    K.path(front, BODY, { fill: `url(#${id}b)`, stroke: 'none' });
+    K.path(front, 'M -266 76 A 266 52 0 0 0 266 76', { stroke: C.greenLight, 'stroke-width': 22, fill: 'none', 'clip-path': `url(#${id}c)` });
+    K.path(front, 'M -228 84 C -218 136 -184 176 -132 200', { stroke: '#fff', 'stroke-width': 10, opacity: 0.2, fill: 'none' });
+    K.path(front, 'M 260 0 A 260 50 0 0 1 -260 0', { stroke: '#fff', 'stroke-width': 12, fill: 'none' });
 
-  // Step title "1. The behavior works" with the number in green.
-  const stepTitle = (stage, n, text, o) => box(stage, 'c3-title', `<span class="n">${n}.</span> ${text}`, { x: o.x, y: o.y, w: o.w });
+    const tokens = ING.map((g, k) => {
+      const outer = K.group(tokG);
+      const inner = K.group(outer);
+      K.circle(inner, 0, 0, 44, { fill: g.col, stroke: '#fff', 'stroke-width': 5, filter: `url(#${id}t)` });
+      svgIcon(inner, g.icon, 0, 0, 46, { stroke: '#fff', 'stroke-width': 2.3 });
+      const [x, y] = SPOT[k];
+      gsap.set(outer, { x, y, opacity: k < o.filled ? 1 : 0 });
+      return { outer, inner, x, y };
+    });
+    const slotG = K.group(svg);
+    const slots = SLOT.map(([x, y], k) => {
+      const g = K.group(slotG);
+      if (k < 7) {
+        K.circle(g, 0, 0, 40, { fill: 'rgba(255,255,255,0.8)', stroke: '#aebb9f', 'stroke-width': 3.5, 'stroke-dasharray': '9 8' });
+        K.svgText(g, 0, 18, '?', { 'font-family': 'Rubik', 'font-size': 52, 'font-weight': 700, fill: '#9eab90', 'text-anchor': 'middle' });
+      } else {
+        K.circle(g, 0, 0, 31, { fill: 'rgba(255,255,255,0.8)', stroke: '#aebb9f', 'stroke-width': 3, 'stroke-dasharray': '7 6' });
+        K.path(g, 'M -13 0 H 13 M 0 -13 V 13', { stroke: '#9eab90', 'stroke-width': 5.5, 'stroke-linecap': 'round', fill: 'none' });
+      }
+      gsap.set(g, { x, y, opacity: k >= o.filled ? 1 : 0 });
+      return { g, x, y };
+    });
+    const fx = K.group(svg);
+    return { wrap, svg, glow, bodyAll, tokens, slots, fx, s, cx: o.cx, y: o.y };
+  }
 
-  // ------------------------------------------------------------------ ch03s01: Reactive or aggressive?
-  registerScene('ch03s01', (ctx) => {
-    const { stage, tl, cue, end, dur } = ctx;
-    const at = sayAt(ctx);
-    stage.appendChild(style());
+  /** Remaining "?" chips hover gently from t0 to t1. */
+  function bob(tl, B, t0, t1) {
+    B.slots.forEach((sl, k) => {
+      const per = 1.3, st = t0 + k * 0.19;
+      const n = Math.max(1, Math.floor((t1 - st) / per));
+      tl.fromTo(sl.g, { y: sl.y }, { y: sl.y - 9, duration: per, ease: 'sine.inOut', yoyo: true, repeat: n - 1 }, st);
+    });
+  }
 
-    // chapter opener: the accent bar grows and the chapter title wipes on over it before the layout builds
-    const h = K.heading(stage, 'Reactive or aggressive?', { x: 100, y: 120, w: 1400, size: 84 });
-    A.in(tl, h.bar, 0.05, 'grow', { dur: 0.5 });
-    A.in(tl, h.title, 0.15, 'wipe', { dur: 1.0 });
+  /** Little droplets that fly up from the landing point. */
+  function splash(tl, B, x, y, t, col) {
+    [-162, -128, -94, -58, -22].forEach((a, i) => {
+      const r = (a * Math.PI) / 180, d = 74 + (i % 2) * 24;
+      const c = K.circle(B.fx, x, y, 9 - (i % 2) * 2, { fill: i % 2 ? C.greenLight : col, opacity: 0 });
+      tl.fromTo(c, { x: 0, y: 0, opacity: 0.95 }, { x: Math.cos(r) * d, y: Math.sin(r) * d, opacity: 0, duration: 0.6, ease: 'power2.out', immediateRender: false }, t);
+    });
+  }
 
-    // --- beat 1: split screen with a divider drawing down the middle
-    const PY = 320, PW = 700, PH = 420, LX = 150, RX = 1070;
-    const pL = K.photo(stage, 'photo_reactivity.jpg', { x: LX, y: PY, w: PW, h: PH, pos: '50% 0%' });
-    const pR = K.photo(stage, 'photo_aggression.jpg', { x: RX, y: PY, w: PW, h: PH, pos: '50% 21%' });
-    gsap.set(pR.root, { scaleX: -1 }); // mirrored: the dog faces the divider and stays clear of the Venn overlap
-    const div = box(stage, 'divider-v', null, { x: 958, y: 300, w: 4, h: 640 });
-    const t0 = Math.max(cue(0), 1.1);
-    A.in(tl, pL.root, t0 + 0.05, 'fadeRight', { dur: 0.9 });
-    A.in(tl, pR.root, t0 + 0.2, 'fadeLeft', { dur: 0.9 });
-    tl.fromTo(div, { scaleY: 0, transformOrigin: '50% 0%' }, { scaleY: 1, duration: 1.1, ease: 'power2.inOut' }, t0 + 0.35);
-    A.kenburns(tl, pL.img, { from: 1.02, to: 1.1 });
-    A.kenburns(tl, pR.img, { from: 1.02, to: 1.1 });
+  /**
+   * Ingredient k lights up in its hovering chip, hops into the bowl and lands with a splash.
+   * k = 7 (many other factors) fills the small dotted "+" chip. Returns the landing time.
+   */
+  function dropIn(tl, B, k, t) {
+    const tk = B.tokens[k];
+    const [sx, sy] = SLOT[k];
+    tl.to(B.slots[k].g, { opacity: 0, scale: 1.35, transformOrigin: '50% 50%', duration: 0.35, ease: 'power2.out' }, t);
+    tl.fromTo(tk.outer, { x: sx, y: sy, opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power1.out' }, t);
+    tl.fromTo(tk.inner, { scale: 0.3, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.5, ease: 'back.out(2.2)' }, t);
+    const t1 = t + 0.55, D = 0.62;
+    tl.to(tk.outer, { x: tk.x, duration: D, ease: 'power1.inOut' }, t1);
+    tl.to(tk.outer, { y: sy - (k === 7 ? 16 : 46), duration: D * 0.36, ease: 'power2.out' }, t1); // the "+" chip sits just above the pile: small hop
+    tl.to(tk.outer, { y: tk.y, duration: D * 0.64, ease: 'power2.in' }, t1 + D * 0.36);
+    const land = t1 + D;
+    tl.to(tk.inner, { scaleX: 1.14, scaleY: 0.86, transformOrigin: '50% 50%', duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, land);
+    tl.to(B.bodyAll, { y: 5, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, land);
+    splash(tl, B, tk.x, tk.y - 34, land, ING[k].col);
+    return land;
+  }
 
-    // --- beat 2: label cards rise under each photo, joined by "or"
-    const CW = 420, CH = 150, CY = 770;
-    const card = (x, icon, variant, k, t) => {
-      const c = box(stage, 'c3-card', null, { x, y: CY, w: CW, h: CH });
-      const ib = K.el('div', 'ib ' + variant);
-      ib.appendChild(K.icon(icon, { stroke: 2.2 }));
-      c.appendChild(ib);
-      const tx = K.el('div', 'tx');
-      tx.appendChild(K.el('div', 'k', k));
-      tx.appendChild(K.el('div', 't', t));
-      c.appendChild(tx);
+  /** Caption pill under the bowl naming ingredient k. */
+  function caption(parent, k, cx, y) {
+    const row = K.el('div', 'c4-caprow');
+    Object.assign(row.style, { left: cx - 480 + 'px', top: y + 'px', width: '960px' });
+    const p = K.el('div', 'c4-cap');
+    const dot = K.el('div', 'c4-dot');
+    dot.style.background = ING[k].col;
+    dot.appendChild(K.icon(ING[k].icon));
+    p.appendChild(dot);
+    p.appendChild(K.el('span', null, ING[k].name));
+    row.appendChild(p);
+    parent.appendChild(row);
+    return row;
+  }
+
+  /** Heading + standard bowl shared by scenes 2 to 5 (both fade in at the start of the scene). */
+  function sceneBase(ctx, title, filled, size = 80) {
+    const { stage, tl, dur } = ctx;
+    style(stage);
+    const h = K.heading(stage, title, { x: 100, y: 120, w: 1450, size });
+    A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
+    const B = makeBowl(stage, { cx: STD.cx, y: STD.y, s: STD.s, filled });
+    A.in(tl, B.wrap, 0, 'fade', { dur: 0.6 });
+    bob(tl, B, 0, dur);
+    return { h, B };
+  }
+
+  // ================================================================== ch04s01
+  registerScene('ch03s01', ctx => {
+    const { stage, tl, cue, dur } = ctx;
+    style(stage);
+
+    // photo card left (deck slide 3), heading right
+    const ph = K.photo(stage, 'photo_why.jpg', { x: 100, y: 150, w: 580, h: 790, pos: '35% 50%' });
+    A.in(tl, ph.root, Math.max(0, cue(0) - 0.4), 'fadeRight', { dur: 1.0 });
+    A.kenburns(tl, ph.img, { from: 1.03, to: 1.12, t0: 0, t1: dur });
+    const h = K.heading(stage, 'Why it happens', { x: 780, y: 170, w: 1000, size: 92 });
+    A.in(tl, h.title, cue(0) + 0.1, 'wipe', { dur: 1.1 });
+    A.in(tl, h.bar, cue(0) + 0.9, 'grow', { dur: 0.6 });
+
+    // beat 0: the question every owner asks
+    const q = K.el('div', 'c4-q');
+    Object.assign(q.style, { left: '780px', top: '480px' });
+    const qi = K.el('div', 'c4-qico');
+    qi.appendChild(K.icon('message-circle-question'));
+    q.appendChild(qi);
+    q.appendChild(K.el('div', 'c4-qt', 'Why is my dog like this?'));
+    stage.appendChild(q);
+    A.in(tl, q, cue(0) + 0.9, 'fadeUp', { dur: 0.8 });
+    const q2 = K.el('div', 'c4-q alt');
+    Object.assign(q2.style, { left: '1040px', top: '712px' });
+    const qi2 = K.el('div', 'c4-qico');
+    qi2.appendChild(K.icon('frown'));
+    q2.appendChild(qi2);
+    q2.appendChild(K.el('div', 'c4-qt', 'What did I do wrong?'));
+    stage.appendChild(q2);
+    A.in(tl, q2, Math.max(cue(0) + 2.2, phraseAt(ctx, 0, 'what did i do wrong', 0.75) - 0.3), 'fadeUp', { dur: 0.8 });
+
+    // beat 1: "usually a mix" answers the questions; on "it's a recipe" the questions give way to the bowl,
+    // and on "seven common ingredients" seven empty chips pop up over it
+    const tBowl = Math.min(dur - 3.5, Math.max(cue(1) + 1.5, phraseAt(ctx, 1, 'a recipe', 0.75) - 0.4));
+    const tSeven = Math.min(dur - 1.8, Math.max(tBowl + 0.6, phraseAt(ctx, 1, 'seven common ingredients', 0.85) - 0.3));
+    A.out(tl, [q, q2], tBowl - 0.35, 'fadeUp', { dur: 0.45, stagger: 0.08 });
+    const B = makeBowl(stage, { cx: 1300, y: 745, s: 0.8, filled: 0 });
+    A.in(tl, B.wrap, tBowl, 'fadeUp', { dur: 0.9 });
+    tl.fromTo(B.slots.map(sl => sl.g), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: 'back.out(2)' }, tSeven);
+    bob(tl, B, tSeven + 0.8, dur);
+    const mix = put(stage, 'c4-mix', 'Usually a *mix*', { x: 780, y: 330 });
+    A.in(tl, mix, cue(1) + 0.8, 'fadeUp', { dur: 0.8 });
+  });
+
+  // ================================================================== ch04s02
+  registerScene('ch03s02', ctx => {
+    const { stage, tl, cue, end } = ctx;
+    const { B } = sceneBase(ctx, 'Nature and early life', 0);
+
+    // ---------- beat 0: genetics and temperament
+    const cap0 = caption(stage, 0, STD.cx, CAP_Y);
+    const land0 = dropIn(tl, B, 0, cue(0) - 0.1);
+    A.in(tl, cap0, cue(0) + 0.35, 'fadeUp', { dur: 0.6 });
+
+    const LA = layer(stage);
+    const card = K.el('div', 'c4-card');
+    Object.assign(card.style, { left: '100px', top: '300px', width: '1000px', height: '240px' });
+    LA.appendChild(card);
+    const dna = badge(LA, 'dna', 204, 420, 128, ING[0].col, '#fff');
+    const sens = put(LA, 'c4-big', 'Some dogs are<br>born *sensitive*', { x: 310, y: 350 });
+    A.in(tl, card, land0 - 0.3, 'fadeUp', { dur: 0.7 });
+    A.in(tl, dna, land0 - 0.1, 'pop', { dur: 0.6 });
+    A.in(tl, sens, land0, 'fadeUp', { dur: 0.7 });
+
+    // tiny smoke alarm (callback to chapter 2), blinking
+    const asvg = K.svg(LA, { x: 830, y: 330, w: 250, h: 180 });
+    const aBody = K.group(asvg);
+    K.circle(aBody, 70, 90, 54, { fill: C.redPale, stroke: '#fff', 'stroke-width': 5 });
+    svgIcon(aBody, 'alarm-smoke', 70, 92, 64, { stroke: C.red, 'stroke-width': 1.9 });
+    const arcD = (r, span = 30) => {
+      const a = (span * Math.PI) / 180;
+      return `M${70 + r * Math.cos(-a)} ${90 + r * Math.sin(-a)} A${r} ${r} 0 0 1 ${70 + r * Math.cos(a)} ${90 + r * Math.sin(a)}`;
+    };
+    const arcs = [86, 116, 146].map((r, i) => K.path(asvg, arcD(r), { stroke: C.red, 'stroke-width': 8 - i * 1.5, opacity: 0 }));
+    const tAl = Math.max(land0 + 0.6, phraseAt(ctx, 0, 'smoke alarm', 0.6) - 0.3);
+    tl.fromTo(aBody, { opacity: 0, scale: 0.5, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, tAl);
+    const blinkEnd = cue(2) - 0.4;
+    const nBl = Math.max(2, Math.floor((blinkEnd - tAl - 0.5) / 0.9));
+    tl.fromTo(arcs, { opacity: 0 }, { opacity: 1, duration: 0.18, stagger: 0.09, yoyo: true, repeat: nBl * 2 - 1, repeatDelay: 0.27, ease: 'power1.out' }, tAl + 0.5);
+    tl.to(aBody, { rotation: 8, transformOrigin: '50% 50%', duration: 0.07, yoyo: true, repeat: 7, ease: 'sine.inOut' }, tAl + 0.5);
+
+    // ---------- beat 1: bred for a job (tags sprout from the DNA chip)
+    const csvg = K.svg(LA, { x: 0, y: 0, w: 1920, h: 1080 });
+    const conn = [
+      K.path(csvg, 'M 204 548 V 666 Q 204 694 232 694 H 252', { stroke: C.greenLight, 'stroke-width': 6 }),
+      K.path(csvg, 'M 204 666 V 772 Q 204 800 232 800 H 252', { stroke: C.greenLight, 'stroke-width': 6 }),
+    ];
+    const job = put(LA, 'c4-sub', 'Bred for a job', { x: 264, y: 580 });
+    const mkTag = (icon, html, y) => {
+      const t = K.el('div', 'c4-tag');
+      Object.assign(t.style, { left: '264px', top: y + 'px' });
+      const ic = K.el('div', 'ic');
+      ic.appendChild(K.icon(icon));
+      t.appendChild(ic);
+      t.appendChild(K.el('span', null, K.md(html)));
+      LA.appendChild(t);
+      return t;
+    };
+    const tag1 = mkTag('eye', '**Herders:** movement', 652);
+    const tag2 = mkTag('shield', '**Guardians:** strangers', 758);
+    const tT1 = Math.max(cue(1) + 0.4, phraseAt(ctx, 1, 'herders were bred', 0.15) - 0.2);
+    const tT2 = Math.max(tT1 + 0.8, phraseAt(ctx, 1, 'guardians to distrust', 0.45) - 0.2);
+    A.draw(tl, conn[0], cue(1) - 0.2, 0.7);
+    A.in(tl, job, cue(1), 'fadeRight', { dur: 0.7 });
+    A.in(tl, tag1, tT1, 'pop', { dur: 0.6 });
+    A.draw(tl, conn[1], tT2 - 0.45, 0.5);
+    A.in(tl, tag2, tT2, 'pop', { dur: 0.6 });
+
+    // ---------- beat 2: socialization, the early window
+    A.out(tl, LA, cue(2) - 0.35, 'fadeUp', { dur: 0.45 });
+    A.out(tl, cap0, cue(2) - 0.2, 'fade', { dur: 0.35 });
+    const cap1 = caption(stage, 1, STD.cx, CAP_Y);
+    const land1 = dropIn(tl, B, 1, cue(2) - 0.1);
+    A.in(tl, cap1, cue(2) + 0.35, 'fadeUp', { dur: 0.6 });
+
+    const LB = layer(stage);
+    const TX0 = 130, TX1 = 1060, TW = TX1 - TX0, WIN = TX0 + TW / 2; // track shows birth to six months
+    const tsvg = K.svg(LB, { x: 0, y: 0, w: 1920, h: 1080 });
+    const TY = 376, TH = 64;
+    const track = K.rect(tsvg, TX0, TY, TW, TH, { rx: 32, fill: '#e1e7d9' });
+    const win = K.rect(tsvg, TX0, TY, WIN - TX0, TH, { rx: 32, fill: C.green });
+    const shine = K.rect(tsvg, TX0, TY, WIN - TX0, TH, { rx: 32, fill: '#ffffff', opacity: 0 });
+    // everyday things the puppy meets and files under "normal"
+    const WI = ['dog', 'bus', 'person-standing', 'umbrella', 'bike'];
+    const wx = i => TX0 + ((WIN - TX0) * (i + 0.5)) / WI.length;
+    const wIcons = WI.map((n, i) => svgIcon(tsvg, n, wx(i), TY + TH / 2, 38, { stroke: '#fff', 'stroke-width': 2.2 }));
+    const brk = K.path(tsvg, `M ${TX0 + 2} 364 V 352 H ${WIN - 2} V 364`, { stroke: C.green, 'stroke-width': 4 });
+    const wlab = put(LB, 'c4-sub', 'Roughly the first three months', { x: TX0, y: 290, size: 42 });
+    const ticks = [
+      put(LB, 'c4-lab', 'Birth', { x: TX0, y: 454 }),
+      label(LB, '3 months', WIN, 454, { w: 240 }),
+      put(LB, 'c4-lab', '6 months', { x: TX1 - 300, y: 454, w: 300, align: 'right' }),
+    ];
+    A.in(tl, track, cue(2) + 0.3, 'grow', { dur: 0.8 });
+    A.in(tl, ticks, cue(2) + 0.7, 'fade', { dur: 0.5, stagger: 0.1 });
+    // the green window fills on "roughly the first three months"
+    const tWin = Math.max(cue(2) + 1.1, phraseAt(ctx, 2, 'roughly the first', 0.2) - 0.3);
+    A.in(tl, win, tWin - 0.2, 'grow', { dur: 0.8 });
+    A.draw(tl, brk, tWin + 0.2, 0.6);
+    A.in(tl, wlab, tWin + 0.2, 'fadeUp', { dur: 0.7 });
+    const tSort = Math.max(tWin + 1.0, phraseAt(ctx, 2, 'sorts the world', 0.35) - 0.3);
+    tl.fromTo(wIcons, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.28, ease: 'back.out(2)' }, tSort);
+    const tLight = Math.max(tSort + 1.8, phraseAt(ctx, 2, 'feel normal', 0.8) - 0.3);
+    tl.fromTo(shine, { opacity: 0 }, { opacity: 0.4, duration: 0.35, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tLight);
+
+    // gaps in the window (beat 3): buses, strangers and wheels never get filed under normal
+    const GAP = [1, 2, 4];
+    const gaps = GAP.map(i => K.rect(tsvg, wx(i) - 24, TY, 48, TH, { fill: '#e1e7d9' }));
+    tl.to(GAP.map(i => wIcons[i]), { opacity: 0, y: 26, duration: 0.4, stagger: 0.12, ease: 'power2.in' }, cue(3) - 0.2);
+
+    const mkRow = (icon, html, y, bg, fg) => {
+      const r = K.el('div', 'c4-row');
+      Object.assign(r.style, { left: '100px', top: y + 'px', width: '1000px' });
+      const ic = K.el('div', 'ic');
+      Object.assign(ic.style, { background: bg, color: fg });
+      ic.appendChild(K.icon(icon));
+      r.appendChild(ic);
+      r.appendChild(K.el('span', null, K.md(html)));
+      LB.appendChild(r);
+      return r;
+    };
+    const row1 = mkRow('door-closed', 'Too little', 520, '#eceee8', C.inkSoft);
+    const row2 = mkRow('triangle-alert', 'Too much, too fast', 636, C.amberPale, C.amber);
+    const row3 = mkRow('party-popper', 'Everyone is a party', 752, C.pale, C.green);
+    tl.fromTo(gaps, { scaleY: 0, transformOrigin: '50% 50%' }, { scaleY: 1, duration: 0.45, stagger: 0.12, ease: 'power2.out' }, cue(3));
+    A.in(tl, row1, cue(3) + 0.2, 'fadeDown', { dur: 0.7 });
+    A.in(tl, row2, cue(4) - 0.1, 'fadeDown', { dur: 0.7 });
+    A.in(tl, row3, cue(5) - 0.1, 'fadeDown', { dur: 0.7 });
+
+    // leash mini-diagram inside row 3: person, leash, dog. The leash snaps tight.
+    const lsvg = K.svgEl('svg', { viewBox: '0 0 400 96', width: 400, height: 96 });
+    Object.assign(lsvg.style, { position: 'absolute', left: '580px', top: '0px', overflow: 'visible' });
+    row3.appendChild(lsvg);
+    svgIcon(lsvg, 'user', 34, 48, 50, { stroke: C.inkSoft, 'stroke-width': 2.2 });
+    const SLACK = 'M 62 54 Q 170 100 272 50', TAUT = 'M 62 54 Q 170 52 272 50';
+    const leash = K.path(lsvg, SLACK, { stroke: '#8a6d3b', 'stroke-width': 6 });
+    const dogG = K.group(lsvg);
+    svgIcon(dogG, 'dog', 304, 48, 54, { stroke: C.ink, 'stroke-width': 2.2 });
+    const chev = [K.path(lsvg, 'M 342 34 L 356 48 L 342 62', { stroke: C.red, 'stroke-width': 5 }), K.path(lsvg, 'M 362 34 L 376 48 L 362 62', { stroke: C.red, 'stroke-width': 5 })];
+    const tTaut = Math.max(cue(5) + 1.2, phraseAt(ctx, 5, 'leash says no', 0.45) - 0.2);
+    tl.to(leash, { attr: { d: TAUT, stroke: C.red }, duration: 0.35, ease: 'power3.in' }, tTaut);
+    tl.fromTo(dogG, { x: 0 }, { x: 8, duration: 0.35, ease: 'power3.in' }, tTaut);
+    tl.to(dogG, { x: 4, duration: 0.08, yoyo: true, repeat: 9, ease: 'sine.inOut' }, tTaut + 0.4);
+    tl.fromTo(chev, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.4, stagger: 0.12 }, tTaut + 0.3);
+    void land1; void end;
+  });
+
+  // ================================================================== ch04s03
+  registerScene('ch03s03', ctx => {
+    const { stage, tl, cue } = ctx;
+    const { B } = sceneBase(ctx, 'Age', 2, 84);
+
+    // ---------- beat 0: age drops in, the bowl shifts up and a life-stage ruler draws
+    dropIn(tl, B, 2, cue(0) - 0.1);
+    const NB = { cx: 1270, y: 400, s: 0.52 };
+    const tShift = cue(0) + 0.55;
+    tl.to(B.wrap, { x: NB.cx - STD.cx, y: NB.y - STD.y, scale: NB.s / STD.s, duration: 0.9, ease: 'power3.inOut' }, tShift);
+    const cap = caption(stage, 2, NB.cx, 552);
+    A.in(tl, cap, tShift + 0.8, 'fadeUp', { dur: 0.6 });
+
+    const X = m => 170 + m * 31.5; // months to x (birth to three years), then a break, then senior years
+    const AX = 880;
+    const rsvg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
+    const axis1 = K.line(rsvg, 150, AX, X(36) + 26, AX, { stroke: '#b9c4ab', 'stroke-width': 6 });
+    const axis2 = K.path(rsvg, `M ${X(36) + 66} ${AX} H 1770`, { stroke: '#b9c4ab', 'stroke-width': 6 });
+    const brk = [K.line(rsvg, X(36) + 30, AX + 16, X(36) + 42, AX - 16, { stroke: '#b9c4ab', 'stroke-width': 5 }), K.line(rsvg, X(36) + 50, AX + 16, X(36) + 62, AX - 16, { stroke: '#b9c4ab', 'stroke-width': 5 })];
+    const arrowHead = K.path(rsvg, `M 1756 ${AX - 14} L 1776 ${AX} L 1756 ${AX + 14}`, { stroke: '#b9c4ab', 'stroke-width': 5 });
+    const tickMarks = [0, 6, 12, 18, 24, 36].map(m => K.line(rsvg, X(m), AX - 12, X(m), AX + 12, { stroke: '#9aa98a', 'stroke-width': 4 }));
+    const tickLabs = [['Birth', 0], ['6 months', 6], ['1 year', 12], ['18 months', 18], ['2 years', 24], ['3 years', 36]].map(([t, m]) => label(stage, t, X(m), AX + 22, { w: 200 }));
+    const tAx = cue(0) + 0.7;
+    A.draw(tl, [axis1], tAx, 0.9);
+    A.draw(tl, [...brk, axis2, arrowHead], tAx + 0.7, 0.5, { stagger: 0.08 });
+    A.in(tl, [...tickMarks], tAx + 0.3, 'fade', { dur: 0.3, stagger: 0.07 });
+    A.in(tl, tickLabs, tAx + 0.4, 'fadeUp', { dur: 0.5, stagger: 0.07 });
+
+    const mkBand = (html, m0, m1, y, bg, bd, fg) => {
+      const b = K.el('div', 'c4-band', K.md(html));
+      Object.assign(b.style, { left: X(m0) + 'px', top: y + 'px', width: X(m1) - X(m0) + 'px', background: bg, borderColor: bd, color: fg });
+      stage.appendChild(b);
+      return b;
+    };
+    const adol = mkBand('Adolescence', 6, 18, 650, C.pale, C.green, C.greenDeep);
+    const ext = K.el('div', 'c4-band', 'Big breeds');
+    Object.assign(ext.style, { left: X(18) - 24 + 'px', top: '650px', width: X(24) - X(18) + 24 + 'px', background: 'transparent', borderColor: C.green, borderStyle: 'dashed', borderLeft: 'none', borderRadius: '0 22px 22px 0', zIndex: 0,
+      justifyContent: 'center', padding: '0 0 0 24px', font: '600 28px/1 var(--font-body)', color: C.greenDark });
+    stage.insertBefore(ext, adol);
+    const social = mkBand('Social maturity', 12, 36, 766, C.amberPale, C.amber, '#8a5410');
+
+    const mkCall = (t1, t2, col) => {
+      const c = K.el('div', 'c4-call');
+      Object.assign(c.style, { left: '100px', top: '330px', borderLeftColor: col });
+      const a = K.el('div', 't1', K.md(t1));
+      a.style.color = col;
+      c.appendChild(a);
+      if (t2) c.appendChild(K.el('div', 't2', K.md(t2)));
+      stage.appendChild(c);
       return c;
     };
-    const cL = card(LX + (PW - CW) / 2, 'volume-2', 'amber', 'Reactivity', 'How big');
-    const cR = card(RX + (PW - CW) / 2, 'target', 'red', 'Aggression', 'What for');
-    const or1 = box(stage, 'c3-or', 'or', { x: 922, y: CY + CH / 2 - 38 });
-    [pL.root, pR.root].forEach(n => (n.style.zIndex = 2));
-    [cL, cR].forEach(n => (n.style.zIndex = 1));
-    const t1 = cue(1);
-    A.in(tl, cL, t1 + 0.05, 'fadeUp', { dur: 0.8 });
-    // the right card waits for "Aggression is about intent"; the 'or' joins the pair
-    const tR1 = clamp(at(1, 'aggression is about'), t1 + 0.9, cue(2) - 1.4);
-    A.in(tl, cR, tR1, 'fadeUp', { dur: 0.8 });
-    A.in(tl, or1, tR1 + 0.45, 'pop', { dur: 0.5 });
+    const call1 = mkCall('Adolescence:', 'about 6 to 18 months', C.green);
+    const tAd = Math.max(tAx + 1.0, phraseAt(ctx, 0, 'adolescence', 0.15));
+    A.in(tl, adol, tAd, 'wipe', { dur: 0.8 });
+    A.in(tl, call1, tAd + 0.15, 'fadeUp', { dur: 0.8 });
+    A.in(tl, ext, Math.max(tAd + 1.2, phraseAt(ctx, 0, 'up to two years', 0.6) - 0.2), 'wipe', { dur: 0.7 });
 
-    // --- beat 3: speech bubbles pop from each photo, again joined by "or"
-    const BY = 252;
-    const bL = box(stage, 'c3-bub amber', 'This is too much', { x: 815, y: BY });
-    gsap.set(bL, { xPercent: -100 });
-    const tailL = K.el('div', 'tail'); tailL.style.left = '104px'; bL.appendChild(tailL);
-    const bR = box(stage, 'c3-bub red', 'I’ll make this stop', { x: 1105, y: BY });
-    const tailR = K.el('div', 'tail'); tailR.style.right = '72px'; bR.appendChild(tailR);
-    const or2 = box(stage, 'c3-or', 'or', { x: 922, y: BY + 1 });
-    [bL, bR, or1, or2].forEach(n => (n.style.zIndex = 4));
-    const t2 = cue(2);
-    const tR2 = clamp(at(2, 'the dog using aggression'), t2 + 0.9, cue(3) - 1.2);
-    tl.fromTo(bL, { opacity: 0, scale: 0.4, transformOrigin: '28% 100%' }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.8)' }, t2 + 0.1);
-    tl.fromTo(bR, { opacity: 0, scale: 0.4, transformOrigin: '80% 100%' }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.8)' }, tR2);
-    A.in(tl, or2, tR2 + 0.35, 'pop', { dur: 0.5 });
+    // ---------- beat 1: social maturity, and the volume turns up
+    const call2 = mkCall('Social maturity:', 'about 1 to 3 years', C.amberText);
+    A.out(tl, call1, cue(1) - 0.3, 'fadeUp', { dur: 0.4 });
+    A.in(tl, social, cue(1) - 0.1, 'wipe', { dur: 0.9 });
+    A.in(tl, call2, cue(1) + 0.2, 'fadeUp', { dur: 0.8 });
+    const vol = K.el('div', 'c4-badge');
+    Object.assign(vol.style, { left: '1110px', top: '664px', width: '84px', height: '84px', background: C.amberPale, color: C.amber, border: '4px solid #fff', boxShadow: 'var(--shadow-soft)' });
+    const vIcons = ['volume', 'volume-1', 'volume-2'].map((n, i) => {
+      const ic = K.icon(n);
+      Object.assign(ic.style, { position: 'absolute', left: '50%', top: '50%', width: '48px', height: '48px', marginLeft: '-24px', marginTop: '-24px', opacity: i ? 0 : 1 });
+      vol.appendChild(ic);
+      return ic;
+    });
+    stage.appendChild(vol);
+    const tVol = Math.max(cue(1) + 0.9, phraseAt(ctx, 1, 'gets louder', 0.4) - 0.4);
+    // the (quiet) volume badge arrives on "reactivity often shows up", then turns up on "gets louder"
+    A.in(tl, vol, Math.max(cue(1) + 0.7, Math.min(tVol - 0.8, phraseAt(ctx, 1, 'reactivity often', 0.5) - 0.3)), 'pop', { dur: 0.6 });
+    tl.to(vIcons[0], { opacity: 0, duration: 0.2 }, tVol);
+    tl.to(vIcons[1], { opacity: 1, duration: 0.2 }, tVol);
+    tl.to(vIcons[1], { opacity: 0, duration: 0.2 }, tVol + 0.45);
+    tl.to(vIcons[2], { opacity: 1, duration: 0.2 }, tVol + 0.45);
+    tl.to(vol, { background: C.amber, color: '#fff', duration: 0.4 }, tVol + 0.45);
+    A.pulse(tl, social, tVol + 0.5, { scale: 1.04 });
+    A.pulse(tl, vol, tVol + 0.5, { scale: 1.15 });
 
-    // --- beat 4: photos shrink into circles and slide together into a Venn; the overlap tints green
-    const t3 = cue(3);
-    const R = 230, CYV = 590, CXL = 795, CXR = 1125;
-    A.out(tl, [bL, bR, or1, or2, div], t3 - 0.15, 'fade', { dur: 0.4 });
-    const morph = { top: CYV - R, width: 2 * R, height: 2 * R, borderRadius: R, duration: 1.0, ease: 'power3.inOut' };
-    tl.to(pL.root, Object.assign({ left: CXL - R }, morph), t3);
-    tl.to(pR.root, Object.assign({ left: CXR - R }, morph), t3);
-    tl.to(pL.img, { objectPosition: '85% 30%', duration: 1.0, ease: 'power3.inOut' }, t3);
-    // the cards would cross under the moving photos, so they fade out, jump to the sides and slide back in
-    tl.to([cL, cR], { opacity: 0, duration: 0.3, ease: 'power2.in' }, t3 - 0.1);
-    tl.set(cL, { left: 100, top: CYV - CH / 2 }, t3 + 0.25);
-    tl.set(cR, { left: 1820 - CW, top: CYV - CH / 2 }, t3 + 0.25);
-    tl.fromTo(cL, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', immediateRender: false }, t3 + 0.85);
-    tl.fromTo(cR, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', immediateRender: false }, t3 + 0.95);
-
-    const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    svg.style.zIndex = 3;
-    const half = (CXR - CXL) / 2, hh = Math.sqrt(R * R - half * half);
-    const lens = K.path(svg, `M 960 ${CYV - hh} A ${R} ${R} 0 0 1 960 ${CYV + hh} A ${R} ${R} 0 0 1 960 ${CYV - hh} Z`,
-      { fill: GREEN_LIGHT, 'fill-opacity': 0.62, stroke: GREEN, 'stroke-width': 4 });
-    const ringL = K.circle(svg, CXL, CYV, R, { fill: 'none', stroke: AMBER, 'stroke-width': 7, transform: `rotate(-90 ${CXL} ${CYV})` });
-    const ringR = K.circle(svg, CXR, CYV, R, { fill: 'none', stroke: RED, 'stroke-width': 7, transform: `rotate(-90 ${CXR} ${CYV})` });
-    const conn = K.line(svg, 960, CYV + hh + 8, 960, 846, { stroke: GREEN, 'stroke-width': 4, 'stroke-dasharray': '2 10' });
-    A.draw(tl, [ringL, ringR], t3 + 0.55, 0.8);
-    A.in(tl, lens, t3 + 0.75, 'fade', { dur: 0.5 });
-    // the overlap glows on "overlap"; the pill lands on "a bit of both"
-    const tLens = clamp(at(3, 'lot of overlap'), t3 + 1.6, dur - 4);
-    tl.to(lens, { attr: { 'fill-opacity': 0.8 }, duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tLens);
-    const tPill = clamp(at(3, 'so many dogs'), tLens + 1.2, dur - 2.4);
-    A.in(tl, conn, tPill - 0.15, 'fade', { dur: 0.3 });
-    const pill = box(stage, 'c3-pill', 'Often a bit of both', { x: 960, y: 850 });
-    gsap.set(pill, { xPercent: -50 });
-    pill.style.zIndex = 4;
-    tl.fromTo(pill, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, tPill);
+    // ---------- beat 2: senior years
+    const pin = K.line(rsvg, 1600, AX, 1600, 796, { stroke: C.olive, 'stroke-width': 5 });
+    const pinDot = K.circle(rsvg, 1600, AX, 13, { fill: C.olive, stroke: '#fff', 'stroke-width': 4 });
+    const clock = badge(stage, 'clock', 1600, 750, 88, C.olive, '#fff');
+    const sen = label(stage, 'Senior', 1600, 648, { cls: 'c4-sub', w: 300, color: C.olive });
+    const call3 = mkCall('Senior changes', 'Sore joints, fading senses', C.olive);
+    A.out(tl, call2, cue(2) - 0.3, 'fadeUp', { dur: 0.4 });
+    A.in(tl, pinDot, cue(2) - 0.1, 'pop', { dur: 0.5 });
+    A.draw(tl, pin, cue(2) + 0.1, 0.5);
+    A.in(tl, clock, cue(2) + 0.4, 'pop', { dur: 0.6 });
+    A.in(tl, sen, cue(2) + 0.6, 'fadeUp', { dur: 0.6 });
+    A.in(tl, call3, cue(2) + 0.3, 'fadeUp', { dur: 0.8 });
+    A.pulse(tl, clock, cue(2) + 1.4, { scale: 1.12 });
   });
 
-  // ------------------------------------------------------------------ ch03s02: A reactive dog CAN become aggressive
-  registerScene('ch03s02', (ctx) => {
+  // ================================================================== ch04s04
+  registerScene('ch03s04', ctx => {
     const { stage, tl, cue, dur } = ctx;
-    const at = sayAt(ctx);
-    stage.appendChild(style());
+    const { B } = sceneBase(ctx, 'Past experiences and tools', 3, 76);
 
-    const p = K.photo(stage, 'photo_reactive_to_aggressive.jpg', { x: 100, y: 115, w: 690, h: 845, pos: '50% 45%' });
-    A.in(tl, p.root, Math.max(0, cue(0) - 0.25), 'fadeRight', { dur: 1.0 });
-    A.kenburns(tl, p.img, { from: 1.03, to: 1.12, x0: 0, x1: -1.5 });
+    // ---------- beat 0: one bad moment
+    const cap3 = caption(stage, 3, STD.cx, CAP_Y);
+    dropIn(tl, B, 3, cue(0) - 0.1);
+    A.in(tl, cap3, cue(0) + 0.35, 'fadeUp', { dur: 0.6 });
 
-    // statement: built char by char so it can type on; CAN carries its own underline
-    const SX = 890, SY = 200;
-    const st = box(stage, 'c3-stmt', null, { x: SX, y: SY, w: 930 });
-    const LINES = [
-      [{ t: 'A' }, { t: 'REACTIVE', g: 1 }, { t: 'DOG' }],
-      [{ t: 'CAN', can: 1 }, { t: 'BECOME' }],
-      [{ t: 'AGGRESSIVE', g: 1, tight: 1 }, { t: '.' }],
-    ];
-    const chars = [];
-    let canWord = null, lineTwo = null;
-    LINES.forEach((words, li) => {
-      const ln = K.el('div', 'ln');
-      words.forEach((wd, wi) => {
-        const w = K.el('span', 'w' + (wd.g ? ' g' : ''));
-        [...wd.t].forEach(c => { const s = K.el('span', 'ch', c); w.appendChild(s); chars.push(s); });
-        ln.appendChild(w);
-        if (wd.can) canWord = w;
-        if (wi < words.length - 1 && !wd.tight) ln.appendChild(document.createTextNode(' '));
-      });
-      if (li === 1) lineTwo = ln;
-      st.appendChild(ln);
+    const LA = layer(stage);
+    const title = put(LA, 'c4-big', 'One bad moment can be *enough*', { x: 100, y: 320 });
+    A.in(tl, title, cue(0) + 0.5, 'fadeUp', { dur: 0.8 });
+    const SY = 420; // svg top
+    const tsvg = K.svg(LA, { x: 100, y: SY, w: 1000, h: 380 });
+    const LY = 250, SX = 420; // line y and strike x (svg-local)
+    const base = K.line(tsvg, 40, LY, 960, LY, { stroke: '#d3dbc9', 'stroke-width': 8 });
+    const after = K.line(tsvg, SX, LY, 960, LY, { stroke: C.amber, 'stroke-width': 8, opacity: 0.85 });
+    const dots = [];
+    for (let x = 70; x <= 930; x += 70) dots.push({ x, c: K.circle(tsvg, x, LY, 11, { fill: '#9dbb3f', stroke: '#fff', 'stroke-width': 3 }) });
+    const hit = K.circle(tsvg, SX, LY, 22, { fill: C.red, stroke: '#fff', 'stroke-width': 5 });
+    const rays = [-180, -150, -120, -90, -60, -30, 0].map(a => {
+      const r = (a * Math.PI) / 180;
+      return K.line(tsvg, SX + 34 * Math.cos(r), LY + 34 * Math.sin(r), SX + 62 * Math.cos(r), LY + 62 * Math.sin(r), { stroke: C.amber, 'stroke-width': 6 });
     });
-    const ul = K.el('div', 'ul');
-    canWord.appendChild(ul);
-    const notWill = K.el('span', 'c3-notwill', 'not will');
-    lineTwo.appendChild(notWill);
+    const bolt = K.group(tsvg);
+    svgIcon(bolt, 'zap', SX, 128, 132, { fill: C.amber, stroke: '#b36b12', 'stroke-width': 1.2 });
+    const bad = label(LA, 'One bad moment', 100 + SX, SY + LY + 44, { cls: 'c4-sub', w: 460, color: C.red, size: 38 });
+    A.draw(tl, base, cue(0) + 0.8, 0.9);
+    tl.fromTo(dots.map(d => d.c), { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.35, stagger: 0.05, ease: 'back.out(2)' }, cue(0) + 1.0);
+    const tStrike = Math.max(cue(0) + 2.0, phraseAt(ctx, 0, 'one scary moment', 0.3) - 0.2);
+    tl.fromTo(bolt, { opacity: 0, y: -110 }, { opacity: 1, y: 0, duration: 0.28, ease: 'power4.in' }, tStrike);
+    tl.fromTo(hit, { opacity: 0, scale: 0.2, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(3)' }, tStrike + 0.26);
+    tl.fromTo(rays, { opacity: 0, drawSVG: '0% 0%' }, { opacity: 1, drawSVG: '0% 100%', duration: 0.3, ease: 'power2.out' }, tStrike + 0.26);
+    tl.to(rays, { opacity: 0, duration: 0.5 }, tStrike + 0.9);
+    A.in(tl, bad, tStrike + 0.5, 'fadeUp', { dur: 0.6 });
+    // "may never forget it": everything after that moment stays tinted
+    const tMem = Math.max(tStrike + 1.2, phraseAt(ctx, 0, 'never forget', 0.7) - 0.3);
+    A.draw(tl, after, tMem, 1.2);
+    dots.filter(d => d.x > SX).forEach((d, i) => tl.to(d.c, { attr: { fill: C.amber }, duration: 0.3 }, tMem + 0.15 + i * 0.13));
 
-    // beat 1: statement types on, sitting a little lower so the frame is balanced
-    const t0 = cue(0);
-    gsap.set(st, { y: 150 });
-    tl.fromTo(chars, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, stagger: 0.03, ease: 'power2.out' }, t0 + 0.25);
+    // ---------- beat 1: the tools used
+    A.out(tl, LA, cue(1) - 0.35, 'fadeUp', { dur: 0.45 });
+    A.out(tl, cap3, cue(1) - 0.2, 'fade', { dur: 0.35 });
+    const cap4 = caption(stage, 4, STD.cx, CAP_Y);
+    dropIn(tl, B, 4, cue(1) - 0.1);
+    A.in(tl, cap4, cue(1) + 0.35, 'fadeUp', { dur: 0.6 });
 
-    // beat 2: CAN underlined, "not will" tag; then, on "four common ways", the statement rises and
-    // four empty circles on a timeline arrow appear under it
-    const t1 = cue(1);
-    tl.fromTo(ul, { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 0.5, ease: 'power2.inOut' }, t1 + 0.15);
-    tl.fromTo(notWill, { opacity: 0, scale: 0.5, rotation: -12 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.6, ease: 'back.out(1.8)' }, t1 + 0.4);
-    const tF = clamp(at(1, 'four common ways'), t1 + 1.6, dur - 2.6);
-    tl.to(st, { y: 0, duration: 0.9, ease: 'power3.inOut' }, tF - 0.6);
+    const LB = layer(stage);
+    const t2 = put(LB, 'c4-big', 'Harsh tools, !!more fear!!', { x: 100, y: 320 });
+    // what research links them with (said first), then the tools themselves
+    const ups = K.el('div', 'c4-wrap');
+    Object.assign(ups.style, { left: '100px', top: '430px', width: '1000px' });
+    LB.appendChild(ups);
+    const upChips = ['Fear', 'Stress', 'Aggression'].map(t => {
+      const n = K.el('div', 'c4-up');
+      n.appendChild(K.icon('trending-up'));
+      n.appendChild(K.el('span', null, t));
+      ups.appendChild(n);
+      return n;
+    });
+    const wrapT = K.el('div', 'c4-wrap');
+    Object.assign(wrapT.style, { left: '100px', top: '560px', width: '1000px' });
+    LB.appendChild(wrapT);
+    const tags = ['Leash jerks', 'Prong and choke collars', 'Shock collars', 'Alpha rolls'].map(t => {
+      const n = K.el('div', 'c4-red', t);
+      wrapT.appendChild(n);
+      return n;
+    });
+    A.in(tl, t2, cue(1) + 0.4, 'fadeUp', { dur: 0.8 });
+    let tPrev = cue(1) + 0.9;
+    const upWords = ['more fear', 'stress and', 'aggression'];
+    upChips.forEach((n, i) => {
+      tPrev = Math.max(tPrev + 0.3, phraseAt(ctx, 1, upWords[i], 0.4 + i * 0.05) - 0.2);
+      A.in(tl, n, tPrev, 'fadeUp', { dur: 0.6 });
+    });
+    const tagWords = ['leash jerks', 'prong', 'shock', 'pinning'];
+    tags.forEach((n, i) => {
+      tPrev = Math.max(tPrev + 0.35, phraseAt(ctx, 1, tagWords[i], 0.65 + i * 0.08) - 0.25);
+      A.in(tl, n, tPrev, 'pop', { dur: 0.55 });
+    });
 
-    const four = box(stage, 'c3-four', '*Four* common ways', { x: SX, y: 650 });
-    A.in(tl, four, tF, 'fadeUp', { dur: 0.6 });
-    const TY = 780;
-    const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const axis = K.path(svg, `M ${SX} ${TY} L 1790 ${TY}`, { stroke: GREEN_LIGHT, 'stroke-width': 6 });
-    const head = K.path(svg, `M 1772 ${TY - 18} L 1794 ${TY} L 1772 ${TY + 18}`, { stroke: GREEN_LIGHT, 'stroke-width': 6 });
-    A.draw(tl, axis, tF + 0.1, 0.8);
-    A.in(tl, head, tF + 0.8, 'fade', { dur: 0.25 });
-    const circles = [0, 1, 2, 3].map(i => box(stage, 'c3-tc', null, { x: SX + 20 + i * 235, y: TY - 42 }));
-    A.in(tl, circles, tF + 0.25, 'pop', { dur: 0.5, stagger: 0.1 });
+    // ---------- beat 2: the equation. Other dog + pain = fear
+    A.out(tl, LB, cue(2) - 0.3, 'fadeUp', { dur: 0.45 });
+    const LC = layer(stage);
+    const t3 = put(LC, 'c4-big', 'Other dogs predict *pain*', { x: 100, y: 320 });
+    const EY = 540, xs = [230, 600, 970];
+    const eq = [
+      badge(LC, 'dog', xs[0], EY, 160, C.pale, C.greenDark),
+      badge(LC, 'zap', xs[1], EY, 160, C.amberPale, C.amber),
+      badge(LC, 'triangle-alert', xs[2], EY, 160, C.redPale, C.red),
+    ];
+    const signs = [put(LC, 'c4-sign', '+', { x: (xs[0] + xs[1]) / 2 - 40, y: EY - 38 }), put(LC, 'c4-sign', '=', { x: (xs[1] + xs[2]) / 2 - 40, y: EY - 38 })];
+    const eqLabs = ['Another dog', 'Pain', 'Fear'].map((t, i) => label(LC, t, xs[i], EY + 102, { cls: 'c4-eqlab', w: 260 }));
+    A.in(tl, t3, cue(2) + 0.2, 'fadeUp', { dur: 0.8 });
+    const tDog = Math.max(cue(2) + 0.6, phraseAt(ctx, 2, 'feels pain', 0.2) - 0.4);
+    const tPain = tDog + 0.45;
+    const tFear = Math.max(tPain + 0.8, phraseAt(ctx, 2, 'predict pain', 0.45) - 0.2);
+    A.in(tl, [eq[0], eqLabs[0]], tDog, 'pop', { dur: 0.6, stagger: 0.1 });
+    A.in(tl, [signs[0], eq[1], eqLabs[1]], tPain, 'pop', { dur: 0.6, stagger: 0.12 });
+    A.in(tl, [signs[1], eq[2], eqLabs[2]], tFear, 'pop', { dur: 0.6, stagger: 0.12 });
+    A.pulse(tl, eq[2], Math.max(tFear + 1, phraseAt(ctx, 2, 'fear grows', 0.7)), { scale: 1.14 });
+
+    // ---------- beat 3: not dominance, big feelings
+    tl.to(LC, { opacity: 0, filter: 'blur(8px)', duration: 0.9, ease: 'power2.inOut' }, cue(3) - 0.2);
+    const LD = layer(stage);
+    const t4 = put(LD, 'c4-big', 'Not dominance. *Big feelings.*', { x: 100, y: 320 });
+    const CX = 215, CY = 608;
+    const crown = badge(LD, 'crown', CX, CY, 170, '#eceee8', C.inkSoft);
+    const boss = label(LD, 'Boss?', CX, CY + 104, { cls: 'c4-eqlab', w: 240 });
+    const xsvg = K.svg(LD, { x: CX - 85, y: CY - 85, w: 170, h: 170 });
+    const xl = [K.line(xsvg, 34, 34, 136, 136, { stroke: C.red, 'stroke-width': 13 }), K.line(xsvg, 136, 34, 34, 136, { stroke: C.red, 'stroke-width': 13 })];
+    const asvg = K.svg(LD, { x: 0, y: 0, w: 1920, h: 1080 });
+    const arr = [K.path(asvg, `M 326 ${CY} H 396`, { stroke: C.green, 'stroke-width': 6 }), K.path(asvg, `M 380 ${CY - 15} L 398 ${CY} L 380 ${CY + 15}`, { stroke: C.green, 'stroke-width': 6 })];
+    const feel = [['Scared', 'frown'], ['Frustrated', 'annoyed'], ['Overwhelmed', 'tornado']].map(([t, ic], i) => {
+      const n = K.el('div', 'c4-tag');
+      Object.assign(n.style, { left: '430px', top: CY - 148 + i * 106 + 'px' });
+      const c = K.el('div', 'ic');
+      c.appendChild(K.icon(ic));
+      n.appendChild(c);
+      n.appendChild(K.el('span', null, t));
+      LD.appendChild(n);
+      return n;
+    });
+    A.in(tl, t4, cue(3) + 0.4, 'fadeUp', { dur: 0.8 });
+    const tCrown = Math.max(cue(3) + 0.9, phraseAt(ctx, 3, 'outdated idea', 0.2) - 0.2);
+    A.in(tl, crown, tCrown, 'pop', { dur: 0.6 });
+    A.in(tl, boss, Math.max(tCrown + 0.4, phraseAt(ctx, 3, 'be the boss', 0.35) - 0.3), 'fadeUp', { dur: 0.5 });
+    const tX = Math.max(tCrown + 1.2, phraseAt(ctx, 3, 'after rank', 0.6) - 0.4);
+    A.draw(tl, xl, tX, 0.35, { stagger: 0.18 });
+    tl.to([crown, boss], { opacity: 0.45, duration: 0.5 }, tX + 0.6);
+    let tF = tX + 0.4;
+    ['scared', 'frustrated', 'overwhelmed'].forEach((w, i) => {
+      tF = Math.max(tF + 0.35, phraseAt(ctx, 3, w, 0.8 + i * 0.07) - 0.35);
+      if (i === 0) A.draw(tl, arr, tF - 0.1, 0.4, { stagger: 0.12 });
+      A.in(tl, feel[i], tF, 'fadeRight', { dur: 0.6 });
+    });
+
+    // ---------- beat 4: be kind to yourself
+    A.out(tl, LD, cue(4) + 0.1, 'fade', { dur: 0.5 });
+    const LE = layer(stage);
+    const kind = put(LE, 'c4-best', 'Be kind to yourself', { x: 100, y: 372 });
+    const ul = K.el('div', 'accent-bar');
+    Object.assign(ul.style, { left: '104px', top: '496px', width: '160px' });
+    LE.appendChild(ul);
+    const best = put(LE, 'lead', 'You did your best.', { x: 100, y: 532 });
+    best.style.color = C.inkSoft;
+    const help = K.el('div', 'c4-qpill');
+    Object.assign(help.style, { left: '100px', top: '646px' });
+    const hk = K.el('div', 'ck');
+    hk.appendChild(K.icon('check'));
+    help.appendChild(hk);
+    help.appendChild(K.el('span', null, 'Switch safely, with a force-free trainer'));
+    LE.appendChild(help);
+    A.in(tl, kind, cue(4) + 0.6, 'fadeUp', { dur: 0.9 });
+    A.in(tl, ul, cue(4) + 1.1, 'grow', { dur: 0.6 });
+    const tBest = Math.max(cue(4) + 1.5, phraseAt(ctx, 4, 'you did your best', 0.3) - 0.3);
+    A.in(tl, best, tBest, 'fadeUp', { dur: 0.8 });
+    A.in(tl, help, Math.max(tBest + 1.2, phraseAt(ctx, 4, 'a trainer who', 0.6) - 0.3), 'fadeRight', { dur: 0.7 });
+    // green heart pulses once over the bowl, then stays
+    const HX = STD.cx, HY = STD.y - 400 * STD.s;
+    const ring = K.el('div', 'c4-heart');
+    Object.assign(ring.style, { left: HX - 70 + 'px', top: HY - 70 + 'px', width: '140px', height: '140px', borderRadius: '50%', border: '5px solid ' + C.greenLight, opacity: 0 });
+    stage.appendChild(ring);
+    const heart = K.el('div', 'c4-heart');
+    Object.assign(heart.style, { left: HX - 56 + 'px', top: HY - 56 + 'px', width: '112px', height: '112px' });
+    heart.appendChild(K.icon('heart', { size: 112, stroke: 1.6, color: C.green }));
+    heart.firstChild.setAttribute('fill', C.green);
+    stage.appendChild(heart);
+    const tH = cue(4) + 0.3;
+    A.in(tl, heart, tH, 'pop', { dur: 0.6 });
+    tl.to(heart, { scale: 1.25, duration: 0.28, ease: 'power2.out', yoyo: true, repeat: 1 }, tH + 0.75);
+    tl.fromTo(ring, { opacity: 0.9, scale: 0.7 }, { opacity: 0, scale: 1.6, duration: 1.0, ease: 'power2.out', immediateRender: false }, tH + 0.8);
+    tl.to(B.glow, { opacity: 0.55, duration: 1.0 }, tH + 0.8);
+    void dur;
   });
 
-  // ------------------------------------------------------------------ ch03s03: It works, and it's practiced
-  registerScene('ch03s03', (ctx) => {
-    const { stage, tl, cue, end, dur } = ctx;
-    const at = sayAt(ctx);
-    stage.appendChild(style());
+  // ================================================================== ch04s05
+  registerScene('ch03s05', ctx => {
+    const { stage, tl, cue, dur } = ctx;
+    const { h, B } = sceneBase(ctx, 'Frustration, pain and the mix', 5, 76);
+    h.root.style.zIndex = 3; // stays crisp above the bowl's glow
 
-    const h = K.heading(stage, 'It works, and it’s practiced', { x: 100, y: 120, w: 1400, size: 76 });
-    A.in(tl, h.title, Math.max(0, cue(0) - 0.25), 'fadeUp', { dur: 0.8 });
-    A.in(tl, h.bar, cue(0) + 0.25, 'grow', { dur: 0.6 });
+    // ---------- beat 0: leash and barrier frustration
+    const cap5 = caption(stage, 5, STD.cx, CAP_Y);
+    dropIn(tl, B, 5, cue(0) - 0.1);
+    A.in(tl, cap5, cue(0) + 0.35, 'fadeUp', { dur: 0.6 });
 
-    // the four circles from ch03s02 return as a thin strip across the top
-    const sp = strip(stage, tl, { y: 282 });
-    A.draw(tl, sp.base, 0.05, 0.9, { ease: 'power2.out' });
-    A.in(tl, sp.head, 0.8, 'fade', { dur: 0.25 });
-    tl.fromTo(sp.steps.map(s => s.dot), { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.45, stagger: 0.15, ease: 'back.out(2)' }, 0.1);
+    const ph = K.photo(stage, 'photo_reactive_to_aggressive.jpg', { x: 100, y: 290, w: 440, h: 650, pos: '45% 40%' });
+    A.in(tl, ph.root, cue(0) + 0.1, 'fadeRight', { dur: 1.0 });
+    A.kenburns(tl, ph.img, { from: 1.04, to: 1.12, t0: 0, t1: cue(1) + 1 });
+    const LA = layer(stage);
+    const held = put(LA, 'c4-big', 'Held back by a<br>*leash* or *barrier*', { x: 600, y: 330, w: 540 });
+    A.in(tl, held, cue(0) + 0.6, 'fadeUp', { dur: 0.8 });
+    // pressure meter climbing
+    const plab = put(LA, 'c4-sub', 'Pressure', { x: 600, y: 520, size: 38, color: C.inkSoft });
+    const msvg = K.svg(LA, { x: 600, y: 590, w: 500, h: 60 });
+    const mdefs = K.svgEl('defs', {}, msvg);
+    mdefs.innerHTML = `<linearGradient id="c4press" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7fb24a"/><stop offset="0.45" stop-color="#c2b235"/><stop offset="0.72" stop-color="#d9912b"/><stop offset="1" stop-color="#b8452d"/></linearGradient>`;
+    K.rect(msvg, 0, 8, 480, 44, { rx: 22, fill: '#e1e7d9' });
+    const fill = K.rect(msvg, 0, 8, 480, 44, { rx: 22, fill: 'url(#c4press)' });
+    A.in(tl, [plab, msvg], cue(0) + 1.1, 'fadeUp', { dur: 0.7, stagger: 0.12 });
+    const tP = Math.max(cue(0) + 1.8, phraseAt(ctx, 0, 'sees what they want', 0.7) - 0.2);
+    const dP = Math.max(1.2, Math.min(3.2, cue(1) - 0.7 - tP));
+    tl.fromTo(fill, { clipPath: 'inset(0% 100% 0% 0% round 22px)' }, { clipPath: 'inset(0% 6% 0% 0% round 22px)', duration: dP, ease: 'power1.in' }, tP);
 
-    const TX = 100, TY = 372, TW = 640, SY = 548;
-    const title1 = stepTitle(stage, 1, 'The behavior works', { x: TX, y: TY, w: TW });
-    const title2 = stepTitle(stage, 2, 'Practice makes it stronger', { x: TX, y: TY, w: TW });
-    const sub1 = box(stage, 'c3-sub', 'Behavior that works<br>*gets repeated*', { x: TX, y: SY, w: 620 });
-    const sub3 = box(stage, 'c3-sub', 'Every rehearsal<br>*deepens the path*', { x: TX, y: SY, w: 620 });
+    // ---------- beat 1: pain shortens the fuse
+    tl.to(ph.root, { x: -140, opacity: 0, duration: 0.6, ease: 'power2.in' }, cue(1) - 0.35);
+    A.out(tl, LA, cue(1) - 0.35, 'fadeUp', { dur: 0.45 });
+    A.out(tl, cap5, cue(1) - 0.2, 'fade', { dur: 0.35 });
+    const cap6 = caption(stage, 6, STD.cx, CAP_Y);
+    dropIn(tl, B, 6, cue(1) - 0.1);
+    A.in(tl, cap6, cue(1) + 0.35, 'fadeUp', { dur: 0.6 });
 
-    // --- the loop: a ring with three nodes, drawn clockwise from the top
-    const CX = 1270, CY = 662, R = 190;
-    const ang = [-90, 30, 150];
-    const pt = a => [CX + R * Math.cos(a * Math.PI / 180), CY + R * Math.sin(a * Math.PI / 180)];
-    const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const ringD = `M ${CX} ${CY - R} A ${R} ${R} 0 1 1 ${CX} ${CY + R} A ${R} ${R} 0 1 1 ${CX} ${CY - R}`;
-    const ring = K.path(svg, ringD, { stroke: GREEN_LIGHT, 'stroke-width': 12 });
-    // arrowheads (chevrons) on the ring midway between nodes, pointing clockwise
-    const chevs = [-30, 90, 210].map(a => {
-      const [x, y] = pt(a);
-      return K.path(svg, 'M -13 -17 L 7 0 L -13 17', { stroke: GREEN, 'stroke-width': 8, transform: `translate(${x} ${y}) rotate(${a + 90})` });
-    });
-    // comet that orbits the ring during beat 3
-    const comet = K.group(svg, { opacity: 0 });
-    const trail = [0.18, 0.32, 0.55].map((o, i) => K.circle(comet, CX, CY - R, 7 + i * 2, { fill: GREEN, opacity: o }));
-    const glow = K.circle(comet, CX, CY - R, 30, { fill: GREEN, opacity: 0.18 });
-    const dot = K.circle(comet, CX, CY - R, 13, { fill: GREEN_DARK });
-    // return arrow (relief reinforces the barking): from node 3 arching back to node 2 inside the ring
-    const [n3x, n3y] = pt(150), [n2x, n2y] = pt(30);
-    const retD = `M ${n3x + 62} ${n3y - 44} Q ${CX} ${CY - 120} ${n2x - 62} ${n2y - 44}`;
-    const ret = K.path(svg, retD, { stroke: GREEN, 'stroke-width': 8 });
-    const retHead = K.path(svg, 'M -16 -15 L 4 0 L -16 15', { stroke: GREEN, 'stroke-width': 8 });
-    {
-      const ex = n2x - 62, ey = n2y - 44, cx = CX, cy = CY - 120;
-      const a = Math.atan2(ey - cy, ex - cx) * 180 / Math.PI;
-      retHead.setAttribute('transform', `translate(${ex} ${ey}) rotate(${a})`);
-    }
+    const LB = layer(stage);
+    const fuse = put(LB, 'c4-big', 'Pain shortens the *fuse*', { x: 100, y: 300 });
+    const bsvg = K.svg(LB, { x: 100, y: 390, w: 520, h: 180 });
+    K.rect(bsvg, 6, 6, 440, 168, { rx: 30, fill: '#fff', stroke: C.inkSoft, 'stroke-width': 8 });
+    K.rect(bsvg, 450, 58, 34, 64, { rx: 10, fill: C.inkSoft });
+    const cells = [0, 1, 2, 3, 4].map(i => K.rect(bsvg, 26 + i * 82, 26, 70, 128, { rx: 12, fill: C.green }));
+    const pat = put(LB, 'c4-sub', 'Patience', { x: 650, y: 452, size: 46, color: C.ink });
+    A.in(tl, fuse, cue(1) + 0.4, 'fadeUp', { dur: 0.8 });
+    A.in(tl, [bsvg, pat], cue(1) + 0.7, 'fadeUp', { dur: 0.8, stagger: 0.15 });
+    const tDrain = Math.max(cue(1) + 1.8, phraseAt(ctx, 1, 'short your fuse', 0.5) - 0.2);
+    [4, 3, 2, 1].forEach((c, i) => tl.to(cells[c], { opacity: 0, duration: 0.3, ease: 'power1.out' }, tDrain + i * 0.45));
+    tl.to(cells.slice(0, 4), { attr: { fill: C.amber }, duration: 0.3 }, tDrain + 0.5);
+    tl.to(cells[0], { attr: { fill: C.red }, duration: 0.3 }, tDrain + 1.4);
+    tl.to(pat, { color: C.red, duration: 0.4 }, tDrain + 1.4);
+    A.pulse(tl, bsvg, tDrain + 1.8, { scale: 1.05 });
 
-    const NODES = [
-      { icon: 'triangle-alert', v: 'amber', t: 'Scary thing appears', side: 't' },
-      { icon: 'volume-2', v: 'red', t: 'Bark and<br>lunge', side: 'r' },
-      { icon: 'footprints', v: 'green', t: 'Scary thing<br>leaves', side: 'l' },
-    ];
-    const nodes = NODES.map((n, i) => {
-      const [x, y] = pt(ang[i]);
-      const b = box(stage, 'c3-node ' + n.v, null, { x: x - 58, y: y - 58, w: 116, h: 116 });
-      b.appendChild(K.icon(n.icon, { stroke: 2.2 }));
-      const lab = n.side === 'r' ? box(stage, 'c3-nlab', n.t, { x: x + 78, y: y - 38 })
-        : n.side === 't' ? box(stage, 'c3-nlab c', n.t, { x: x - 250, y: y - 112, w: 500 })
-          : box(stage, 'c3-nlab r', n.t, { x: x - 78 - 260, y: y - 38, w: 260 });
-      return { b, lab, x, y };
-    });
-    const relief = box(stage, 'c3-pill', null, { x: nodes[2].x - 78 - 212, y: nodes[2].y + 56 });
-    relief.appendChild(K.icon('check', { stroke: 3 }));
-    relief.appendChild(K.el('span', null, 'Relief'));
+    // ---------- beat 2: rule out pain first. Pain hides, so every dog gets a vet check
+    const rule = put(LB, 'c4-sub', 'Rule out pain first', { x: 100, y: 612, size: 44 });
+    const hide = K.el('div', 'c4-qpill');
+    Object.assign(hide.style, { left: '100px', top: '694px' });
+    const hi = K.el('div', 'ck');
+    Object.assign(hi.style, { background: C.amberPale, color: C.amber });
+    hi.appendChild(K.icon('eye-off'));
+    hide.appendChild(hi);
+    hide.appendChild(K.el('span', null, 'Not always a limp'));
+    LB.appendChild(hide);
+    const vrow = K.el('div', null);
+    Object.assign(vrow.style, { position: 'absolute', left: '100px', top: '796px', display: 'flex', alignItems: 'center', gap: '26px' });
+    const vet = K.el('div', 'c4-vet');
+    Object.assign(vet.style, { position: 'relative', fontSize: '40px' });
+    const vi = K.el('div', 'vi');
+    vi.appendChild(K.icon('stethoscope'));
+    vet.appendChild(vi);
+    vet.appendChild(K.el('span', null, 'Vet check for every dog'));
+    vrow.appendChild(vet);
+    const sud = K.el('div', 'c4-up');
+    Object.assign(sud.style, { background: C.amberPale, color: '#8a5410' });
+    sud.appendChild(K.icon('zap'));
+    sud.appendChild(K.el('span', null, 'Sudden change?'));
+    vrow.appendChild(sud);
+    LB.appendChild(vrow);
+    A.in(tl, rule, cue(2) + 0.1, 'fadeUp', { dur: 0.7 });
+    const tHide = Math.max(cue(2) + 0.8, phraseAt(ctx, 2, 'look like limping', 0.45) - 0.4);
+    A.in(tl, hide, tHide, 'fadeRight', { dur: 0.6 });
+    const tVet = Math.max(tHide + 1.0, phraseAt(ctx, 2, 'every reactive dog', 0.57) - 0.3);
+    A.in(tl, vet, tVet, 'pop', { dur: 0.7 });
+    // on "especially after a sudden change": early enough to read before this view clears for beat 3
+    A.in(tl, sud, Math.min(cue(3) - 1.6, Math.max(tVet + 0.9, phraseAt(ctx, 2, 'especially after', 0.85) - 0.3)), 'fadeRight', { dur: 0.6 });
 
-    // beat 1: circle one lights with 'Works', title, the scary thing appears; the loop then draws clockwise
-    // in step with the narration: "barks and lunges" pops node two, "walks away" node three, then it closes
-    const t0 = cue(0);
-    sp.light(0, t0 + 0.2);
-    A.in(tl, title1, t0 + 0.35, 'fadeUp', { dur: 0.7 });
-    const tBark = clamp(at(0, 'barks and lunges'), t0 + 1.4, cue(1) - 4);
-    const tAway = clamp(at(0, 'walks away'), tBark + 1.2, cue(1) - 2.5);
-    const nodeAt = [t0 + 0.4, tBark, tAway];
-    const seg = (to, t) => tl.to(ring, { drawSVG: '0% ' + to, duration: 0.7, ease: 'power1.inOut' }, t);
-    tl.fromTo(ring, { drawSVG: '0% 0%' }, { drawSVG: '0% 0.5%', duration: 0.2 }, t0 + 0.6);
-    seg('33.4%', tBark - 0.75);
-    seg('66.7%', tAway - 0.75);
-    seg('100%', tAway + 0.35);
-    nodes.forEach((n, i) => {
-      tl.fromTo(n.b, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, nodeAt[i]);
-      A.in(tl, n.lab, nodeAt[i] + 0.1, n.side === 'r' ? 'fadeLeft' : n.side === 't' ? 'fadeUp' : 'fadeRight', { dur: 0.5 });
-    });
-    [tBark - 0.4, tAway - 0.4, tAway + 0.75].forEach((t, i) => A.in(tl, chevs[i], t, 'fade', { dur: 0.3 }));
+    // ---------- beat 3: many other factors. The bowl moves centre stage and glows
+    A.out(tl, LB, cue(3) - 0.35, 'fade', { dur: 0.45 });
+    A.out(tl, cap6, cue(3) - 0.35, 'fade', { dur: 0.35 });
+    const FB = { cx: 960, y: 510, s: 0.92 };
+    tl.to(B.wrap, { x: FB.cx - STD.cx, y: FB.y - STD.y, scale: FB.s / STD.s, duration: 1.0, ease: 'power3.inOut' }, cue(3) - 0.2);
+    const land = dropIn(tl, B, 7, cue(3) + 0.55);
+    const cap7 = caption(stage, 7, FB.cx, 792);
+    A.in(tl, cap7, cue(3) + 0.8, 'fadeUp', { dur: 0.6 });
+    tl.fromTo(B.glow, { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 1.1, ease: 'power2.out' }, land + 0.05);
+    tl.to(B.tokens.map(t => t.inner), { scale: 1.12, transformOrigin: '50% 50%', duration: 0.22, yoyo: true, repeat: 1, stagger: 0.06, ease: 'power1.out' }, land + 0.3);
+    const nG = Math.max(1, Math.floor((dur - land - 1.3) / 1.6));
+    tl.to(B.glow, { scale: 1.06, transformOrigin: '50% 50%', duration: 1.6, yoyo: true, repeat: nG - 1, ease: 'sine.inOut' }, land + 1.2);
 
-    // beat 2: Relief glows on node three, the return arrow curves back to "Bark and lunge"
-    const t1 = cue(1);
-    tl.fromTo(relief, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.8)' }, t1 + 0.1);
-    tl.to(relief, { boxShadow: '0 0 0 16px rgba(97,149,55,0.25)', duration: 0.35, ease: 'power2.out' }, t1 + 0.6);
-    tl.to(relief, { boxShadow: '0 12px 26px rgba(44,74,23,0.24)', duration: 0.6, ease: 'power2.inOut' }, t1 + 0.95);
-    tl.to(nodes[2].b, { boxShadow: '0 0 0 14px rgba(97,149,55,0.22)', duration: 0.35 }, t1 + 0.6);
-    tl.to(nodes[2].b, { boxShadow: '0 10px 30px rgba(40,60,20,0.10)', duration: 0.6 }, t1 + 0.95);
-    A.draw(tl, ret, t1 + 0.55, 0.8);
-    A.in(tl, retHead, t1 + 1.3, 'fade', { dur: 0.2 });
-    A.in(tl, sub1, clamp(at(1, 'behavior that works'), t1 + 0.8, cue(2) - 1.5), 'fadeUp', { dur: 0.7 });
-
-    // beat 3: dot two, title swaps, the loop spins faster and faster while a counter ticks up
-    const t2 = cue(2);
-    sp.settle(0, t2);
-    sp.light(1, t2 + 0.1);
-    swap(tl, title1, title2, t2);
-    tl.to(sub1, { opacity: 0, y: -20, duration: 0.3, ease: 'power2.out' }, t2 - 0.05);
-    const cnt = box(stage, 'c3-count', null, { x: TX, y: SY, w: 470, h: 230 });
-    const cib = K.el('div', 'ib'); cib.appendChild(K.icon('repeat', { stroke: 2.4 })); cnt.appendChild(cib);
-    const col = K.el('div', 'col'); cnt.appendChild(col);
-    const num = K.el('div', 'num'); col.appendChild(num);
-    const vals = ['1', '5', '20', '50'].map(v => { const s = K.el('span', null, v); num.appendChild(s); return s; });
-    col.insertBefore(K.el('div', 'lab', 'Times practiced'), num); // label above the number: reads right for "1" too
-    A.in(tl, cnt, t2 + 0.35, 'fadeUp', { dur: 0.7 });
-    gsap.set(vals.slice(1), { opacity: 0 });
-    const S = Math.max(3, Math.min(end(2) - t2 + 0.4, cue(3) - t2 - 0.7)), LAPS = 5;
-    const spinStart = t2 + 0.4;
-    const lapAt = k => spinStart + S * Math.sqrt(k / LAPS); // power1.in: progress = p^2
-    [1, 2, 3].forEach(k => {
-      const at = lapAt(k);
-      tl.to(vals[k - 1], { opacity: 0, y: -30, duration: 0.2, ease: 'power2.in' }, at - 0.05);
-      tl.fromTo(vals[k], { opacity: 0, y: 30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(2)' }, at + 0.1);
-    });
-    const orbit = { a: -90 };
-    const place = () => {
-      const pos = off => {
-        const r = (orbit.a - off) * Math.PI / 180;
-        return [CX + R * Math.cos(r), CY + R * Math.sin(r)];
-      };
-      const [x, y] = pos(0);
-      dot.setAttribute('cx', x); dot.setAttribute('cy', y);
-      glow.setAttribute('cx', x); glow.setAttribute('cy', y);
-      trail.forEach((c, i) => { const [tx, ty] = pos((3 - i) * 9); c.setAttribute('cx', tx); c.setAttribute('cy', ty); });
-    };
-    tl.to(comet, { opacity: 1, duration: 0.4 }, spinStart - 0.1);
-    tl.fromTo(orbit, { a: -90 }, { a: -90 + 360 * LAPS, duration: S, ease: 'power1.in', onUpdate: place }, spinStart);
-    tl.to(ring, { attr: { 'stroke-width': 22, stroke: '#8fbf5f' }, duration: S, ease: 'power1.in' }, spinStart);
-    tl.to(orbit, { a: -90 + 360 * (LAPS + 1.2), duration: 1.4, ease: 'power1.out', onUpdate: place }, spinStart + S);
-    place();
-
-    // beat 4: the loop fades; a faint dotted line across a lawn wears into a bold path
-    const t3 = cue(3), L3 = end(3) - t3;
-    const loopBits = [svg, ...nodes.map(n => n.b), ...nodes.map(n => n.lab), relief, cnt];
-    tl.to(loopBits, { opacity: 0, duration: 0.5, ease: 'power2.in' }, t3 - 0.2);
-    tl.to(nodes.map(n => n.b), { scale: 0.85, duration: 0.5, ease: 'power2.in' }, t3 - 0.2);
-
-    const LW = 1020, LH = 560, LXp = 800, LYp = 372;
-    const lawn = K.svg(stage, { x: LXp, y: LYp, w: LW, h: LH });
-    const defs = K.svgEl('defs', {}, lawn);
-    const g = K.svgEl('linearGradient', { id: 'c3-lawn', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
-    K.svgEl('stop', { offset: '0', 'stop-color': '#d6e9bf' }, g);
-    K.svgEl('stop', { offset: '1', 'stop-color': '#a7cb80' }, g);
-    const clip = K.svgEl('clipPath', { id: 'c3-lawnclip' }, defs);
-    K.rect(clip, 0, 0, LW, LH, { rx: 26 });
-    const reveal = K.svgEl('clipPath', { id: 'c3-newclip', clipPathUnits: 'userSpaceOnUse' }, defs);
-    const revealR = K.rect(reveal, -40, 0, 0, LH, { fill: '#fff' });
-    const body = K.group(lawn, { 'clip-path': 'url(#c3-lawnclip)' });
-    K.rect(body, 0, 0, LW, LH, { fill: 'url(#c3-lawn)' });
-    // seeded grass tufts
-    let seed = 7;
-    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
-    for (let i = 0; i < 54; i++) {
-      const x = 30 + rnd() * (LW - 60), y = 40 + rnd() * (LH - 60), s = 0.8 + rnd() * 0.6;
-      K.path(body, `M ${x} ${y} l ${-7 * s} ${-20 * s} M ${x} ${y} l 0 ${-26 * s} M ${x} ${y} l ${7 * s} ${-20 * s}`,
-        { stroke: rnd() > 0.5 ? '#86b556' : '#79a94b', 'stroke-width': 4, opacity: 0.55 + rnd() * 0.35 });
-    }
-    // the old path (wears in) and, below it, the fresh path we build instead
-    const pathD = 'M -30 400 C 200 405, 320 290, 520 255 S 850 140, 1060 60';
-    const newD = 'M -30 505 C 230 505, 380 425, 580 395 S 900 330, 1060 300';
-    const worn = K.path(body, pathD, { stroke: '#cdb285', 'stroke-width': 0 });
-    const wornIn = K.path(body, pathD, { stroke: '#b8966a', 'stroke-width': 0, opacity: 0.75 });
-    const dotted = K.path(body, pathD, { stroke: '#6f6446', 'stroke-width': 7, 'stroke-dasharray': '0.1 24', opacity: 0.6 });
-    const freshG = K.group(body, { 'clip-path': 'url(#c3-newclip)' });
-    K.path(freshG, newD, { stroke: '#ffffff', 'stroke-width': 20, 'stroke-dasharray': '0.1 26', opacity: 0.75 });
-    K.path(freshG, newD, { stroke: GREEN_DARK, 'stroke-width': 12, 'stroke-dasharray': '0.1 26' });
-    K.rect(lawn, 2, 2, LW - 4, LH - 4, { rx: 25, fill: 'none', stroke: '#ffffff', 'stroke-width': 4, opacity: 0.7 });
-    lawn.style.filter = 'drop-shadow(0 18px 40px rgba(40,60,20,0.16))';
-    const newp = box(stage, 'c3-newp', null, { x: LXp + 730, y: LYp + 408 });
-    newp.appendChild(K.icon('sprout', { stroke: 2.4 }));
-    newp.appendChild(K.el('span', null, 'New path'));
-
-    tl.fromTo(lawn, { opacity: 0, scale: 0.96, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }, t3 + 0.2);
-    tl.fromTo(dotted, { opacity: 0 }, { opacity: 0.6, duration: 0.6 }, t3 + 0.7);
-    A.in(tl, sub3, t3 + 0.5, 'fadeUp', { dur: 0.7 });
-    // "walk it every day": a thin trace; "it wears in": thicker; "without thinking": a bold, worn path
-    const w1 = clamp(at(3, 'walk it every day'), t3 + 1.2, dur - 6.4);
-    const w2 = clamp(at(3, 'it wears in'), w1 + 1.0, dur - 5.4);
-    const w3 = clamp(at(3, 'without thinking'), w2 + 0.9, dur - 4.4);
-    tl.set(worn, { attr: { 'stroke-width': 12 } }, w1);
-    A.draw(tl, worn, w1, 0.9, { ease: 'power1.inOut' });
-    tl.to(worn, { attr: { 'stroke-width': 34 }, duration: 0.7, ease: 'power2.out' }, w2);
-    tl.to(dotted, { opacity: 0.25, duration: 0.7 }, w2);
-    tl.to(worn, { attr: { 'stroke-width': 78 }, duration: 0.8, ease: 'power2.out' }, w3);
-    tl.to(wornIn, { attr: { 'stroke-width': 34 }, duration: 0.8, ease: 'power2.out' }, w3 + 0.1);
-    tl.to(dotted, { opacity: 0, duration: 0.6 }, w3);
-    // "the good news": a fresh green dotted path sketches in beside the worn one
-    const tn = clamp(at(3, 'the good news', 0.2), w3 + 1.0, dur - 2.6);
-    tl.fromTo(revealR, { attr: { width: 0 } }, { attr: { width: LW + 80 }, duration: 1.6, ease: 'power1.inOut' }, tn);
-    tl.fromTo(newp, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(1.8)' }, Math.min(tn + 0.9, dur - 1.8));
-  });
-
-  // ------------------------------------------------------------------ ch03s04: Warnings and frustration
-  registerScene('ch03s04', (ctx) => {
-    const { stage, tl, cue, end, dur } = ctx;
-    const at = sayAt(ctx);
-    stage.appendChild(style());
-
-    const h = K.heading(stage, 'Warnings and frustration', { x: 100, y: 120, w: 1400, size: 76 });
-    A.in(tl, h.title, Math.max(0, cue(0) - 0.25), 'fadeUp', { dur: 0.8 });
-    A.in(tl, h.bar, cue(0) + 0.25, 'grow', { dur: 0.6 });
-
-    // the timeline strip stays pinned: Works and Practice are already lit
-    const sp = strip(stage, tl, { y: 282, done: [0, 1] });
-    A.in(tl, sp.wrap, 0, 'fade', { dur: 0.5 });
-
-    const TX = 100, TY = 372, TW = 640, SY = 548;
-    const title3 = stepTitle(stage, 3, 'Warnings ignored or punished', { x: TX, y: TY, w: TW });
-    const title4 = stepTitle(stage, 4, 'Frustration boils over', { x: TX, y: TY, w: TW });
-    const sub1 = box(stage, 'c3-sub', 'The warnings *get skipped*', { x: TX, y: SY, w: 620 });
-    const sub3 = box(stage, 'c3-sub', 'Hands clear.<br><span class="l2">*Add distance.*</span>', { x: TX, y: SY, w: 620 });
-    const sub3b = sub3.querySelector('.l2');
-
-    // --- the warning ladder, small, on the right
-    const LX = 960, LY = 398, RH = 62, RG = 12, LW = 520;
-    const L = K.ladder(stage, LADDER, { x: LX, y: LY, w: LW, rungH: RH, gap: RG, size: 28 });
-    const HH = LADDER.length * RH + (LADDER.length - 1) * RG;
-    const rungTop = i => LY + HH - (i + 1) * RH - i * RG;
-    const xs = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const gy = rungTop(2) + RH / 2;
-    const X = K.group(xs, { transform: `translate(${LX + 40 + LW - 22 - 150} ${gy})` });
-    const XI = K.group(X);
-    ['M -30 -30 L 30 30', 'M 30 -30 L -30 30'].forEach(d => K.path(XI, d, { stroke: '#ffffff', 'stroke-width': 26 }));
-    ['M -30 -30 L 30 30', 'M 30 -30 L -30 30'].forEach(d => K.path(XI, d, { stroke: RED, 'stroke-width': 14 }));
-
-    const t0 = cue(0);
-    sp.light(2, t0 + 0.2);
-    A.in(tl, title3, t0 + 0.35, 'fadeUp', { dur: 0.7 });
-    tl.fromTo(L.rails, { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.9, ease: 'power2.inOut' }, t0 + 0.1);
-    tl.fromTo(L.rungs, { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 0.45, stagger: 0.08, ease: 'power3.out' }, t0 + 0.2);
-    // "listens to a growl": the Growl rung pulses; "punishes it": the red X slams onto it
-    const tG = clamp(at(0, 'to a growl'), t0 + 1.2, cue(1) - 3);
-    const tXs = clamp(at(0, 'punishes it'), tG + 0.8, cue(1) - 2);
-    A.pulse(tl, L.rungs[2], tG, { scale: 1.06 });
-    tl.fromTo(XI, { opacity: 0, scale: 1.9, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, transformOrigin: '50% 50%', duration: 0.35, ease: 'back.out(2.2)' }, tXs);
-    tl.to(L.rungs[2], { x: 6, duration: 0.05, yoyo: true, repeat: 3, ease: 'none' }, tXs + 0.25);
-
-    // beat 2: lower rungs fade to grey ("skip the warnings"), a red arrow jumps from the bottom rung
-    // straight to Bite ("go straight to the top")
-    const t1 = cue(1);
-    const tSk = clamp(at(1, 'skip the warnings', 0.4), t1, cue(2) - 2.6);
-    const tTop = clamp(at(1, 'go straight', 0.75), tSk + 0.7, cue(2) - 1.4);
-    tl.to(L.rungs.slice(0, 5), { backgroundColor: '#d3d8cc', color: '#8c9386', boxShadow: '0 6px 16px rgba(40,60,20,0)', duration: 0.5, stagger: 0.05, ease: 'power2.out' }, tSk);
-    tl.to(XI, { opacity: 0.45, duration: 0.5 }, tSk);
-    const yb = rungTop(0) + RH / 2, yt = rungTop(5) + RH / 2, ax = LX + LW + 50;
-    const jump = K.path(xs, `M ${ax} ${yb} C ${ax + 190} ${yb - 60}, ${ax + 190} ${yt + 60}, ${ax + 8} ${yt}`, { stroke: RED, 'stroke-width': 9 });
-    const jhead = K.path(xs, 'M 18 -18 L -2 0 L 18 18', { stroke: RED, 'stroke-width': 9, transform: `translate(${ax + 6} ${yt})` });
-    A.draw(tl, jump, tTop, 0.6, { ease: 'power2.in' });
-    A.in(tl, jhead, tTop + 0.55, 'fade', { dur: 0.15 });
-    const bite = L.rungs[5];
-    tl.to(bite, { boxShadow: '0 0 0 18px rgba(184,69,45,0.28)', scale: 1.05, duration: 0.25, ease: 'power2.out' }, tTop + 0.6);
-    tl.to(bite, { boxShadow: '0 6px 16px rgba(40,60,20,0.14)', scale: 1, duration: 0.5, ease: 'power2.inOut' }, tTop + 0.85);
-    A.in(tl, sub1, tSk + 0.1, 'fadeUp', { dur: 0.7 });
-
-    // beat 3: ladder clears; a pressure gauge fills to red; a zap arcs sideways to leash, dog and hand
-    const t2 = cue(2), L2 = end(2) - t2;
-    tl.to([L.root, xs], { opacity: 0, duration: 0.45, ease: 'power2.in' }, t2 - 0.2);
-    tl.to(sub1, { opacity: 0, y: -20, duration: 0.3, ease: 'power2.out' }, t2 - 0.05);
-    sp.settle(2, t2);
-    sp.light(3, t2 + 0.1);
-    swap(tl, title3, title4, t2);
-
-    const GX = 910, GY = 700, GR = 172;
-    const gs = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const gdefs = K.svgEl('defs', {}, gs);
-    const grad = K.svgEl('linearGradient', { id: 'c3-press', gradientUnits: 'userSpaceOnUse', x1: GX - GR, y1: 0, x2: GX + GR, y2: 0 }, gdefs);
-    K.svgEl('stop', { offset: '0', 'stop-color': '#7fb24a' }, grad);
-    K.svgEl('stop', { offset: '0.5', 'stop-color': '#d9912b' }, grad);
-    K.svgEl('stop', { offset: '1', 'stop-color': '#b8452d' }, grad);
-    const gauge = K.group(gs);
-    const PR = 236;
-    K.path(gauge, `M ${GX - PR} ${GY + 40} L ${GX - PR} ${GY} A ${PR} ${PR} 0 0 1 ${GX + PR} ${GY} L ${GX + PR} ${GY + 40} Q ${GX + PR} ${GY + 62} ${GX + PR - 22} ${GY + 62} L ${GX - PR + 22} ${GY + 62} Q ${GX - PR} ${GY + 62} ${GX - PR} ${GY + 40} Z`,
-      { fill: '#ffffff', stroke: '#e3e7dc', 'stroke-width': 2, style: 'filter: drop-shadow(0 14px 30px rgba(40,60,20,0.14))' });
-    const arcD = `M ${GX - GR} ${GY} A ${GR} ${GR} 0 0 1 ${GX + GR} ${GY}`;
-    K.path(gauge, arcD, { stroke: '#e8ece2', 'stroke-width': 40, 'stroke-linecap': 'butt' });
-    for (let i = 0; i <= 10; i++) {
-      const a = Math.PI + (i / 10) * Math.PI;
-      const r1 = GR + 30, r2 = GR + (i % 5 === 0 ? 50 : 42);
-      K.line(gauge, GX + r1 * Math.cos(a), GY + r1 * Math.sin(a), GX + r2 * Math.cos(a), GY + r2 * Math.sin(a), { stroke: '#c9cfc0', 'stroke-width': i % 5 === 0 ? 6 : 4 });
-    }
-    const fill = K.path(gauge, arcD, { stroke: 'url(#c3-press)', 'stroke-width': 40, 'stroke-linecap': 'butt' });
-    const needle = K.group(gauge);
-    K.line(needle, GX, GY, GX, GY - GR + 34, { stroke: '#2f3530', 'stroke-width': 10 });
-    K.circle(gauge, GX, GY, 22, { fill: '#2f3530' });
-    K.circle(gauge, GX, GY, 8, { fill: '#ffffff' });
-    const glab = box(stage, 'c3-glab', 'Pressure', { x: GX - 150, y: GY + 90, w: 300 });
-
-    const gIn = t2 + 0.3;
-    tl.fromTo(gauge, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, gIn);
-    A.in(tl, glab, gIn + 0.2, 'fadeUp', { dur: 0.6 });
-    const fillEnd = mid(t2, L2, 0.5, 3.4, cue(3) - 2.4);
-    A.draw(tl, fill, gIn + 0.5, fillEnd - gIn - 0.5, { ease: 'power1.in' });
-    tl.fromTo(needle, { rotation: -90, svgOrigin: `${GX} ${GY}` }, { rotation: 86, svgOrigin: `${GX} ${GY}`, duration: fillEnd - gIn - 0.5, ease: 'power1.in' }, gIn + 0.5);
-    tl.to(needle, { rotation: 80, svgOrigin: `${GX} ${GY}`, duration: 0.07, yoyo: true, repeat: 9, ease: 'none' }, fillEnd);
-
-    // the zap: a jagged bolt arcing sideways off the gauge, forking to three small icons
-    const S0 = [GX + 205, GY - 108], C0 = [1255, 470], E0 = [1380, 585];
-    const q = t => [
-      (1 - t) * (1 - t) * S0[0] + 2 * t * (1 - t) * C0[0] + t * t * E0[0],
-      (1 - t) * (1 - t) * S0[1] + 2 * t * (1 - t) * C0[1] + t * t * E0[1],
-    ];
-    let boltD = `M ${S0[0]} ${S0[1]}`;
-    const N = 8;
-    for (let i = 1; i < N; i++) {
-      const t = i / N, [x, y] = q(t), [x2, y2] = q(t + 0.01);
-      const nx = -(y2 - y), ny = x2 - x, nl = Math.hypot(nx, ny) || 1, off = (i % 2 ? 15 : -15);
-      boltD += ` L ${x + nx / nl * off} ${y + ny / nl * off}`;
-    }
-    boltD += ` L ${E0[0]} ${E0[1]}`;
-    const zs = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const boltGlow = K.path(zs, boltD, { stroke: '#fbefd9', 'stroke-width': 22 });
-    const bolt = K.path(zs, boltD, { stroke: AMBER, 'stroke-width': 8 });
-    const IX = 1500, IYS = [440, 610, 780];
-    const forks = IYS.map(y => K.path(zs, `M ${E0[0]} ${E0[1]} L ${IX - 64} ${y}`, { stroke: AMBER, 'stroke-width': 6 }));
-    const [zx, zy] = q(0.5);
-    const zap = K.iconBadge(stage, 'zap', { x: zx - 46, y: zy - 46, size: 92, variant: 'amber' });
-    zap.style.border = '4px solid #f0cf9c';
-    const ICONS = [{ n: 'dog', t: 'Leash', svg: LEASH }, { n: 'dog', t: 'Dog' }, { n: 'hand', t: 'Hand' }];
-    const targets = ICONS.map((it, i) => {
-      const b = K.iconBadge(stage, it.n, { x: IX - 52, y: IYS[i] - 52, size: 104 });
-      if (it.svg) b.querySelector('svg').innerHTML = it.svg;
-      b.style.border = '4px solid #d8e6c9';
-      const lb = box(stage, 'c3-tlab', it.t, { x: IX - 80, y: IYS[i] + 60, w: 160 });
-      return { b, lb };
-    });
-    const zt = mid(t2, L2, 0.56, 4.0, cue(3) - 1.9);
-    A.draw(tl, [boltGlow, bolt], zt, 0.45, { ease: 'power2.in' });
-    A.in(tl, zap, zt + 0.2, 'pop', { dur: 0.5 });
-    A.draw(tl, forks, zt + 0.45, 0.3, { ease: 'power2.in' });
-    targets.forEach((o, i) => {
-      A.in(tl, o.b, zt + 0.55 + i * 0.12, 'pop', { dur: 0.45 });
-      A.in(tl, o.lb, zt + 0.65 + i * 0.12, 'fade', { dur: 0.4 });
-    });
-    const hand = targets[2].b;
-    const ht = mid(t2, L2, 0.84, zt - t2 + 1.2, cue(3) - 0.5);
-    tl.to(hand, { backgroundColor: '#f8e3dd', color: RED, borderColor: '#eebcaf', duration: 0.3 }, ht);
-    tl.to(hand, { boxShadow: '0 0 0 16px rgba(184,69,45,0.22)', scale: 1.08, duration: 0.25, ease: 'power2.out' }, ht);
-    tl.to(hand, { boxShadow: '0 0 0 0px rgba(184,69,45,0)', scale: 1, duration: 0.5, ease: 'power2.inOut' }, ht + 0.25);
-    tl.to(forks[2], { attr: { stroke: RED }, duration: 0.3 }, ht);
-
-    // beat 4: "Redirection" names the zap; then the hand slides back out of range and a green
-    // distance arrow stretches away from the gauge ("Hands clear. Add distance.")
-    const t3 = cue(3);
-    const redir = box(stage, 'c3-redir', 'Redirection', { x: zx - 170, y: zy - 122, w: 340 });
-    A.in(tl, redir, t3 + 0.15, 'fadeUp', { dur: 0.6 });
-    const tSlide = clamp(at(3, 'keep your hands'), t3 + 1.6, dur - 2.8);
-    A.in(tl, sub3, tSlide - 0.1, 'fadeUp', { dur: 0.7 });
-    const handLab = targets[2].lb;
-    tl.to(forks[2], { drawSVG: '0% 0%', duration: 0.45, ease: 'power2.in' }, tSlide);
-    tl.to([hand, handLab], { x: 230, duration: 0.9, ease: 'power3.inOut' }, tSlide + 0.1);
-    tl.to(hand, { backgroundColor: '#e8f1dc', color: GREEN_DARK, borderColor: '#d8e6c9', duration: 0.5 }, tSlide + 0.5);
-    const DY = 924, DX0 = GX + 40, DX1 = 1778; // clear of the Hand label above the arrowhead
-    const dsv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const dTail = K.line(dsv, DX0, DY - 20, DX0, DY + 20, { stroke: GREEN, 'stroke-width': 7 });
-    const dShaft = K.line(dsv, DX0, DY, DX1 - 4, DY, { stroke: GREEN, 'stroke-width': 7 });
-    const dHead = K.path(dsv, `M ${DX1 - 22} ${DY - 20} L ${DX1} ${DY} L ${DX1 - 22} ${DY + 20}`, { stroke: GREEN, 'stroke-width': 7 });
-    const tDist = clamp(at(3, 'add distance', 1.0), tSlide + 1.1, dur - 1.8);
-    A.in(tl, sub3b, tDist, 'fade', { dur: 0.5 });
-    A.in(tl, dTail, tDist, 'fade', { dur: 0.25 });
-    A.draw(tl, dShaft, tDist + 0.05, 0.7, { ease: 'power2.out' });
-    A.in(tl, dHead, tDist + 0.65, 'fade', { dur: 0.2 });
-  });
-
-  // ------------------------------------------------------------------ ch03s05: Never punish a growl
-  registerScene('ch03s05', (ctx) => {
-    const { stage, tl, cue, end, dur } = ctx;
-    const at = sayAt(ctx);
-    stage.appendChild(style());
-
-    // beat 1: the rule lands large at the center, then settles into the heading slot
-    const t0 = cue(0);
-    const big = box(stage, 'c3-bigh', 'Never punish a growl.', { x: 960, y: 120 });
-    const bar = box(stage, 'accent-bar', null, { x: 960, y: 237 });
-    gsap.set(big, { xPercent: -50, y: 355, scale: 1.5, transformOrigin: '50% 50%' });
-    gsap.set(bar, { xPercent: -50, y: 385 });
-    tl.fromTo(big, { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1.5, duration: 0.9, ease: 'power3.out' }, t0 + 0.05);
-    tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'power2.inOut' }, t0 + 0.6);
-
-    const t1 = cue(1), L1 = end(1) - t1;
-    // a slow, calm push-in while the rule holds the screen
-    if (t1 - t0 > 2.4) tl.to(big, { scale: 1.54, duration: t1 - t0 - 1.2, ease: 'sine.inOut' }, t0 + 0.95);
-    tl.to(big, { xPercent: 0, x: -860, y: 0, scale: 1, duration: 0.9, ease: 'power3.inOut' }, t1 - 0.1);
-    tl.to(bar, { xPercent: 0, x: -860, y: 0, duration: 0.9, ease: 'power3.inOut' }, t1 - 0.1);
-
-    // beat 2: a dashboard with an amber check engine light; tape slaps over it; smoke keeps rising
-    const DX = 130, DY = 330, DW = 820, DH = 540;
-    const dwrap = box(stage, 'c3-dashwrap', null, { x: DX, y: DY, w: DW, h: DH });
-    dwrap.style.position = 'absolute';
-    const ds = K.svg(dwrap, { x: 0, y: 0, w: DW, h: DH });
-    const ddefs = K.svgEl('defs', {}, ds);
-    const rg = K.svgEl('radialGradient', { id: 'c3-glow' }, ddefs);
-    K.svgEl('stop', { offset: '0', 'stop-color': '#ffb43c', 'stop-opacity': 0.9 }, rg);
-    K.svgEl('stop', { offset: '1', 'stop-color': '#ffb43c', 'stop-opacity': 0 }, rg);
-    const blur = K.svgEl('filter', { id: 'c3-smokeblur', x: '-50%', y: '-50%', width: '200%', height: '200%' }, ddefs);
-    K.svgEl('feGaussianBlur', { stdDeviation: 3.5 }, blur);
-    const smoke = [[340, 0.0], [430, 0.6], [505, 1.2]].map(([x, d]) => ({
-      p: K.path(ds, `M ${x} 200 C ${x - 30} 160, ${x + 30} 128, ${x} 88 S ${x - 24} 24, ${x + 8} -12`, { stroke: '#b3b8ad', 'stroke-width': 18, filter: 'url(#c3-smokeblur)' }),
-      d,
-    }));
-    const dash = K.group(ds);
-    K.rect(dash, 30, 160, 760, 360, { rx: 70, fill: '#2f3531' });
-    K.rect(dash, 52, 182, 716, 316, { rx: 54, fill: 'none', stroke: '#454d46', 'stroke-width': 4 });
-    const gaugeAt = (cx, cy, na) => {
-      K.circle(dash, cx, cy, 118, { fill: '#232824', stroke: '#566057', 'stroke-width': 6 });
-      for (let i = 0; i <= 10; i++) {
-        const a = (135 + i * 27) * Math.PI / 180;
-        K.line(dash, cx + 90 * Math.cos(a), cy + 90 * Math.sin(a), cx + 106 * Math.cos(a), cy + 106 * Math.sin(a), { stroke: '#c9d1c4', 'stroke-width': i % 5 === 0 ? 6 : 4 });
-      }
-      const a = na * Math.PI / 180;
-      K.line(dash, cx, cy, cx + 80 * Math.cos(a), cy + 80 * Math.sin(a), { stroke: '#e8703f', 'stroke-width': 7 });
-      K.circle(dash, cx, cy, 12, { fill: '#6b756c' });
-    };
-    gaugeAt(200, 330, 200);
-    gaugeAt(620, 330, 250);
-    const LCX = 410, LCY = 420;
-    const glowC = K.circle(dash, LCX, LCY, 96, { fill: 'url(#c3-glow)', opacity: 0 });
-    // check engine symbol
-    const eng = K.group(dash, { transform: `translate(${LCX - 50} ${LCY - 34}) scale(1)` });
-    const engD = 'M 14 22 h 10 v -8 h 16 v -6 h -8 v -6 h 30 v 6 h -8 v 6 h 18 l 8 8 h 8 v -6 h 8 v 40 h -8 v -6 h -8 l -10 12 h -40 l -8 -8 h -10 v 10 h -8 v -34 h 8 z';
-    const engOff = K.path(eng, engD, { fill: '#4a524b', stroke: 'none' });
-    const engOn = K.path(eng, engD, { fill: '#f5a623', stroke: 'none', opacity: 0 });
-    gsap.set(smoke.map(o => o.p), { opacity: 0 });
-    const tape = box(dwrap, 'c3-tape', null, { x: LCX - 135, y: LCY - 44 });
-    const cap1 = box(stage, 'c3-cap', 'The problem is<br>*still there*', { x: 1060, y: 520, w: 760 });
-
-    const dIn = t1 + 0.35;
-    gsap.set(dwrap, { x: 960 - (DX + DW / 2) });
-    tl.fromTo(ds, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, dIn);
-    tl.to(engOn, { opacity: 1, duration: 0.3 }, dIn + 0.7);
-    tl.to(glowC, { opacity: 1, duration: 0.3 }, dIn + 0.7);
-    tl.to(glowC, { opacity: 0.55, duration: 0.45, yoyo: true, repeat: 3, ease: 'sine.inOut' }, dIn + 1.0);
-    const tapeAt = mid(t1, L1, 0.3, 2.4, cue(2) - 2.6);
-    tl.fromTo(tape, { opacity: 0, scale: 1.5, rotation: -24 }, { opacity: 1, scale: 1, rotation: -9, duration: 0.28, ease: 'power4.out' }, tapeAt);
-    tl.to(ds, { x: 5, duration: 0.05, yoyo: true, repeat: 3, ease: 'none' }, tapeAt + 0.25);
-    tl.to([glowC, engOn], { opacity: 0, duration: 0.2 }, tapeAt + 0.2);
-    // smoke keeps rising behind the dash
-    const sEnd = cue(2);
-    smoke.forEach(({ p, d }) => {
-      const start = dIn + 0.9 + d;
-      const n = Math.max(1, Math.floor((sEnd - start) / 1.7));
-      tl.to(p, {
-        keyframes: [{ opacity: 0, y: 30, duration: 0 }, { opacity: 0.75, y: -10, duration: 0.8, ease: 'sine.out' }, { opacity: 0, y: -60, duration: 0.9, ease: 'sine.in' }],
-        repeat: n - 1,
-      }, start);
-    });
-    const capAt = mid(t1, L1, 0.48, 3.6, cue(2) - 1.4);
-    tl.to(dwrap, { x: 0, duration: 0.9, ease: 'power3.inOut' }, capAt - 0.3);
-    A.in(tl, cap1, capAt + 0.2, 'fadeLeft', { dur: 0.8 });
-
-    // beat 3: the iceberg returns; the growl at its tip is wiped away; the feelings stay put
-    const t2 = cue(2), L2 = end(2) - t2;
-    tl.to([dwrap, cap1], { opacity: 0, duration: 0.45, ease: 'power2.in' }, t2 - 0.2);
-
-    const S = 0.8, OX = -242.8, OY = 129.6; // ch01 iceberg coordinates, scaled into the left of the frame
-    const T = (x, y) => [x * S + OX, y * S + OY];
-    const WL = 562 * S + OY;
-    const isvg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const idefs = K.svgEl('defs', {}, isvg);
-    const wg = K.svgEl('linearGradient', { id: 'c3-water', x1: 0, y1: 0, x2: 0, y2: 1 }, idefs);
-    K.svgEl('stop', { offset: '0', 'stop-color': '#b8d99a', 'stop-opacity': 0.5 }, wg);
-    K.svgEl('stop', { offset: '1', 'stop-color': '#e8f1dc', 'stop-opacity': 0 }, wg);
-    const W0 = 100, W1 = 960;
-    const fg = K.svgEl('linearGradient', { id: 'c3-wfade', gradientUnits: 'userSpaceOnUse', x1: W0, y1: 0, x2: W1, y2: 0 }, idefs);
-    [[0, 0], [0.1, 1], [0.9, 1], [1, 0]].forEach(([o, v]) => K.svgEl('stop', { offset: o, 'stop-color': '#fff', 'stop-opacity': v }, fg));
-    const mask = K.svgEl('mask', { id: 'c3-wmask', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 1920, height: 1080 }, idefs);
-    K.rect(mask, W0, 0, W1 - W0, 1080, { fill: 'url(#c3-wfade)' });
-    let wave = `M ${W0} ${WL}`;
-    for (let x = W0; x < W1; x += 40) wave += ` Q ${x + 10} ${WL - 8} ${x + 20} ${WL} Q ${x + 30} ${WL + 8} ${x + 40} ${WL}`;
-    const water = K.group(isvg, { mask: 'url(#c3-wmask)' });
-    K.path(water, `${wave} L ${W1} 930 L ${W0} 930 Z`, { fill: 'url(#c3-water)', stroke: 'none' });
-    const berg = K.group(isvg, { transform: `translate(${OX} ${OY}) scale(${S})` });
-    const mass = K.group(berg);
-    K.path(mass, 'M560 562 L466 690 L512 836 L700 934 L1220 934 L1418 826 L1452 684 L1360 562 Z', { fill: '#d3e5bf', stroke: 'none' });
-    K.path(mass, 'M1110 562 L1360 562 L1452 684 L1418 826 L1220 934 L1180 934 L1330 760 Z', { fill: '#c6dcaf', stroke: 'none' });
-    const tip = K.group(berg);
-    K.path(tip, 'M560 562 L700 452 L790 430 L880 318 L960 288 L1040 330 L1150 420 L1250 470 L1360 562 Z', { fill: '#fbfdf8', stroke: '#a9cf86', 'stroke-width': 5 });
-    K.path(tip, 'M960 288 L1040 330 L1150 420 L1250 470 L1360 562 L1080 562 L1010 420 Z', { fill: '#e4efd8', stroke: 'none' });
-    const wlineG = K.group(isvg, { mask: 'url(#c3-wmask)' });
-    const wline = K.path(wlineG, wave, { stroke: GREEN, 'stroke-width': 5 });
-
-    const [gx, gy] = T(960, 468);
-    const growl = box(stage, 'c3-growl', 'Growl', { x: gx, y: gy });
-    gsap.set(growl, { xPercent: -50, yPercent: -50 });
-    const ghost = box(stage, 'c3-ghost', null, { x: gx - 76, y: gy - 36, w: 152, h: 72 });
-    const [fx, fy] = T(960, 640), [frx, fry] = T(760, 806), [gux, guy] = T(1160, 806);
-    const emos = [
-      box(stage, 'c3-emo big', 'Fear', { x: fx - 150, y: fy, w: 300 }),
-      box(stage, 'c3-emo', 'Frustration', { x: frx - 150, y: fry, w: 300 }),
-      box(stage, 'c3-emo', 'Guarding', { x: gux - 150, y: guy, w: 300 }),
-    ];
-
-    const iIn = t2 + 0.05;
-    A.draw(tl, wline, iIn, 0.9);
-    A.in(tl, water, iIn + 0.2, 'fade', { dur: 0.7 });
-    A.in(tl, tip, iIn + 0.2, 'fade', { dur: 0.6 });
-    A.in(tl, mass, iIn + 0.3, 'fadeUp', { dur: 0.7 });
-    A.in(tl, emos, iIn + 0.55, 'fadeUp', { dur: 0.6, stagger: 0.1 });
-    tl.fromTo(growl, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, iIn + 0.4);
-    const wipeAt = mid(t2, L2, 0.2, 1.4, cue(3) - 2.2);
-    tl.fromTo(growl, { clipPath: 'inset(0% 0% 0% 0% round 28px)' }, { clipPath: 'inset(0% 0% 0% 100% round 28px)', duration: 0.6, ease: 'power2.inOut' }, wipeAt);
-    tl.fromTo(ghost, { opacity: 0 }, { opacity: 0.8, duration: 0.5 }, wipeAt + 0.45);
-    A.pulse(tl, emos, mid(t2, L2, 0.38, 2.6, cue(3) - 1.6), { scale: 1.08 });
-
-    const qx = 1060;
-    const qq = box(stage, 'c3-q', 'Out of <span class="nw">nowhere<span class="strike"></span></span>?', { x: qx, y: 360 });
-    const strike = qq.querySelector('.strike');
-    A.in(tl, qq, clamp(at(2, 'out of nowhere', 0.5), t2 + 2.0, cue(3) - 0.9), 'fadeUp', { dur: 0.7 });
-
-    // beat 4: "nowhere" struck through; the ghost pulses on "erased the warning"; the owner's plan
-    // ticks in (three check bullets) with the green "Try this" badge pinned to its top-left corner
-    const t3 = cue(3);
-    tl.fromTo(strike, { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }, t3 + 0.25);
-    const tGhost = clamp(at(3, 'erased the warning'), t3 + 1.0, dur - 6);
-    tl.to(ghost, { borderColor: GREEN, scale: 1.12, duration: 0.3, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tGhost);
-    const PY0 = 548;
-    const plan = K.flow(stage, { x: qx, y: PY0, w: 700, gap: 28 });
-    plan.classList.add('c3-plan');
-    const rows = K.bullets(plan, ['Thank the warning', 'Give space', 'Note what came before'], { icon: 'check', gap: 26, size: 38 });
-    const tryB = box(stage, 'c3-try', null, { x: qx - 26, y: PY0 - 30 });
-    tryB.appendChild(K.icon('notebook-pen', { stroke: 2.4 }));
-    tryB.appendChild(K.el('span', null, 'Try this'));
-    // the card arrives just ahead of its first bullet, so it never sits empty
-    const planIn = clamp(at(3, 'thank them') - 0.5, tGhost + 0.8, dur - 4.6);
-    A.in(tl, plan, planIn, 'fadeUp', { dur: 0.7 });
-    tl.fromTo(tryB, { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.7, ease: 'back.out(1.8)' }, planIn + 0.35);
-    const rowAt = [['thank them', 0.45], ['give space', 1.2], ['note what came before', 1.9]]
-      .map(([p, d], i) => clamp(at(3, p, 0.35), planIn + d, dur - 2.4 + i * 0.35));
-    rows.forEach((r, i) => {
-      A.in(tl, r, rowAt[i], 'fadeRight', { dur: 0.6 });
-      A.in(tl, r.querySelector('.ico'), rowAt[i] + 0.1, 'pop', { dur: 0.5 });
-    });
+    // ---------- beat 4: it's not your fault
+    A.out(tl, cap7, cue(4) - 0.3, 'fade', { dur: 0.35 });
+    const fin = K.el('div', 'c4-final');
+    Object.assign(fin.style, { left: '160px', top: '790px', width: '1600px' });
+    const fh = K.icon('heart', { size: 76, stroke: 1.6, color: C.green });
+    fh.setAttribute('fill', C.green);
+    fin.appendChild(fh);
+    fin.appendChild(K.el('div', 'ft', 'It\u2019s <b>not your fault.</b>'));
+    stage.appendChild(fin);
+    A.in(tl, fin, cue(4) + 0.1, 'fadeUp', { dur: 1.0 });
+    A.pulse(tl, fh, cue(4) + 1.2, { scale: 1.18 });
   });
 })();

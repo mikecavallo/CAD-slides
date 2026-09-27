@@ -106,6 +106,7 @@ def main():
     ap.add_argument("--no-chapters", action="store_true")
     ap.add_argument("--music", help="optional background music file, looped and ducked under the voice")
     ap.add_argument("--music-db", type=float, default=-24, help="music level in dB (default -24)")
+    ap.add_argument("--chapter-max-mb", type=float, default=29, help="re-encode any chapter file bigger than this (default 29 MB)")
     args = ap.parse_args()
     timing = json.loads((BUILD / "timing.json").read_text())
     segs = timing["segments"]
@@ -176,8 +177,19 @@ def main():
     if not args.no_chapters:
         for c in chapters:
             slug = re.sub(r"[^A-Za-z0-9]+", "-", c["title"]).strip("-")
+            dest = OUT / "chapters" / f"{c['num']:02d}-{slug}.mp4"
             run("ffmpeg", "-v", "error", "-y", "-ss", f"{c['start']:.3f}", "-i", str(final), "-t", f"{c['end'] - c['start']:.3f}", "-c", "copy",
-                "-avoid_negative_ts", "make_zero", "-movflags", "+faststart", str(OUT / "chapters" / f"{c['num']:02d}-{slug}.mp4"))
+                "-avoid_negative_ts", "make_zero", "-movflags", "+faststart", str(dest))
+            if dest.stat().st_size > args.chapter_max_mb * 1e6:
+                # two-pass re-encode to fit the size cap (keeps 1080p, trims bitrate)
+                secs = c["end"] - c["start"]
+                vk = int((args.chapter_max_mb * 0.97 * 8e6 / secs - 160e3) / 1000)
+                tmp = dest.with_suffix(".fit.mp4")
+                common = ["-c:v", "libx264", "-preset", "slow", "-b:v", f"{vk}k", "-pix_fmt", "yuv420p", "-tune", "animation"]
+                run("ffmpeg", "-v", "error", "-y", "-i", str(dest), *common, "-pass", "1", "-passlogfile", str(BUILD / "x264pass"), "-an", "-f", "mp4", "/dev/null")
+                run("ffmpeg", "-v", "error", "-y", "-i", str(dest), *common, "-pass", "2", "-passlogfile", str(BUILD / "x264pass"),
+                    "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", str(tmp))
+                tmp.replace(dest)
 
     size = final.stat().st_size / 1e6
     print(f"done: {final.relative_to(ROOT)} ({total / 60:.1f} min, {size:.0f} MB), {len(cues)} captions, {len(chapters)} chapters")

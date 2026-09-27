@@ -53,7 +53,8 @@ def main():
     .scene { margin: 0 0 16pt; padding-top: 10pt; border-top: 1pt solid #dfe5d6; }
     .scene:first-of-type { border-top: 0; padding-top: 0; }
     .onscreen { font-size: 9.5pt; color: #8a8a8a; font-style: italic; margin-bottom: 7pt; }
-    p { font-size: 17pt; line-height: 1.6; margin: 0 0 11pt; }
+    p { font-size: 17pt; line-height: 1.6; margin: 0 0 11pt; break-inside: avoid; }
+    h2.first { page-break-before: auto; margin-top: 22pt; }
     """
     body = [f"<h1>{html.escape(s['title'])}</h1>",
             f"<div class='sub'>Narration script &middot; about {total:,} words &middot; roughly {minutes:.0f} minutes at a relaxed pace. "
@@ -65,8 +66,9 @@ def main():
             "<li>Flubbed a line? Pause, then say the whole sentence again. Tell me and I'll cut the flub.</li>"
             "<li>Small ad-libs are fine. The software matches your words to the script and times the visuals to your voice.</li>"
             "</ol></div>"]
-    for c in s["chapters"]:
-        body.append(f"<h2>{html.escape(c['title'])}</h2><div class='file'>RECORD AS: {c['id']}</div>")
+    for ci, c in enumerate(s["chapters"]):
+        cls = " class='first'" if ci == 0 else ""
+        body.append(f"<h2{cls}>{html.escape(c['title'])}</h2><div class='file'>RECORD AS: {c['id']}</div>")
         for sc in c["scenes"]:
             body.append("<div class='scene'>")
             vis = sc.get("heading") or ""

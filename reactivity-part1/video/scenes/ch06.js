@@ -117,7 +117,7 @@
   registerScene('ch06s01', ({ stage, tl, cue, end }) => {
     setup(stage);
     const span = i => end(i) - cue(i);
-    const at = (i, f) => cue(i) + f * span(i);
+    const at = (i, f) => window.fracTime(window.__ctx, i, f);
     const S = strip(stage, {
       label: 'Before training', labelVariant: 'red', panels: BEFORE,
       captions: ['Another dog appears too close.', 'Barking · Lunging · Growling', CAP_C],
@@ -176,7 +176,7 @@
   registerScene('ch06s02', ({ stage, tl, cue, end }) => {
     setup(stage);
     const span = i => end(i) - cue(i);
-    const at = (i, f) => cue(i) + f * span(i);
+    const at = (i, f) => window.fracTime(window.__ctx, i, f);
     const S = strip(stage, { label: 'During training', labelVariant: 'green', panels: DURING, captions: ['Management.'] });
     const [cA, cB, cC] = S.cols;
 
@@ -285,7 +285,7 @@
   registerScene('ch06s03', ({ stage, tl, cue, end }) => {
     setup(stage);
     const span = i => end(i) - cue(i);
-    const at = (i, f) => cue(i) + f * span(i);
+    const at = (i, f) => window.fracTime(window.__ctx, i, f);
     const G = layer(stage);
     const S = strip(G, {
       label: 'During training', labelVariant: 'green', panels: DURING,
@@ -402,7 +402,7 @@
   registerScene('ch06s04', ({ stage, tl, cue, end, dur }) => {
     setup(stage);
     const span = i => end(i) - cue(i);
-    const at = (i, f) => cue(i) + f * span(i);
+    const at = (i, f) => window.fracTime(window.__ctx, i, f);
     const S = strip(stage, {
       label: 'After training', labelVariant: 'green', panels: AFTER,
       captions: ['Less management as skills improve.', 'Readily uses the new behavior.', CAP_C],

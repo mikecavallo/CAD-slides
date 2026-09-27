@@ -19,7 +19,7 @@
     { icon: 'alarm-smoke', html: 'Reactivity is an <b>emotional response</b>, not disobedience.' },
     { icon: 'gauge', html: 'Read the <b>threshold</b>: under it they learn, over it they can’t.' },
     { icon: 'clipboard-list', html: 'Every dog has their own <b>list of triggers</b>. Get specific.' },
-    { icon: 'glass-water', html: 'Stress <b>stacks up</b>: over time, or all at once.' },
+    { icon: 'stress-cup', html: 'Stress <b>stacks up</b>: over time, or all at once.' },
     { icon: 'triangle-alert', warn: true, html: 'Aggression is <b>communication</b>. Never punish a growl.' },
     { icon: null, html: 'Bites or escalation? See a <b>force-free pro</b> and rule out pain.' },
   ];

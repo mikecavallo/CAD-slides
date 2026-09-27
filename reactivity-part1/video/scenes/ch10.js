@@ -150,7 +150,7 @@
     tl.fromTo(photo.img, { scale: 1.08 }, { scale: 1.0, duration: Math.max(1, cue(3) - cue(2) + 0.6), ease: 'none' }, cue(2) + 0.2);
     tl.set(chrome.footer.querySelector('.url'), { opacity: 0 }, cue(2) + 0.5);
     tl.set(chrome.footer.querySelector('.url'), { opacity: 1 }, cue(3) + 0.6);
-    const labs = [['heart', 'Feeling'], ['repeat', 'Function'], ['glass-water', 'Full cup']].map(([ic, t], i) => {
+    const labs = [['heart', 'Feeling'], ['repeat', 'Function'], ['stress-cup', 'Full cup']].map(([ic, t], i) => {
       const l = K.el('div', 'c10-lab'); Object.assign(l.style, { left: `${150 + i * 70}px`, top: `${300 + i * 170}px` });
       const b = K.el('div', 'ib'); b.appendChild(K.icon(ic)); l.appendChild(b); l.appendChild(K.el('span', null, t));
       stage.appendChild(l);

@@ -1,4 +1,8 @@
 // Chapter 0: cold open and welcome.
+// The stress cup icon matches the cup drawn in chapter 8, so the "full cup" callbacks (ch00, ch09, ch10) read as one object.
+window.ICONS = window.ICONS || {};
+window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 1.5H9.62a1.7 1.7 0 0 1-1.7-1.5Z" fill="currentColor" stroke="none" opacity="0.5"/>' +
+  '<path d="M5.6 3.5l1.95 15.9a1.9 1.9 0 0 0 1.9 1.7h5.1a1.9 1.9 0 0 0 1.9-1.7l1.95-15.9"/>';
 (function () {
   const css = `
     .c0-arc { position:absolute; border: 7px solid #fff; border-left-color: transparent; border-bottom-color: transparent; border-radius: 50%; transform: rotate(45deg); }
@@ -143,7 +147,7 @@
     A.in(tl, part, cue(2) + 1.1, 'fadeLeft');
 
     // beat 4: three things you'll understand
-    const items = [['heart', 'The feeling', 'What they feel'], ['repeat', 'The function', 'What it does'], ['glass-water', 'The full cup', 'Why some days']];
+    const items = [['heart', 'The feeling', 'What they feel'], ['repeat', 'The function', 'What it does'], ['stress-cup', 'The full cup', 'Why some days']];
     const rows = items.map(([ic, t, s], i) => {
       const r = K.el('div', 'c0-row'); Object.assign(r.style, { left: `${140 + i * 560}px`, top: '600px', height: '270px' });
       const b = K.el('div', 'ib'); b.appendChild(K.icon(ic)); r.appendChild(b);

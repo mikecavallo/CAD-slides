@@ -85,7 +85,7 @@
   const addCss = stage => stage.appendChild(K.el('style', null, CSS));
   const div = (parent, cls, html) => { const n = K.el('div', cls, html); parent.appendChild(n); return n; };
   /** a time a fraction of the way through beat i's narration */
-  const frac = (cue, end) => (i, f) => cue(i) + (end(i) - cue(i)) * f;
+  const frac = (cue, end) => (i, f) => window.fracTime(window.__ctx, i, f);
   /** horizontally centered row container at (x, y) with width w */
   const rowC = (parent, x, y, w) => { const r = div(parent, 'c5-rowc'); K.place(r, { x, y, w }); return r; };
 

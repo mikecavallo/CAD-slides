@@ -1,13 +1,15 @@
 /*
  * Chapter 08: Stress and recovery over time
- *   ch08s01  Threshold             title card, then the threshold zones: thinking brain under the line, survival brain over it
- *   ch08s02  Getting close         vertical stress gauge + warning-sign checklist, "your cue" flag, distance ruler
- *   ch08s03  Stress stacks up      the stress cup fills trigger by trigger and overflows, then one day of stress as a chart
- *   ch08s04  Up fast, down slow    one recovery curve, the "boo" startle, then yesterday's leftover stress raising today
+ *   ch08s01  Threshold             Monday / Thursday calendars return, title card with three ideas, then the threshold zones
+ *   ch08s02  Getting close         the zones stood on end as a bar with a climbing dog marker + warning-sign checklist
+ *   ch08s03  Stress stacks up      the stress cup fills trigger by trigger and tips over the line, then shrinks into a
+ *                                  gauge beside one day of stress as a chart
+ *   ch08s04  Up fast, down slow    one recovery curve, the "boo" startle, then Wednesday's vet visit raising Thursday
  *   ch08s05  Empty the cup         decompression drains the cup, hard days spaced out on a week strip, closing question
  *
- * Shared look: the threshold is always a red dashed line with a red "Threshold" label; stress colours follow the
- * same green to amber to red ramp as the warning ladder; the stress cup is one builder used in s03 and s05.
+ * Shared look: the threshold is always the same red dashed stroke with the same white "Threshold" pill; stress
+ * colours follow the green to amber to red ramp of the warning ladder; the stress cup is one builder (s03, s05)
+ * with the threshold well below the rim and a grey base layer for the stress you can't see.
  */
 (function () {
   const C = {
@@ -15,14 +17,18 @@
     ink: '#212121', inkSoft: '#4a4a4a', muted: '#7a7a7a', line: '#d9ddd3', red: '#b8452d', redPale: '#f8e3dd',
     amber: '#d9912b', amberPale: '#fbefd9', amberText: '#a8650f', cup: '#454a40', axis: '#8d9386',
   };
-  // one colour per trigger, stepping up the calm-to-hot ramp
+  // one colour per trigger, stepping up the calm-to-hot ramp; BASE is the stress you can't see (poor sleep, sore hip)
   const TRIG = { doorbell: '#9dbb3f', truck: '#c9b03a', skate: '#d9912b', jogger: '#c4512d' };
+  const BASE = '#a7ab9f';
   const NS = 'http://www.w3.org/2000/svg';
   let uid = 0;
 
-  // Lucide has no skateboard, so draw one in the same line style
+  // Lucide has no skateboard, dashed line or tumbler, so draw them in the same line style
   const CUSTOM = {
     skateboard: '<path d="M2 9.5c0 1.7 1.3 3 3 3h14c1.7 0 3-1.3 3-3"/><path d="M8 12.5v2M16 12.5v2"/><circle cx="8" cy="17" r="2.2"/><circle cx="16" cy="17" r="2.2"/>',
+    thrline: '<path d="M2 12h4.6M9.7 12h4.6M17.4 12h4.6"/>',
+    cup: '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 1.5H9.62a1.7 1.7 0 0 1-1.7-1.5Z" fill="currentColor" stroke="none" opacity="0.5"/>' +
+      '<path d="M5.6 3.5l1.95 15.9a1.9 1.9 0 0 0 1.9 1.7h5.1a1.9 1.9 0 0 0 1.9-1.7l1.95-15.9"/>',
   };
   const iconInner = name => {
     const s = CUSTOM[name] || (window.ICONS || {})[name];
@@ -33,13 +39,29 @@
   const CSS = `
   .c8-layer { position:absolute; left:0; top:0; width:1920px; height:1080px; }
   .c8-crow { position:absolute; display:flex; justify-content:center; }
-  .c8-ideas { position:absolute; display:flex; justify-content:center; gap:44px; }
-  .c8-idea { display:inline-flex; align-items:center; gap:24px; padding:18px 44px 18px 18px; border-radius:999px; background:#fff;
-    box-shadow: var(--shadow-soft); border:1px solid #e6e9e1; font:700 46px/1 var(--font-head); color: var(--ink); white-space:nowrap; }
-  .c8-idea .n { width:68px; height:68px; border-radius:50%; background: var(--green); color:#fff; display:grid; place-items:center; font:800 36px/1 var(--font-head); }
+  .c8-cal { position:absolute; background:#fff; border-radius:26px; box-shadow: var(--shadow); border:1px solid #e6e9e1; }
+  .c8-cal .top { position:relative; height:122px; background: var(--green-dark); color:#fff; display:grid; place-items:center;
+    font:700 50px/1 var(--font-head); border-radius:26px 26px 0 0; }
+  .c8-cal .ring { position:absolute; top:16px; width:20px; height:20px; border-radius:50%; background:rgba(255,255,255,0.85); }
+  .c8-cal .cbody { display:flex; flex-direction:column; align-items:center; padding-top:44px; }
+  .c8-cal .ico { width:150px; height:150px; border-radius:50%; background: var(--green-pale); color: var(--green-dark); display:grid; place-items:center; }
+  .c8-cal .ico svg { width:82px; height:82px; }
+  .c8-cal .nm { margin-top:20px; font:700 44px/1.1 var(--font-head); color: var(--ink); }
+  .c8-stat { position:absolute; width:124px; height:124px; border-radius:50%; display:grid; place-items:center; color:#fff; border:6px solid #fff;
+    box-shadow: 0 12px 28px rgba(40,60,20,0.22); }
+  .c8-stat.ok { background: var(--green); }
+  .c8-stat.bad { background: var(--red); box-shadow: 0 12px 28px rgba(120,30,10,0.3); }
+  .c8-stat svg { width:64px; height:64px; }
+  .c8-ideas { position:absolute; display:flex; justify-content:center; gap:40px; }
+  .c8-idea { display:inline-flex; align-items:center; gap:22px; padding:16px 40px 16px 16px; border-radius:999px; background:#fff;
+    box-shadow: var(--shadow-soft); border:1px solid #e6e9e1; font:700 42px/1 var(--font-head); color: var(--ink); white-space:nowrap; }
+  .c8-idea .ic { width:72px; height:72px; border-radius:50%; display:grid; place-items:center; flex:0 0 auto; }
+  .c8-idea .ic svg { width:44px; height:44px; }
   .c8-zone { position:absolute; }
   .c8-zone.red { background: linear-gradient(180deg, #f5d5cb 0%, #fbebe6 100%); border-radius:26px 26px 0 0; }
   .c8-zone.green { background: linear-gradient(180deg, #edf5e3 0%, #dcebca 100%); border-radius:0 0 26px 26px; }
+  .c8-zone.bar.red { background: linear-gradient(180deg, #eaa996 0%, #f3cabd 100%); }
+  .c8-zone.bar.green { background: linear-gradient(180deg, #e1eed2 0%, #b9d893 100%); }
   .c8-ring { position:absolute; border:5px solid var(--green); border-top:0; border-radius:0 0 26px 26px; box-shadow: 0 0 30px rgba(97,149,55,0.35); }
   .c8-badge { position:absolute; border-radius:50%; display:grid; place-items:center; border:6px solid #fff;
     box-shadow: 0 12px 30px rgba(40,60,20,0.16), 0 3px 8px rgba(40,60,20,0.08); }
@@ -50,17 +72,20 @@
     white-space:nowrap; background:#fff; box-shadow: 0 6px 16px rgba(40,60,20,0.10); }
   .c8-tag.red { color: var(--red); }
   .c8-tag.green { color: var(--green-dark); }
-  .c8-thr { display:inline-flex; align-items:center; padding:10px 30px; border-radius:999px; background:#fff; border:4px solid var(--red);
-    color: var(--red); font:700 34px/1 var(--font-head); letter-spacing:0.5px; white-space:nowrap; box-shadow: var(--shadow-soft); }
+  .c8-thr { display:inline-flex; align-items:center; padding:10px 28px; border-radius:999px; background:#fff; border:4px solid var(--red);
+    color: var(--red); font:700 30px/1 var(--font-head); letter-spacing:0.5px; white-space:nowrap; box-shadow: var(--shadow-soft); }
   .c8-card { position:absolute; background:#fff; border-radius:26px; box-shadow: var(--shadow-soft); border:1px solid #e6e9e1; }
-  .c8-calc { display:flex; align-items:center; gap:28px; padding:34px 44px; filter: grayscale(0); color: var(--ink); }
-  .c8-calc .t { font:700 62px/1 var(--font-head); color: var(--ink); white-space:nowrap; }
+  .c8-calc { display:flex; align-items:center; justify-content:center; gap:26px; filter: grayscale(0); color: var(--ink); }
+  .c8-calc .t { font:700 58px/1 var(--font-head); color: var(--ink); white-space:nowrap; }
   .c8-pill { display:inline-flex; align-items:center; gap:12px; padding:15px 34px; border-radius:999px; background: var(--green); color:#fff;
     font:700 38px/1 var(--font-head); white-space:nowrap; box-shadow: 0 10px 24px rgba(63,107,34,0.28); }
   .c8-row { position:absolute; display:flex; align-items:center; gap:26px; font:600 38px/1.1 var(--font-body); color: var(--ink); white-space:nowrap; }
   .c8-row .b { width:68px; height:68px; border-radius:50%; display:grid; place-items:center; flex:0 0 auto; }
   .c8-row .b svg { width:38px; height:38px; }
   .c8-gbar { position:absolute; border-radius:4px; }
+  .c8-mark { position:absolute; width:84px; height:84px; border-radius:50%; background:#fff; border:6px solid var(--green); color: var(--green-dark);
+    display:grid; place-items:center; box-shadow: 0 10px 24px rgba(40,60,20,0.22); }
+  .c8-mark svg { width:46px; height:46px; }
   .c8-flag { position:absolute; display:flex; align-items:center; gap:14px; padding:12px 26px 12px 20px; background: var(--green); color:#fff;
     border-radius:16px; font:700 28px/1.2 var(--font-body); white-space:nowrap; box-shadow: 0 10px 24px rgba(63,107,34,0.28); }
   .c8-flag::before { content:''; position:absolute; left:-17px; top:50%; margin-top:-17px; width:0; height:0;
@@ -69,6 +94,9 @@
   .c8-rule .b { width:78px; height:78px; border-radius:22px; background: var(--green-pale); color: var(--green-dark); display:grid; place-items:center; flex:0 0 auto; }
   .c8-rule .b svg { width:46px; height:46px; }
   .c8-rule .t { font:700 36px/1.1 var(--font-head); color: var(--ink); white-space:nowrap; }
+  .c8-try { position:absolute; display:inline-flex; align-items:center; gap:12px; padding:14px 26px 14px 18px; border-radius:999px; background: var(--green);
+    color:#fff; font:700 26px/1 var(--font-body); letter-spacing:3px; text-transform:uppercase; white-space:nowrap; box-shadow: 0 10px 22px rgba(44,74,23,0.26); z-index:5; }
+  .c8-try svg { width:32px; height:32px; }
   .c8-chip { display:inline-flex; align-items:center; gap:12px; padding:9px 24px 9px 16px; border-radius:999px; background:#fff;
     box-shadow: 0 6px 16px rgba(40,60,20,0.18); font:700 28px/1 var(--font-body); color: var(--ink); white-space:nowrap; }
   .c8-chip svg { width:32px; height:32px; }
@@ -82,19 +110,22 @@
   .c8-lbl b { font-weight:800; }
   .c8-inset { position:absolute; background:#fff; border-radius:26px; box-shadow: var(--shadow); border:1px solid #e6e9e1; }
   .c8-inset .ttl { position:absolute; left:34px; top:30px; font:700 40px/1 var(--font-head); color: var(--ink); white-space:nowrap; }
-  .c8-item { position:absolute; display:flex; align-items:center; gap:24px; padding:0 30px; background:#fff; border-radius:24px;
+  .c8-item { position:absolute; display:flex; align-items:center; gap:24px; padding:0 28px; background:#fff; border-radius:24px;
     box-shadow: var(--shadow-soft); border:1px solid #e6e9e1; font:700 40px/1 var(--font-head); color: var(--ink); white-space:nowrap; }
-  .c8-item .b { width:74px; height:74px; border-radius:50%; background: var(--green-pale); color: var(--green-dark); display:grid; place-items:center; flex:0 0 auto; }
-  .c8-item .b svg { width:42px; height:42px; }
+  .c8-item .b { width:72px; height:72px; border-radius:50%; background: var(--green-pale); color: var(--green-dark); display:grid; place-items:center; flex:0 0 auto; }
+  .c8-item .b svg { width:40px; height:40px; }
   .c8-day { position:absolute; background:rgba(255,255,255,0.92); border-radius:20px; border:1px solid #e3e7dd; box-shadow: 0 6px 18px rgba(40,60,20,0.08);
     text-align:center; padding-top:14px; font:700 28px/1 var(--font-body); color: var(--muted); }
+  .c8-day.wknd { color: var(--green-dark); background: #f6faf1; }
   .c8-blk { position:absolute; border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
     font:700 28px/1.12 var(--font-body); text-align:center; }
   .c8-blk svg { width:40px; height:40px; }
   .c8-blk.hard { background: var(--red-pale); color: var(--red); border:3px solid #eab9ab; }
   .c8-blk.rest { background: var(--green-pale); color: var(--green-deep); border:3px solid var(--green-light); }
   .c8-q { position:absolute; font:800 170px/1 var(--font-head); color: var(--green); text-align:center; }
-  .c8-final { position:absolute; font:700 76px/1.1 var(--font-head); color: var(--ink); text-align:center; white-space:nowrap; }
+  .c8-ask { position:relative; display:inline-flex; align-items:center; padding:34px 56px 30px; border-radius:26px; background:#fff;
+    box-shadow: var(--shadow); border:1px solid #e6e9e1; font:700 64px/1.1 var(--font-head); color: var(--ink); white-space:nowrap; }
+  .c8-ask .c8-try { left:-34px; top:-46px; }
   `;
   const style = stage => stage.appendChild(K.el('style', null, CSS));
 
@@ -145,8 +176,35 @@
     c.appendChild(K.el('span', null, text));
     return c;
   }
+  /** The one "Threshold" label, a white pill with a red border, centred on (cx, cy). 58 px tall. */
+  function thrTag(parent, cx, cy) { return centred(parent, K.el('div', 'c8-thr', 'Threshold'), cx, cy - 29, 400); }
+  /** The chapter-wide green "Try this" badge. */
+  function tryBadge(parent, x, y) {
+    const b = x == null ? K.el('div', 'c8-try') : box(parent, 'c8-try', null, x, y);
+    b.appendChild(ico('notebook-pen', null, { stroke: 2.4 }));
+    b.appendChild(K.el('span', null, 'Try this'));
+    if (x == null) parent.appendChild(b);
+    return b;
+  }
+  function tryIn(tl, b, t) {
+    tl.fromTo(b, { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.7, ease: 'back.out(1.8)' }, t);
+  }
 
   // ------------------------------------------------------------------ motion helpers
+  /**
+   * Time a phrase starts in beat i's narration, minus a small lead. Uses the word-level alignment through the
+   * framework's ctx.phrase when present (falls back to the phrase's share of the text), so it follows the real voice.
+   */
+  const sayAt = ctx => (i, phrase, lead = 0.3, fb = 0.4) => {
+    const t0 = ctx.cue(i), t1 = ctx.end(i);
+    let t;
+    if (ctx.phrase) t = ctx.phrase(i, phrase, fb);
+    else {
+      const s = String((ctx.beats[i] || {}).say || '').toLowerCase(), k = s.indexOf(phrase.toLowerCase());
+      t = t0 + (t1 - t0) * (k < 0 ? fb : k / Math.max(1, s.length));
+    }
+    return Math.max(t0, t - lead);
+  };
   /** Left-to-right write-on for a heading (clip padded so descenders never get cut). */
   function wipeIn(tl, el, t, dur = 0.9) {
     tl.fromTo(el, { clipPath: 'inset(-25% 102% -35% -2%)' }, { clipPath: 'inset(-25% -2% -35% -2%)', duration: dur, ease: 'power2.inOut' }, t);
@@ -176,7 +234,7 @@
     tl.fromTo(node, { opacity: 0, scale: 0.4, svgOrigin: `${cx} ${cy}` }, { opacity: 1, scale: 1, svgOrigin: `${cx} ${cy}`, duration: dur, ease: 'back.out(2)' }, t);
   }
 
-  // ------------------------------------------------------------------ threshold line
+  // ------------------------------------------------------------------ threshold line (one stroke style everywhere)
   function thrLine(svg, x1, x2, y, attrs = {}, halo = false) {
     const a = Object.assign({ stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 16', 'stroke-linecap': 'round' }, attrs);
     // a white halo under the dashes keeps the line readable when it crosses coloured liquid
@@ -215,26 +273,30 @@
   /** Area between the curve and the threshold wherever the curve is above it. */
   function overArea(fn, a, b, thr, X, Y) {
     const n = Math.ceil((b - a) * 600);
-    let d = '', on = false, last = a;
+    let d = '', on = false;
     for (let i = 0; i <= n; i++) {
       const t = a + ((b - a) * i) / n, v = fn(t);
       if (v > thr && !on) { d += `M${X(t).toFixed(1)} ${Y(thr).toFixed(1)}`; on = true; }
       if (on) d += `L${X(t).toFixed(1)} ${Y(Math.max(v, thr)).toFixed(1)}`;
       if (on && (v <= thr || i === n)) { d += `L${X(t).toFixed(1)} ${Y(thr).toFixed(1)}Z`; on = false; }
-      last = t;
     }
     return d;
   }
   /**
    * A chart line that draws itself left to right from a to b (linear in time, so events line up with the x axis).
    * Returns the paths [main, redOverlay?]. The overlay is the same line in red, clipped to above the threshold.
+   * onV(v) is called with the value at the moving tip (used by the cup gauge in s03).
    */
-  function liveLine(tl, parent, fn, X, Y, a, b, t, dur, attrs = {}, overlay) {
+  function liveLine(tl, parent, fn, X, Y, a, b, t, dur, attrs = {}, overlay, onV) {
     const base = Object.assign({ stroke: C.greenDark, 'stroke-width': 7, 'vector-effect': 'non-scaling-stroke' }, attrs);
     const paths = [K.path(parent, '', base)];
     if (overlay) paths.push(K.path(parent, '', Object.assign({}, base, { stroke: C.red, 'clip-path': `url(#${overlay})` })));
     const st = { p: a };
-    const upd = () => { const d = fnPath(fn, a, st.p, X, Y); paths.forEach(q => q.setAttribute('d', d)); };
+    const upd = () => {
+      const d = fnPath(fn, a, st.p, X, Y);
+      paths.forEach(q => q.setAttribute('d', d));
+      if (onV && st.p > a + 1e-6) onV(fn(st.p)); // never at build time (immediate render)
+    };
     tl.fromTo(st, { p: a }, { p: b, duration: dur, ease: 'none', onUpdate: upd }, t);
     return paths;
   }
@@ -249,7 +311,7 @@
     const axX = K.line(dataG, x0, yb, x0 + W, yb, { stroke: C.axis, 'stroke-width': 4, 'vector-effect': 'non-scaling-stroke' });
     const axY = K.line(svg, x0, yb, x0, yt - 20, { stroke: C.axis, 'stroke-width': 4 });
     const arrowY = K.path(svg, `M${x0 - 12} ${yt - 6} L${x0} ${yt - 22} L${x0 + 12} ${yt - 6}`, { stroke: C.axis, 'stroke-width': 4, fill: 'none' });
-    const yLab = K.svgText(svg, x0 - 24, yt + 4, o.yLabel || 'Stress', { 'text-anchor': 'end', 'font-size': 30, 'font-weight': 700, fill: C.inkSoft });
+    const yLab = K.svgText(svg, x0 + 26, yt - 2, o.yLabel || 'Stress', { 'font-size': 30, 'font-weight': 700, fill: C.inkSoft });
     return { wrap, svg, defs, dataG, X, Y, x0, W, yb, yt, axX, axY, arrowY, yLab };
   }
   function drawAxes(tl, ch, t) {
@@ -260,6 +322,13 @@
     const cp = K.svgEl('clipPath', { id }, ch.defs);
     K.svgEl('rect', { x: ch.x0 - 60, y: 0, width: ch.W + 120, height: thrY }, cp);
     return id;
+  }
+  /** A white icon disc under the time axis marking an event. */
+  function evIcon(svg, name, x, y, color) {
+    const g = K.group(svg), inner = K.group(g);
+    K.circle(inner, x, y, 30, { fill: '#fff', stroke: '#e0e4da', 'stroke-width': 2 });
+    svgIcon(inner, name, x, y, 34, { stroke: color });
+    return { g, inner, x, y };
   }
 
   // ------------------------------------------------------------------ the stress cup
@@ -297,7 +366,8 @@
 
     const setLevel = (tl, y, t, dur = 0.9, ease = 'power2.inOut') =>
       tl.to(lvRect, { attr: { y, height: bottom + 40 - y }, duration: dur, ease }, t);
-    return { wrap, svg, body, glass, streamG, inner, liquid, bands, extra, outline, shine, thr, setLevel, xl, xr, bl, br, top, bottom, cx, wallL, wallR, d };
+    const levelNow = y => { lvRect.setAttribute('y', y.toFixed(1)); lvRect.setAttribute('height', (bottom + 40 - y).toFixed(1)); };
+    return { wrap, svg, body, glass, streamG, inner, liquid, bands, extra, outline, shine, thr, setLevel, levelNow, xl, xr, bl, br, top, bottom, cx, wallL, wallR, d };
   }
   /** Pour a stream from above into the cup while the level rises to y. */
   function pour(tl, cup, color, y, t) {
@@ -309,31 +379,72 @@
   }
 
   // =================================================================== ch08s01  Threshold
-  registerScene('ch08s01', ({ stage, tl, cue, end }) => {
+  registerScene('ch08s01', ctx => {
+    const { stage, tl, cue, end } = ctx;
     style(stage);
     const T = [0, 1, 2, 3, 4].map(i => cue(i));
     const L = i => Math.max(1, end(i) - cue(i));
+    const at = sayAt(ctx);
 
-    // ---- beat 0: title card with the two ideas
-    const tc = K.heading(stage, 'Stress and recovery over time', { x: 100, y: 330, w: 1720, size: 100, align: 'center', barGap: 36 });
+    // ---- beat 0: the Monday / Thursday calendars from ch07s05 return, then shrink up to make room for the title
+    const CAL = { w: 480, h: 560, y: 300, xs: [400, 1040] }, CS = 0.6, CY2 = 196;
+    const fx = [960 - CAL.w * CS - 20, 960 + 20];
+    const cals = ['Monday', 'Thursday'].map((day, i) => {
+      const card = box(stage, 'c8-cal', null, CAL.xs[i], CAL.y, CAL.w, CAL.h);
+      const top = K.el('div', 'top', day);
+      card.appendChild(top);
+      [150, 310].forEach(x => { const r = K.el('div', 'ring'); r.style.left = x + 'px'; top.appendChild(r); });
+      const body = K.el('div', 'cbody');
+      card.appendChild(body);
+      const ic = K.el('div', 'ico');
+      ic.appendChild(ico('footprints', null, { stroke: 2 }));
+      body.appendChild(ic);
+      body.appendChild(K.el('div', 'nm', 'Jogger'));
+      const st = box(card, 'c8-stat ' + (i ? 'bad' : 'ok'), null, CAL.w / 2 - 62, CAL.h - 164);
+      st.appendChild(ico(i ? 'triangle-alert' : 'check', null, { stroke: 2.6 }));
+      return { card, st };
+    });
+
+    const tc = K.heading(stage, 'Stress and recovery over time', { x: 100, y: 590, w: 1720, size: 84, align: 'center', barGap: 28 });
     tc.title.style.whiteSpace = 'nowrap';
-    const ideas = box(stage, 'c8-ideas', null, 100, 590, 1720);
-    const mkIdea = (n, s) => { const c = K.el('div', 'c8-idea', `<span class="n">${n}</span><span>${s}</span>`); ideas.appendChild(c); return c; };
-    const idea1 = mkIdea(1, 'Threshold'), idea2 = mkIdea(2, 'Stress stacks up');
-    wipeIn(tl, tc.title, T[0], 1.0);
-    tl.fromTo(tc.bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'power2.inOut' }, T[0] + 0.75);
-    A.in(tl, idea1, T[0] + 0.64 * L(0), 'fadeUp');
-    A.in(tl, idea2, T[0] + 0.8 * L(0), 'fadeUp');
-    A.out(tl, [tc.root, ideas], T[1] - 0.4, 'fadeUp', { dur: 0.45 });
+    const ideas = box(stage, 'c8-ideas', null, 100, 762, 1720);
+    const mkIdea = (icon, bg, fg, s) => {
+      const c = K.el('div', 'c8-idea');
+      const n = K.el('span', 'ic');
+      Object.assign(n.style, { background: bg, color: fg });
+      n.appendChild(ico(icon, null, { stroke: icon === 'thrline' ? 2.8 : 2.2 }));
+      c.appendChild(n);
+      c.appendChild(K.el('span', null, s));
+      ideas.appendChild(c);
+      return c;
+    };
+    const idea = [
+      mkIdea('thrline', C.redPale, C.red, 'Threshold'),
+      mkIdea('cup', C.amberPale, C.amberText, 'Stress stacks up'),
+      mkIdea('clock', C.pale, C.greenDark, 'Slow recovery'),
+    ];
+
+    A.in(tl, cals[0].card, T[0] + 0.05, 'fadeRight', { dur: 0.8 });
+    A.in(tl, cals[1].card, T[0] + 0.25, 'fadeLeft', { dur: 0.8 });
+    A.in(tl, cals[0].st, T[0] + 0.75, 'pop', { dur: 0.5 });
+    A.in(tl, cals[1].st, T[0] + 1.0, 'pop', { dur: 0.5 });
+    tl.fromTo(cals[1].card, { rotation: 0 }, { rotation: 1.2, duration: 0.06, yoyo: true, repeat: 5, ease: 'none' }, T[0] + 1.15);
+    const tMove = Math.max(T[0] + 1.9, at(0, 'three ideas', 0.5));
+    cals.forEach((c, i) => tl.to(c.card, { x: fx[i] - CAL.xs[i], y: CY2 - CAL.y, scale: CS, transformOrigin: '0% 0%', duration: 0.9, ease: 'power3.inOut' }, tMove));
+    wipeIn(tl, tc.title, tMove + 0.35, 1.0);
+    tl.fromTo(tc.bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'power2.inOut' }, tMove + 1.0);
+    const tI = [Math.max(tMove + 1.2, at(0, 'threshold,')), at(0, 'stress stacking'), at(0, 'how slowly')];
+    idea.forEach((c, i) => A.in(tl, c, Math.max(tI[i], tMove + 1.2 + i * 0.5), 'fadeUp', { dur: 0.7 }));
+    tl.to([cals[0].card, cals[1].card, tc.root, ideas], { opacity: 0, y: '-=30', duration: 0.45, ease: 'power2.in' }, T[1] - 0.4);
 
     // ---- the threshold diagram
-    const H = headline(stage, ['Under the line: thinking', 'Over the line: survival mode', 'Not stubborn. Unavailable.', 'Training happens under the line']);
+    const H = headline(stage, ['Under the line: thinking', 'Over the line: feelings take over', 'Not stubborn. Unavailable.', 'Training happens under the line']);
     const PT = 280, LY = 610, PB = 940;
     const zR = box(stage, 'c8-zone red', null, 100, PT, 1720, LY - PT);
     const zG = box(stage, 'c8-zone green', null, 100, LY, 1720, PB - LY);
     const ring = box(stage, 'c8-ring', null, 100, LY, 1720, PB - LY);
     const svg = K.svg(stage, {});
-    const line = thrLine(svg, 104, 1816, LY, { 'stroke-width': 6, 'stroke-dasharray': '14 18' });
+    const line = thrLine(svg, 104, 1816, LY);
 
     // under the line: thinking brain
     const brain = badge(stage, 'brain', 240, 775, 140, C.green, '#fff', 2);
@@ -341,26 +452,27 @@
     const gTags = box(stage, 'c8-tags', null, 352, 790);
     const gt = ['Hears you', 'Takes treats', 'Makes choices'].map(s => gTags.appendChild(tag(s, 'green')));
 
-    // over the line: survival brain
+    // over the line: big feelings take the wheel
     const zap = badge(stage, 'zap', 240, 445, 140, C.red, '#fff', 2);
-    const rLab = box(stage, 'c8-lab', 'Survival brain', 352, 370, null, null, { color: C.red });
+    const rLab = box(stage, 'c8-lab', 'Feelings in charge', 352, 370, null, null, { color: C.red });
     const rTags = box(stage, 'c8-tags', null, 352, 460);
-    const rt = ['Fight', 'Flight', 'Freeze'].map(s => rTags.appendChild(tag(s, 'red')));
+    const rt = ['Fight', 'Flight', 'Freeze', 'Road rage'].map(s => rTags.appendChild(tag(s, 'red')));
 
-    // long division while being chased
-    const calc = box(stage, 'c8-card c8-calc', null, 1090, 356);
-    calc.appendChild(ico('calculator', 96, { stroke: 1.8 }));
-    calc.appendChild(K.el('div', 't', '38 × 17 = ?'));
-    const alert = badge(stage, 'triangle-alert', 1738, 440, 112, C.redPale, C.red, 2.2);
+    // long division while a bear chases you
+    const CW = 560, CXL = 1170, CYT = 350, CH = 170;
+    const calc = box(stage, 'c8-card c8-calc', null, CXL, CYT, CW, CH);
+    calc.appendChild(ico('calculator', 92, { stroke: 1.8 }));
+    calc.appendChild(K.el('div', 't', '952 ÷ 17 = ?'));
+    const alert = badge(stage, 'triangle-alert', CXL + CW - 8, CYT + 4, 100, C.redPale, C.red, 2.2);
 
     // train here
-    const AX = 1367;
+    const AX = 1450;
     const arrG = K.group(svg);
-    const shaft = K.line(arrG, AX, 572, AX, 782, { stroke: C.green, 'stroke-width': 16 });
+    const shaft = K.line(arrG, AX, 548, AX, 782, { stroke: C.green, 'stroke-width': 16 });
     const head = K.path(arrG, `M${AX - 30} 758 L${AX} 790 L${AX + 30} 758`, { stroke: C.green, 'stroke-width': 16 });
     const train = centred(stage, K.el('div', 'c8-pill', 'Train here'), AX, 808, 500);
 
-    const pill = centred(stage, K.el('div', 'c8-thr', 'Threshold'), 960, LY - 32, 600);
+    const pill = thrTag(stage, 960, LY);
 
     // beat 1: the line, the green zone and the thinking brain
     wipeIn(tl, H.titles[0], T[1] + 0.15);
@@ -370,19 +482,20 @@
     A.in(tl, zG, T[1] + 0.35, 'fade', { dur: 0.7 });
     A.in(tl, brain, T[1] + 0.6, 'pop', { dur: 0.6 });
     A.in(tl, gLab, T[1] + 0.75, 'fadeRight', { dur: 0.7 });
-    A.in(tl, gt, T[1] + 0.55 * L(1), 'fadeUp', { stagger: 0.35, dur: 0.6 });
+    A.in(tl, gt, Math.max(T[1] + 1.6, at(1, 'hear you')), 'fadeUp', { stagger: 0.35, dur: 0.6 });
 
-    // beat 2: the red zone and the survival brain
+    // beat 2: the red zone, feelings in charge
     swapTitle(tl, H, 0, 1, T[2]);
     A.in(tl, zR, T[2] + 0.05, 'fade', { dur: 0.7 });
     A.in(tl, zap, T[2] + 0.3, 'pop', { dur: 0.6 });
     A.in(tl, rLab, T[2] + 0.45, 'fadeRight', { dur: 0.7 });
-    A.in(tl, rt, T[2] + 0.72 * L(2), 'fadeUp', { stagger: 0.3, dur: 0.55 });
+    A.in(tl, rt.slice(0, 3), Math.max(T[2] + 1.4, at(2, 'fight')), 'fadeUp', { stagger: 0.25, dur: 0.55 });
+    A.in(tl, rt[3], Math.max(T[2] + 2.4, at(2, 'road rage')), 'fadeUp', { dur: 0.55 });
 
     // beat 3: the calculator greys out while the alarm flashes
     swapTitle(tl, H, 1, 2, T[3]);
     A.in(tl, calc, T[3] + 0.1, 'pop', { dur: 0.6 });
-    const tg = T[3] + 0.4 * L(3);
+    const tg = Math.max(T[3] + 1.4, at(3, "you're not"));
     tl.to(calc, { filter: 'grayscale(1)', opacity: 0.42, duration: 0.7, ease: 'power2.out' }, tg);
     A.in(tl, alert, tg - 0.1, 'pop', { dur: 0.5 });
     tl.to(alert, { opacity: 0.3, duration: 0.18, yoyo: true, repeat: 5, ease: 'sine.inOut' }, tg + 0.5);
@@ -396,49 +509,40 @@
   });
 
   // =================================================================== ch08s02  Getting close to threshold
-  registerScene('ch08s02', ({ stage, tl, cue, end }) => {
+  registerScene('ch08s02', ctx => {
+    const { stage, tl, cue, end } = ctx;
     style(stage);
     const T = [0, 1, 2, 3, 4].map(i => cue(i));
-    const L = i => Math.max(1, end(i) - cue(i));
+    const at = sayAt(ctx);
 
     const h = K.heading(stage, 'Signs they’re getting close', { x: 100, y: 120, size: 80 });
     h.title.style.whiteSpace = 'nowrap';
     wipeIn(tl, h.title, T[0]);
     barIn(tl, h.bar, T[0] + 0.5);
 
-    // ---- gauge
-    const card = box(stage, 'c8-card', null, 100, 280, 660, 510);
+    // ---- the threshold zones from s01, stood on end as a bar, with a dog marker that climbs
+    const card = box(stage, 'c8-card', null, 100, 280, 660, 460);
+    const BX = 180, BW = 124, BT = 318, BB = 702, LY = 420, MX = BX + BW / 2;
+    const zR = box(stage, 'c8-zone bar red', null, BX, BT, BW, LY - BT);
+    const zG = box(stage, 'c8-zone bar green', null, BX, LY, BW, BB - LY);
     const svg = K.svg(stage, {});
-    const defs = K.svgEl('defs', {}, svg);
-    defs.innerHTML = `<linearGradient id="c8gg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#7fb24a"/><stop offset="0.45" stop-color="#c2b235"/><stop offset="0.72" stop-color="#d9912b"/><stop offset="1" stop-color="#b8452d"/></linearGradient>`;
-    const cp = K.svgEl('clipPath', { id: 'c8lv' }, defs);
-    const TX = 196, TW = 96, TT = 330, TB = 750;
-    const LV = p => TB - p * (TB - TT);
-    const lv = K.svgEl('rect', { x: TX - 10, y: TB, width: TW + 20, height: 0 }, cp);
-    const trackG = K.group(svg);
-    K.rect(trackG, TX, TT, TW, TB - TT, { rx: 48, fill: '#eef1ea', stroke: '#d9ddd3', 'stroke-width': 3 });
-    K.rect(trackG, TX + 1.5, TT + 1.5, TW - 3, TB - TT - 3, { rx: 46, fill: 'url(#c8gg)', opacity: 0.16 });
-    K.rect(trackG, TX + 1.5, TT + 1.5, TW - 3, TB - TT - 3, { rx: 46, fill: 'url(#c8gg)', 'clip-path': 'url(#c8lv)' });
-    const ptr = K.group(svg);
-    K.path(ptr, 'M146 -16 L180 0 L146 16 Z', { fill: C.inkSoft, stroke: C.inkSoft, 'stroke-width': 4 });
-    const thrY = LV(0.9);
-    const tLine = thrLine(svg, 150, 730, thrY);
-    const tLab = K.svgText(svg, 324, thrY - 18, 'Threshold', { 'font-size': 30, 'font-weight': 700, fill: C.red });
-    const cLab = K.svgText(svg, 324, TB - 8, 'Calm', { 'font-size': 30, 'font-weight': 700, fill: C.greenDark });
-
-    const level = (p, t, dur = 0.9, ease = 'power2.inOut') => {
-      tl.to(lv, { attr: { y: LV(p), height: TB - LV(p) + 10 }, duration: dur, ease }, t);
-      tl.to(ptr, { y: LV(p), duration: dur, ease }, t);
-    };
+    const line = thrLine(svg, 140, 722, LY);
+    const pill = thrTag(stage, 560, LY);
+    const LV = [652, 590, 526, 470];                       // marker centre per step (last one sits just under the line)
+    const MC = [C.green, '#b3a22c', C.amber, '#c4512d'];   // marker ring warms up as it climbs
+    const MT = [C.greenDark, '#8a7c12', C.amberText, C.red];
+    const mark = box(stage, 'c8-mark', null, MX - 42, LV[0] - 42);
+    mark.appendChild(ico('dog', null, { stroke: 2.2 }));
+    const step = (k, t, dur = 0.9, ease = 'power2.inOut') =>
+      tl.to(mark, { y: LV[k] - LV[0], borderColor: MC[k], color: MT[k], duration: dur, ease }, t);
 
     A.in(tl, card, T[0] + 0.1, 'fadeUp', { dur: 0.7 });
-    tl.fromTo(trackG, { opacity: 0, scaleY: 0.15, svgOrigin: `${TX + TW / 2} ${TB}` }, { opacity: 1, scaleY: 1, svgOrigin: `${TX + TW / 2} ${TB}`, duration: 0.8 }, T[0] + 0.35);
-    tl.fromTo(ptr, { opacity: 0, y: LV(0.02) }, { opacity: 1, y: LV(0.12), duration: 0.7 }, T[0] + 1.0);
-    tl.to(lv, { attr: { y: LV(0.12), height: TB - LV(0.12) + 10 }, duration: 0.7 }, T[0] + 1.0);
-    drawThr(tl, tLine, T[0] + 0.9, 0.8);
-    tl.fromTo([tLab, cLab], { opacity: 0 }, { opacity: 1, duration: 0.5, stagger: 0.15 }, T[0] + 1.2);
+    tl.fromTo([zR, zG], { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.12 }, T[0] + 0.4);
+    drawThr(tl, line, T[0] + 0.8, 0.8);
+    A.in(tl, pill, T[0] + 1.1, 'pop', { dur: 0.6 });
+    A.in(tl, mark, T[0] + 1.3, 'pop', { dur: 0.6 });
 
-    // ---- warning signs, in three groups that match the gauge colours
+    // ---- warning signs, in three groups that match the marker colours
     const GC = [
       { bg: '#f3f0d2', fg: '#8a7c12', bar: '#c2b235' },
       { bg: C.amberPale, fg: C.amberText, bar: C.amber },
@@ -471,192 +575,228 @@
       A.in(tl, rows[i], t, 'fadeRight', { dur: 0.7 });
     };
 
-    // beat 0: two signs, gauge steps up
-    sign(0, T[0] + 0.4 * L(0));
-    sign(1, T[0] + 0.7 * L(0));
-    level(0.36, T[0] + 0.84 * L(0));
+    // beat 0: two signs, the marker climbs a step
+    sign(0, Math.max(T[0] + 1.6, at(0, 'they stop taking')));
+    const s1 = Math.max(T[0] + 2.6, at(0, 'they stop hearing'));
+    sign(1, s1);
+    step(1, s1 + 0.6);
     // beat 1: three more
     sign(2, T[1] + 0.05);
-    sign(3, T[1] + 0.34 * L(1));
-    sign(4, T[1] + 0.74 * L(1));
-    level(0.6, T[1] + 0.86 * L(1));
-    // beat 2: two more, gauge just under the mark
+    sign(3, Math.max(T[1] + 1.0, at(1, 'the body goes')));
+    const s4 = Math.max(T[1] + 2.0, at(1, 'their weight'));
+    sign(4, s4);
+    step(2, s4 + 0.6);
+    // beat 2: two more, the marker sits just under the line
     sign(5, T[2] + 0.05);
-    sign(6, T[2] + 0.36 * L(2));
-    level(0.84, T[2] + 0.6 * L(2), 1.0);
-    tl.to(ptr, { scale: 1.25, transformOrigin: '50% 50%', duration: 0.25, yoyo: true, repeat: 3, ease: 'power2.out' }, T[2] + 0.6 * L(2) + 1.1);
+    const s6 = Math.max(T[2] + 1.0, at(2, 'or their'));
+    sign(6, s6);
+    step(3, s6 + 0.5, 1.0);
+    tl.to(mark, { scale: 1.14, duration: 0.25, yoyo: true, repeat: 3, ease: 'power2.out' }, s6 + 1.6);
 
-    // beat 3: your cue, add distance, back into the green
-    const flagY = LV(0.74);
-    const flag = box(stage, 'c8-flag', null, 326, flagY - 46);
+    // beat 3: your cue: add distance, and the marker drops back into the green
+    const flag = box(stage, 'c8-flag', null, 330, 468);
     flag.appendChild(ico('flag', 32, { stroke: 2.4 }));
     flag.appendChild(K.el('span', null, 'Your cue to<br>add distance'));
-    const undo = badge(stage, 'undo-2', 374, 566, 96, C.pale, C.greenDark, 2.4);
+    const undo = badge(stage, 'undo-2', 420, 640, 88, C.pale, C.greenDark, 2.4);
     A.in(tl, flag, T[3] + 0.1, 'fadeRight', { dur: 0.7 });
-    const tDrop = T[3] + 0.36 * L(3);
+    const tDrop = Math.max(T[3] + 1.4, at(3, 'add distance'));
     A.in(tl, undo, tDrop, 'pop', { dur: 0.55 });
-    level(0.24, tDrop + 0.3, 1.4, 'power3.inOut');
+    tl.to(mark, { y: 0, borderColor: MC[0], color: MT[0], duration: 1.4, ease: 'power3.inOut' }, tDrop + 0.3);
 
-    // beat 4: measure the distance
-    const rule = box(stage, 'c8-card c8-rule', null, 100, 815, 660, 120);
+    // beat 4: note the distance (a Try this task)
+    const rule = box(stage, 'c8-card c8-rule', null, 100, 810, 660, 120);
     const rb = K.el('div', 'b');
     rb.appendChild(ico('ruler', null, { stroke: 2.2 }));
     rule.appendChild(rb);
     rule.appendChild(K.el('div', 't', 'Note your dog’s distance'));
+    const tryB = tryBadge(stage, 78, 766);
     A.in(tl, rule, T[4] + 0.05, 'fadeRight', { dur: 0.8 });
+    tryIn(tl, tryB, T[4] + 0.55);
   });
 
   // =================================================================== ch08s03  Stress stacks up
-  registerScene('ch08s03', ({ stage, tl, cue, end }) => {
+  registerScene('ch08s03', ctx => {
+    const { stage, tl, cue, end } = ctx;
     style(stage);
     const T = [0, 1, 2, 3, 4, 5, 6].map(i => cue(i));
     const L = i => Math.max(1, end(i) - cue(i));
+    const at = sayAt(ctx);
     const H = headline(stage, ['Stress stacks up', 'One day of stress', 'Small things add up', 'Over time, or all at once']);
     wipeIn(tl, H.titles[0], T[0]);
     barIn(tl, H.bar, T[0] + 0.5);
 
-    // ---- the cup
-    const CX = 960, TOP = 330, HGT = 560, THR = 400;
-    const BANDS = [
-      { key: 'doorbell', y0: 740, y1: 900, icon: 'bell', text: 'Doorbell' },
-      { key: 'truck', y0: 590, y1: 740, icon: 'truck', text: 'Garbage truck' },
-      { key: 'skate', y0: 430, y1: 590, icon: 'skateboard', text: 'Skateboard' },
-      { key: 'jogger', y0: 300, y1: 430, icon: 'footprints', text: 'Jogger' },
+    // ---- the cup: threshold well below the rim, a grey base layer already in the bottom
+    const CX = 960, TOP = 300, HGT = 600, BOT = TOP + HGT, THR = 470, TOPLV = 420;
+    const LAY = [
+      { y0: 850, y1: 900, color: BASE },
+      { y0: 750, y1: 850, color: TRIG.doorbell, icon: 'bell', text: 'Doorbell', cy: 800 },
+      { y0: 650, y1: 750, color: TRIG.truck, icon: 'truck', text: 'Garbage truck', cy: 700 },
+      { y0: 545, y1: 650, color: TRIG.skate, icon: 'skateboard', text: 'Skateboard', cy: 597 },
+      { y0: 380, y1: 545, color: TRIG.jogger, icon: 'footprints', text: 'Jogger', cy: 508 },
     ];
-    const cup = makeCup(stage, { cx: CX, top: TOP, h: HGT, wTop: 520, wBot: 400, thr: THR, bands: BANDS.map(b => ({ y0: b.y0, y1: b.y1, color: TRIG[b.key] })) });
+    const cup = makeCup(stage, { cx: CX, top: TOP, h: HGT, wTop: 520, wBot: 400, thr: THR, level: 850, bands: LAY });
     const W = cup.wrap;
-    const tLab = K.svgText(cup.svg, cup.xr + 56, THR + 11, 'Threshold', { 'font-size': 30, 'font-weight': 700, fill: C.red });
+    const flush = K.rect(cup.liquid, cup.xl - 30, TOP - 60, 580, HGT + 80, { fill: TRIG.jogger, opacity: 0 });
+    const flush2 = K.rect(cup.liquid, cup.xl - 30, TOP - 60, 580, HGT + 80, { fill: TRIG.jogger, opacity: 0 });
+    const glow = K.rect(cup.extra, cup.xl - 30, 850, 580, 52, { fill: '#ffffff', opacity: 0 });
+    const cupTag = thrTag(W, cup.xr + 120, THR);
+    const chips = LAY.slice(1).map(b => centred(W, chip(b.icon, b.text, b.color), CX, b.cy - 25, 600));
 
-    // chips sit inside their band (the jogger chip rides in above the threshold line)
-    const chipY = [820, 665, 510, 341];
-    const chips = BANDS.map((b, i) => centred(W, chip(b.icon, b.text, TRIG[b.key]), CX, i === 3 ? chipY[i] : chipY[i] - 25, 600));
-
-    // beat 0: cup and threshold
-    tl.fromTo(cup.glass, { opacity: 0 }, { opacity: 1, duration: 0.6 }, T[0] + 0.2);
+    // beat 0: cup, base layer and threshold
+    tl.fromTo([cup.glass, cup.inner], { opacity: 0 }, { opacity: 1, duration: 0.6 }, T[0] + 0.2);
     A.draw(tl, cup.outline, T[0] + 0.2, 1.2);
     tl.fromTo(cup.shine, { opacity: 0 }, { opacity: 0.4, duration: 0.6 }, T[0] + 1.1);
     drawThr(tl, cup.thr, T[0] + 1.0, 0.8);
-    tl.fromTo(tLab, { opacity: 0 }, { opacity: 1, duration: 0.4 }, T[0] + 1.1);
+    A.in(tl, cupTag, T[0] + 1.3, 'pop', { dur: 0.6 });
 
     // beat 1: three pours
-    const P = [T[1] + 0.15, T[1] + 0.31 * L(1), T[1] + 0.58 * L(1)];
-    [0, 1, 2].forEach(i => {
-      pour(tl, cup, TRIG[BANDS[i].key], BANDS[i].y0, P[i]);
-      A.in(tl, chips[i], P[i] + 0.85, 'pop', { dur: 0.5 });
+    const P = [T[1] + 0.15];
+    P.push(Math.max(P[0] + 1.5, at(1, 'the garbage truck')));
+    P.push(Math.max(P[1] + 1.5, at(1, 'a skateboard')));
+    [1, 2, 3].forEach((k, i) => {
+      pour(tl, cup, LAY[k].color, LAY[k].y0, P[i]);
+      A.in(tl, chips[k - 1], P[i] + 0.85, 'pop', { dur: 0.5 });
     });
 
-    // beat 2: the jogger is the last drop, and the cup overflows
+    // beat 2: the jogger tips it over the line; the liquid flushes red with a small splash
+    const DY = 222;
     const drop = K.group(cup.svg);
-    K.path(drop, `M${CX} 256 C${CX + 9} 272 ${CX + 17} 283 ${CX + 17} 294 A17 17 0 0 1 ${CX - 17} 294 C${CX - 17} 283 ${CX - 9} 272 ${CX} 256 Z`, { fill: TRIG.jogger, stroke: 'none' });
-    svgPop(tl, drop, T[2] + 0.1, CX, 290);
-    tl.fromTo(chips[3], { opacity: 0, x: 150, y: -96, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(2)' }, T[2] + 0.2);
-    const tD = T[2] + 0.64 * L(2);
-    tl.to(drop, { y: 138, duration: 0.45, ease: 'power2.in' }, tD);
+    K.path(drop, `M${CX} ${DY - 40} C${CX + 9} ${DY - 24} ${CX + 17} ${DY - 13} ${CX + 17} ${DY - 2} A17 17 0 0 1 ${CX - 17} ${DY - 2} C${CX - 17} ${DY - 13} ${CX - 9} ${DY - 24} ${CX} ${DY - 40} Z`, { fill: TRIG.jogger, stroke: 'none' });
+    svgPop(tl, drop, T[2] + 0.1, CX, DY);
+    tl.fromTo(chips[3], { opacity: 0, x: 170, y: DY - LAY[4].cy, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(2)' }, T[2] + 0.25);
+    const tD = Math.max(T[2] + 2.4, at(2, 'so it tips', 0.6));
+    tl.to(drop, { y: LAY[3].y0 - DY - 16, duration: 0.45, ease: 'power2.in' }, tD);
     tl.to(drop, { opacity: 0, duration: 0.12 }, tD + 0.4);
-    cup.setLevel(tl, TOP - 2, tD + 0.38, 0.45, 'power2.out');
+    cup.setLevel(tl, TOPLV, tD + 0.38, 0.5, 'power2.out');
     tl.to(chips[3], { x: 0, y: 0, duration: 0.6, ease: 'power2.inOut' }, tD + 0.45);
-    // overflow: a red dome over the rim and drips down both outer walls
-    const ov = K.group(cup.svg);
-    const dome = K.path(ov, `M${cup.xl - 4} ${TOP} C${cup.xl + 70} ${TOP - 40} ${cup.xr - 70} ${TOP - 40} ${cup.xr + 4} ${TOP} Z`, { fill: TRIG.jogger, stroke: 'none' });
-    const dripL = K.path(ov, `M${cup.xl + 6} ${TOP - 8} Q${cup.xl - 14} ${TOP - 4} ${cup.xl - 13} ${TOP + 22} L${cup.wallL(TOP + 250) - 13} ${TOP + 250}`, { stroke: TRIG.jogger, 'stroke-width': 14 });
-    const dripR = K.path(ov, `M${cup.xr - 6} ${TOP - 8} Q${cup.xr + 14} ${TOP - 4} ${cup.xr + 13} ${TOP + 22} L${cup.wallR(TOP + 190) + 13} ${TOP + 190}`, { stroke: TRIG.jogger, 'stroke-width': 14 });
-    const dL = K.circle(ov, cup.wallL(TOP + 250) - 13, TOP + 262, 11, { fill: TRIG.jogger });
-    const dR = K.circle(ov, cup.wallR(TOP + 190) + 13, TOP + 202, 11, { fill: TRIG.jogger });
-    tl.fromTo(dome, { scaleY: 0, svgOrigin: `${CX} ${TOP}` }, { scaleY: 1, svgOrigin: `${CX} ${TOP}`, duration: 0.4, ease: 'back.out(2)' }, tD + 0.8);
-    A.draw(tl, [dripL, dripR], tD + 0.95, 0.9, { stagger: 0.12 });
-    tl.fromTo([dL, dR], { opacity: 0 }, { opacity: 1, duration: 0.2, stagger: 0.12 }, tD + 1.75);
-    const note = box(W, 'c8-note', 'The last drop overflows', 1290, 470);
-    A.in(tl, note, tD + 0.95, 'fadeLeft', { dur: 0.7 });
+    tl.to(flush, { opacity: 0.92, duration: 0.5, ease: 'power2.out' }, tD + 0.75);
+    const SPL = [[-74, -44, 9], [-30, -68, 7], [26, -62, 8], [72, -40, 7]];
+    SPL.forEach(([dx, dy, r], i) => {
+      const c = K.circle(cup.svg, CX + dx * 0.4, TOPLV + 4, r, { fill: TRIG.jogger, opacity: 0 });
+      const ts = tD + 0.8 + i * 0.03;
+      tl.fromTo(c, { opacity: 0, x: 0, y: 0 }, { opacity: 1, x: dx * 0.6, y: dy, duration: 0.32, ease: 'power2.out' }, ts);
+      tl.to(c, { opacity: 0, x: dx, y: dy + 34, duration: 0.34, ease: 'power2.in' }, ts + 0.32);
+    });
+    const note = box(W, 'c8-note', 'One drop too many', 1250, 354);
+    A.in(tl, note, tD + 0.9, 'fadeLeft', { dur: 0.7 });
 
-    // beat 3: it was everything before: trigger stacking
-    const bx = 650;
-    const brace = K.path(cup.svg, `M${bx + 26} ${TOP} Q${bx} ${TOP} ${bx} ${TOP + 30} L${bx} ${588} Q${bx} ${615} ${bx - 26} ${615} Q${bx} ${615} ${bx} ${642} L${bx} ${870} Q${bx} ${900} ${bx + 26} ${900}`, { stroke: C.greenDark, 'stroke-width': 7 });
-    const stack = box(W, 'c8-big', 'Trigger<br>stacking', 360, 556, 240, null, { textAlign: 'right' });
-    A.draw(tl, brace, T[3] + 0.1, 0.9);
-    A.in(tl, stack, T[3] + 0.5, 'fadeRight', { dur: 0.7 });
-    A.pulse(tl, chips, T[3] + 1.2, { scale: 1.08 });
+    // beat 3: it was the whole cup, including what you can't see: trigger stacking
+    tl.to(note, { opacity: 0, duration: 0.4 }, T[3] + 0.1);
+    tl.to(flush, { opacity: 0, duration: 0.8, ease: 'power2.inOut' }, T[3] + 0.2);
+    const tB = Math.max(T[3] + 1.4, at(3, 'poor sleep', 0.8));
+    const LYB = 875, wx = cup.wallR(LYB) + 16;
+    const leader = K.line(cup.svg, wx, LYB, 1236, LYB, { stroke: '#9a9e94', 'stroke-width': 4, 'stroke-dasharray': '2 9', 'stroke-linecap': 'round' });
+    const baseChip = box(W, 'c8-chip', null, 1250, LYB - 25);
+    baseChip.appendChild(ico('eye-off', 32, { stroke: 2.4, color: C.muted }));
+    baseChip.appendChild(K.el('span', null, 'Poor sleep, sore hip'));
+    tl.to(glow, { opacity: 0.6, duration: 0.35, ease: 'sine.out' }, tB);
+    tl.to(glow, { opacity: 0.15, duration: 0.35, ease: 'sine.inOut' }, tB + 0.35);
+    tl.to(glow, { opacity: 0.6, duration: 0.35, ease: 'sine.inOut' }, tB + 0.7);
+    tl.to(glow, { opacity: 0.3, duration: 0.5, ease: 'sine.inOut' }, tB + 1.05);
+    A.draw(tl, leader, tB + 0.2, 0.5);
+    A.in(tl, baseChip, tB + 0.45, 'fadeLeft', { dur: 0.6 });
+    const bx = 650, bm = (TOPLV + BOT) / 2;
+    const brace = K.path(cup.svg, `M${bx + 26} ${TOPLV} Q${bx} ${TOPLV} ${bx} ${TOPLV + 30} L${bx} ${bm - 27} Q${bx} ${bm} ${bx - 26} ${bm} Q${bx} ${bm} ${bx} ${bm + 27} L${bx} ${BOT - 30} Q${bx} ${BOT} ${bx + 26} ${BOT}`, { stroke: C.greenDark, 'stroke-width': 7 });
+    const stack = box(W, 'c8-big', 'Trigger<br>stacking', 360, bm - 58, 240, null, { textAlign: 'right' });
+    const tS = Math.max(tB + 1.6, at(3, "that's trigger"));
+    A.draw(tl, brace, tS, 0.9);
+    A.in(tl, stack, tS + 0.4, 'fadeRight', { dur: 0.7 });
+    A.pulse(tl, chips, tS + 1.1, { scale: 1.08 });
 
-    // ---- beat 4: the cup slides away, one day as a chart
-    tl.to(W, { x: -320, opacity: 0, duration: 0.6, ease: 'power2.in' }, T[4] - 0.2);
+    // ---- beat 4: the cup slides left and shrinks into a gauge; one day of stress draws beside it
+    const TH = 0.78;
+    const DAY = [[0.2, 0.28, 'bell', '#6f8f2a'], [0.4, 0.30, 'truck', '#8f7d16'], [0.6, 0.30, 'skateboard', C.amberText], [0.8, 0.32, 'footprints', C.red]];
+    const fDay = t => 0.1 + DAY.reduce((s, [t0, a]) => s + spike(t, t0, a, 0.5, 0.05), 0);
+    const fCalm = t => 0.1 + spike(t, 0.8, 0.32, 0.5, 0.05);
+    const ch = chart(stage, { x0: 380, W: 1400, yb: 820, yt: 330 });
+    const { X, Y, svg, dataG } = ch;
+    const KS = 0.4, CXM = 222, thrY = Y(TH);
+    const lvY = v => BOT - Math.min(v / TH, 1.25) * (BOT - THR);   // chart value -> cup level, threshold to threshold
+    const gauge = v => {
+      cup.levelNow(lvY(v));
+      flush2.style.opacity = String(Math.max(0, Math.min(1, (v - TH) / 0.03)) * 0.92);
+    };
+
+    const t4 = T[4] - 0.25;
+    tl.to([...chips, cupTag, baseChip, leader, brace, stack], { opacity: 0, duration: 0.4, ease: 'power2.in' }, t4);
+    tl.to(glow, { opacity: 0, duration: 0.4 }, t4);
+    tl.to(W, { x: CXM - CX, y: thrY - THR, scale: KS, transformOrigin: `${CX}px ${THR}px`, duration: 1.0, ease: 'power3.inOut' }, t4 + 0.1);
+    // keep the mini cup's line the same stroke and dash as every other threshold line once it is scaled down
+    tl.to(cup.thr, { attr: { 'stroke-width': 5 / KS, 'stroke-dasharray': `${12 / KS} ${16 / KS}` }, duration: 1.0, ease: 'power3.inOut' }, t4 + 0.1);
+    tl.to(cup.thr._halo, { attr: { 'stroke-width': 10 / KS }, duration: 1.0, ease: 'power3.inOut' }, t4 + 0.1);
+    cup.setLevel(tl, lvY(fDay(0)), t4 + 0.15, 0.9);
     swapTitle(tl, H, 0, 1, T[4]);
 
-    const TH = 0.78;
-    const DAY = [[0.18, 0.28], [0.40, 0.30], [0.61, 0.30], [0.82, 0.32]];
-    const fDay = t => 0.1 + DAY.reduce((s, [t0, a]) => s + spike(t, t0, a, 0.5, 0.05), 0);
-    const fCalm = t => 0.1 + spike(t, 0.82, 0.32, 0.5, 0.05);
-    const ch = chart(stage, { x0: 230, W: 1480, yb: 810, yt: 320 });
-    const { X, Y, svg, dataG } = ch;
-    const over = clipAbove(ch, 'c8over3', Y(TH));
+    const over = clipAbove(ch, 'c8over3', thrY);
     const area = K.path(dataG, overArea(fDay, 0.78, 1, TH, X, Y), { fill: C.red, opacity: 0, stroke: 'none' });
-    const thr = thrLine(dataG, ch.x0, ch.x0 + ch.W, Y(TH), { 'vector-effect': 'non-scaling-stroke' });
-    const thrLab = K.svgText(svg, ch.x0 + 18, Y(TH) - 16, 'Threshold', { 'font-size': 30, 'font-weight': 700, fill: C.red });
+    const cupEdge = CXM + (cup.xr + 40 - CX) * KS;          // right end of the mini cup's own threshold line
+    const thr = thrLine(svg, cupEdge, ch.x0 + ch.W, thrY);
+    const thrPill = thrTag(ch.wrap, ch.x0 + 140, thrY);
     const labStyle = { 'font-size': 28, 'font-weight': 700, fill: C.inkSoft };
     const morning = K.svgText(svg, ch.x0, ch.yb + 58, 'Morning', labStyle);
     const evening = K.svgText(svg, ch.x0 + ch.W, ch.yb + 58, 'Evening', Object.assign({ 'text-anchor': 'end' }, labStyle));
-    const ICOL = ['#6f8f2a', '#8f7d16', C.amberText, C.red];
-    const evIcons = [['bell', 0], ['truck', 1], ['skateboard', 2], ['footprints', 3]].map(([n, i]) => {
-      const g = K.group(svg), inner = K.group(g), x = X(DAY[i][0]), y = ch.yb + 48;
-      K.circle(inner, x, y, 30, { fill: '#fff', stroke: '#e0e4da', 'stroke-width': 2 });
-      svgIcon(inner, n, x, y, 34, { stroke: ICOL[i] });
-      return { g, inner, x, y, t: DAY[i][0] };
-    });
+    const evIcons = DAY.map(([t0, , n, col]) => Object.assign(evIcon(svg, n, X(t0), ch.yb + 48, col), { t: t0 }));
 
     drawAxes(tl, ch, T[4] + 0.3);
     tl.fromTo([morning, evening], { opacity: 0 }, { opacity: 1, duration: 0.5 }, T[4] + 0.7);
-    const D1 = 3.2, S1 = T[4] + 0.9, CUT = 0.78;
-    liveLine(tl, dataG, fDay, X, Y, 0, CUT, S1, D1, {}, over);
+    const D1 = 3.2, S1 = T[4] + 0.9, CUT = 0.76;
+    liveLine(tl, dataG, fDay, X, Y, 0, CUT, S1, D1, {}, over, gauge);
     evIcons.slice(0, 3).forEach(e => svgPop(tl, e.inner, S1 + (e.t / CUT) * D1 - 0.1, e.x, e.y, 0.5));
 
-    // beat 5: the threshold, the jogger tips it over, and a calm day for comparison
+    // beat 5: the cup's threshold runs on across the chart, the jogger tips it over, and a calm day for comparison
     swapTitle(tl, H, 1, 2, T[5]);
     drawThr(tl, thr, T[5] + 0.1, 0.9);
-    tl.fromTo(thrLab, { opacity: 0 }, { opacity: 1, duration: 0.5 }, T[5] + 0.5);
-    const S2 = T[5] + 1.0, D2 = 1.1;
-    liveLine(tl, dataG, fDay, X, Y, CUT, 1, S2, D2, {}, over);
-    svgPop(tl, evIcons[3].inner, S2 + ((0.82 - CUT) / (1 - CUT)) * D2 - 0.1, evIcons[3].x, evIcons[3].y, 0.5);
+    A.in(tl, thrPill, T[5] + 0.6, 'pop', { dur: 0.6 });
+    const S2 = T[5] + 1.1, D2 = 1.2;
+    liveLine(tl, dataG, fDay, X, Y, CUT, 1, S2, D2, {}, over, gauge);
+    svgPop(tl, evIcons[3].inner, S2 + ((0.8 - CUT) / (1 - CUT)) * D2 - 0.1, evIcons[3].x, evIcons[3].y, 0.5);
     tl.to(area, { opacity: 0.22, duration: 0.6 }, S2 + D2);
-    const tG = T[5] + 0.5 * L(5);
+    const tG = Math.max(S2 + D2 + 0.4, at(5, 'from outside'));
     const ghost = liveLine(tl, dataG, fCalm, X, Y, 0.72, 1, tG, 1.2, { stroke: '#a3a79e', 'stroke-width': 6, opacity: 0.8 });
     dataG.insertBefore(ghost[0], dataG.firstChild);
-    const calm = K.svgText(svg, X(0.875), 728, 'Calm day', { 'font-size': 28, 'font-weight': 700, fill: '#8d9188' });
+    const calmX = X(0.845);
+    const calm = K.svgText(svg, calmX, 738, 'Calm day', { 'font-size': 28, 'font-weight': 700, fill: '#8d9188' });
     tl.fromTo(calm, { opacity: 0 }, { opacity: 1, duration: 0.5 }, tG + 0.9);
 
     // beat 6: make room, then the "all at once" inset
-    const NW = 1000, k = NW / ch.W;
+    const NW = 880, k = NW / ch.W;
     swapTitle(tl, H, 2, 3, T[6]);
     const t6 = T[6] - 0.1;
     tl.to(dataG, { scaleX: k, svgOrigin: `${ch.x0} 0`, duration: 0.9, ease: 'power3.inOut' }, t6);
+    tl.to(thr, { attr: { x2: ch.x0 + NW }, duration: 0.9, ease: 'power3.inOut' }, t6);
     tl.to(evening, { x: -(ch.W - NW), duration: 0.9, ease: 'power3.inOut' }, t6);
-    tl.to(calm, { x: -(X(0.875) - ch.x0) * (1 - k), duration: 0.9, ease: 'power3.inOut' }, t6);
+    tl.to(calm, { x: -(calmX - ch.x0) * (1 - k), duration: 0.9, ease: 'power3.inOut' }, t6);
     evIcons.forEach(e => tl.to(e.g, { x: -(e.x - ch.x0) * (1 - k), duration: 0.9, ease: 'power3.inOut' }, t6));
 
-    const IX = 1310, IY = 300, IW = 500, IH = 500;
+    const IX = 1310, IY = 300, IW = 500, IH = 520;
     const inset = box(stage, 'c8-inset', null, IX, IY, IW, IH);
     inset.appendChild(K.el('div', 'ttl', 'All at once'));
     const isvg = K.svg(inset, { x: 0, y: 0, w: IW, h: IH });
     const idefs = K.svgEl('defs', {}, isvg);
-    const ix0 = 50, iW = 410, iyb = 440, iyt = 190, ITH = 0.58;
+    const ix0 = 50, iW = 410, iyb = 460, iyt = 200, ITH = 0.58;
     const iX = t => ix0 + t * iW, iY = v => iyb - v * (iyb - iyt);
     const icp = K.svgEl('clipPath', { id: 'c8over3i' }, idefs);
     K.svgEl('rect', { x: 0, y: 0, width: IW, height: iY(ITH) }, icp);
     ['dog', 'skateboard', 'megaphone'].forEach((n, i) => {
-      const cx = 64 + i * 78;
-      K.circle(isvg, cx, 124, 30, { fill: C.redPale, stroke: 'none' });
-      svgIcon(isvg, n, cx, 124, 34, { stroke: C.red });
+      const cx = 66 + i * 80;
+      K.circle(isvg, cx, 128, 31, { fill: C.redPale, stroke: 'none' });
+      svgIcon(isvg, n, cx, 128, 36, { stroke: C.red });
     });
     K.line(isvg, ix0, iyb, ix0 + iW, iyb, { stroke: C.axis, 'stroke-width': 4 });
     K.line(isvg, ix0, iyb, ix0, iyt - 10, { stroke: C.axis, 'stroke-width': 4 });
-    thrLine(isvg, ix0, ix0 + iW, iY(ITH), { 'stroke-width': 4, 'stroke-dasharray': '9 12' });
+    thrLine(isvg, ix0, ix0 + iW, iY(ITH));
     const fBurst = t => 0.1 + [0.32, 0.38, 0.44].reduce((s, t0) => s + spike(t, t0, 0.24, 0.4, 0.15, 0.02), 0);
     tl.fromTo(inset, { opacity: 0, scale: 0.85, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.7, ease: 'back.out(1.6)' }, T[6] + 0.45);
     liveLine(tl, isvg, fBurst, iX, iY, 0, 1, T[6] + 1.1, 1.3, { 'stroke-width': 6 }, 'c8over3i');
   });
 
   // =================================================================== ch08s04  Up fast, down slow
-  registerScene('ch08s04', ({ stage, tl, cue, end }) => {
+  registerScene('ch08s04', ctx => {
+    const { stage, tl, cue, end } = ctx;
     style(stage);
     const T = [0, 1, 2, 3].map(i => cue(i));
     const L = i => Math.max(1, end(i) - cue(i));
+    const at = sayAt(ctx);
     const H = headline(stage, ['Up fast, down slow', 'Yesterday is still in the cup']);
     wipeIn(tl, H.titles[0], T[0]);
     barIn(tl, H.bar, T[0] + 0.5);
@@ -694,16 +834,16 @@
     K.circle(clockG, 1592, CY, 5, { fill: C.greenDark });
 
     A.in(tl, card, T[1] + 0.05, 'fadeUp', { dur: 0.6 });
-    tl.fromTo(card, { width: 200 }, { width: 640, duration: 0.7, ease: 'power3.inOut' }, T[1] + 0.5 * L(1) - 0.6);
+    const tH = Math.max(T[1] + 2.0, at(1, 'but your heart'));
+    tl.fromTo(card, { width: 200 }, { width: 640, duration: 0.7, ease: 'power3.inOut' }, tH - 0.6);
     svgPop(tl, alertG, T[1] + 0.3, 1152, CY);
     tl.to(alertG, { opacity: 0.35, duration: 0.16, yoyo: true, repeat: 5, ease: 'sine.inOut' }, T[1] + 0.9);
-    const tH = T[1] + 0.5 * L(1);
     tl.fromTo(chev, { opacity: 0 }, { opacity: 1, duration: 0.4 }, tH - 0.2);
     svgPop(tl, heartG, tH, 1392, CY);
     svgPop(tl, clockG, tH + 0.2, 1592, CY);
     const tStop = T[3] - 0.2;
-    const beats = Math.max(1, Math.floor((tStop - (tH + 0.7)) / 0.8));
-    tl.to(heartG, { scale: 1.12, svgOrigin: `1392 ${CY}`, duration: 0.2, ease: 'power2.out', yoyo: true, repeat: beats * 2 - 1, repeatDelay: 0.2 }, tH + 0.7);
+    const nBeats = Math.max(1, Math.floor((tStop - (tH + 0.7)) / 0.8));
+    tl.to(heartG, { scale: 1.12, svgOrigin: `1392 ${CY}`, duration: 0.2, ease: 'power2.out', yoyo: true, repeat: nBeats * 2 - 1, repeatDelay: 0.2 }, tH + 0.7);
     tl.fromTo(hand, { rotation: 0, svgOrigin: `1592 ${CY}` }, { rotation: 360 * Math.max(1, Math.round((tStop - tH) / 2.2)), svgOrigin: `1592 ${CY}`, duration: tStop - tH - 0.4, ease: 'none' }, tH + 0.4);
 
     // ---- beat 2: adrenaline fast, full recovery slow
@@ -718,138 +858,157 @@
     slow.appendChild(K.el('span', null, '<b>Full recovery:</b> hours, sometimes days'));
     A.draw(tl, hiRise, T[2] + 0.1, 0.5);
     A.in(tl, fast, T[2] + 0.3, 'pop', { dur: 0.6 });
-    const tS = T[2] + 0.34 * L(2);
+    const tS = Math.max(T[2] + 1.6, at(2, 'but cortisol'));
     A.draw(tl, hiTail, tS, 1.6, { ease: 'power1.inOut' });
-    A.in(tl, slow, tS + 0.5, 'fadeLeft', { dur: 0.7 });
+    A.in(tl, slow, Math.max(tS + 0.5, at(2, 'a big scare')), 'fadeLeft', { dur: 0.7 });
 
-    // ---- beat 3: two days, yesterday's leftovers raise today
+    // ---- beat 3: Wednesday's vet visit is still in the cup on Thursday
     const oneDay = [ch.wrap, card, csvg, fastRow, slow];
     tl.to(oneDay, { opacity: 0, duration: 0.45, ease: 'power2.in' }, T[3] - 0.25);
     swapTitle(tl, H, 0, 1, T[3]);
 
-    const TH = 0.75;
-    const f2 = t => 0.12 + spike(t, 0.14, 0.78, 0, 0.28, 0.03) + spike(t, 0.64, 0.56, 0.35, 0.07, 0.025);
+    const TH = 0.72, MID = 0.5, TJ = 0.66;
+    const f2 = t => 0.12 + spike(t, 0.1, 0.56, 0.3, 0.2, 0.03) + spike(t, TJ, 0.5, 0.35, 0.07, 0.025);
     const c2 = chart(stage, { x0: 230, W: 1480, yb: 810, yt: 320 });
     const over = clipAbove(c2, 'c8over4', c2.Y(TH));
     const base = K.line(c2.dataG, c2.x0, c2.Y(0.12), c2.x0 + c2.W, c2.Y(0.12), { stroke: '#b3b8ac', 'stroke-width': 3, 'stroke-dasharray': '2 10', 'stroke-linecap': 'round' });
-    const div = K.line(c2.svg, c2.X(0.5), c2.yt + 40, c2.X(0.5), c2.yb, { stroke: '#b3b8ac', 'stroke-width': 3, 'stroke-dasharray': '2 10', 'stroke-linecap': 'round' });
+    const div = K.line(c2.svg, c2.X(MID), c2.yt + 40, c2.X(MID), c2.yb, { stroke: '#b3b8ac', 'stroke-width': 3, 'stroke-dasharray': '2 10', 'stroke-linecap': 'round' });
     const moon = K.group(c2.svg);
-    K.circle(moon, c2.X(0.5), c2.yt + 6, 30, { fill: '#fff', stroke: '#e0e4da', 'stroke-width': 2 });
-    svgIcon(moon, 'moon', c2.X(0.5), c2.yt + 6, 32, { stroke: C.inkSoft });
+    K.circle(moon, c2.X(MID), c2.yt + 6, 30, { fill: '#fff', stroke: '#e0e4da', 'stroke-width': 2 });
+    svgIcon(moon, 'moon', c2.X(MID), c2.yt + 6, 32, { stroke: C.inkSoft });
     const thr = thrLine(c2.dataG, c2.x0, c2.x0 + c2.W, c2.Y(TH));
-    const thrLab = K.svgText(c2.svg, c2.x0 + c2.W, c2.Y(TH) - 16, 'Threshold', { 'text-anchor': 'end', 'font-size': 30, 'font-weight': 700, fill: C.red });
-    const ls = { 'text-anchor': 'middle', 'font-size': 30, 'font-weight': 700, fill: C.inkSoft };
-    const yest = K.svgText(c2.svg, c2.X(0.25), c2.yb + 60, 'Yesterday', ls);
-    const today = K.svgText(c2.svg, c2.X(0.75), c2.yb + 60, 'Today', ls);
-    const area = K.path(c2.dataG, overArea(f2, 0, 1, TH, c2.X, c2.Y), { fill: C.red, opacity: 0, stroke: 'none' });
+    const thrPill = thrTag(c2.wrap, c2.x0 + c2.W - 110, c2.Y(TH));
+    const area = K.path(c2.dataG, overArea(f2, MID, 1, TH, c2.X, c2.Y), { fill: C.red, opacity: 0, stroke: 'none' });
+    const vetChip = centred(c2.wrap, chip('stethoscope', 'Wednesday: vet', C.amberText), c2.X(0.1) + 30, c2.yb + 26, 500);
+    const jogChip = centred(c2.wrap, chip('footprints', 'Thursday: jogger', C.red), c2.X(TJ) + 30, c2.yb + 26, 500);
 
+    // step 1 (first sentence): Wednesday's spike leaves a tail that stays raised overnight
     const t3 = T[3];
     drawAxes(tl, c2, t3 + 0.15);
-    tl.fromTo([yest, today, div, moon, base], { opacity: 0 }, { opacity: 1, duration: 0.5, stagger: 0.06 }, t3 + 0.35);
+    tl.fromTo([div, moon, base], { opacity: 0 }, { opacity: 1, duration: 0.5, stagger: 0.06 }, t3 + 0.35);
     drawThr(tl, thr, t3 + 0.3, 0.8);
-    tl.fromTo(thrLab, { opacity: 0 }, { opacity: 1, duration: 0.4 }, t3 + 0.8);
-    const LS = t3 + 0.45, LD = 2.0;
-    liveLine(tl, c2.dataG, f2, c2.X, c2.Y, 0, 1, LS, LD, {}, over);
-    tl.to(area, { opacity: 0.22, duration: 0.5 }, LS + LD);
+    A.in(tl, thrPill, t3 + 0.7, 'pop', { dur: 0.5 });
+    const LS = t3 + 0.55, LD = 2.4;
+    liveLine(tl, c2.dataG, f2, c2.X, c2.Y, 0, MID, LS, LD, {}, over);
+    A.in(tl, vetChip, LS + (0.1 / MID) * LD - 0.2, 'fadeUp', { dur: 0.6 });
 
-    // a little cup rides the line from yesterday into today
+    // a little cup rides the line: half full at the end of Wednesday, carried into Thursday morning
     const rider = K.group(c2.svg);
     const rIn = K.group(rider);
     K.circle(rIn, 0, 0, 36, { fill: '#fff', stroke: '#dfe3d8', 'stroke-width': 3 });
     const mc = 'M-15 -17 L-11 14 Q-10.5 17 -7 17 L7 17 Q10.5 17 11 14 L15 -17';
     const mcp = K.svgEl('clipPath', { id: 'c8mini' }, c2.defs);
     K.svgEl('path', { d: mc + 'Z' }, mcp);
-    K.rect(rIn, -18, -2, 36, 22, { fill: C.amber, 'clip-path': 'url(#c8mini)' });
+    K.rect(rIn, -18, 0, 36, 22, { fill: C.amber, 'clip-path': 'url(#c8mini)' });
     K.path(rIn, mc, { stroke: C.cup, 'stroke-width': 3.5, fill: 'none' });
-    const st = { t: 0.34 };
-    const place = () => rider.setAttribute('transform', `translate(${c2.X(st.t).toFixed(1)} ${c2.Y(f2(st.t)).toFixed(1)})`);
+    const R0 = 0.46, R1 = 0.63;
+    const st = { t: R0 };
+    const place = () => rider.setAttribute('transform', `translate(${c2.X(st.t).toFixed(1)} ${(c2.Y(f2(st.t)) - 44).toFixed(1)})`);
     place();
-    const RS = LS + LD * 0.4;
-    tl.fromTo(rIn, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, transformOrigin: '50% 50%', duration: 0.45, ease: 'back.out(2)' }, RS);
-    tl.fromTo(st, { t: 0.34 }, { t: 0.62, duration: 2.3, ease: 'power1.inOut', onUpdate: place }, RS + 0.3);
+    tl.fromTo(rIn, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, transformOrigin: '50% 50%', duration: 0.45, ease: 'back.out(2)' }, LS + LD + 0.1);
+
+    // step 2 (second sentence): Thursday starts half full and the jogger tips it over
+    const tB = Math.max(LS + LD + 0.8, at(3, 'thursday starts', 0.5));
+    const LD2 = 2.2;
+    liveLine(tl, c2.dataG, f2, c2.X, c2.Y, MID, 1, tB, LD2, {}, over);
+    tl.fromTo(st, { t: R0 }, { t: R1, duration: 1.0, ease: 'power1.inOut', onUpdate: place }, tB + 0.15);
+    A.in(tl, jogChip, tB + ((TJ - MID) / (1 - MID)) * LD2 - 0.2, 'fadeUp', { dur: 0.6 });
+    tl.to(area, { opacity: 0.22, duration: 0.5 }, tB + LD2 - 0.3);
   });
 
   // =================================================================== ch08s05  Empty the cup
-  registerScene('ch08s05', ({ stage, tl, cue, end }) => {
+  registerScene('ch08s05', ctx => {
+    const { stage, tl, cue, end } = ctx;
     style(stage);
     const T = [0, 1, 2, 3].map(i => cue(i));
-    const L = i => Math.max(1, end(i) - cue(i));
+    const at = sayAt(ctx);
     const h = K.heading(stage, 'Plan decompression days', { x: 100, y: 120, size: 80 });
     h.title.style.whiteSpace = 'nowrap';
     wipeIn(tl, h.title, T[0]);
     barIn(tl, h.bar, T[0] + 0.5);
 
-    // ---- the cup comes back nearly full
-    const CX = 360, TOP = 330, HGT = 540, THR = 390, SHIFT = 600;
+    // ---- the cup comes back nearly full (same build as s03: base layer, threshold well below the rim)
+    const CX = 360, TOP = 320, HGT = 570, THR = 480, SHIFT = 600;
     const cup = makeCup(stage, {
-      cx: CX, top: TOP, h: HGT, wTop: 420, wBot: 320, thr: THR, level: 402,
+      cx: CX, top: TOP, h: HGT, wTop: 420, wBot: 320, thr: THR, level: 500,
       bands: [
-        { y0: 740, y1: 900, color: TRIG.doorbell }, { y0: 610, y1: 740, color: TRIG.truck },
-        { y0: 480, y1: 610, color: TRIG.skate }, { y0: 300, y1: 480, color: TRIG.jogger },
+        { y0: 840, y1: 890, color: BASE }, { y0: 740, y1: 840, color: TRIG.doorbell }, { y0: 640, y1: 740, color: TRIG.truck },
+        { y0: 560, y1: 640, color: TRIG.skate }, { y0: 400, y1: 560, color: TRIG.jogger },
       ],
     });
     const W = cup.wrap;
-    const tLab = K.svgText(cup.svg, cup.xr + 48, THR + 11, 'Threshold', { 'font-size': 30, 'font-weight': 700, fill: C.red });
+    const tLab = thrTag(W, cup.xr + 124, THR);
     gsap.set(W, { x: SHIFT });
     tl.fromTo(cup.body, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, T[0] + 0.2);
     drawThr(tl, cup.thr, T[0] + 0.7, 0.7);
-    tl.fromTo(tLab, { opacity: 0 }, { opacity: 1, duration: 0.5 }, T[0] + 1.1);
+    A.in(tl, tLab, T[0] + 1.1, 'pop', { dur: 0.5 });
 
-    // ---- beat 0: decompression drains it
-    const ITEMS = [['footprints', 'Sniffing'], ['bone', 'Chewing'], ['house', 'Quiet time'], ['moon', 'Rest']];
+    // ---- beat 0: decompression drains it, hottest stress first
+    const ITEMS = [['footprints', 'Sniffing games'], ['bone', 'Chewing'], ['puzzle', 'Food puzzle'], ['moon', 'Rest']];
     const items = ITEMS.map(([n, s], i) => {
-      const it = box(stage, 'c8-item', null, 836 + (i % 2) * 500, 282 + Math.floor(i / 2) * 132, 480, 112);
+      const it = box(stage, 'c8-item', null, 836 + (i % 2) * 500, 280 + Math.floor(i / 2) * 124, 480, 106);
       const b = K.el('div', 'b');
       b.appendChild(ico(n, null, { stroke: 2.2 }));
       it.appendChild(b);
       it.appendChild(K.el('span', null, s));
       return it;
     });
-    const tI = [0.5, 0.7, 0.8, 0.9].map(f => T[0] + f * L(0));
+    const skip = box(stage, 'c8-lbl green', null, 836, 530);
+    skip.appendChild(ico('circle-check', null, { stroke: 2.4 }));
+    skip.appendChild(K.el('span', null, 'Skipping a walk is okay'));
+    const tI = [at(0, 'sniffing games'), at(0, 'chews'), at(0, 'food puzzles'), at(0, 'naps')];
+    for (let i = 1; i < 4; i++) tI[i] = Math.max(tI[i], tI[i - 1] + 0.5);
     tl.to(W, { x: 0, duration: 0.9, ease: 'power3.inOut' }, tI[0] - 0.9);
-    const LEV = [470, 530, 580, 625];
+    const LEV = [580, 650, 710, 752];
     items.forEach((it, i) => {
       A.in(tl, it, tI[i], 'fadeLeft', { dur: 0.6 });
       cup.setLevel(tl, LEV[i], tI[i] + 0.15, 0.8);
     });
+    A.in(tl, skip, Math.max(tI[3] + 0.8, at(0, 'and yes')), 'fadeUp', { dur: 0.6 });
 
-    // ---- beat 1: a week strip, hard days spaced apart
-    const X0 = 836, CG = 12, CWD = (980 - 6 * CG) / 7, CY = 668, CH = 206;
+    // ---- beat 1: a week strip; grooming Saturday, the street fair moves off Sunday
+    const X0 = 836, CG = 12, CWD = (980 - 6 * CG) / 7, CY = 690, CH = 196;
     const cx = i => X0 + i * (CWD + CG);
-    const calLab = box(stage, 'c8-big', 'Space out the hard days', 836, 578, null, null, { fontSize: '44px' });
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d, i) => box(stage, 'c8-day', d, cx(i), CY, CWD, CH));
+    const calLab = box(stage, 'c8-big', 'Space out the hard days', 836, 620, null, null, { fontSize: '44px' });
+    const days = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed'].map((d, i) => box(stage, 'c8-day' + (i === 2 || i === 3 ? ' wknd' : ''), d, cx(i), CY, CWD, CH));
     const blk = (i, cls, icon, text) => {
-      const b = box(stage, 'c8-blk ' + cls, null, cx(i) + 8, CY + 56, CWD - 16, CH - 66);
+      const b = box(stage, 'c8-blk ' + cls, null, cx(i) + 8, CY + 54, CWD - 16, CH - 64);
       b.appendChild(ico(icon, null, { stroke: 2.2 }));
       b.appendChild(K.el('span', null, text));
       return b;
     };
-    const hard1 = blk(1, 'hard', 'stethoscope', 'Hard<br>day');
-    const hard2 = blk(2, 'hard', 'ferris-wheel', 'Hard<br>day');
-    const rest = blk(2, 'rest', 'bed', 'Rest<br>day');
+    const groom = blk(2, 'hard', 'scissors', 'Hard<br>day');
+    const fair = blk(3, 'hard', 'ferris-wheel', 'Hard<br>day');
+    const rest = blk(3, 'rest', 'bed', 'Rest<br>day');
     A.in(tl, calLab, T[1] + 0.05, 'fadeUp', { dur: 0.6 });
     A.in(tl, days, T[1] + 0.2, 'fadeUp', { dur: 0.6, stagger: 0.06 });
-    A.in(tl, [hard1, hard2], T[1] + 0.8, 'pop', { dur: 0.55, stagger: 0.15 });
-    const tSep = T[1] + 0.52 * L(1);
-    tl.to(hard2, { x: CWD + CG, duration: 0.8, ease: 'power3.inOut' }, tSep);
+    // "don't stack hard days back to back": two hard days side by side; "if Saturday is grooming": that one nudges
+    const tHard = Math.max(T[1] + 0.9, at(1, 'hard days'));
+    A.in(tl, [groom, fair], tHard, 'pop', { dur: 0.55, stagger: 0.15 });
+    A.pulse(tl, groom, Math.max(tHard + 0.9, at(1, 'grooming', 0.1)), { scale: 1.08 });
+    const tSep = Math.max(tHard + 1.8, at(1, "sunday isn't"));
+    tl.to(fair, { x: CWD + CG, duration: 0.8, ease: 'power3.inOut' }, tSep);
     A.in(tl, rest, tSep + 0.45, 'fadeDown', { dur: 0.6 });
 
     // ---- beat 2: room to learn
-    const LOW = 760;
+    const LOW = 790;
     const room = K.rect(cup.extra, cup.xl - 30, THR, 480, LOW - THR, { fill: C.green, opacity: 0 });
     const roomLab = box(W, 'c8-big', 'Room<br>to learn', CX - 200, (THR + LOW) / 2 - 58, 400, null, { textAlign: 'center', color: C.greenDeep, fontSize: '48px' });
     cup.setLevel(tl, LOW, T[2] + 0.05, 1.0);
     tl.to(room, { opacity: 0.18, duration: 0.7 }, T[2] + 0.7);
     A.in(tl, roomLab, T[2] + 0.9, 'fadeUp', { dur: 0.6 });
 
-    // ---- beat 3: everything clears but the cup and one question
+    // ---- beat 3: everything clears but the cup, one question and the Try this badge
     const t3 = T[3];
-    const clear = [h.title, h.bar, ...items, calLab, ...days, hard1, hard2, rest, cup.thr, cup.thr._halo, tLab, roomLab, room, cup.liquid];
+    const clear = [h.title, h.bar, ...items, skip, calLab, ...days, groom, fair, rest, tLab, roomLab, room, cup.liquid];
     tl.to(clear, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t3 - 0.1);
-    tl.to(W, { x: 960 - CX, y: -40, scale: 0.62, transformOrigin: `${CX}px 600px`, duration: 1.0, ease: 'power3.inOut' }, t3 + 0.2);
-    const q = box(stage, 'c8-q', '?', 760, 196, 400);
-    const fin = box(stage, 'c8-final', 'What’s in the cup today?', 160, 772, 1600);
+    tl.to(W, { x: 960 - CX, y: -60, scale: 0.55, transformOrigin: `${CX}px 605px`, duration: 1.0, ease: 'power3.inOut' }, t3 + 0.2);
+    tl.to(cup.thr, { attr: { 'stroke-width': 9, 'stroke-dasharray': '21.8 29.1' }, duration: 1.0, ease: 'power3.inOut' }, t3 + 0.2);
+    const q = box(stage, 'c8-q', '?', 760, 214, 400);
+    const ask = centred(stage, K.el('div', 'c8-ask', 'What’s in the cup today?'), 960, 740, 1400);
+    const tryB = tryBadge(ask);
     A.in(tl, q, t3 + 0.9, 'pop', { dur: 0.6 });
-    A.in(tl, fin, t3 + 1.1, 'fadeUp', { dur: 0.7 });
+    A.in(tl, ask, t3 + 1.1, 'fadeUp', { dur: 0.7 });
+    tryIn(tl, tryB, t3 + 1.6);
   });
 })();

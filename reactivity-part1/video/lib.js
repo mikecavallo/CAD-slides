@@ -448,6 +448,29 @@
   }
   window.phraseTime = phraseTime;
 
+  /**
+   * Scene time at fraction f (0..1) of the way through beat i's TEXT. With aligned narration this lands on
+   * the word actually being spoken there (pauses and pace changes included); otherwise it is linear in time.
+   */
+  function fracTime(ctx, i, f) {
+    const b = ctx.beats[i] || {};
+    const t0 = ctx.cue(i), t1 = ctx.end(i);
+    if (!(f > 0 && f < 1) || !b.words || !b.words.length) return t0 + (t1 - t0) * f;
+    const say = String(b.say || '');
+    const toks = [...say.matchAll(/[A-Za-z0-9'\u2019]+/g)];
+    if (toks.length !== b.words.length) return t0 + (t1 - t0) * f;
+    const target = f * say.length;
+    for (let k = 0; k < toks.length; k++) {
+      const s0 = toks[k].index, s1 = k + 1 < toks.length ? toks[k + 1].index : say.length;
+      if (target < s1) {
+        const w = b.words[k], nt = k + 1 < b.words.length ? b.words[k + 1].t : w.e;
+        return w.t + (nt - w.t) * Math.min(1, Math.max(0, (target - s0) / Math.max(1, s1 - s0)));
+      }
+    }
+    return t1;
+  }
+  window.fracTime = fracTime;
+
   // ---------------------------------------------------------------- chrome + boot
   function buildChrome(stage, info) {
     stage.appendChild(el('div', 'bg'));
@@ -512,6 +535,7 @@
     else {
       const build = SCENES[id];
       if (!build) throw new Error('scene not implemented: ' + id);
+      window.__ctx = ctx;
       build(ctx);
     }
     // automatic exit: everything in the scene layer fades out over the last ~0.5s

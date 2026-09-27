@@ -132,7 +132,7 @@
   const div = (parent, cls, html) => { const n = K.el('div', cls, html == null ? null : html); parent.appendChild(n); return n; };
   const iconIn = (parent, name, o) => { parent.appendChild(K.icon(name, o)); return parent; };
   /** a time a fraction f of the way through beat i's narration */
-  const fracOf = (cue, end) => (i, f) => cue(i) + (end(i) - cue(i)) * f;
+  const fracOf = (cue, end) => (i, f) => window.fracTime(window.__ctx, i, f);
   /** horizontally centred row at (cx, y) */
   function centerRow(parent, cx, y, w = 1200) {
     const r = div(parent, 'c7-crow');

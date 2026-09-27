@@ -287,9 +287,18 @@
     const big = K.heading(f, 'Behavior<br>with intent.', { size: 132, barGap: 40 });
     big.bar.style.width = '170px';
     big.bar.style.height = '12px';
+    // "not spite, just a goal": intent means a goal, never malice
+    const notSpite = K.cx(f, [{ t: 'Spite', yes: false }, { t: '*A goal*', yes: true }], { size: 40 });
+    notSpite.root.style.columnGap = '56px';
+    notSpite.root.style.marginTop = '6px';
     A.in(tl, kick, t3 + 0.45, 'fadeUp', { dur: 0.6 });
-    A.in(tl, big.title, t3 + 0.6, 'scale', { dur: 0.9 });
-    A.in(tl, big.bar, t3 + 1.05, 'grow', { dur: 0.6 });
+    // the answer lands as the narration starts defining it ("actively trying to make something happen")
+    const tBig = Math.max(t3 + 0.6, Math.min(at(3, "that's behavior", 0.3, 0.55) - 1.5, at(3, 'actively', 0.3, 0.3)));
+    A.in(tl, big.title, tBig, 'scale', { dur: 0.9 });
+    A.in(tl, big.bar, tBig + 0.45, 'grow', { dur: 0.6 });
+    const tNs = Math.max(tBig + 1.2, at(3, 'not spite', 0.3, 0.75));
+    A.in(tl, notSpite.items[0], tNs, 'fadeUp', { dur: 0.6 });
+    A.in(tl, notSpite.items[1], Math.max(tNs + 0.4, at(3, 'just a goal', 0.3, 0.85)), 'fadeUp', { dur: 0.6 });
   });
 
   // ------------------------------------------------------------------ ch01s03: The warning ladder

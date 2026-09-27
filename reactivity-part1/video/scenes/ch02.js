@@ -222,7 +222,12 @@
   /** Draw the knob in at t (dial pops, scale ticks fan in). */
   function knobIn(tl, k, t) {
     tl.fromTo(k.dial, { opacity: 0, scale: 0.7, svgOrigin: '0 0' }, { opacity: 1, scale: 1, svgOrigin: '0 0', duration: 0.8, ease: 'back.out(1.5)' }, t);
-    A.draw(tl, [k.track, k.band], t + 0.2, 0.9);
+    // keep each arc hidden until it starts drawing (a 0% round-capped stroke still shows as a dot); the red
+    // band picks up where the grey track reaches it, so it never floats on its own
+    tl.fromTo(k.track, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, t + 0.2);
+    A.draw(tl, k.track, t + 0.2, 0.9);
+    tl.fromTo(k.band, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, t + 0.8);
+    A.draw(tl, k.band, t + 0.8, 0.35, { ease: 'power1.out' });
     tl.fromTo(k.ticks, { opacity: 0 }, { opacity: 1, duration: 0.25, stagger: 0.025 }, t + 0.25);
     A.in(tl, k.labels, t + 0.8, 'fade', { dur: 0.6 });
   }
@@ -392,7 +397,7 @@
     tl.to(al.shake, { rotation: 6, svgOrigin: org, duration: 0.07, repeat: Math.min(shakes, 120) - 1, yoyo: true, ease: 'sine.inOut' }, t0 + 0.45);
     tl.fromTo(aWrap, { x: 960 - AX, y: 600 - AY, scale: 1.5 }, { x: 0, y: 0, scale: 1, duration: 0.9, ease: 'power3.inOut' }, tMove);
     tl.to(al.arcs[1], { opacity: 0, duration: 0.4, ease: 'power2.out' }, tMove); // back to low volume
-    const tKnob = tMove + 0.3;
+    const tKnob = tMove + 0.5; // the alarm has slid clear of the knob by now
     knobIn(tl, k1, tKnob);
     A.draw(tl, cable, tMove + 0.9, 0.5);
     A.in(tl, plug, tMove + 0.9, 'fade', { dur: 0.3 });
@@ -430,6 +435,11 @@
       A.draw(tl, a.head, cue(2) + 1.45 + i * 0.2, 0.35);
     });
     A.in(tl, ph, cue(2) + 1.8, 'fade', { dur: 0.6, stagger: 0.2 });
+
+    // hand-off: the hub (knob, grey arrows, placeholders) stays on screen and ch02s03 opens on the same
+    // frame, so only the heading changes instead of the whole diagram blinking out and back in
+    ctx.exit = false;
+    tl.to([...h.all, subs[2]], { opacity: 0, duration: 0.4, ease: 'power2.in' }, dur - 0.5);
   });
 
   // ================================================================== ch02s03
@@ -501,10 +511,9 @@
     qS.card.appendChild(pin);
     gsap.set(pin, { rotation: -4 });
 
-    // ---- scene open: the hub from the previous scene is already there
+    // ---- scene open: the hub from the previous scene is already there (ch02s02 hands it over without a fade)
     A.in(tl, h.title, 0.05, 'wipe', { dur: 0.8 });
     A.in(tl, h.bar, 0.4, 'grow', { dur: 0.5 });
-    A.in(tl, [grey, knob.wrap], 0, 'fade', { dur: 0.45 });
 
     const lightUp = (k, badgeEl, labelEl, t) => {
       A.draw(tl, lit[k].shaft, t, 0.6);
@@ -518,8 +527,10 @@
     const roadRage = [car, rage, ...horn];
     const releaseGroup = [lit.release.g, bRelease, lRelease];
 
-    // ---- beat 1: away (fear)
+    // ---- beat 1: away (fear); the badge startles on "they bark like their life depends on it"
     lightUp('away', bAway, lAway, cue(0));
+    const tBark = Math.max(cue(0) + 2.0, Math.min(end(0) - 1.0, phraseAt(ctx, 0, 'they bark', 0.62) - 0.1));
+    A.pulse(tl, bAway, tBark, { scale: 1.16 });
 
     // ---- beat 2: toward (frustration), the leash pulls taut
     A.dim(tl, awayGroup, cue(1) - 0.1, 0.35);
@@ -555,6 +566,11 @@
     gsap.set(spark, { opacity: 0 });
     tl.fromTo(spark, { opacity: 1, drawSVG: '0% 0%' }, { opacity: 1, drawSVG: '0% 100%', duration: 0.3, ease: 'power2.out', immediateRender: false }, cue(3) + 0.8);
     tl.to(spark, { drawSVG: '100% 100%', opacity: 0, duration: 0.4, ease: 'power2.in' }, cue(3) + 1.15);
+    // and again for the dog who "spins and screams" at the leash
+    const tSpin = Math.max(cue(3) + 3.0, Math.min(end(3) - 1.0, phraseAt(ctx, 3, 'spins and screams', 0.8) - 0.1));
+    tl.fromTo(spark, { opacity: 1, drawSVG: '0% 0%' }, { opacity: 1, drawSVG: '0% 100%', duration: 0.3, ease: 'power2.out', immediateRender: false }, tSpin);
+    tl.to(spark, { drawSVG: '100% 100%', opacity: 0, duration: 0.4, ease: 'power2.in' }, tSpin + 0.35);
+    A.pulse(tl, bRelease, tSpin, { scale: 1.14 });
 
     // ---- beat 5: one catch. Away comes back into focus; its tip flips forward (the lunge) with a caution
     // badge flashing on it, the note lands, then the tip snaps back: the goal is still distance.

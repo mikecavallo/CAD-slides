@@ -856,8 +856,10 @@
     const slow = box(stage, 'c8-lbl green', null, 1040, 566);
     slow.appendChild(ico('clock', null, { stroke: 2.4 }));
     slow.appendChild(K.el('span', null, '<b>Full recovery:</b> hours, sometimes days'));
-    A.draw(tl, hiRise, T[2] + 0.1, 0.5);
-    A.in(tl, fast, T[2] + 0.3, 'pop', { dur: 0.6 });
+    // the rise lights up on "adrenaline hits in seconds", not on "same for your dog"
+    const tA = Math.min(T[2] + 2.5, Math.max(T[2] + 0.1, at(2, 'adrenaline')));
+    A.draw(tl, hiRise, tA, 0.5);
+    A.in(tl, fast, tA + 0.2, 'pop', { dur: 0.6 });
     const tS = Math.max(T[2] + 1.6, at(2, 'but cortisol'));
     A.draw(tl, hiTail, tS, 1.6, { ease: 'power1.inOut' });
     A.in(tl, slow, Math.max(tS + 0.5, at(2, 'a big scare')), 'fadeLeft', { dur: 0.7 });
@@ -890,7 +892,8 @@
     A.in(tl, thrPill, t3 + 0.7, 'pop', { dur: 0.5 });
     const LS = t3 + 0.55, LD = 2.4;
     liveLine(tl, c2.dataG, f2, c2.X, c2.Y, 0, MID, LS, LD, {}, over);
-    A.in(tl, vetChip, LS + (0.1 / MID) * LD - 0.2, 'fadeUp', { dur: 0.6 });
+    // the spike reads as "yesterday's scare" first; its label lands on "if Wednesday was a vet visit"
+    A.in(tl, vetChip, Math.max(LS + (0.1 / MID) * LD - 0.2, at(3, 'if wednesday')), 'fadeUp', { dur: 0.6 });
 
     // a little cup rides the line: half full at the end of Wednesday, carried into Thursday morning
     const rider = K.group(c2.svg);

@@ -313,12 +313,15 @@
     stage.appendChild(q2);
     A.in(tl, q2, Math.max(cue(0) + 2.2, phraseAt(ctx, 0, 'what did i do wrong', 0.75) - 0.3), 'fadeUp', { dur: 0.8 });
 
-    // beat 1: it's a recipe. The bowl rises with seven empty chips hovering over it
-    A.out(tl, [q, q2], cue(1) - 0.25, 'fadeUp', { dur: 0.45, stagger: 0.08 });
+    // beat 1: "usually a mix" answers the questions; on "it's a recipe" the questions give way to the bowl,
+    // and on "seven common ingredients" seven empty chips pop up over it
+    const tBowl = Math.min(dur - 3.5, Math.max(cue(1) + 1.5, phraseAt(ctx, 1, 'a recipe', 0.75) - 0.4));
+    const tSeven = Math.min(dur - 1.8, Math.max(tBowl + 0.6, phraseAt(ctx, 1, 'seven common ingredients', 0.85) - 0.3));
+    A.out(tl, [q, q2], tBowl - 0.35, 'fadeUp', { dur: 0.45, stagger: 0.08 });
     const B = makeBowl(stage, { cx: 1300, y: 745, s: 0.8, filled: 0 });
-    A.in(tl, B.wrap, cue(1) + 0.1, 'fadeUp', { dur: 0.9 });
-    tl.fromTo(B.slots.map(sl => sl.g), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: 'back.out(2)' }, cue(1) + 0.5);
-    bob(tl, B, cue(1) + 1.2, dur);
+    A.in(tl, B.wrap, tBowl, 'fadeUp', { dur: 0.9 });
+    tl.fromTo(B.slots.map(sl => sl.g), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: 'back.out(2)' }, tSeven);
+    bob(tl, B, tSeven + 0.8, dur);
     const mix = put(stage, 'c4-mix', 'Usually a *mix*', { x: 780, y: 330 });
     A.in(tl, mix, cue(1) + 0.8, 'fadeUp', { dur: 0.8 });
   });
@@ -413,11 +416,13 @@
       put(LB, 'c4-lab', '6 months', { x: TX1 - 300, y: 454, w: 300, align: 'right' }),
     ];
     A.in(tl, track, cue(2) + 0.3, 'grow', { dur: 0.8 });
-    A.in(tl, win, cue(2) + 0.75, 'grow', { dur: 0.8 });
     A.in(tl, ticks, cue(2) + 0.7, 'fade', { dur: 0.5, stagger: 0.1 });
-    A.draw(tl, brk, cue(2) + 1.1, 0.6);
-    A.in(tl, wlab, cue(2) + 1.1, 'fadeUp', { dur: 0.7 });
-    const tSort = Math.max(cue(2) + 1.6, phraseAt(ctx, 2, 'sorts the world', 0.35) - 0.3);
+    // the green window fills on "roughly the first three months"
+    const tWin = Math.max(cue(2) + 1.1, phraseAt(ctx, 2, 'roughly the first', 0.2) - 0.3);
+    A.in(tl, win, tWin - 0.2, 'grow', { dur: 0.8 });
+    A.draw(tl, brk, tWin + 0.2, 0.6);
+    A.in(tl, wlab, tWin + 0.2, 'fadeUp', { dur: 0.7 });
+    const tSort = Math.max(tWin + 1.0, phraseAt(ctx, 2, 'sorts the world', 0.35) - 0.3);
     tl.fromTo(wIcons, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.28, ease: 'back.out(2)' }, tSort);
     const tLight = Math.max(tSort + 1.8, phraseAt(ctx, 2, 'feel normal', 0.8) - 0.3);
     tl.fromTo(shine, { opacity: 0 }, { opacity: 0.4, duration: 0.35, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tLight);
@@ -536,7 +541,8 @@
     });
     stage.appendChild(vol);
     const tVol = Math.max(cue(1) + 0.9, phraseAt(ctx, 1, 'gets louder', 0.4) - 0.4);
-    A.in(tl, vol, cue(1) + 0.7, 'pop', { dur: 0.6 });
+    // the (quiet) volume badge arrives on "reactivity often shows up", then turns up on "gets louder"
+    A.in(tl, vol, Math.max(cue(1) + 0.7, Math.min(tVol - 0.8, phraseAt(ctx, 1, 'reactivity often', 0.5) - 0.3)), 'pop', { dur: 0.6 });
     tl.to(vIcons[0], { opacity: 0, duration: 0.2 }, tVol);
     tl.to(vIcons[1], { opacity: 1, duration: 0.2 }, tVol);
     tl.to(vIcons[1], { opacity: 0, duration: 0.2 }, tVol + 0.45);
@@ -820,7 +826,8 @@
     A.in(tl, hide, tHide, 'fadeRight', { dur: 0.6 });
     const tVet = Math.max(tHide + 1.0, phraseAt(ctx, 2, 'every reactive dog', 0.57) - 0.3);
     A.in(tl, vet, tVet, 'pop', { dur: 0.7 });
-    A.in(tl, sud, Math.max(tVet + 0.9, phraseAt(ctx, 2, 'sudden change', 0.9) - 0.5), 'fadeRight', { dur: 0.6 });
+    // on "especially after a sudden change": early enough to read before this view clears for beat 3
+    A.in(tl, sud, Math.min(cue(3) - 1.6, Math.max(tVet + 0.9, phraseAt(ctx, 2, 'especially after', 0.85) - 0.3)), 'fadeRight', { dur: 0.6 });
 
     // ---------- beat 3: many other factors. The bowl moves centre stage and glows
     A.out(tl, LB, cue(3) - 0.35, 'fade', { dur: 0.45 });

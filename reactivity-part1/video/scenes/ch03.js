@@ -229,8 +229,12 @@
     tl.to(pL.root, Object.assign({ left: CXL - R }, morph), t3);
     tl.to(pR.root, Object.assign({ left: CXR - R }, morph), t3);
     tl.to(pL.img, { objectPosition: '85% 30%', duration: 1.0, ease: 'power3.inOut' }, t3);
-    tl.to(cL, { left: 100, top: CYV - CH / 2, duration: 1.0, ease: 'power3.inOut' }, t3 + 0.05);
-    tl.to(cR, { left: 1820 - CW, top: CYV - CH / 2, duration: 1.0, ease: 'power3.inOut' }, t3 + 0.05);
+    // the cards would cross under the moving photos, so they fade out, jump to the sides and slide back in
+    tl.to([cL, cR], { opacity: 0, duration: 0.3, ease: 'power2.in' }, t3 - 0.1);
+    tl.set(cL, { left: 100, top: CYV - CH / 2 }, t3 + 0.25);
+    tl.set(cR, { left: 1820 - CW, top: CYV - CH / 2 }, t3 + 0.25);
+    tl.fromTo(cL, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', immediateRender: false }, t3 + 0.85);
+    tl.fromTo(cR, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', immediateRender: false }, t3 + 0.95);
 
     const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     svg.style.zIndex = 3;
@@ -242,16 +246,21 @@
     const conn = K.line(svg, 960, CYV + hh + 8, 960, 846, { stroke: GREEN, 'stroke-width': 4, 'stroke-dasharray': '2 10' });
     A.draw(tl, [ringL, ringR], t3 + 0.55, 0.8);
     A.in(tl, lens, t3 + 0.75, 'fade', { dur: 0.5 });
-    A.in(tl, conn, t3 + 0.9, 'fade', { dur: 0.3 });
+    // the overlap glows on "overlap"; the pill lands on "a bit of both"
+    const tLens = clamp(at(3, 'lot of overlap'), t3 + 1.6, dur - 4);
+    tl.to(lens, { attr: { 'fill-opacity': 0.8 }, duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tLens);
+    const tPill = clamp(at(3, 'so many dogs'), tLens + 1.2, dur - 2.4);
+    A.in(tl, conn, tPill - 0.15, 'fade', { dur: 0.3 });
     const pill = box(stage, 'c3-pill', 'Often a bit of both', { x: 960, y: 850 });
     gsap.set(pill, { xPercent: -50 });
     pill.style.zIndex = 4;
-    tl.fromTo(pill, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, t3 + 0.95);
-    tl.to(lens, { attr: { 'fill-opacity': 0.8 }, duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, t3 + 1.6);
+    tl.fromTo(pill, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, tPill);
   });
 
   // ------------------------------------------------------------------ ch03s02: A reactive dog CAN become aggressive
-  registerScene('ch03s02', ({ stage, tl, cue, dur }) => {
+  registerScene('ch03s02', (ctx) => {
+    const { stage, tl, cue, dur } = ctx;
+    const at = sayAt(ctx);
     stage.appendChild(style());
 
     const p = K.photo(stage, 'photo_reactive_to_aggressive.jpg', { x: 100, y: 115, w: 690, h: 845, pos: '50% 45%' });
@@ -290,22 +299,24 @@
     gsap.set(st, { y: 150 });
     tl.fromTo(chars, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.25, stagger: 0.03, ease: 'power2.out' }, t0 + 0.25);
 
-    // beat 2: statement rises, CAN underlined, "not will" tag, four empty circles on a timeline arrow
+    // beat 2: CAN underlined, "not will" tag; then, on "four common ways", the statement rises and
+    // four empty circles on a timeline arrow appear under it
     const t1 = cue(1);
-    tl.to(st, { y: 0, duration: 0.9, ease: 'power3.inOut' }, t1);
-    tl.fromTo(ul, { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 0.5, ease: 'power2.inOut' }, t1 + 0.45);
-    tl.fromTo(notWill, { opacity: 0, scale: 0.5, rotation: -12 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.6, ease: 'back.out(1.8)' }, t1 + 0.7);
+    tl.fromTo(ul, { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 0.5, ease: 'power2.inOut' }, t1 + 0.15);
+    tl.fromTo(notWill, { opacity: 0, scale: 0.5, rotation: -12 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.6, ease: 'back.out(1.8)' }, t1 + 0.4);
+    const tF = clamp(at(1, 'four common ways'), t1 + 1.6, dur - 2.6);
+    tl.to(st, { y: 0, duration: 0.9, ease: 'power3.inOut' }, tF - 0.6);
 
     const four = box(stage, 'c3-four', '*Four* common ways', { x: SX, y: 650 });
-    A.in(tl, four, t1 + 0.6, 'fadeUp', { dur: 0.6 });
+    A.in(tl, four, tF, 'fadeUp', { dur: 0.6 });
     const TY = 780;
     const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     const axis = K.path(svg, `M ${SX} ${TY} L 1790 ${TY}`, { stroke: GREEN_LIGHT, 'stroke-width': 6 });
     const head = K.path(svg, `M 1772 ${TY - 18} L 1794 ${TY} L 1772 ${TY + 18}`, { stroke: GREEN_LIGHT, 'stroke-width': 6 });
-    A.draw(tl, axis, t1 + 0.7, 0.8);
-    A.in(tl, head, t1 + 1.4, 'fade', { dur: 0.25 });
+    A.draw(tl, axis, tF + 0.1, 0.8);
+    A.in(tl, head, tF + 0.8, 'fade', { dur: 0.25 });
     const circles = [0, 1, 2, 3].map(i => box(stage, 'c3-tc', null, { x: SX + 20 + i * 235, y: TY - 42 }));
-    A.in(tl, circles, t1 + 0.85, 'pop', { dur: 0.5, stagger: 0.1 });
+    A.in(tl, circles, tF + 0.25, 'pop', { dur: 0.5, stagger: 0.1 });
   });
 
   // ------------------------------------------------------------------ ch03s03: It works, and it's practiced
@@ -376,16 +387,24 @@
     relief.appendChild(K.icon('check', { stroke: 3 }));
     relief.appendChild(K.el('span', null, 'Relief'));
 
-    // beat 1: circle one lights with 'Works', title, the loop draws clockwise and the nodes pop as it passes
+    // beat 1: circle one lights with 'Works', title, the scary thing appears; the loop then draws clockwise
+    // in step with the narration: "barks and lunges" pops node two, "walks away" node three, then it closes
     const t0 = cue(0);
     sp.light(0, t0 + 0.2);
     A.in(tl, title1, t0 + 0.35, 'fadeUp', { dur: 0.7 });
-    A.draw(tl, ring, t0 + 0.3, 1.2, { ease: 'power1.inOut' });
+    const tBark = clamp(at(0, 'barks and lunges'), t0 + 1.4, cue(1) - 4);
+    const tAway = clamp(at(0, 'walks away'), tBark + 1.2, cue(1) - 2.5);
+    const nodeAt = [t0 + 0.4, tBark, tAway];
+    const seg = (to, t) => tl.to(ring, { drawSVG: '0% ' + to, duration: 0.7, ease: 'power1.inOut' }, t);
+    tl.fromTo(ring, { drawSVG: '0% 0%' }, { drawSVG: '0% 0.5%', duration: 0.2 }, t0 + 0.6);
+    seg('33.4%', tBark - 0.75);
+    seg('66.7%', tAway - 0.75);
+    seg('100%', tAway + 0.35);
     nodes.forEach((n, i) => {
-      tl.fromTo(n.b, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, t0 + 0.3 + i * 0.4);
-      A.in(tl, n.lab, t0 + 0.4 + i * 0.4, n.side === 'r' ? 'fadeLeft' : n.side === 't' ? 'fadeUp' : 'fadeRight', { dur: 0.5 });
+      tl.fromTo(n.b, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, nodeAt[i]);
+      A.in(tl, n.lab, nodeAt[i] + 0.1, n.side === 'r' ? 'fadeLeft' : n.side === 't' ? 'fadeUp' : 'fadeRight', { dur: 0.5 });
     });
-    A.in(tl, chevs, t0 + 0.7, 'fade', { dur: 0.3, stagger: 0.4 });
+    [tBark - 0.4, tAway - 0.4, tAway + 0.75].forEach((t, i) => A.in(tl, chevs[i], t, 'fade', { dur: 0.3 }));
 
     // beat 2: Relief glows on node three, the return arrow curves back to "Bark and lunge"
     const t1 = cue(1);
@@ -409,7 +428,7 @@
     const col = K.el('div', 'col'); cnt.appendChild(col);
     const num = K.el('div', 'num'); col.appendChild(num);
     const vals = ['1', '5', '20', '50'].map(v => { const s = K.el('span', null, v); num.appendChild(s); return s; });
-    col.appendChild(K.el('div', 'lab', 'times practiced'));
+    col.insertBefore(K.el('div', 'lab', 'Times practiced'), num); // label above the number: reads right for "1" too
     A.in(tl, cnt, t2 + 0.35, 'fadeUp', { dur: 0.7 });
     gsap.set(vals.slice(1), { opacity: 0 });
     const S = Math.max(3, Math.min(end(2) - t2 + 0.4, cue(3) - t2 - 0.7)), LAPS = 5;
@@ -536,22 +555,29 @@
     A.in(tl, title3, t0 + 0.35, 'fadeUp', { dur: 0.7 });
     tl.fromTo(L.rails, { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.9, ease: 'power2.inOut' }, t0 + 0.1);
     tl.fromTo(L.rungs, { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 0.45, stagger: 0.08, ease: 'power3.out' }, t0 + 0.2);
-    tl.fromTo(XI, { opacity: 0, scale: 1.9, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, transformOrigin: '50% 50%', duration: 0.35, ease: 'back.out(2.2)' }, t0 + 1.05);
-    tl.to(L.rungs[2], { x: 6, duration: 0.05, yoyo: true, repeat: 3, ease: 'none' }, t0 + 1.3);
+    // "listens to a growl": the Growl rung pulses; "punishes it": the red X slams onto it
+    const tG = clamp(at(0, 'to a growl'), t0 + 1.2, cue(1) - 3);
+    const tXs = clamp(at(0, 'punishes it'), tG + 0.8, cue(1) - 2);
+    A.pulse(tl, L.rungs[2], tG, { scale: 1.06 });
+    tl.fromTo(XI, { opacity: 0, scale: 1.9, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, transformOrigin: '50% 50%', duration: 0.35, ease: 'back.out(2.2)' }, tXs);
+    tl.to(L.rungs[2], { x: 6, duration: 0.05, yoyo: true, repeat: 3, ease: 'none' }, tXs + 0.25);
 
-    // beat 2: lower rungs fade to grey, a red arrow jumps from the bottom rung straight to Bite
+    // beat 2: lower rungs fade to grey ("skip the warnings"), a red arrow jumps from the bottom rung
+    // straight to Bite ("go straight to the top")
     const t1 = cue(1);
-    tl.to(L.rungs.slice(0, 5), { backgroundColor: '#d3d8cc', color: '#8c9386', boxShadow: '0 6px 16px rgba(40,60,20,0)', duration: 0.5, stagger: 0.05, ease: 'power2.out' }, t1);
-    tl.to(XI, { opacity: 0.45, duration: 0.5 }, t1);
+    const tSk = clamp(at(1, 'skip the warnings', 0.4), t1, cue(2) - 2.6);
+    const tTop = clamp(at(1, 'go straight', 0.75), tSk + 0.7, cue(2) - 1.4);
+    tl.to(L.rungs.slice(0, 5), { backgroundColor: '#d3d8cc', color: '#8c9386', boxShadow: '0 6px 16px rgba(40,60,20,0)', duration: 0.5, stagger: 0.05, ease: 'power2.out' }, tSk);
+    tl.to(XI, { opacity: 0.45, duration: 0.5 }, tSk);
     const yb = rungTop(0) + RH / 2, yt = rungTop(5) + RH / 2, ax = LX + LW + 50;
     const jump = K.path(xs, `M ${ax} ${yb} C ${ax + 190} ${yb - 60}, ${ax + 190} ${yt + 60}, ${ax + 8} ${yt}`, { stroke: RED, 'stroke-width': 9 });
     const jhead = K.path(xs, 'M 18 -18 L -2 0 L 18 18', { stroke: RED, 'stroke-width': 9, transform: `translate(${ax + 6} ${yt})` });
-    A.draw(tl, jump, t1 + 0.25, 0.6, { ease: 'power2.in' });
-    A.in(tl, jhead, t1 + 0.8, 'fade', { dur: 0.15 });
+    A.draw(tl, jump, tTop, 0.6, { ease: 'power2.in' });
+    A.in(tl, jhead, tTop + 0.55, 'fade', { dur: 0.15 });
     const bite = L.rungs[5];
-    tl.to(bite, { boxShadow: '0 0 0 18px rgba(184,69,45,0.28)', scale: 1.05, duration: 0.25, ease: 'power2.out' }, t1 + 0.85);
-    tl.to(bite, { boxShadow: '0 6px 16px rgba(40,60,20,0.14)', scale: 1, duration: 0.5, ease: 'power2.inOut' }, t1 + 1.1);
-    A.in(tl, sub1, t1 + 0.35, 'fadeUp', { dur: 0.7 });
+    tl.to(bite, { boxShadow: '0 0 0 18px rgba(184,69,45,0.28)', scale: 1.05, duration: 0.25, ease: 'power2.out' }, tTop + 0.6);
+    tl.to(bite, { boxShadow: '0 6px 16px rgba(40,60,20,0.14)', scale: 1, duration: 0.5, ease: 'power2.inOut' }, tTop + 0.85);
+    A.in(tl, sub1, tSk + 0.1, 'fadeUp', { dur: 0.7 });
 
     // beat 3: ladder clears; a pressure gauge fills to red; a zap arcs sideways to leash, dog and hand
     const t2 = cue(2), L2 = end(2) - t2;
@@ -648,9 +674,9 @@
     A.in(tl, sub3, tSlide - 0.1, 'fadeUp', { dur: 0.7 });
     const handLab = targets[2].lb;
     tl.to(forks[2], { drawSVG: '0% 0%', duration: 0.45, ease: 'power2.in' }, tSlide);
-    tl.to([hand, handLab], { x: 230, y: 20, duration: 0.9, ease: 'power3.inOut' }, tSlide + 0.1);
+    tl.to([hand, handLab], { x: 230, duration: 0.9, ease: 'power3.inOut' }, tSlide + 0.1);
     tl.to(hand, { backgroundColor: '#e8f1dc', color: GREEN_DARK, borderColor: '#d8e6c9', duration: 0.5 }, tSlide + 0.5);
-    const DY = 912, DX0 = GX + 40, DX1 = 1778;
+    const DY = 924, DX0 = GX + 40, DX1 = 1778; // clear of the Hand label above the arrowhead
     const dsv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     const dTail = K.line(dsv, DX0, DY - 20, DX0, DY + 20, { stroke: GREEN, 'stroke-width': 7 });
     const dShaft = K.line(dsv, DX0, DY, DX1 - 4, DY, { stroke: GREEN, 'stroke-width': 7 });
@@ -820,10 +846,11 @@
     const tryB = box(stage, 'c3-try', null, { x: qx - 26, y: PY0 - 30 });
     tryB.appendChild(K.icon('notebook-pen', { stroke: 2.4 }));
     tryB.appendChild(K.el('span', null, 'Try this'));
-    const planIn = clamp(at(3, 'so when your dog growls', 0.5), tGhost + 0.8, dur - 4.6);
+    // the card arrives just ahead of its first bullet, so it never sits empty
+    const planIn = clamp(at(3, 'thank them') - 0.5, tGhost + 0.8, dur - 4.6);
     A.in(tl, plan, planIn, 'fadeUp', { dur: 0.7 });
     tl.fromTo(tryB, { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.7, ease: 'back.out(1.8)' }, planIn + 0.35);
-    const rowAt = [['thank them', 0.9], ['give space', 1.5], ['note what came before', 2.1]]
+    const rowAt = [['thank them', 0.45], ['give space', 1.2], ['note what came before', 1.9]]
       .map(([p, d], i) => clamp(at(3, p, 0.35), planIn + d, dur - 2.4 + i * 0.35));
     rows.forEach((r, i) => {
       A.in(tl, r, rowAt[i], 'fadeRight', { dur: 0.6 });

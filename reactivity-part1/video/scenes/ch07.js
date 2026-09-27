@@ -114,7 +114,7 @@
   .c7-ws .th2 { position:absolute; font:600 26px/1 var(--font-body); color:var(--muted); white-space:nowrap; }
   .c7-ws .cell { position:absolute; }
   .c7-wr { position:relative; display:inline-block; }
-  .c7-wr .txt { display:block; overflow:hidden; white-space:nowrap; max-width:0; font:italic 500 38px/1.25 var(--font-body); color:var(--ink); }
+  .c7-wr .txt { display:block; overflow:hidden; white-space:nowrap; max-width:0; font:italic 500 36px/1.25 var(--font-body); color:var(--ink); }
   .c7-wr .pen { position:absolute; left:100%; bottom:4px; margin-left:2px; width:56px; height:56px; color:var(--green-dark); }
   .c7-wr .pen svg { width:56px; height:56px; }
   .c7-qrow { position:absolute; display:flex; align-items:center; gap:22px; background:var(--amber-pale); border-radius:18px; padding:0 28px 0 14px; }
@@ -231,7 +231,7 @@
   window.CAD_PARTS = Object.assign(window.CAD_PARTS || {}, { triggerFlow, flowIn });
 
   // ================================================================== ch07s01  What is a trigger?
-  registerScene('ch07s01', ({ stage, tl, cue, dur }) => {
+  registerScene('ch07s01', ({ stage, tl, cue, dur, phrase }) => {
     addCss(stage);
     const c0 = cue(0), c1 = cue(1);
 
@@ -288,14 +288,16 @@
       return { b, l };
     });
 
-    // --- beat 0: heading writes on, cloud card fades in, definition lands in the band
+    // --- beat 0: heading writes on and the cloud card fades in with the examples; the definition lands in the
+    // band when it is said ("A trigger is anything..."), its second line on "whether they react"
     A.in(tl, h.title, Math.max(0.1, c0 - 0.3), 'wipe', { dur: 1.0 });
     A.in(tl, h.bar, c0 + 0.2, 'grow', { dur: 0.6 });
     tl.fromTo(card, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.9 }, c0);
     A.kenburns(tl, img, { from: 1.0, to: 1.07, t0: c0, t1: dur });
-    A.in(tl, def, c0 + 0.5, 'wipe', { dur: 0.7 });
-    A.in(tl, defT, c0 + 0.7, 'fadeUp', { dur: 0.6 });
-    A.in(tl, defS, c0 + 0.9, 'fadeUp', { dur: 0.6 });
+    const tDef = Math.max(c0 + 0.5, phrase(0, 'a trigger is anything') - 0.3);
+    A.in(tl, def, tDef, 'wipe', { dur: 0.7 });
+    A.in(tl, defT, tDef + 0.2, 'fadeUp', { dur: 0.6 });
+    A.in(tl, defS, Math.max(tDef + 0.4, phrase(0, 'whether they react') - 0.3), 'fadeUp', { dur: 0.6 });
 
     // --- beat 1: the cloud dims, two thermometers fill to the same red level
     tl.fromTo(veil, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out' }, c1);
@@ -315,7 +317,7 @@
   });
 
   // ================================================================== ch07s02  Feeling first
-  registerScene('ch07s02', ({ stage, tl, cue, end }) => {
+  registerScene('ch07s02', ({ stage, tl, cue, end, phrase }) => {
     addCss(stage);
     const at = fracOf(cue, end);
     const c0 = cue(0), c1 = cue(1), c2 = cue(2);
@@ -350,30 +352,41 @@
     const lr = centerRow(stage, nE.cx, F.y + 200, 900);
     const workP = pill(lr, 'This is where we work', 'green', 'target');
 
-    // --- beat 0: heading, three nodes draw left to right
+    // --- beat 0: heading, then each node lands as it is named ("the trigger causes an emotion ... the reaction")
     A.in(tl, h.all, 0.15, 'fadeUp', { stagger: 0.12 });
-    sub.show(tl, 0, c0 + 0.2);
-    flowIn(tl, F, c0 + 0.1);
+    const tN0 = Math.max(c0 + 0.1, phrase(0, 'the trigger') - 0.25);
+    const tN1 = Math.max(tN0 + 0.6, phrase(0, 'an emotion') - 0.25);
+    const tN2 = Math.max(tN1 + 0.6, phrase(0, 'the reaction') - 0.25);
+    sub.show(tl, 0, tN0);
+    A.in(tl, nT.n, tN0, 'pop', { dur: 0.55 });
+    A.draw(tl, [F.arrows[0].shaft], tN1 - 0.25, 0.3);
+    A.draw(tl, [F.arrows[0].head], tN1 + 0.05, 0.15);
+    A.in(tl, nE.n, tN1, 'pop', { dur: 0.55 });
+    A.draw(tl, [F.arrows[1].shaft], tN2 - 0.25, 0.3);
+    A.draw(tl, [F.arrows[1].head], tN2 + 0.05, 0.15);
+    A.in(tl, nR.n, tN2, 'pop', { dur: 0.55 });
 
-    // --- beat 1: the startle. Emotion jolts first, the reaction fires a beat later
+    // --- beat 1: the startle. Emotion jolts on "boo" (heart leaps), the reaction fires on "scream second"
     sub.show(tl, 1, c1);
-    A.pulse(tl, nT.n, c1, { scale: 1.08 });
-    tl.fromTo(dot1, { opacity: 1, attr: { cx: a1s } }, { opacity: 1, attr: { cx: a1e }, duration: 0.3, ease: 'power2.in', immediateRender: false }, c1 + 0.05);
-    tl.to(dot1, { opacity: 0, duration: 0.1 }, c1 + 0.35);
-    tl.to(nE.n, { scale: 1.26, duration: 0.3, ease: 'back.out(2.2)' }, c1 + 0.35);
-    tl.to(nE.n, { scale: 1.06, duration: 0.6, ease: 'power2.inOut' }, c1 + 0.95);
-    A.in(tl, zap, c1 + 0.4, 'pop', { dur: 0.45 });
-    A.draw(tl, rays, c1 + 0.4, 0.3, { stagger: 0.02 });
-    tl.to(rays, { opacity: 0, duration: 0.4 }, c1 + 1.0);
-    tl.fromTo(dot2, { opacity: 1, attr: { cx: a2s } }, { opacity: 1, attr: { cx: a2e }, duration: 0.45, ease: 'power1.inOut', immediateRender: false }, c1 + 0.75);
-    tl.to(dot2, { opacity: 0, duration: 0.1 }, c1 + 1.2);
-    tl.to(nR.n, { borderColor: C.red, backgroundColor: C.redPale, duration: 0.3 }, c1 + 1.15);
-    tl.to(nR.ic, { color: C.red, duration: 0.3 }, c1 + 1.15);
-    A.pulse(tl, nR.n, c1 + 1.15, { scale: 1.08 });
-    A.in(tl, arcs, c1 + 1.2, 'fade', { dur: 0.25, stagger: 0.1 });
+    const tJ = Math.max(c1 + 0.3, phrase(1, 'boo') - 0.35);
+    A.pulse(tl, nT.n, tJ, { scale: 1.08 });
+    tl.fromTo(dot1, { opacity: 1, attr: { cx: a1s } }, { opacity: 1, attr: { cx: a1e }, duration: 0.3, ease: 'power2.in', immediateRender: false }, tJ + 0.05);
+    tl.to(dot1, { opacity: 0, duration: 0.1 }, tJ + 0.35);
+    tl.to(nE.n, { scale: 1.26, duration: 0.3, ease: 'back.out(2.2)' }, tJ + 0.35);
+    tl.to(nE.n, { scale: 1.06, duration: 0.6, ease: 'power2.inOut' }, tJ + 0.95);
+    A.in(tl, zap, tJ + 0.4, 'pop', { dur: 0.45 });
+    A.draw(tl, rays, tJ + 0.4, 0.3, { stagger: 0.02 });
+    tl.to(rays, { opacity: 0, duration: 0.4 }, tJ + 1.0);
+    const tR = Math.min(end(1) - 0.3, Math.max(tJ + 1.6, phrase(1, 'scream second') - 0.3));
+    tl.fromTo(dot2, { opacity: 1, attr: { cx: a2s } }, { opacity: 1, attr: { cx: a2e }, duration: 0.45, ease: 'power1.inOut', immediateRender: false }, tR - 0.4);
+    tl.to(dot2, { opacity: 0, duration: 0.1 }, tR + 0.05);
+    tl.to(nR.n, { borderColor: C.red, backgroundColor: C.redPale, duration: 0.3 }, tR);
+    tl.to(nR.ic, { color: C.red, duration: 0.3 }, tR);
+    A.pulse(tl, nR.n, tR, { scale: 1.08 });
+    A.in(tl, arcs, tR + 0.05, 'fade', { dur: 0.25, stagger: 0.1 });
     // the heart keeps pounding while the story plays out
-    const hbN = yoyoCount(c1 + 1.7, end(1), 0.32);
-    tl.fromTo(nE.ic, { scale: 1 }, { scale: 1.14, duration: 0.32, ease: 'sine.inOut', yoyo: true, repeat: hbN }, c1 + 1.7);
+    const hbN = yoyoCount(tJ + 1.0, end(1), 0.32);
+    tl.fromTo(nE.ic, { scale: 1 }, { scale: 1.14, duration: 0.32, ease: 'sine.inOut', yoyo: true, repeat: hbN }, tJ + 1.0);
 
     // --- beat 2: green ring around the Emotion node, then the feeling calms and the reaction follows
     sub.show(tl, 2, c2);
@@ -419,7 +432,7 @@
   };
   const CLOUD_PAL = ['#5f7a2c', '#3e7a78', '#5b6f96', '#b5873a', '#3f3f3f', '#4a6a34'];
 
-  registerScene('ch07s03', ({ stage, tl, cue, end }) => {
+  registerScene('ch07s03', ({ stage, tl, cue, end, phrase }) => {
     addCss(stage);
     const c = [0, 1, 2, 3].map(cue);
     const h = K.heading(stage, 'Every dog’s list', { x: 100, y: 110, size: 76 });
@@ -505,31 +518,44 @@
     tl.to(hats.chip, { scale: 1, color: hats.color, duration: 0.5, ease: 'power2.inOut' }, Math.min(tHat + 1.0, c[1] - 0.6));
 
     // --- beats 1 to 3: two categories per beat. Unsorted words dim; stray words fade as their column fills.
+    // At the beat start ("As I sort them") both categories' words glide into their slots, still in cloud colours,
+    // so no word ever sits on a card. Each card then fades in under its words when the narration names it,
+    // and its words turn into green chips.
     const extras = words.filter(w => w.cat < 0);
     const later = words.filter(w => w.cat >= 2);
+    const CAT_SAY = ['people', 'dogs and other animals', 'sounds', 'moving things', 'handling', 'places and situations'];
+    let tLast = 0;
     tl.to(later.concat(extras.filter(w => w.seg > 0)).map(w => w.el), { opacity: 0.26, duration: 0.5, ease: 'power2.out' }, c[1]);
     [1, 2, 3].forEach(b => {
       const gone = extras.filter(w => w.seg === b - 1).map(w => w.el);
       if (gone.length) tl.to(gone, { opacity: 0, duration: 0.45, ease: 'power2.out' }, c[b]);
+      const tSort = c[b] + 0.1;
+      words.filter(w => w.cat === (b - 1) * 2 || w.cat === (b - 1) * 2 + 1).forEach((w, k) => {
+        const card = cards[w.cat];
+        const t = tSort + k * 0.05;
+        const tgt = () => layoutXY(card.ph[w.t], stage);
+        tl.set(w.el, { zIndex: 20 }, t);
+        tl.to(w.el, { x: () => tgt()[0] - w.left, y: () => tgt()[1] - w.top, scale: 1, rotation: 0, opacity: 1, duration: 0.9, ease: 'power3.inOut' }, t);
+      });
+      let prev = tSort + 0.3;
       [0, 1].forEach(j => {
         const ci = (b - 1) * 2 + j;
         const card = cards[ci];
-        const t0 = c[b] + 0.1 + j * 0.4;
-        A.in(tl, card.card, t0, 'fadeUp', { dur: 0.6 });
+        const t0 = Math.min(end(b) - 0.6, Math.max(prev + (j ? 1.0 : 0.3), phrase(b, CAT_SAY[ci]) - 0.3));
+        prev = t0;
+        tLast = t0;
+        A.in(tl, card.card, t0, 'fade', { dur: 0.55 });
         words.filter(w => w.cat === ci).forEach((w, k) => {
-          const t = t0 + 0.2 + k * 0.07;
-          const tgt = () => layoutXY(card.ph[w.t], stage);
-          tl.set(w.el, { zIndex: 20 }, t);
-          tl.to(w.el, { x: () => tgt()[0] - w.left, y: () => tgt()[1] - w.top, scale: 1, rotation: 0, opacity: 1, duration: 0.8, ease: 'power3.inOut' }, t);
-          tl.to(w.chip, { backgroundColor: 'rgba(232,241,220,1)', color: C.greenDeep, duration: 0.5, ease: 'power2.out' }, t + 0.3);
+          tl.to(w.chip, { backgroundColor: 'rgba(232,241,220,1)', color: C.greenDeep, duration: 0.45, ease: 'power2.out' }, t0 + 0.25 + k * 0.06);
         });
       });
     });
-    sub.show(tl, 1, c[3] + 0.9);
+    // the sixth card completes the set
+    sub.show(tl, 1, Math.max(c[3] + 0.9, tLast + 0.6));
   });
 
   // ================================================================== ch07s04  Why just exposing them backfires
-  registerScene('ch07s04', ({ stage, tl, cue, end }) => {
+  registerScene('ch07s04', ({ stage, tl, cue, end, phrase }) => {
     addCss(stage);
     const c = [0, 1, 2, 3].map(cue);
     const at = fracOf(cue, end);
@@ -621,39 +647,42 @@
       const tt = c[0] + 0.25 + t.ri * 0.15 + t.k * 0.03;
       tl.fromTo(t.b, { x: t.dx, y: t.dy, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, tt);
     });
+    // the chart takes over on "sensitization" (the cluster, with its FLOODING stamp, stays through "Flooding can cause")
+    const tC = Math.min(c[2] + 1.2, Math.max(c[2], phrase(2, 'sensitization') - 0.75));
     tl.to(dogb, { borderColor: C.red, color: C.red, duration: 0.5 }, c[0] + 1.0);
-    tl.fromTo(clu, { scale: 1 }, { scale: 0.95, duration: Math.max(1, c[2] - c[0] - 1.4), ease: 'sine.inOut' }, c[0] + 1.2);
-    const shN = yoyoCount(c[0] + 1.3, c[2] - 0.3, 0.09);
+    tl.fromTo(clu, { scale: 1 }, { scale: 0.95, duration: Math.max(1, tC - c[0] - 1.4), ease: 'sine.inOut' }, c[0] + 1.2);
+    const shN = yoyoCount(c[0] + 1.3, tC - 0.3, 0.09);
     tl.fromTo(dogb, { rotation: -2.5 }, { rotation: 2.5, duration: 0.09, ease: 'sine.inOut', yoyo: true, repeat: Math.min(shN, 401), immediateRender: false }, c[0] + 1.3);
 
-    // --- beat 1: FLOODING stamps over the cluster
-    A.in(tl, rows[1], c[1] + 0.15, 'fadeRight', { dur: 0.7 });
-    tl.fromTo(stamp, { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.35, ease: 'power4.in' }, c[1] + 0.2);
-    tl.fromTo(sr, { x: 0 }, { x: 8, duration: 0.05, yoyo: true, repeat: 5, ease: 'none' }, c[1] + 0.55);
+    // --- beat 1: the spider story plays over the crowded dog; FLOODING stamps on "you're just surviving. That's flooding."
+    const tF = Math.min(end(1) - 1.0, Math.max(c[1] + 0.2, phrase(1, "you're just surviving") - 0.3));
+    A.in(tl, rows[1], tF - 0.05, 'fadeRight', { dur: 0.7 });
+    tl.fromTo(stamp, { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.35, ease: 'power4.in' }, tF);
+    tl.fromTo(sr, { x: 0 }, { x: 8, duration: 0.05, yoyo: true, repeat: 5, ease: 'none' }, tF + 0.35);
 
     // --- beat 2: the cluster slides away, the chart draws with the red climb
-    tl.to(clu, { x: 320, opacity: 0, duration: 0.55, ease: 'power2.in' }, c[2] - 0.15);
-    A.in(tl, rows[2], c[2] + 0.15, 'fadeRight', { dur: 0.7 });
-    A.draw(tl, axes, c[2] + 0.2, 0.5);
-    A.in(tl, tips.concat(ticks), c[2] + 0.55, 'fade', { dur: 0.3 });
-    A.in(tl, [yLab, xLab], c[2] + 0.45, 'fade', { dur: 0.5 });
-    A.draw(tl, redLine, c[2] + 0.45, 0.9, { ease: 'power1.inOut' });
-    redDots.forEach((d, i) => A.in(tl, d, c[2] + 0.45 + i * 0.17, 'pop', { dur: 0.35 }));
-    A.in(tl, redP, c[2] + 1.0, 'fadeUp', { dur: 0.5 });
+    tl.to(clu, { x: 320, opacity: 0, duration: 0.55, ease: 'power2.in' }, tC - 0.15);
+    A.in(tl, rows[2], tC + 0.15, 'fadeRight', { dur: 0.7 });
+    A.draw(tl, axes, tC + 0.2, 0.5);
+    A.in(tl, tips.concat(ticks), tC + 0.55, 'fade', { dur: 0.3 });
+    A.in(tl, [yLab, xLab], tC + 0.45, 'fade', { dur: 0.5 });
+    A.draw(tl, redLine, tC + 0.45, 0.9, { ease: 'power1.inOut' });
+    redDots.forEach((d, i) => A.in(tl, d, tC + 0.45 + i * 0.17, 'pop', { dur: 0.35 }));
+    A.in(tl, redP, tC + 1.0, 'fadeUp', { dur: 0.5 });
     // "Or a dog shuts down and goes quiet": a grey tag pins to the top of the climb
-    const tShut = Math.max(c[2] + 2.5, at(2, 0.68));
+    const tShut = Math.max(tC + 2.5, at(2, 0.68));
     A.draw(tl, shutPin, tShut, 0.3);
     A.in(tl, shutP, tShut + 0.15, 'fadeDown', { dur: 0.6 });
 
-    // --- beat 3: the green line gently falls beneath it
+    // --- beat 3: the green line gently falls beneath it; its label lands on "the dose is small enough to feel safe"
     A.in(tl, rows[3], c[3] + 0.15, 'fadeRight', { dur: 0.7 });
     A.draw(tl, grnLine, c[3] + 0.1, 0.9, { ease: 'power1.inOut' });
     grnDots.forEach((d, i) => A.in(tl, d, c[3] + 0.1 + i * 0.17, 'pop', { dur: 0.35 }));
-    A.in(tl, grnP, c[3] + 0.8, 'fadeUp', { dur: 0.5 });
+    A.in(tl, grnP, Math.max(c[3] + 0.8, phrase(3, 'the dose') - 0.3), 'fadeUp', { dur: 0.5 });
   });
 
   // ================================================================== ch07s05  Your homework
-  registerScene('ch07s05', ({ stage, tl, cue, end, dur }) => {
+  registerScene('ch07s05', ({ stage, tl, cue, end, dur, phrase }) => {
     addCss(stage);
     const c = [0, 1, 2, 3].map(cue);
     const at = fracOf(cue, end);
@@ -728,15 +757,19 @@
     const qpen = div(qw, 'pen');
     iconIn(qpen, 'pencil', { stroke: 2.2 });
 
-    // --- beat 0: calendars slide in, Monday gets a check, Thursday an alert
+    // --- beat 0: each calendar slides in on its day, Monday's check on "ignores", Thursday's alert on "meltdown"
     A.in(tl, h0.all, Math.max(0.1, c[0] - 0.3), 'fadeUp', { stagger: 0.12 });
-    A.in(tl, cals[0].card, c[0] + 0.1, 'fadeRight', { dur: 0.8 });
-    A.in(tl, cals[1].card, c[0] + 0.35, 'fadeLeft', { dur: 0.8 });
-    A.in(tl, cals[0].st, c[0] + 0.75, 'pop', { dur: 0.5 });
-    A.in(tl, cals[1].st, c[0] + 1.05, 'pop', { dur: 0.5 });
-    tl.fromTo(cals[1].card, { rotation: 0 }, { rotation: 1.2, duration: 0.06, yoyo: true, repeat: 5, ease: 'none' }, c[0] + 1.15);
-    const alN = yoyoCount(c[0] + 2.0, c[1] - 0.5, 0.45);
-    tl.fromTo(cals[1].st, { scale: 1 }, { scale: 1.1, duration: 0.45, ease: 'sine.inOut', yoyo: true, repeat: alN, immediateRender: false }, c[0] + 2.0);
+    const tMon = Math.max(c[0] + 0.1, phrase(0, 'on monday') - 0.3);
+    const tMonOk = Math.max(tMon + 0.6, phrase(0, 'ignores') - 0.2);
+    const tThu = Math.max(tMonOk + 0.4, phrase(0, 'on thursday') - 0.3);
+    const tAl = Math.min(c[1] - 1.2, Math.max(tThu + 0.7, phrase(0, 'meltdown') - 0.3));
+    A.in(tl, cals[0].card, tMon, 'fadeRight', { dur: 0.8 });
+    A.in(tl, cals[0].st, tMonOk, 'pop', { dur: 0.5 });
+    A.in(tl, cals[1].card, tThu, 'fadeLeft', { dur: 0.8 });
+    A.in(tl, cals[1].st, tAl, 'pop', { dur: 0.5 });
+    tl.fromTo(cals[1].card, { rotation: 0 }, { rotation: 1.2, duration: 0.06, yoyo: true, repeat: 5, ease: 'none' }, tAl + 0.1);
+    const alN = yoyoCount(tAl + 0.8, c[1] - 0.5, 0.45);
+    tl.fromTo(cals[1].st, { scale: 1 }, { scale: 1.1, duration: 0.45, ease: 'sine.inOut', yoyo: true, repeat: alN, immediateRender: false }, tAl + 0.8);
 
     // --- beat 1: calendars clear, the clipboard expands into the worksheet
     A.out(tl, h0.all, c[1] - 0.25, 'fadeUp', { dur: 0.4 });
@@ -755,28 +788,33 @@
     A.in(tl, ttl, c[1] + 1.45, 'fade', { dur: 0.5 });
     tl.fromTo(tryB, { opacity: 0, scale: 0.4, rotation: 14 }, { opacity: 1, scale: 1, rotation: 4, duration: 0.7, ease: 'back.out(1.8)' }, c[1] + 1.25);
 
-    // --- beat 2: the column headings type in
+    // --- beat 2: the table rules draw on "get specific", then each column heading types in as it is said
     sub.show(tl, 1, c[2] + 0.1);
     A.draw(tl, [hline], c[2] + 0.1, 0.7);
     A.draw(tl, dividers, c[2] + 0.2, 0.6, { stagger: 0.08 });
-    let tt = c[2] + 0.2;
-    heads.concat([scale]).forEach(node => {
+    const HEAD_SAY = ['which dogs', 'how close', 'where', 'when', 'how big', 'one to ten'];
+    let tt = c[2] + 0.4;
+    heads.concat([scale]).forEach((node, i) => {
       const split = new SplitText(node, { type: 'chars' });
-      tl.fromTo(split.chars, { opacity: 0 }, { opacity: 1, duration: 0.01, stagger: 0.026, ease: 'none' }, tt);
-      tt += split.chars.length * 0.026 + 0.02;
+      const t = Math.max(tt, phrase(2, HEAD_SAY[i]) - 0.2);
+      tl.fromTo(split.chars, { opacity: 0 }, { opacity: 1, duration: 0.01, stagger: 0.026, ease: 'none' }, t);
+      tt = t + split.chars.length * 0.026 + 0.05;
     });
 
-    // --- beat 3: the pencil fills an example row, then the quiet-reaction row slides in
+    // --- beat 3: the pencil fills an example row on "big dogs, head-on, after dark", then the quiet-reaction row
+    // slides in on "count quiet reactions" and is written on "a freeze or a sudden stop in sniffing".
+    // One pencil at a time: each fades out before the next cell's fades in.
     const write = (w, t, d) => {
-      tl.fromTo(w.pen, { opacity: 0 }, { opacity: 1, duration: 0.15, ease: 'none' }, t - 0.15);
+      tl.fromTo(w.pen, { opacity: 0 }, { opacity: 1, duration: 0.1, ease: 'none' }, t - 0.1);
       tl.fromTo(w.tx, { maxWidth: 0 }, { maxWidth: 520, duration: d, ease: 'none' }, t);
       tl.fromTo(w.pen, { rotation: 0, y: 0 }, { rotation: -10, y: -4, duration: d / 8, ease: 'sine.inOut', yoyo: true, repeat: 7 }, t);
-      tl.to(w.pen, { opacity: 0, duration: 0.15, ease: 'none' }, t + d + 0.02);
+      tl.to(w.pen, { opacity: 0, duration: 0.1, ease: 'none' }, t + d);
     };
-    cells.forEach((w, i) => write(w, c[3] + 0.25 + i * 0.62, i === 4 ? 0.2 : 0.55));
-    const tQ = Math.max(c[3] + 3.4, at(3, 0.5));
+    const tW = Math.max(c[3] + 0.25, phrase(3, 'big dogs') - 0.3);
+    cells.forEach((w, i) => write(w, tW + i * 0.75, i === 4 ? 0.2 : 0.55));
+    const tQ = Math.max(tW + 3.0 + 0.2 + 0.2, phrase(3, 'count quiet') - 0.2);
     tl.fromTo(qrow, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, tQ);
     tl.to(ruled[1], { opacity: 0, duration: 0.3 }, tQ);
-    write({ tx: qtx, pen: qpen }, tQ + 0.7, 1.0);
+    write({ tx: qtx, pen: qpen }, Math.min(end(3) - 1.2, Math.max(tQ + 0.8, phrase(3, 'a freeze') - 0.2)), 1.2);
   });
 })();

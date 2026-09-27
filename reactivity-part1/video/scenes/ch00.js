@@ -22,7 +22,7 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
     .c0-row .ib { width:96px; height:96px; border-radius:50%; background: var(--green-pale); color: var(--green-dark); display:grid; place-items:center; }
     .c0-row .ib svg { width:54px; height:54px; }
     .c0-row .t { font:700 38px/1 Rubik, sans-serif; color: var(--ink); }
-    .c0-row .s { font:500 24px/1 Montserrat, sans-serif; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; }
+    .c0-row .s { font:500 26px/1 Montserrat, sans-serif; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; }
     .c0-strip { position:absolute; left:0; width:1920px; display:flex; justify-content:center; align-items:center; gap:26px; font:700 50px/1 Rubik, sans-serif; color: var(--green-deep); }
     .c0-strip .ib { width:84px; height:84px; border-radius:50%; background: var(--green); color:#fff; display:grid; place-items:center; }
     .c0-strip .ib svg { width:48px; height:48px; }
@@ -31,7 +31,8 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
   const style = () => K.el('style', null, css);
 
   // ------------------------------------------------------------------ cold open
-  registerScene('ch00s01', ({ stage, tl, cue, dur, chrome }) => {
+  registerScene('ch00s01', (ctx) => {
+    const { stage, tl, cue, dur, chrome } = ctx;
     stage.appendChild(style());
 
     // beat 1: a calm walk on a dotted path, another dog appears at the corner
@@ -42,8 +43,9 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
     const trail = K.path(svg, d, { stroke: '#b8d99a', 'stroke-width': 10, 'stroke-dasharray': '2 26' });
     const trailSolid = K.path(svg, d, { stroke: '#e8f1dc', 'stroke-width': 46, opacity: 0.9 });
     svg.insertBefore(trailSolid, trail);
+    // footprints are left behind on the path as the dog passes (built before the dog so it covers them)
+    const printsLayer = K.el('div'); walk.appendChild(printsLayer);
     const me = K.iconBadge(walk, 'dog', { x: 0, y: 0, size: 132, variant: 'solid' });
-    const prints = K.iconBadge(walk, 'footprints', { x: 0, y: 0, size: 70 });
     const other = K.iconBadge(walk, 'dog', { x: 1500, y: 262, size: 132, variant: 'amber' });
     kick.style.fontSize = '30px';
     const scenery = [['trees', 330, 560, 150], ['trees', 1180, 700, 170], ['house', 1690, 470, 120], ['trees', 760, 380, 130], ['sun', 1320, 150, 110]].map(([ic, x, y, sz]) => {
@@ -55,13 +57,21 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
     A.in(tl, kick, 0.15, 'fadeUp');
     A.in(tl, scenery, 0.3, 'fadeUp', { stagger: 0.12 });
     A.draw(tl, [trailSolid, trail], 0.1, 1.4);
-    A.in(tl, [me, prints], 0.35, 'pop', { stagger: 0.1 });
+    A.in(tl, me, 0.35, 'pop');
     const walkEnd = Math.max(1.6, cue(1) - 1.0);
     const mp = (end, origin) => ({ motionPath: { path: trail, align: trail, alignOrigin: origin, start: 0, end } });
     gsap.set(me, mp(0, [0.5, 0.5]));
-    gsap.set(prints, mp(0, [0.5, 1.7]));
     tl.to(me, Object.assign(mp(0.5, [0.5, 0.5]), { duration: walkEnd - 0.4, ease: 'none' }), 0.4);
-    tl.to(prints, Object.assign(mp(0.44, [0.5, 1.7]), { duration: walkEnd - 0.4, ease: 'none' }), 0.4);
+    // each print fades in just as the dog's trailing edge uncovers it, pointing the way the dog walks
+    const LEN = trail.getTotalLength(), WALK = 0.5 * LEN, PS = 44;
+    for (let s = 70; s < WALK - 90; s += 96) {
+      const p = trail.getPointAtLength(s), a = trail.getPointAtLength(s - 2), b = trail.getPointAtLength(s + 2);
+      const ang = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI + 90;
+      const fp = K.el('div', null, null, { position: 'absolute', left: `${p.x - PS / 2}px`, top: `${p.y - PS / 2}px`, width: `${PS}px`, height: `${PS}px`, color: '#6f9f45', transform: `rotate(${ang}deg)` });
+      fp.appendChild(K.icon('footprints', { stroke: 2.2 })); fp.firstChild.style.width = fp.firstChild.style.height = '100%';
+      printsLayer.appendChild(fp);
+      tl.fromTo(fp, { opacity: 0 }, { opacity: 0.8, duration: 0.35, ease: 'power2.out' }, 0.4 + ((s + 62) / WALK) * (walkEnd - 0.4));
+    }
     A.in(tl, other, Math.max(cue(0) + 2.2, walkEnd - 1.4), 'pop', { dur: 0.6 });
     A.pulse(tl, other, Math.max(cue(0) + 3.0, walkEnd - 0.6), { scale: 1.15 });
 
@@ -86,6 +96,12 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
       tl.fromTo(a, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power2.out' }, cue(1) + 0.45 + i * 0.12);
       tl.to(a, { opacity: 0.35, duration: 0.3, yoyo: true, repeat: 5, ease: 'sine.inOut' }, cue(1) + 0.8 + i * 0.12);
     });
+    // second burst on "barking, lunging": the arcs pulse again with another two-frame shake
+    const tBark = Math.min(cue(2) - 2.4, Math.max(cue(1) + 3.2, window.phraseTime(ctx, 1, 'barking', 0.62) - 0.1));
+    arcs.forEach((a, i) => tl.to(a, { opacity: 0.35, duration: 0.3, yoyo: true, repeat: 5, ease: 'sine.inOut' }, tBark + i * 0.12));
+    tl.to(photo.root, { x: 12, y: -6, duration: 0.033, ease: 'none' }, tBark)
+      .to(photo.root, { x: -10, y: 5, duration: 0.033, ease: 'none' }, tBark + 0.04)
+      .to(photo.root, { x: 0, y: 0, duration: 0.05, ease: 'none' }, tBark + 0.08);
     tl.set(chrome.footer.querySelector('.url'), { opacity: 0 }, cue(1));
 
     // beat 3: dim, eyes open around the edges, "Sound familiar?"
@@ -106,7 +122,9 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
   });
 
   // ------------------------------------------------------------------ welcome
-  registerScene('ch00s02', ({ stage, tl, cue, dur }) => {
+  registerScene('ch00s02', (ctx) => {
+    const { stage, tl, cue, dur } = ctx;
+    const say = (i, phrase, fb) => window.phraseTime(ctx, i, phrase, fb);
     stage.appendChild(style());
 
     // beat 1: heart + "Not a bad owner. Not a bad dog."
@@ -118,7 +136,8 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
     A.in(tl, glow, cue(0) + 0.1, 'scale', { dur: 1.4 });
     A.draw(tl, hs.querySelectorAll('path'), cue(0) + 0.1, 1.3);
     tl.fromTo(hs, { fill: 'rgba(97,149,55,0)' }, { fill: 'rgba(97,149,55,0.18)', duration: 0.8 }, cue(0) + 1.2);
-    A.in(tl, msg1, cue(0) + 0.9, 'fadeUp');
+    // the heart draws first; the message lands as it is said ("You're not a bad owner")
+    A.in(tl, msg1, Math.max(cue(0) + 0.9, say(0, "you're not a bad", 0.5) - 0.3), 'fadeUp');
 
     // beat 2: a dog having a hard time (red alert badge becomes a green heart)
     const dog = K.el('div', 'c0-dog'); Object.assign(dog.style, { left: '885px', top: '700px' });
@@ -136,11 +155,14 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
     tl.fromTo(good, { scale: 0, rotation: -90, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.55, ease: 'back.out(2)' }, cue(1) + 2.3);
     A.in(tl, msg2, cue(1) + 2.4, 'fadeUp');
 
-    // beat 3: title card
+    // beat 3: title card, centred on screen while it is the only thing there; it rises to make room at beat 4
     A.out(tl, g1, cue(2) - 0.1, 'fadeUp', { dur: 0.5 });
-    const kick = K.kicker(stage, 'Part 1 &nbsp;·&nbsp; The foundation', { x: 120, y: 190 });
-    const h = K.heading(stage, 'Understanding reactivity<br>and aggression', { x: 116, y: 236, w: 1500, size: 100 });
-    const part = K.chip(stage, 'Part 1', { x: 1580, y: 250, variant: 'green', icon: 'graduation-cap', size: 34 });
+    const tc = K.el('div'); stage.appendChild(tc);
+    const kick = K.kicker(tc, 'The foundation', { x: 120, y: 190 });
+    kick.style.fontSize = '30px';
+    const h = K.heading(tc, 'Understanding reactivity<br>and aggression', { x: 116, y: 236, w: 1500, size: 100 });
+    const part = K.chip(tc, 'Part 1', { x: 1580, y: 250, variant: 'green', icon: 'graduation-cap', size: 34 });
+    tl.fromTo(tc, { y: 200 }, { y: 0, duration: 0.9, ease: 'power3.inOut' }, cue(3));
     A.in(tl, kick, cue(2) + 0.35, 'fadeUp');
     A.in(tl, h.title, cue(2) + 0.45, 'wipe', { dur: 1.1 });
     A.in(tl, h.bar, cue(2) + 1.3, 'grow');
@@ -156,9 +178,18 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
       stage.appendChild(r);
       return r;
     });
-    const span3 = Math.max(4, dur - cue(3));
-    rows.forEach((r, i) => A.in(tl, r, cue(3) + span3 * (0.08 + i * 0.16), 'fadeUp'));
-    rows.forEach((r, i) => A.pulse(tl, r.querySelector('.ib'), cue(3) + span3 * (0.62 + i * 0.1), { scale: 1.12 }));
+    // each card arrives as its idea is named, then each icon pulses on the recap ("the feeling, the function, the full cup")
+    let prev = cue(3) + 1.0;
+    ['what your dog', 'what the behavior', 'why some days'].forEach((p, i) => {
+      const t = Math.max(prev, say(3, p, 0.25 + i * 0.18) - 0.3);
+      A.in(tl, rows[i], t, 'fadeUp');
+      prev = t + 0.6;
+    });
+    ['the feeling', 'the function', 'the full cup'].forEach((p, i) => {
+      const t = Math.max(prev, say(3, p, 0.72 + i * 0.09) - 0.1);
+      A.pulse(tl, rows[i].querySelector('.ib'), t, { scale: 1.12 });
+      prev = t + 0.5;
+    });
 
   });
 })();

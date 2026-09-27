@@ -33,14 +33,11 @@
 
   .c5-strip { position:absolute; left:0; top:0; width:1920px; height:1080px; }
   .c5-strip .abc-col .panel { background:var(--green-mist); }
-  .c5-strip .abc-col .panel img.c5-over { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-  .c5-strip .abc-col .cap { display:grid; }
-  .c5-strip .abc-col .cap .c5-cs { grid-area:1/1; align-self:center; }
-  .c5-stamp { position:absolute; width:164px; height:164px; border-radius:50%; background:var(--green); color:#fff; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; text-align:center; font:800 26px/1 var(--font-head); letter-spacing:-0.3px; text-transform:uppercase;
+  .c5-stamp { position:absolute; width:152px; height:152px; border-radius:50%; background:var(--green); color:#fff; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; font:800 26px/1 var(--font-head); letter-spacing:-0.8px; text-transform:uppercase;
     border:5px solid #fff; box-shadow:0 0 0 3px var(--green), 0 12px 28px rgba(40,60,20,0.32); padding-bottom:2px; }
-  .c5-stamp::before { content:''; position:absolute; inset:5px; border-radius:50%; border:2px dashed rgba(255,255,255,0.55); }
-  .c5-stamp svg { width:28px; height:28px; margin-bottom:4px; }
+  .c5-stamp::before { content:''; position:absolute; inset:4px; border-radius:50%; border:2px dashed rgba(255,255,255,0.55); }
+  .c5-stamp svg { width:24px; height:24px; margin-bottom:2px; }
   .c5-msg { position:absolute; display:flex; align-items:center; gap:24px; white-space:nowrap; }
   .c5-msg .rule { width:10px; height:72px; border-radius:5px; background:var(--green); }
   .c5-msg .t { font:700 46px/1.1 var(--font-head); color:var(--ink); }
@@ -93,11 +90,28 @@
   const STRIP = { x: 140, y: 130, w: 1640 };
   const COL_X = [0, 1, 2].map(i => STRIP.x + i * 570);      // left edge of each column (colW 500, gap 70)
   const COL_CX = COL_X.map(x => x + 250);                    // column centers
+  // 'It worked' stamp: over panel C's top-right corner, clear of the 'Consequence' label, the logo and
+  // the walking-away figure in abc_approach_c
+  const STAMP = { x: 1666, y: 209 };
   function strip(stage, label, panels, captions) {
     const wrap = div(stage, 'c5-strip');
     const S = K.abc(wrap, Object.assign({}, STRIP, { label, panels: panels.map(p => p), captions }));
     S.wrap = wrap;
     return S;
+  }
+  /** empty frames settle in just ahead of beat 0, the tab slides in, then A, B, C fill on beats 0, 1, 2
+   *  (tA: optional fill time for panel A, when the narration says 'A' later in beat 0) */
+  function stripIntro(tl, S, cue, tA) {
+    const t0 = Math.max(0.05, cue(0) - 0.3);
+    A.in(tl, S.cols.map(c => c.head), t0, 'fadeDown', { stagger: 0.08, dur: 0.6 });
+    A.in(tl, S.cols.map(c => c.panel), t0 + 0.05, 'fade', { stagger: 0.08, dur: 0.6 });
+    A.in(tl, S.arrows, t0 + 0.25, 'fade', { stagger: 0.08, dur: 0.5 });
+    A.in(tl, S.label, cue(0), 'fadeRight', { dur: 0.7 });
+    const fillT = [Math.max(cue(0) + 0.3, tA || 0), cue(1), cue(2)];
+    S.cols.forEach((c, i) => {
+      fillPanel(tl, c.panel, c.img, fillT[i]);
+      A.in(tl, c.cap, fillT[i] + 0.35, 'fadeUp', { dur: 0.6 });
+    });
   }
   /** panel fill: border turns olive, the illustration wipes in with a gentle settle */
   function fillPanel(tl, panel, img, t) {
@@ -259,22 +273,10 @@
       ['abc_greet_a.jpg', 'abc_greet_b.jpg', 'abc_greet_c.jpg'],
       ['A person appears outside<br>the window.', 'Jumping at the window<br>and barking.', 'The person comes inside.<br>The dog gets attention.']);
     S.cols.forEach(c => (c.panel.style.borderColor = LIGHT_BORDER));
-
-    // empty frame settles in just ahead of the first beat
-    const t0 = Math.max(0.05, cue(0) - 0.3);
-    A.in(tl, S.cols.map(c => c.head), t0, 'fadeDown', { stagger: 0.08, dur: 0.6 });
-    A.in(tl, S.cols.map(c => c.panel), t0 + 0.05, 'fade', { stagger: 0.08, dur: 0.6 });
-    A.in(tl, S.arrows, t0 + 0.25, 'fade', { stagger: 0.08, dur: 0.5 });
-    A.in(tl, S.label, cue(0), 'fadeRight', { dur: 0.7 });
-
-    const fillT = [cue(0) + 0.3, cue(1), cue(2)];
-    S.cols.forEach((c, i) => {
-      fillPanel(tl, c.panel, c.img, fillT[i]);
-      A.in(tl, c.cap, fillT[i] + 0.35, 'fadeUp', { dur: 0.6 });
-    });
+    stripIntro(tl, S, cue);
 
     // beat 2: it worked
-    const st = stamp(S.wrap, 1652, 210);
+    const st = stamp(S.wrap, STAMP.x, STAMP.y);
     stampIn(tl, st, at(2, 0.48));
     const m1 = msg(S.wrap, '*Barking* opened the door', 140, 786);
     A.in(tl, m1, at(2, 0.56), 'fadeRight', { dur: 0.7 });
@@ -291,57 +293,18 @@
   registerScene('ch05s03', ({ stage, tl, cue, end }) => {
     addCss(stage);
     const at = frac(cue, end);
-    const S = strip(stage, 'An excited greeting',
-      ['abc_greet_a.jpg', 'abc_greet_b.jpg', 'abc_greet_c.jpg'],
-      ['A person appears outside<br>the window.', 'Jumping at the window<br>and barking.', 'The person comes inside.<br>The dog gets attention.']);
-    const newCaps = ['A person approaches.', 'The dog stands in front of<br>the owner and barks.', 'The person goes away.'];
-    const newImgs = ['abc_approach_a.jpg', 'abc_approach_b.jpg', 'abc_approach_c.jpg'];
-    const oldSp = [], newSp = [], overs = [];
-    S.cols.forEach((c, i) => {
-      const old = c.cap.innerHTML;
-      c.cap.innerHTML = '';
-      const o = K.el('span', 'c5-cs', old), n = K.el('span', 'c5-cs', newCaps[i]);
-      c.cap.append(o, n);
-      gsap.set(n, { opacity: 0 });
-      oldSp.push(o); newSp.push(n);
-      const im = K.el('img', 'c5-over');
-      im.src = '../assets/img/' + newImgs[i];
-      c.panel.appendChild(im);
-      overs.push(im);
-    });
-    const lab2 = K.el('div', 'abc-label', 'A person approaches');
-    K.place(lab2, { x: STRIP.x, y: STRIP.y });
-    S.wrap.appendChild(lab2);
-
-    // the greeting strip is back for a moment, then clears
-    A.in(tl, S.wrap, 0, 'fade', { dur: 0.35 });
-    const c0 = cue(0);
-    A.out(tl, S.label, c0 - 0.2, 'fade', { dur: 0.35 });
-    A.in(tl, lab2, c0 + 0.1, 'fadeRight', { dur: 0.7 });
-    [1, 2].forEach(i => {
-      const t = c0 - 0.2 + (i - 1) * 0.1;
-      tl.fromTo(S.cols[i].img, { clipPath: 'inset(0% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 100%)', duration: 0.7, ease: 'power2.inOut', immediateRender: false }, t);
-      tl.to(S.cols[i].panel, { borderColor: LIGHT_BORDER, duration: 0.5, ease: 'power2.out' }, t);
-      A.out(tl, S.cols[i].cap, t, 'fade', { dur: 0.35 });
-    });
-    tl.set([oldSp[1], oldSp[2]], { opacity: 0 }, c0 + 0.5);
-    tl.set([newSp[1], newSp[2]], { opacity: 1 }, c0 + 0.5);
-
-    // beat 0: panel A wipes over to the new example
-    tl.fromTo(overs[0], { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: 'power2.inOut' }, c0 + 0.3);
-    tl.fromTo(overs[0], { scale: 1.12 }, { scale: 1, duration: 1.8, ease: 'power2.out' }, c0 + 0.3);
-    tl.to(oldSp[0], { opacity: 0, duration: 0.3, ease: 'power2.in' }, c0 + 0.35);
-    tl.to(newSp[0], { opacity: 1, duration: 0.5, ease: 'power2.out' }, c0 + 0.6);
-
-    // beats 1 and 2: B and C fill
-    [[1, cue(1)], [2, cue(2)]].forEach(([i, t]) => {
-      fillPanel(tl, S.cols[i].panel, overs[i], t);
-      tl.to(S.cols[i].cap, { opacity: 1, duration: 0.6, ease: 'power2.out' }, t + 0.35);
-    });
+    // same entrance as the greeting: empty frames settle in, then A, B and C fill on their beats
+    // (the greeting strip is not re-shown: the scene cut already fades it out, so bringing it back only to wipe it
+    // flashed the old panels and stacked the two tab labels)
+    const S = strip(stage, 'A person approaches',
+      ['abc_approach_a.jpg', 'abc_approach_b.jpg', 'abc_approach_c.jpg'],
+      ['A person approaches.', 'The dog stands in front of<br>the owner and barks.', 'The person goes away.']);
+    S.cols.forEach(c => (c.panel.style.borderColor = LIGHT_BORDER));
+    stripIntro(tl, S, cue, at(0, 0.37));   // panel A fills on "A, you're out on a walk"
 
     const m1 = msg(S.wrap, '*Barking* made them leave', 140, 786);
     A.in(tl, m1, at(2, 0.44), 'fadeRight', { dur: 0.7 });
-    const st = stamp(S.wrap, 1652, 210);
+    const st = stamp(S.wrap, STAMP.x, STAMP.y);
     stampIn(tl, st, at(2, 0.8));
 
     // beat 3: function tag, negative means removed

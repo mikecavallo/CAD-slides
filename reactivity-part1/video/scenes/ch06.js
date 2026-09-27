@@ -253,10 +253,13 @@
     K.place(tip, { x: colX(1) + 40 - 22, y: CAP_T + 52 - 26 });
     stage.appendChild(tip);
     tl.set(tip, { rotation: -4 }, 0);
-    A.in(tl, tip, cue(3) + 0.1, 'pop', { dur: 0.6 });
     const tSpot = at(3, 0.2);
-    A.out(tl, lines[2], tSpot, 'fadeUp', { dur: 0.4 });
-    A.in(tl, lines[3], tSpot + 0.3, 'fadeUp', { dur: 0.6 });
+    // the tip lands as one unit around "...next walk: spot": the old line lifts off as the badge pops, and
+    // 'Spot it first' follows on "spot", so the badge never sits on 'Calm dogs can learn' or on an empty card
+    const tTip = Math.max(cue(3) + 0.1, tSpot - 0.5);
+    A.out(tl, lines[2], tTip - 0.1, 'fadeUp', { dur: 0.4 });
+    A.in(tl, tip, tTip, 'pop', { dur: 0.6 });
+    A.in(tl, lines[3], tSpot + 0.1, 'fadeUp', { dur: 0.6 });
 
     // panel A window: x colX(0)+6, y PT+6, 488 x 260; image drawn at 0.8257 scale, shifted up 12.8 px
     const wx = colX(0) + 6, wy = PT + 6;

@@ -1,0 +1,187 @@
+"""Join rendered segments + narration into the finished video, captions and chapter files.
+
+    python3 tools/assemble.py [--name Reactivity-and-Aggression-Part-1]
+
+Outputs in out/:
+  <name>.mp4                  full lesson (1080p, chapters embedded)
+  <name>.srt / .vtt           captions (upload these to your course platform)
+  <name>-chapters.txt         chapter timestamps (YouTube style)
+  chapters/NN-Title.mp4       each chapter as its own video (for shorter lessons)
+"""
+import argparse
+import json
+import re
+import subprocess
+from pathlib import Path
+
+import numpy as np
+
+from common import BUILD, ROOT
+
+SR = 48000
+OUT = ROOT / "out"
+
+
+def run(*a):
+    subprocess.run(list(a), check=True)
+
+
+def decode(path):
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(path), "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True, check=True).stdout
+    return np.frombuffer(raw, dtype=np.float32)
+
+
+def chime(length=1.6):
+    """Soft two-note marimba-ish chime for chapter cards."""
+    t = np.arange(int(SR * length)) / SR
+    out = np.zeros_like(t)
+    for f, d in ((659.25, 0.0), (987.77, 0.14)):
+        tt = np.clip(t - d, 0, None)
+        env = (t >= d) * (1 - np.exp(-tt * 90)) * np.exp(-tt * 3.2)
+        out += env * (np.sin(2 * np.pi * f * tt) + 0.25 * np.sin(2 * np.pi * 2 * f * tt) + 0.08 * np.sin(2 * np.pi * 3 * f * tt))
+    return (out / np.max(np.abs(out)) * 0.16).astype(np.float32)
+
+
+def fmt_ts(sec, sep=","):
+    ms = int(round(sec * 1000))
+    h, ms = divmod(ms, 3600000)
+    m, ms = divmod(ms, 60000)
+    s, ms = divmod(ms, 1000)
+    return f"{h:02d}:{m:02d}:{s:02d}{sep}{ms:03d}"
+
+
+def split_caption(text, limit=84):
+    """Split text into caption chunks at sentence/clause boundaries, each <= limit chars (2 lines of ~42)."""
+    sents = re.split(r"(?<=[.!?])\s+", text.strip())
+    chunks = []
+    for s in sents:
+        while len(s) > limit:
+            cut = max((m.end() for m in re.finditer(r"[,;:]\s", s[:limit])), default=0) or s[:limit].rfind(" ")
+            chunks.append(s[:cut].strip())
+            s = s[cut:].strip()
+        if s:
+            chunks.append(s)
+    return chunks
+
+
+def two_lines(s, width=42):
+    if len(s) <= width:
+        return s
+    mid = len(s) // 2
+    spaces = [m.start() for m in re.finditer(" ", s)]
+    cut = min(spaces, key=lambda i: abs(i - mid)) if spaces else mid
+    return s[:cut].strip() + "\n" + s[cut:].strip()
+
+
+def captions(timing):
+    cues = []
+    for seg in timing["segments"]:
+        for b in seg["beats"]:
+            parts = split_caption(b["say"])
+            t0, t1 = seg["start"] + b["t"] + 0.12, seg["start"] + b["end"]
+            if b.get("words"):
+                # narration mode: use real word times for chunk boundaries
+                ws = b["words"]
+                n = 0
+                for p in parts:
+                    k = len(re.findall(r"[A-Za-z0-9'’]+", p))
+                    seg_ws = ws[n:n + k] or ws[-1:]
+                    cues.append([seg["start"] + seg_ws[0]["t"], seg["start"] + seg_ws[-1]["e"] + 0.25, p])
+                    n += k
+            else:
+                total = sum(len(p) for p in parts)
+                t = t0
+                for p in parts:
+                    d = (t1 - t0) * len(p) / total
+                    cues.append([t, t + d + 0.2, p])
+                    t += d
+    for i in range(len(cues) - 1):  # no overlaps
+        cues[i][1] = min(cues[i][1], cues[i + 1][0] - 0.04)
+    return cues
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--name", default="Reactivity-and-Aggression-Part-1")
+    ap.add_argument("--no-chapters", action="store_true")
+    ap.add_argument("--music", help="optional background music file, looped and ducked under the voice")
+    ap.add_argument("--music-db", type=float, default=-24, help="music level in dB (default -24)")
+    args = ap.parse_args()
+    timing = json.loads((BUILD / "timing.json").read_text())
+    segs = timing["segments"]
+    OUT.mkdir(exist_ok=True)
+    (OUT / "chapters").mkdir(exist_ok=True)
+
+    # 1) video: concat the segment files (each starts on a keyframe, so chapter cuts are exact)
+    lst = BUILD / "concat.txt"
+    lst.write_text("".join(f"file '{(BUILD / 'segments' / (s['id'] + '.mp4')).resolve()}'\n" for s in segs))
+    video = BUILD / "video_only.mp4"
+    run("ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", str(video))
+
+    # 2) audio: place narration clips on one timeline, chimes on chapter cards
+    total = timing["total"]
+    mix = np.zeros(int(SR * (total + 1)), dtype=np.float32)
+    cache = {}
+    ch = chime()
+    for s in segs:
+        if s["kind"] == "bumper":
+            a = int(SR * (s["start"] + 0.05))
+            mix[a:a + len(ch)] += ch[: len(mix) - a]
+        for item in s["audio"]:
+            f = ROOT / item["file"]
+            if f not in cache:
+                cache[f] = decode(f)
+            clip = cache[f]
+            a = int(round(SR * item["at"]))
+            n = min(len(clip), len(mix) - a)
+            mix[a:a + n] += clip[:n]
+    mix = mix[: int(SR * total)]
+    raw = BUILD / "mix.f32"
+    mix.tofile(raw)
+    audio = BUILD / "narration.m4a"
+    if args.music:
+        # music bed: looped, faded in/out, ducked whenever the narrator speaks
+        fc = (f"[0:a]highpass=f=70,asplit=2[v][sc];[1:a]aloop=loop=-1:size=2e9,atrim=0:{total:.3f},volume={args.music_db}dB,"
+              f"afade=t=in:d=2,afade=t=out:st={max(0, total - 4):.3f}:d=4[m];[m][sc]sidechaincompress=threshold=0.02:ratio=6:attack=80:release=600[md];"
+              f"[v][md]amix=inputs=2:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11[out]")
+        run("ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", str(raw), "-i", args.music,
+            "-filter_complex", fc, "-map", "[out]", "-ar", str(SR), "-ac", "2", "-c:a", "aac", "-b:a", "192k", str(audio))
+    else:
+        run("ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", str(raw),
+            "-af", "highpass=f=70,loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", str(SR), "-ac", "2", "-c:a", "aac", "-b:a", "192k", str(audio))
+
+    # 3) chapters metadata
+    chapters, seen = [], set()
+    for s in segs:
+        if s["chapter"] not in seen:
+            seen.add(s["chapter"])
+            chapters.append({"id": s["chapter"], "num": s["chapterNum"], "title": s["chapterTitle"], "start": s["start"]})
+    for i, c in enumerate(chapters):
+        c["end"] = chapters[i + 1]["start"] if i + 1 < len(chapters) else total
+    meta = BUILD / "chapters.ffmeta"
+    meta.write_text(";FFMETADATA1\ntitle=Understanding Reactivity and Aggression, Part 1\nartist=Calling All Dogs\n" + "".join(
+        f"[CHAPTER]\nTIMEBASE=1/1000\nSTART={int(c['start'] * 1000)}\nEND={int(c['end'] * 1000)}\ntitle={c['title']}\n" for c in chapters))
+
+    final = OUT / f"{args.name}.mp4"
+    run("ffmpeg", "-v", "error", "-y", "-i", str(video), "-i", str(audio), "-i", str(meta), "-map", "0:v", "-map", "1:a", "-map_metadata", "2",
+        "-map_chapters", "2", "-c", "copy", "-shortest", "-movflags", "+faststart", str(final))
+
+    # 4) captions + chapter list
+    cues = captions(timing)
+    (OUT / f"{args.name}.srt").write_text("".join(f"{i + 1}\n{fmt_ts(a)} --> {fmt_ts(b)}\n{two_lines(t)}\n\n" for i, (a, b, t) in enumerate(cues)))
+    (OUT / f"{args.name}.vtt").write_text("WEBVTT\n\n" + "".join(f"{fmt_ts(a, '.')} --> {fmt_ts(b, '.')}\n{two_lines(t)}\n\n" for a, b, t in cues))
+    (OUT / f"{args.name}-chapters.txt").write_text("".join(f"{int(c['start'] // 60)}:{int(c['start'] % 60):02d} {c['title']}\n" for c in chapters))
+
+    # 5) one file per chapter
+    if not args.no_chapters:
+        for c in chapters:
+            slug = re.sub(r"[^A-Za-z0-9]+", "-", c["title"]).strip("-")
+            run("ffmpeg", "-v", "error", "-y", "-ss", f"{c['start']:.3f}", "-i", str(final), "-t", f"{c['end'] - c['start']:.3f}", "-c", "copy",
+                "-avoid_negative_ts", "make_zero", "-movflags", "+faststart", str(OUT / "chapters" / f"{c['num']:02d}-{slug}.mp4"))
+
+    size = final.stat().st_size / 1e6
+    print(f"done: {final.relative_to(ROOT)} ({total / 60:.1f} min, {size:.0f} MB), {len(cues)} captions, {len(chapters)} chapters")
+
+
+if __name__ == "__main__":
+    main()

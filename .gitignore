@@ -1,0 +1,7 @@
+node_modules/
+reactivity-part1/build/
+reactivity-part1/out/
+reactivity-part1/narration/
+*.tmp.mp4
+.DS_Store
+__pycache__/

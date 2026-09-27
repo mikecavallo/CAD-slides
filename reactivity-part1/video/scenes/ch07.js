@@ -530,11 +530,14 @@
       const gone = extras.filter(w => w.seg === b - 1).map(w => w.el);
       if (gone.length) tl.to(gone, { opacity: 0, duration: 0.45, ease: 'power2.out' }, c[b]);
       const tSort = c[b] + 0.1;
+      // each word is picked up as a solid white token (so paths that cross read as tokens passing, never text on text)
       words.filter(w => w.cat === (b - 1) * 2 || w.cat === (b - 1) * 2 + 1).forEach((w, k) => {
         const card = cards[w.cat];
-        const t = tSort + k * 0.05;
+        const t = tSort + k * 0.07;
         const tgt = () => layoutXY(card.ph[w.t], stage);
-        tl.set(w.el, { zIndex: 20 }, t);
+        tl.set(w.el, { zIndex: 20 + k }, t);
+        tl.fromTo(w.chip, { backgroundColor: 'rgba(255,255,255,0)', boxShadow: '0px 6px 16px rgba(40,60,20,0)' },
+          { backgroundColor: 'rgba(255,255,255,1)', boxShadow: '0px 6px 16px rgba(40,60,20,0.16)', duration: 0.25, ease: 'power1.out', immediateRender: false }, t);
         tl.to(w.el, { x: () => tgt()[0] - w.left, y: () => tgt()[1] - w.top, scale: 1, rotation: 0, opacity: 1, duration: 0.9, ease: 'power3.inOut' }, t);
       });
       let prev = tSort + 0.3;
@@ -546,7 +549,7 @@
         tLast = t0;
         A.in(tl, card.card, t0, 'fade', { dur: 0.55 });
         words.filter(w => w.cat === ci).forEach((w, k) => {
-          tl.to(w.chip, { backgroundColor: 'rgba(232,241,220,1)', color: C.greenDeep, duration: 0.45, ease: 'power2.out' }, t0 + 0.25 + k * 0.06);
+          tl.to(w.chip, { backgroundColor: 'rgba(232,241,220,1)', color: C.greenDeep, boxShadow: '0px 6px 16px rgba(40,60,20,0)', duration: 0.45, ease: 'power2.out' }, t0 + 0.25 + k * 0.06);
         });
       });
     });

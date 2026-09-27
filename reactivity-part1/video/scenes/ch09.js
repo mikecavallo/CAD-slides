@@ -65,23 +65,38 @@
       gsap.set([c.fill, c.num, c.txt, c.ib], { opacity: 0 });
     });
     [0, 1, 2].forEach(i => fillCard(tl, g.cards[i], cue(i + 1)));
-    A.pulse(tl, g.cards[2].ib, cue(3) + 2.2, { scale: 1.15 });
+    A.pulse(tl, g.cards[2].ib, ctx.phrase(3, 'get specific', 0.4), { scale: 1.15 });
     ctx.exit = false; // continues seamlessly into ch09s02
   });
 
-  registerScene('ch09s02', ({ stage, tl, cue, beats }) => {
+  registerScene('ch09s02', (ctx) => {
+    const { stage, tl, cue, end, dur } = ctx;
+    const at = (i, p, fb) => ctx.phrase(i, p, fb);
     const g = grid(stage);
     g.cards.forEach((c, i) => { if (i < 3) setFilled(c); else gsap.set([c.fill, c.num, c.txt, c.ib], { opacity: 0 }); });
     fillCard(tl, g.cards[3], cue(0));
     fillCard(tl, g.cards[4], cue(1));
+    // "don't tape over the warning light": the warning light blinks once
+    A.pulse(tl, g.cards[4].ib, Math.max(cue(1) + 1.5, at(1, 'warning light', 0.5) - 0.1), { scale: 1.18 });
     fillCard(tl, g.cards[5], cue(2));
     // help icons join card 06, then a shield, then every card glows together
     const help = K.el('div', 'c9-help');
     const hb = ['users', 'stethoscope', 'shield-check'].map(ic => { const b = K.el('div', 'ib2'); b.appendChild(K.icon(ic)); help.appendChild(b); return b; });
     g.cards[5].card.appendChild(help);
     g.cards[5].txt.style.width = '355px'; g.cards[5].txt.style.fontSize = '29px';
-    A.in(tl, hb.slice(0, 2), cue(3) + 0.2, 'pop', { stagger: 0.3 });
-    A.in(tl, hb[2], cue(4) + 0.2, 'pop');
-    tl.to(g.cards.map(c => c.glow), { opacity: 1, duration: 0.8, stagger: 0.08, ease: 'power2.out' }, cue(4) + 1.4);
+    // each helper arrives as it is named: the pro, the vet (pulsing again for the veterinary behaviorist),
+    // then the shield for safety; every card glows together as the chapter wraps up
+    const tPro = Math.max(cue(3), at(3, 'force free pro', 0.05) - 0.2);
+    const tVet = Math.max(tPro + 1.2, at(3, 'have your vet', 0.3) - 0.2);
+    const tVb = Math.max(tVet + 2, at(3, 'veterinary behaviorist', 0.65) - 0.1);
+    A.in(tl, hb[0], tPro, 'pop');
+    A.in(tl, hb[1], tVet, 'pop');
+    A.pulse(tl, hb[1], tVb, { scale: 1.18 });
+    const tSafe = Math.max(cue(4), at(4, 'keep everyone safe', 0.1) - 0.2);
+    const tKids = Math.max(tSafe + 1.5, at(4, 'never leave kids', 0.35) - 0.1);
+    const tGlow = Math.min(dur - 2.6, Math.max(tKids + 2, at(4, 'muzzle training', 0.8) - 0.3));
+    A.in(tl, hb[2], tSafe, 'pop');
+    A.pulse(tl, hb[2], tKids, { scale: 1.18 });
+    tl.to(g.cards.map(c => c.glow), { opacity: 1, duration: 0.8, stagger: 0.08, ease: 'power2.out' }, tGlow);
   });
 })();

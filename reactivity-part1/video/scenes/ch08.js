@@ -426,10 +426,12 @@
 
     A.in(tl, cals[0].card, T[0] + 0.05, 'fadeRight', { dur: 0.8 });
     A.in(tl, cals[1].card, T[0] + 0.25, 'fadeLeft', { dur: 0.8 });
-    A.in(tl, cals[0].st, T[0] + 0.75, 'pop', { dur: 0.5 });
-    A.in(tl, cals[1].st, T[0] + 1.0, 'pop', { dur: 0.5 });
-    tl.fromTo(cals[1].card, { rotation: 0 }, { rotation: 1.2, duration: 0.06, yoyo: true, repeat: 5, ease: 'none' }, T[0] + 1.15);
-    const tMove = Math.max(T[0] + 1.9, at(0, 'three ideas', 0.5));
+    // Monday's check lands on "fine", Thursday's alert on "a disaster"
+    A.in(tl, cals[0].st, Math.max(T[0] + 0.75, at(0, 'fine', 0.2)), 'pop', { dur: 0.5 });
+    const tBad = Math.max(T[0] + 1.0, at(0, 'a disaster', 0.2));
+    A.in(tl, cals[1].st, tBad, 'pop', { dur: 0.5 });
+    tl.fromTo(cals[1].card, { rotation: 0 }, { rotation: 1.2, duration: 0.06, yoyo: true, repeat: 5, ease: 'none' }, tBad + 0.15);
+    const tMove = Math.max(T[0] + 1.9, tBad + 0.8, at(0, 'three ideas', 0.5));
     cals.forEach((c, i) => tl.to(c.card, { x: fx[i] - CAL.xs[i], y: CY2 - CAL.y, scale: CS, transformOrigin: '0% 0%', duration: 0.9, ease: 'power3.inOut' }, tMove));
     wipeIn(tl, tc.title, tMove + 0.35, 1.0);
     tl.fromTo(tc.bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'power2.inOut' }, tMove + 1.0);
@@ -474,38 +476,50 @@
 
     const pill = thrTag(stage, 960, LY);
 
-    // beat 1: the line, the green zone and the thinking brain
+    // beat 1: the line draws on "threshold", its two sides tint on "coping and not coping" (the side above stays
+    // faint until beat 2), and the thinking brain lands on "Under it"
     wipeIn(tl, H.titles[0], T[1] + 0.15);
     barIn(tl, H.bar, T[1] + 0.3);
-    drawThr(tl, line, T[1] + 0.05, 0.9);
-    A.in(tl, pill, T[1] + 0.55, 'pop', { dur: 0.6 });
-    A.in(tl, zG, T[1] + 0.35, 'fade', { dur: 0.7 });
-    A.in(tl, brain, T[1] + 0.6, 'pop', { dur: 0.6 });
-    A.in(tl, gLab, T[1] + 0.75, 'fadeRight', { dur: 0.7 });
-    A.in(tl, gt, Math.max(T[1] + 1.6, at(1, 'hear you')), 'fadeUp', { stagger: 0.35, dur: 0.6 });
+    const tLine = Math.max(T[1] + 0.05, at(1, 'threshold'));
+    drawThr(tl, line, tLine, 0.9);
+    A.in(tl, pill, tLine + 0.5, 'pop', { dur: 0.6 });
+    const tCope = Math.max(tLine + 1.0, at(1, 'coping'));
+    A.in(tl, zG, tCope, 'fade', { dur: 0.7 });
+    const tNot = Math.max(tCope + 0.5, at(1, 'not coping'));
+    tl.fromTo(zR, { opacity: 0 }, { opacity: 0.4, duration: 0.7, ease: 'power2.out' }, tNot);
+    const tUnder = Math.max(tNot + 0.8, at(1, 'under it'));
+    A.in(tl, brain, tUnder, 'pop', { dur: 0.6 });
+    A.in(tl, gLab, tUnder + 0.15, 'fadeRight', { dur: 0.7 });
+    A.in(tl, gt, Math.max(tUnder + 1.0, at(1, 'hear you')), 'fadeUp', { stagger: 0.35, dur: 0.6 });
 
-    // beat 2: the red zone, feelings in charge
+    // beat 2: the red zone fills in; the thinking brain dims on "goes offline", feelings take the wheel
+    const gGroup = [brain, gLab, gTags];
     swapTitle(tl, H, 0, 1, T[2]);
-    A.in(tl, zR, T[2] + 0.05, 'fade', { dur: 0.7 });
-    A.in(tl, zap, T[2] + 0.3, 'pop', { dur: 0.6 });
-    A.in(tl, rLab, T[2] + 0.45, 'fadeRight', { dur: 0.7 });
-    A.in(tl, rt.slice(0, 3), Math.max(T[2] + 1.4, at(2, 'fight')), 'fadeUp', { stagger: 0.25, dur: 0.55 });
-    A.in(tl, rt[3], Math.max(T[2] + 2.4, at(2, 'road rage')), 'fadeUp', { dur: 0.55 });
+    tl.to(zR, { opacity: 1, duration: 0.7, ease: 'power2.out' }, T[2] + 0.05);
+    const tOff = Math.max(T[2] + 0.6, at(2, 'goes offline'));
+    A.dim(tl, gGroup, tOff, 0.35, { dur: 0.7 });
+    const tFeel = Math.max(tOff + 0.5, at(2, 'big feelings'));
+    A.in(tl, zap, tFeel, 'pop', { dur: 0.6 });
+    A.in(tl, rLab, tFeel + 0.15, 'fadeRight', { dur: 0.7 });
+    A.in(tl, rt.slice(0, 3), Math.max(tFeel + 1.0, at(2, 'fight')), 'fadeUp', { stagger: 0.25, dur: 0.55 });
+    A.in(tl, rt[3], Math.max(tFeel + 2.0, at(2, 'road rage')), 'fadeUp', { dur: 0.55 });
 
-    // beat 3: the calculator greys out while the alarm flashes
-    swapTitle(tl, H, 1, 2, T[3]);
+    // beat 3: long division pops up; on "You're not being stubborn" it greys out, the alarm flashes and the title changes
     A.in(tl, calc, T[3] + 0.1, 'pop', { dur: 0.6 });
     const tg = Math.max(T[3] + 1.4, at(3, "you're not"));
+    swapTitle(tl, H, 1, 2, tg);
     tl.to(calc, { filter: 'grayscale(1)', opacity: 0.42, duration: 0.7, ease: 'power2.out' }, tg);
     A.in(tl, alert, tg - 0.1, 'pop', { dur: 0.5 });
     tl.to(alert, { opacity: 0.3, duration: 0.18, yoyo: true, repeat: 5, ease: 'sine.inOut' }, tg + 0.5);
 
-    // beat 4: train here
-    swapTitle(tl, H, 2, 3, T[4]);
-    A.draw(tl, shaft, T[4] + 0.1, 0.6);
-    A.draw(tl, head, T[4] + 0.6, 0.3);
-    A.in(tl, train, T[4] + 0.75, 'pop', { dur: 0.6 });
-    A.in(tl, ring, T[4] + 0.5, 'fade', { dur: 0.8 });
+    // beat 4: on "Training happens under the line" the thinking brain comes back and the arrow points into the green
+    const tTrain = Math.max(T[4] + 0.1, at(4, 'training happens', 0.5));
+    swapTitle(tl, H, 2, 3, tTrain);
+    A.undim(tl, gGroup, tTrain - 0.1, { dur: 0.6 });
+    A.draw(tl, shaft, tTrain + 0.1, 0.6);
+    A.draw(tl, head, tTrain + 0.6, 0.3);
+    A.in(tl, train, tTrain + 0.75, 'pop', { dur: 0.6 });
+    A.in(tl, ring, tTrain + 0.5, 'fade', { dur: 0.8 });
   });
 
   // =================================================================== ch08s02  Getting close to threshold
@@ -642,12 +656,13 @@
     const cupTag = thrTag(W, cup.xr + 120, THR);
     const chips = LAY.slice(1).map(b => centred(W, chip(b.icon, b.text, b.color), CX, b.cy - 25, 600));
 
-    // beat 0: cup, base layer and threshold
-    tl.fromTo([cup.glass, cup.inner], { opacity: 0 }, { opacity: 1, duration: 0.6 }, T[0] + 0.2);
-    A.draw(tl, cup.outline, T[0] + 0.2, 1.2);
-    tl.fromTo(cup.shine, { opacity: 0 }, { opacity: 0.4, duration: 0.6 }, T[0] + 1.1);
-    drawThr(tl, cup.thr, T[0] + 1.0, 0.8);
-    A.in(tl, cupTag, T[0] + 1.3, 'pop', { dur: 0.6 });
+    // beat 0: cup (on "Think of a cup"), base layer and threshold
+    const tCup = Math.min(T[1] - 1.8, Math.max(T[0] + 0.2, at(0, 'think of a cup')));
+    tl.fromTo([cup.glass, cup.inner], { opacity: 0 }, { opacity: 1, duration: 0.6 }, tCup);
+    A.draw(tl, cup.outline, tCup, 1.2);
+    tl.fromTo(cup.shine, { opacity: 0 }, { opacity: 0.4, duration: 0.6 }, tCup + 0.9);
+    drawThr(tl, cup.thr, tCup + 0.8, 0.8);
+    A.in(tl, cupTag, tCup + 1.1, 'pop', { dur: 0.6 });
 
     // beat 1: three pours
     const P = [T[1] + 0.15];
@@ -665,6 +680,11 @@
     svgPop(tl, drop, T[2] + 0.1, CX, DY);
     tl.fromTo(chips[3], { opacity: 0, x: 170, y: DY - LAY[4].cy, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(2)' }, T[2] + 0.25);
     const tD = Math.max(T[2] + 2.4, at(2, 'so it tips', 0.6));
+    // while the story waits for "so it tips over", the drop hovers gently instead of hanging frozen in mid-air
+    const bob0 = T[2] + 0.8, bobH = 0.7, bobN = Math.floor((tD - 0.05 - bob0) / bobH);
+    if (bobN >= 2) {
+      tl.fromTo(drop, { y: 0 }, { y: -9, duration: bobH, ease: 'sine.inOut', yoyo: true, repeat: (bobN % 2 ? bobN - 2 : bobN - 1), immediateRender: false }, bob0);
+    }
     tl.to(drop, { y: LAY[3].y0 - DY - 16, duration: 0.45, ease: 'power2.in' }, tD);
     tl.to(drop, { opacity: 0, duration: 0.12 }, tD + 0.4);
     cup.setLevel(tl, TOPLV, tD + 0.38, 0.5, 'power2.out');
@@ -747,7 +767,8 @@
     swapTitle(tl, H, 1, 2, T[5]);
     drawThr(tl, thr, T[5] + 0.1, 0.9);
     A.in(tl, thrPill, T[5] + 0.6, 'pop', { dur: 0.6 });
-    const S2 = T[5] + 1.1, D2 = 1.2;
+    // the last stretch draws so the jogger's spike crosses the line on "until the jogger tips it over"
+    const D2 = 1.2, S2 = Math.min(T[5] + 2.6, Math.max(T[5] + 1.1, at(5, 'the jogger tips', 0.1) - ((0.8 - CUT) / (1 - CUT)) * D2));
     liveLine(tl, dataG, fDay, X, Y, CUT, 1, S2, D2, {}, over, gauge);
     svgPop(tl, evIcons[3].inner, S2 + ((0.8 - CUT) / (1 - CUT)) * D2 - 0.1, evIcons[3].x, evIcons[3].y, 0.5);
     tl.to(area, { opacity: 0.22, duration: 0.6 }, S2 + D2);
@@ -777,10 +798,16 @@
     const iX = t => ix0 + t * iW, iY = v => iyb - v * (iyb - iyt);
     const icp = K.svgEl('clipPath', { id: 'c8over3i' }, idefs);
     K.svgEl('rect', { x: 0, y: 0, width: IW, height: iY(ITH) }, icp);
+    // the three triggers pop in as they are named: "a dog, a skateboard and a shouting kid"
+    const ISAY = ['a dog', 'a skateboard', 'a shouting kid'];
+    let tIc = T[6] + 1.0;
     ['dog', 'skateboard', 'megaphone'].forEach((n, i) => {
       const cx = 66 + i * 80;
-      K.circle(isvg, cx, 128, 31, { fill: C.redPale, stroke: 'none' });
-      svgIcon(isvg, n, cx, 128, 36, { stroke: C.red });
+      const g = K.group(isvg);
+      K.circle(g, cx, 128, 31, { fill: C.redPale, stroke: 'none' });
+      svgIcon(g, n, cx, 128, 36, { stroke: C.red });
+      tIc = Math.max(tIc + 0.35, at(6, ISAY[i], 0.2));
+      svgPop(tl, g, tIc, cx, 128, 0.5);
     });
     K.line(isvg, ix0, iyb, ix0 + iW, iyb, { stroke: C.axis, 'stroke-width': 4 });
     K.line(isvg, ix0, iyb, ix0, iyt - 10, { stroke: C.axis, 'stroke-width': 4 });
@@ -810,7 +837,9 @@
     const hiTail = K.path(dataG, fnPath(f1, 0.3, 1, X, Y), { stroke: C.greenLight, 'stroke-width': 24, opacity: 0.9 });
     drawAxes(tl, ch, T[0] + 0.2);
     tl.fromTo(time, { opacity: 0 }, { opacity: 1, duration: 0.5 }, T[0] + 0.6);
-    liveLine(tl, dataG, f1, X, Y, 0, 1, T[0] + 0.7, 2.8, { stroke: C.greenDark });
+    // the line runs so the spike climbs on "stress goes up fast" and the tail draws through "comes down slowly"
+    const D0 = 3.2, S0 = Math.min(T[1] - D0 + 0.2, Math.max(T[0] + 0.7, at(0, 'goes up', 0.1) - 0.18 * D0));
+    liveLine(tl, dataG, f1, X, Y, 0, 1, S0, D0, { stroke: C.greenDark });
 
     // ---- beat 1: the friend who yelled boo
     const card = box(stage, 'c8-card', null, 1060, 300, 640, 230);
@@ -833,11 +862,13 @@
     const hand = K.line(clockG, 1592, CY, 1592, CY - 24, { stroke: C.greenDark, 'stroke-width': 5 });
     K.circle(clockG, 1592, CY, 5, { fill: C.greenDark });
 
-    A.in(tl, card, T[1] + 0.05, 'fadeUp', { dur: 0.6 });
-    const tH = Math.max(T[1] + 2.0, at(1, 'but your heart'));
+    // the card and its alarm arrive with the "boo"; heart and clock follow on "But your heart kept pounding"
+    const tBoo = Math.max(T[1] + 0.3, at(1, 'boo', 0.25));
+    A.in(tl, card, tBoo - 0.25, 'fadeUp', { dur: 0.6 });
+    const tH = Math.max(T[1] + 2.0, tBoo + 1.4, at(1, 'but your heart'));
     tl.fromTo(card, { width: 200 }, { width: 640, duration: 0.7, ease: 'power3.inOut' }, tH - 0.6);
-    svgPop(tl, alertG, T[1] + 0.3, 1152, CY);
-    tl.to(alertG, { opacity: 0.35, duration: 0.16, yoyo: true, repeat: 5, ease: 'sine.inOut' }, T[1] + 0.9);
+    svgPop(tl, alertG, tBoo, 1152, CY);
+    tl.to(alertG, { opacity: 0.35, duration: 0.16, yoyo: true, repeat: 5, ease: 'sine.inOut' }, tBoo + 0.6);
     tl.fromTo(chev, { opacity: 0 }, { opacity: 1, duration: 0.4 }, tH - 0.2);
     svgPop(tl, heartG, tH, 1392, CY);
     svgPop(tl, clockG, tH + 0.2, 1592, CY);
@@ -1010,8 +1041,11 @@
     const q = box(stage, 'c8-q', '?', 760, 214, 400);
     const ask = centred(stage, K.el('div', 'c8-ask', 'What’s in the cup today?'), 960, 740, 1400);
     const tryB = tryBadge(ask);
-    A.in(tl, q, t3 + 0.9, 'pop', { dur: 0.6 });
-    A.in(tl, ask, t3 + 1.1, 'fadeUp', { dur: 0.7 });
-    tryIn(tl, tryB, t3 + 1.6);
+    // the question mark lands on "one question", the question itself when it is asked
+    const tQ = Math.max(t3 + 0.9, at(3, 'one question'));
+    const tAsk = Math.min(end(3) - 1.0, Math.max(tQ + 0.6, at(3, "what's already")));
+    A.in(tl, q, tQ, 'pop', { dur: 0.6 });
+    A.in(tl, ask, tAsk, 'fadeUp', { dur: 0.7 });
+    tryIn(tl, tryB, tAsk + 0.5);
   });
 })();

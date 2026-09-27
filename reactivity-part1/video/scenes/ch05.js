@@ -5,8 +5,7 @@
  * ch05s04  same behavior, different job, then the A, B, C worksheet homework
  */
 (() => {
-  const GREEN = '#619537', GREEN_DARK = '#3f6b22', OLIVE = '#4b5a1e';
-  const LIGHT_BORDER = '#cdd7c0';
+  const GREEN = '#619537', GREEN_DARK = '#3f6b22';
 
   const CSS = `
   .c5-hero { position:absolute; left:0; top:330px; width:1920px; display:flex; justify-content:center; align-items:center; gap:44px; }
@@ -32,7 +31,8 @@
   .c5-halo { position:absolute; width:200px; height:200px; border-radius:50%; border:6px solid var(--green); opacity:0; }
 
   .c5-strip { position:absolute; left:0; top:0; width:1920px; height:1080px; }
-  .c5-strip .abc-col .panel { background:var(--green-mist); }
+  /* empty frames look like chapter 6's: olive frame, near-white window (as in the deck) */
+  .c5-strip .abc-col .panel { background:rgba(255,255,255,0.78); }
   .c5-stamp { position:absolute; width:152px; height:152px; border-radius:50%; background:var(--green); color:#fff; display:flex; flex-direction:column;
     align-items:center; justify-content:center; text-align:center; font:800 26px/1 var(--font-head); letter-spacing:-0.8px; text-transform:uppercase;
     border:5px solid #fff; box-shadow:0 0 0 3px var(--green), 0 12px 28px rgba(40,60,20,0.32); padding-bottom:2px; }
@@ -72,10 +72,10 @@
   .c5-sheet .wr .txt { display:block; overflow:hidden; white-space:nowrap; max-width:0; font:italic 500 44px/1.25 var(--font-body); color:var(--ink); }
   .c5-sheet .wr .pen { position:absolute; left:100%; bottom:6px; margin-left:2px; width:64px; height:64px; color:var(--green-dark); }
   .c5-sheet .wr .pen svg { width:64px; height:64px; }
-  .c5-try { position:absolute; display:flex; align-items:center; gap:14px; padding:10px 30px 10px 10px; border-radius:999px; background:var(--green); color:#fff;
-    border:5px solid #fff; box-shadow:0 10px 26px rgba(40,60,20,0.28); font:700 32px/1 var(--font-head); white-space:nowrap; }
-  .c5-try .ib { width:52px; height:52px; border-radius:50%; background:#fff; color:var(--green-dark); display:grid; place-items:center; flex:0 0 auto; }
-  .c5-try .ib svg { width:32px; height:32px; }
+  /* the video-wide "Try this" badge (same look as chapters 1, 2, 3, 7 and 8) */
+  .c5-try { position:absolute; display:flex; align-items:center; gap:12px; padding:14px 26px 14px 18px; border-radius:999px; background:var(--green); color:#fff;
+    font:700 26px/1 var(--font-body); letter-spacing:3px; text-transform:uppercase; white-space:nowrap; box-shadow:0 10px 22px rgba(44,74,23,0.26); }
+  .c5-try svg { width:32px; height:32px; }
   `;
 
   // ---------------------------------------------------------------- shared helpers
@@ -113,9 +113,8 @@
       A.in(tl, c.cap, fillT[i] + 0.35, 'fadeUp', { dur: 0.6 });
     });
   }
-  /** panel fill: border turns olive, the illustration wipes in with a gentle settle */
+  /** panel fill: the illustration wipes in with a gentle settle */
   function fillPanel(tl, panel, img, t) {
-    tl.to(panel, { borderColor: OLIVE, duration: 0.5, ease: 'power2.out' }, t);
     tl.fromTo(img, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: 'power2.inOut' }, t);
     tl.fromTo(img, { scale: 1.12 }, { scale: 1, duration: 1.8, ease: 'power2.out' }, t);
   }
@@ -272,7 +271,6 @@
     const S = strip(stage, 'An excited greeting',
       ['abc_greet_a.jpg', 'abc_greet_b.jpg', 'abc_greet_c.jpg'],
       ['A person appears outside<br>the window.', 'Jumping at the window<br>and barking.', 'The person comes inside.<br>The dog gets attention.']);
-    S.cols.forEach(c => (c.panel.style.borderColor = LIGHT_BORDER));
     stripIntro(tl, S, cue);
 
     // beat 2: it worked
@@ -299,7 +297,6 @@
     const S = strip(stage, 'A person approaches',
       ['abc_approach_a.jpg', 'abc_approach_b.jpg', 'abc_approach_c.jpg'],
       ['A person approaches.', 'The dog stands in front of<br>the owner and barks.', 'The person goes away.']);
-    S.cols.forEach(c => (c.panel.style.borderColor = LIGHT_BORDER));
     stripIntro(tl, S, cue, at(0, 0.37));   // panel A fills on "A, you're out on a walk"
 
     const m1 = msg(S.wrap, '*Barking* made them leave', 140, 786);
@@ -423,11 +420,10 @@
     A.out(tl, h2.title, c3 - 0.15, 'fadeUp', { dur: 0.4 });
     A.in(tl, h3.title, c3 + 0.3, 'fadeUp', { dur: 0.7 });
     const tryB = div(stage, 'c5-try');
-    div(tryB, 'ib').appendChild(K.icon('notebook-pen', { stroke: 2.2 }));
+    tryB.appendChild(K.icon('notebook-pen', { stroke: 2.4 }));
     tryB.appendChild(K.el('span', null, 'Try this'));
-    K.place(tryB, { x: 190, y: 292 });
-    tl.fromTo(tryB, { opacity: 0, scale: 1.5, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.45, ease: 'power3.in' }, c3 + 0.2);
-    tl.to(tryB, { scale: 1.05, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, c3 + 0.65);
+    K.place(tryB, { x: 226, y: 292 });
+    tl.fromTo(tryB, { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.7, ease: 'back.out(1.8)' }, c3 + 0.2);
     // spacing adapts to the beat length so all three lines finish before the scene ends
     const w0 = c3 + 0.9;
     const step = Math.min(1.5, Math.max(0.9, (dur - 1.2 - w0) / 3));

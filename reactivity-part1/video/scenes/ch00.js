@@ -37,7 +37,7 @@ window.ICONS['stress-cup'] = '<path d="M7.2 12.5h9.6l-.72 6.6a1.7 1.7 0 0 1-1.7 
 
     // beat 1: a calm walk on a dotted path, another dog appears at the corner
     const walk = K.el('div'); stage.appendChild(walk);
-    const kick = K.kicker(walk, 'A quiet morning walk', { x: 120, y: 190 });
+    const kick = K.kicker(walk, 'A quiet morning walk', { x: 120, y: 190, size: 30 }); // 30 px like every other kicker
     const svg = K.svg(walk, { x: 0, y: 0, w: 1920, h: 1080 });
     const d = 'M 150 820 C 520 820 700 640 980 640 S 1400 470 1560 330';
     const trail = K.path(svg, d, { stroke: '#b8d99a', 'stroke-width': 10, 'stroke-dasharray': '2 26' });

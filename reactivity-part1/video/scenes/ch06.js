@@ -38,7 +38,9 @@
   .c6-tile .l { font: 600 26px/1.2 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
   .c6-eye { position: absolute; width: 68px; height: 68px; border-radius: 50%; background: #fff; color: var(--green-dark); display: grid; place-items: center; box-shadow: 0 6px 18px rgba(30,50,15,0.32); }
   .c6-eye svg { width: 40px; height: 40px; }
-  .c6-trythis { position: absolute; display: inline-flex; align-items: center; gap: 10px; padding: 10px 24px 10px 18px; border-radius: 999px; background: var(--green); color: #fff; font: 700 28px/1 var(--font-body); white-space: nowrap; box-shadow: 0 6px 16px rgba(30,50,15,0.25); }
+  /* the video-wide "Try this" badge (same look as chapters 1, 2, 3, 7 and 8) */
+  .c6-trythis { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 14px 26px 14px 18px; border-radius: 999px; background: var(--green); color: #fff;
+    font: 700 26px/1 var(--font-body); letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; box-shadow: 0 10px 22px rgba(44,74,23,0.26); }
   .c6-trythis svg { width: 32px; height: 32px; }
   .c6-card { position: absolute; background: #fff; border-radius: 30px; box-shadow: var(--shadow); border: 1px solid #e6e9e1; }
   .c6-bubble-txt { position: absolute; display: grid; place-items: center; text-align: center; font: 700 56px/1.1 var(--font-head); color: var(--green-dark); }
@@ -250,15 +252,14 @@
     const tip = K.el('div', 'c6-trythis');
     tip.appendChild(K.icon('notebook-pen', { stroke: 2.4 }));
     tip.appendChild(K.el('span', null, 'Try this'));
-    K.place(tip, { x: colX(1) + 40 - 22, y: CAP_T + 52 - 26 });
+    K.place(tip, { x: colX(1) + 40 - 26, y: CAP_T + 52 - 30 });
     stage.appendChild(tip);
-    tl.set(tip, { rotation: -4 }, 0);
     const tSpot = at(3, 0.2);
     // the tip lands as one unit around "...next walk: spot": the old line lifts off as the badge pops, and
     // 'Spot it first' follows on "spot", so the badge never sits on 'Calm dogs can learn' or on an empty card
     const tTip = Math.max(cue(3) + 0.1, tSpot - 0.5);
     A.out(tl, lines[2], tTip - 0.1, 'fadeUp', { dur: 0.4 });
-    A.in(tl, tip, tTip, 'pop', { dur: 0.6 });
+    tl.fromTo(tip, { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.7, ease: 'back.out(1.8)' }, tTip);
     A.in(tl, lines[3], tSpot + 0.1, 'fadeUp', { dur: 0.6 });
 
     // panel A window: x colX(0)+6, y PT+6, 488 x 260; image drawn at 0.8257 scale, shifted up 12.8 px

@@ -26,7 +26,7 @@
 
   function grid(stage) {
     stage.appendChild(K.el('style', null, css));
-    const kick = K.kicker(stage, 'Pulling it together', { x: 120, y: 118 });
+    const kick = K.kicker(stage, 'Pulling it together', { x: 120, y: 112, size: 30 }); // 30 px like the ch00 and ch01 kickers
     const h = K.heading(stage, 'Your key takeaways', { x: 116, y: 150, size: 80 });
     const cards = CARDS.map((c, i) => {
       const x = 110 + (i % 2) * 865, y = 312 + Math.floor(i / 2) * 216;

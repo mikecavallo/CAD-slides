@@ -258,7 +258,7 @@
       },
       {
        "say": "Same volume, different reason. And the reason is where the useful information is.",
-       "show": "The two knobs merge back into one and three unlabeled arrows fan out from it: left, right and up.",
+       "show": "The two knobs fade away. A round dog badge takes the center and three unlabeled arrows fan out from it: left, right and up.",
        "onscreen": "Which direction?"
       }
      ]
@@ -266,7 +266,7 @@
     {
      "id": "ch02s03",
      "heading": "Three directions",
-     "visual_concept": "Hub diagram: the maxed-out knob at center with three arrows. Left arrow 'Away' with an alert-triangle icon, right arrow 'Toward' with a magnet icon and a taut leash line, upward burst 'Release' with a zap icon. Each lights in turn; a car icon carries the road rage analogy. A caution beat flips the Away arrow's tip forward for a moment so owners learn to judge the goal, not the pull. Ends with the green 'Try this' badge and a question card.",
+     "visual_concept": "Hub diagram with a round dog badge at the center (no gauge or knob) and three arrows: left 'Away', right 'Toward', up 'Release'. Each arrow lights up in turn with a Lucide icon and a short label.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:volume-knob",
@@ -280,7 +280,7 @@
      "beats": [
       {
        "say": "Direction one is away: your dog is scared and wants distance. A skateboard rattles by, and they bark like their life depends on it. To them, it kind of does.",
-       "show": "The left arrow lights up with an alert-triangle icon and the label 'Away: fear'.",
+       "show": "The left arrow from the dog badge lights up with an alert-triangle icon and the label 'Away: fear'.",
        "onscreen": "Away: fear"
       },
       {
@@ -305,8 +305,39 @@
       },
       {
        "say": "Lots of dogs mix all three. Next time yours goes off, ask: away, toward, or release? Guessing is fine.",
-       "show": "All three arrows glow together, a question card slides up beneath the knob, and a small green 'Try this' badge with a notebook-pen icon pins to the top left corner.",
+       "show": "All three arrows glow together, a question card slides up beneath the dog badge, and a small green 'Try this' badge with a notebook-pen icon pins to the top left corner.",
        "onscreen": "Away, toward, or release?"
+      }
+     ]
+    },
+    {
+     "id": "ch02s04",
+     "heading": "Bred for a job",
+     "visual_concept": "Four breed-job cards in a grid, each with a Lucide icon. A pressure meter fills to red with nowhere to go, a zap arcs to everyday targets, then the meter drains to green as healthy outlet chips appear.",
+     "assets": [
+      "icon:footprints",
+      "icon:squirrel",
+      "icon:search",
+      "icon:shield",
+      "icon:gauge",
+      "icon:bike",
+      "icon:mail"
+     ],
+     "beats": [
+      {
+       "say": "One more piece of the puzzle: the job your dog was bred for. Herders were made to chase and control movement. Terriers, to hunt. Hounds, to follow their nose. Guardians, to watch over their home.",
+       "show": "The heading 'Bred for a job' writes on and four breed cards pop in one per phrase: 'Herders: chase and control movement', 'Terriers: hunt', 'Hounds: follow their nose', 'Guardians: watch over home'.",
+       "onscreen": "Bred for a job"
+      },
+      {
+       "say": "Those drives are normal, and they don't switch off. When they don't get a healthy outlet, the pressure builds, and a bike, a squirrel or the mail carrier becomes the target.",
+       "show": "The cards shrink to one side; a pressure meter fills to red and a zap arcs from it to three small targets: bike, squirrel, mail.",
+       "onscreen": "No outlet, more pressure"
+      },
+      {
+       "say": "So give the drive a job: flirt poles for chasers, sniffing games for noses, tug for hunters. It won't fix reactivity on its own, but it takes a lot of pressure off.",
+       "show": "The meter drains to green as three outlet chips pop in, 'Flirt pole', 'Sniff games', 'Tug', under a green label 'Give the drive a job'.",
+       "onscreen": "Give the drive a job"
       }
      ]
     }
@@ -343,9 +374,14 @@
        "onscreen": "How big, or what for"
       },
       {
-       "say": "The reactive dog is saying, this is too much. The dog using aggression is saying, I'll make this stop.",
-       "show": "A speech bubble pops up from each photo: 'This is too much' on the left, 'I'll make this stop' on the right.",
-       "onscreen": "Too much, or make it stop"
+       "say": "The reactive dog is saying one of two things: this is too much, or I want this now.",
+       "show": "Two speech bubbles pop up from the reactivity photo, one per phrase: 'This is too much' and 'I want this now'.",
+       "onscreen": ""
+      },
+      {
+       "say": "The dog using aggression is saying: I will make this stop, or I will make this happen.",
+       "show": "Two speech bubbles pop up from the aggression photo, one per phrase: 'I will make this stop' and 'I will make this happen'.",
+       "onscreen": ""
       },
       {
        "say": "In real life there's a lot of overlap. A reactive dog's barking often gets results too, so many dogs are a bit of both.",
@@ -484,7 +520,7 @@
   },
   {
    "id": "ch04",
-   "title": "Why it happens",
+   "title": "Why reactivity and aggression happen",
    "slide_refs": [
     3,
     5
@@ -492,7 +528,7 @@
    "scenes": [
     {
      "id": "ch04s01",
-     "heading": "Why it happens",
+     "heading": "Why reactivity and aggression happen",
      "visual_concept": "photo_why.jpg as a portrait card on the left, heading on the right. A mixing bowl built from a cooking-pot icon sits center right with seven blank ingredient chips hovering above it, plus a smaller dotted chip marked with a plus sign. Across the chapter, each cause becomes a labeled chip that drops into the bowl; the dotted plus chip is the last to fill.",
      "assets": [
       "bg_swirl.jpg",
@@ -501,12 +537,12 @@
      ],
      "beats": [
       {
-       "say": "The question I hear most is, why is my dog like this? And right behind it, what did I do wrong?",
-       "show": "photo_why.jpg slides in as a portrait card at left and the heading 'Why it happens' writes on in green.",
+       "say": "The question I hear most is, why is my dog like this? Why the barking and lunging, or the growling and snapping? And right behind it, what did I do wrong?",
+       "show": "photo_why.jpg slides in as a portrait card at left and the heading 'Why reactivity and aggression happen' writes on in green.",
        "onscreen": "Why is my dog like this?"
       },
       {
-       "say": "The honest answer? It's almost never one thing, or one mistake. It's a recipe, and here are seven common ingredients.",
+       "say": "The honest answer? It's almost never one thing, or one mistake. It's a recipe, and the same ingredients can cook up reactivity, aggression, or both. Here are seven common ones.",
        "show": "A large mixing bowl appears center right with seven blank ingredient chips hovering above it, plus a smaller dotted chip marked with a plus sign.",
        "onscreen": "Usually a mix"
       }
@@ -534,9 +570,9 @@
        "onscreen": "Some dogs are born sensitive"
       },
       {
-       "say": "Breed traits nudge things too. Herders were bred to watch movement, guardians to distrust strangers. Breed isn't destiny, but those jobs don't switch off on a sidewalk.",
-       "show": "photo_why.jpg slides back in as a small portrait card beside the bowl; the tag 'Guardians: strangers' points to the Great Pyrenees, and 'Herders: movement' pops in beside it as a text tag.",
-       "onscreen": "Bred for a job"
+       "say": "Breed traits nudge things too. Remember those jobs? A guardian bred to be wary of strangers may growl at visitors, and a herder may nip at running kids. Breed isn't destiny, but it loads the dice.",
+       "show": "photo_why.jpg slides back in as a small portrait card beside the bowl; the tag 'Guardians: wary of strangers' points to the Great Pyrenees, and 'Herders: chase and nip' pops in beside it as a text tag.",
+       "onscreen": "Breed loads the dice"
       },
       {
        "say": "Ingredient two, socialization. In roughly the first three months, a puppy's brain sorts the world into safe and scary. What they meet calmly in that window tends to feel normal later.",
@@ -578,9 +614,19 @@
        "onscreen": "Adolescence: about 6 to 18 months"
       },
       {
-       "say": "Then comes social maturity, when your dog becomes an adult, between about one and three years. Reactivity often shows up or gets louder here. If your sweet puppy changed around age two, that may be why.",
+       "say": "Then comes social maturity, when your dog becomes an adult, between about one and three years. This is when reactivity or aggression often shows up or gets louder.",
        "show": "A second band shades in, 'Social maturity, 1 to 3 years', and pulses as a small volume icon turns up above it.",
        "onscreen": "Social maturity: about 1 to 3 years"
+      },
+      {
+       "say": "Many dogs also get pickier about other dogs as they grow up. It's like a teenager who wants to hit the club and make a ton of friends. As an adult, they'd rather skip the club and see a few close friends.",
+       "show": "Two small cards appear under the ruler: 'Teen' with a party-popper icon and a crowd of little dots, then 'Adult' with a coffee icon and three dots, under the label 'More selective with age'.",
+       "onscreen": "More selective with age"
+      },
+      {
+       "say": "That's normal, not a problem. But the dog who loved the dog park at one may not want it at three, and pushing them can end in a scuffle.",
+       "show": "A small dog park card appears with a trees icon: 'Age 1: loved it' with a green check, then 'Age 3: not anymore' with an amber caution badge.",
+       "onscreen": "Normal, not a problem"
       },
       {
        "say": "Senior dogs change too. Sore joints lower tolerance, and fading senses or a foggy memory make the world less predictable, and less safe.",
@@ -619,8 +665,8 @@
        "onscreen": "Other dogs predict pain"
       },
       {
-       "say": "Those tools often come from the outdated idea that your dog wants to be the boss. Reactive dogs aren't after rank. They're scared, frustrated or overwhelmed.",
-       "show": "The equation clears; a small crown icon labeled 'Boss?' appears over the bowl, a red X crosses it out, and three soft tags replace it: Scared, Frustrated, Overwhelmed.",
+       "say": "Those tools often come from the outdated idea that your dog wants to be the boss. Dogs who react or aggress aren't after rank. They're scared, frustrated, overwhelmed, or protecting something they value.",
+       "show": "The equation clears; a small crown icon labeled 'Boss?' appears over the bowl, a red X crosses it out, and four soft tags replace it: Scared, Frustrated, Overwhelmed, Protecting.",
        "onscreen": "Not dominance. Big feelings."
       },
       {
@@ -644,7 +690,7 @@
      ],
      "beats": [
       {
-       "say": "Ingredient six, barriers. Remember road rage? A leash, fence or window is the traffic jam: your dog sees what they want, can't reach it, and the pressure climbs.",
+       "say": "Ingredient six, barriers. Remember road rage? A leash, fence or window is the traffic jam: your dog sees what they want, can't reach it, and the pressure climbs. It's how a lot of fence fighting starts.",
        "show": "The 'Leash and barrier frustration' chip drops in and photo_reactive_to_aggressive.jpg slides in at the left edge, the dog peering through the iron fence.",
        "onscreen": "Held back by a leash or barrier"
       },
@@ -654,7 +700,7 @@
        "onscreen": "Pain shortens the fuse"
       },
       {
-       "say": "Pain is common in dogs with behavior problems, and it doesn't always look like limping. So every reactive dog needs a vet check, especially after a sudden change.",
+       "say": "Pain is common in dogs with behavior problems, and it's a big reason behind sudden growling or snapping. So every dog with reactivity or aggression needs a vet check, especially after a sudden change.",
        "show": "A green badge reads 'Vet check for every dog', then a question ticks in beneath it, 'Sudden change?', with an arrow marked 'See the vet first'.",
        "onscreen": "Rule out pain first"
       },

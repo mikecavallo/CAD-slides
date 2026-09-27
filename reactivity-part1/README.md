@@ -40,7 +40,20 @@ python3 tools/assemble.py               # final MP4, captions, chapter files -> 
 python3 tools/export_script.py          # printable script -> out/Narration-Script.pdf
 ```
 
-Preview without recordings: `python3 tools/tts_scratch.py && python3 tools/timing.py --mode scratch`
-then render and assemble.
+Preview without recordings (temporary AI voice, run through the same sync path as real recordings):
+
+```bash
+python3 tools/tts_scratch.py
+python3 tools/scratch_narration.py
+python3 tools/align.py --dir build/scratch_narration
+python3 tools/timing.py --mode narration
+node tools/render.mjs && python3 tools/assemble.py --name Reactivity-Part-1-PREVIEW-temp-voice
+```
+
+Optional background music: `python3 tools/assemble.py --music path/to/track.mp3` loops it, fades it
+and ducks it under the voice. Chapter files over 29 MB are automatically re-encoded to fit.
+
+Quality checks: `node tools/snap.mjs <scene>` makes stills at each beat; `python3 tools/qa_sheets.py`
+makes contact sheets from the rendered video, one frame every 1.5 s.
 
 Scene authoring rules and the component kit are documented in `video/SCENE_GUIDE.md`.

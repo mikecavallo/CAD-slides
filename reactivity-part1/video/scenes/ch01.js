@@ -54,13 +54,7 @@
   };
   // Time of a phrase inside beat i, proportional to where it sits in the beat's narration, so it
   // scales with any recording speed. Leads the word slightly; never earlier than the beat's cue.
-  const sayAt = ({ beats, cue, end }) => (i, phrase, lead = 0.3, fb = 0.4) => {
-    const t0 = cue(i), t1 = end(i);
-    const s = String((beats[i] || {}).say || '').toLowerCase();
-    const k = s.indexOf(phrase.toLowerCase());
-    const f = k < 0 ? fb : k / Math.max(1, s.length);
-    return Math.max(t0, t0 + (t1 - t0) * f - lead);
-  };
+  const sayAt = ctx => (i, phrase, lead = 0.3, fb = 0.4) => Math.max(ctx.cue(i), window.phraseTime(ctx, i, phrase, fb) - lead);
 
   // The shared warning ladder (ch03s04 rebuilds it small with the same six rungs).
   const LADDER = [

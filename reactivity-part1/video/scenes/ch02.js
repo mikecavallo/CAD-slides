@@ -63,7 +63,8 @@
     color: #fff; font: 700 26px/1 var(--font-body); letter-spacing: 3px; text-transform: uppercase; white-space: nowrap;
     box-shadow: 0 10px 24px rgba(40,70,20,0.26); }
   .c2-try svg { width: 32px; height: 32px; stroke-width: 2.4; }
-  .c2-pin { position: absolute; left: -30px; top: -38px; }
+  .c2-pin { position: absolute; left: -34px; top: -46px; }
+  .c2-q.ask { padding: 34px 52px 24px; }
   .c2-qt { font: 700 42px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   `;
   const style = stage => stage.appendChild(K.el('style', null, CSS));
@@ -245,7 +246,7 @@
     release: [HUB.cx, HUB.cy - KR, HUB.cx, 340],
   };
   const BADGE = { away: [HUB.cx - 476, HUB.cy], toward: [HUB.cx + 476, HUB.cy], release: [HUB.cx, 272] };
-  const SLOT_Y = 866; // bottom takeaway slot under the knob (note card, then the question card)
+  const SLOT_Y = 858; // bottom takeaway slot under the knob (note card, then the question card)
   /** A card centred under the hub in the bottom slot. Returns {row, card}. */
   function slotCard(parent, cls) {
     const row = K.el('div', 'c2-row');
@@ -269,12 +270,7 @@
    * Scene time when `phrase` is spoken in beat i, estimated from its character position in the beat's
    * narration (works for any voice speed). Falls back to fraction `fb` of the beat.
    */
-  const phraseAt = (ctx, i, phrase, fb = 0.5) => {
-    const say = ((ctx.beats[i] || {}).say || '').toLowerCase();
-    const k = say.indexOf(phrase.toLowerCase());
-    const f = k >= 0 && say.length ? k / say.length : fb;
-    return ctx.cue(i) + (ctx.end(i) - ctx.cue(i)) * f;
-  };
+  const phraseAt = (ctx, i, phrase, fb = 0.5) => window.phraseTime(ctx, i, phrase, fb);
   function greyArrows(svg) {
     return ['away', 'toward', 'release'].map(k => arrow(svg, ...ARW[k], { color: '#cdd5c3', width: 14 }));
   }
@@ -360,30 +356,63 @@
     const arrows = greyArrows(svg);
     const ph = placeholders(svg);
 
+    // the smoke alarm from ch02s01, wired to the knob so the knob reads as the alarm's volume
+    const AX = 1500, AY = 640, AB = 300;
+    const cable = K.line(svg, 1236, AY, AX - 84, AY, { stroke: '#c9d1bf', 'stroke-width': 6 });
+    const plug = K.circle(svg, 1236, AY, 9, { fill: '#c9d1bf' });
+    // own little svg in a div, so the move/shrink is a plain CSS transform (no SVG origin maths)
+    const aWrap = K.el('div', 'c2-knob');
+    Object.assign(aWrap.style, { left: AX - AB + 'px', top: AY - AB + 'px', width: 2 * AB + 'px', height: 2 * AB + 'px' });
+    stage.appendChild(aWrap);
+    const aSvg = K.svgEl('svg', { viewBox: `0 0 ${2 * AB} ${2 * AB}`, width: 2 * AB, height: 2 * AB }, aWrap);
+    const al = smokeAlarm(aSvg, { x: AB, y: AB, r: 70, radii: [108, 148, 188, 228], span: 28 });
+    al.ripple.style.display = 'none'; // no ripple here: it would run past the safe area
+
     const K0 = { cx: 960, cy: 640 };
-    const k2 = volumeKnob(stage, { cx: K0.cx, cy: K0.cy, scale: 1.12, maxed: true });
+    const k2 = volumeKnob(stage, { cx: K0.cx, cy: K0.cy, scale: 1.12, maxed: true, dog: false });
     gsap.set(k2.wrap, { opacity: 0 });
-    const k1 = volumeKnob(stage, { cx: K0.cx, cy: K0.cy, scale: 1.12 });
+    const k1 = volumeKnob(stage, { cx: K0.cx, cy: K0.cy, scale: 1.12, dog: false });
 
     const mail = badge(stage, 'mail', { cx: 960, cy: 640, size: 140, color: C.greenDark, bg: '#fff' });
     const mailLab = label(stage, 'Mail carrier', { cx: 960, y: 732, w: 400, cls: 'c2-small' });
     const goAway = tag(stage, 'Go away', { cx: 520, y: 868, icon: DIR.away.icon, tone: 'amber' });
     const sayHi = tag(stage, 'Come say hi', { cx: 1400, y: 868, icon: DIR.toward.icon, tone: 'red' });
 
-    // ---- beat 1: knob draws in, needle sweeps from low into the red zone
+    // ---- beat 1: the alarm rings at centre, shrinks aside, and a volume knob draws in beside it.
+    // As the needle sweeps from Low into the red zone, the alarm's sound arcs grow one by one.
     A.in(tl, h.title, cue(0) - 0.2, 'wipe', { dur: 0.9 });
     A.in(tl, h.bar, cue(0) + 0.4, 'grow', { dur: 0.6 });
-    knobIn(tl, k1, cue(0) + 0.2);
-    knobSweep(tl, k1, cue(0) + Math.min(2.4, 0.24 * L(0)), 2.6);
-    tl.to(k1.band, { opacity: 0.55, duration: 0.25, yoyo: true, repeat: 3 }, cue(0) + Math.min(2.4, 0.24 * L(0)) + 2.6);
-    A.in(tl, subs[0], phraseAt(ctx, 0, 'it tells you', 0.58), 'fadeUp', { dur: 0.8 });
+    const org = `${AB} ${AB}`;
+    const t0 = cue(0) - 0.2;
+    const tMove = cue(0) + Math.min(1.4, 0.18 * L(0));
+    tl.fromTo(al.body, { opacity: 0, scale: 0.5, svgOrigin: org }, { opacity: 1, scale: 1, svgOrigin: org, duration: 0.7, ease: 'back.out(1.8)' }, t0);
+    tl.fromTo(al.arcs.slice(0, 2), { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.12, ease: 'power2.out' }, t0 + 0.45);
+    const shakeEnd = cue(1) - 0.4;
+    const shakes = Math.max(2, Math.floor((shakeEnd - t0 - 0.45) / 0.14) * 2);
+    tl.to(al.shake, { rotation: 6, svgOrigin: org, duration: 0.07, repeat: Math.min(shakes, 120) - 1, yoyo: true, ease: 'sine.inOut' }, t0 + 0.45);
+    tl.fromTo(aWrap, { x: 960 - AX, y: 600 - AY, scale: 1.5 }, { x: 0, y: 0, scale: 1, duration: 0.9, ease: 'power3.inOut' }, tMove);
+    tl.to(al.arcs[1], { opacity: 0, duration: 0.4, ease: 'power2.out' }, tMove); // back to low volume
+    const tKnob = tMove + 0.3;
+    knobIn(tl, k1, tKnob);
+    A.draw(tl, cable, tMove + 0.9, 0.5);
+    A.in(tl, plug, tMove + 0.9, 'fade', { dur: 0.3 });
+    const SW = 2.6;
+    const sweepT = Math.max(tKnob + 1.0, phraseAt(ctx, 0, 'the volume', 0.4) - 0.3);
+    knobSweep(tl, k1, sweepT, SW);
+    const inv = p => Math.acos(1 - 2 * p) / Math.PI; // inverse of sine.inOut, matches the needle
+    tl.fromTo(al.arcG, { scale: 0.85, svgOrigin: org }, { scale: 1.1, svgOrigin: org, duration: SW, ease: 'sine.inOut' }, sweepT);
+    [0.3, 0.55, 0.8].forEach((p, i) => tl.to(al.arcs[i + 1], { opacity: 1, duration: 0.25, ease: 'power2.out' }, sweepT + inv(p) * SW));
+    tl.to(k1.band, { opacity: 0.55, duration: 0.25, yoyo: true, repeat: 3 }, sweepT + SW);
+    A.in(tl, subs[0], Math.max(sweepT + 1.2, phraseAt(ctx, 0, 'it tells you', 0.7)), 'fadeUp', { dur: 0.8 });
 
-    // ---- beat 2: the knob splits into two maxed knobs around one mail carrier
+    // ---- beat 2: the alarm steps aside; the knob splits into two maxed knobs (two dogs) around one mail carrier
     A.out(tl, subs[0], cue(1) - 0.2, 'fadeUp', { dur: 0.4 });
+    A.out(tl, [aWrap, cable, plug], cue(1) - 0.35, 'fade', { dur: 0.4 });
     A.in(tl, subs[1], cue(1) + 0.3, 'fadeUp', { dur: 0.8 });
     tl.set(k2.wrap, { opacity: 1 }, cue(1));
     tl.to(k1.wrap, { x: 520 - K0.cx, scale: 0.95, duration: 1.1, ease: 'power3.inOut' }, cue(1));
     tl.to(k2.wrap, { x: 1400 - K0.cx, scale: 0.95, duration: 1.1, ease: 'power3.inOut' }, cue(1));
+    tl.fromTo([k1.dog, k2.dog], { opacity: 0, scale: 0.6, svgOrigin: '0 0' }, { opacity: 1, scale: 1, svgOrigin: '0 0', duration: 0.6, ease: 'back.out(1.8)' }, cue(1) + 0.5);
     A.in(tl, mail, cue(1) + 0.8, 'pop', { dur: 0.7 });
     A.in(tl, mailLab, cue(1) + 1.1, 'fadeUp', { dur: 0.6 });
     A.in(tl, goAway, phraseAt(ctx, 1, 'one wants', 0.55) + 0.2, 'pop', { dur: 0.6 });
@@ -407,7 +436,6 @@
   registerScene('ch02s03', ctx => {
     const { stage, tl, cue, end, dur } = ctx;
     style(stage);
-    const L = i => end(i) - cue(i);
 
     const h = K.heading(stage, 'Three directions', { x: 100, y: 140 });
 
@@ -434,7 +462,7 @@
     const strain = [-40, 0, 40].map(dx => K.line(svg, lm + dx - 7, ly + 30, lm + dx + 7, ly + 16, { stroke: C.amber, 'stroke-width': 5, opacity: 0 }));
     ['away', 'toward', 'release'].forEach(k => { lit[k] = arrow(svg, ...ARW[k], { color: DIR[k].col, width: 16 }); });
 
-    const knob = volumeKnob(stage, { cx: HUB.cx, cy: HUB.cy, scale: HUB.s, maxed: true, labels: false });
+    const knob = volumeKnob(stage, { cx: HUB.cx, cy: HUB.cy, scale: HUB.s, maxed: true, labels: false, dog: true });
 
     const bAway = badge(stage, DIR.away.icon, { cx: BADGE.away[0], cy: BADGE.away[1], size: 128, bg: DIR.away.pale, color: DIR.away.col });
     const bToward = badge(stage, DIR.toward.icon, { cx: BADGE.toward[0], cy: BADGE.toward[1], size: 128, bg: DIR.toward.pale, color: DIR.toward.col });
@@ -442,28 +470,36 @@
     const lab = (k, word, rest, o) => label(stage, `<span style="color:${DIR[k].text}">${word}</span> ${rest}`, o);
     const lAway = lab('away', 'Away:', 'fear', { cx: BADGE.away[0], y: 740, w: 440 });
     const lToward = lab('toward', 'Toward:', 'frustration', { cx: BADGE.toward[0], y: 740, w: 500 });
-    const lRelease = lab('release', 'Release:', 'letting off steam', { x: BADGE.release[0] + 84, y: BADGE.release[1] - 24, w: 560, align: 'left' });
+    const lRelease = lab('release', 'Release:', 'built-up tension', { x: BADGE.release[0] + 84, y: BADGE.release[1] - 24, w: 560, align: 'left' });
 
     // road rage: a car on the toward arrow, honking
     const carX = (ARW.toward[0] + ARW.toward[2]) / 2 + 2, carY = HUB.cy;
     const car = badge(stage, 'car', { cx: carX, cy: carY, size: 100, bg: '#fff', color: C.red });
     const rage = tag(stage, 'Leash road rage', { cx: carX + 60, y: 470, tone: 'red' });
 
+    // caution: a small solid amber badge that flashes on the away arrow while its tip flips forward
+    const awayMid = (ARW.away[0] + ARW.away[2]) / 2;
+    const caution = badge(stage, 'circle-alert', { cx: awayMid, cy: HUB.cy, size: 84, bg: C.amber, color: '#fff' });
+
     const fx = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     const horn = rays(fx, carX, carY, 62, 88, [-72, -48, -24], { stroke: C.amber, 'stroke-width': 6 });
     const spark = rays(fx, BADGE.release[0], BADGE.release[1], 72, 100, [-162, -130, -90, -50, -18], { stroke: C.green, 'stroke-width': 6 });
 
-    // question card with the coach badge
-    const qRow = K.el('div', 'c2-row');
-    Object.assign(qRow.style, { left: '360px', top: '856px', width: '1200px' });
-    const q = K.el('div', 'c2-q');
-    const tr = K.el('div', 'c2-try');
-    tr.appendChild(K.icon('notebook-pen'));
-    tr.appendChild(K.el('span', null, 'Try this'));
-    q.appendChild(tr);
-    q.appendChild(K.el('div', 'c2-qt', `<span style="color:${DIR.away.text}">Away</span>, <span style="color:${DIR.toward.text}">toward</span>, or <span style="color:${DIR.release.text}">release</span>?`));
-    qRow.appendChild(q);
-    stage.appendChild(qRow);
+    // bottom slot, beat 5: the caution note
+    const noteS = slotCard(stage, 'c2-q note');
+    const eye = K.el('div', 'c2-eye');
+    eye.appendChild(K.icon('eye'));
+    noteS.card.appendChild(eye);
+    noteS.card.appendChild(K.el('div', 'c2-qt', K.md('Watch the *goal*, not the pull')));
+
+    // bottom slot, beat 6: the question card with the green 'Try this' badge pinned to its top left corner
+    const qS = slotCard(stage, 'c2-q ask');
+    qS.card.appendChild(K.el('div', 'c2-qt', `<span style="color:${DIR.away.text}">Away</span>, <span style="color:${DIR.toward.text}">toward</span>, or <span style="color:${DIR.release.text}">release</span>?`));
+    const pin = K.el('div', 'c2-try c2-pin');
+    pin.appendChild(K.icon('notebook-pen'));
+    pin.appendChild(K.el('span', null, 'Try this'));
+    qS.card.appendChild(pin);
+    gsap.set(pin, { rotation: -4 });
 
     // ---- scene open: the hub from the previous scene is already there
     A.in(tl, h.title, 0.05, 'wipe', { dur: 0.8 });
@@ -478,7 +514,9 @@
       A.in(tl, labelEl, t + 0.85, k === 'release' ? 'fadeRight' : 'fadeUp', { dur: 0.7 });
     };
     const awayGroup = [lit.away.g, bAway, lAway];
-    const towardGroup = [lit.toward.g, bToward, lToward, leashG, car, rage, ...horn];
+    const towardCore = [lit.toward.g, bToward, lToward, leashG];
+    const roadRage = [car, rage, ...horn];
+    const releaseGroup = [lit.release.g, bRelease, lRelease];
 
     // ---- beat 1: away (fear)
     lightUp('away', bAway, lAway, cue(0));
@@ -512,17 +550,38 @@
     A.pulse(tl, car, hornT + 0.6, { scale: 1.12 });
 
     // ---- beat 4: release bursts upward
-    A.dim(tl, [...awayGroup, ...towardGroup], cue(3) - 0.1, 0.3);
+    A.dim(tl, [...awayGroup, ...towardCore, ...roadRage], cue(3) - 0.1, 0.3);
     lightUp('release', bRelease, lRelease, cue(3));
     gsap.set(spark, { opacity: 0 });
     tl.fromTo(spark, { opacity: 1, drawSVG: '0% 0%' }, { opacity: 1, drawSVG: '0% 100%', duration: 0.3, ease: 'power2.out', immediateRender: false }, cue(3) + 0.8);
     tl.to(spark, { drawSVG: '100% 100%', opacity: 0, duration: 0.4, ease: 'power2.in' }, cue(3) + 1.15);
 
-    // ---- beat 5: all three glow together, question card slides up
-    A.undim(tl, [...awayGroup, ...towardGroup], cue(4), { dur: 0.6 });
-    tl.to([glow.away, glow.toward, glow.release], { opacity: 0.32, duration: 0.8, ease: 'power2.out' }, cue(4) + 0.1);
-    tl.to([glow.away, glow.toward, glow.release], { opacity: 0.14, duration: 0.9, yoyo: true, repeat: 3, ease: 'sine.inOut' }, cue(4) + 0.9);
-    A.pulse(tl, [bAway, bToward, bRelease], cue(4) + 0.2, { scale: 1.1 });
-    A.in(tl, q, Math.max(cue(4) + 1.0, phraseAt(ctx, 4, 'ask yourself', 0.3) - 0.2), 'fadeUp', { dur: 0.9 });
+    // ---- beat 5: one catch. Away comes back into focus; its tip flips forward (the lunge) with a caution
+    // badge flashing on it, the note lands, then the tip snaps back: the goal is still distance.
+    A.dim(tl, releaseGroup, cue(4) - 0.1, 0.3);
+    A.undim(tl, awayGroup, cue(4) - 0.1);
+    const flipO = `${awayMid} ${HUB.cy}`;
+    const tFlip = Math.max(cue(4) + 0.8, phraseAt(ctx, 4, 'lunge', 0.2) - 0.3);
+    tl.to(greyA[0].g, { opacity: 0, duration: 0.2 }, tFlip); // the grey base arrow would show a second head
+    tl.to(lit.away.g, { scaleX: -1, svgOrigin: flipO, duration: 0.55, ease: 'power3.inOut' }, tFlip);
+    A.in(tl, caution, tFlip + 0.3, 'pop', { dur: 0.6 });
+    tl.to(caution, { scale: 1.16, duration: 0.22, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tFlip + 1.0);
+    const noteT = Math.max(tFlip + 1.4, phraseAt(ctx, 4, "so don't judge", 0.55) - 0.2);
+    A.in(tl, noteS.card, noteT, 'fadeUp', { dur: 0.8 });
+    const tBack = Math.max(noteT + 1.2, Math.min(end(4) - 1.0, phraseAt(ctx, 4, 'ask what', 0.8) - 0.1));
+    tl.to(lit.away.g, { scaleX: 1, svgOrigin: flipO, duration: 0.5, ease: 'back.out(2)' }, tBack);
+    A.out(tl, caution, tBack, 'shrink', { dur: 0.35 });
+    A.pulse(tl, bAway, tBack + 0.35, { scale: 1.12 });
+
+    // ---- beat 6: the road-rage props clear, all three directions glow together, the question card slides up
+    A.out(tl, noteS.card, cue(5) - 0.2, 'fade', { dur: 0.4 });
+    A.out(tl, roadRage, cue(5) - 0.1, 'fade', { dur: 0.5 });
+    A.undim(tl, [...towardCore, ...releaseGroup], cue(5), { dur: 0.6 });
+    tl.to([glow.away, glow.toward, glow.release], { opacity: 0.32, duration: 0.8, ease: 'power2.out' }, cue(5) + 0.1);
+    tl.to([glow.away, glow.toward, glow.release], { opacity: 0.14, duration: 0.9, yoyo: true, repeat: 3, ease: 'sine.inOut' }, cue(5) + 0.9);
+    A.pulse(tl, [bAway, bToward, bRelease], cue(5) + 0.2, { scale: 1.1 });
+    const qT = Math.max(cue(5) + 1.0, phraseAt(ctx, 5, 'ask: away', 0.45) - 0.2);
+    A.in(tl, qS.card, qT, 'fadeUp', { dur: 0.9 });
+    A.in(tl, pin, qT + 0.55, 'pop', { dur: 0.6 });
   });
 })();

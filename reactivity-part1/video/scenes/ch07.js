@@ -23,6 +23,8 @@
   .c7-pill.green { background:var(--green); color:#fff; }
   .c7-pill.red { background:var(--red-pale); color:var(--red); box-shadow:none; }
   .c7-pill.pale { background:var(--green-pale); color:var(--green-deep); box-shadow:none; }
+  .c7-pill.grey { background:#eceee8; color:var(--ink-soft); box-shadow:none; border:2px solid #d6dacf; padding:12px 26px 12px 20px; font-size:30px; gap:12px; }
+  .c7-pill.grey svg { width:32px; height:32px; }
   .c7-crow { position:absolute; display:flex; justify-content:center; align-items:center; }
   .c7-rrow { position:absolute; display:flex; justify-content:flex-end; align-items:center; }
 
@@ -120,6 +122,9 @@
     box-shadow:0 4px 12px rgba(120,70,10,0.14); }
   .c7-qrow .eb svg { width:36px; height:36px; stroke-width:2.3; }
   .c7-qrow .ql { font:700 34px/1 var(--font-head); color:var(--ink); white-space:nowrap; }
+  .c7-try { display:inline-flex; align-items:center; gap:12px; padding:14px 26px 14px 18px; border-radius:999px; background:var(--green); color:#fff;
+    font:700 26px/1 var(--font-body); letter-spacing:3px; text-transform:uppercase; white-space:nowrap; box-shadow:0 10px 22px rgba(44,74,23,0.26); }
+  .c7-try svg { width:32px; height:32px; stroke-width:2.4; }
   `;
 
   // ------------------------------------------------------------------ helpers
@@ -191,8 +196,11 @@
   function triggerFlow(stage, o = {}) {
     addCss(stage);
     const y = o.y ?? 590, xs = o.xs || [440, 960, 1480], r = o.r ?? 128;
+    // gap between each arrow end and its node; a bigger gap around a node leaves room for a ring
+    const pads = o.pads || [[26, 26], [26, 26]];
     const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const arrows = [0, 1].map(i => arrow(svg, xs[i] + r + 26, y, xs[i + 1] - r - 26, y, { color: '#a9b39d', width: 10, head: 26 }));
+    const ends = [0, 1].map(i => [xs[i] + r + pads[i][0], xs[i + 1] - r - pads[i][1]]);
+    const arrows = ends.map(([a, b]) => arrow(svg, a, y, b, y, { color: '#a9b39d', width: 10, head: 26 }));
     const defs = [
       ['triangle-alert', 'Trigger', C.amber, C.amberText],
       ['heart', 'Emotion', C.red, C.red],
@@ -208,7 +216,7 @@
       div(n, 'lb', label);
       return { n, ic, cx: xs[i], cy: y };
     });
-    return { nodes, arrows, svg, r, y, xs };
+    return { nodes, arrows, ends, svg, r, y, xs };
   }
   /** Draw the three nodes left to right starting at t (about 1.4 s). */
   function flowIn(tl, F, t) {
@@ -271,7 +279,7 @@
     const th = TX.map(thermo);
     const level = K.group(svg);
     K.line(level, TX[0] - 70, LEVEL, TX[1] + 70, LEVEL, { stroke: C.red, 'stroke-width': 4, 'stroke-dasharray': '12 12', 'stroke-linecap': 'butt' });
-    const badges = [['volume-2', 'Barking'], ['eye', 'Silent stare']].map(([icon, lab], i) => {
+    const badges = [['volume-2', 'Barking'], ['eye', 'Frozen stare']].map(([icon, lab], i) => {
       const b = div(card, 'c7-tbadge');
       K.place(b, { x: TX[i] - 52, y: 66 });
       iconIn(b, icon);
@@ -314,13 +322,16 @@
     const h = K.heading(stage, 'Feeling first', { x: 100, y: 120, size: 84 });
     const sub = subtitles(stage, ['Trigger. Emotion. Reaction.', 'Feeling first, then reaction', 'Change the *feeling*'], 100, 270);
 
-    const F = triggerFlow(stage, { y: 600, xs: [430, 950, 1470], r: 128 });
+    // the arrows stop short of the Emotion node so the beat-3 ring never crosses them
+    const RING = 168;
+    const F = triggerFlow(stage, { y: 600, xs: [410, 960, 1510], r: 128, pads: [[26, RING - 128 + 28], [RING - 128 + 28, 26]] });
     const [nT, nE, nR] = F.nodes;
     const svg = F.svg;
+    const [[a1s, a1e], [a2s, a2e]] = F.ends;
 
     // beat 1 parts: travelling pulse dots, burst rays, zap badge, sound arcs
-    const dot1 = K.circle(svg, F.xs[0] + 154, F.y, 11, { fill: C.amber, opacity: 0 });
-    const dot2 = K.circle(svg, F.xs[1] + 154, F.y, 11, { fill: C.red, opacity: 0 });
+    const dot1 = K.circle(svg, a1s, F.y, 11, { fill: C.amber, opacity: 0 });
+    const dot2 = K.circle(svg, a2s, F.y, 11, { fill: C.red, opacity: 0 });
     const rays = [-112.5, -67.5, -22.5, 22.5, 157.5, 202.5].map(d => {
       const t = (d * Math.PI) / 180;
       return K.line(svg, nE.cx + 158 * Math.cos(t), F.y + 158 * Math.sin(t), nE.cx + 196 * Math.cos(t), F.y + 196 * Math.sin(t), { stroke: C.amber, 'stroke-width': 9 });
@@ -335,7 +346,7 @@
     });
 
     // beat 2 parts: green ring and its label
-    const ring = K.circle(svg, nE.cx, F.y, 176, { fill: 'none', stroke: C.green, 'stroke-width': 9, transform: `rotate(-90 ${nE.cx} ${F.y})` });
+    const ring = K.circle(svg, nE.cx, F.y, RING, { fill: 'none', stroke: C.green, 'stroke-width': 9, transform: `rotate(-90 ${nE.cx} ${F.y})` });
     const lr = centerRow(stage, nE.cx, F.y + 200, 900);
     const workP = pill(lr, 'This is where we work', 'green', 'target');
 
@@ -347,14 +358,14 @@
     // --- beat 1: the startle. Emotion jolts first, the reaction fires a beat later
     sub.show(tl, 1, c1);
     A.pulse(tl, nT.n, c1, { scale: 1.08 });
-    tl.fromTo(dot1, { opacity: 1, attr: { cx: F.xs[0] + 154 } }, { opacity: 1, attr: { cx: F.xs[1] - 156 }, duration: 0.3, ease: 'power2.in', immediateRender: false }, c1 + 0.05);
+    tl.fromTo(dot1, { opacity: 1, attr: { cx: a1s } }, { opacity: 1, attr: { cx: a1e }, duration: 0.3, ease: 'power2.in', immediateRender: false }, c1 + 0.05);
     tl.to(dot1, { opacity: 0, duration: 0.1 }, c1 + 0.35);
     tl.to(nE.n, { scale: 1.26, duration: 0.3, ease: 'back.out(2.2)' }, c1 + 0.35);
     tl.to(nE.n, { scale: 1.06, duration: 0.6, ease: 'power2.inOut' }, c1 + 0.95);
     A.in(tl, zap, c1 + 0.4, 'pop', { dur: 0.45 });
     A.draw(tl, rays, c1 + 0.4, 0.3, { stagger: 0.02 });
     tl.to(rays, { opacity: 0, duration: 0.4 }, c1 + 1.0);
-    tl.fromTo(dot2, { opacity: 1, attr: { cx: F.xs[1] + 154 } }, { opacity: 1, attr: { cx: F.xs[2] - 156 }, duration: 0.45, ease: 'power1.inOut', immediateRender: false }, c1 + 0.75);
+    tl.fromTo(dot2, { opacity: 1, attr: { cx: a2s } }, { opacity: 1, attr: { cx: a2e }, duration: 0.45, ease: 'power1.inOut', immediateRender: false }, c1 + 0.75);
     tl.to(dot2, { opacity: 0, duration: 0.1 }, c1 + 1.2);
     tl.to(nR.n, { borderColor: C.red, backgroundColor: C.redPale, duration: 0.3 }, c1 + 1.15);
     tl.to(nR.ic, { color: C.red, duration: 0.3 }, c1 + 1.15);
@@ -412,7 +423,7 @@
     addCss(stage);
     const c = [0, 1, 2, 3].map(cue);
     const h = K.heading(stage, 'Every dog’s list', { x: 100, y: 110, size: 76 });
-    const sub = subtitles(stage, ['Every dog has their own list', 'Six kinds of triggers'], 100, 244);
+    const sub = subtitles(stage, ['Every dog has *their own* list', 'Six kinds of triggers'], 100, 244);
 
     // the word cloud card the words lift off from
     const IMG = { x: 760, y: 330, w: 400, h: 600 };
@@ -518,9 +529,10 @@
   });
 
   // ================================================================== ch07s04  Why just exposing them backfires
-  registerScene('ch07s04', ({ stage, tl, cue }) => {
+  registerScene('ch07s04', ({ stage, tl, cue, end }) => {
     addCss(stage);
     const c = [0, 1, 2, 3].map(cue);
+    const at = fracOf(cue, end);
 
     // --- left: heading + the four key lines, one per beat
     const f = K.flow(stage, { x: 100, y: 110, w: 780, h: 850, valign: 'center', gap: 56 });
@@ -588,9 +600,15 @@
     const redLine = K.path(svg, smooth(redPts), { stroke: C.red, 'stroke-width': 9 });
     const redDots = redPts.map(([x, y]) => K.circle(svg, x, y, 14, { fill: C.red, stroke: '#fff', 'stroke-width': 4 }));
     const grnDots = grnPts.map(([x, y]) => K.circle(svg, x, y, 9, { fill: C.green, stroke: '#fff', 'stroke-width': 3 }));
-    const redRow = div(stage, 'c7-rrow');
-    K.place(redRow, { x: 1290, y: 250, w: 500 });
-    const redP = pill(redRow, 'Sensitization', 'red', 'trending-up');
+    // "Sensitization" labels the climbing line from above its middle; the top end carries the shut-down tag
+    const redP = pill(stage, 'Sensitization', 'red', 'trending-up');
+    redP.style.position = 'absolute';
+    K.place(redP, { x: 1090, y: 398 });
+    const shutRow = div(stage, 'c7-rrow');
+    K.place(shutRow, { x: 1190, y: 240, w: 600 });
+    const shutP = pill(shutRow, 'Shut down is not calm', 'grey', 'meh');
+    const endPt = redPts[redPts.length - 1];
+    const shutPin = K.line(svg, endPt[0], 240 + 60 - CH.y, endPt[0], endPt[1] - 16, { stroke: '#b9bfb0', 'stroke-width': 4 });
     const grnRow = div(stage, 'c7-rrow');
     K.place(grnRow, { x: 1190, y: 740, w: 600 });
     const grnP = pill(grnRow, 'Small doses, feeling safe', 'pale', 'shield-check');
@@ -622,6 +640,10 @@
     A.draw(tl, redLine, c[2] + 0.45, 0.9, { ease: 'power1.inOut' });
     redDots.forEach((d, i) => A.in(tl, d, c[2] + 0.45 + i * 0.17, 'pop', { dur: 0.35 }));
     A.in(tl, redP, c[2] + 1.0, 'fadeUp', { dur: 0.5 });
+    // "Or a dog shuts down and goes quiet": a grey tag pins to the top of the climb
+    const tShut = Math.max(c[2] + 2.5, at(2, 0.68));
+    A.draw(tl, shutPin, tShut, 0.3);
+    A.in(tl, shutP, tShut + 0.15, 'fadeDown', { dur: 0.6 });
 
     // --- beat 3: the green line gently falls beneath it
     A.in(tl, rows[3], c[3] + 0.15, 'fadeRight', { dur: 0.7 });
@@ -673,6 +695,14 @@
     });
     const scale = div(ws, 'th2', '1 to 10');
     K.place(scale, { x: COLX[4] + 16, y: 192 });
+    // the chapter-wide green "Try this" badge, pinned to the worksheet's top right corner
+    // (top left holds the clipboard title icon)
+    const tryRow = div(stage, 'c7-rrow');
+    K.place(tryRow, { x: WS.x + WS.w + 26 - 600, y: WS.y - 32, w: 600 });
+    tryRow.style.zIndex = 7;
+    const tryB = div(tryRow, 'c7-try');
+    tryB.appendChild(K.icon('notebook-pen'));
+    tryB.appendChild(K.el('span', null, 'Try this'));
     const clipB = div(stage, 'c7-clip');
     K.place(clipB, { x: 960 - 75, y: 620 - 75 });
     iconIn(clipB, 'clipboard-list');
@@ -721,6 +751,9 @@
     // the badge becomes the title icon at the card's top left
     const tgtC = [WS.x + 56 + 45, WS.y + 30 + 45];
     tl.to(clipB, { x: tgtC[0] - 960, y: tgtC[1] - 620, scale: 0.6, duration: 0.9, ease: 'power2.inOut' }, c[1] + 0.7);
+    // the title waits for the badge to land beside it, so the two never cross mid-flight
+    A.in(tl, ttl, c[1] + 1.45, 'fade', { dur: 0.5 });
+    tl.fromTo(tryB, { opacity: 0, scale: 0.4, rotation: 14 }, { opacity: 1, scale: 1, rotation: 4, duration: 0.7, ease: 'back.out(1.8)' }, c[1] + 1.25);
 
     // --- beat 2: the column headings type in
     sub.show(tl, 1, c[2] + 0.1);

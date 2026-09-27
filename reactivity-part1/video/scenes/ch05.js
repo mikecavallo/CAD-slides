@@ -36,11 +36,11 @@
   .c5-strip .abc-col .panel img.c5-over { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
   .c5-strip .abc-col .cap { display:grid; }
   .c5-strip .abc-col .cap .c5-cs { grid-area:1/1; align-self:center; }
-  .c5-stamp { position:absolute; width:160px; height:160px; border-radius:50%; background:var(--green); color:#fff; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; text-align:center; font:800 26px/1.04 var(--font-head); letter-spacing:0; text-transform:uppercase;
-    border:5px solid #fff; box-shadow:0 0 0 3px var(--green), 0 12px 28px rgba(40,60,20,0.32); }
-  .c5-stamp::before { content:''; position:absolute; inset:6px; border-radius:50%; border:2px dashed rgba(255,255,255,0.6); }
-  .c5-stamp svg { width:32px; height:32px; margin-bottom:3px; }
+  .c5-stamp { position:absolute; width:164px; height:164px; border-radius:50%; background:var(--green); color:#fff; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; font:800 26px/1 var(--font-head); letter-spacing:-0.3px; text-transform:uppercase;
+    border:5px solid #fff; box-shadow:0 0 0 3px var(--green), 0 12px 28px rgba(40,60,20,0.32); padding-bottom:2px; }
+  .c5-stamp::before { content:''; position:absolute; inset:5px; border-radius:50%; border:2px dashed rgba(255,255,255,0.55); }
+  .c5-stamp svg { width:28px; height:28px; margin-bottom:4px; }
   .c5-msg { position:absolute; display:flex; align-items:center; gap:24px; white-space:nowrap; }
   .c5-msg .rule { width:10px; height:72px; border-radius:5px; background:var(--green); }
   .c5-msg .t { font:700 46px/1.1 var(--font-head); color:var(--ink); }
@@ -49,10 +49,6 @@
   .c5-tag .ib svg { width:48px; height:48px; stroke-width:3; }
   .c5-tag .k { font:700 26px/1 var(--font-body); letter-spacing:4px; text-transform:uppercase; color:var(--green); }
   .c5-tag .v { font:700 36px/1.15 var(--font-head); color:var(--ink); margin-top:8px; white-space:nowrap; }
-  .c5-note { display:flex; align-items:center; gap:26px; background:#fff; border-radius:24px; padding:20px 44px 20px 20px; box-shadow:var(--shadow); border:1px solid #e6e9e1; }
-  .c5-note .ib { width:78px; height:78px; border-radius:50%; background:var(--green-pale); color:var(--green-dark); display:grid; place-items:center; flex:0 0 auto; }
-  .c5-note .ib svg { width:44px; height:44px; }
-  .c5-note .t { font:600 38px/1.2 var(--font-body); color:var(--ink); white-space:nowrap; }
 
   .c5-bwrap { position:absolute; }
   .c5-frame { position:absolute; inset:0; border:6px solid var(--olive); border-radius:24px; overflow:hidden; box-shadow:var(--shadow); background:#ddd; }
@@ -63,7 +59,8 @@
   .c5-dir svg { overflow:visible; }
   .c5-banner { position:relative; min-width:1180px; height:124px; display:grid; place-items:center; background:#fff; border-radius:999px; padding:0 70px;
     box-shadow:0 22px 60px rgba(40,60,20,0.28), 0 4px 12px rgba(40,60,20,0.12); border:3px solid var(--line); font:700 56px/1 var(--font-head); color:var(--ink); white-space:nowrap; }
-  .c5-banner svg.c5-strike { position:absolute; left:0; top:0; overflow:visible; }
+  .c5-banner .bt { position:relative; display:inline-block; }
+  .c5-banner .c5-strike { position:absolute; left:-26px; right:-26px; top:50%; height:10px; margin-top:1px; border-radius:5px; background:var(--red); }
   .c5-xb { position:absolute; right:-40px; top:50%; margin-top:-56px; width:112px; height:112px; border-radius:50%; background:var(--red); color:#fff; display:grid; place-items:center;
     border:6px solid #fff; box-shadow:0 10px 26px rgba(120,30,10,0.3); }
   .c5-xb svg { width:62px; height:62px; stroke-width:3.4; }
@@ -78,8 +75,10 @@
   .c5-sheet .wr .txt { display:block; overflow:hidden; white-space:nowrap; max-width:0; font:italic 500 44px/1.25 var(--font-body); color:var(--ink); }
   .c5-sheet .wr .pen { position:absolute; left:100%; bottom:6px; margin-left:2px; width:64px; height:64px; color:var(--green-dark); }
   .c5-sheet .wr .pen svg { width:64px; height:64px; }
-  .c5-nb { position:absolute; width:110px; height:110px; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; border:6px solid #fff; box-shadow:var(--shadow-soft); }
-  .c5-nb svg { width:56px; height:56px; }
+  .c5-try { position:absolute; display:flex; align-items:center; gap:14px; padding:10px 30px 10px 10px; border-radius:999px; background:var(--green); color:#fff;
+    border:5px solid #fff; box-shadow:0 10px 26px rgba(40,60,20,0.28); font:700 32px/1 var(--font-head); white-space:nowrap; }
+  .c5-try .ib { width:52px; height:52px; border-radius:50%; background:#fff; color:var(--green-dark); display:grid; place-items:center; flex:0 0 auto; }
+  .c5-try .ib svg { width:32px; height:32px; }
   `;
 
   // ---------------------------------------------------------------- shared helpers
@@ -245,10 +244,10 @@
     const loopHead = K.path(sv, 'M940 752 L960 728 L980 752', { stroke: GREEN, 'stroke-width': 8 });
     A.draw(tl, loop, loopT, 1.2, { ease: 'power2.inOut' });
     A.draw(tl, loopHead, loopT + 1.15, 0.25);
-    const lr = rowC(stage, 945, 820, 600);
+    const lr = rowC(stage, 845, 820, 800);
     const lchip = div(lr, 'chip green c5-chip');
     lchip.appendChild(K.icon('repeat'));
-    lchip.appendChild(K.el('span', null, 'C decides what comes back'));
+    lchip.appendChild(K.el('span', null, 'C helps decide what comes back'));
     A.in(tl, lchip, loopT + 0.55, 'pop', { dur: 0.6 });
   });
 
@@ -275,7 +274,7 @@
     });
 
     // beat 2: it worked
-    const st = stamp(S.wrap, 1660, 225);
+    const st = stamp(S.wrap, 1652, 210);
     stampIn(tl, st, at(2, 0.48));
     const m1 = msg(S.wrap, '*Barking* opened the door', 140, 786);
     A.in(tl, m1, at(2, 0.56), 'fadeRight', { dur: 0.7 });
@@ -286,16 +285,6 @@
     const m2 = msg(S.wrap, '*Positive* means added', 140, 786);
     A.out(tl, m1, at(3, 0.46), 'fadeUp', { dur: 0.4 });
     A.in(tl, m2, at(3, 0.46) + 0.3, 'fadeUp', { dur: 0.7 });
-
-    // beat 4: strip steps back, reflective note slides up
-    const c4 = cue(4);
-    A.out(tl, m2, c4 - 0.1, 'fade', { dur: 0.4 });
-    tl.to(S.wrap, { scale: 0.88, transformOrigin: '960px 130px', duration: 0.9, ease: 'power3.inOut' }, c4);
-    const nr = rowC(stage, 0, 824, 1920);
-    const note = div(nr, 'c5-note');
-    div(note, 'ib').appendChild(K.icon('house'));
-    div(note, 't', 'Has this happened at your house?');
-    tl.fromTo(note, { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, c4 + 0.35);
   });
 
   // ================================================================ s03: A person approaches
@@ -352,7 +341,7 @@
 
     const m1 = msg(S.wrap, '*Barking* made them leave', 140, 786);
     A.in(tl, m1, at(2, 0.44), 'fadeRight', { dur: 0.7 });
-    const st = stamp(S.wrap, 1660, 225);
+    const st = stamp(S.wrap, 1652, 210);
     stampIn(tl, st, at(2, 0.8));
 
     // beat 3: function tag, negative means removed
@@ -401,37 +390,41 @@
       const a = { stroke: color, 'stroke-width': 6 };
       const left = K.group(s), right = K.group(s);
       K.circle(s, 70, 24, 8, { fill: color });
+      // both pills rest with the arrows 12px from the dot; the nudge runs in the arrow's direction and returns
       if (inward) {
-        K.path(left, 'M4 24 H48 M36 12 L48 24 L36 36', a);
-        K.path(right, 'M136 24 H92 M104 12 L92 24 L104 36', a);
+        K.path(left, 'M6 24 H50 M38 12 L50 24 L38 36', a);
+        K.path(right, 'M134 24 H90 M102 12 L90 24 L102 36', a);
       } else {
-        K.path(left, 'M52 24 H8 M20 12 L8 24 L20 36', a);
-        K.path(right, 'M88 24 H132 M120 12 L132 24 L120 36', a);
+        K.path(left, 'M50 24 H6 M18 12 L6 24 L18 36', a);
+        K.path(right, 'M90 24 H134 M122 12 L134 24 L122 36', a);
       }
       p.appendChild(K.el('span', null, label));
-      return { p, left, right };
+      return { p, left, right, dir: inward ? 1 : -1 };
     };
     const closer = dirPill(230 + W / 2, 'Closer', GREEN_DARK, true);
     const gone = dirPill(990 + W / 2, 'Gone', '#b86f14', false);
+    const nudge = (pill, t) => {
+      const v = { duration: 0.45, ease: 'sine.inOut', yoyo: true, repeat: 3 };
+      tl.fromTo(pill.left, { x: 0 }, Object.assign({ x: 6 * pill.dir }, v), t);
+      tl.fromTo(pill.right, { x: 0 }, Object.assign({ x: -6 * pill.dir }, v), t);
+    };
     const tC = at(0, 0.6), tG = at(0, 0.8);
     A.in(tl, closer.p, tC, 'fadeUp', { dur: 0.7 });
-    tl.fromTo(closer.left, { x: -10 }, { x: 3, duration: 0.5, ease: 'power2.inOut', yoyo: true, repeat: 3 }, tC + 0.3);
-    tl.fromTo(closer.right, { x: 10 }, { x: -3, duration: 0.5, ease: 'power2.inOut', yoyo: true, repeat: 3 }, tC + 0.3);
+    nudge(closer, tC + 0.3);
     A.in(tl, gone.p, tG, 'fadeUp', { dur: 0.7 });
-    tl.fromTo(gone.left, { x: 3 }, { x: -10, duration: 0.5, ease: 'power2.inOut', yoyo: true, repeat: 3 }, tG + 0.3);
-    tl.fromTo(gone.right, { x: -3 }, { x: 10, duration: 0.5, ease: 'power2.inOut', yoyo: true, repeat: 3 }, tG + 0.3);
+    nudge(gone, tG + 0.3);
 
-    // --- beat 1: "Just stop the barking" across both, crossed out
+    // --- beat 1: "Just stop the barking" across both (low, so both barking dogs stay visible), crossed out
     const c1 = cue(1);
-    const br = rowC(stage, 0, 442, 1920);
-    const banner = div(br, 'c5-banner', 'Just stop the barking');
+    const br = rowC(stage, 0, 568, 1920);
+    const banner = div(br, 'c5-banner');
+    const bt = div(banner, 'bt', 'Just stop the barking');
     tl.fromTo(banner, { opacity: 0, scaleX: 0.2 }, { opacity: 1, scaleX: 1, duration: 0.8, ease: 'power3.out' }, c1 + 0.1);
-    const ss = K.svgEl('svg', { viewBox: '0 0 1180 124', width: 1180, height: 124, class: 'c5-strike' }, banner);
-    const strike = K.path(ss, 'M150 64 L1030 60', { stroke: '#b8452d', 'stroke-width': 10 });
+    const strike = div(bt, 'c5-strike');
     const xb = div(banner, 'c5-xb');
     xb.appendChild(K.icon('x', { stroke: 3.4 }));
     const tX = at(1, 0.55);
-    A.draw(tl, strike, tX, 0.55, { ease: 'power2.in' });
+    tl.fromTo(strike, { scaleX: 0, rotation: -0.6, transformOrigin: '0% 50%' }, { scaleX: 1, rotation: -0.6, duration: 0.55, ease: 'power2.in' }, tX);
     A.in(tl, xb, tX + 0.45, 'pop', { dur: 0.55 });
     A.set(tl, banner, tX + 0.5, { color: '#8a8a8a' }, 0.4);
 
@@ -442,11 +435,11 @@
     A.in(tl, h2.title, c2 + 0.3, 'fadeUp', { dur: 0.7 });
 
     const sheet = div(stage, 'c5-sheet');
-    K.place(sheet, { x: 260, y: 300, w: 1400 });
+    K.place(sheet, { x: 260, y: 338, w: 1400 });
     const rows = [
-      ['A', 'Antecedent', 'Mail carrier walks up the steps'],
-      ['B', 'Behavior', 'Barks and jumps at the door'],
-      ['C', 'Consequence', 'Mail carrier leaves'],
+      ['A', 'Antecedent', 'Mail carrier at the door'],
+      ['B', 'Behavior', 'Barked, jumped at window'],
+      ['C', 'Consequence', 'Mail carrier left'],
     ].map(([l, lab, txt]) => {
       const r = div(sheet, 'row');
       const tile = div(r, 'tile', l);
@@ -459,22 +452,25 @@
       pen.appendChild(K.icon('pencil', { stroke: 2.2 }));
       return { tile, t, pen };
     });
-    const nb = div(stage, 'c5-nb');
-    K.place(nb, { x: 1605, y: 250 });
-    nb.appendChild(K.icon('notebook-pen', { stroke: 2.2 }));
     tl.fromTo(sheet, { opacity: 0, y: 140 }, { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, c2 + 0.35);
     A.in(tl, rows.map(r => r.tile), c2 + 0.9, 'pop', { stagger: 0.15, dur: 0.55 });
-    A.in(tl, nb, c2 + 1.2, 'pop', { dur: 0.6 });
 
-    // --- beat 3: the pencil writes a sample line into each row
+    // --- beat 3: a 'Try this' badge pins to the sheet's top-left corner, then the pencil writes a sample line into each row
     const c3 = cue(3);
     A.out(tl, h2.title, c3 - 0.15, 'fadeUp', { dur: 0.4 });
     A.in(tl, h3.title, c3 + 0.3, 'fadeUp', { dur: 0.7 });
+    const tryB = div(stage, 'c5-try');
+    div(tryB, 'ib').appendChild(K.icon('notebook-pen', { stroke: 2.2 }));
+    tryB.appendChild(K.el('span', null, 'Try this'));
+    K.place(tryB, { x: 190, y: 292 });
+    tl.fromTo(tryB, { opacity: 0, scale: 1.5, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.45, ease: 'power3.in' }, c3 + 0.2);
+    tl.to(tryB, { scale: 1.05, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, c3 + 0.65);
     // spacing adapts to the beat length so all three lines finish before the scene ends
-    const step = Math.min(1.5, Math.max(0.9, (dur - 1.2 - (c3 + 0.6)) / 3));
+    const w0 = c3 + 0.9;
+    const step = Math.min(1.5, Math.max(0.9, (dur - 1.2 - w0) / 3));
     const wdur = step * 1.2;
     rows.forEach((r, i) => {
-      const t = c3 + 0.6 + i * step;
+      const t = w0 + i * step;
       tl.fromTo(r.pen, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none' }, t - 0.2);
       tl.fromTo(r.t, { maxWidth: 0 }, { maxWidth: 1100, duration: wdur, ease: 'none' }, t);
       tl.fromTo(r.pen, { rotation: 0, y: 0 }, { rotation: -10, y: -4, duration: step / 14, ease: 'sine.inOut', yoyo: true, repeat: 7 }, t);

@@ -1,9 +1,9 @@
 /*
  * Chapter 04: Why it happens
  *   ch04s01  Why it happens                 photo + the owner's question, then the mixing bowl with seven empty chips
- *   ch04s02  Nature and early life          genetics (born sensitive, built for a job), the socialization window
+ *   ch04s02  Nature and early life          genetics (born sensitive, bred for a job), the socialization window
  *   ch04s03  Age                            bowl shifts up, life-stage ruler: adolescence, social maturity, senior
- *   ch04s04  Past experiences and tools     one bad moment, harsh tools, other dogs predict pain, be kind to yourself
+ *   ch04s04  Past experiences and tools     one bad moment, harsh tools, other dogs predict pain, not dominance, be kind
  *   ch04s05  Frustration, pain and the mix  barrier photo, patience battery, vet first, the full bowl, not your fault
  *
  * The mixing bowl is one shared part. Every scene rebuilds it with the ingredients already added, so the
@@ -22,7 +22,7 @@
     { name: 'Socialization', icon: 'users', col: '#3f6b22' },
     { name: 'Age', icon: 'hourglass', col: '#4b5a1e' },
     { name: 'Past experiences', icon: 'zap', col: '#d9912b' },
-    { name: 'Tools used', icon: 'link', col: '#b8452d' },
+    { name: 'Training tools', icon: 'link', col: '#b8452d' },
     { name: 'Leash and barrier frustration', icon: 'fence', col: '#cf6a2c' },
     { name: 'Pain or medical issues', icon: 'stethoscope', col: '#2c4a17' },
     { name: 'Many other factors', icon: 'ellipsis', col: '#8fb03a' },
@@ -32,6 +32,7 @@
     const r = (d * Math.PI) / 180;
     return [Math.round(420 * Math.cos(r)), Math.round(60 + 420 * Math.sin(r))];
   });
+  SLOT.push([0, -250]); // the smaller dotted "+" chip (many other factors) hovers inside the arc
   const SPOT = [[-172, 2], [-60, -4], [60, -4], [172, 2], [-118, -72], [118, -72], [0, -78], [0, -162]];
   const BODY = 'M -260 0 C -260 150 -150 232 0 232 C 150 232 260 150 260 0 A 260 50 0 0 1 -260 0 Z';
   const STD = { cx: 1480, y: 600, s: 0.78 }; // bowl placement in scenes 2 to 5
@@ -113,12 +114,7 @@
     return outer;
   }
   /** Scene time at which `phrase` is spoken in beat i (estimated from its position in the narration). */
-  const phraseAt = (ctx, i, phrase, fb = 0.5) => {
-    const say = ((ctx.beats[i] || {}).say || '').toLowerCase();
-    const k = say.indexOf(phrase.toLowerCase());
-    const f = k >= 0 && say.length ? k / say.length : fb;
-    return ctx.cue(i) + (ctx.end(i) - ctx.cue(i)) * f;
-  };
+  const phraseAt = (ctx, i, phrase, fb = 0.5) => window.phraseTime(ctx, i, phrase, fb);
   /** Full-canvas group so a whole view can be faded out at once. */
   function layer(stage) {
     const d = K.el('div', 'c4-layer');
@@ -206,8 +202,13 @@
     const slotG = K.group(svg);
     const slots = SLOT.map(([x, y], k) => {
       const g = K.group(slotG);
-      K.circle(g, 0, 0, 40, { fill: 'rgba(255,255,255,0.8)', stroke: '#aebb9f', 'stroke-width': 3.5, 'stroke-dasharray': '9 8' });
-      K.svgText(g, 0, 18, '?', { 'font-family': 'Rubik', 'font-size': 52, 'font-weight': 700, fill: '#9eab90', 'text-anchor': 'middle' });
+      if (k < 7) {
+        K.circle(g, 0, 0, 40, { fill: 'rgba(255,255,255,0.8)', stroke: '#aebb9f', 'stroke-width': 3.5, 'stroke-dasharray': '9 8' });
+        K.svgText(g, 0, 18, '?', { 'font-family': 'Rubik', 'font-size': 52, 'font-weight': 700, fill: '#9eab90', 'text-anchor': 'middle' });
+      } else {
+        K.circle(g, 0, 0, 31, { fill: 'rgba(255,255,255,0.8)', stroke: '#aebb9f', 'stroke-width': 3, 'stroke-dasharray': '7 6' });
+        K.path(g, 'M -13 0 H 13 M 0 -13 V 13', { stroke: '#9eab90', 'stroke-width': 5.5, 'stroke-linecap': 'round', fill: 'none' });
+      }
       gsap.set(g, { x, y, opacity: k >= o.filled ? 1 : 0 });
       return { g, x, y };
     });
@@ -235,26 +236,19 @@
 
   /**
    * Ingredient k lights up in its hovering chip, hops into the bowl and lands with a splash.
-   * k = 7 (many other factors) has no chip: it drops in from above. Returns the landing time.
+   * k = 7 (many other factors) fills the small dotted "+" chip. Returns the landing time.
    */
   function dropIn(tl, B, k, t) {
     const tk = B.tokens[k];
-    let land;
-    if (k < 7) {
-      const [sx, sy] = SLOT[k];
-      tl.to(B.slots[k].g, { opacity: 0, scale: 1.35, transformOrigin: '50% 50%', duration: 0.35, ease: 'power2.out' }, t);
-      tl.fromTo(tk.outer, { x: sx, y: sy, opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power1.out' }, t);
-      tl.fromTo(tk.inner, { scale: 0.3, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.5, ease: 'back.out(2.2)' }, t);
-      const t1 = t + 0.55, D = 0.62;
-      tl.to(tk.outer, { x: tk.x, duration: D, ease: 'power1.inOut' }, t1);
-      tl.to(tk.outer, { y: sy - 46, duration: D * 0.36, ease: 'power2.out' }, t1);
-      tl.to(tk.outer, { y: tk.y, duration: D * 0.64, ease: 'power2.in' }, t1 + D * 0.36);
-      land = t1 + D;
-    } else {
-      tl.fromTo(tk.outer, { x: tk.x, y: -620, opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power1.out' }, t);
-      tl.to(tk.outer, { y: tk.y, duration: 0.72, ease: 'power2.in' }, t);
-      land = t + 0.72;
-    }
+    const [sx, sy] = SLOT[k];
+    tl.to(B.slots[k].g, { opacity: 0, scale: 1.35, transformOrigin: '50% 50%', duration: 0.35, ease: 'power2.out' }, t);
+    tl.fromTo(tk.outer, { x: sx, y: sy, opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power1.out' }, t);
+    tl.fromTo(tk.inner, { scale: 0.3, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.5, ease: 'back.out(2.2)' }, t);
+    const t1 = t + 0.55, D = 0.62;
+    tl.to(tk.outer, { x: tk.x, duration: D, ease: 'power1.inOut' }, t1);
+    tl.to(tk.outer, { y: sy - (k === 7 ? 16 : 46), duration: D * 0.36, ease: 'power2.out' }, t1); // the "+" chip sits just above the pile: small hop
+    tl.to(tk.outer, { y: tk.y, duration: D * 0.64, ease: 'power2.in' }, t1 + D * 0.36);
+    const land = t1 + D;
     tl.to(tk.inner, { scaleX: 1.14, scaleY: 0.86, transformOrigin: '50% 50%', duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, land);
     tl.to(B.bodyAll, { y: 5, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, land);
     splash(tl, B, tk.x, tk.y - 34, land, ING[k].col);
@@ -366,13 +360,13 @@
     tl.fromTo(arcs, { opacity: 0 }, { opacity: 1, duration: 0.18, stagger: 0.09, yoyo: true, repeat: nBl * 2 - 1, repeatDelay: 0.27, ease: 'power1.out' }, tAl + 0.5);
     tl.to(aBody, { rotation: 8, transformOrigin: '50% 50%', duration: 0.07, yoyo: true, repeat: 7, ease: 'sine.inOut' }, tAl + 0.5);
 
-    // ---------- beat 1: built for a job (tags sprout from the DNA chip)
+    // ---------- beat 1: bred for a job (tags sprout from the DNA chip)
     const csvg = K.svg(LA, { x: 0, y: 0, w: 1920, h: 1080 });
     const conn = [
       K.path(csvg, 'M 204 548 V 666 Q 204 694 232 694 H 252', { stroke: C.greenLight, 'stroke-width': 6 }),
       K.path(csvg, 'M 204 666 V 772 Q 204 800 232 800 H 252', { stroke: C.greenLight, 'stroke-width': 6 }),
     ];
-    const job = put(LA, 'c4-sub', 'Built for a job', { x: 264, y: 580 });
+    const job = put(LA, 'c4-sub', 'Bred for a job', { x: 264, y: 580 });
     const mkTag = (icon, html, y) => {
       const t = K.el('div', 'c4-tag');
       Object.assign(t.style, { left: '264px', top: y + 'px' });
@@ -385,8 +379,8 @@
     };
     const tag1 = mkTag('eye', '**Herders:** movement', 652);
     const tag2 = mkTag('shield', '**Guardians:** strangers', 758);
-    const tT1 = Math.max(cue(1) + 0.4, phraseAt(ctx, 1, 'herding', 0.15) - 0.2);
-    const tT2 = Math.max(tT1 + 0.8, phraseAt(ctx, 1, 'guardian', 0.45) - 0.2);
+    const tT1 = Math.max(cue(1) + 0.4, phraseAt(ctx, 1, 'herders were bred', 0.15) - 0.2);
+    const tT2 = Math.max(tT1 + 0.8, phraseAt(ctx, 1, 'guardians to distrust', 0.45) - 0.2);
     A.draw(tl, conn[0], cue(1) - 0.2, 0.7);
     A.in(tl, job, cue(1), 'fadeRight', { dur: 0.7 });
     A.in(tl, tag1, tT1, 'pop', { dur: 0.6 });
@@ -423,14 +417,14 @@
     A.in(tl, ticks, cue(2) + 0.7, 'fade', { dur: 0.5, stagger: 0.1 });
     A.draw(tl, brk, cue(2) + 1.1, 0.6);
     A.in(tl, wlab, cue(2) + 1.1, 'fadeUp', { dur: 0.7 });
-    const tSort = Math.max(cue(2) + 1.6, phraseAt(ctx, 2, 'sorting', 0.35) - 0.3);
+    const tSort = Math.max(cue(2) + 1.6, phraseAt(ctx, 2, 'sorts the world', 0.35) - 0.3);
     tl.fromTo(wIcons, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.28, ease: 'back.out(2)' }, tSort);
     const tLight = Math.max(tSort + 1.8, phraseAt(ctx, 2, 'feel normal', 0.8) - 0.3);
     tl.fromTo(shine, { opacity: 0 }, { opacity: 0.4, duration: 0.35, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tLight);
 
     // gaps in the window (beat 3): buses, strangers and wheels never get filed under normal
     const GAP = [1, 2, 4];
-    const gaps = GAP.map(i => K.rect(tsvg, wx(i) - 24, TY - 4, 48, TH + 8, { fill: '#e1e7d9' }));
+    const gaps = GAP.map(i => K.rect(tsvg, wx(i) - 24, TY, 48, TH, { fill: '#e1e7d9' }));
     tl.to(GAP.map(i => wIcons[i]), { opacity: 0, y: 26, duration: 0.4, stagger: 0.12, ease: 'power2.in' }, cue(3) - 0.2);
 
     const mkRow = (icon, html, y, bg, fg) => {
@@ -462,7 +456,7 @@
     const dogG = K.group(lsvg);
     svgIcon(dogG, 'dog', 304, 48, 54, { stroke: C.ink, 'stroke-width': 2.2 });
     const chev = [K.path(lsvg, 'M 342 34 L 356 48 L 342 62', { stroke: C.red, 'stroke-width': 5 }), K.path(lsvg, 'M 362 34 L 376 48 L 362 62', { stroke: C.red, 'stroke-width': 5 })];
-    const tTaut = Math.max(cue(5) + 1.2, phraseAt(ctx, 5, 'on leash', 0.45));
+    const tTaut = Math.max(cue(5) + 1.2, phraseAt(ctx, 5, 'leash says no', 0.45) - 0.2);
     tl.to(leash, { attr: { d: TAUT, stroke: C.red }, duration: 0.35, ease: 'power3.in' }, tTaut);
     tl.fromTo(dogG, { x: 0 }, { x: 8, duration: 0.35, ease: 'power3.in' }, tTaut);
     tl.to(dogG, { x: 4, duration: 0.08, yoyo: true, repeat: 9, ease: 'sine.inOut' }, tTaut + 0.4);
@@ -505,8 +499,9 @@
       return b;
     };
     const adol = mkBand('Adolescence', 6, 18, 650, C.pale, C.green, C.greenDeep);
-    const ext = K.el('div', 'c4-band');
-    Object.assign(ext.style, { left: X(18) - 24 + 'px', top: '650px', width: X(24) - X(18) + 24 + 'px', background: 'transparent', borderColor: C.green, borderStyle: 'dashed', borderLeft: 'none', borderRadius: '0 22px 22px 0', zIndex: 0 });
+    const ext = K.el('div', 'c4-band', 'Big breeds');
+    Object.assign(ext.style, { left: X(18) - 24 + 'px', top: '650px', width: X(24) - X(18) + 24 + 'px', background: 'transparent', borderColor: C.green, borderStyle: 'dashed', borderLeft: 'none', borderRadius: '0 22px 22px 0', zIndex: 0,
+      justifyContent: 'center', padding: '0 0 0 24px', font: '600 28px/1 var(--font-body)', color: C.greenDark });
     stage.insertBefore(ext, adol);
     const social = mkBand('Social maturity', 12, 36, 766, C.amberPale, C.amber, '#8a5410');
 
@@ -555,7 +550,7 @@
     const pinDot = K.circle(rsvg, 1600, AX, 13, { fill: C.olive, stroke: '#fff', 'stroke-width': 4 });
     const clock = badge(stage, 'clock', 1600, 750, 88, C.olive, '#fff');
     const sen = label(stage, 'Senior', 1600, 648, { cls: 'c4-sub', w: 300, color: C.olive });
-    const call3 = mkCall('Senior changes', null, C.olive);
+    const call3 = mkCall('Senior changes', 'Sore joints, fading senses', C.olive);
     A.out(tl, call2, cue(2) - 0.3, 'fadeUp', { dur: 0.4 });
     A.in(tl, pinDot, cue(2) - 0.1, 'pop', { dur: 0.5 });
     A.draw(tl, pin, cue(2) + 0.1, 0.5);
@@ -615,16 +610,9 @@
 
     const LB = layer(stage);
     const t2 = put(LB, 'c4-big', 'Harsh tools, !!more fear!!', { x: 100, y: 320 });
-    const wrapT = K.el('div', 'c4-wrap');
-    Object.assign(wrapT.style, { left: '100px', top: '440px', width: '1000px' });
-    LB.appendChild(wrapT);
-    const tags = ['Leash pops', 'Prong and choke collars', 'Shock collars', 'Alpha rolls'].map(t => {
-      const n = K.el('div', 'c4-red', t);
-      wrapT.appendChild(n);
-      return n;
-    });
+    // what research links them with (said first), then the tools themselves
     const ups = K.el('div', 'c4-wrap');
-    Object.assign(ups.style, { left: '100px', top: '660px', width: '1000px' });
+    Object.assign(ups.style, { left: '100px', top: '430px', width: '1000px' });
     LB.appendChild(ups);
     const upChips = ['Fear', 'Stress', 'Aggression'].map(t => {
       const n = K.el('div', 'c4-up');
@@ -633,11 +621,26 @@
       ups.appendChild(n);
       return n;
     });
+    const wrapT = K.el('div', 'c4-wrap');
+    Object.assign(wrapT.style, { left: '100px', top: '560px', width: '1000px' });
+    LB.appendChild(wrapT);
+    const tags = ['Leash jerks', 'Prong and choke collars', 'Shock collars', 'Alpha rolls'].map(t => {
+      const n = K.el('div', 'c4-red', t);
+      wrapT.appendChild(n);
+      return n;
+    });
     A.in(tl, t2, cue(1) + 0.4, 'fadeUp', { dur: 0.8 });
-    const tagWords = ['leash pops', 'prong', 'shock', 'alpha'];
-    tags.forEach((n, i) => A.in(tl, n, Math.max(cue(1) + 0.8 + i * 0.25, phraseAt(ctx, 1, tagWords[i], 0.3 + i * 0.1) - 0.25), 'pop', { dur: 0.55 }));
-    const upWords = ['more fear', 'more stress', 'more aggression'];
-    upChips.forEach((n, i) => A.in(tl, n, Math.max(cue(1) + 2 + i * 0.3, phraseAt(ctx, 1, upWords[i], 0.75 + i * 0.07) - 0.2), 'fadeUp', { dur: 0.6 }));
+    let tPrev = cue(1) + 0.9;
+    const upWords = ['more fear', 'stress and', 'aggression'];
+    upChips.forEach((n, i) => {
+      tPrev = Math.max(tPrev + 0.3, phraseAt(ctx, 1, upWords[i], 0.4 + i * 0.05) - 0.2);
+      A.in(tl, n, tPrev, 'fadeUp', { dur: 0.6 });
+    });
+    const tagWords = ['leash jerks', 'prong', 'shock', 'pinning'];
+    tags.forEach((n, i) => {
+      tPrev = Math.max(tPrev + 0.35, phraseAt(ctx, 1, tagWords[i], 0.65 + i * 0.08) - 0.25);
+      A.in(tl, n, tPrev, 'pop', { dur: 0.55 });
+    });
 
     // ---------- beat 2: the equation. Other dog + pain = fear
     A.out(tl, LB, cue(2) - 0.3, 'fadeUp', { dur: 0.45 });
@@ -660,19 +663,64 @@
     A.in(tl, [signs[1], eq[2], eqLabs[2]], tFear, 'pop', { dur: 0.6, stagger: 0.12 });
     A.pulse(tl, eq[2], Math.max(tFear + 1, phraseAt(ctx, 2, 'fear grows', 0.7)), { scale: 1.14 });
 
-    // ---------- beat 3: be kind to yourself
+    // ---------- beat 3: not dominance, big feelings
     tl.to(LC, { opacity: 0, filter: 'blur(8px)', duration: 0.9, ease: 'power2.inOut' }, cue(3) - 0.2);
-    const best = put(stage, 'c4-best', 'You did your best', { x: 100, y: 470 });
+    const LD = layer(stage);
+    const t4 = put(LD, 'c4-big', 'Not dominance. *Big feelings.*', { x: 100, y: 320 });
+    const CX = 215, CY = 608;
+    const crown = badge(LD, 'crown', CX, CY, 170, '#eceee8', C.inkSoft);
+    const boss = label(LD, 'Boss?', CX, CY + 104, { cls: 'c4-eqlab', w: 240 });
+    const xsvg = K.svg(LD, { x: CX - 85, y: CY - 85, w: 170, h: 170 });
+    const xl = [K.line(xsvg, 34, 34, 136, 136, { stroke: C.red, 'stroke-width': 13 }), K.line(xsvg, 136, 34, 34, 136, { stroke: C.red, 'stroke-width': 13 })];
+    const asvg = K.svg(LD, { x: 0, y: 0, w: 1920, h: 1080 });
+    const arr = [K.path(asvg, `M 326 ${CY} H 396`, { stroke: C.green, 'stroke-width': 6 }), K.path(asvg, `M 380 ${CY - 15} L 398 ${CY} L 380 ${CY + 15}`, { stroke: C.green, 'stroke-width': 6 })];
+    const feel = [['Scared', 'frown'], ['Frustrated', 'annoyed'], ['Overwhelmed', 'tornado']].map(([t, ic], i) => {
+      const n = K.el('div', 'c4-tag');
+      Object.assign(n.style, { left: '430px', top: CY - 148 + i * 106 + 'px' });
+      const c = K.el('div', 'ic');
+      c.appendChild(K.icon(ic));
+      n.appendChild(c);
+      n.appendChild(K.el('span', null, t));
+      LD.appendChild(n);
+      return n;
+    });
+    A.in(tl, t4, cue(3) + 0.4, 'fadeUp', { dur: 0.8 });
+    const tCrown = Math.max(cue(3) + 0.9, phraseAt(ctx, 3, 'outdated idea', 0.2) - 0.2);
+    A.in(tl, crown, tCrown, 'pop', { dur: 0.6 });
+    A.in(tl, boss, Math.max(tCrown + 0.4, phraseAt(ctx, 3, 'be the boss', 0.35) - 0.3), 'fadeUp', { dur: 0.5 });
+    const tX = Math.max(tCrown + 1.2, phraseAt(ctx, 3, 'after rank', 0.6) - 0.4);
+    A.draw(tl, xl, tX, 0.35, { stagger: 0.18 });
+    tl.to([crown, boss], { opacity: 0.45, duration: 0.5 }, tX + 0.6);
+    let tF = tX + 0.4;
+    ['scared', 'frustrated', 'overwhelmed'].forEach((w, i) => {
+      tF = Math.max(tF + 0.35, phraseAt(ctx, 3, w, 0.8 + i * 0.07) - 0.35);
+      if (i === 0) A.draw(tl, arr, tF - 0.1, 0.4, { stagger: 0.12 });
+      A.in(tl, feel[i], tF, 'fadeRight', { dur: 0.6 });
+    });
+
+    // ---------- beat 4: be kind to yourself
+    A.out(tl, LD, cue(4) + 0.1, 'fade', { dur: 0.5 });
+    const LE = layer(stage);
+    const kind = put(LE, 'c4-best', 'Be kind to yourself', { x: 100, y: 372 });
     const ul = K.el('div', 'accent-bar');
-    Object.assign(ul.style, { left: '104px', top: '600px', width: '160px' });
-    stage.appendChild(ul);
-    A.in(tl, best, cue(3) + 0.5, 'fadeUp', { dur: 0.9 });
-    A.in(tl, ul, cue(3) + 1.0, 'grow', { dur: 0.6 });
-    const more = put(stage, 'lead', 'And now you know more.', { x: 100, y: 648 });
-    more.style.color = C.inkSoft;
-    A.in(tl, more, Math.max(cue(3) + 1.6, phraseAt(ctx, 3, 'now you know more', 0.8) - 0.3), 'fadeUp', { dur: 0.8 });
+    Object.assign(ul.style, { left: '104px', top: '496px', width: '160px' });
+    LE.appendChild(ul);
+    const best = put(LE, 'lead', 'You did your best.', { x: 100, y: 532 });
+    best.style.color = C.inkSoft;
+    const help = K.el('div', 'c4-qpill');
+    Object.assign(help.style, { left: '100px', top: '646px' });
+    const hk = K.el('div', 'ck');
+    hk.appendChild(K.icon('check'));
+    help.appendChild(hk);
+    help.appendChild(K.el('span', null, 'Switch safely, with a force-free trainer'));
+    LE.appendChild(help);
+    A.in(tl, kind, cue(4) + 0.6, 'fadeUp', { dur: 0.9 });
+    A.in(tl, ul, cue(4) + 1.1, 'grow', { dur: 0.6 });
+    const tBest = Math.max(cue(4) + 1.5, phraseAt(ctx, 4, 'you did your best', 0.3) - 0.3);
+    A.in(tl, best, tBest, 'fadeUp', { dur: 0.8 });
+    A.in(tl, help, Math.max(tBest + 1.2, phraseAt(ctx, 4, 'a trainer who', 0.6) - 0.3), 'fadeRight', { dur: 0.7 });
     // green heart pulses once over the bowl, then stays
-    const HX = STD.cx, HY = STD.y - 290 * STD.s;
+    const HX = STD.cx, HY = STD.y - 400 * STD.s;
     const ring = K.el('div', 'c4-heart');
     Object.assign(ring.style, { left: HX - 70 + 'px', top: HY - 70 + 'px', width: '140px', height: '140px', borderRadius: '50%', border: '5px solid ' + C.greenLight, opacity: 0 });
     stage.appendChild(ring);
@@ -681,7 +729,7 @@
     heart.appendChild(K.icon('heart', { size: 112, stroke: 1.6, color: C.green }));
     heart.firstChild.setAttribute('fill', C.green);
     stage.appendChild(heart);
-    const tH = cue(3) + 0.3;
+    const tH = cue(4) + 0.3;
     A.in(tl, heart, tH, 'pop', { dur: 0.6 });
     tl.to(heart, { scale: 1.25, duration: 0.28, ease: 'power2.out', yoyo: true, repeat: 1 }, tH + 0.75);
     tl.fromTo(ring, { opacity: 0.9, scale: 0.7 }, { opacity: 0, scale: 1.6, duration: 1.0, ease: 'power2.out', immediateRender: false }, tH + 0.8);
@@ -714,7 +762,7 @@
     K.rect(msvg, 0, 8, 480, 44, { rx: 22, fill: '#e1e7d9' });
     const fill = K.rect(msvg, 0, 8, 480, 44, { rx: 22, fill: 'url(#c4press)' });
     A.in(tl, [plab, msvg], cue(0) + 1.1, 'fadeUp', { dur: 0.7, stagger: 0.12 });
-    const tP = Math.max(cue(0) + 1.8, phraseAt(ctx, 0, 'can see it', 0.55) - 0.2);
+    const tP = Math.max(cue(0) + 1.8, phraseAt(ctx, 0, 'sees what they want', 0.7) - 0.2);
     const dP = Math.max(1.2, Math.min(3.2, cue(1) - 0.7 - tP));
     tl.fromTo(fill, { clipPath: 'inset(0% 100% 0% 0% round 22px)' }, { clipPath: 'inset(0% 6% 0% 0% round 22px)', duration: dP, ease: 'power1.in' }, tP);
 
@@ -742,44 +790,37 @@
     tl.to(pat, { color: C.red, duration: 0.4 }, tDrain + 1.4);
     A.pulse(tl, bsvg, tDrain + 1.8, { scale: 1.05 });
 
-    // ---------- beat 2: rule out pain first
+    // ---------- beat 2: rule out pain first. Pain hides, so every dog gets a vet check
     const rule = put(LB, 'c4-sub', 'Rule out pain first', { x: 100, y: 612, size: 44 });
-    const mkQ = (t, y) => {
-      const p = K.el('div', 'c4-qpill');
-      Object.assign(p.style, { left: '100px', top: y + 'px', width: '560px' });
-      const ck = K.el('div', 'ck');
-      ck.appendChild(K.icon('check'));
-      p.appendChild(ck);
-      p.appendChild(K.el('span', null, t));
-      LB.appendChild(p);
-      return { p, ck };
-    };
-    const q1 = mkQ('Sudden change?', 694);
-    const q2 = mkQ('Touchy when handled?', 796);
+    const hide = K.el('div', 'c4-qpill');
+    Object.assign(hide.style, { left: '100px', top: '694px' });
+    const hi = K.el('div', 'ck');
+    Object.assign(hi.style, { background: C.amberPale, color: C.amber });
+    hi.appendChild(K.icon('eye-off'));
+    hide.appendChild(hi);
+    hide.appendChild(K.el('span', null, 'Not always a limp'));
+    LB.appendChild(hide);
+    const vrow = K.el('div', null);
+    Object.assign(vrow.style, { position: 'absolute', left: '100px', top: '796px', display: 'flex', alignItems: 'center', gap: '26px' });
     const vet = K.el('div', 'c4-vet');
-    Object.assign(vet.style, { left: '760px', top: '727px' });
+    Object.assign(vet.style, { position: 'relative', fontSize: '40px' });
     const vi = K.el('div', 'vi');
     vi.appendChild(K.icon('stethoscope'));
     vet.appendChild(vi);
-    vet.appendChild(K.el('span', null, 'Vet first'));
-    LB.appendChild(vet);
-    const asv = K.svg(LB, { x: 0, y: 0, w: 1920, h: 1080 });
-    const ar = [
-      K.path(asv, 'M 672 734 C 710 734 712 770 744 772', { stroke: C.green, 'stroke-width': 5 }),
-      K.path(asv, 'M 672 836 C 710 836 712 800 744 798', { stroke: C.green, 'stroke-width': 5 }),
-    ];
-    const heads = [K.path(asv, 'M 732 762 L 746 772 L 732 783', { stroke: C.green, 'stroke-width': 5 }), K.path(asv, 'M 732 788 L 746 798 L 732 809', { stroke: C.green, 'stroke-width': 5 })];
+    vet.appendChild(K.el('span', null, 'Vet check for every dog'));
+    vrow.appendChild(vet);
+    const sud = K.el('div', 'c4-up');
+    Object.assign(sud.style, { background: C.amberPale, color: '#8a5410' });
+    sud.appendChild(K.icon('zap'));
+    sud.appendChild(K.el('span', null, 'Sudden change?'));
+    vrow.appendChild(sud);
+    LB.appendChild(vrow);
     A.in(tl, rule, cue(2) + 0.1, 'fadeUp', { dur: 0.7 });
-    const tQ1 = Math.max(cue(2) + 0.6, phraseAt(ctx, 2, 'sudden', 0.4) - 0.3);
-    const tQ2 = Math.max(tQ1 + 0.8, phraseAt(ctx, 2, 'touchy', 0.6) - 0.3);
-    [[q1, tQ1], [q2, tQ2]].forEach(([q, t]) => {
-      A.in(tl, q.p, t, 'fadeRight', { dur: 0.6 });
-      A.in(tl, q.ck, t + 0.35, 'pop', { dur: 0.5 });
-    });
-    const tVet = Math.max(tQ2 + 0.7, phraseAt(ctx, 2, 'your vet', 0.75) - 0.3);
-    A.draw(tl, ar, tVet - 0.2, 0.5, { stagger: 0.1 });
-    A.in(tl, heads, tVet + 0.2, 'fade', { dur: 0.3 });
-    A.in(tl, vet, tVet + 0.1, 'pop', { dur: 0.7 });
+    const tHide = Math.max(cue(2) + 0.8, phraseAt(ctx, 2, 'look like limping', 0.45) - 0.4);
+    A.in(tl, hide, tHide, 'fadeRight', { dur: 0.6 });
+    const tVet = Math.max(tHide + 1.0, phraseAt(ctx, 2, 'every reactive dog', 0.57) - 0.3);
+    A.in(tl, vet, tVet, 'pop', { dur: 0.7 });
+    A.in(tl, sud, Math.max(tVet + 0.9, phraseAt(ctx, 2, 'sudden change', 0.9) - 0.5), 'fadeRight', { dur: 0.6 });
 
     // ---------- beat 3: many other factors. The bowl moves centre stage and glows
     A.out(tl, LB, cue(3) - 0.35, 'fade', { dur: 0.45 });

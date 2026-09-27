@@ -194,6 +194,13 @@ def find_recordings(chapters):
 
 
 def main():
+    global NARRATION_DIR
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dir", help="folder with the recordings (default: narration/)")
+    args = ap.parse_args()
+    if args.dir:
+        NARRATION_DIR = Path(args.dir).resolve()
     script = load_script()
     items = chapter_items(script)
     per, full = find_recordings(list(items))

@@ -423,6 +423,31 @@
   window.K = K;
   window.A = A;
 
+  /**
+   * Scene time at which `phrase` is spoken inside beat i. Uses real word timestamps when the timeline
+   * was built from aligned narration (beats[i].words), otherwise estimates from the phrase's character
+   * position in the beat text. Falls back to fraction `fb` of the beat when the phrase isn't found.
+   */
+  function phraseTime(ctx, i, phrase, fb = 0.5) {
+    const b = ctx.beats[i] || {};
+    const say = String(b.say || '');
+    const norm = w => w.toLowerCase().replace(/\u2019/g, "'").replace(/[^a-z0-9']/g, '').replace(/^'+|'+$/g, '');
+    const want = (String(phrase).match(/[A-Za-z0-9'\u2019]+/g) || []).map(norm).filter(Boolean);
+    if (b.words && b.words.length && want.length) {
+      const ws = b.words.map(w => norm(w.w));
+      for (let k = 0; k + want.length <= ws.length; k++) {
+        let ok = true;
+        for (let j = 0; j < want.length; j++) { if (ws[k + j] !== want[j]) { ok = false; break; } }
+        if (ok) return b.words[k].t;
+      }
+    }
+    const low = say.toLowerCase();
+    const at = low.indexOf(String(phrase).toLowerCase());
+    const f = at >= 0 && low.length ? at / low.length : fb;
+    return ctx.cue(i) + (ctx.end(i) - ctx.cue(i)) * f;
+  }
+  window.phraseTime = phraseTime;
+
   // ---------------------------------------------------------------- chrome + boot
   function buildChrome(stage, info) {
     stage.appendChild(el('div', 'bg'));
@@ -480,6 +505,7 @@
       cue: i => (i < 0 ? (beats[beats.length + i] || {}).t ?? 0 : i < beats.length ? beats[i].t : dur),
       end: i => (i < beats.length ? beats[i].end : dur),
       at: (i, off = 0) => ctx.cue(i) + off,
+      phrase: (i, text, fb) => phraseTime(ctx, i, text, fb),
       exit: true,
     };
     if (info.kind === 'bumper') buildBumper(ctx);

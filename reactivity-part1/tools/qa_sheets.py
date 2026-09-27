@@ -32,10 +32,11 @@ def main():
             continue
         for old in out.glob(f"{seg['id']}_*.jpg"):
             old.unlink()
-        vf = (f"fps=1/{args.every},scale=480:270,"
+        step = max(1, round(args.every * timing["fps"]))
+        vf = (f"select='not(mod(n\\,{step}))',scale=480:270,"
               f"drawtext=fontfile={FONT}:text='%{{pts\\:hms}}':x=6:y=6:fontsize=18:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=4,"
               f"tile=4x3:padding=4:color=white")
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(src), "-vf", vf, "-q:v", "4", str(out / f"{seg['id']}_%02d.jpg")], check=True)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(src), "-vf", vf, "-fps_mode", "passthrough", "-q:v", "4", str(out / f"{seg['id']}_%02d.jpg")], check=True)
         lines = [f"{seg['id']}  duration {seg['dur']:.1f}s  (sheets every {args.every}s, 12 frames per sheet, read left to right)"]
         for i, b in enumerate(seg["beats"]):
             lines.append(f"  beat {i + 1} starts {b['t']:.1f}s, ends {b['end']:.1f}s: {b['say']}")

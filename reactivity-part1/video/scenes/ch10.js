@@ -32,7 +32,7 @@
   registerScene('ch10s01', ({ stage, tl, cue }) => {
     stage.appendChild(K.el('style', null, css));
     const h = K.heading(stage, 'Where to go from here', { x: 116, y: 120, size: 80 });
-    const sub = K.text(stage, 'Understanding the *why* is step one.', { cls: 'lead', x: 120, y: 262, w: 1300 });
+    const sub = K.text(stage, 'Understanding the *why* comes first.', { cls: 'lead', x: 120, y: 262, w: 1300 });
     A.in(tl, h.title, cue(0), 'wipe', { dur: 0.9 });
     A.in(tl, h.bar, cue(0) + 0.7, 'grow');
     A.in(tl, sub, cue(0) + 0.9, 'fadeUp');
@@ -72,10 +72,10 @@
     const lawn = K.svg(steps[0].card, { x: 318, y: 262, w: 170, h: 72, viewBox: '0 0 190 80' });
     lawn.style.zIndex = 2;
     const path = K.path(lawn, 'M 6 70 C 60 60 90 30 184 12', { stroke: '#b89a6a', 'stroke-width': 12, opacity: 0.75 });
-    const blades = [20, 50, 80, 110, 140, 170].map((x, i) => K.path(lawn, `M ${x} ${66 - i * 9} l -6 -18 M ${x} ${66 - i * 9} l 0 -22 M ${x} ${66 - i * 9} l 6 -18`, { stroke: '#7fb24a', 'stroke-width': 4 }));
+    const fresh = K.path(lawn, 'M 6 44 C 60 36 90 10 184 -8', { stroke: '#619537', 'stroke-width': 7 });
     A.in(tl, path, cue(1) + 0.9, 'fade');
-    tl.to(path, { attr: { stroke: '#8fbf5a' }, duration: 1.6, ease: 'power1.inOut' }, cue(1) + 2.6);
-    A.draw(tl, blades, cue(1) + 2.8, 0.8, { stagger: 0.18 });
+    tl.to(path, { opacity: 0.45, duration: 1.2 }, cue(1) + 2.8);
+    A.draw(tl, fresh, cue(1) + 3.0, 1.4);
 
     fillStep(steps[1], cue(2));
     // definition cards hang off card 2
@@ -85,7 +85,7 @@
     defA.innerHTML = '<div class="dt">Counterconditioning</div><div class="dd">Trigger means good things</div>';
     const eq = K.el('div', 'c10-eq');
     const eqItem = (ic, bg, fg) => { const e = K.el('div', 'e', null, { background: bg, color: fg }); e.appendChild(K.icon(ic)); return e; };
-    [eqItem('dog', 'var(--amber-pale)', 'var(--amber)'), K.el('span', null, '+'), eqItem('cookie', 'var(--green-pale)', 'var(--green-dark)'), K.el('span', null, '='), eqItem('heart', 'var(--green)', '#fff')].forEach(n => eq.appendChild(n));
+    [eqItem('triangle-alert', 'var(--amber-pale)', 'var(--amber)'), K.el('span', null, '+'), eqItem('cookie', 'var(--green-pale)', 'var(--green-dark)'), K.el('span', null, '='), eqItem('heart', 'var(--green)', '#fff')].forEach(n => eq.appendChild(n));
     defA.appendChild(eq);
     const defB = K.el('div', 'c10-def'); defB.style.left = '1000px';
     defB.innerHTML = '<div class="dt">Desensitization</div><div class="dd">Start easy, build slowly</div>';
@@ -118,7 +118,7 @@
 
     // beats 1-2: progress, not perfection
     const g1 = K.el('div'); stage.appendChild(g1);
-    const h = K.heading(g1, 'Very improvable', { x: 116, y: 120, size: 80 });
+    const h = K.heading(g1, 'It can get a lot better', { x: 116, y: 120, size: 80 });
     const sub = K.text(g1, 'Progress, *not perfection*', { cls: 'lead', x: 120, y: 262, w: 1200, size: 42 });
     A.in(tl, h.title, cue(0), 'wipe', { dur: 0.9 });
     A.in(tl, h.bar, cue(0) + 0.7, 'grow');

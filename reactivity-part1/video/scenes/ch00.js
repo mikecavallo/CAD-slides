@@ -145,25 +145,16 @@
     // beat 4: three things you'll understand
     const items = [['heart', 'The feeling', 'What they feel'], ['repeat', 'The function', 'What it does'], ['glass-water', 'The full cup', 'Why some days']];
     const rows = items.map(([ic, t, s], i) => {
-      const r = K.el('div', 'c0-row'); Object.assign(r.style, { left: `${140 + i * 560}px`, top: '560px' });
+      const r = K.el('div', 'c0-row'); Object.assign(r.style, { left: `${140 + i * 560}px`, top: '600px', height: '270px' });
       const b = K.el('div', 'ib'); b.appendChild(K.icon(ic)); r.appendChild(b);
       r.appendChild(K.el('div', 't', t));
       r.appendChild(K.el('div', 's', s));
       stage.appendChild(r);
       return r;
     });
-    A.in(tl, rows, cue(3) + 0.2, 'fadeUp', { stagger: 0.35 });
-    rows.forEach((r, i) => A.pulse(tl, r.querySelector('.ib'), cue(3) + 1.2 + i * 1.3, { scale: 1.12 }));
+    const span3 = Math.max(4, dur - cue(3));
+    rows.forEach((r, i) => A.in(tl, r, cue(3) + span3 * (0.08 + i * 0.16), 'fadeUp'));
+    rows.forEach((r, i) => A.pulse(tl, r.querySelector('.ib'), cue(3) + span3 * (0.62 + i * 0.1), { scale: 1.12 }));
 
-    // beat 5: understand, predict, help
-    const strip = K.el('div', 'c0-strip');
-    strip.style.top = '850px';
-    const eye = K.el('div', 'ib'); eye.appendChild(K.icon('eye'));
-    strip.appendChild(eye);
-    ['Understand.', 'Predict.', 'Help.'].forEach((w, i) => { const s = K.el('span', i === 2 ? 'g' : null, w); if (i === 2) s.style.color = 'var(--green)'; strip.appendChild(s); });
-    stage.appendChild(strip);
-    tl.to(rows, { y: -40, duration: 0.7, ease: 'power2.inOut' }, cue(4));
-    A.in(tl, eye, cue(4) + 0.2, 'pop');
-    A.in(tl, [...strip.querySelectorAll('span')], cue(4) + 0.6, 'fadeUp', { stagger: 0.55 });
   });
 })();

@@ -57,6 +57,10 @@ node tools/render.mjs && python3 tools/assemble.py --name Reactivity-Part-1-PREV
 Optional background music: `python3 tools/assemble.py --music path/to/track.mp3` loops it, fades it
 and ducks it under the voice. Chapter files over 29 MB are automatically re-encoded to fit.
 
+Web pages: `python3 tools/web_parts.py --video out/X.mp4 --timing build/timing.json --srt out/X.srt --out out/web/x`
+splits a finished video into parts under the artifact file limit, then `python3 tools/web_page.py --dir out/web/x ...`
+writes a player page with a scene list and captions.
+
 Quality checks: `node tools/snap.mjs <scene>` makes stills at each beat; `python3 tools/qa_sheets.py`
 makes contact sheets from the rendered video, one frame every 1.5 s.
 

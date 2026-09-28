@@ -182,7 +182,7 @@ def main():
         if multi and s["chapter"] != last_ch:
             last_ch = s["chapter"]
             toc.append(f'<div class="ch">{s["chapter"]} &middot; {esc(s["chapterTitle"])}</div>')
-        title = s["heading"] or f"Scene {n + 1}"
+        title = s["heading"] or s["chapterTitle"] or f"Scene {n + 1}"
         first = first or title
         toc.append(f'<button type="button" class="scene" data-t="{s["t"]}" data-title="{esc(title)}" aria-current="false">'
                    f'<span class="t">{fmt(s["t"])}</span><span>{esc(title)}</span></button>')

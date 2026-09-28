@@ -14,7 +14,7 @@ FPS = 30
 LEAD = 0.7          # scene starts this long before its first beat
 GAP = 0.45          # silence between beats (scratch voice)
 SCENE_GAP = 0.35    # extra breath between scenes (scratch voice)
-TAIL = 1.1          # hold after the last beat of a chapter
+TAIL = 3.0          # hold after the last beat of a chapter (room for the logo close)
 HOLD = 1.2          # narration mode: silent hold added after each scene so its last visual can land and be read
 BUMPER = 2.8        # chapter title card length
 

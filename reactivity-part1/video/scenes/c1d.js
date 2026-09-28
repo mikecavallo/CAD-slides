@@ -504,8 +504,8 @@
     A.in(tl, l1, t1 + 0.3, 'fadeUp', { dur: 0.8 });
     const sb = K.svg(LB, { x: 0, y: 0, w: 1920, h: 1080 });
     const D = dogAt(sb, 330, 624, 0.82);
-    const barks = [[414, 62, 100], [432, 50, 112], [450, 38, 124]].map(([x, y0, y1], i) =>
-      K.path(D.fx, `M ${x} ${y0} Q ${x + 16 + i * 6} ${(y0 + y1) / 2} ${x} ${y1}`, { stroke: C.red, 'stroke-width': 8, fill: 'none', opacity: 0 }));
+    const barks = [[412, 58, 102], [436, 42, 118], [460, 26, 134]].map(([x, y0, y1], i) =>
+      K.path(D.fx, `M ${x} ${y0} Q ${x + 18 + i * 8} ${(y0 + y1) / 2} ${x} ${y1}`, { stroke: C.red, 'stroke-width': 10, fill: 'none', opacity: 0 }));
     const tDog = t1 + 0.5;
     A.in(tl, D.outer, tDog, 'fadeUp', { dur: 0.8 });
     tl.to(D.fig, { rotation: 3, transformOrigin: '50% 100%', duration: 0.4, ease: 'power2.out' }, tDog + 0.6);

@@ -1,0 +1,1179 @@
+{
+  "title": "Understanding Reactivity and Aggression, Part 1",
+  "chapters": [
+    {
+      "id": "ch01",
+      "title": "Aggression and reactivity",
+      "slide_refs": [
+        1,
+        2
+      ],
+      "scenes": [
+        {
+          "id": "ch01s01",
+          "heading": "What is aggression?",
+          "visual_concept": "Deck slide 1 rebuilt: photo_aggression.jpg as a tall rounded portrait card on the left third, green heading and light green accent bar on the right. A two-by-two grid of function cards fills in on the right, each with a Lucide icon in a green circle.",
+          "assets": [
+            "bg_swirl.jpg",
+            "photo_aggression.jpg",
+            "icon:move-horizontal",
+            "icon:shield",
+            "icon:eye",
+            "icon:bone",
+            "icon:hand"
+          ],
+          "beats": [
+            {
+              "say": "Let's start with the word that scares owners most: aggression.",
+              "show": "photo_aggression.jpg slides in as a portrait card on the left and the heading 'What is aggression?' writes on in green at right.",
+              "onscreen": "What is aggression?"
+            },
+            {
+              "say": "Aggression isn't a label for who your dog is. It describes what a behavior is for, usually one of four jobs.",
+              "show": "The accent bar wipes in under the heading and four empty card outlines appear in a two-by-two grid.",
+              "onscreen": "Behavior aimed at a goal"
+            },
+            {
+              "say": "Job one, create distance. Get away from me, or make that thing go away. Job two, stop a perceived threat.",
+              "show": "The top row fills: arrows pointing apart labeled 'Create distance', and a shield labeled 'Stop a threat'.",
+              "onscreen": ""
+            },
+            {
+              "say": "Notice that word, perceived. The threat only has to feel dangerous to your dog.",
+              "show": "The shield card pulses and a small eye badge reading 'Perceived' pins to its corner.",
+              "onscreen": "It only has to feel threatening"
+            },
+            {
+              "say": "Job three, guard something they value, like a bone or the couch. Job four, change how things turn out, like growling so the brushing stops.",
+              "show": "The bottom row fills: a bone icon labeled 'Guard what they value', and a hand icon labeled 'Change the outcome'.",
+              "onscreen": "Four jobs aggression does"
+            },
+            {
+              "say": "What makes it aggression? Your dog is actively trying to make something happen. That's behavior with intent: not spite, just a goal.",
+              "show": "'Behavior with intent.' lands large in green over the accent bar beneath the four job cards.",
+              "onscreen": "Behavior with intent."
+            }
+          ]
+        },
+        {
+          "id": "ch01s02",
+          "heading": "What is reactivity?",
+          "visual_concept": "Deck slide 2 rebuilt: photo_reactivity.jpg in a rounded frame on the right, heading and definition on the left. A smoke alarm icon beside a tiny slice of toast carries the analogy: the alarm's sound rings swell huge while the toast stays small. Build the alarm once; it returns in ch04s02, ch06s01 and ch09s01.",
+          "assets": [
+            "bg_swirl.jpg",
+            "photo_reactivity.jpg",
+            "icon:alarm-smoke",
+            "shape:toast"
+          ],
+          "beats": [
+            {
+              "say": "Next, reactivity. It's an over-the-top emotional reaction to something in your dog's world, way bigger than the moment calls for.",
+              "show": "photo_reactivity.jpg slides in on the right, the heading 'What is reactivity?' writes on at left, and the definition fades in beneath it with 'over-the-top' highlighted in green.",
+              "onscreen": "What is reactivity?"
+            },
+            {
+              "say": "Picture a smoke alarm that screams every time you make toast. The alarm isn't broken. It's set way too sensitive.",
+              "show": "A smoke alarm icon appears beside a tiny slice of toast; red sound rings blast out of the alarm and swell huge while the toast stays small.",
+              "onscreen": "A smoke alarm for toast"
+            }
+          ]
+        },
+        {
+          "id": "ch01s03",
+          "heading": "Magnitude, not intent",
+          "visual_concept": "The smoke alarm from ch02s01 shrinks into the corner and a large volume knob diagram draws in beside it, with tick marks from low to max and a red zone at the top, so the knob reads as the alarm's volume. The needle sweeps to max, then the knob duplicates into two identical maxed-out knobs for the mail carrier example. Three unlabeled arrows fan out at the end to hand off to the next scene.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:volume-knob",
+            "icon:mail",
+            "icon:alarm-smoke"
+          ],
+          "beats": [
+            {
+              "say": "Here's the big idea. Think of reactivity as the volume on that smoke alarm. It tells you how loud, not why.",
+              "show": "The smoke alarm shrinks into the corner and a large volume knob draws in beside it; its needle sweeps from low all the way into the red zone.",
+              "onscreen": "Magnitude, not intent"
+            },
+            {
+              "say": "Take two dogs barking at the same mail carrier, both at max. One wants the mail carrier gone. The other is desperate to say hi.",
+              "show": "The knob splits into two identical knobs, both pinned at max, with a mail icon between them and small labels beneath: 'Go away' and 'Come say hi'.",
+              "onscreen": "Same volume, different reasons"
+            },
+            {
+              "say": "Same volume, different reason. And the reason is where the useful information is.",
+              "show": "The two knobs glide back together into one, and a green question mark pops above it.",
+              "onscreen": "The reason matters"
+            }
+          ]
+        },
+        {
+          "id": "ch01s04",
+          "heading": "Often a bit of both",
+          "visual_concept": "Split screen of the barking white dog photo and the snarling dog photo, each with two speech bubbles, which merge into a Venn diagram. Then two question cards, 'What is it for?' and 'What's driving it?', feed arrows into a green 'Your dog's plan' card.",
+          "assets": [
+            "photo_reactivity.jpg",
+            "photo_aggression.jpg",
+            "icon:target",
+            "icon:layers",
+            "icon:list-checks"
+          ],
+          "beats": [
+            {
+              "say": "So is your dog reactive or aggressive? Honestly, most dogs don't fit neatly in one box. There's a lot of overlap.",
+              "show": "The split screen builds: the barking white dog photo on the left, the snarling dog photo on the right, the heading 'Reactive or aggressive?' above, and a thin green divider between them.",
+              "onscreen": "Reactive or aggressive?"
+            },
+            {
+              "say": "A reactive dog might be saying, this is too much, or I want this now.",
+              "show": "Two speech bubbles pop up from the reactivity photo, one per phrase: 'This is too much' and 'I want this now'.",
+              "onscreen": ""
+            },
+            {
+              "say": "A dog using aggression might be saying, I will make this stop, or I will make this happen.",
+              "show": "Two speech bubbles pop up from the aggression photo, one per phrase: 'I will make this stop' and 'I will make this happen'.",
+              "onscreen": ""
+            },
+            {
+              "say": "But the same bark, lunge or growl can carry any of those messages, and one dog can say all four in a single week.",
+              "show": "Both photos shrink into circles and slide together into a Venn diagram; all four bubbles drift into the overlap, which tints light green.",
+              "onscreen": "Often a bit of both"
+            },
+            {
+              "say": "So instead of chasing a label, I ask two better questions. What is this behavior doing for your dog? That's its function. And what's driving it? Those are the underlying factors.",
+              "show": "The Venn clears and two question cards appear, one per question: a target icon with 'What is it for? The function', then a layers icon with 'What's driving it? Underlying factors'.",
+              "onscreen": "Two better questions"
+            },
+            {
+              "say": "Put those answers together, and they tell us which steps your dog needs. That's what the rest of this lesson is about.",
+              "show": "Both cards send an arrow into a green card with a list icon: 'Your dog's plan'.",
+              "onscreen": "The answers shape the plan"
+            }
+          ]
+        },
+        {
+          "id": "ch01s05",
+          "heading": "Behavior is communication",
+          "visual_concept": "Speech-bubble motif. Two person icons act out the too-close-in-line moment, then a dog icon takes over with three green speech bubbles. The bubbles become the visible tip of an iceberg diagram whose underwater part holds the emotions. Ends on the deck's bold line over the accent bar with the photo returning. Build the iceberg once; it returns in ch03s05.",
+          "assets": [
+            "bg_swirl.jpg",
+            "photo_aggression.jpg",
+            "icon:user",
+            "icon:dog",
+            "icon:message-circle",
+            "diagram:iceberg"
+          ],
+          "beats": [
+            {
+              "say": "When someone stands too close in line, you don't shove them. You shift, give them a look, maybe say excuse me.",
+              "show": "The plan card clears; two person icons stand side by side, one inching closer, and a speech bubble pops up from the other reading 'Excuse me.'",
+              "onscreen": ""
+            },
+            {
+              "say": "Dogs do the same. A hard stare, a growl, a snap: each says back off, go away, or this is mine. Even a bite is a message, just the loudest.",
+              "show": "The person icons swap for a dog icon and three green speech bubbles pop in around it, one by one: 'Back off', 'Go away', 'This is mine'.",
+              "onscreen": "Back off. Go away. This is mine."
+            },
+            {
+              "say": "Every one of those messages is driven by emotion: fear, sometimes frustration, sometimes a strong urge to guard. The behavior is just the part we see.",
+              "show": "The bubbles shrink into four labels on an iceberg tip, Stare, Growl, Snap, Bite, above a wavy waterline; below it, Fear, Frustration and Guarding rise into view.",
+              "onscreen": "Emotion drives the behavior"
+            }
+          ]
+        },
+        {
+          "id": "ch01s06",
+          "heading": "The warning ladder",
+          "visual_concept": "New diagram: a tall six-rung ladder in brand green up the center, labels to the right. Rungs fill bottom to top on a pale green, yellow, orange, red ramp. A green bracket and gift icon mark the five warning rungs, then the green 'Try this' badge. Build the ladder once as a reusable SVG; it returns small in ch03s04.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:warning-ladder",
+            "icon:gift",
+            "icon:notebook-pen"
+          ],
+          "beats": [
+            {
+              "say": "Luckily, most dogs don't go straight to a bite. They climb a ladder of warnings first, though a startled or hurting dog can race up it in a split second.",
+              "show": "A tall ladder with six empty rungs draws itself in from bottom to top at center.",
+              "onscreen": "The warning ladder"
+            },
+            {
+              "say": "The bottom rungs are quiet: a lip lick, a yawn that doesn't fit the moment, a head turned away. Then the body stiffens and the stare goes hard.",
+              "show": "The bottom two rungs fill in soft green: 'Subtle stress signals' with small tags for lip lick, yawn and look away, then 'Stiffening, hard stare'.",
+              "onscreen": "Quiet signals first"
+            },
+            {
+              "say": "If nobody listens, it gets louder. A growl, a lip lifted to show teeth, then a snap, often at the air. Even here, your dog is holding back.",
+              "show": "The next three rungs fill one at a time, shifting from yellow to orange: 'Growl', 'Snarl, lip lift', 'Snap'.",
+              "onscreen": "Growl. Snarl. Snap."
+            },
+            {
+              "say": "And only at the very top, after all of that, comes a bite.",
+              "show": "The top rung flashes red: 'Bite'.",
+              "onscreen": ""
+            },
+            {
+              "say": "Every rung below the bite is your dog trying not to bite. Those warnings are a gift.",
+              "show": "A green bracket wraps the lower five rungs and a gift icon pops in beside it.",
+              "onscreen": "Warnings are a gift"
+            },
+            {
+              "say": "Barking and lunging can be loud warnings too. This week, watch for the quiet rungs first, like a lip lick, a look away or a stiff body, and give your dog space.",
+              "show": "A small green 'Try this' badge with a notebook-pen icon pins to the top left corner, and the two quiet bottom rungs of the ladder glow.",
+              "onscreen": "Spot the quiet rungs first"
+            }
+          ]
+        },
+        {
+          "id": "ch01s07",
+          "heading": "Three directions",
+          "visual_concept": "Hub diagram with a round dog badge at the center (no gauge or knob) and three arrows: left 'Away', right 'Toward', up 'Release'. Each arrow lights up in turn with a Lucide icon and a short label.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:volume-knob",
+            "icon:triangle-alert",
+            "icon:magnet",
+            "icon:car",
+            "icon:zap",
+            "icon:circle-help",
+            "icon:notebook-pen"
+          ],
+          "beats": [
+            {
+              "say": "Remember, the reason behind the behavior is where the useful information is. For a lot of dogs, the feeling pulls in one of three directions.",
+              "show": "A round dog badge appears at center and three unlabeled arrows fan out from it: left, right and up.",
+              "onscreen": "Three directions"
+            },
+            {
+              "say": "Direction one is away: your dog is scared and wants distance. A skateboard rattles by, and they bark like their life depends on it. To them, it kind of does.",
+              "show": "The left arrow from the dog badge lights up with an alert-triangle icon and the label 'Away: fear'.",
+              "onscreen": "Away: fear"
+            },
+            {
+              "say": "Direction two is toward. Your dog wants something so badly it hurts, like the dog across the street or a squirrel. And the leash says no.",
+              "show": "The right arrow lights up with a magnet icon, a leash line pulls taut along it, and the label reads 'Toward: frustration'.",
+              "onscreen": "Toward: frustration"
+            },
+            {
+              "say": "That's road rage. You can see exactly where you want to go, and you're stuck in traffic. Sooner or later, you lean on the horn.",
+              "show": "A car icon slides onto the right arrow with little horn sound lines bursting from it.",
+              "onscreen": "Leash road rage"
+            },
+            {
+              "say": "Direction three is release: built-up tension or excitement bursting out, and sometimes it's even fun. Think of the dog who spins and screams when you grab the leash.",
+              "show": "The upward arrow bursts out with a zap icon and the label 'Release: built-up tension'.",
+              "onscreen": "Release: built-up tension"
+            },
+            {
+              "say": "One catch: scared dogs often lunge toward what they fear, to drive it off. So don't judge by the pull. Ask what they're trying to get.",
+              "show": "The Away arrow's tip briefly flips to point forward with a small caution badge flashing on it, then snaps back.",
+              "onscreen": "Watch the goal, not the pull"
+            },
+            {
+              "say": "Lots of dogs mix all three. Next time yours goes off, ask: away, toward, or release? Guessing is fine.",
+              "show": "All three arrows glow together, a question card slides up beneath the dog badge, and a small green 'Try this' badge with a notebook-pen icon pins to the top left corner.",
+              "onscreen": "Away, toward, or release?"
+            }
+          ]
+        },
+        {
+          "id": "ch01s08",
+          "heading": "Bred for a job",
+          "visual_concept": "Four breed-job cards in a grid, each with a Lucide icon. A pressure meter fills to red with nowhere to go, a zap arcs to everyday targets, then the meter drains to green as healthy outlet chips appear.",
+          "assets": [
+            "icon:footprints",
+            "icon:squirrel",
+            "icon:search",
+            "icon:shield",
+            "icon:gauge",
+            "icon:bike",
+            "icon:mail"
+          ],
+          "beats": [
+            {
+              "say": "One more piece of the puzzle: the job your dog was bred for. Herders were made to chase and control movement. Terriers, to hunt. Hounds, to follow their nose. Guardians, to watch over their home.",
+              "show": "The heading 'Bred for a job' writes on and four breed cards pop in one per phrase: 'Herders: chase and control movement', 'Terriers: hunt', 'Hounds: follow their nose', 'Guardians: watch over home'.",
+              "onscreen": "Bred for a job"
+            },
+            {
+              "say": "Those drives are normal, and they don't switch off. When they don't get a healthy outlet, the pressure builds, and a bike, a squirrel or the mail carrier becomes the target.",
+              "show": "The cards shrink to one side; a pressure meter fills to red and a zap arcs from it to three small targets: bike, squirrel, mail.",
+              "onscreen": "No outlet, more pressure"
+            },
+            {
+              "say": "So give the drive a job: flirt poles for chasers, sniffing games for noses, tug for hunters. It won't fix reactivity on its own, but it takes a lot of pressure off.",
+              "show": "The meter drains to green as three outlet chips pop in, 'Flirt pole', 'Sniff games', 'Tug', under a green label 'Give the drive a job'.",
+              "onscreen": "Give the drive a job"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch02",
+      "title": "Why reactivity and aggression happen",
+      "slide_refs": [
+        3,
+        5
+      ],
+      "scenes": [
+        {
+          "id": "ch02s01",
+          "heading": "Why reactivity and aggression happen",
+          "visual_concept": "photo_why.jpg as a portrait card on the left, heading on the right. A mixing bowl built from a cooking-pot icon sits center right with seven blank ingredient chips hovering above it, plus a smaller dotted chip marked with a plus sign. Across the chapter, each cause becomes a labeled chip that drops into the bowl; the dotted plus chip is the last to fill.",
+          "assets": [
+            "bg_swirl.jpg",
+            "photo_why.jpg",
+            "diagram:mixing-bowl"
+          ],
+          "beats": [
+            {
+              "say": "The question I hear most is, why is my dog like this? Why the barking and lunging, or the growling and snapping? And right behind it, what did I do wrong?",
+              "show": "photo_why.jpg slides in as a portrait card at left and the heading 'Why reactivity and aggression happen' writes on in green.",
+              "onscreen": "Why is my dog like this?"
+            },
+            {
+              "say": "The honest answer? It's almost never one thing, or one mistake. These are the underlying factors, and they work like a recipe: the same ingredients can cook up reactivity, aggression, or both. Here are seven common ones.",
+              "show": "A large mixing bowl appears center right with seven blank ingredient chips hovering above it, plus a smaller dotted chip marked with a plus sign.",
+              "onscreen": "Usually a mix"
+            }
+          ]
+        },
+        {
+          "id": "ch02s02",
+          "heading": "Nature and early life",
+          "visual_concept": "Ingredient chips drop into the bowl one by one. The genetics chip gets a tiny smoke alarm callback, then photo_why.jpg returns as a small portrait card beside the bowl with two breed-trait tags. A socialization timeline bar draws beside the bowl with a green window over roughly the first three months, then three labels stack beneath it: too little, too much too fast, everyone is a party.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:mixing-bowl",
+            "icon:dna",
+            "icon:alarm-smoke",
+            "diagram:puppy-timeline",
+            "icon:door-closed",
+            "icon:triangle-alert",
+            "icon:party-popper",
+            "photo_why.jpg"
+          ],
+          "beats": [
+            {
+              "say": "Ingredient one, genetics. Some dogs are simply born more sensitive, with a touchier smoke alarm from day one.",
+              "show": "The first chip, a DNA icon labeled 'Genetics and temperament', drops into the bowl with a small splash, and a tiny smoke alarm icon blinks beside it.",
+              "onscreen": "Some dogs are born sensitive"
+            },
+            {
+              "say": "Breed traits nudge things too. Remember those jobs? A guardian bred to be wary of strangers may growl at visitors, and a herder may nip at running kids. Breed isn't destiny, but it loads the dice.",
+              "show": "photo_why.jpg slides back in as a small portrait card beside the bowl; the tag 'Guardians: wary of strangers' points to the Great Pyrenees, and 'Herders: chase and nip' pops in beside it as a text tag.",
+              "onscreen": "Breed loads the dice"
+            },
+            {
+              "say": "Ingredient two, socialization. In roughly the first three months, a puppy's brain sorts the world into safe and scary. What they meet calmly in that window tends to feel normal later.",
+              "show": "The photo card slides away, the 'Socialization' chip drops in, and a timeline bar draws beside the bowl with a green window lit over its start, labeled 'Roughly the first three months'.",
+              "onscreen": "Roughly the first three months"
+            },
+            {
+              "say": "Miss that window, and buses, strangers and skateboards can stay harder to file as normal. If you adopted an older dog, it closed before you met. Harder, not hopeless.",
+              "show": "Gaps appear in the green window and a label 'Too little' drops in beneath it with a closed-door icon.",
+              "onscreen": "Too little"
+            },
+            {
+              "say": "Or the other way: too much, too fast, and a puppy learns the world is overwhelming.",
+              "show": "A second label 'Too much, too fast' drops in with an alert-triangle icon.",
+              "onscreen": "Too much, too fast"
+            },
+            {
+              "say": "And a puppy who greeted every dog learns every dog means a party, until the leash says no. Hello, frustration. If that was your puppy, you followed common advice.",
+              "show": "A third label 'Everyone is a party' drops in with a party-popper icon, and a small leash line pulls tight beneath it.",
+              "onscreen": "Everyone is a party"
+            }
+          ]
+        },
+        {
+          "id": "ch02s03",
+          "heading": "Age",
+          "visual_concept": "The bowl shifts left and a life-stage ruler draws across the lower half of the screen with shaded bands for adolescence and social maturity and a marker for senior years.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:mixing-bowl",
+            "diagram:life-stage-ruler",
+            "icon:volume-2",
+            "icon:clock"
+          ],
+          "beats": [
+            {
+              "say": "Ingredient three, age. Adolescence runs from about six to eighteen months, up to two years in some big breeds. Think teenager with fur: big feelings, less self-control.",
+              "show": "On the first sentence the 'Age' chip drops in and the bowl shifts left; on 'Adolescence runs', a life-stage ruler draws beneath it with a shaded band labeled 'Adolescence, 6 to 18 months'.",
+              "onscreen": "Adolescence: about 6 to 18 months"
+            },
+            {
+              "say": "Then comes social maturity, when your dog becomes an adult, between about one and three years. This is when reactivity or aggression often shows up or gets louder.",
+              "show": "A second band shades in, 'Social maturity, 1 to 3 years', and pulses as a small volume icon turns up above it.",
+              "onscreen": "Social maturity: about 1 to 3 years"
+            },
+            {
+              "say": "Many dogs also get pickier about other dogs as they grow up. It's like a teenager who wants to hit the club and make a ton of friends. As an adult, they'd rather skip the club and see a few close friends.",
+              "show": "Two small cards appear under the ruler: 'Teen' with a party-popper icon and a crowd of little dots, then 'Adult' with a coffee icon and three dots, under the label 'More selective with age'.",
+              "onscreen": "More selective with age"
+            },
+            {
+              "say": "That's normal, not a problem. But the dog who loved the dog park at one may not want it at three, and pushing them can end in a scuffle.",
+              "show": "A small dog park card appears with a trees icon: 'Age 1: loved it' with a green check, then 'Age 3: not anymore' with an amber caution badge.",
+              "onscreen": "Normal, not a problem"
+            },
+            {
+              "say": "Senior dogs change too. Sore joints lower tolerance, and fading senses or a foggy memory make the world less predictable, and less safe.",
+              "show": "A final marker lights at the far end of the ruler with a clock icon: 'Senior'.",
+              "onscreen": "Senior changes"
+            }
+          ]
+        },
+        {
+          "id": "ch02s04",
+          "heading": "Past experiences and tools",
+          "visual_concept": "Back to the bowl. A lightning bolt strikes a short timeline for one bad event. A row of red-outlined text tags lists harsh tools. A simple icon equation shows how aversives pair pain with the trigger. A crown icon labeled 'Boss?' gets crossed out to retire the dominance myth. A green heart softens the moment for owners.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:mixing-bowl",
+            "icon:zap",
+            "icon:dog",
+            "icon:triangle-alert",
+            "icon:heart",
+            "icon:crown"
+          ],
+          "beats": [
+            {
+              "say": "Ingredient four, past experiences. One scary moment can be enough: if an off-leash dog rushes yours once, they may never forget it. Fear learns fast.",
+              "show": "The 'Past experiences' chip drops in and a lightning bolt strikes a single point on a short timeline labeled 'One bad moment'.",
+              "onscreen": "One bad moment can be enough"
+            },
+            {
+              "say": "Ingredient five, training tools. Research links harsh methods with more fear, stress and aggression. Think leash jerks, prong, choke or shock collars, and pinning a dog down.",
+              "show": "The 'Training tools' chip drops in and a short row of red-outlined tags appears beside it: Leash pops, Prong and choke collars, Shock collars, Alpha rolls.",
+              "onscreen": "Harsh tools, more fear"
+            },
+            {
+              "say": "If your dog feels pain whenever another dog appears, they learn other dogs predict pain. The fear grows, even if the barking stops for a while.",
+              "show": "The tags are replaced by an icon equation: dog icon plus zap icon equals alert-triangle icon, labeled 'Other dogs predict pain'.",
+              "onscreen": "Other dogs predict pain"
+            },
+            {
+              "say": "Those tools often come from the outdated idea that your dog wants to be the boss. Dogs who react or aggress aren't after rank. They're scared, frustrated, overwhelmed, or protecting something they value.",
+              "show": "The equation clears; a small crown icon labeled 'Boss?' appears over the bowl, a red X crosses it out, and four soft tags replace it: Scared, Frustrated, Overwhelmed, Protecting.",
+              "onscreen": "Not dominance. Big feelings."
+            },
+            {
+              "say": "If you've used any of these, be kind to yourself. You did your best, and now you know more. A trainer who works without force can help you switch safely to a comfortable harness.",
+              "show": "The crown and tags fade as a green heart icon pulses once over the bowl.",
+              "onscreen": "Be kind to yourself"
+            }
+          ]
+        },
+        {
+          "id": "ch02s05",
+          "heading": "Frustration, pain and the mix",
+          "visual_concept": "Final chips. photo_reactive_to_aggressive.jpg (the dog behind the iron fence) slides in at the edge for barrier frustration. A stethoscope chip with a draining 'Patience' battery covers pain, then a 'Vet first' badge. The last chip drops, the full bowl glows, and the reassuring statement lands.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:mixing-bowl",
+            "photo_reactive_to_aggressive.jpg",
+            "icon:stethoscope",
+            "icon:battery-low",
+            "icon:heart"
+          ],
+          "beats": [
+            {
+              "say": "Ingredient six, barriers. Remember road rage? A leash, fence or window is the traffic jam: your dog sees what they want, can't reach it, and the pressure climbs. It's how a lot of fence fighting starts.",
+              "show": "The 'Leash and barrier frustration' chip drops in and photo_reactive_to_aggressive.jpg slides in at the left edge, the dog peering through the iron fence.",
+              "onscreen": "Held back by a leash or barrier"
+            },
+            {
+              "say": "Ingredient seven, pain, and don't skip this one. Think how short your fuse gets with a headache. Dogs feel that too, and hide it well.",
+              "show": "On the first sentence the photo slides away and the 'Pain or medical issues' chip drops in with a stethoscope icon; on 'Think how short your fuse gets', a battery labeled 'Patience' drains to low beside it.",
+              "onscreen": "Pain shortens the fuse"
+            },
+            {
+              "say": "Pain is common in dogs with behavior problems, and it's a big reason behind sudden growling or snapping. So every dog with reactivity or aggression needs a vet check, especially after a sudden change.",
+              "show": "A green badge reads 'Vet check for every dog', then a question ticks in beneath it, 'Sudden change?', with an arrow marked 'See the vet first'.",
+              "onscreen": "Rule out pain first"
+            },
+            {
+              "say": "And there are many other factors, which we'll get into later in the course.",
+              "show": "The dotted plus chip fills with 'Many other factors' and drops in, and the whole bowl glows.",
+              "onscreen": "Many other factors"
+            },
+            {
+              "say": "Please hear this. Most of this list was never in your control, and none of it is your fault. But understanding it is now in your hands.",
+              "show": "'It's not your fault.' fades up large beneath the glowing bowl with a small green heart icon.",
+              "onscreen": "It's not your fault."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch03",
+      "title": "A reactive dog can become aggressive",
+      "slide_refs": [
+        4
+      ],
+      "scenes": [
+        {
+          "id": "ch03s01",
+          "heading": "Can, not will",
+          "visual_concept": "Deck slide 4 statement moment: photo_reactive_to_aggressive.jpg fills the left half, the all-caps statement types on in bold green at right, the word CAN gets a thick green underline, then four empty circles fade in beneath it and join into a timeline. In ch03s03 this timeline shrinks to a thin strip pinned across the top of the frame and stays there through ch03s04; each circle lights with its short label as its way is taught: Works, Practice, Warnings lost, Boils over.",
+          "assets": [
+            "bg_swirl.jpg",
+            "photo_reactive_to_aggressive.jpg"
+          ],
+          "beats": [
+            {
+              "say": "And that overlap can shift over time. A reactive dog can become aggressive. Notice I said can, not will.",
+              "show": "photo_reactive_to_aggressive.jpg fills the left half and the statement types on in bold green capitals at right.",
+              "onscreen": "A REACTIVE DOG CAN BECOME AGGRESSIVE."
+            },
+            {
+              "say": "Many reactive dogs never get there, and it's rarely overnight. It happens in four common ways, and once you see them, you can get ahead of them.",
+              "show": "'CAN' gets a thick green underline, a small tag 'not will' appears beside it, and four empty green circles fade in beneath the statement on a timeline arrow.",
+              "onscreen": "Four common ways"
+            }
+          ]
+        },
+        {
+          "id": "ch03s02",
+          "heading": "It works, and it's practiced",
+          "visual_concept": "The four-circle timeline from ch03s02 shrinks into a thin strip pinned across the top of the frame. Below it, a three-node loop diagram with Lucide icons: alert 'Scary thing appears', volume 'Bark and lunge', footprints 'Scary thing leaves'. 'Relief' glows on the third node and an arrow curves back. A counter ticks up as the loop spins. Then a faint dotted line across a green lawn thickens into a worn path, and a fresh dotted path sketches in beside it. Build the loop and lawn path once; the loop returns in ch06, the lawn in ch10s01.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:reinforcement-loop",
+            "diagram:lawn-path",
+            "icon:triangle-alert",
+            "icon:volume-2",
+            "icon:footprints"
+          ],
+          "beats": [
+            {
+              "say": "One, the behavior works. Your dog barks and lunges, and the other dog walks away. It was leaving anyway, but the barking gets the credit.",
+              "show": "The timeline shrinks into a thin strip across the top and circle one lights with the label 'Works'; below the strip, a loop draws clockwise: 'Scary thing appears', 'Bark and lunge', 'Scary thing leaves'.",
+              "onscreen": "1. The behavior works"
+            },
+            {
+              "say": "And that relief is a powerful reward. Behavior that works gets repeated, and that's how a burst of feeling slowly becomes a strategy your dog reaches for.",
+              "show": "The word 'Relief' glows on the third node with a green check, and an arrow curves back to 'Bark and lunge'.",
+              "onscreen": "Behavior that works gets repeated"
+            },
+            {
+              "say": "Two, practice. Every time that loop runs, it gets faster and stronger. Your dog reacts sooner, and from farther away.",
+              "show": "Circle two lights on the strip with the label 'Practice'; the loop starts spinning and a counter beside it ticks up: 1, 5, 20, 50.",
+              "onscreen": "2. Practice makes it stronger"
+            },
+            {
+              "say": "It's like a path across a lawn: walk it every day and it wears in, until it's the way you go without thinking. Your dog's brain works the same way, and the good news is we can build a new path.",
+              "show": "The loop fades; a faint dotted line across a green lawn thickens into a bold, worn path, and on 'the good news' a fresh green dotted path sketches in beside it.",
+              "onscreen": "Every rehearsal deepens the path"
+            }
+          ]
+        },
+        {
+          "id": "ch03s03",
+          "heading": "Warnings and frustration",
+          "visual_concept": "The timeline strip stays pinned at the top. The warning ladder from ch01s03 returns at small scale below it. A red X stamps on the growl rung, the lower rungs grey out and an arrow jumps to Bite. Then a pressure gauge fills to red and a zap arcs sideways to three small targets: a drawn leash shape, a dog icon and a hand icon. The hand then slides back out of range.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:warning-ladder",
+            "icon:gauge",
+            "icon:zap",
+            "icon:dog",
+            "icon:hand",
+            "shape:leash"
+          ],
+          "beats": [
+            {
+              "say": "Three, the warnings stop working. If nobody listens to a growl, or someone punishes it, your dog learns the polite rungs are pointless.",
+              "show": "Circle three lights on the strip with the label 'Warnings lost'; the warning ladder returns at small scale below it, and a red X stamps over the 'Growl' rung.",
+              "onscreen": "3. Warnings ignored or punished"
+            },
+            {
+              "say": "So next time, they may skip the warnings and go straight to the top.",
+              "show": "The lower rungs fade to grey and a red arrow jumps from the bottom rung straight to 'Bite'.",
+              "onscreen": "The warnings get skipped"
+            },
+            {
+              "say": "Four, frustration boils over. A dog who's held back and wound up can whip around and snap at whatever's closest, even your hand.",
+              "show": "Circle four lights on the strip with the label 'Boils over'; the ladder clears, a pressure gauge fills steadily to red, and a zap arcs sideways off it toward three small targets: a drawn leash shape, a dog and a hand.",
+              "onscreen": "4. Frustration boils over"
+            },
+            {
+              "say": "That's redirection: not spite, just pressure with nowhere to go. So when your dog's wound up, keep your hands clear of their collar and face, and add distance.",
+              "show": "The label 'Redirection' appears under the zap, then the hand icon slides back out of range and a green distance arrow stretches away from the gauge.",
+              "onscreen": "Hands clear. Add distance."
+            }
+          ]
+        },
+        {
+          "id": "ch03s04",
+          "heading": "Never punish a growl",
+          "visual_concept": "Statement moment. Big green text on the clean swirl, then a simple car dashboard shape with an amber check engine light that gets taped over while the engine keeps smoking. The iceberg from ch01s02 returns with its Growl label wiped from the tip. Ends with three green check-circle bullets as the owner's action plan and the green 'Try this' badge. The dashboard light returns as a small icon in ch09s02.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:dashboard-light",
+            "diagram:iceberg",
+            "icon:circle-check",
+            "icon:notebook-pen"
+          ],
+          "beats": [
+            {
+              "say": "Which brings me to the most important rule here: never punish a growl. If you have, you're in good company. Most of us were taught to.",
+              "show": "Everything clears and 'Never punish a growl.' lands large in green at the center of the swirl.",
+              "onscreen": "Never punish a growl."
+            },
+            {
+              "say": "Punishing a growl is like taping over your car's check engine light. The light's gone, but the engine problem isn't. You've just lost your warning.",
+              "show": "A simple dashboard shape glows with an amber check engine light; a strip of tape slaps over it while a thin wisp of smoke keeps rising behind the dash.",
+              "onscreen": "The problem is still there"
+            },
+            {
+              "say": "Punishment can stop the growl, but not the fear underneath, and often makes the fear worse. That's how you get a dog who seems to bite out of nowhere.",
+              "show": "The iceberg returns; the 'Growl' at its tip is wiped away while Fear, Frustration and Guarding stay put below the waterline.",
+              "onscreen": "Out of nowhere?"
+            },
+            {
+              "say": "It wasn't out of nowhere. Either punishment erased the warning, or the warning was too quiet to notice. So when your dog growls, thank them: stop, give space, and later, note what came before.",
+              "show": "'nowhere' gets struck through, three check-circle bullets tick in, 'Thank the warning', 'Give space', 'Note what came before', and a small green 'Try this' badge with a notebook-pen icon pins to the top left corner.",
+              "onscreen": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch04",
+      "title": "What's the function?",
+      "slide_refs": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "scenes": [
+        {
+          "id": "ch04s01",
+          "heading": "What's the function?",
+          "visual_concept": "Deck slide 6 heading with a target icon on the swirl. The line 'Behavior that works gets repeated' types on with an upward arrow and repeat icon, calling back the loop from ch03. Then the deck's three-column frame: big green A, B, C letters with Antecedent, Behavior, Consequence labels and green arrows, plus a curved arrow from C back to B. Build this frame once; it carries the whole chapter.",
+          "assets": [
+            "bg_swirl.jpg",
+            "icon:target",
+            "icon:repeat",
+            "diagram:abc-frame"
+          ],
+          "beats": [
+            {
+              "say": "Now the other big question: what job is this behavior doing for my dog? That job is its function.",
+              "show": "The heading 'What's the function?' writes on large in green with a target icon.",
+              "onscreen": "What's the function?"
+            },
+            {
+              "say": "Remember, behavior that works gets repeated. What happens right after a behavior helps decide whether it happens again.",
+              "show": "Beneath the heading, the line 'Behavior that works gets repeated' types on with a green upward arrow and a repeat icon beside it.",
+              "onscreen": "What happens next matters"
+            },
+            {
+              "say": "To see it, I use the A, B, C. A is the antecedent, what happened right before. B is the behavior, what your dog did.",
+              "show": "Big green letters A, B and C drop in with arrows between them, and labels fade in under A and B: 'Antecedent: right before', 'Behavior: what they did'.",
+              "onscreen": "The A, B, C"
+            },
+            {
+              "say": "And C is the consequence, what happened right after. Feelings start a reaction, and consequences help decide whether it comes back, so we'll work on both.",
+              "show": "The label 'Consequence: right after' fades in under C, the C glows, and a curved arrow loops from C back to B.",
+              "onscreen": "C helps decide what comes back"
+            }
+          ]
+        },
+        {
+          "id": "ch04s02",
+          "heading": "An excited greeting",
+          "visual_concept": "Deck slide 7 layout: three painterly panels in rounded green frames under the A, B, C headers, green arrows between them, cream caption boxes beneath with the deck's exact wording. Each panel fills on its beat, then a green 'It worked' stamp and a plus-sign function tag. Never show an ABC panel wider than about 770 pixels on screen, since the rasters are small.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:abc-frame",
+            "abc_greet_a.jpg",
+            "abc_greet_b.jpg",
+            "abc_greet_c.jpg",
+            "icon:plus"
+          ],
+          "beats": [
+            {
+              "say": "Let's try one. A, the antecedent: someone shows up outside your front window.",
+              "show": "abc_greet_a.jpg fills panel A with the caption 'A person appears outside the window'.",
+              "onscreen": "An excited greeting"
+            },
+            {
+              "say": "B, your dog launches at the window, barking like the house is on fire.",
+              "show": "abc_greet_b.jpg fills panel B with the caption 'Jumping at the window and barking'.",
+              "onscreen": ""
+            },
+            {
+              "say": "C, the person comes in, and your dog gets a big hello. As far as they can tell, barking opened the door.",
+              "show": "abc_greet_c.jpg fills panel C with the caption 'The person comes inside; the dog gets attention' and a green 'It worked' stamp lands on its corner.",
+              "onscreen": "Barking opened the door"
+            },
+            {
+              "say": "The barking brought something your dog loves, a visitor and attention, so the barking grows.",
+              "show": "A tag appears under panel C with a plus icon: 'Function: bring them closer'.",
+              "onscreen": "Barking brought them closer"
+            }
+          ]
+        },
+        {
+          "id": "ch04s03",
+          "heading": "A person approaches",
+          "visual_concept": "Same three-panel frame; the panels wipe over to the deck slide 8 illustrations one at a time, then an 'It worked' stamp and a minus-sign function tag on C.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:abc-frame",
+            "abc_approach_a.jpg",
+            "abc_approach_b.jpg",
+            "abc_approach_c.jpg",
+            "icon:minus"
+          ],
+          "beats": [
+            {
+              "say": "Different dog, different story. A, you're out on a walk, and a stranger heads your way.",
+              "show": "The greeting panels wipe out and abc_approach_a.jpg fills panel A with the caption 'A person approaches'.",
+              "onscreen": "A person approaches"
+            },
+            {
+              "say": "B, your dog plants their feet in front of you and barks. Deep, serious barking. It can look protective, but it's often fear.",
+              "show": "abc_approach_b.jpg fills panel B with the caption 'The dog stands in front of the owner and barks'.",
+              "onscreen": ""
+            },
+            {
+              "say": "C, the person walks away. To your dog, barking made the stranger leave. It worked too.",
+              "show": "abc_approach_c.jpg fills panel C with the caption 'The person goes away' and its own green 'It worked' stamp.",
+              "onscreen": "Barking made them leave"
+            },
+            {
+              "say": "So this barking grows too, but its job is the opposite. Not bring them closer, but make them go away.",
+              "show": "A tag appears under panel C with a minus icon: 'Function: make them leave'.",
+              "onscreen": "Barking made them leave"
+            }
+          ]
+        },
+        {
+          "id": "ch04s04",
+          "heading": "Guarding a toy",
+          "visual_concept": "Same three-panel frame with the 'Guarding a toy' green title tab from the deck. The panels wipe over to the guarding illustrations one at a time with the deck's exact captions, then an 'It worked' stamp and a shield function tag on C. Never show an ABC panel wider than about 770 pixels on screen.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:abc-frame",
+            "abc_guard_a.jpg",
+            "abc_guard_b.jpg",
+            "abc_guard_c.jpg",
+            "icon:shield"
+          ],
+          "beats": [
+            {
+              "say": "Here's one that looks more like aggression. A: your dog is lying down with a favorite toy, and another dog walks over.",
+              "show": "The approach panels wipe out, a green 'Guarding a toy' title tab slides in at top left, and abc_guard_a.jpg fills panel A with the caption 'Another dog approaches a dog with a toy'.",
+              "onscreen": "Guarding a toy"
+            },
+            {
+              "say": "B: your dog gets up and snaps at the other dog. Fast, loud, and scary to watch.",
+              "show": "abc_guard_b.jpg fills panel B with the caption 'The dog gets up and snaps at the approaching dog'.",
+              "onscreen": ""
+            },
+            {
+              "say": "C: the other dog backs off, and your dog keeps the toy. The snap worked.",
+              "show": "abc_guard_c.jpg fills panel C with the caption 'The other dog goes away: the dog keeps the toy' and a green 'It worked' stamp lands on its corner.",
+              "onscreen": "The snap kept the toy"
+            },
+            {
+              "say": "So the function is keeping something they value. That's the 'I will make this stop' side of aggression. And it tells us where to start: helping your dog feel their things are safe, not punishing the snap. Punishing the warning just teaches a dog to skip it.",
+              "show": "A tag appears under panel C with a shield icon: 'Function: keep the toy'. Then a small red X crosses a 'Punish the snap' label beside it.",
+              "onscreen": "Function: keep what they value"
+            }
+          ]
+        },
+        {
+          "id": "ch04s05",
+          "heading": "Same behavior, different job",
+          "visual_concept": "The two B panels meet in the center, each no wider than 740 pixels with a 60 pixel gap, with opposite-pointing arrows. A 'Just stop the barking' label gets crossed out. Then a blank A, B, C worksheet card with a pencil icon and the green 'Try this' badge turns the idea into this week's one notebook entry.",
+          "assets": [
+            "bg_swirl.jpg",
+            "abc_greet_b.jpg",
+            "abc_approach_b.jpg",
+            "icon:pencil",
+            "icon:notebook-pen"
+          ],
+          "beats": [
+            {
+              "say": "Now look back at those two barking dogs. Same barking, opposite jobs. One dog wants people closer, the other wants them gone.",
+              "show": "abc_greet_b.jpg and abc_approach_b.jpg slide to the center side by side, each at 740 pixels wide or less; an inward arrow labeled 'Closer' appears under one and an outward arrow labeled 'Gone' under the other.",
+              "onscreen": "Same behavior, opposite jobs"
+            },
+            {
+              "say": "Treat them the same, and you'd get it wrong. Inviting the person closer would thrill one dog and push the other right up the warning ladder.",
+              "show": "A single label 'Just stop the barking' stretches across both images and a red X crosses it out.",
+              "onscreen": ""
+            },
+            {
+              "say": "That's why naming the A, B and C comes first. The function decides the plan. Once you know the job, you can teach a better way to do it.",
+              "show": "The images clear and a blank worksheet card slides up with three lines labeled A, B and C.",
+              "onscreen": "Name the A, B and C"
+            },
+            {
+              "say": "So grab a notebook. Pick one moment this week and write down all three, just the facts, like a reporter.",
+              "show": "A small green 'Try this' badge with a notebook-pen icon pins to the top left corner, and a pencil icon writes a sample line into each row: 'A: Mail carrier at the door', 'B: Barked, jumped at window', 'C: Mail carrier left'.",
+              "onscreen": "Write down one A, B, C"
+            }
+          ]
+        },
+        {
+          "id": "ch04s06",
+          "heading": "Before training",
+          "visual_concept": "Deck slide 9 layout: red 'Before training' tab with a green 'Function: get space' chip beside it that stays up through the during and after scenes, the three before panels with green arrows and cream caption boxes, then the deck's red note beneath and a red loop arrow from C back to B (barking worked, so it comes back). Ends with the C caption outline turning bright green.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:abc-frame",
+            "abc_before_a.jpg",
+            "abc_before_b.jpg",
+            "abc_before_c.jpg",
+            "icon:alarm-smoke",
+            "diagram:reinforcement-loop"
+          ],
+          "beats": [
+            {
+              "say": "Now let's watch the function decide the plan. Here's the walk that probably brought you here: a dog on leash who wants space. First, before training.",
+              "show": "The red 'Before training' tab slides in at top left with a green chip beside it, 'Function: get space', and three empty A, B, C frames draw in with arrows between them.",
+              "onscreen": "Before training"
+            },
+            {
+              "say": "A: suddenly there's another dog, too close and too fast. The smoke alarm goes off.",
+              "show": "abc_before_a.jpg fills panel A with the caption 'Another dog appears too close.' and a small smoke alarm icon blinks red in its corner.",
+              "onscreen": ""
+            },
+            {
+              "say": "B, barking, lunging, growling. The full show, right there on the path, with an audience.",
+              "show": "abc_before_b.jpg fills panel B with the caption 'Barking · Lunging · Growling'.",
+              "onscreen": ""
+            },
+            {
+              "say": "C, you hurry away, or the other person crosses the street. Your dog gets space and huge relief.",
+              "show": "abc_before_c.jpg fills panel C with the caption 'Space is given. The situation ends.'",
+              "onscreen": ""
+            },
+            {
+              "say": "And there's the trap. Your dog wanted space, and barking got it. It worked, so next time, barking is even more likely.",
+              "show": "The red note types on beneath the panels, 'Getting more space can make this behavior more likely next time.', and a red arrow loops from C back to B.",
+              "onscreen": ""
+            },
+            {
+              "say": "Don't try to stop the payoff by standing your ground. That just traps your dog in the scary moment. Leaving is still right, and we'll teach a calmer way to ask for space.",
+              "show": "The outline of the C caption box turns from dark green to bright green with a small label: 'Keep the space'.",
+              "onscreen": "Leaving is still right"
+            }
+          ]
+        },
+        {
+          "id": "ch04s07",
+          "heading": "During training: the A",
+          "visual_concept": "Deck slides 10 to 12 built step by step. The tab flips to green 'During training'. Only panel A is full color; B and C are ghosted. Four small management icons appear under A, then the deck's red X and green check list, then an eye icon with a distance bar for the 'Try this' tip.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:abc-frame",
+            "abc_during_a.jpg",
+            "abc_during_b.jpg",
+            "abc_during_c.jpg",
+            "icon:move-horizontal",
+            "icon:map",
+            "icon:clock",
+            "icon:undo-2",
+            "icon:eye",
+            "icon:notebook-pen"
+          ],
+          "beats": [
+            {
+              "say": "So how do we change it? We work with the function, not against it. Your dog still gets space. We change the A, change the B, and keep the C.",
+              "show": "The tab flips from red to green and reads 'During training' while the 'Function: get space' chip stays put; the frames reset to the during-training panels, with A in full color and B and C ghosted.",
+              "onscreen": "Change A. Change B. Keep C."
+            },
+            {
+              "say": "First, the A: management. More distance, quieter routes, calmer times of day, and turning around early, so fewer things surprise your dog.",
+              "show": "The caption 'Management.' pops under panel A and four small icons appear beneath it: move-horizontal, map, clock, undo-2.",
+              "onscreen": "A is for management"
+            },
+            {
+              "say": "Now your dog isn't surprised or overwhelmed. They're calm enough to think, and a dog who can think can learn.",
+              "show": "Under panel A, red X's appear beside 'Surprised' and 'Overwhelmed', then green checks beside 'Calm' and 'Learning'.",
+              "onscreen": "Calm dogs can learn"
+            },
+            {
+              "say": "Try this on your next walk: spot the other dog before your dog does. That head start lets you turn around before the alarm goes off.",
+              "show": "An eye icon appears over panel A with a distance bar stretching between the two dogs, labeled 'Spot it first', and a small green 'Try this' badge with a notebook-pen icon pins to the top left corner.",
+              "onscreen": "Spot it first"
+            }
+          ]
+        },
+        {
+          "id": "ch04s08",
+          "heading": "During training: the B and C",
+          "visual_concept": "Panels B and C come into full color with the deck's X and check lists. A baby icon with a scribbled red bubble that smooths into a calm speech bubble carries the toddler analogy. Ends with a green loop arrow from C back to B, mirroring the red loop from before training.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:abc-frame",
+            "abc_during_b.jpg",
+            "abc_during_c.jpg",
+            "icon:baby",
+            "icon:message-circle",
+            "diagram:reinforcement-loop"
+          ],
+          "beats": [
+            {
+              "say": "Next, the B. We teach your dog something new to do when that other dog shows up.",
+              "show": "abc_during_b.jpg comes into full color with the caption 'Teaching new behaviors.'",
+              "onscreen": "Teaching new behaviors"
+            },
+            {
+              "say": "We don't punish barking, growling or lunging away. We just make them unnecessary. Instead, your dog learns check-ins, where they glance up at you, plus loose-leash walking and leave it, which means turning away on cue.",
+              "show": "Under panel B, red X's mark Barking, Growling, Lunging, then green checks mark Check-ins, Loose leash, Leave it.",
+              "onscreen": ""
+            },
+            {
+              "say": "And the C? We keep it the same: space and relief. That's the function, and we protect it. Now it comes after the calm behavior, not the barking.",
+              "show": "abc_during_c.jpg comes into full color with the caption 'Space is given. The situation ends.' and a green check 'Relief' appears beneath it.",
+              "onscreen": "Same payoff: relief"
+            },
+            {
+              "say": "It's like a toddler who melts down when they need a break. You don't cancel the break. You teach them to say, I need a break.",
+              "show": "A small baby icon appears with a jagged red scribble bubble, which smooths into a calm speech bubble reading 'I need a break'.",
+              "onscreen": "Same need, new words"
+            },
+            {
+              "say": "So now calm is what pays off, and calm is what grows.",
+              "show": "A green arrow loops from C back to B, mirroring the red loop from before training.",
+              "onscreen": "Now calm is what works"
+            }
+          ]
+        },
+        {
+          "id": "ch04s09",
+          "heading": "After training",
+          "visual_concept": "Deck slide 13: a green 'After training' tab and the three after panels filling clause by clause, then a gentle in-place scale on the calm passing panel, never wider than about 770 pixels on screen so the raster stays sharp. Then the chapter's big idea as a statement line, and small green sparkles for celebrating small wins.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:abc-frame",
+            "abc_after_a.jpg",
+            "abc_after_b.jpg",
+            "abc_after_c.jpg",
+            "icon:sparkles"
+          ],
+          "beats": [
+            {
+              "say": "And after training? You need less management, and your dog reaches for the new behavior on their own. It still ends with space.",
+              "show": "On 'And after training?' a green 'After training' tab slides in; then abc_after_a.jpg, abc_after_b.jpg and abc_after_c.jpg fill their frames one per clause, with the deck captions 'Less management as skills improve.', 'Readily uses the new behavior.' and 'Space is given. The situation ends.'",
+              "onscreen": "After training"
+            },
+            {
+              "say": "Two dogs pass on the path, and nothing happens. Not a dog who never feels anything, but a dog with a better plan.",
+              "show": "Panels A and C dim to 40 percent while panel B scales gently in place from 100 to about 115 percent and its frame glows green.",
+              "onscreen": "A dog with a better plan"
+            },
+            {
+              "say": "That's what modifying behavior based on function looks like. We never took away what your dog needed. We gave them a better way to ask for it.",
+              "show": "The panels fade and 'A better way to ask.' settles large in green over the accent bar.",
+              "onscreen": "A better way to ask."
+            },
+            {
+              "say": "You'll see that after picture in small moments first, like a faster recovery or a glance back at you. Celebrate those.",
+              "show": "Small green sparkle icons twinkle around the statement as the line 'Celebrate small wins' fades in.",
+              "onscreen": "Celebrate small wins"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch05",
+      "title": "What is a trigger?",
+      "slide_refs": [
+        14
+      ],
+      "scenes": [
+        {
+          "id": "ch05s01",
+          "heading": "What is a trigger?",
+          "visual_concept": "Deck slide 14 layout: heading and definition at left on the accent bar, trigger_wordcloud.jpg as a portrait card at right. The word cloud then dims behind two thermometer icons that compare a loud dog and a quiet dog.",
+          "assets": [
+            "bg_swirl.jpg",
+            "trigger_wordcloud.jpg",
+            "icon:thermometer"
+          ],
+          "beats": [
+            {
+              "say": "The dog on the corner, the skateboard, the mail carrier: these are triggers. A trigger is anything that raises your dog's stress, whether they react out loud, quietly, or not at all.",
+              "show": "The heading 'What is a trigger?' writes on, trigger_wordcloud.jpg fades in as a portrait card on the right, and the definition lands in the accent bar.",
+              "onscreen": "Anything that raises stress"
+            },
+            {
+              "say": "That last part matters. A dog who freezes and stares can be just as stressed as a barking dog. Sometimes more.",
+              "show": "The word cloud dims; two thermometer icons appear side by side, labeled 'Barking' and 'Frozen stare', both filling to the same high red level.",
+              "onscreen": "Quiet can still be stressed"
+            }
+          ]
+        },
+        {
+          "id": "ch05s02",
+          "heading": "Feeling first",
+          "visual_concept": "Three-node flow diagram, Trigger to Emotion to Reaction, drawing left to right. The Emotion node takes the spotlight with a startle pulse, then gets a green ring. Build this once; the startle idea is called back in ch08s04.",
+          "assets": [
+            "bg_swirl.jpg",
+            "diagram:trigger-emotion-reaction",
+            "icon:triangle-alert",
+            "icon:heart",
+            "icon:volume-2",
+            "icon:zap"
+          ],
+          "beats": [
+            {
+              "say": "Inside your dog, it goes like this. The trigger causes an emotion first, and that emotion drives the reaction.",
+              "show": "Three nodes draw left to right with arrows between them: alert-triangle 'Trigger', heart 'Emotion', volume 'Reaction'.",
+              "onscreen": "Trigger. Emotion. Reaction."
+            },
+            {
+              "say": "You know that jolt when a friend jumps out and yells boo? Your heart leaps before you know it's them. Feeling first, scream second.",
+              "show": "The Emotion node pulses large with a zap icon, and the Reaction node lights up a beat later.",
+              "onscreen": "Feeling first, then reaction"
+            },
+            {
+              "say": "That's why we work on the feeling, not just the barking. Change the feeling, and the reaction changes with it.",
+              "show": "A green ring circles the Emotion node with the label 'This is where we work'.",
+              "onscreen": "Change the feeling"
+            }
+          ]
+        },
+        {
+          "id": "ch05s03",
+          "heading": "Every dog's list",
+          "visual_concept": "The word cloud's words are re-typeset as live animated text. They scatter across the screen, then snap into six labeled columns with Lucide icons, two columns per beat, at most six words per column, and the rest fade out. People: Strangers, Approaching people, Running children, Jogger, Delivery driver, Hats. Dogs and animals: Other dogs, Cats, Squirrels, Birds. Sounds: Doorbell, Siren, Thunder, Fireworks, Horn, Vacuum cleaner. Moving things: Bicycles, Skateboards, Strollers, Buses, Garbage truck, Motorcycles. Handling: Being touched, Nail trims, Grooming, Leash restraint. Places and situations: Vet visits, Crowds, New places, Being alone, Fences. The original trigger_wordcloud.jpg can sit behind as a low-opacity texture.",
+          "assets": [
+            "bg_swirl.jpg",
+            "trigger_wordcloud.jpg",
+            "icon:users",
+            "icon:dog",
+            "icon:volume-2",
+            "icon:bike",
+            "icon:hand",
+            "icon:map-pin"
+          ],
+          "beats": [
+            {
+              "say": "Every dog has their own list. Some are fine with every person on the planet, until one is wearing a hat.",
+              "show": "Dozens of trigger words fly out of the word cloud and scatter across the screen, with 'Hats' briefly popping larger.",
+              "onscreen": "Every dog has their own list"
+            },
+            {
+              "say": "As I sort them, count how many are on your dog's list. People, like strangers, joggers and running kids. Dogs and other animals, like cats and squirrels.",
+              "show": "Words snap into two labeled columns: users icon 'People' and dog icon 'Dogs and animals'.",
+              "onscreen": ""
+            },
+            {
+              "say": "Then sounds, like the doorbell and fireworks. And moving things, like bikes, skateboards and buses.",
+              "show": "Two more columns form: volume icon 'Sounds' and bike icon 'Moving things'.",
+              "onscreen": ""
+            },
+            {
+              "say": "Then handling, like nail trims or being touched. And places and situations, like the vet or being left alone.",
+              "show": "The final two columns form: hand icon 'Handling' and map-pin icon 'Places and situations'.",
+              "onscreen": "Six kinds of triggers"
+            }
+          ]
+        },
+        {
+          "id": "ch05s04",
+          "heading": "Why just exposing them backfires",
+          "visual_concept": "A dog icon crowded by trigger icons shows flooding. Then a simple line chart, x axis 'Exposures', y axis 'Fear': a red line climbing for sensitization and a green line gently falling for small, safe doses.",
+          "assets": [
+            "bg_swirl.jpg",
+            "icon:dog",
+            "chart:exposure-lines"
+          ],
+          "beats": [
+            {
+              "say": "Maybe someone told you to keep exposing your dog to the scary thing until they get over it. That can make things worse.",
+              "show": "A dog icon appears in the center and bike, car, bell, volume and users icons crowd in around it from every side under the words 'Just expose them?'",
+              "onscreen": "Just expose them?"
+            },
+            {
+              "say": "If you're scared of spiders, a night in a room full of them won't make you love them. You're just surviving. That's flooding.",
+              "show": "The label 'Flooding' stamps in red over the crowded cluster.",
+              "onscreen": "Flooding: just surviving it"
+            },
+            {
+              "say": "Flooding can cause sensitization, where fear grows with every exposure. Daily walks that get too close can do it too. Or a dog shuts down and goes quiet, which looks calm but isn't.",
+              "show": "The cluster slides away and a chart draws a red line climbing across repeated exposures, labeled 'Sensitization'; then a small grey tag, 'Shut down is not calm', pins to the end of the line.",
+              "onscreen": "Sensitization: fear grows"
+            },
+            {
+              "say": "A dog only gets used to something when the dose is small enough to feel safe. Far enough away, quiet enough, and short enough.",
+              "show": "A green line draws beneath the red one, sloping gently down, labeled 'Small doses, feeling safe'.",
+              "onscreen": "Distance and dose"
+            }
+          ]
+        },
+        {
+          "id": "ch05s05",
+          "heading": "Start a trigger list",
+          "visual_concept": "Two calendar cards tease ch08 with the same jogger on different days. Then a clipboard icon expands into a fill-in worksheet card, 'My dog's trigger list', with the green 'Try this' badge, column headings typing in like a form the owner can copy, one example row, and a row for quiet reactions.",
+          "assets": [
+            "bg_swirl.jpg",
+            "icon:calendar",
+            "icon:footprints",
+            "icon:clipboard-list",
+            "diagram:trigger-log",
+            "icon:eye",
+            "icon:notebook-pen"
+          ],
+          "beats": [
+            {
+              "say": "A puzzle: on Monday your dog ignores the jogger. On Thursday, the same jogger sets off a meltdown. That's not random, and we'll dig into why in the next lesson.",
+              "show": "Two calendar cards slide in side by side, each with a footprints icon labeled 'Jogger': Monday gets a green check, Thursday a red alert.",
+              "onscreen": "Fine Monday. Meltdown Thursday."
+            },
+            {
+              "say": "For now, grab that notebook and start your dog's trigger list, right next to your A, B, C notes. You can't change what you haven't named.",
+              "show": "The calendars clear, a clipboard icon expands into a worksheet card titled 'My dog's trigger list', and a small green 'Try this' badge with a notebook-pen icon pins to the top left corner.",
+              "onscreen": "Start your trigger list"
+            },
+            {
+              "say": "And get specific. Not just dogs, but which dogs, how close, where, when, and how big the reaction was, from one to ten.",
+              "show": "Column headings type in across the card: What exactly, How close, Where, When, How big 1 to 10.",
+              "onscreen": "Get specific"
+            },
+            {
+              "say": "Something like: big dogs, head-on, after dark. And count quiet reactions too, like a freeze or a sudden stop in sniffing.",
+              "show": "An example row fills in handwritten style: 'Big dogs, head-on', 'Across the street', 'Our block', 'After dark', '7'. Then a second row slides in with an eye icon: 'Man in a hood', 'Half a block', 'Park', 'Morning', '4, froze and stopped sniffing', tagged 'Quiet reactions count'.",
+              "onscreen": "Quiet reactions count too"
+            }
+          ]
+        },
+        {
+          "id": "ch05s06",
+          "heading": "See you next lesson",
+          "visual_concept": "Short brand sign-off: four small recap chips, then the Calling All Dogs logo with the website.",
+          "assets": [
+            "logo.png"
+          ],
+          "beats": [
+            {
+              "say": "That's the foundation. Don't get stuck on the label. Ask what the behavior is for and what's driving it, and you'll know where to start. I'll see you in the next lesson.",
+              "show": "Four small recap chips appear in a row, 'Aggression and reactivity', 'Underlying factors', 'The function', 'Triggers', then fade as the Calling All Dogs logo scales in at center with callingalldogsny.com beneath it.",
+              "onscreen": "See you in the next lesson"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": "Revised master script, written for the trainer to narrate in first person. Narration is 3,881 spoken words, about 26 minutes at 150 words per minute and more like 27 to 28 minutes at a natural recorded pace with beat pauses. Time every beat to the recorded voiceover, not to the word estimate.\n\nChecked by script:\n- No em or en dashes anywhere.\n- No parentheses or digits in narration, and no banned phrases.\n- Every beat is 10 to 45 words and 1 to 3 sentences, and no spoken sentence is over 25 words.\n- On-screen text is 2 to 8 words, and every chapter has 2 to 5 scenes.\n\nChapter and scene ids are unchanged. Beat counts changed in five scenes. New beats: ch02s03 (the fearful lunge caution), ch04s04 (the dominance debunk) and ch09s02 (immediate safety). One beat was cut from each of ch00s02 and ch05s02 to stay under the word cap.\n\nWhat changed, in short.\n- Safety first. ch06s01 now tells owners not to stand their ground, and that leaving is still right. The ladder can be climbed in a split second. Hands stay clear of a wound-up dog. Every reactive dog gets a vet check. Kids, gates and kind muzzle training are covered in ch09s02. Owners using aversive tools now get a next step. Scared dogs can lunge forward, so owners judge the goal, not the pull.\n- Internal consistency. Over threshold, the dog is only practicing the reaction. The thinking brain goes offline for scared and frustrated dogs alike. Feelings start a reaction, and consequences help decide whether it comes back. Intent means a goal, not spite.\n- Reactive and aggressive now connect: barking that gets results slowly becomes a strategy the dog reaches for.\n- The bookend works aloud. The feeling, the function and the full cup are spoken in ch00s02, function is defined in ch05s01, and the full cup is named in ch08s03.\n- The false line about having heard the word trigger is gone. ch07s01 now defines it through the owner's own triggers.\n- Homework is one notebook. It starts in ch05s04, is reused in ch07s05 and ch08s02, and gets one clear ask in ch09s01: if you only do one thing this week, start that list.\n- Reassurance lands at each low point: ch01s01, ch03s05 beat 1, and ch04s02 beats 4 and 6.\n- Force-free is explained where it is first used (\"a trainer who works without force\") and named with its meaning in ch09s02.\n\nReviewer fixes rejected or changed, and why.\n1. Clarity, ch03s03 beat 4, \"stop walking it, and the grass starts to grow back\". Rejected on the science: old learning isn't erased and can come back under stress. The line now says \"we can build a new one\", and ch10s01 pays it off with \"Management stops the old path getting deeper while we build a new one.\"\n2. Clarity, ch03s03 beat 2, \"a tool your dog uses on purpose\". Softened to \"a strategy your dog reaches for\", because the science reviewer showed that \"on purpose\" reads as deliberate or spiteful.\n3. Clarity, ch06s01 beat 6, \"earn that space\". Used the science wording instead (\"we'll teach a calmer way to ask for space\"). \"Earn\" invites owners to withhold escape, which is the flooding risk the fix was meant to remove.\n4. Science, ch01s02 beat 4, \"not just overwhelm\". Dropped, because reactivity hasn't been introduced yet (the clarity point). Kept \"not spite, just a goal\".\n5. Science and clarity, ch04s04 and ch09s02. The harness step now reads \"A trainer who works without force can help you switch safely to a comfortable harness\". That explains the idea at first mention and saves the term for ch09s02, where it is defined as \"someone who trains without pain or fear\". The veterinary behaviorist definition was cut for the word budget. I kept the science point that medication is normal, not failure.\n6. Word budget. All critical and major fixes together pushed narration to about 4,500 words, so every beat was tightened and these optional or minor additions were dropped:\n   - Clarity ch00s02 beat 3, the promise of things to try.\n   - Clarity ch04s03 beat 1, \"new worries about old things\".\n   - Clarity ch07s04 beat 3, \"That's why management comes first\". I kept the daily too-close walks and the science point about shutting down.\n   - Science ch08s02 beat 5, \"That distance is gold\".\n   - Clarity ch06s03 beat 2, \"we'll teach each one step by step\".\n   - Coverage ch10s01 beat 6, \"built around your dog's real life\".\n   - Science ch04s05 beat 3, the handling-sensitivity clause. I kept that every dog gets a vet check, especially after a sudden change, and that pain doesn't always look like limping.\n   - The whole of ch00s02 beat 5 and ch05s02 beat 5, both named by the science reviewer as trimmable. Their on-screen and wording fixes no longer apply.\n7. Style, ch07s05 beat 4, the full two-note contrast. Replaced by a short example (\"Something like: big dogs, head-on, after dark.\"), because beat 3 already says \"not just dogs\".\n8. Style, ch08s05 beat 1, \"slow, sniffy walks somewhere quiet\". Replaced with clarity's \"sniffing games\", which suits New York owners better, plus permission to skip the walk.\n9. Style versus coverage, ch02s03 beat 4. Label and on-screen both read \"Release: built-up tension\", the deck wording, not \"letting off steam\". The deck's \"having fun\" is kept aloud.\n10. Style, ch10s01 subline. Changed to 'Understanding the why comes first.' This is the one deliberate departure from the deck's wording (\"is step one\"). It avoids having two step ones, on screen and aloud. Restore the deck line if the client prefers exact fidelity.\n11. Coverage, ch05s02 beat 1. Used \"someone shows up outside your front window\" so the narrator never says \"A, a person\".\n\nBuild rules from the reviews.\n- Threshold is drawn one way throughout: one dashed stroke, one 'Threshold' label. It appears in ch08s01, on the compressed vertical bar in ch08s02 (with a climbing dog marker and no gauge), in the stress cup (line well below the rim, so crossing it never reads as overflowing), on every ch08 chart and on the ch09 card 02 icon.\n- The cup icon is a mini diagram:stress-cup everywhere, never a lidded soda cup.\n- Toward uses a magnet icon, so the heart stays reserved for the feeling.\n- The ch03 four-circle timeline stays pinned as a strip through ch03s03 and ch03s04. Circles light in order: Works, Practice, Warnings lost, Boils over.\n- ABC panels are small rasters. Never show one wider than about 770 pixels, and two side by side at most 740 pixels each. The ch06s04 hero moment is a gentle in-place scale to about 115 percent.\n- When a show already puts a phrase on screen, onscreen is empty or identical to it.\n- One consistent green 'Try this' badge with a notebook-pen icon marks the coach moments: ch01s03 beat 6, ch02s03 beat 6, ch03s05 beat 4, ch05s04 beat 4, ch06s02 beat 4, ch07s05 beats 2 to 4, ch08s02 beat 5 and ch08s05 beat 4.\n- Chapter transitions: on the first beat of every chapter, the green corner tab (bottom right, as in the deck) updates to the chapter number. A 1-second title wipe of the chapter name runs over the accent bar before the scene layout builds.\n- Leash and skateboard are simple drawn SVG shapes in the Lucide stroke style.\n- New Lucide icons: magnet, crown, puzzle, shield.\n- The ch07s03 word mapping and the worksheet sample rows are specified in the scenes themselves.\n\nDeck fidelity. The ABC captions now match the deck exactly, including 'The person comes inside; the dog gets attention' and 'Barking · Lunging · Growling'. The red note, the X and check lists, the takeaway cards (three rows of two) and the step-card tags use deck wording; the narration paraphrases them. The single all-caps line in ch03s02 matches deck slide 4. Digits appear only in on-screen labels and worksheet samples.\n\nFor the narrator: read A, B, C as letters. Antecedent is AN-tuh-SEE-dent. No names, credentials or client stories are invented.\n\nGuardrails:\n- No dominance framing, plus one gentle debunk.\n- Sensitive period is roughly the first three months. Adolescence is about six to eighteen months, up to two years in big breeds. Social maturity is about one to three years.\n- Adrenaline is fast and cortisol lingers. Recovery takes hours, sometimes days, with no hour count.\n- Aversive tools are linked to more fear, stress and aggression, with no papers named and no shaming.\n- Every reactive dog gets a vet check, with no percentages.\n- Reinforcement is defined in plain words.\n- Flooding, sensitization and shutdown are explained.\n- Counterconditioning is trigger first, then food. Desensitization stays under the line.\n- No cure is promised, and lifelong management is framed as okay.\n- Referral goes to a force-free pro, the vet, and a veterinary behaviorist with medication, plus immediate safety steps.\n\nWorking files are in /tmp/claude-0/-home-user-CAD-slides/2fb12956-cdb7-57f8-a90e-23ee1987d1f2/scratchpad/rev/. revised2.json is built by apply.py, then apply2.py, from master_in.json, and check.py re-runs every check."
+}

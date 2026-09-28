@@ -367,15 +367,15 @@
     const H = smallHub(stage);
 
     // right panel: direction title, dog and trigger with a distance bar between them
-    const tInc = sectionTitle(stage, 'inc', { x: 900, y: 330 });
-    const tDec = sectionTitle(stage, 'dec', { x: 900, y: 330 });
-    const Y = 610, BS = 140, BR = BS / 2;
-    const DOG0 = 1070, DOG1 = 1300, TR0 = 1370, TR1 = 1690;
+    const tInc = sectionTitle(stage, 'inc', { x: 900, y: 350 });
+    const tDec = sectionTitle(stage, 'dec', { x: 900, y: 350 });
+    const Y = 640, BS = 140, BR = BS / 2;
+    const DOG0 = 1070, DOG1 = 1230, TR0 = 1370, TR1 = 1690;
     const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     // leash (beat 3) sits behind the dog
     const HAND = 930;
     const lx1 = HAND + 44, lx2 = DOG1 - BR + 6, ly = Y + 22;
-    const slackD = `M${lx1} ${ly} Q${(lx1 + lx2) / 2} ${ly + 90} ${lx2} ${ly}`;
+    const slackD = `M${lx1} ${ly} Q${(lx1 + lx2) / 2} ${ly + 64} ${lx2} ${ly}`;
     const tautD = `M${lx1} ${ly} Q${(lx1 + lx2) / 2} ${ly} ${lx2} ${ly}`;
     const leash = K.path(svg, slackD, { stroke: C.brown, 'stroke-width': 8 });
     const strainX = (lx1 + lx2) / 2;

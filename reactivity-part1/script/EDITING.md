@@ -2,6 +2,9 @@
 
 The trainer edits the narration in Google Docs; changes are pulled back into `lesson.json`.
 
+- The trainer edits the v4 doc directly. Only the material ABOVE its 'END OF FIRST CHAPTER MATERIAL' line is in
+  this video (lesson.json v5, ten scenes). Leave the material below that line alone until she asks for it.
+  `script/.doc-snapshot-v5-ch1.html` is what lesson.json holds for that part, for diffing her next edits.
 - Current doc (one chapter, v4): "Reactivity & Aggression Part 1: Script v4 (one chapter)",
   Drive id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE`
 - Baseline sent to the doc: `script/.doc-baseline-v4.html` (diff the doc against this to find the trainer's edits).

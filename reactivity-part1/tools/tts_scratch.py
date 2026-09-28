@@ -12,7 +12,9 @@ import sys
 
 import soundfile as sf
 
-from common import AUDIO, load_script, iter_scenes
+import numpy as np
+
+from common import AUDIO, PAUSE_RE, PAUSE_SEC, load_script, iter_scenes
 
 MODEL_DIR = "/opt/tts"
 
@@ -36,7 +38,15 @@ def main():
             key = hashlib.sha1(f"{args.voice}|{args.speed}|{text}".encode()).hexdigest()[:12]
             path = out / f"{sc['id']}_{i:02d}_{key}.wav"
             if not path.exists():
-                samples, sr = k.create(text, voice=args.voice, speed=args.speed, lang="en-us")
+                # [pause] markers become real silence, so the preview shows the pause
+                parts, sr = [], 24000
+                for j, piece in enumerate(p.strip() for p in PAUSE_RE.split(text)):
+                    if j:
+                        parts.append(np.zeros(int(PAUSE_SEC * sr), dtype=np.float32))
+                    if piece:
+                        a, sr = k.create(piece, voice=args.voice, speed=args.speed, lang="en-us")
+                        parts.append(np.asarray(a, dtype=np.float32))
+                samples = np.concatenate(parts)
                 sf.write(path, samples, sr)
                 print(f"  tts {path.name}  {len(samples) / sr:.2f}s", flush=True)
             info = sf.info(path)

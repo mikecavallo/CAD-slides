@@ -22,6 +22,11 @@ script PDF. `build/` is scratch space.
    named `ch01` (any format: .m4a from a phone is fine). A take named `full` works too.
 2. Put the files in `narration/` and rebuild (below). Speech recognition finds when you said each line,
    so every animation fires as you say it. Ad-libs and small wording changes are fine.
+3. Pauses are yours. The video follows your recording, so any pause you take (inside a line or between
+   slides) plays exactly as you recorded it; the next animation waits for your next word. Each slide stays
+   up at least 1.6 s after its last word before cutting; a longer pause of yours is kept as is.
+   Write `[pause]` in a line to mark a planned pause: it shows as a red PAUSE cue in the script PDF, and the
+   AI preview voice pauses there too. It is never read aloud or matched against your recording.
 
 Until your recordings exist, the preview uses a temporary AI voice purely for timing.
 

@@ -18,7 +18,7 @@ from pathlib import Path
 
 import numpy as np
 
-from common import BUILD, NARRATION_DIR, iter_scenes, load_script
+from common import BUILD, NARRATION_DIR, iter_scenes, load_script, spoken
 
 MODEL = Path("/opt/tts/sherpa-onnx-zipformer-en-2023-06-26")
 SR = 16000
@@ -146,7 +146,7 @@ def chapter_items(script):
     for ch, sc in iter_scenes(script):
         out.setdefault(ch["id"], [])
         for i, b in enumerate(sc["beats"]):
-            out[ch["id"]].append((f"{sc['id']}:{i}", tokenize(b["say"])))
+            out[ch["id"]].append((f"{sc['id']}:{i}", tokenize(spoken(b["say"]))))
     return out
 
 

@@ -16,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
-from common import BUILD, ROOT
+from common import BUILD, ROOT, spoken
 
 SR = 48000
 OUT = ROOT / "out"
@@ -77,7 +77,7 @@ def captions(timing):
     cues = []
     for seg in timing["segments"]:
         for b in seg["beats"]:
-            parts = split_caption(b["say"])
+            parts = split_caption(spoken(b["say"]))
             t0, t1 = seg["start"] + b["t"] + 0.12, seg["start"] + b["end"]
             if b.get("words"):
                 # narration mode: use real word times for chunk boundaries

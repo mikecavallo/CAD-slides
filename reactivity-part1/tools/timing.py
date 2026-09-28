@@ -10,7 +10,7 @@ Modes
 import argparse
 import json
 
-from common import (AUDIO, BUILD, BUMPER, FPS, GAP, HOLD, LEAD, SCENE_GAP, TAIL, chapter_num, load_script, words)
+from common import (AUDIO, BUILD, BUMPER, FPS, GAP, HOLD, LEAD, SCENE_GAP, TAIL, chapter_num, load_script, spoken, words)
 
 
 def frames(sec):
@@ -46,7 +46,7 @@ def build_sequential(script, beat_dur, beat_audio):
             local, beats, audio = LEAD, [], []
             for i, b in enumerate(sc["beats"]):
                 d = beat_dur(sc, i)
-                beats.append({"t": round(local, 3), "end": round(local + d, 3), "say": b["say"], "onscreen": b.get("onscreen", "")})
+                beats.append({"t": round(local, 3), "end": round(local + d, 3), "say": spoken(b["say"]), "onscreen": b.get("onscreen", "")})
                 a = beat_audio(sc, i)
                 if a:
                     audio.append({"file": a, "at": round(t + local, 4), "dur": d})
@@ -87,10 +87,11 @@ def build_narration(script, align):
             beats = []
             for i, b in enumerate(sc["beats"]):
                 r = rec["beats"][f"{sc['id']}:{i}"]
-                beats.append({"t": round(max(0.05, r["start"] - s0 - 0.12), 3), "end": round(r["end"] - s0, 3), "say": b["say"], "onscreen": b.get("onscreen", ""),
+                beats.append({"t": round(max(0.05, r["start"] - s0 - 0.12), 3), "end": round(r["end"] - s0, 3), "say": spoken(b["say"]), "onscreen": b.get("onscreen", ""),
                               "words": [{"w": w["w"], "t": round(w["t"] - s0, 3), "e": round(w["e"] - s0, 3)} for w in r.get("words", [])]})
             audio = [{"file": rec["file"], "at": round(t, 4), "from": round(s0, 4), "dur": round(s1 - s0, 4)}]
-            dur = frames(s1 - s0 + HOLD)
+            hold = max(0.0, HOLD - (s1 - lasts[k]))  # top up only when her own pause is shorter than HOLD
+            dur = frames(s1 - s0 + hold)
             segs.append(scene_seg(ch, sc, t, dur, beats, audio))
             t += dur
     return segs

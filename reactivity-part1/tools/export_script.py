@@ -13,7 +13,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from common import ROOT, load_script, words
+from common import PAUSE_RE, ROOT, load_script, words
 
 OUT = ROOT / "out"
 FONTS = ROOT / "assets" / "fonts"
@@ -53,6 +53,7 @@ def main():
     .scene { margin: 0 0 16pt; padding-top: 10pt; border-top: 1pt solid #dfe5d6; }
     .scene:first-of-type { border-top: 0; padding-top: 0; }
     .onscreen { font-size: 9.5pt; color: #8a8a8a; font-style: italic; margin-bottom: 7pt; }
+    .pause { display: inline-block; margin: 0 3pt; padding: 0 6pt; border-radius: 8pt; background: #f8e3dd; color: #b8452d; font: 700 9pt Montserrat; letter-spacing: 1pt; vertical-align: 1pt; }
     p { font-size: 17pt; line-height: 1.6; margin: 0 0 11pt; break-inside: avoid; }
     h2.first { page-break-before: auto; margin-top: 22pt; }
     """
@@ -76,7 +77,9 @@ def main():
             note = html.escape(vis + (" · " if vis else "") + concept)
             body.append(f"<div class='onscreen'>On screen: {note}</div>")
             for b in sc["beats"]:
-                body.append(f"<p>{html.escape(b['say'])}</p>")
+                # [pause] markers print as a visible cue so the pause isn't forgotten while recording
+                txt = PAUSE_RE.sub(" \x00 ", b['say']).strip()
+                body.append("<p>" + html.escape(txt).replace("\x00", "<span class='pause'>PAUSE</span>") + "</p>")
             body.append("</div>")
     doc = f"<!doctype html><html><head><meta charset='utf-8'><style>{css}</style></head><body>{''.join(body)}</body></html>"
     OUT.mkdir(exist_ok=True)

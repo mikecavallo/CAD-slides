@@ -197,10 +197,9 @@
     A.in(tl, pills[0], tNa, 'pop', { dur: 0.6 });
     A.in(tl, pills[1], tNr, 'pop', { dur: 0.6 });
 
-    // ---- beat 2: 'Behavior with intent.' lands on "with an intent", then five chips above it, one per word
+    // ---- beat 2: five chips, one per word, then 'Behavior with intent.' beneath them
     const ROWA = 706, ROWB = 780, INTY = 866;
     const intent = box(stage, 'c1a-intent', 'Behavior with <span class="r">intent</span>.', { x: CXS[0] - 450, y: INTY, w: 900 });
-    A.in(tl, intent, at(1, 'with an intent', 0.2, 0.3), 'fadeUp', { dur: 0.7 });
     const CHIPS = [
       ['Threaten', 'triangle-alert', 'threaten'], ['Push away', 'hand', 'push away'], ['Control', 'lock', 'control'],
       ['Protect', 'shield', 'protect'], ['Harm', 'octagon-alert', 'cause harm'],
@@ -214,6 +213,8 @@
       A.in(tl, c, t, 'pop', { dur: 0.55 });
       prev = t + 0.3;
     });
+    // the sixth line lands after the chips, as the summary: "Behavior with intent."
+    A.in(tl, intent, Math.max(prev + 0.2, at(1, 'It can show up', 0.6, 0.3)), 'fadeUp', { dur: 0.7 });
 
     // ---- beat 3: reactivity circle flares, then the smoke alarm screams at a tiny slice of toast
     const t2 = cue(2);

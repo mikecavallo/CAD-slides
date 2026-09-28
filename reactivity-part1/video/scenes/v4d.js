@@ -635,12 +635,14 @@
     Object.assign(owrap.style, { position: 'absolute', left: '660px', top: '484px', display: 'flex', flexDirection: 'column', gap: '22px', alignItems: 'flex-start' });
     LC.appendChild(owrap);
     const outs = [['feather', 'Flirt pole'], ['search', 'Sniff games'], ['move-horizontal', 'Tug']].map(([ic, t]) => iconPill(owrap, 'v4d-out', ic, t));
-    const tO1 = Math.max(cue(2) + 2.2, sayAt(ctx, 2, 'flirt poles', 0.4));
-    const tO2 = Math.max(tO1 + 0.6, sayAt(ctx, 2, 'sniffing games', 0.5));
-    const tO3 = Math.max(tO2 + 0.6, sayAt(ctx, 2, 'or tug', 0.58));
+    // narration: no outlet, the pressure builds to the target; then the outlets name the fix
+    const tFill = cue(2) + 0.6;
+    const dFill = Math.max(1.2, sayAt(ctx, 2, 'becomes the target', 0.62) + 0.5 - tFill);
+    const tO1 = Math.max(tFill + dFill + 0.4, sayAt(ctx, 2, 'Flirt poles', 0.7));
+    const tO2 = Math.max(tO1 + 0.6, sayAt(ctx, 2, 'sniffing games', 0.78));
+    const tO3 = Math.max(tO2 + 0.6, sayAt(ctx, 2, 'or tug', 0.85));
     A.in(tl, outl, Math.max(cue(2) + 0.2, sayAt(ctx, 2, 'healthy outlet', 0.25) - 0.4), 'fadeUp', { dur: 0.8 });
     A.in(tl, [gTrack, gFill, needle, plab], cue(2) + 0.3, 'fadeUp', { dur: 0.6, stagger: 0.06 });
-    const tFill = cue(2) + 0.6, dFill = Math.max(1.2, tO1 - 0.2 - tFill);
     tl.fromTo(gFill, { drawSVG: '0% 0.5%' }, { drawSVG: '0% 95%', duration: dFill, ease: 'power1.in' }, tFill);
     tl.fromTo(needle, { rotation: 1, svgOrigin: `${GX} ${GY}` }, { rotation: 171, duration: dFill, ease: 'power1.in' }, tFill);
     tl.to(plab, { color: C.red, duration: 0.4 }, tO1 - 0.6);
@@ -1068,7 +1070,7 @@
     const cells = [0, 1, 2, 3, 4].map(i => K.rect(bsvg, 26 + i * 82, 26, 70, 128, { rx: 12, fill: C.green }));
     const pat = put(LB, 'v4d-sub', 'Patience', { x: 650, y: 452, size: 46, color: C.ink });
     const tFuse = Math.max(cue(1) + 1.2, sayAt(ctx, 1, 'think how short', 0.35, 0.4));
-    A.in(tl, fuse, tFuse - 0.4, 'fadeUp', { dur: 0.8 });
+    A.in(tl, fuse, cue(1) + 0.5, 'fadeUp', { dur: 0.8 });
     A.in(tl, [bsvg, pat], tFuse, 'fadeUp', { dur: 0.8, stagger: 0.15 });
     const tDrain = Math.max(tFuse + 0.9, sayAt(ctx, 1, 'your fuse gets', 0.5, 0.1));
     [4, 3, 2, 1].forEach((c, i) => tl.to(cells[c], { opacity: 0, duration: 0.3, ease: 'power1.out' }, tDrain + i * 0.45));

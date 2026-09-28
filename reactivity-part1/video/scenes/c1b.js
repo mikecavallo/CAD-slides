@@ -340,4 +340,331 @@
     tl.to(items, { boxShadow: '0 0 0 4px rgba(184,217,154,0.9), 0 12px 30px rgba(97,149,55,0.25)', duration: 0.6, stagger: 0.12 }, tGlow);
     void dur;
   });
+
+  // ================================================================== ch01s05 Early life and socialization
+  registerScene('ch01s05', ctx => {
+    const { stage, tl, cue, dur } = ctx;
+    const { sayAt, clamp, STD, CAP_Y, ING } = C1;
+    const C = col();
+    css(stage);
+    const { B } = C1.sceneBase(ctx, 'Early life and socialization', 3);
+    const SUB_Y = 296;
+    const at = (i, ph, fb, lead = 0.3) => sayAt(ctx, i, ph, fb, lead);
+
+    // ---------- beat 0: the socialization chip lights up above the bowl
+    const sg = B.slots[3].g;
+    const lit = K.group(sg);
+    K.circle(lit, 0, 0, 44, { fill: ING[3].col, stroke: '#fff', 'stroke-width': 5 });
+    C1.svgIcon(lit, ING[3].icon, 0, 0, 46, { stroke: '#fff', 'stroke-width': 2.3 });
+    const ring = K.circle(sg, 0, 0, 44, { fill: 'none', stroke: ING[3].col, 'stroke-width': 5 });
+    const tLit = clamp(at(0, 'socialization', 0.12), cue(0) + 0.5, cue(0) + 3);
+    tl.fromTo(lit, { opacity: 0, scale: 0.5, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2.2)' }, tLit);
+    tl.fromTo(ring, { opacity: 0.9, scale: 1, transformOrigin: '50% 50%' }, { opacity: 0, scale: 1.9, duration: 1.0, ease: 'power2.out', repeat: 2, repeatDelay: 0.25 }, tLit + 0.2);
+    const cap = C1.caption(stage, 3, STD.cx, CAP_Y);
+    A.in(tl, cap, tLit + 0.3, 'fadeUp', { dur: 0.6 });
+
+    // the bowl steps aside (smaller, lower right) for the busy middle of the scene
+    const tSide = clamp(at(0, 'help puppies learn', 0.3, 0.1), tLit + 1.6, cue(1) - 4);
+    A.out(tl, cap, tSide - 0.2, 'fade', { dur: 0.35 });
+    tl.to(B.wrap, { scale: 0.62, x: 130, y: 170, duration: 0.9, ease: 'power3.inOut' }, tSide);
+
+    const sub0 = C1.put(stage, 'c1b-sub', 'Early experiences *matter*', { x: 100, y: SUB_Y });
+    A.in(tl, sub0, clamp(at(0, 'Early experiences', 0.2), tLit + 0.6, tSide), 'fadeUp', { dur: 0.8 });
+
+    // timeline: birth to adult, the early window highlighted
+    const LT = C1.layer(stage);
+    const TX0 = 140, TX1 = 1300, TY = 570, TH = 72, WIN = 700;
+    const tsvg = K.svg(LT, { x: 0, y: 0, w: 1920, h: 1080 });
+    const track = K.rect(tsvg, TX0, TY, TX1 - TX0, TH, { rx: 36, fill: '#e1e7d9' });
+    const win = K.rect(tsvg, TX0, TY, WIN - TX0, TH, { rx: 36, fill: C.green });
+    const brk = K.path(tsvg, `M ${TX0 + 2} ${TY - 12} V ${TY - 25} H ${WIN - 2} V ${TY - 12}`, { stroke: C.green, 'stroke-width': 4 });
+    const wlab = C1.put(LT, 'c1b-win', 'First few months', { x: TX0, y: TY - 96 });
+    const ticks = [C1.put(LT, 'c1b-tick', 'Birth', { x: TX0, y: TY + TH + 22 }), C1.put(LT, 'c1b-tick', 'Adult', { x: TX1 - 200, y: TY + TH + 22, w: 200, align: 'right' })];
+    const tTrack = tSide + 0.5;
+    A.in(tl, track, tTrack, 'grow', { dur: 0.9 });
+    A.in(tl, ticks, tTrack + 0.5, 'fade', { dur: 0.5, stagger: 0.12 });
+    const tWin = Math.max(tTrack + 1.2, at(0, 'developmental period', 0.6));
+    A.in(tl, win, tWin, 'grow', { dur: 0.8 });
+    const tFew = Math.max(tWin + 0.7, at(0, 'first few months', 0.75));
+    A.draw(tl, brk, tFew - 0.1, 0.6);
+    A.in(tl, wlab, tFew, 'fadeUp', { dur: 0.7 });
+    // everyday things the puppy meets in the window
+    const CELLS = ['dog', 'user', 'bus', 'skateboard', 'map-pin', 'house'];
+    const cw = (WIN - TX0) / CELLS.length, cx = k => TX0 + cw * (k + 0.5);
+    const cells = CELLS.map((n, k) => sIcon(tsvg, n, cx(k), TY + TH / 2, 40, { stroke: '#fff', 'stroke-width': 2.2 }));
+    const tCells = Math.max(tFew + 0.9, at(0, 'especially influenced', 0.85));
+    tl.fromTo(cells, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.14, ease: 'back.out(2)' }, tCells);
+
+    // ---------- beat 1: too little. Gaps open in the window; the missing experiences are named
+    const sub1 = C1.put(stage, 'c1b-sub', 'Too little *exposure*', { x: 100, y: SUB_Y });
+    swap(tl, sub0, sub1, cue(1));
+    const GAP = [1, 2, 3, 4];
+    const gaps = GAP.map(k => K.rect(tsvg, cx(k) - 36, TY, 72, TH, { fill: '#e1e7d9' }));
+    const tGap = Math.max(cue(1) + 0.3, at(1, 'Too little', 0.05));
+    tl.to(GAP.map(k => cells[k]), { opacity: 0, y: 30, duration: 0.4, stagger: 0.12, ease: 'power2.in' }, tGap);
+    tl.fromTo(gaps, { scaleY: 0, transformOrigin: '50% 50%' }, { scaleY: 1, duration: 0.45, stagger: 0.12, ease: 'power2.out' }, tGap + 0.2);
+    const TAGS = [['user', 'Strangers', 'people'], ['bus', 'Buses', 'experiences'], ['skateboard', 'Skateboards', 'experiences'], ['map-pin', 'New places', 'places']];
+    const trow = K.el('div', null);
+    Object.assign(trow.style, { position: 'absolute', left: TX0 + 'px', top: TY + TH + 110 + 'px', display: 'flex', gap: '22px' });
+    LT.appendChild(trow);
+    const tags = TAGS.map(([ic, t]) => {
+      const n = pill(trow, 'c1b-miss', ic, t, 0, 0);
+      n.style.position = 'relative';
+      n.style.left = n.style.top = '';
+      return n;
+    });
+    TAGS.forEach(([, , ph], i) => {
+      const t = Math.max(tGap + 1.0, at(1, ph, 0.3 + i * 0.08, 0.2)) + (i === 2 ? 0.45 : 0);
+      A.in(tl, tags[i], t, 'fadeUp', { dur: 0.55 });
+    });
+    // an adopted dog: you meet them after the window has closed
+    const MX = 1030;
+    const mk = K.group(tsvg);
+    K.line(mk, MX, TY - 42, MX, TY - 4, { stroke: C.greenDark, 'stroke-width': 4 });
+    K.circle(mk, MX, TY + TH / 2, 30, { fill: '#fff', stroke: C.greenDark, 'stroke-width': 5 });
+    C1.svgIcon(mk, 'heart-handshake', MX, TY + TH / 2, 34, { stroke: C.greenDark, 'stroke-width': 2.2 });
+    const mlab = C1.label(LT, 'You meet them', MX, TY - 88, { cls: 'c1b-pin', w: 300 });
+    mlab.style.justifyContent = 'center';
+    const tMeet = Math.max(tGap + 3, at(1, 'adopt an older dog', 0.5));
+    tl.fromTo(mk, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(2)' }, tMeet);
+    A.in(tl, mlab, tMeet + 0.2, 'fadeUp', { dur: 0.6 });
+
+    // ---------- beat 2: more is not always better. The window swells and overfills
+    const sub2 = C1.put(stage, 'c1b-sub', 'More is not *always better*', { x: 100, y: SUB_Y });
+    swap(tl, sub1, sub2, cue(2));
+    A.out(tl, [...tags, mlab, mk, ticks[1]], cue(2) - 0.3, 'fade', { dur: 0.4 });
+    tl.to(gaps, { opacity: 0, duration: 0.4 }, cue(2) - 0.2);
+    tl.to(GAP.map(k => cells[k]), { opacity: 1, y: 0, duration: 0.4 }, cue(2));
+    const WX1 = 960, WY1 = 900;
+    const tSwell = Math.max(cue(2) + 0.3, at(2, 'go too far', 0.3));
+    tl.to(win, { attr: { width: WX1 - TX0, height: WY1 - TY, rx: 40 }, duration: 1.0, ease: 'power3.inOut' }, tSwell);
+    tl.to(brk, { attr: { d: `M ${TX0 + 2} ${TY - 12} V ${TY - 25} H ${WX1 - 2} V ${TY - 12}` }, duration: 1.0, ease: 'power3.inOut' }, tSwell);
+    tl.to(ticks[0], { opacity: 0, duration: 0.3 }, tSwell);
+    // a fixed scatter of people, dogs, hands and places that piles up and spills over the edges
+    const PILE = ['user', 'dog', 'hand', 'map-pin', 'users', 'dog', 'house', 'hand', 'store', 'user', 'bus', 'dog', 'hand', 'trees',
+      'user', 'car', 'dog', 'hand', 'user', 'map-pin', 'dog', 'users', 'hand', 'house', 'user', 'dog', 'store', 'hand'];
+    let seed = 11;
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    const spots = [];
+    for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++) spots.push([200 + c * 104 + (r % 2) * 40 + (rnd() - 0.5) * 44, TY + TH + 58 + r * 88 + (rnd() - 0.5) * 36]);
+    spots.push([1000, TY + 150], [1016, TY + 262], [930, WY1 + 12], [560, WY1 + 16], [250, WY1 + 10], [700, TY + TH + 20]);
+    const order = spots.map((_, i) => [rnd(), i]).sort((a, b) => a[0] - b[0]).map(v => v[1]);
+    const pile = order.map((si, i) => {
+      const [x, y] = spots[si];
+      const r = 32 + rnd() * 12;
+      const solid = i % 3 !== 1;
+      return sBadge(tsvg, PILE[i % PILE.length], x, y, r, solid ? '#fff' : C.greenDark, solid ? C.greenDark : '#fff', { stroke: solid ? C.greenLight : '#fff', sw: 3, k: 1.15, iw: 2.1 });
+    });
+    const tPile = Math.max(tSwell + 0.8, at(2, 'More exposure', 0.6, 0.6));
+    const pileEnd = Math.max(tPile + 1.5, cue(3) - 1.0);
+    pile.forEach((p, i) => {
+      const f = Math.pow(i / (pile.length - 1), 0.75);
+      tl.fromTo(p.inner, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2.4)' }, tPile + f * (pileEnd - tPile));
+    });
+    tl.to(win, { attr: { fill: '#7fa84f' }, duration: 1.2 }, pileEnd - 0.8);
+
+    // ---------- beat 3: pass the puppy
+    A.out(tl, LT, cue(3) - 0.35, 'fadeUp', { dur: 0.45 });
+    const sub3 = C1.put(stage, 'c1b-sub', 'Pass the *puppy*', { x: 100, y: SUB_Y });
+    swap(tl, sub2, sub3, cue(3));
+    const LP = C1.layer(stage);
+    const psvg = K.svg(LP, { x: 0, y: 0, w: 1920, h: 1080 });
+    const CX = 640, CY = 668, R = 236, PR = 84;
+    const crowd = K.group(psvg);
+    const ang = i => -90 + 60 * i;
+    const pos = (a, r) => [CX + r * Math.cos((a * Math.PI) / 180), CY + r * Math.sin((a * Math.PI) / 180)];
+    const people = [0, 1, 2, 3, 4, 5].map(i => {
+      const [x, y] = pos(ang(i), R);
+      return sBadge(crowd, 'user', x, y, 50, '#fff', C.inkSoft, { stroke: '#cfd8c4', sw: 3, k: 1.1, iw: 2 });
+    });
+    tl.fromTo(people.map(p => p.inner), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(2)' }, Math.max(cue(3) + 0.6, at(3, 'pass the puppy', 0.1) + 0.3));
+    // one reaching hand per person, pointing at the middle
+    const HR0 = 204, HR1 = 156;
+    const hands = [0, 1, 2, 3, 4, 5].map(i => {
+      const g = K.group(crowd);
+      const [x, y] = pos(ang(i), HR0);
+      gsap.set(g, { x, y, opacity: 0 });
+      const rot = K.group(g, { transform: `rotate(${ang(i) - 90})` });
+      C1.svgIcon(rot, 'hand', 0, 0, 52, { stroke: '#8a6a4a', 'stroke-width': 2, fill: '#f6e7d6' });
+      return g;
+    });
+    const reach = (i, t) => {
+      const [x, y] = pos(ang(i), HR1);
+      tl.to(hands[i], { x, y, opacity: 1, duration: 0.4, ease: 'power2.out' }, t);
+    };
+    const pull = (i, t) => {
+      const [x, y] = pos(ang(i), HR0);
+      tl.to(hands[i], { x, y, opacity: 0, duration: 0.35, ease: 'power2.in' }, t);
+    };
+    // the puppy: rotates around the middle, counter-rotating so it stays upright
+    const pupRot = K.group(psvg);
+    const pupPos = K.group(pupRot);
+    const pupIn = K.group(pupPos);
+    K.circle(pupIn, 0, 0, 44, { fill: C.amber, stroke: '#fff', 'stroke-width': 5 });
+    C1.svgIcon(pupIn, 'dog', 0, 1, 50, { stroke: '#fff', 'stroke-width': 2.1 });
+    gsap.set(pupRot, { rotation: ang(0), svgOrigin: `${CX} ${CY}` });
+    gsap.set(pupPos, { x: CX, y: CY });
+    gsap.set(pupIn, { rotation: -ang(0), transformOrigin: '50% 50%' });
+    const tPup = Math.max(cue(3) + 0.4, at(3, 'pass the puppy', 0.1));
+    tl.fromTo(pupIn, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, tPup);
+    const stops = [at(3, 'picking up', 0.3, 0.2)];
+    const tPass = Math.max(stops[0] + 1.6, at(3, 'passing them', 0.45, 0.1));
+    const tLast = Math.max(tPass + 4, cue(4) - 1.4);
+    for (let i = 1; i < 6; i++) stops.push(tPass + ((tLast - tPass) * (i - 1)) / 4);
+    reach(0, stops[0] - 0.35);
+    tl.to(pupPos, { x: CX + PR, duration: 0.6, ease: 'power2.inOut' }, stops[0]);
+    for (let i = 1; i < 6; i++) {
+      const t = stops[i];
+      reach(i, Math.max(stops[i - 1] + 0.5, t - 0.8));
+      tl.to(pupRot, { rotation: ang(i), svgOrigin: `${CX} ${CY}`, duration: 0.7, ease: 'power2.inOut' }, t - 0.35);
+      tl.to(pupIn, { rotation: -ang(i), transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, t - 0.35);
+      pull(i - 1, t + 0.2);
+    }
+    // a small choice meter that stays close to empty
+    const meter = K.el('div', 'c1b-meter');
+    Object.assign(meter.style, { left: '1060px', top: '612px' });
+    meter.innerHTML = '<div class="t">Choice</div><div class="bar"><div class="fill"></div></div><div class="ends"><span>Low</span><span>High</span></div>';
+    LP.appendChild(meter);
+    const mfill = meter.querySelector('.fill');
+    gsap.set(mfill, { scaleX: 0.1 });
+    const tMeter = Math.max(stops[2], at(3, 'very little choice', 0.75));
+    A.in(tl, meter, tMeter, 'fadeLeft', { dur: 0.6 });
+    tl.fromTo(mfill, { scaleX: 0.02 }, { scaleX: 0.1, duration: 0.8, ease: 'power2.out' }, tMeter + 0.4);
+    tl.to(mfill, { scaleX: 0.06, duration: 0.25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tMeter + 1.4);
+
+    // ---------- beat 4: too much, too fast. The crowd closes in and the puppy shrinks
+    const sub4 = C1.put(stage, 'c1b-sub', 'Too much, *too fast*', { x: 100, y: SUB_Y });
+    swap(tl, sub3, sub4, cue(4));
+    tl.to(pupPos, { x: CX, duration: 0.8, ease: 'power2.inOut' }, cue(4));
+    [0, 1, 2, 3, 4, 5].forEach(i => { if (i !== 5) reach(i, cue(4) + 0.2 + i * 0.08); });
+    const MORE = {
+      people: [['user', -60, 236], ['user', 120, 236], ['users', 35, 345], ['user', 215, 345]],
+      dogs: [['dog', 0, 236], ['dog', 180, 236], ['dog', -35, 345], ['dog', 145, 345]],
+      hands: [['hand', -60, 150], ['hand', 0, 150], ['hand', 120, 150], ['hand', 180, 150]],
+      places: [['house', 60, 236], ['store', 240, 236], ['map-pin', 0, 345], ['trees', 180, 345]],
+    };
+    const PH = { people: 'new people', dogs: 'dogs', hands: 'handling', places: 'environments' };
+    let tPrevM = cue(4) + 0.6;
+    Object.keys(MORE).forEach((key, gi) => {
+      const els = MORE[key].map(([n, a, r]) => {
+        const [x, y] = pos(a, r);
+        if (n === 'hand') {
+          const g = K.group(crowd);
+          gsap.set(g, { x, y });
+          const inner = K.group(g);
+          const rot = K.group(inner, { transform: `rotate(${a - 90})` });
+          C1.svgIcon(rot, 'hand', 0, 0, 50, { stroke: '#8a6a4a', 'stroke-width': 2.1, fill: '#f6e7d6' });
+          return inner;
+        }
+        const fill = key === 'dogs' ? C.green : key === 'places' ? C.pale : '#fff';
+        const fg = key === 'dogs' ? '#fff' : key === 'places' ? C.olive : C.inkSoft;
+        return sBadge(crowd, n, x, y, 42, fill, fg, { stroke: key === 'people' ? '#cfd8c4' : '#fff', sw: key === 'people' ? 3 : 4, k: 1.1, iw: 2 }).inner;
+      });
+      const t = Math.max(tPrevM + 0.6, at(4, PH[key], 0.3 + gi * 0.1, 0.2));
+      tPrevM = t;
+      tl.fromTo(els, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.45, stagger: 0.1, ease: 'back.out(2.2)' }, t);
+    });
+    const tSqueeze = tPrevM + 0.6;
+    const tOver = Math.max(tSqueeze + 1, at(4, 'overwhelming', 0.9));
+    tl.to(crowd, { scale: 0.8, svgOrigin: `${CX} ${CY}`, duration: tOver + 0.5 - tSqueeze, ease: 'power1.inOut' }, tSqueeze);
+    tl.to(pupIn, { scale: 0.42, duration: tOver + 0.6 - cue(4), ease: 'power1.in' }, cue(4) + 0.4);
+    tl.to(mfill, { scaleX: 0.025, backgroundColor: C.red, duration: 0.8, ease: 'power2.out' }, Math.max(tPrevM, at(4, 'without enough opportunity', 0.55)));
+    tl.to(pupIn, { x: 3, duration: 0.07, yoyo: true, repeat: 11, ease: 'sine.inOut' }, tOver);
+
+    // ---------- beat 5: every dog means a party, until the leash says no
+    A.out(tl, LP, cue(5) - 0.35, 'fade', { dur: 0.45 });
+    const sub5 = C1.put(stage, 'c1b-sub', 'Every dog means a *party*', { x: 100, y: SUB_Y });
+    swap(tl, sub4, sub5, cue(5));
+    const LQ = C1.layer(stage);
+    const qsvg = K.svg(LQ, { x: 0, y: 0, w: 1920, h: 1080 });
+    const RY = 540, ROW = [['dog', 400], ['dog', 650], ['user', 900], ['dog', 1150]];
+    const rowG = K.group(qsvg);
+    const party = ROW.map(([n, x]) => {
+      const it = sBadge(rowG, n, x, RY, 56, n === 'dog' ? C.green : '#fff', n === 'dog' ? '#fff' : C.inkSoft, { stroke: n === 'dog' ? '#fff' : '#cfd8c4', sw: n === 'dog' ? 5 : 3, k: 1.1, iw: 2 });
+      const pop = sIcon(it.inner, 'party-popper', 52, -52, 46, { stroke: C.amber, 'stroke-width': 2.2 });
+      return { it, pop, x };
+    });
+    const tRow = Math.max(cue(5) + 0.3, at(5, 'every dog or person', 0.15));
+    tl.fromTo(party.map(p => p.it.inner), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.12, ease: 'back.out(2)' }, tRow);
+    // the party puppy
+    const pup = K.group(qsvg);
+    const pin = K.group(pup);
+    K.circle(pin, 0, 0, 44, { fill: C.amber, stroke: '#fff', 'stroke-width': 5 });
+    C1.svgIcon(pin, 'dog', 0, 1, 50, { stroke: '#fff', 'stroke-width': 2.1 });
+    gsap.set(pup, { x: 170, y: RY });
+    const tPupP = Math.max(cue(5) + 0.3, at(5, 'the puppy who learned', 0.1));
+    tl.fromTo(pin, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tPupP);
+    const confetti = (x, y, t) => {
+      const cols = [C.amber, C.green, C.red, C.greenLight, C.amber, C.green];
+      cols.forEach((c, i) => {
+        const a = ((-160 + i * 28) * Math.PI) / 180, d = 58 + (i % 2) * 20;
+        const dot = K.circle(qsvg, x, y, 7 - (i % 2) * 2, { fill: c, opacity: 0 });
+        tl.fromTo(dot, { x: 0, y: 0, opacity: 1 }, { x: Math.cos(a) * d, y: Math.sin(a) * d, opacity: 0, duration: 0.7, ease: 'power2.out', immediateRender: false }, t);
+      });
+    };
+    const hopT = [at(5, 'Running up to meet', 0.3, 0.1), at(5, 'after dog', 0.38, 0.2), at(5, 'person after person', 0.45, 0.2), at(5, 'another dog', 0.55, 0.3)];
+    let px = 170;
+    hopT.forEach((t0, i) => {
+      const t = Math.max(t0, i ? hopT[i - 1] + 0.9 : tRow + 1.0);
+      hopT[i] = t;
+      const nx = party[i].x - 128, H = i ? 118 : 40;
+      tl.to(pup, { x: nx, duration: 0.6, ease: 'power1.inOut' }, t);
+      tl.to(pup, { y: RY - H, duration: 0.3, ease: 'power2.out' }, t);
+      tl.to(pup, { y: RY, duration: 0.3, ease: 'power2.in' }, t + 0.3);
+      confetti(party[i].x - 20, RY - 64, t + 0.55);
+      tl.to(party[i].it.inner, { scale: 1.12, transformOrigin: '50% 50%', duration: 0.18, yoyo: true, repeat: 1, ease: 'sine.inOut' }, t + 0.55);
+      tl.to(party[i].pop, { rotation: -14, transformOrigin: '50% 50%', duration: 0.12, yoyo: true, repeat: 3, ease: 'sine.inOut' }, t + 0.55);
+      px = nx;
+    });
+    // the leash: the puppy is held back from the next dog
+    const LY = 836, HX = 240, PX2 = 700, DX = 1150;
+    const tLeash = Math.max(hopT[3] + 1.0, at(5, 'until the leash', 0.7, 0.2));
+    tl.to(rowG, { opacity: 0.3, duration: 0.6 }, tLeash);
+    tl.to(pup, { x: px, y: RY + 150, duration: 0.4, ease: 'power2.in' }, tLeash);
+    tl.to(pup, { x: PX2, y: LY, duration: 0.7, ease: 'power2.inOut' }, tLeash + 0.4);
+    const handler = sBadge(qsvg, 'user', HX, LY, 56, '#fff', C.ink, { stroke: '#cfd8c4', sw: 3, k: 1.1, iw: 2 });
+    const next = sBadge(qsvg, 'dog', DX, LY, 56, C.green, '#fff', { sw: 5, k: 1.1, iw: 2 });
+    const nextPop = sIcon(next.inner, 'party-popper', 52, -52, 46, { stroke: C.amber, 'stroke-width': 2.2 });
+    tl.fromTo([handler.inner, next.inner], { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.15, ease: 'back.out(2)' }, tLeash + 0.3);
+    const SLACK = `M ${HX + 50} ${LY + 10} Q ${(HX + PX2) / 2} ${LY + 100} ${PX2 - 44} ${LY + 8}`;
+    const TAUT = `M ${HX + 50} ${LY + 10} Q ${(HX + PX2) / 2 + 22} ${LY + 10} ${PX2 - 20} ${LY + 8}`;
+    const leash = K.path(qsvg, SLACK, { stroke: '#8a6d3b', 'stroke-width': 8 });
+    qsvg.insertBefore(leash, pup);
+    A.draw(tl, leash, tLeash + 1.0, 0.6);
+    const tTaut = Math.max(tLeash + 1.7, at(5, 'prevents', 0.75, 0.1));
+    tl.to(leash, { attr: { d: TAUT, stroke: C.red }, duration: 0.35, ease: 'power3.in' }, tTaut);
+    tl.to(pup, { x: PX2 + 22, duration: 0.35, ease: 'power3.in' }, tTaut);
+    const chev = [0, 1].map(k => K.path(qsvg, `M ${PX2 + 90 + k * 28} ${LY - 20} L ${PX2 + 110 + k * 28} ${LY} L ${PX2 + 90 + k * 28} ${LY + 20}`, { stroke: C.red, 'stroke-width': 7 }));
+    tl.fromTo(chev, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.4, stagger: 0.12 }, tTaut + 0.3);
+    const strainEnd = cue(6) - 0.6;
+    const nSt = Math.max(3, Math.floor((strainEnd - tTaut - 0.5) / 0.18));
+    tl.to(pin, { x: 5, duration: 0.09, yoyo: true, repeat: nSt, ease: 'sine.inOut' }, tTaut + 0.4);
+    tl.to(nextPop, { rotation: -14, transformOrigin: '50% 50%', duration: 0.14, yoyo: true, repeat: 5, ease: 'sine.inOut' }, tTaut + 0.2);
+    const fr = K.el('div', 'c1b-red');
+    fr.appendChild(K.icon('frown'));
+    fr.appendChild(K.el('span', null, 'Frustration'));
+    Object.assign(fr.style, { left: '0px', top: '0px' });
+    LQ.appendChild(fr);
+    Object.assign(fr.style, { left: (PX2 + 22 + DX) / 2 - 150 + 'px', top: LY - 150 + 'px', width: '300px', justifyContent: 'center' });
+    const tFr = Math.max(tTaut + 0.8, at(5, 'frustration', 0.85, 0.2));
+    A.in(tl, fr, tFr, 'pop', { dur: 0.6 });
+
+    // ---------- beat 6: the chip drops into the bowl beside the others
+    A.out(tl, LQ, cue(6) - 0.35, 'fade', { dur: 0.45 });
+    A.out(tl, sub5, cue(6) - 0.35, 'fadeUp', { dur: 0.4 });
+    tl.to(B.wrap, { scale: 1, x: 0, y: 0, duration: 0.9, ease: 'power3.inOut' }, cue(6) + 0.1);
+    const land = C1.dropIn(tl, B, 3, cue(6) + 1.0);
+    const cap2 = C1.caption(stage, 3, STD.cx, CAP_Y);
+    A.in(tl, cap2, land - 0.2, 'fadeUp', { dur: 0.6 });
+    const LZ = C1.layer(stage);
+    const card = K.el('div', 'c1-card');
+    Object.assign(card.style, { left: '100px', top: '400px', width: '1000px', height: '250px' });
+    LZ.appendChild(card);
+    const hb = C1.badge(LZ, 'history', 206, 525, 130, ING[3].col, '#fff');
+    const htxt = C1.put(LZ, 'c1-big', 'Early experiences become<br>part of the *history*', { x: 310, y: 458 });
+    A.in(tl, card, cue(6) + 0.1, 'fadeUp', { dur: 0.7 });
+    A.in(tl, hb, cue(6) + 0.3, 'pop', { dur: 0.6 });
+    A.in(tl, htxt, cue(6) + 0.4, 'fadeUp', { dur: 0.7 });
+    void dur;
+  });
 })();

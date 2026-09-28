@@ -95,11 +95,11 @@
     tl.to(s, { scale: 1.06, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, t + 0.42);
   }
   /** two arrows around a dot: pointing in (closer) or out (distance). Returns {svg, left, right, dir} */
-  function arrows(parent, inward, color, w = 140) {
+  function arrows(parent, inward, color, w = 140, sw = 6) {
     const s = K.svgEl('svg', { viewBox: '0 0 140 48', width: w, height: Math.round(w * 48 / 140) }, parent);
-    const a = { stroke: color, 'stroke-width': 6, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+    const a = { stroke: color, 'stroke-width': sw, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
     const left = K.group(s), right = K.group(s);
-    K.circle(s, 70, 24, 8, { fill: color, stroke: 'none' });
+    K.circle(s, 70, 24, sw + 2, { fill: color, stroke: 'none' });
     if (inward) {
       K.path(left, 'M6 24 H50 M38 12 L50 24 L38 36', a);
       K.path(right, 'M134 24 H90 M102 12 L90 24 L102 36', a);
@@ -122,7 +122,7 @@
     const t = div(r, 'v4b-tag');
     const ib = div(t, 'ib');
     let ar = null;
-    if (icon === 'in' || icon === 'out') ar = arrows(ib, icon === 'in', '#fff', 60);
+    if (icon === 'in' || icon === 'out') ar = arrows(ib, icon === 'in', '#fff', 64, 10);
     else ib.appendChild(K.icon(icon, { stroke: 2.6, cls: 'lu' }));
     div(t, 'v', '<b>Possible function:</b>' + value);
     return { t, ar };
@@ -184,11 +184,11 @@
   registerScene('ch01s07', ({ stage, tl, cue, end, dur, phrase }) => {
     addCss(stage);
 
-    const h = K.heading(stage, 'Same behavior, different job', { x: 120, y: 120 });
+    const h = K.heading(stage, 'Same behavior, different job', { x: 100, y: 120 });
     A.in(tl, h.all, cue(0), 'fadeUp', { stagger: 0.12 });
 
-    // --- beat 0: three B panels slide in side by side (520 px wide), then a job tag pops under each
-    const W = 520, H = 306, GAP = 60, Y = 318;
+    // --- beat 0: three B panels slide in side by side (540 px wide), then a job tag pops under each
+    const W = 540, H = 318, GAP = 50, Y = 390;
     const X0 = (1920 - (3 * W + 2 * GAP)) / 2;
     const xs = [0, 1, 2].map(i => X0 + i * (W + GAP));
     const mk = (src, x) => {
@@ -239,7 +239,7 @@
 
     // --- beat 1: 'Just stop the barking' stretches across the images, then a red strike and X
     const c1 = cue(1);
-    const br = rowC(stage, 0, Y + H - 150, 1920);
+    const br = rowC(stage, 0, Y + H - 142, 1920);
     const banner = div(br, 'v4b-banner');
     const bt = div(banner, 'bt', 'Just stop the barking');
     tl.fromTo(banner, { opacity: 0, scaleX: 0.2 }, { opacity: 1, scaleX: 1, duration: 0.8, ease: 'power3.out' }, c1 + 0.1);
@@ -254,9 +254,9 @@
     // --- beat 2: the images dim and 'A, B, C' lands large in green over them
     const c2 = cue(2);
     A.out(tl, br, c2 - 0.1, 'fade', { dur: 0.45 });
-    A.dim(tl, [...P.map(p => p.w), ...tags], c2 + 0.1, 0.16, { dur: 0.8 });
+    A.dim(tl, [...P.map(p => p.w), ...tags], c2 + 0.1, 0.2, { dur: 0.8 });
     const box = div(stage, 'v4b-abc');
-    K.place(box, { x: 0, y: 330 });
+    K.place(box, { x: 0, y: Y + H / 2 - 150 });
     const pre = div(box, 'pre', 'Look at the');
     const big = div(box, 'big');
     const letters = ['A,', ' B,', ' C'].map(s => { const n = K.el('span', null, s); big.appendChild(n); return n; });

@@ -360,8 +360,8 @@
               "onscreen": "Pain isn't always obvious"
             },
             {
-              "say": "That's why a change in behavior, especially a sudden change, is worth taking seriously. Before assuming a behavior problem is purely behavioral, we need to consider whether pain or another physical problem could be contributing.",
-              "show": "The panels clear; a sudden-change arrow appears beside a dog and branches into two paths: 'Behavior' and 'Physical health'.",
+              "say": "That's why a change in behavior, especially a sudden change, is worth taking seriously. Before assuming a behavior problem is purely behavioral, we need to consider whether pain or another physical problem could be contributing. That starts with a vet visit.",
+              "show": "The panels clear; a sudden-change arrow appears beside a dog and branches into two paths: 'Behavior' and 'Physical health'. On 'vet visit', a green stethoscope badge reading 'Vet visit first' lands on the Physical health path.",
               "onscreen": "Behavior change can be a clue"
             }
           ]

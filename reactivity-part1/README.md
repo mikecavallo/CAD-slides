@@ -9,7 +9,7 @@ An animated, on-brand explainer video for the Calling All Dogs reactivity course
 |---|---|
 | `script/lesson.json` | the script: chapters, scenes, every line of narration and what appears on screen. Source of truth. |
 | `script/Narration-Script.md` | the narration as plain text (paste into Google Docs or a teleprompter app) |
-| `video/` | the animation: one file per chapter in `video/scenes/`, shared brand kit in `lib.js` + `base.css` |
+| `video/` | the animation: scene files `video/scenes/v4a.js` to `v4f.js` (older versions in `video/scenes/archive/`), shared brand kit in `lib.js` + `base.css` |
 | `assets/` | photos and ABC illustrations from the deck, logo, fonts |
 | `tools/` | build scripts (below) |
 
@@ -18,9 +18,8 @@ script PDF. `build/` is scratch space.
 
 ## How the narration works
 
-1. Read `out/Narration-Script.pdf` (or the `.md`). Record one audio file per chapter, named by the
-   chapter code printed on each page: `ch00`, `ch01` ... `ch10` (any format: .m4a from a phone is fine).
-   One single take named `full` works too.
+1. Read `out/Narration-Script.pdf` (or the `.md`). The lesson is one chapter, so record one audio file
+   named `ch01` (any format: .m4a from a phone is fine). A take named `full` works too.
 2. Put the files in `narration/` and rebuild (below). Speech recognition finds when you said each line,
    so every animation fires as you say it. Ad-libs and small wording changes are fine.
 

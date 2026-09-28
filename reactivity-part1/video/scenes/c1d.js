@@ -584,7 +584,7 @@
     const tL = Math.max(tC + 1.0, Math.min(end(2) + 0.15, dur - 1.9));
     tl.to([h.root, LC], { opacity: 0, duration: 0.5, ease: 'power2.in' }, tL - 0.1);
     tl.to(chrome.logo, { opacity: 0, duration: 0.4 }, tL);
-    tl.to(rowG, { y: 150, scale: 0.8, transformOrigin: '960px 640px', duration: 0.9, ease: 'power3.inOut' }, tL - 0.1);
+    tl.to(rowG, { y: 104, scale: 0.8, transformOrigin: '960px 640px', duration: 0.9, ease: 'power3.inOut' }, tL - 0.1);
     const halo = K.el('div', 'c1d-halo');
     Object.assign(halo.style, { left: '360px', top: '190px', width: '1200px', height: '560px' });
     stage.appendChild(halo);

@@ -69,7 +69,7 @@
   .v4d-row .ic svg { width: 36px; height: 36px; stroke-width: 2.2; }
   .v4d-lab { position: absolute; font: 600 28px/1.2 var(--font-body); color: var(--ink-soft); white-space: nowrap; text-align: center; }
   .v4d-red { display: inline-flex; align-items: center; padding: 16px 32px; border-radius: 999px; border: 3px solid var(--red); background: #fff;
-    color: var(--red); font: 700 34px/1 var(--font-body); white-space: nowrap; }
+    color: var(--red); font: 700 38px/1 var(--font-body); white-space: nowrap; }
   .v4d-wrap { position: absolute; display: flex; flex-wrap: wrap; gap: 20px 22px; }
   .v4d-out { display: inline-flex; align-items: center; gap: 14px; padding: 14px 30px 14px 14px; border-radius: 999px; background: var(--green-pale);
     color: var(--green-deep); font: 700 34px/1 var(--font-body); white-space: nowrap; }
@@ -639,7 +639,7 @@
     const tO2 = Math.max(tO1 + 0.6, sayAt(ctx, 2, 'sniffing games', 0.5));
     const tO3 = Math.max(tO2 + 0.6, sayAt(ctx, 2, 'or tug', 0.58));
     A.in(tl, outl, Math.max(cue(2) + 0.2, sayAt(ctx, 2, 'healthy outlet', 0.25) - 0.4), 'fadeUp', { dur: 0.8 });
-    A.in(tl, [gTrack, needle, plab], cue(2) + 0.3, 'fadeUp', { dur: 0.6, stagger: 0.08 });
+    A.in(tl, [gTrack, gFill, needle, plab], cue(2) + 0.3, 'fadeUp', { dur: 0.6, stagger: 0.06 });
     const tFill = cue(2) + 0.6, dFill = Math.max(1.2, tO1 - 0.2 - tFill);
     tl.fromTo(gFill, { drawSVG: '0% 0.5%' }, { drawSVG: '0% 95%', duration: dFill, ease: 'power1.in' }, tFill);
     tl.fromTo(needle, { rotation: 1, svgOrigin: `${GX} ${GY}` }, { rotation: 171, duration: dFill, ease: 'power1.in' }, tFill);
@@ -737,14 +737,14 @@
 
     // ---------- beat 0: age drops in, the bowl shifts left, then the life-stage ruler draws beneath it
     dropIn(tl, B, 2, cue(0) - 0.1);
-    const NB = { cx: 330, y: 405, s: 0.46 };
+    const NB = { cx: 340, y: 398, s: 0.5 };
     const tShift = cue(0) + 0.6;
     tl.to(B.wrap, { x: NB.cx - STD.cx, y: NB.y - STD.y, scale: NB.s / STD.s, duration: 1.0, ease: 'power3.inOut' }, tShift);
     const cap = caption(stage, 2, 600, 262, { left: true });
     A.in(tl, cap, tShift + 0.8, 'fadeUp', { dur: 0.6 });
 
     const X = m => 200 + m * 31; // months to x (birth to three years), then a break, then senior years
-    const AX = 730;
+    const AX = 740;
     const rsvg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     const axis1 = K.line(rsvg, 180, AX, X(36) + 26, AX, { stroke: '#b9c4ab', 'stroke-width': 6 });
     const axis2 = K.path(rsvg, `M ${X(36) + 66} ${AX} H 1770`, { stroke: '#b9c4ab', 'stroke-width': 6 });
@@ -764,12 +764,12 @@
       stage.appendChild(b);
       return b;
     };
-    const adol = mkBand('Adolescence', 6, 18, 526, C.pale, C.green, C.greenDeep);
+    const adol = mkBand('Adolescence', 6, 18, 534, C.pale, C.green, C.greenDeep);
     const ext = K.el('div', 'v4d-band', 'Big breeds');
-    Object.assign(ext.style, { left: X(18) - 24 + 'px', top: '526px', width: X(24) - X(18) + 24 + 'px', background: 'transparent', borderColor: C.green, borderStyle: 'dashed', borderLeft: 'none', borderRadius: '0 22px 22px 0', zIndex: 0,
+    Object.assign(ext.style, { left: X(18) - 24 + 'px', top: '534px', width: X(24) - X(18) + 24 + 'px', background: 'transparent', borderColor: C.green, borderStyle: 'dashed', borderLeft: 'none', borderRadius: '0 22px 22px 0', zIndex: 0,
       justifyContent: 'center', padding: '0 0 0 24px', font: '600 28px/1 var(--font-body)', color: C.greenDark });
     stage.insertBefore(ext, adol);
-    const social = mkBand('Social maturity', 12, 36, 620, C.amberPale, C.amber, '#8a5410');
+    const social = mkBand('Social maturity', 12, 36, 628, C.amberPale, C.amber, '#8a5410');
 
     const CX = 600, CY = 348;
     const call1 = callout(stage, CX, CY, 'Adolescence:', 'about 6 to 18 months', C.green);
@@ -784,7 +784,7 @@
     A.in(tl, social, cue(1) - 0.1, 'wipe', { dur: 0.9 });
     A.in(tl, call2, cue(1) + 0.2, 'fadeUp', { dur: 0.8 });
     const vol = K.el('div', 'v4d-badge');
-    Object.assign(vol.style, { left: '1080px', top: '524px', width: '84px', height: '84px', background: C.amberPale, color: C.amber, border: '4px solid #fff', boxShadow: 'var(--shadow-soft)' });
+    Object.assign(vol.style, { left: '1080px', top: '532px', width: '84px', height: '84px', background: C.amberPale, color: C.amber, border: '4px solid #fff', boxShadow: 'var(--shadow-soft)' });
     const vIcons = ['volume', 'volume-1', 'volume-2'].map((n, i) => {
       const ic = K.icon(n);
       Object.assign(ic.style, { position: 'absolute', left: '50%', top: '50%', width: '48px', height: '48px', marginLeft: '-24px', marginTop: '-24px', opacity: i ? 0 : 1 });
@@ -806,7 +806,7 @@
     const call3 = callout(stage, CX, CY, 'More selective', 'with age', C.greenDark);
     A.out(tl, call2, cue(2) - 0.3, 'fadeUp', { dur: 0.4 });
     A.in(tl, call3, cue(2) + 0.1, 'fadeUp', { dur: 0.8 });
-    const CARD_Y = 800, CARD_H = 150;
+    const CARD_Y = 812, CARD_H = 146;
     const mkLife = (x, w, icon, bg, fg, name, dots) => {
       const c = K.el('div', 'v4d-life');
       Object.assign(c.style, { left: x + 'px', top: CARD_Y + 'px', width: w + 'px', height: CARD_H + 'px' });
@@ -824,8 +824,8 @@
     const CROWD = [[20, 28, '#9dbb3f'], [48, 18, '#d9912b'], [78, 30, '#619537'], [108, 16, '#c2b235'], [132, 36, '#8fb03a'],
       [30, 58, '#619537'], [60, 50, '#cf6a2c'], [92, 62, '#9dbb3f'], [120, 66, '#d9912b'], [16, 84, '#c2b235'],
       [46, 84, '#8fb03a'], [76, 88, '#619537'], [106, 90, '#9dbb3f'], [136, 84, '#cf6a2c']];
-    const teen = mkLife(100, 400, 'party-popper', C.amberPale, C.amber, 'Teen', CROWD);
-    const adult = mkLife(530, 400, 'coffee', C.pale, C.greenDark, 'Adult', [[40, 50, '#619537'], [75, 50, '#9dbb3f'], [110, 50, '#8fb03a']]);
+    const teen = mkLife(100, 390, 'party-popper', C.amberPale, C.amber, 'Teen', CROWD);
+    const adult = mkLife(520, 390, 'coffee', C.pale, C.greenDark, 'Adult', [[40, 50, '#619537'], [75, 50, '#9dbb3f'], [110, 50, '#8fb03a']]);
     const tTeen = Math.max(cue(2) + 1.2, sayAt(ctx, 2, 'like a teenager', 0.3));
     const tAdult = Math.max(tTeen + 1.5, sayAt(ctx, 2, 'as an adult', 0.65));
     A.in(tl, teen.c, tTeen, 'fadeUp', { dur: 0.7 });
@@ -838,7 +838,7 @@
     A.out(tl, call3, cue(3) - 0.3, 'fadeUp', { dur: 0.4 });
     A.in(tl, call4, cue(3) + 0.1, 'fadeUp', { dur: 0.8 });
     const park = K.el('div', 'v4d-park');
-    Object.assign(park.style, { left: '960px', top: CARD_Y + 'px', width: '860px', height: CARD_H + 'px' });
+    Object.assign(park.style, { left: '940px', top: CARD_Y + 'px', width: '880px', height: CARD_H + 'px', justifyContent: 'center', gap: '40px' });
     const pib = K.el('div', 'ib');
     pib.appendChild(K.icon('trees'));
     park.appendChild(pib);
@@ -866,10 +866,10 @@
     A.in(tl, ln2.mk, tNo + 0.4, 'pop', { dur: 0.5 });
 
     // ---------- beat 4: senior years
-    const pin = K.line(rsvg, 1600, AX, 1600, 660, { stroke: C.olive, 'stroke-width': 5 });
+    const pin = K.line(rsvg, 1600, AX, 1600, 670, { stroke: C.olive, 'stroke-width': 5 });
     const pinDot = K.circle(rsvg, 1600, AX, 13, { fill: C.olive, stroke: '#fff', 'stroke-width': 4 });
-    const clock = badge(stage, 'clock', 1600, 614, 88, C.olive, '#fff');
-    const sen = label(stage, 'Senior', 1600, 510, { cls: 'v4d-sub', w: 300, color: C.olive });
+    const clock = badge(stage, 'clock', 1600, 624, 88, C.olive, '#fff');
+    const sen = label(stage, 'Senior', 1600, 520, { cls: 'v4d-sub', w: 300, color: C.olive });
     const call5 = callout(stage, CX, CY, 'Senior changes', 'Sore joints, fading senses', C.olive);
     A.out(tl, call4, cue(4) - 0.3, 'fadeUp', { dur: 0.4 });
     A.in(tl, pinDot, cue(4) - 0.1, 'pop', { dur: 0.5 });
@@ -979,7 +979,7 @@
     const boss = put(CR, 'v4d-eqlab', 'Boss?', { x: HX + 80, y: HY - 20, w: 140 });
     boss.style.textAlign = 'left';
     boss.style.fontSize = '36px';
-    const xsvg = K.svg(CR, { x: HX - 65, y: HY - 65, w: 130, h: 130 });
+    const xsvg = K.svg(stage, { x: HX - 65, y: HY - 65, w: 130, h: 130 });
     const xl = [K.line(xsvg, 26, 26, 104, 104, { stroke: C.red, 'stroke-width': 12 }), K.line(xsvg, 104, 26, 26, 104, { stroke: C.red, 'stroke-width': 12 })];
     const feel = [['Scared', 'frown'], ['Frustrated', 'annoyed'], ['Overwhelmed', 'tornado'], ['Protecting', 'shield']].map(([t, ic], i) => {
       const n = iconPill(LD, 'v4d-tag', ic, t, { x: 100 + (i % 2) * 470, y: 440 + Math.floor(i / 2) * 110 });
@@ -995,18 +995,19 @@
     ['scared', 'frustrated', 'overwhelmed', 'protecting'].forEach((w, i) => {
       tF = Math.max(tF + 0.35, sayAt(ctx, 3, w, 0.75 + i * 0.06, 0.35));
       A.in(tl, feel[i], tF, 'fadeRight', { dur: 0.6 });
-      if (i === 0) tl.to(CR, { opacity: 0.4, duration: 0.5 }, tF);
+      if (i === 0) tl.to(CR, { opacity: 0.45, duration: 0.5 }, tF);
     });
 
     // ---------- beat 4: be kind to yourself. Crown and tags fade, a green heart pulses over the bowl
-    A.out(tl, [LD, CR], cue(4) - 0.1, 'fade', { dur: 0.5 });
+    A.out(tl, [LD, CR, xsvg], cue(4) - 0.1, 'fade', { dur: 0.5 });
     const LE = layer(stage);
     const kind = put(LE, 'v4d-best', 'Be kind to yourself', { x: 100, y: 420 });
     const ul = K.el('div', 'accent-bar');
     Object.assign(ul.style, { left: '104px', top: '548px', width: '160px' });
     LE.appendChild(ul);
-    A.in(tl, kind, cue(4) + 0.5, 'fadeUp', { dur: 0.9 });
-    A.in(tl, ul, cue(4) + 1.0, 'grow', { dur: 0.6 });
+    const tKind = Math.max(cue(4) + 0.5, sayAt(ctx, 4, 'be kind to yourself', 0.2, 0.4));
+    A.in(tl, kind, tKind, 'fadeUp', { dur: 0.9 });
+    A.in(tl, ul, tKind + 0.5, 'grow', { dur: 0.6 });
     const ring = K.el('div', 'v4d-heart');
     Object.assign(ring.style, { left: HX - 70 + 'px', top: HY - 70 + 'px', width: '140px', height: '140px', borderRadius: '50%', border: '5px solid ' + C.greenLight, opacity: 0 });
     stage.appendChild(ring);

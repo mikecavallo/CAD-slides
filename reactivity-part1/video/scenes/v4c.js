@@ -55,7 +55,7 @@
   .v4c-chip .i { flex: 0 0 auto; width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; background: var(--green-pale); color: var(--green-dark); }
   .v4c-chip .i svg { width: 34px; height: 34px; stroke-width: 2.3; }
   .v4c-q { position: absolute; font: 500 46px/1.25 var(--font-body); color: var(--ink); white-space: nowrap; }
-  .v4c-hl { color: var(--green); font-weight: 700; background: linear-gradient(var(--green-light), var(--green-light)) no-repeat 0 92% / 0% 30%; }
+  .v4c-hl { color: var(--green); font-weight: 700; background: linear-gradient(var(--green-light), var(--green-light)) no-repeat 0 94% / 0% 24%; }
   .v4c-cap { position: absolute; font: 600 30px/1.15 var(--font-body); color: var(--ink-soft); white-space: nowrap; text-align: center; }
   .v4c-step { position: absolute; background: #fff; border-radius: 26px; box-shadow: var(--shadow-soft); border: 1px solid #e6e9e1;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
@@ -298,7 +298,7 @@
     A.in(tl, h.bar, T(cue(0)) + 0.6, 'grow', { dur: 0.5 });
     const tQ = clamp(P(ctx, 0, 'what did the behavior', 0.4) - 0.2, cue(0) + 0.9, ctx.end(0) - 1.5);
     A.in(tl, q, tQ, 'fadeUp', { dur: 0.8 });
-    tl.to(hl, { backgroundSize: '100% 30%', duration: 0.8, ease: 'power2.inOut' }, P(ctx, 0, 'accomplish', 0.55));
+    tl.to(hl, { backgroundSize: '100% 24%', duration: 0.8, ease: 'power2.inOut' }, P(ctx, 0, 'accomplish', 0.55));
 
     // ---- beat 2: 'What it looks like' slides up and greys out, 'What it does' slides up green
     A.in(tl, cardA.c, cue(1) - 0.1, 'fadeUp', { dur: 0.8 });
@@ -396,7 +396,7 @@
     gsap.set(heart, { opacity: 0 });
     // bark lines from the dog toward the trigger
     const fx = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const bark = rays(fx, DOG0, Y, BR + 16, BR + 44, [-38, -14, 10], { stroke: C.amber, 'stroke-width': 6 });
+    const bark = rays(fx, DOG0, Y, BR + 16, BR + 44, [-62, -40, -18], { stroke: C.amber, 'stroke-width': 6 });
     gsap.set(bark, { opacity: 0 });
 
     const PILL_Y = Y + BR + 34;
@@ -513,7 +513,7 @@
     // release: burst at the hub's up badge, six chips, then the strip
     const fx = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     const up = H.d.rel;
-    const spark = rays(fx, up.bx, up.by, H.br + 12, H.br + 34, [-160, -125, -90, -55, -20], { stroke: C.green, 'stroke-width': 6 });
+    const spark = rays(fx, up.bx, up.by, H.br + 12, H.br + 34, [-160, -128, -96, -64, -36], { stroke: C.green, 'stroke-width': 6 });
     gsap.set(spark, { opacity: 0 });
     const chipDefs = [
       { t: 'Bark', icon: 'megaphone' }, { t: 'Jump', icon: 'arrow-big-up' }, { t: 'Grab', icon: 'grab' },
@@ -643,7 +643,7 @@
     const path = K.group(svg);
     K.rect(path, 150, Y + BR + 4, 1620, 34, { rx: 17, fill: '#e3e9da' });
     K.line(path, 190, Y + BR + 21, 1730, Y + BR + 21, { stroke: '#f7f9f3', 'stroke-width': 5, 'stroke-dasharray': '26 22' });
-    const lunge = arrow(svg, L0 + 40, Y, R0 - BR - 18, Y, { color: C.green, width: 12, head: 32 });
+    const lunge = arrow(svg, L1 + BR - 14, Y, R0 - BR - 18, Y, { color: C.green, width: 12, head: 32 });
     const speed = [-26, 0, 26].map(dy => K.line(svg, L1 - BR - 70, Y + dy, L1 - BR - 22, Y + dy, { stroke: C.amber, 'stroke-width': 6, opacity: 0 }));
     // distance bar under the path
     const DY = Y + BR + 104;
@@ -661,7 +661,7 @@
     // strip: B / C / function
     const boxes = [
       { lt: 'B', kk: 'Behavior', tx: 'Dog lunges toward' },
-      { lt: 'C', kk: 'Consequence', tx: 'Other dog moves away' },
+      { lt: 'C', kk: 'Consequence', tx: 'Other dog<br>moves away' },
       { icon: 'target', kk: 'Function', tx: 'More distance', fn: true },
     ];
     const BW = 500, BH = 146, BY = 802, GAPX = (1720 - 3 * BW) / 2;
@@ -707,11 +707,11 @@
     tl.fromTo([bar, tk1, tk2], { opacity: 0 }, { opacity: 1, duration: 0.3 }, tAway);
     tl.to(bar, { attr: { x2: R1 }, duration: SD, ease: 'power2.inOut' }, tAway);
     tl.to(tk2, { attr: { x1: R1, x2: R1 }, duration: SD, ease: 'power2.inOut' }, tAway);
-    A.dim(tl, [lunge.g, lungeLab], tAway + SD, 0.45);
+    A.dim(tl, [lunge.g, lungeLab], tAway + SD, 0.55);
     A.in(tl, moreLab, tAway + SD - 0.2, 'pop', { dur: 0.6 });
     const tSpace = clamp(P(ctx, 1, 'the dog moved toward', 0.55) - 0.2, tAway + SD + 0.4, end(1) - 1.2);
     A.in(tl, cap1, tSpace, 'fadeUp', { dur: 0.7 });
-    tl.to(cap1.querySelector('.v4c-hl'), { backgroundSize: '100% 30%', duration: 0.7, ease: 'power2.inOut' }, clamp(P(ctx, 1, 'more space', 0.9), tSpace + 0.6, end(1)));
+    tl.to(cap1.querySelector('.v4c-hl'), { backgroundSize: '100% 24%', duration: 0.7, ease: 'power2.inOut' }, clamp(P(ctx, 1, 'more space', 0.9), tSpace + 0.6, end(1)));
 
     // ---- beat 3: the B / C / function strip slides in beneath; the caption turns into the takeaway
     A.out(tl, cap1, cue(2) - 0.2, 'fadeUp', { dur: 0.4 });

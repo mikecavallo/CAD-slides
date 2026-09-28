@@ -10,7 +10,7 @@ Modes
 import argparse
 import json
 
-from common import (AUDIO, BUILD, BUMPER, FPS, GAP, LEAD, SCENE_GAP, TAIL, chapter_num, load_script, words)
+from common import (AUDIO, BUILD, BUMPER, FPS, GAP, HOLD, LEAD, SCENE_GAP, TAIL, chapter_num, load_script, words)
 
 
 def frames(sec):
@@ -81,7 +81,7 @@ def build_narration(script, align):
             bounds.append(b)
         bounds.append(max(rec["dur"], lasts[-1]) + TAIL)
         bounds = [frames(x) for x in bounds]
-        chapter_start = t
+        # each scene plays its own slice of the recording, followed by a short silent hold
         for k, sc in enumerate(scenes):
             s0, s1 = bounds[k], bounds[k + 1]
             beats = []
@@ -89,9 +89,10 @@ def build_narration(script, align):
                 r = rec["beats"][f"{sc['id']}:{i}"]
                 beats.append({"t": round(max(0.05, r["start"] - s0 - 0.12), 3), "end": round(r["end"] - s0, 3), "say": b["say"], "onscreen": b.get("onscreen", ""),
                               "words": [{"w": w["w"], "t": round(w["t"] - s0, 3), "e": round(w["e"] - s0, 3)} for w in r.get("words", [])]})
-            audio = [{"file": rec["file"], "at": round(chapter_start, 4), "dur": rec["dur"]}] if k == 0 else []
-            segs.append(scene_seg(ch, sc, t, s1 - s0, beats, audio))
-            t += frames(s1 - s0)
+            audio = [{"file": rec["file"], "at": round(t, 4), "from": round(s0, 4), "dur": round(s1 - s0, 4)}]
+            dur = frames(s1 - s0 + HOLD)
+            segs.append(scene_seg(ch, sc, t, dur, beats, audio))
+            t += dur
     return segs
 
 

@@ -645,10 +645,12 @@
     const tip = box(stage, 'v4e-try', null, { x: CO.x - 26, y: CO.y - 30 });
     tip.appendChild(K.icon('notebook-pen', { stroke: 2.4 }));
     tip.appendChild(K.el('span', null, 'Try this'));
-    const t3 = cue(3);
-    tl.fromTo(tip, { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.7, ease: 'back.out(1.8)' }, t3 + 0.1);
-    const tSpot = clamp(at(3, 'spot the other dog', 0.2), t3 + 0.9, end(3) - 4);
-    swap(tl, co.lines[2], co.lines[3], tSpot);
+    // on "Try this" the badge pins and the old line lifts off; "Spot it first" rises on "spot the other dog"
+    const tTry = clamp(at(3, 'Try this', 0.2), cue(3), end(3) - 6);
+    tl.fromTo(tip, { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.7, ease: 'back.out(1.8)' }, tTry);
+    tl.to(co.lines[2], { opacity: 0, y: -24, duration: 0.3, ease: 'power2.out' }, tTry);
+    const tSpot = clamp(at(3, 'spot the other dog', 0.2), tTry + 0.9, end(3) - 4);
+    tl.fromTo(co.lines[3], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, tSpot);
 
     // panel A window: x colX(0)+6, y PT+6, 488 x 260
     const wx = colX(0) + 6, wy = PT + 6;

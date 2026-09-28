@@ -82,6 +82,7 @@
   const style = stage => stage.appendChild(K.el('style', null, CSS));
   const P = (ctx, i, text, fb) => window.phraseTime(ctx, i, text, fb);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const T = t => Math.max(0.05, t); // never schedule before the scene starts (cue(0) can be ~0)
 
   // ------------------------------------------------------------------ small builders
   function abs(n, o) {
@@ -292,9 +293,9 @@
     });
 
     // ---- beat 1: 'Function' writes on with its target, the question fades in beneath
-    A.in(tl, tb, cue(0) - 0.2, 'pop', { dur: 0.7 });
-    A.in(tl, h.title, cue(0), 'wipe', { dur: 0.9 });
-    A.in(tl, h.bar, cue(0) + 0.6, 'grow', { dur: 0.5 });
+    A.in(tl, tb, T(cue(0) - 0.2), 'pop', { dur: 0.7 });
+    A.in(tl, h.title, T(cue(0)), 'wipe', { dur: 0.9 });
+    A.in(tl, h.bar, T(cue(0)) + 0.6, 'grow', { dur: 0.5 });
     const tQ = clamp(P(ctx, 0, 'what did the behavior', 0.4) - 0.2, cue(0) + 0.9, ctx.end(0) - 1.5);
     A.in(tl, q, tQ, 'fadeUp', { dur: 0.8 });
     tl.to(hl, { backgroundSize: '100% 30%', duration: 0.8, ease: 'power2.inOut' }, P(ctx, 0, 'accomplish', 0.55));
@@ -337,9 +338,9 @@
     cap.querySelector('svg').style.color = C.green;
 
     // ---- beat 1: title, the dog badge, then each arrow fans out on its phrase
-    A.in(tl, h.title, cue(0) - 0.3, 'wipe', { dur: 0.9 });
-    A.in(tl, h.bar, cue(0) + 0.3, 'grow', { dur: 0.5 });
-    A.in(tl, H.center, cue(0) - 0.1, 'pop', { dur: 0.8 });
+    A.in(tl, h.title, T(cue(0) - 0.3), 'wipe', { dur: 0.9 });
+    A.in(tl, h.bar, T(cue(0) - 0.3) + 0.6, 'grow', { dur: 0.5 });
+    A.in(tl, H.center, T(cue(0) - 0.1) + 0.2, 'pop', { dur: 0.8 });
     const phr = { inc: 'Increase distance', dec: 'Decrease distance', acc: 'Gain or keep access', rel: 'release built-up' };
     let prev = cue(0) + 0.6;
     ['inc', 'dec', 'acc', 'rel'].forEach((k, i) => {
@@ -413,8 +414,8 @@
     A.in(tl, h.title, 0.1, 'wipe', { dur: 0.8 });
     A.in(tl, h.bar, 0.6, 'grow', { dur: 0.5 });
     smallHubIn(tl, H, 0.05);
-    light(tl, H, 'inc', cue(0) + 0.4);
-    A.in(tl, tInc, cue(0) + 0.5, 'fadeUp', { dur: 0.7 });
+    light(tl, H, 'inc', Math.max(cue(0) + 0.4, 0.9));
+    A.in(tl, tInc, Math.max(cue(0) + 0.5, 0.8), 'fadeUp', { dur: 0.7 });
     tl.set(trig, { x: TR0 - TR1 }, 0);
     A.in(tl, [dog, trig], cue(0) + 1.1, 'pop', { dur: 0.6, stagger: 0.12 });
     tl.fromTo(barParts, { opacity: 0 }, { opacity: 1, duration: 0.4 }, cue(0) + 1.5);
@@ -496,7 +497,7 @@
     const keepC = mkCard({ x: 900, y: 688, w: 380, h: 164, icon: 'shield', text: 'Keep it.' });
     const items = [
       { icon: 'bone', t: 'Food', p: 'food' }, { icon: 'volleyball', t: 'Toy', p: 'a toy' },
-      { icon: 'user', t: 'Person', p: 'a person' }, { icon: 'bed', t: 'Rest spot', p: 'a resting spot' },
+      { icon: 'user', t: 'Person', p: 'a person' }, { icon: 'bed', t: 'Bed', p: 'a resting spot' },
     ].map((it, i) => {
       const cx = 1382 + i * 122;
       const b = badge(stage, it.icon, { cx, cy: 496, size: 88, bg: '#fff', color: D.col, cls: 'thin' });
@@ -526,11 +527,11 @@
       c.appendChild(ic);
       c.appendChild(K.el('span', null, d.t));
       c.style.position = 'relative';
-      centred(stage, c, cellX[i % 3], i < 3 ? 470 : 600, 300);
+      centred(stage, c, cellX[i % 3], i < 3 ? 486 : 616, 300);
       return c;
     });
     // strip: High arousal > Behavior > Change in state
-    const SW = 236, SH = 224, SY = 452;
+    const SW = 240, SH = 236, SY = 478;
     const stepDefs = [
       { t: 'High<br>arousal', icon: 'flame', bg: C.redPale, col: C.red, x: 1330 - SW / 2 - 330 },
       { t: 'Behavior', icon: 'paw-print', bg: C.pale, col: C.greenDark, x: 1330 - SW / 2 },
@@ -560,8 +561,8 @@
     A.in(tl, h.title, 0.1, 'wipe', { dur: 0.8 });
     A.in(tl, h.bar, 0.6, 'grow', { dur: 0.5 });
     smallHubIn(tl, H, 0.05);
-    light(tl, H, 'acc', cue(0) + 0.4);
-    A.in(tl, tAcc, cue(0) + 0.5, 'fadeUp', { dur: 0.7 });
+    light(tl, H, 'acc', Math.max(cue(0) + 0.4, 0.9));
+    A.in(tl, tAcc, Math.max(cue(0) + 0.5, 0.8), 'fadeUp', { dur: 0.7 });
     const tGet = clamp(P(ctx, 0, 'get something', 0.45) - 0.2, cue(0) + 1.2, end(0) - 4);
     A.in(tl, getC, tGet, 'fadeUp', { dur: 0.7 });
     const tKeep = clamp(P(ctx, 0, 'or keep something', 0.55) - 0.2, tGet + 0.6, end(0) - 3);
@@ -606,7 +607,7 @@
 
     // ---- beat 4: the chips gather into the middle card; the strip lands around it
     chips.forEach((c, i) => {
-      const dx = 1330 - cellX[i % 3], dy = SY + SH / 2 - ((i < 3 ? 470 : 600) + 43);
+      const dx = 1330 - cellX[i % 3], dy = SY + SH / 2 - ((i < 3 ? 486 : 616) + 43);
       tl.to(c, { x: dx, y: dy, scale: 0.35, opacity: 0, duration: 0.7, ease: 'power2.in' }, cue(3) - 0.1 + i * 0.05);
     });
     A.in(tl, steps[1], cue(3) + 0.55, 'pop', { dur: 0.7 });
@@ -686,10 +687,10 @@
     });
 
     // ---- beat 1: two dogs on a path; the left dog lunges toward the right one along a green arrow
-    A.in(tl, h.title, cue(0) - 0.4, 'wipe', { dur: 0.9 });
-    A.in(tl, h.bar, cue(0) + 0.2, 'grow', { dur: 0.5 });
-    tl.fromTo(path, { opacity: 0 }, { opacity: 1, duration: 0.7 }, cue(0));
-    A.in(tl, [dogL, dogR], cue(0) + 0.3, 'pop', { dur: 0.7, stagger: 0.15 });
+    A.in(tl, h.title, T(cue(0) - 0.4), 'wipe', { dur: 0.9 });
+    A.in(tl, h.bar, T(cue(0) - 0.4) + 0.6, 'grow', { dur: 0.5 });
+    tl.fromTo(path, { opacity: 0 }, { opacity: 1, duration: 0.7 }, T(cue(0)) + 0.3);
+    A.in(tl, [dogL, dogR], T(cue(0)) + 0.6, 'pop', { dur: 0.7, stagger: 0.15 });
     const tLunge = clamp(P(ctx, 0, 'may lunge toward', 0.45) - 0.1, cue(0) + 1.5, end(0) - 3);
     tl.to(dogL, { x: L1 - L0, rotation: 8, duration: 0.32, ease: 'power3.in' }, tLunge);
     tl.to(dogL, { rotation: 0, duration: 0.4, ease: 'back.out(2.5)' }, tLunge + 0.32);

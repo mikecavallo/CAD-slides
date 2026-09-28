@@ -133,6 +133,9 @@ def main():
             if f not in cache:
                 cache[f] = decode(f)
             clip = cache[f]
+            if "from" in item:  # a slice of a longer recording
+                s = int(round(SR * item["from"]))
+                clip = clip[s:s + int(round(SR * item["dur"]))]
             a = int(round(SR * item["at"]))
             n = min(len(clip), len(mix) - a)
             mix[a:a + n] += clip[:n]

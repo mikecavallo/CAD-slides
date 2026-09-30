@@ -160,51 +160,56 @@
         {
           "id": "ch01s06",
           "heading": "Breed history and purpose",
-          "visual_concept": "Six breed-group cards around the bowl, each with its own icon and job line: Herders (control movement), Guardians (monitor and respond to potential threats), Terriers (hunt and pursue small animals), Hounds (track and pursue), Sporting dogs (find, flush, point to, or retrieve), Working dogs (perform physical jobs such as guarding, pulling, rescue, or assistance). Each highlights as it is discussed and gains small behavior icons. Ends with the cards moving into the bowl as the 'Breed history and purpose' chip. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Six AKC breed groups as six cards (three rows of two), each with a dog photo, the group name and a short job line; each card highlights and its photo appears as it is discussed. Ends with the cards flying into the bowl as the 'Breed history and purpose' chip. Bowl chips: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
-            "icon:paw-print"
+            "breed_sporting.jpg",
+            "breed_hounds.jpg",
+            "breed_working.jpg",
+            "breed_terriers.jpg",
+            "breed_toy.jpg",
+            "breed_herding.jpg"
           ],
           "beats": [
             {
-              "say": "Ingredient three: breed history and purpose. Dogs have been selectively bred for generations to perform specific jobs. Those jobs can give us clues about behaviors a dog may be naturally inclined toward.",
-              "show": "Six breed-group cards appear around the bowl: Herders: control movement; Guardians: monitor and respond to potential threats; Terriers: hunt and pursue small animals; Hounds: track and pursue; Sporting dogs: find, flush, point to, or retrieve; Working dogs: perform physical jobs such as guarding, pulling, rescue, or assistance.",
+              "say": "Ingredient three: breed history and purpose. Dogs have been selectively bred for generations to perform specific jobs. The American Kennel Club sorts many breeds into groups based on those jobs, and they can give us clues about behaviors a dog may be naturally inclined toward.",
+              "show": "Six AKC breed-group cards appear in a grid of three rows and two columns, each with an empty photo area, the group name and a short job line: Sporting Group: Find, flush, or retrieve game; Hound Group: Pursue game by sight or scent; Working Group: Guard, pull, rescue and other jobs; Terrier Group: Hunt vermin and small animals; Toy Group: Bred for companionship; Herding Group: Control and move livestock. A small label reads 'AKC breed groups'.",
               "onscreen": "What was this dog bred to do?"
             },
             {
               "say": "Those original jobs can influence the kinds of things a dog notices, how they respond to movement or their environment, and what behaviors they may be more likely to offer.",
-              "show": "All six cards pulse gently together, ready to be highlighted one at a time.",
+              "show": "All six cards pulse gently together.",
               "onscreen": ""
             },
             {
-              "say": "For example, herding dogs were developed to notice and control movement, so some may be especially tuned in to things that move and may naturally want to follow, control, or redirect that movement.",
-              "show": "The Herders card highlights while the others dim; small behavior icons appear beside it: Notice movement, Follow, Control.",
+              "say": "For example, sporting dogs were bred to assist hunters by finding, flushing, or retrieving game, like Golden Retrievers, Labrador Retrievers, Pointers, and Spaniels. Depending on the breed, that can mean being especially attentive to movement, searching, carrying objects, or working closely with a person.",
+              "show": "The Sporting Group card highlights while the others dim; its dog photo fades in with a small breed tag, and the example breeds appear under the card: Golden Retrievers, Labrador Retrievers, Pointers, Spaniels.",
               "onscreen": ""
             },
             {
-              "say": "Guardian breeds were developed to monitor and respond to potential threats, so some may be especially attentive to unfamiliar people, animals, or activity around their home or territory.",
-              "show": "The Guardians card highlights; icons appear beside it: Unfamiliar people, Animals, Home and territory.",
+              "say": "Hounds were bred to pursue game, using either sight or scent, like Beagles, Bloodhounds, Greyhounds, and Dachshunds. A hound may be especially motivated to chase something fast or follow a scent that has captured their attention.",
+              "show": "The Hound Group card highlights while the others dim; its dog photo fades in with a small breed tag, and the example breeds appear under the card: Beagles, Bloodhounds, Greyhounds, Dachshunds.",
               "onscreen": ""
             },
             {
-              "say": "Terriers were developed to hunt and pursue small animals, so some may be particularly interested in quick movement from squirrels, cats, or other small animals.",
-              "show": "The Terriers card highlights; icons appear beside it: Quick movement, Squirrels, Cats.",
+              "say": "Working dogs were bred for jobs such as guarding property, pulling, rescue, and other working tasks, like Rottweilers, Great Danes, Siberian Huskies, and Newfoundlands. Those jobs can come with tendencies such as persistence, physical engagement, or close attention to unfamiliar people and activity around their home.",
+              "show": "The Working Group card highlights while the others dim; its dog photo fades in with a small breed tag, and the example breeds appear under the card: Rottweilers, Great Danes, Siberian Huskies, Newfoundlands.",
               "onscreen": ""
             },
             {
-              "say": "Hounds were developed to track and pursue, often using their remarkable sense of smell. A hound may be especially motivated to follow a scent or track something that has captured their attention.",
-              "show": "The Hounds card highlights; icons appear beside it: Sense of smell, Follow a scent, Track.",
+              "say": "Terriers were bred primarily to hunt and eliminate vermin and other small animals, like Parson Russell Terriers, Airedale Terriers, and Miniature Schnauzers. Some may be particularly interested in quick movement from squirrels, cats, or other small animals.",
+              "show": "The Terrier Group card highlights while the others dim; its dog photo fades in with a small breed tag, and the example breeds appear under the card: Parson Russell Terriers, Airedale Terriers, Miniature Schnauzers.",
               "onscreen": ""
             },
             {
-              "say": "Sporting dogs were developed to find, flush, point to, or retrieve game. Depending on the breed, that can mean being especially attentive to movement, searching, carrying objects, or working closely with a person.",
-              "show": "The Sporting dogs card highlights; icons appear beside it: Movement, Searching, Carrying, Working with a person.",
+              "say": "Toy breeds are small companion dogs, bred primarily for companionship, like Chihuahuas, Pomeranians, Maltese, and Yorkshire Terriers. Many are closely tuned in to their people, and because they're small, being picked up, loomed over, or crowded can feel like a much bigger deal.",
+              "show": "The Toy Group card highlights while the others dim; its dog photo fades in with a small breed tag, and the example breeds appear under the card: Chihuahuas, Pomeranians, Maltese, Yorkshire Terriers.",
               "onscreen": ""
             },
             {
-              "say": "Working dogs were developed for a wide range of physical jobs, including guarding, pulling, rescue, and assistance. Those different jobs can come with different natural tendencies, such as persistence, physical engagement, environmental awareness, or a strong interest in working with people.",
-              "show": "The Working dogs card highlights; icons appear beside it: Persistence, Physical engagement, Awareness, Working with people. Then all six cards stay visible, each with its behavior icons.",
+              "say": "And herding dogs were bred to control and move livestock, like German Shepherd Dogs, Border Collies, Australian Shepherds, and Corgis. Some may be especially tuned in to things that move and may naturally want to follow, control, or redirect that movement.",
+              "show": "The Herding Group card highlights while the others dim; its dog photo fades in with a small breed tag, and the example breeds appear under the card: German Shepherd Dogs, Border Collies, Australian Shepherds, Corgis. Then all six cards stay visible with their photos.",
               "onscreen": ""
             },
             {

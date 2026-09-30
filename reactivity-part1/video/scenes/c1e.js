@@ -1,18 +1,27 @@
 // Chapter 1 (v6): breed history and purpose. Bowl parts come from window.C1 (c1_bowl.js).
-//   ch01s06  Breed history and purpose   six breed-group cards in a 2 x 3 grid beside a small bowl; each card highlights in turn
-//                                         and a photo of a dog from that group fills its right side; "clues, not guarantees" lands
-//                                         over the grid; the cards fly into the bowl and become the third ingredient
+//   ch01s06  Breed history and purpose   six AKC breed-group cards in a 2 x 3 grid beside a small bowl; each card highlights in turn,
+//                                         a photo of a dog from that group (with a breed tag) fills its right side and the example
+//                                         breeds appear under its job line; "clues, not guarantees" lands over the grid; the cards
+//                                         fly into the bowl and become the third ingredient
 (() => {
   const CSS = `
   .c1e-q { position: absolute; font: 600 40px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c1e-q .em-green { font-weight: 600; }
+  .c1e-akc { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 8px 22px 8px 10px; border-radius: 999px;
+    background: var(--green-pale); color: var(--green-deep); font: 600 28px/1 var(--font-body); white-space: nowrap; }
+  .c1e-akc .ai { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; }
+  .c1e-akc .ai svg { width: 23px; height: 23px; stroke-width: 2.3; }
   .c1e-card { position: absolute; width: 848px; height: 212px; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; }
   .c1e-card .bd { position: absolute; left: 20px; top: 18px; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
     background: var(--green-pale); color: var(--green-dark); }
   .c1e-card .bd svg { width: 31px; height: 31px; stroke-width: 2.2; }
   .c1e-card .nm { position: absolute; left: 92px; top: 18px; height: 56px; display: flex; align-items: center; font: 700 37px/1 var(--font-head);
     color: var(--green-dark); white-space: nowrap; }
-  .c1e-card .job { position: absolute; left: 22px; top: 86px; width: 410px; font: 500 27px/1.18 var(--font-body); color: var(--ink-soft); }
+  .c1e-card .job { position: absolute; left: 22px; top: 86px; width: 537px; font: 500 27px/1.18 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
+  .c1e-card .ex { position: absolute; left: 22px; top: 130px; width: 537px; font: 600 26px/1.2 var(--font-body); color: var(--green-dark); }
+  .c1e-card .btrow { position: absolute; left: 0; right: 0; bottom: 9px; display: flex; justify-content: center; }
+  .c1e-card .btag { padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.94); box-shadow: 0 3px 10px rgba(40,60,20,0.18);
+    font: 500 26px/1 var(--font-head); color: var(--green-deep); white-space: nowrap; }
   .c1e-card .photo { background: var(--green-mist); box-shadow: inset 0 0 0 1px rgba(97,149,55,0.10); }
   .c1e-card .photo .ph0 { position: absolute; inset: 0; display: grid; place-items: center; color: var(--green-light); }
   .c1e-card .photo .ph0 svg { width: 64px; height: 64px; stroke-width: 1.8; opacity: 0.7; }
@@ -32,26 +41,43 @@
   .c1e-puz .pt { font: 600 56px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   `;
 
-  // the six breed groups: icon, job line, and the photo that fills the card's right side
-  // pos = object-position of the photo; the frame is about 2:1, so only the vertical value matters (keep the dog's face in view)
+  // Photos and breed-name tags, one entry per group: swap img/breed here when photos change.
+  // The photos are 4:3 crops already framed on the dog's head, shown centred in a 4:3 frame.
+  const PHOTOS = {
+    sporting: { img: 'breed_sporting.jpg', breed: 'Golden Retriever' },
+    hound: { img: 'breed_hounds.jpg', breed: 'Beagle' },
+    working: { img: 'breed_working.jpg', breed: 'Great Pyrenees' },
+    terrier: { img: 'breed_terriers.jpg', breed: 'Russell Terrier' },
+    toy: { img: 'breed_toy.jpg', breed: 'Chihuahua' },
+    herding: { img: 'breed_herding.jpg', breed: 'Border Collie' },
+  };
+
+  // the six AKC breed groups in narration order (beats 2 to 7): icon, job line, example breeds (revealed on `say`, fb = fallback fraction)
   const GROUPS = [
-    { nm: 'Herders', job: 'Control movement', ic: 'move', img: 'breed_herders.jpg', pos: '50% 35%' },
-    { nm: 'Guardians', job: 'Monitor and respond to potential threats', ic: 'shield', img: 'breed_guardians.jpg', pos: '50% 55%' },
-    { nm: 'Terriers', job: 'Hunt and pursue small animals', ic: 'rabbit', img: 'breed_terriers.jpg', pos: '50% 35%' },
-    { nm: 'Hounds', job: 'Track and pursue', ic: 'footprints', img: 'breed_hounds.jpg', pos: '50% 35%' },
-    { nm: 'Sporting dogs', job: 'Find, flush, point to, or retrieve', ic: 'bird', img: 'breed_sporting.jpg', pos: '50% 10%' },
-    { nm: 'Working dogs', job: 'Perform physical jobs such as guarding, pulling, rescue, or assistance', ic: 'hard-hat', img: 'breed_working.jpg', pos: '50% 35%' },
+    { key: 'sporting', nm: 'Sporting Group', job: 'Find, flush, or retrieve game', ic: 'bird',
+      ex: 'Golden Retrievers, Labrador Retrievers, Pointers, Spaniels', say: 'like Golden Retrievers', fb: 0.32 },
+    { key: 'hound', nm: 'Hound Group', job: 'Pursue game by sight or scent', ic: 'footprints',
+      ex: 'Beagles, Bloodhounds, Greyhounds, Dachshunds', say: 'like Beagles', fb: 0.27 },
+    { key: 'working', nm: 'Working Group', job: 'Guard, pull, rescue and other jobs', ic: 'hard-hat',
+      ex: 'Rottweilers, Great Danes, Siberian Huskies, Newfoundlands', say: 'like Rottweilers', fb: 0.32 },
+    { key: 'terrier', nm: 'Terrier Group', job: 'Hunt vermin and small animals', ic: 'rat',
+      ex: 'Parson Russell Terriers, Airedale Terriers, Miniature Schnauzers', say: 'like Parson Russell', fb: 0.32 },
+    { key: 'toy', nm: 'Toy Group', job: 'Bred for companionship', ic: 'heart',
+      ex: 'Chihuahuas, Pomeranians, Maltese, Yorkshire Terriers', say: 'like Chihuahuas', fb: 0.26 },
+    { key: 'herding', nm: 'Herding Group', job: 'Control and move livestock', ic: 'move',
+      ex: 'German Shepherd Dogs, Border Collies, Australian Shepherds, Corgis', say: 'like German Shepherd', fb: 0.23 },
   ];
   const CW = 848, CH = 212;
   const GX = [100, 972], GY = [300, 524, 748];
-  // photo frame inside the card (card inner box is 846 x 210): as wide as the job line allows, 8 px inset
-  const PH = { x: 446, y: 8, w: 392, h: 194, r: 18 };
+  // 4:3 photo frame at the card's right edge (card inner box is 846 x 210), 8 px inset; the text column gets the rest
+  const PH = { x: 579, y: 8, w: 259, h: 194, r: 18 };
   const SH0 = '0 10px 30px rgba(40,60,20,0.10), 0 0 0 0px rgba(97,149,55,0)';
   const SHG = '0 14px 36px rgba(40,60,20,0.14), 0 0 0 4px rgba(184,217,154,1)';
   const SHH = '0 20px 46px rgba(40,60,20,0.18), 0 0 0 4px rgba(97,149,55,1)';
 
   /** One breed-group card with a softly tinted, still empty photo frame; returns its parts and centre. */
   function groupCard(parent, g, x, y) {
+    const P = PHOTOS[g.key];
     const c = K.el('div', 'c1e-card');
     Object.assign(c.style, { left: x + 'px', top: y + 'px', boxShadow: SH0 });
     const bd = K.el('div', 'bd');
@@ -59,12 +85,18 @@
     c.appendChild(bd);
     c.appendChild(K.el('div', 'nm', g.nm));
     c.appendChild(K.el('div', 'job', g.job));
-    const ph = K.photo(c, g.img, { x: PH.x, y: PH.y, w: PH.w, h: PH.h, radius: PH.r, pos: g.pos });
+    const ex = K.el('div', 'ex', g.ex);
+    c.appendChild(ex);
+    const ph = K.photo(c, P.img, { x: PH.x, y: PH.y, w: PH.w, h: PH.h, radius: PH.r, pos: '50% 50%' });
     const ph0 = K.el('div', 'ph0');
     ph0.appendChild(K.icon('paw-print'));
     ph.root.insertBefore(ph0, ph.img);
+    const tagRow = K.el('div', 'btrow');
+    const tag = K.el('div', 'btag', P.breed);
+    tagRow.appendChild(tag);
+    ph.root.appendChild(tagRow);
     parent.appendChild(c);
-    return { c, bd, ph, cx: x + CW / 2, cy: y + CH / 2 };
+    return { c, bd, ph, ex, tag, cx: x + CW / 2, cy: y + CH / 2 };
   }
 
   // ================================================================== ch01s06 Breed history and purpose

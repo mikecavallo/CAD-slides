@@ -19,7 +19,7 @@
     color: var(--green-dark); white-space: nowrap; }
   .c1e-card .job { position: absolute; left: 22px; top: 86px; width: 537px; font: 500 27px/1.18 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
   .c1e-card .ex { position: absolute; left: 22px; top: 130px; width: 537px; font: 600 26px/1.2 var(--font-body); color: var(--green-dark); }
-  .c1e-card .btrow { position: absolute; left: 0; right: 0; bottom: 9px; display: flex; justify-content: center; }
+  .c1e-card .btrow { display: none; } /* breed tags hidden: they covered the dogs; the example line names the breeds */
   .c1e-card .btag { padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.94); box-shadow: 0 3px 10px rgba(40,60,20,0.18);
     font: 500 26px/1 var(--font-head); color: var(--green-deep); white-space: nowrap; }
   .c1e-card .photo { background: var(--green-mist); box-shadow: inset 0 0 0 1px rgba(97,149,55,0.10); }
@@ -44,7 +44,7 @@
   // Photos and breed-name tags, one entry per group: swap img/breed here when photos change.
   // The photos are 4:3 crops already framed on the dog's head, shown centred in a 4:3 frame.
   const PHOTOS = {
-    sporting: { img: 'breed_sporting.jpg', breed: 'Golden Retriever' },
+    sporting: { img: 'breed_sporting.jpg', breed: 'Labrador Retriever' },
     hound: { img: 'breed_hounds.jpg', breed: 'Beagle' },
     working: { img: 'breed_working.jpg', breed: 'Great Pyrenees' },
     terrier: { img: 'breed_terriers.jpg', breed: 'Russell Terrier' },
@@ -116,18 +116,30 @@
     A.in(tl, B.wrap, 0, 'fade', { dur: 0.6 });
     C1.bob(tl, B, 0, dur);
 
-    // ---------- beat 0: "ingredient three" (its chip blinks), the question, then the six cards
+    // ---------- beat 0: "ingredient three" (its chip blinks), the question, the "AKC breed groups" label, then the six cards
     const tIng = clamp(sayAt(ctx, 0, 'Ingredient three', 0.02), cue(0) + 0.2, cue(0) + 1.5);
     tl.to(B.slots[2].g, { scale: 1.45, transformOrigin: '50% 50%', duration: 0.3, ease: 'sine.inOut', yoyo: true, repeat: 3 }, tIng);
 
     const q = C1.put(stage, 'c1e-q', 'What was this dog *bred to do?*', { x: 100, y: 232 });
-    const tQ = clamp(sayAt(ctx, 0, 'selectively bred', 0.25), cue(0) + 0.8, cue(1) - 4);
+    const tQ = clamp(sayAt(ctx, 0, 'selectively bred', 0.22), cue(0) + 0.8, cue(1) - 4);
     A.in(tl, q, tQ, 'fadeUp', { dur: 0.7 });
+
+    // small label beside the question, on "The American Kennel Club"
+    const akc = K.el('div', 'c1e-akc');
+    Object.assign(akc.style, { left: '722px', top: '228px' });
+    const ai = K.el('div', 'ai');
+    ai.appendChild(K.icon('layout-grid'));
+    akc.appendChild(ai);
+    akc.appendChild(K.el('span', null, 'AKC breed groups'));
+    stage.appendChild(akc);
+    const tAkc = clamp(sayAt(ctx, 0, 'American Kennel Club', 0.44), tQ + 0.8, cue(1) - 3);
+    A.in(tl, akc, tAkc, 'fadeRight', { dur: 0.6 });
+    A.in(tl, ai, tAkc + 0.15, 'pop', { dur: 0.5 });
 
     const cards = GROUPS.map((g, i) => groupCard(stage, g, GX[i % 2], GY[Math.floor(i / 2)]));
     const cardEls = cards.map(k => k.c);
     stage.appendChild(B.wrap); // bowl above the cards, so they fly into it
-    const tCards = clamp(sayAt(ctx, 0, 'perform specific jobs', 0.45), tQ + 1.0, cue(1) - 2.2);
+    const tCards = clamp(sayAt(ctx, 0, 'sorts many breeds into groups', 0.52), tAkc + 0.5, cue(1) - 2.2);
     cards.forEach((k, i) => {
       const t = tCards + i * 0.2;
       A.in(tl, k.c, t, 'fadeUp', { dur: 0.7 });
@@ -143,14 +155,18 @@
     pulseAll(tP1);
     pulseAll(clamp(sayAt(ctx, 1, 'what behaviors', 0.7, 0.2), tP1 + 1.6, cue(2) - 1.2));
 
-    // ---------- beats 2 to 7: one card at a time lights up (the rest dim) and its dog photo fades in to fill the frame
+    // ---------- beats 2 to 7: one card at a time lights up (the rest dim), its dog photo fades in with the breed tag,
+    // and the example breeds appear under the job line as they are named ("like Golden Retrievers, ...")
     cards.forEach((k, j) => {
-      const b = j + 2, t = cue(b) - 0.15;
+      const g = GROUPS[j], b = j + 2, t = cue(b) - 0.15;
       tl.to(cardEls.filter((_, i) => i !== j), { opacity: 0.3, scale: 1, boxShadow: SH0, duration: 0.5, ease: 'power2.out' }, t);
       tl.to(k.c, { opacity: 1, scale: 1.03, boxShadow: SHH, duration: 0.55, ease: 'power2.out' }, t);
       tl.to(k.bd, { backgroundColor: C.green, color: '#fff', duration: 0.45, ease: 'power2.out' }, t + 0.1);
       A.pulse(tl, k.bd, t + 0.2, { scale: 1.15 });
       tl.fromTo(k.ph.img, { opacity: 0, scale: 1.14 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'power2.out' }, t + 0.3);
+      A.in(tl, k.tag, t + 0.9, 'fadeUp', { dur: 0.5 });
+      const tEx = clamp(sayAt(ctx, b, g.say, g.fb, 0.15), t + 1.2, end(b) - 1.5);
+      A.in(tl, k.ex, tEx, 'fadeUp', { dur: 0.6 });
     });
     // then all six stay up, each with its photo
     const tAll = clamp(end(7) - 0.9, cue(7) + 2.5, cue(8) + 0.3);
@@ -173,7 +189,7 @@
 
     // ---------- beat 9: the cards fly into the small bowl's third "?" chip; the bowl grows back and that chip drops in
     const t9 = cue(9);
-    A.out(tl, [row, q], t9 - 0.35, 'fadeUp', { dur: 0.45 });
+    A.out(tl, [row, q, akc], t9 - 0.35, 'fadeUp', { dur: 0.45 });
     tl.to(cardEls, { opacity: 1, duration: 0.35, ease: 'power2.out' }, t9 - 0.3);
     const TX = STD.cx + SM.x + SLOT[2][0] * 0.25, TY = STD.y + SM.y + SLOT[2][1] * 0.25;
     const tFly = t9 + 0.1, FD = 0.95, FS = 0.08;

@@ -30,6 +30,8 @@
   .c1d-pill.green .ic { background:rgba(255,255,255,0.22); color:#fff; }
   .c1d-pill.white { background:#fff; border:1px solid #e6e9e1; color:var(--ink); }
   .c1d-pill.white .ic { background:var(--green-pale); color:var(--green-dark); }
+  .c1d-vetb { position:absolute; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; box-shadow:0 12px 26px rgba(44,74,23,0.24); }
+  .c1d-vetb svg { width:56%; height:56%; stroke-width:2.2; }
   .c1d-pill.grey { background:#fff; border:3px solid #cfd4c8; color:var(--muted); }
   .c1d-pill.grey .ic { background:#eef0ea; color:var(--muted); }
   .c1d-pill.amber { background:#fff; border:3px solid var(--amber); color:#8a5410; }
@@ -403,49 +405,64 @@
     lean(tl, d2, tP2 + 1.0, 0.7);
     A.in(tl, lab2, Math.max(tP2 + 1.3, at(1, 'first clues', 0.85, 0.3)), 'fadeUp', { dur: 0.6 });
 
-    // ---------- beat 2: the panels clear; a sudden change forks into Behavior and Physical health; then 'Vet visit first'
+    // ---------- beat 2: the panels clear; a sudden change leads to the vet, which branches to Physical health and Behavior
     const t2 = cue(2);
     A.out(tl, LB, t2 - 0.35, 'fade', { dur: 0.45 });
     const LC = C1.layer(stage);
-    const l2 = C1.put(LC, 'c1-big', 'Behavior change can be *a clue*', { x: 100, y: 300 });
+    const l2 = C1.put(LC, 'c1-big', 'Check for *underlying causes*', { x: 100, y: 300 });
     A.in(tl, l2, t2 + 0.1, 'fadeUp', { dur: 0.8 });
     const sc = K.svg(LC, { x: 0, y: 0, w: 1920, h: 1080 });
-    const FY = 630, ZX0 = 404, FX = 640, PXL = 740, BYu = 480, BYd = 780;
+    const FY = 630, ZX0 = 404, ZX1 = 596, VX = 660, VR = 52, PXL = 800, BYu = 480, BYd = 780;
     const D3 = dogAt(sc, 250, FY, 0.72);
     A.in(tl, D3.outer, t2 + 0.2, 'fadeUp', { dur: 0.7 });
-    const zig = K.path(sc, `M ${ZX0} ${FY} H 450 L 472 ${FY - 34} L 500 ${FY + 34} L 528 ${FY - 34} L 556 ${FY + 34} L 578 ${FY} H ${FX}`, { stroke: C.amber, 'stroke-width': 9, fill: 'none' });
-    const sLab = C1.put(LC, 'c1d-tlab', 'Sudden change', { x: 512 - 150, y: FY + 52, w: 300, color: C.amberText });
+    const zig = K.path(sc, `M ${ZX0} ${FY} H 440 L 460 ${FY - 34} L 486 ${FY + 34} L 512 ${FY - 34} L 538 ${FY + 34} L 558 ${FY} H ${ZX1}`, { stroke: C.amber, 'stroke-width': 9, fill: 'none' });
+    const sLab = C1.put(LC, 'c1d-tlab', 'Sudden change', { x: 500 - 150, y: FY + 52, w: 300, color: C.amberText });
     const tSud = clamp(at(2, 'especially a sudden change', 0.2, 0.2), t2 + 0.9, end(2) - 9);
     A.draw(tl, zig, tSud, 0.6, { ease: 'power1.inOut' });
     A.in(tl, sLab, tSud + 0.2, 'fadeUp', { dur: 0.5 });
+    // the veterinarian: a stethoscope badge at the end of the sudden-change line
+    const vet = K.el('div', 'c1d-vetb');
+    vet.appendChild(K.icon('stethoscope'));
+    Object.assign(vet.style, { left: VX - VR + 'px', top: FY - VR + 'px', width: VR * 2 + 'px', height: VR * 2 + 'px' });
+    LC.appendChild(vet);
+    const vLab = C1.put(LC, 'c1d-tlab', 'Veterinarian', { x: VX - 20 - 150, y: FY - VR - 50, w: 300, color: C.greenDark });
+    const tVet = clamp(at(2, 'A veterinarian', 0.45, 0.2), tSud + 0.8, end(2) - 6);
+    A.in(tl, vet, tVet, 'pop', { dur: 0.6 });
+    A.in(tl, vLab, tVet + 0.2, 'fadeUp', { dur: 0.5 });
     const branch = by => [
-      K.path(sc, `M ${FX} ${FY} C ${FX + 56} ${FY} ${FX + 44} ${by} ${PXL - 22} ${by}`, { stroke: C.green, 'stroke-width': 8, fill: 'none' }),
+      K.path(sc, `M ${VX + VR} ${FY} C ${VX + VR + 60} ${FY} ${VX + VR + 40} ${by} ${PXL - 22} ${by}`, { stroke: C.green, 'stroke-width': 8, fill: 'none' }),
       K.path(sc, `M ${PXL - 38} ${by - 15} L ${PXL - 22} ${by} L ${PXL - 38} ${by + 15}`, { stroke: C.green, 'stroke-width': 8, fill: 'none' }),
     ];
     const [up, upH] = branch(BYu), [dn, dnH] = branch(BYd);
-    const pB = pill(LC, 'white', 'activity', 'Behavior', { x: PXL, y: BYu - 42 });
-    const pH = pill(LC, 'white', 'heart-pulse', 'Physical health', { x: PXL, y: BYd - 42 });
-    const tB = clamp(at(2, 'purely behavioral', 0.5, 0.5), tSud + 1.0, end(2) - 5);
-    A.draw(tl, up, tB, 0.5);
-    tl.fromTo(upH, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tB + 0.4);
-    A.in(tl, pB, tB + 0.4, 'fadeRight', { dur: 0.6 });
-    const tPH = clamp(at(2, 'pain or another physical', 0.72, 0.5), tB + 1.2, end(2) - 2.5);
-    A.draw(tl, dn, tPH, 0.5);
-    tl.fromTo(dnH, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tPH + 0.4);
+    const pH = pill(LC, 'white', 'heart-pulse', 'Physical health', { x: PXL, y: BYu - 42 });
+    const pB = pill(LC, 'white', 'activity', 'Behavior', { x: PXL, y: BYd - 42 });
+    const tPH = clamp(at(2, 'pain, illness', 0.6, 0.3), tVet + 1.0, end(2) - 3);
+    A.draw(tl, up, tPH, 0.5);
+    tl.fromTo(upH, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tPH + 0.4);
     A.in(tl, pH, tPH + 0.4, 'fadeRight', { dur: 0.6 });
-    // 'Vet visit first' lands on the Physical health path
-    const link = K.line(sc, PXL + 43, BYd + 46, PXL + 43, BYd + 66, { stroke: C.green, 'stroke-width': 6, 'stroke-dasharray': '2 10' });
-    const vet = K.el('div', 'c1d-vet');
-    const vi = K.el('div', 'vi');
-    vi.appendChild(K.icon('stethoscope'));
-    vet.appendChild(vi);
-    vet.appendChild(K.el('span', null, 'Vet visit first'));
-    Object.assign(vet.style, { left: PXL + 'px', top: BYd + 70 + 'px', height: '88px' });
-    LC.appendChild(vet);
-    const tVet = Math.max(tPH + 1.0, ctx.phrase(2, 'vet visit', 0.9) - 0.3);
-    tl.fromTo(vet, { opacity: 0, y: -70 }, { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.6)' }, tVet);
-    tl.fromTo(link, { opacity: 0 }, { opacity: 1, duration: 0.3 }, tVet + 0.3);
-    A.pulse(tl, vet, tVet + 0.9, { scale: 1.06 });
+    const tB = clamp(at(2, 'contributing to the behavior', 0.9, 0.3), tPH + 1.2, end(2) - 0.8);
+    A.draw(tl, dn, tB, 0.5);
+    tl.fromTo(dnH, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tB + 0.4);
+    A.in(tl, pB, tB + 0.4, 'fadeRight', { dur: 0.6 });
+
+    // ---------- beat 3: the pain chip settles in the bowl; the vet and the behavior sit together, both matter
+    const t3 = cue(3);
+    const l3 = C1.put(LC, 'c1-big', 'Look at the *whole picture*', { x: 100, y: 300 });
+    A.out(tl, l2, t3 - 0.1, 'fade', { dur: 0.35 });
+    A.in(tl, l3, t3 + 0.2, 'fadeUp', { dur: 0.8 });
+    tl.to(B.glow, { opacity: 0.85, duration: 0.6, yoyo: true, repeat: 1, ease: 'sine.inOut' }, t3 + 0.2);
+    tl.to(B.tokens[7].inner, { scale: 1.25, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' }, t3 + 0.3);
+    A.pulse(tl, cap, t3 + 0.4, { scale: 1.06 });
+    A.dim(tl, [D3.outer, zig, sLab], t3 + 0.2, 0.35);
+    // the vet and the behavior light up together (no frame: it would cross the branch lines)
+    const pBg = pill(LC, 'green', 'activity', 'Behavior', { x: PXL, y: BYd - 42 });
+    const both = C1.put(LC, 'c1d-tlab', 'Both matter', { x: PXL, y: BYd + 62, w: 300, color: C.greenDark });
+    both.style.textAlign = 'left';
+    const tBoth = clamp(at(3, 'addressing the behavior', 0.45, 0.3), t3 + 0.8, end(3) - 0.6);
+    tl.fromTo(pBg, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power1.out' }, tBoth);
+    tl.fromTo(vet, { boxShadow: '0 0 0 0px rgba(97,149,55,0.35)' }, { boxShadow: '0 0 0 18px rgba(97,149,55,0.28)', duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tBoth);
+    A.in(tl, both, tBoth + 0.4, 'fadeUp', { dur: 0.5 });
+    A.pulse(tl, [vet, pBg], tBoth + 0.5, { scale: 1.06 });
   });
 
   // ================================================================== ch01s12 Putting it together

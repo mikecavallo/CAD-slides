@@ -227,7 +227,7 @@
     A.in(tl, [mlab, tube], tTol, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
     // everyday interactions, one per word, around the dog's right side
-    const chips = [['Bumped', 'bumped', -60], ['Crowded', 'crowded', -30], ['Startled', 'startled', 0], ['Touched', 'bothered', 30], ['New experiences', 'interactions', 60]].map(([t, w, a]) => {
+    const chips = [['Bumped', 'bumped', -52], ['Crowded', 'crowded', -17], ['Startled', 'startled', 17], ['Bothered', 'bothered', 52]].map(([t, w, a]) => {
       const r = (a * Math.PI) / 180, px = DX + 255 * Math.cos(r), py = DY + 206 * Math.sin(r);
       const c = boxC(stage, 'c1c-chip', null, { x: px - 6, y: py - 34 });
       c.appendChild(K.el('div', 'd'));

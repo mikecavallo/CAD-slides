@@ -344,10 +344,10 @@
     A.in(tl, h.title, Math.max(0.05, cue(0) - 0.2), 'wipe', { dur: 1.1 });
     A.in(tl, h.bar, cue(0) + 0.6, 'grow', { dur: 0.6 });
 
-    // ---- beat 1: eight behavior chips in one row, one per word ('Cower' isn't spoken; it follows 'Freeze')
+    // ---- beat 1: eight behavior chips in one row, one per word
     const BEH = [
       ['Bark', 'volume-2', 176, 'bark'], ['Growl', 'audio-lines', 200, 'growl'], ['Lunge', 'chevrons-right', 196, 'lunge'],
-      ['Snap', 'zap', 176, 'snap'], ['Freeze', 'snowflake', 208, 'freeze'], ['Cower', 'shrink', 204, null], ['Move away', 'footprints', 262, 'move away'], ['Bite', 'octagon-alert', 162, 'bite'],
+      ['Snap', 'zap', 176, 'snap'], ['Freeze', 'snowflake', 208, 'freeze'], ['Cower', 'shrink', 204, 'cower'], ['Move away', 'footprints', 262, 'move away'], ['Bite', 'octagon-alert', 162, 'bite'],
     ];
     const GAP = 18, CHH = 68, ROWY = 530, RS = 0.95;
     const total = BEH.reduce((s, b) => s + b[2], 0) + GAP * (BEH.length - 1);

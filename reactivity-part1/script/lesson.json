@@ -67,7 +67,7 @@
           ],
           "beats": [
             {
-              "say": "A dog may bark, growl, lunge, snap, freeze, move away, or bite. These behaviors matter, but the behavior alone does not tell us why the dog is responding that way.",
+              "say": "A dog may bark, growl, lunge, snap, freeze, cower, move away, or bite. These behaviors matter, but the behavior alone does not tell us why the dog is responding that way.",
               "show": "The heading 'Look beyond the label' writes on in green and eight behavior chips pop in a row, one per word: Bark, Growl, Lunge, Snap, Freeze, Cower, Move away, Bite.",
               "onscreen": "Look beyond the label"
             },
@@ -310,7 +310,7 @@
             },
             {
               "say": "Senior dogs change too. Sore joints, fading senses, or changes in memory can affect how much they want to deal with the little things they used to tolerate. A dog who once ignored being bumped, crowded, startled, or bothered may have less patience for those interactions as they get older.",
-              "show": "The cards clear; an older dog appears with small icons for sore joints, fading vision, hearing and memory. Around the dog, everyday interactions appear: Bumped, Crowded, Startled, Touched, New experiences. A 'Tolerance' meter gradually lowers.",
+              "show": "The cards clear; an older dog appears with small icons for sore joints, fading vision, hearing and memory. Around the dog, everyday interactions appear one per word: Bumped, Crowded, Startled, Bothered. A 'Tolerance' meter gradually lowers.",
               "onscreen": "Senior dogs change too"
             }
           ]
@@ -422,9 +422,14 @@
               "onscreen": "Pain isn't always obvious"
             },
             {
-              "say": "That's why a change in behavior, especially a sudden change, is worth taking seriously. Before assuming a behavior problem is purely behavioral, we need to consider whether pain or another physical problem could be contributing. That starts with a vet visit.",
-              "show": "The panels clear; a sudden-change arrow appears beside a dog and branches into two paths: 'Behavior' and 'Physical health'. On 'vet visit', a green stethoscope badge reading 'Vet visit first' lands on the Physical health path.",
-              "onscreen": "Behavior change can be a clue"
+              "say": "That's why a change in behavior, especially a sudden change, is worth taking seriously. A veterinarian can help determine whether pain, illness, or another underlying physical condition could be contributing to the behavior.",
+              "show": "The panels clear; a sudden-change arrow appears beside a dog and leads to a veterinarian icon, which branches to 'Physical health' and 'Behavior'.",
+              "onscreen": "Check for underlying causes"
+            },
+            {
+              "say": "Even when a physical condition is contributing, addressing the behavior itself is still important.",
+              "show": "The 'Pain and discomfort' chip glows in the bowl while the veterinarian and Behavior icons are framed together with the label 'Both matter'.",
+              "onscreen": "Look at the whole picture"
             }
           ]
         },

@@ -1,24 +1,21 @@
 // Chapter 1 (v6): breed history and purpose. Bowl parts come from window.C1 (c1_bowl.js).
 //   ch01s06  Breed history and purpose   six breed-group cards in a 2 x 3 grid beside a small bowl; each card highlights in turn
-//                                         and gains labelled behavior chips; "clues, not guarantees" lands over the grid; the
-//                                         cards fly into the bowl and become the third ingredient
+//                                         and a photo of a dog from that group fills its right side; "clues, not guarantees" lands
+//                                         over the grid; the cards fly into the bowl and become the third ingredient
 (() => {
   const CSS = `
   .c1e-q { position: absolute; font: 600 40px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c1e-q .em-green { font-weight: 600; }
-  .c1e-card { position: absolute; width: 848px; height: 204px; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; }
+  .c1e-card { position: absolute; width: 848px; height: 212px; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; }
   .c1e-card .bd { position: absolute; left: 20px; top: 18px; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
     background: var(--green-pale); color: var(--green-dark); }
   .c1e-card .bd svg { width: 31px; height: 31px; stroke-width: 2.2; }
   .c1e-card .nm { position: absolute; left: 92px; top: 18px; height: 56px; display: flex; align-items: center; font: 700 37px/1 var(--font-head);
     color: var(--green-dark); white-space: nowrap; }
   .c1e-card .job { position: absolute; left: 22px; top: 86px; width: 410px; font: 500 27px/1.18 var(--font-body); color: var(--ink-soft); }
-  .c1e-card .tray { position: absolute; right: 14px; top: 14px; bottom: 14px; width: 376px; padding: 8px; border-radius: 18px;
-    background: var(--green-mist); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 4px; }
-  .c1e-chip { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px 0 4px; border-radius: 999px; background: #fff;
-    box-shadow: 0 2px 6px rgba(40,60,20,0.08); font: 600 26px/1 var(--font-body); color: var(--ink); white-space: nowrap; }
-  .c1e-chip .ic { width: 28px; height: 28px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
-  .c1e-chip .ic svg { width: 17px; height: 17px; stroke-width: 2.6; }
+  .c1e-card .photo { background: var(--green-mist); box-shadow: inset 0 0 0 1px rgba(97,149,55,0.10); }
+  .c1e-card .photo .ph0 { position: absolute; inset: 0; display: grid; place-items: center; color: var(--green-light); }
+  .c1e-card .photo .ph0 svg { width: 64px; height: 64px; stroke-width: 1.8; opacity: 0.7; }
   .c1e-banrow { position: absolute; display: flex; justify-content: center; }
   .c1e-ban { display: flex; align-items: center; gap: 28px; padding: 28px 56px 28px 28px; border-radius: 30px; background: #fff;
     box-shadow: var(--shadow); border: 1px solid #e6e9e1; }
@@ -35,30 +32,25 @@
   .c1e-puz .pt { font: 600 56px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   `;
 
-  // the six breed groups: icon, job line, and the behavior chips with the words that cue each one
+  // the six breed groups: icon, job line, and the photo that fills the card's right side
+  // pos = object-position of the photo; the frame is about 2:1, so only the vertical value matters (keep the dog's face in view)
   const GROUPS = [
-    { nm: 'Herders', job: 'Control movement', ic: 'move', chips: [
-      ['Notice movement', 'eye', 'notice and control movement'], ['Follow', 'chevrons-right', 'follow, control'], ['Control', 'hand', 'control, or redirect']] },
-    { nm: 'Guardians', job: 'Monitor and respond to potential threats', ic: 'shield', chips: [
-      ['Unfamiliar people', 'user', 'unfamiliar people'], ['Animals', 'paw-print', 'animals, or activity'], ['Home and territory', 'house', 'their home or territory']] },
-    { nm: 'Terriers', job: 'Hunt and pursue small animals', ic: 'rabbit', chips: [
-      ['Quick movement', 'zap', 'quick movement'], ['Squirrels', 'squirrel', 'squirrels'], ['Cats', 'cat', 'cats, or other']] },
-    { nm: 'Hounds', job: 'Track and pursue', ic: 'footprints', chips: [
-      ['Sense of smell', 'wind', 'sense of smell'], ['Follow a scent', 'route', 'follow a scent'], ['Track', 'crosshair', 'track something']] },
-    { nm: 'Sporting dogs', job: 'Find, flush, point to, or retrieve', ic: 'bird', chips: [
-      ['Movement', 'scan-eye', 'attentive to movement'], ['Searching', 'search', 'searching'], ['Carrying', 'package', 'carrying objects'],
-      ['Working with a person', 'handshake', 'working closely']] },
-    { nm: 'Working dogs', job: 'Perform physical jobs such as guarding, pulling, rescue, or assistance', ic: 'hard-hat', chips: [
-      ['Persistence', 'repeat', 'persistence'], ['Physical engagement', 'dumbbell', 'physical engagement'], ['Awareness', 'radar', 'environmental awareness'],
-      ['Working with people', 'users', 'working with people']] },
+    { nm: 'Herders', job: 'Control movement', ic: 'move', img: 'breed_herders.jpg', pos: '50% 35%' },
+    { nm: 'Guardians', job: 'Monitor and respond to potential threats', ic: 'shield', img: 'breed_guardians.jpg', pos: '50% 55%' },
+    { nm: 'Terriers', job: 'Hunt and pursue small animals', ic: 'rabbit', img: 'breed_terriers.jpg', pos: '50% 35%' },
+    { nm: 'Hounds', job: 'Track and pursue', ic: 'footprints', img: 'breed_hounds.jpg', pos: '50% 35%' },
+    { nm: 'Sporting dogs', job: 'Find, flush, point to, or retrieve', ic: 'bird', img: 'breed_sporting.jpg', pos: '50% 10%' },
+    { nm: 'Working dogs', job: 'Perform physical jobs such as guarding, pulling, rescue, or assistance', ic: 'hard-hat', img: 'breed_working.jpg', pos: '50% 35%' },
   ];
-  const CW = 848, CH = 204;
-  const GX = [100, 972], GY = [300, 522, 744];
+  const CW = 848, CH = 212;
+  const GX = [100, 972], GY = [300, 524, 748];
+  // photo frame inside the card (card inner box is 846 x 210): as wide as the job line allows, 8 px inset
+  const PH = { x: 446, y: 8, w: 392, h: 194, r: 18 };
   const SH0 = '0 10px 30px rgba(40,60,20,0.10), 0 0 0 0px rgba(97,149,55,0)';
   const SHG = '0 14px 36px rgba(40,60,20,0.14), 0 0 0 4px rgba(184,217,154,1)';
   const SHH = '0 20px 46px rgba(40,60,20,0.18), 0 0 0 4px rgba(97,149,55,1)';
 
-  /** One breed-group card with an empty chip tray; returns its parts and centre. */
+  /** One breed-group card with a softly tinted, still empty photo frame; returns its parts and centre. */
   function groupCard(parent, g, x, y) {
     const c = K.el('div', 'c1e-card');
     Object.assign(c.style, { left: x + 'px', top: y + 'px', boxShadow: SH0 });
@@ -67,19 +59,12 @@
     c.appendChild(bd);
     c.appendChild(K.el('div', 'nm', g.nm));
     c.appendChild(K.el('div', 'job', g.job));
-    const tray = K.el('div', 'tray');
-    c.appendChild(tray);
-    const chips = g.chips.map(([t, ic, say]) => {
-      const ch = K.el('div', 'c1e-chip');
-      const d = K.el('div', 'ic');
-      d.appendChild(K.icon(ic));
-      ch.appendChild(d);
-      ch.appendChild(K.el('span', null, t));
-      tray.appendChild(ch);
-      return { el: ch, say };
-    });
+    const ph = K.photo(c, g.img, { x: PH.x, y: PH.y, w: PH.w, h: PH.h, radius: PH.r, pos: g.pos });
+    const ph0 = K.el('div', 'ph0');
+    ph0.appendChild(K.icon('paw-print'));
+    ph.root.insertBefore(ph0, ph.img);
     parent.appendChild(c);
-    return { c, bd, chips, cx: x + CW / 2, cy: y + CH / 2 };
+    return { c, bd, ph, cx: x + CW / 2, cy: y + CH / 2 };
   }
 
   // ================================================================== ch01s06 Breed history and purpose
@@ -126,23 +111,17 @@
     pulseAll(tP1);
     pulseAll(clamp(sayAt(ctx, 1, 'what behaviors', 0.7, 0.2), tP1 + 1.6, cue(2) - 1.2));
 
-    // ---------- beats 2 to 7: one card at a time lights up (the rest dim); its behavior chips pop in, one per phrase
-    let lastChip = cue(7);
+    // ---------- beats 2 to 7: one card at a time lights up (the rest dim) and its dog photo fades in to fill the frame
     cards.forEach((k, j) => {
       const b = j + 2, t = cue(b) - 0.15;
       tl.to(cardEls.filter((_, i) => i !== j), { opacity: 0.3, scale: 1, boxShadow: SH0, duration: 0.5, ease: 'power2.out' }, t);
       tl.to(k.c, { opacity: 1, scale: 1.03, boxShadow: SHH, duration: 0.55, ease: 'power2.out' }, t);
       tl.to(k.bd, { backgroundColor: C.green, color: '#fff', duration: 0.45, ease: 'power2.out' }, t + 0.1);
       A.pulse(tl, k.bd, t + 0.2, { scale: 1.15 });
-      let tp = t + 0.3;
-      k.chips.forEach((ch, n) => {
-        tp = Math.max(tp + 0.55, Math.min(sayAt(ctx, b, ch.say, 0.35 + n * 0.17, 0.2), end(b) - 0.4));
-        tl.fromTo(ch.el, { opacity: 0, scale: 0.6, y: 8 }, { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'back.out(2)' }, tp);
-      });
-      lastChip = tp;
+      tl.fromTo(k.ph.img, { opacity: 0, scale: 1.14 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'power2.out' }, t + 0.3);
     });
-    // then all six stay up, each with its chips
-    const tAll = clamp(lastChip + 1.3, cue(7) + 2, cue(8) + 0.3);
+    // then all six stay up, each with its photo
+    const tAll = clamp(end(7) - 0.9, cue(7) + 2.5, cue(8) + 0.3);
     tl.to(cardEls, { opacity: 1, scale: 1, boxShadow: SH0, duration: 0.6, ease: 'power2.out' }, tAll);
 
     // ---------- beat 8: "clues, not guarantees" lands over the dimmed cards

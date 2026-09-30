@@ -1,6 +1,6 @@
 // Chapter 1 (v6): scenes built by group b. Bowl parts come from window.C1 (c1_bowl.js).
 //   ch01s03  Why?                          photo + 'Why?', the bowl with eight blank chips, the chips start drifting down
-//   ch01s04  Genetics and temperament      genetics chip drops in, a sensitive and an easygoing dog, a tiny smoke alarm
+//   ch01s04  Genetics and temperament      genetics chip drops in, sensitive and easygoing dog portraits, a tiny smoke alarm
 //   ch01s05  Before birth                  prenatal chip drops in; health, nutrition and experiences gather around it
 //   ch01s07  Early life and socialization  timeline window, gaps, how we expose, pass the puppy, no break, party and leash
 (() => {
@@ -100,33 +100,12 @@
     tl.to(B.tokens.slice(0, n).map(tk => tk.inner), { scale: 1.12, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, stagger: 0.12, ease: 'sine.inOut' }, t + 0.1);
   }
 
-  // simple dog silhouettes, side view facing right, drawn in a 100 x 70 box with the feet on y = 68
-  const POSE = {
-    stand: {
-      parts: [['e', 46, 37, 24, 10.5], ['c', 63, 36, 11], ['l', 63, 32, 73, 17, 12], ['c', 76, 14, 9], ['l', 79, 17, 90, 20, 9],
-        ['l', 29, 40, 27, 66, 6], ['l', 36, 42, 38, 66, 6], ['l', 59, 42, 58, 66, 6], ['l', 66, 41, 67, 66, 6], ['p', 'M 24 33 Q 13 27 14 12', 5]],
-      prick: '69,10 72,-2 78,7', flop: [71, 17], mid: 33,
-    },
-    down: {
-      parts: [['e', 45, 56, 28, 10], ['c', 29, 57, 10], ['l', 62, 51, 73, 38, 12], ['c', 76, 34, 9.5], ['l', 80, 37, 91, 40, 8],
-        ['l', 60, 64, 93, 64, 7], ['p', 'M 19 60 Q 9 64 2 61', 6]],
-      prick: '69,30 72,18 78,27', flop: [70, 37], mid: 45,
-    },
-  };
-  /** Dog silhouette standing on (x, y) (bottom centre), scale s. o: {flip, ear:'prick'|'flop'} */
-  function dogSil(parent, pose, x, y, s, fill, o = {}) {
-    const P = POSE[pose];
-    const outer = K.group(parent);
-    const g = K.group(outer, { transform: `translate(${x} ${y}) scale(${o.flip ? -s : s} ${s}) translate(-50 -68)`, fill, stroke: fill, 'stroke-linecap': 'round' });
-    P.parts.forEach(p => {
-      if (p[0] === 'e') K.svgEl('ellipse', { cx: p[1], cy: p[2], rx: p[3], ry: p[4], stroke: 'none' }, g);
-      else if (p[0] === 'c') K.svgEl('circle', { cx: p[1], cy: p[2], r: p[3], stroke: 'none' }, g);
-      else if (p[0] === 'l') K.svgEl('line', { x1: p[1], y1: p[2], x2: p[3], y2: p[4], 'stroke-width': p[5] }, g);
-      else K.svgEl('path', { d: p[1], fill: 'none', 'stroke-width': p[2] }, g);
-    });
-    if (o.ear === 'flop') K.svgEl('ellipse', { cx: P.flop[0], cy: P.flop[1], rx: 4.5, ry: 8.5, transform: `rotate(18 ${P.flop[0]} ${P.flop[1]})`, stroke: 'none' }, g);
-    else K.svgEl('polygon', { points: P.prick, stroke: 'none' }, g);
-    return outer;
+  /** Round photo portrait centred on (cx, cy), radius r, with a ring border; returns {root, img} (ch01s04). */
+  function portrait(parent, src, cx, cy, r, pos) {
+    const p = K.photo(parent, src, { x: cx - r, y: cy - r, w: 2 * r, h: 2 * r, pos });
+    Object.assign(p.root.style, { borderRadius: '50%', border: '9px solid #d6ddcc', background: '#eef1ea', boxSizing: 'border-box',
+      boxShadow: '0 14px 34px rgba(40,60,20,0.16)' });
+    return p;
   }
 
   // ================================================================== ch01s03 Why?
@@ -199,41 +178,38 @@
     A.in(tl, cap0, land0 - 0.2, 'fadeUp', { dur: 0.6 });
 
     const sub0 = C1.put(stage, 'c1b-sub', 'Some dogs are born *more sensitive*', { x: 100, y: SUB_Y });
-    const dsvg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const DY = 610, DR = 118, DS = 1.65;
+    // two round photo portraits: they arrive in grey and take on colour (and their ring colour) as each is named
+    const DY = 615, DR = 172;
     const DOGS = [
-      { x: 330, pose: 'stand', ear: 'prick', ring: C.amber, bg: C.amberPale, fill: '#9a5f12', lab: 'More sensitive', say: 'more sensitive' },
-      { x: 810, pose: 'down', ear: 'flop', ring: C.green, bg: C.pale, fill: C.greenDark, lab: 'More easygoing', say: 'more easygoing' },
+      { x: 330, img: 'temperament_sensitive.jpg', pos: '50% 40%', ring: C.amber, lab: 'More sensitive', say: 'more sensitive' },
+      { x: 810, img: 'temperament_easygoing.jpg', pos: '50% 40%', ring: C.green, lab: 'More easygoing', say: 'more easygoing' },
     ];
     const dogs = DOGS.map(d => {
-      const g = K.group(dsvg);
-      gsap.set(g, { x: d.x, y: DY });
-      const inner = K.group(g);
-      const disc = K.circle(inner, 0, 0, DR, { fill: '#fff', stroke: '#d6ddcc', 'stroke-width': 6 });
-      dogSil(inner, d.pose, 0, (68 - POSE[d.pose].mid) * DS, DS, '#8f978a', { ear: d.ear });
-      const lab = C1.label(stage, d.lab, d.x, DY + DR + 30, { cls: 'c1b-lab', w: 400 });
-      return { g, inner, disc, lab, d };
+      const p = portrait(stage, d.img, d.x, DY, DR, d.pos);
+      const lab = C1.label(stage, d.lab, d.x, DY + DR + 28, { cls: 'c1b-lab', w: 400 });
+      return { root: p.root, img: p.img, lab, d };
     });
+    const dsvg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 }); // above the photos: the smoke alarm and its rings
     // both dogs arrive with "different temperaments", then each is named in turn
     const tDogs = clamp(sayAt(ctx, 0, 'different temperaments', 0.25), land0 + 0.2, cue(1) - 6);
-    tl.fromTo(dogs.map(o => o.inner), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.6, stagger: 0.15, ease: 'back.out(1.8)' }, tDogs);
+    tl.fromTo(dogs.map(o => o.root), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.7, stagger: 0.15, ease: 'back.out(1.6)' }, tDogs);
     const tSub = clamp(sayAt(ctx, 0, 'Some are naturally', 0.45), tDogs + 0.8, cue(1) - 4);
     A.in(tl, sub0, tSub, 'fadeUp', { dur: 0.8 });
     let tPrev = tSub;
     dogs.forEach((o, i) => {
       const t = Math.max(tPrev + 0.6, sayAt(ctx, 0, o.d.say, 0.55 + i * 0.2, 0.2));
       tPrev = t;
-      tl.to(o.disc, { attr: { fill: o.d.bg, stroke: o.d.ring }, duration: 0.5, ease: 'power2.out' }, t);
-      tl.to(o.inner.querySelectorAll('g[fill]'), { attr: { fill: o.d.fill, stroke: o.d.fill }, duration: 0.5, ease: 'power2.out' }, t);
-      tl.to(o.inner, { scale: 1.08, transformOrigin: '50% 50%', duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut' }, t);
+      tl.to(o.root, { borderColor: o.d.ring, duration: 0.5, ease: 'power2.out' }, t);
+      tl.fromTo(o.img, { filter: 'grayscale(1)' }, { filter: 'grayscale(0)', duration: 0.7, ease: 'power2.out' }, t);
+      tl.to(o.root, { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut' }, t);
       A.in(tl, o.lab, t + 0.1, 'fadeUp', { dur: 0.6 });
     });
 
-    // ---------- beat 1: a tiny smoke alarm blinks beside the sensitive dog
+    // ---------- beat 1: a tiny smoke alarm blinks at the sensitive dog's photo, with small red sound rings
     const sub1 = C1.put(stage, 'c1b-sub', 'A more sensitive *smoke alarm*', { x: 100, y: SUB_Y });
     swap(tl, sub0, sub1, cue(1));
-    tl.to([dogs[1].inner, dogs[1].lab], { opacity: 0.4, duration: 0.6 }, cue(1) + 0.2);
-    const AX = DOGS[0].x + 128, AY = DY - 118;
+    tl.to([dogs[1].root, dogs[1].lab], { opacity: 0.4, duration: 0.6 }, cue(1) + 0.2);
+    const AX = DOGS[0].x + Math.round(DR * 0.74), AY = DY - Math.round(DR * 0.74);
     const aBody = K.group(dsvg);
     K.circle(aBody, AX, AY, 46, { fill: C.redPale, stroke: '#fff', 'stroke-width': 5 });
     C1.svgIcon(aBody, 'alarm-smoke', AX, AY + 2, 54, { stroke: C.red, 'stroke-width': 2 });
@@ -248,10 +224,10 @@
     const nBl = Math.max(2, Math.floor((blinkEnd - tAl - 0.5) / 0.9));
     tl.fromTo(arcs, { opacity: 0 }, { opacity: 1, duration: 0.18, stagger: 0.09, yoyo: true, repeat: nBl * 2 - 1, repeatDelay: 0.27, ease: 'power1.out' }, tAl + 0.5);
     tl.to(aBody, { rotation: 8, svgOrigin: `${AX} ${AY}`, duration: 0.07, yoyo: true, repeat: 7, ease: 'sine.inOut' }, tAl + 0.5);
-    // the sensitive dog startles when the alarm goes off: "easily triggered"
+    // the sensitive dog's photo gives a small startled shake when the alarm goes off: "easily triggered"
     const tTrig = clamp(sayAt(ctx, 1, 'easily triggered', 0.7), tAl + 1.0, dur - 1.5);
-    tl.to(dogs[0].inner, { x: 5, duration: 0.07, yoyo: true, repeat: 9, ease: 'sine.inOut' }, tTrig);
-    tl.to(dogs[0].disc, { attr: { stroke: C.red }, duration: 0.4 }, tTrig);
+    tl.to(dogs[0].root, { x: 6, rotation: 1.2, duration: 0.07, yoyo: true, repeat: 9, ease: 'sine.inOut' }, tTrig);
+    tl.to(dogs[0].root, { borderColor: C.red, duration: 0.4 }, tTrig);
   });
 
   // ================================================================== ch01s05 Before birth

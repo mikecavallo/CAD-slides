@@ -101,6 +101,7 @@ aside h2 { margin: 0; padding: 14px 16px 10px; font: 600 15px/1.2 Rubik, system-
   function fmt(s) { s = Math.max(0, Math.floor(s)); var m = Math.floor(s / 60); var r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
   // captions live in the page (artifacts don't serve .vtt), fed into one text track per part
   var track = video.addTextTrack ? video.addTextTrack('captions', 'English', 'en') : null;
+  if (track && M.captionsOn) track.mode = 'showing';
   function setTrack(i) {
     if (!track || !window.VTTCue) return;
     while (track.cues && track.cues.length) track.removeCue(track.cues[0]);
@@ -168,6 +169,7 @@ def main():
     ap.add_argument("--sub", required=True)
     ap.add_argument("--chips", default="")
     ap.add_argument("--note", required=True)
+    ap.add_argument("--captions-on", action="store_true", help="show captions by default (for a preview with no voice)")
     ap.add_argument("--poster-video")
     ap.add_argument("--poster-at", type=float, default=8.0)
     args = ap.parse_args()
@@ -194,7 +196,7 @@ def main():
     page = (PAGE.replace("__TITLE__", esc(args.title)).replace("__HEADING__", esc(args.heading)).replace("__SUB__", esc(args.sub))
             .replace("__CHIPS__", chip_html).replace("__FIRST__", esc(first)).replace("__TOTAL__", fmt(m["total"]))
             .replace("__TOC__", "".join(toc)).replace("__NOTE__", esc(args.note))
-            .replace("__MANIFEST__", json.dumps({"total": m["total"], "parts": [dict({k: p[k] for k in ("src", "start", "dur")}, cues=read_vtt(d / p["vtt"])) for p in m["parts"]]}).replace("</", "<\\/")))
+            .replace("__MANIFEST__", json.dumps({"total": m["total"], "captionsOn": args.captions_on, "parts": [dict({k: p[k] for k in ("src", "start", "dur")}, cues=read_vtt(d / p["vtt"])) for p in m["parts"]]}).replace("</", "<\\/")))
     (d / "index.html").write_text(page)
     if args.poster_video:
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(args.poster_at), "-i", args.poster_video, "-frames:v", "1",

@@ -20,7 +20,7 @@
   const ING = [
     { name: 'Genetics and temperament', icon: 'dna', col: '#619537' },
     { name: 'Prenatal environment', icon: 'baby', col: '#8aae4a' },
-    { name: 'Breed traits', icon: 'paw-print', col: '#4b5a1e' },
+    { name: 'Breed history and purpose', icon: 'paw-print', col: '#4b5a1e' },
     { name: 'Socialization', icon: 'users', col: '#3f6b22' },
     { name: 'Age', icon: 'hourglass', col: '#7a8f2e' },
     { name: 'Past experiences', icon: 'zap', col: '#d9912b' },

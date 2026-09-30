@@ -253,7 +253,7 @@
     A.in(tl, lens, tv + 0.25, 'fade', { dur: 0.6 });
     tl.to(lens, { attr: { 'fill-opacity': 0.9 }, duration: 0.45, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tv + 0.9);
     const CAPY = VCY + RR + 3 + 26;
-    const cap = caption(stage, 'They overlap, but they’re *not the same*', CAPY);
+    const cap = caption(stage, 'They can overlap, but they’re *not the same*', CAPY);
     A.in(tl, cap, Math.max(tv + 0.7, at(3, "but it doesn't", 0.2, 0.3)), 'fadeUp', { dur: 0.7 });
 
     // ---- beat 5: the definitions clear, a 'Label' tag lands on the overlap, an arrow runs down to the starting-point card
@@ -344,12 +344,12 @@
     A.in(tl, h.title, Math.max(0.05, cue(0) - 0.2), 'wipe', { dur: 1.1 });
     A.in(tl, h.bar, cue(0) + 0.6, 'grow', { dur: 0.6 });
 
-    // ---- beat 1: seven behavior chips in one row, one per word
+    // ---- beat 1: eight behavior chips in one row, one per word ('Cower' isn't spoken; it follows 'Freeze')
     const BEH = [
       ['Bark', 'volume-2', 176, 'bark'], ['Growl', 'audio-lines', 200, 'growl'], ['Lunge', 'chevrons-right', 196, 'lunge'],
-      ['Snap', 'zap', 176, 'snap'], ['Freeze', 'snowflake', 208, 'freeze'], ['Move away', 'footprints', 262, 'move away'], ['Bite', 'octagon-alert', 162, 'bite'],
+      ['Snap', 'zap', 176, 'snap'], ['Freeze', 'snowflake', 208, 'freeze'], ['Cower', 'shrink', 204, null], ['Move away', 'footprints', 262, 'move away'], ['Bite', 'octagon-alert', 162, 'bite'],
     ];
-    const GAP = 20, CHH = 68, ROWY = 530, RS = 1.04;
+    const GAP = 18, CHH = 68, ROWY = 530, RS = 0.95;
     const total = BEH.reduce((s, b) => s + b[2], 0) + GAP * (BEH.length - 1);
     const rowX = 960 - total / 2;
     const row = box(stage, 'c1a-abs', null, { x: rowX, y: ROWY, w: total, h: CHH });
@@ -358,7 +358,7 @@
     const bch = BEH.map(([t, ic, w]) => { const c = fixedChip(row, t, ic, { x, y: 0, w, h: CHH }); x += w + GAP; return c; });
     let prev = cue(0) + 0.8;
     bch.forEach((c, k) => {
-      const t = Math.max(prev, at(0, BEH[k][3], 0.15));
+      const t = BEH[k][3] ? Math.max(prev, at(0, BEH[k][3], 0.15)) : prev + 0.1;
       A.in(tl, c, t, 'pop', { dur: 0.55 });
       prev = t + 0.22;
     });

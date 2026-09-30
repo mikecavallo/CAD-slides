@@ -1,6 +1,6 @@
 {
   "title": "Understanding Reactivity and Aggression, Part 1",
-  "notes": "v6: Chapter 1 from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Twelve scenes. Material below that line is not part of this video. v5 is in script/archive/lesson-v5-chapter1-10scenes.json. The trainer records the narration herself.",
+  "notes": "v5: Chapter 1 only, from the trainer's edited Google Doc (everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video and is not touched. The v4 one-chapter script is in script/archive/lesson-v4-one-chapter.json. Rules: no em or en dashes; A, B, C read as letters.",
   "chapters": [
     {
       "id": "ch01",
@@ -11,8 +11,7 @@
         3,
         4,
         5,
-        6,
-        7
+        6
       ],
       "scenes": [
         {
@@ -32,7 +31,7 @@
               "onscreen": "Aggression and reactivity"
             },
             {
-              "say": "Aggression is behavior intended to threaten, push away, control, protect, or cause harm. It can show up in very different situations.",
+              "say": "Aggression is behavior directed toward another individual or animal with an intent to threaten, push away, control, protect, or cause harm. It can show up in very different emotional situations.",
               "show": "Under the aggression circle, five small chips pop in one per word: Threaten, Push away, Control, Protect, Harm. A sixth line appears: 'Behavior with intent.'",
               "onscreen": ""
             },
@@ -42,9 +41,9 @@
               "onscreen": ""
             },
             {
-              "say": "A reactive response can include aggressive behavior, but it doesn't have to. And aggressive behavior alone doesn't tell us what the dog is feeling or exactly what the behavior is accomplishing.",
+              "say": "A reactive response can include aggressive behavior, but it doesn't have to. And aggressive behavior alone doesn't tell us what the dog is feeling, or exactly what the behavior is accomplishing.",
               "show": "The two circles slide together into a Venn diagram and the overlap tints light green.",
-              "onscreen": "They can overlap, but they're not the same"
+              "onscreen": "They overlap, but they're not the same"
             },
             {
               "say": "That's why the label is only the starting point.",
@@ -68,7 +67,7 @@
           "beats": [
             {
               "say": "A dog may bark, growl, lunge, snap, freeze, move away, or bite. These behaviors matter, but the behavior alone does not tell us why the dog is responding that way.",
-              "show": "The heading 'Look beyond the label' writes on in green and eight behavior chips pop in a row, one per word: Bark, Growl, Lunge, Snap, Freeze, Cower, Move away, Bite.",
+              "show": "The heading 'Look beyond the label' writes on in green and seven behavior chips pop in a row, one per word: Bark, Growl, Lunge, Snap, Freeze, Move away, Bite.",
               "onscreen": "Look beyond the label"
             },
             {
@@ -77,12 +76,12 @@
               "onscreen": "The same behavior can have different reasons"
             },
             {
-              "say": "The behavior is the same, but why it's happening in each situation is different. And that difference matters when we decide how to help the dog.",
+              "say": "The behavior is the same, but what is happening in the situation is different. And that difference matters when we decide how to help the dog.",
               "show": "The four examples remain on screen while the central 'BARK' chip stays unchanged; the four situations glow in turn.",
               "onscreen": "Same behavior. Different context."
             },
             {
-              "say": "So what influences how a dog responds in the first place? There are many factors that contribute to behavior. In this video, we'll take a closer look at some of the influences that shape how a dog responds.",
+              "say": "So what influences how a dog responds in the first place? There are several factors that can contribute to behavior.",
               "show": "The four examples fade out and several question marks appear around a dog icon.",
               "onscreen": "What contributes to behavior?"
             }
@@ -90,8 +89,8 @@
         },
         {
           "id": "ch01s03",
-          "heading": "Why?",
-          "visual_concept": "Photo card and the heading 'Why?', then the bowl with eight blank ingredient chips hovering, then the chips start moving toward the bowl. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "heading": "Why this response?",
+          "visual_concept": "Photo card and heading, then eight blank ingredient chips appear, then the mixing bowl arrives under them. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "photo_why.jpg",
@@ -99,130 +98,70 @@
           ],
           "beats": [
             {
-              "say": "When a dog's behavior changes, one of the first questions an owner may ask is, \"Why is my dog acting this way?\"",
-              "show": "The Lab and Pyrenees photo slides in as a portrait card at left, and the heading 'Why?' writes on in green.",
-              "onscreen": "Why?"
+              "say": "When a dog's behavior changes, many owners immediately ask, “What did I do wrong?”",
+              "show": "The Lab and Pyrenees photo slides in as a portrait card at left and the heading 'Why this response?' writes on in green.",
+              "onscreen": "Why this response?"
             },
             {
-              "say": "The answer? It's not just one reason. A dog's behavior is influenced by many factors, which can contribute to fearful, reactive, aggressive, or other responses.",
-              "show": "The photo slides away; a large mixing bowl appears center right with eight blank ingredient chips hovering above it.",
-              "onscreen": "It's not just one reason"
+              "say": "The honest answer? It's usually not one thing. A dog's behavior can be influenced by many underlying factors, which can contribute to reactivity, aggression, or both.",
+              "show": "The photo slides away, the heading moves up, and eight blank ingredient chips appear in an arc on the right.",
+              "onscreen": "Usually a mix"
             },
             {
-              "say": "Think of it like a recipe. There are several ingredients that can contribute to the behavior we see.",
-              "show": "The blank ingredient chips begin drifting down toward the bowl as the section transitions into the factors covered in this video.",
-              "onscreen": "Several things come together"
+              "say": "Think of it like a recipe. There are usually several ingredients behind the behavior we see.",
+              "show": "A large mixing bowl appears center right beneath the eight blank chips, which hover above it.",
+              "onscreen": "Several factors contribute"
             }
           ]
         },
         {
           "id": "ch01s04",
-          "heading": "Genetics and temperament",
-          "visual_concept": "Bowl scene. The Genetics and temperament chip drops in, then a tiny smoke alarm blinks for the sensitive dog. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "heading": "Nature and genetics",
+          "visual_concept": "Bowl scene. Genetics chip drops in with the tiny smoke alarm; Prenatal environment chip with pregnant dog, food bowl and stress icons; the Lab and Pyrenees photo with three breed tags; small varied dog icons under each tag; then the Breed traits chip joins the other two in the bowl. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
+            "photo_why.jpg",
             "diagram:mixing-bowl",
             "icon:dna",
-            "icon:alarm-smoke"
+            "icon:alarm-smoke",
+            "icon:baby",
+            "icon:utensils",
+            "icon:zap",
+            "icon:paw-print",
+            "icon:dog"
           ],
           "beats": [
             {
-              "say": "Ingredient one: genetics. Dogs are born with different temperaments and personality traits. Some are naturally more sensitive to their surroundings, while others may be more easygoing or less reactive to change.",
-              "show": "The first chip, a DNA icon labeled 'Genetics and temperament', drops into the bowl with a small splash. Two small dog badges appear on the left, one labeled 'More sensitive' and one labeled 'More easygoing'.",
+              "say": "Ingredient one, genetics. Some dogs are simply born more sensitive, with a more easily triggered smoke alarm from day one.",
+              "show": "The first chip, a DNA icon labeled 'Genetics and temperament', drops into the bowl with a small splash, and a tiny smoke alarm icon blinks beside it.",
               "onscreen": "Some dogs are born more sensitive"
             },
             {
-              "say": "Some dogs simply start life with a more sensitive \"smoke alarm,\" meaning their nervous system may be more easily triggered from the beginning.",
-              "show": "A tiny smoke alarm icon blinks beside the 'More sensitive' dog with small red sound rings.",
-              "onscreen": "A more sensitive smoke alarm"
+              "say": "And a puppy's starting point can be influenced before it is even born. The mother's health and nutrition during pregnancy, along with significant stress during pregnancy, can influence fetal development. These early influences can become part of the foundation a puppy starts life with.",
+              "show": "The DNA chip stays in the bowl as a second chip labeled 'Prenatal environment' drops in. Simple icons appear around it, one per phrase: a pregnant dog (health), a food bowl (nutrition), and a stress symbol (stress).",
+              "onscreen": "Before birth matters too"
+            },
+            {
+              "say": "Breed traits matter too. Dogs have been selectively bred for generations to perform specific jobs. Herders were bred to notice and control movement, terriers to hunt and pursue small animals, and guardian breeds to monitor and respond to potential threats. When you're looking at a dog or a mix, it's important to consider what those breeds were developed to do.",
+              "show": "The Lab and Pyrenees photo slides in as a small portrait card beside the bowl; tags appear one per phrase: 'Herders: control movement', 'Terriers: hunt and pursue', 'Guardians: monitor and respond to threats'.",
+              "onscreen": "What was this dog bred to do?"
+            },
+            {
+              "say": "Those breed traits are tendencies, not guarantees. Individual dogs can vary, even within the same breed or mix.",
+              "show": "Several small dog icons of different sizes and poses appear beneath each breed tag, showing variety within each type.",
+              "onscreen": "Breed gives us clues"
+            },
+            {
+              "say": "These are some of the things that can shape a dog's starting point before we ever meet them.",
+              "show": "The photo and tags clear, the 'Breed traits' chip drops into the bowl, and the Genetics and temperament, Prenatal environment and Breed traits chips settle together with a soft glow.",
+              "onscreen": "Every dog starts somewhere"
             }
           ]
         },
         {
           "id": "ch01s05",
-          "heading": "Before birth",
-          "visual_concept": "Bowl scene. The Prenatal environment chip drops in beside the DNA chip, with three icons around it. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
-          "assets": [
-            "bg_swirl.jpg",
-            "diagram:mixing-bowl",
-            "icon:baby",
-            "icon:utensils",
-            "icon:zap"
-          ],
-          "beats": [
-            {
-              "say": "Ingredient two: prenatal environment. A puppy's starting point can be influenced before it is even born. The mother's health, nutrition, and experiences during pregnancy can influence fetal development. These early influences can become part of the foundation a puppy starts life with.",
-              "show": "The DNA chip stays in the bowl as a second chip labeled 'Prenatal environment' drops in. Simple icons appear around it, one per word: a pregnant dog (health), a food bowl (nutrition), and a stress symbol (experiences).",
-              "onscreen": "Before birth matters too"
-            }
-          ]
-        },
-        {
-          "id": "ch01s06",
-          "heading": "Breed history and purpose",
-          "visual_concept": "Six breed-group cards around the bowl, each with its own icon and job line: Herders (control movement), Guardians (monitor and respond to potential threats), Terriers (hunt and pursue small animals), Hounds (track and pursue), Sporting dogs (find, flush, point to, or retrieve), Working dogs (perform physical jobs such as guarding, pulling, rescue, or assistance). Each highlights as it is discussed and gains small behavior icons. Ends with the cards moving into the bowl as the 'Breed history and purpose' chip. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
-          "assets": [
-            "bg_swirl.jpg",
-            "diagram:mixing-bowl",
-            "icon:paw-print"
-          ],
-          "beats": [
-            {
-              "say": "Ingredient three: breed history and purpose. Dogs have been selectively bred for generations to perform specific jobs. Those jobs can give us clues about behaviors a dog may be naturally inclined toward.",
-              "show": "Six breed-group cards appear around the bowl: Herders: control movement; Guardians: monitor and respond to potential threats; Terriers: hunt and pursue small animals; Hounds: track and pursue; Sporting dogs: find, flush, point to, or retrieve; Working dogs: perform physical jobs such as guarding, pulling, rescue, or assistance.",
-              "onscreen": "What was this dog bred to do?"
-            },
-            {
-              "say": "Those original jobs can influence the kinds of things a dog notices, how they respond to movement or their environment, and what behaviors they may be more likely to offer.",
-              "show": "All six cards pulse gently together, ready to be highlighted one at a time.",
-              "onscreen": ""
-            },
-            {
-              "say": "For example, herding dogs were developed to notice and control movement, so some may be especially tuned in to things that move and may naturally want to follow, control, or redirect that movement.",
-              "show": "The Herders card highlights while the others dim; small behavior icons appear beside it: Notice movement, Follow, Control.",
-              "onscreen": ""
-            },
-            {
-              "say": "Guardian breeds were developed to monitor and respond to potential threats, so some may be especially attentive to unfamiliar people, animals, or activity around their home or territory.",
-              "show": "The Guardians card highlights; icons appear beside it: Unfamiliar people, Animals, Home and territory.",
-              "onscreen": ""
-            },
-            {
-              "say": "Terriers were developed to hunt and pursue small animals, so some may be particularly interested in quick movement from squirrels, cats, or other small animals.",
-              "show": "The Terriers card highlights; icons appear beside it: Quick movement, Squirrels, Cats.",
-              "onscreen": ""
-            },
-            {
-              "say": "Hounds were developed to track and pursue, often using their remarkable sense of smell. A hound may be especially motivated to follow a scent or track something that has captured their attention.",
-              "show": "The Hounds card highlights; icons appear beside it: Sense of smell, Follow a scent, Track.",
-              "onscreen": ""
-            },
-            {
-              "say": "Sporting dogs were developed to find, flush, point to, or retrieve game. Depending on the breed, that can mean being especially attentive to movement, searching, carrying objects, or working closely with a person.",
-              "show": "The Sporting dogs card highlights; icons appear beside it: Movement, Searching, Carrying, Working with a person.",
-              "onscreen": ""
-            },
-            {
-              "say": "Working dogs were developed for a wide range of physical jobs, including guarding, pulling, rescue, and assistance. Those different jobs can come with different natural tendencies, such as persistence, physical engagement, environmental awareness, or a strong interest in working with people.",
-              "show": "The Working dogs card highlights; icons appear beside it: Persistence, Physical engagement, Awareness, Working with people. Then all six cards stay visible, each with its behavior icons.",
-              "onscreen": ""
-            },
-            {
-              "say": "That doesn't mean a dog will automatically behave a certain way because of its breed. Breed history gives us clues about tendencies, not guarantees.",
-              "show": "The line 'Breed history gives us clues, not guarantees.' lands over the cards.",
-              "onscreen": "Breed history gives us clues, not guarantees."
-            },
-            {
-              "say": "Individual dogs can vary considerably, even within the same breed or mix. But when we're trying to understand a dog's behavior, knowing what those breeds were originally developed to do can give us another piece of the puzzle.",
-              "show": "The six cards move into the mixing bowl and become the 'Breed history and purpose' chip, which settles beside 'Genetics and temperament' and 'Prenatal environment'.",
-              "onscreen": "Another piece of the puzzle"
-            }
-          ]
-        },
-        {
-          "id": "ch01s07",
           "heading": "Early life and socialization",
-          "visual_concept": "Bowl scene. Socialization chip and the early-window timeline with gaps and example tags; a puppy observing a person, a dog and a new place from different distances with approach, move away and pause arrows; pass the puppy with a choice meter; the puppy surrounded by reaching hands with a pause icon and exit arrow just out of reach; the party row with a tightening leash; the chip settles. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Bowl scene. Socialization chip, then a timeline with a highlighted early window, gaps and example tags, the window overfilling with icons, the pass-the-puppy sequence with a choice meter, the overwhelmed shrinking puppy, the party dogs and tightening leash, then the chip settles. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
@@ -230,49 +169,48 @@
             "icon:dog",
             "icon:user",
             "icon:hand",
-            "icon:pause",
             "icon:party-popper"
           ],
           "beats": [
             {
-              "say": "Ingredient four, socialization. Early experiences help puppies learn what is familiar, safe, and normal. There is an important developmental period during the first few months when puppies are especially influenced by what they encounter.",
+              "say": "Ingredient two, socialization. Early experiences help puppies learn what is familiar, safe, and normal. There is an important developmental period during the first few months when puppies are especially influenced by their experiences.",
               "show": "The 'Socialization' chip lights up above the bowl, and a timeline appears beside it with an early developmental window highlighted and labeled 'First few months'.",
               "onscreen": "Early experiences matter"
             },
             {
-              "say": "When puppies don't have enough positive, appropriate exposure during this period, unfamiliar people, animals, places, or experiences may be harder for them to accept later. And if you adopt an older dog, some of what shaped their early expectations happened before you ever met them.",
+              "say": "Too little positive, appropriate exposure during this period can leave unfamiliar people, animals, places, or experiences harder for a dog to accept later. And if you adopt an older dog, some of that early history happened before you ever met them. That can make things harder to understand, but it doesn't mean behavior cannot change.",
               "show": "Gaps appear in the highlighted window, and example tags appear along the timeline: Strangers, Buses, Skateboards, New places.",
               "onscreen": "Too little exposure"
             },
             {
-              "say": "But appropriate socialization isn't simply about exposing a puppy to as many things as possible. The way those experiences happen matters too. Puppies need opportunities to observe, approach, move away, and take a break. They should have some choice in whether and how they interact with something new.",
-              "show": "The timeline clears. A puppy watches a person, a dog and a new place from different distances; small arrows show its options, one per word: Observe, Approach, Move away, Take a break.",
-              "onscreen": "How we expose matters"
+              "say": "But socialization can also go too far in the other direction. More exposure is not always better.",
+              "show": "The tags clear; the highlighted window expands and fills with overlapping icons of people, dogs, hands and places.",
+              "onscreen": "More is not always better"
             },
             {
               "say": "Think about the game \"pass the puppy.\" A well-meaning group of people may take turns picking up a puppy, holding them, petting them, and passing them from person to person. The puppy may have very little choice about what is happening or when they get a break.",
-              "show": "A puppy icon moves from one person icon to the next around a circle, with hands reaching toward it. A small 'Choice' meter stays near empty.",
+              "show": "The timeline clears; a puppy icon moves from one person icon to the next around a circle, with hands reaching toward it. A small 'Choice' meter stays near empty.",
               "onscreen": "Pass the puppy"
             },
             {
-              "say": "Even when the people involved have good intentions, repeated handling without an opportunity to pause, move away, or choose whether to interact can make those experiences overwhelming rather than helpful.",
-              "show": "The puppy stays surrounded by reaching hands while a pause icon and an exit arrow sit just out of reach.",
-              "onscreen": "No choice, no break"
+              "say": "If a puppy repeatedly experiences new people, dogs, handling, or environments without enough opportunity to pause, move away, or choose whether to interact, those experiences can become overwhelming rather than helpful.",
+              "show": "More people, dog, hand and place icons crowd in around the puppy; the puppy icon shrinks as the activity grows.",
+              "onscreen": "Too much, too fast"
             },
             {
               "say": "And then there is the puppy who learned that every dog or person means a party. Running up to meet dog after dog, person after person can make seeing another dog extremely exciting, until the leash prevents the puppy from getting there. Hello, frustration. If that was your puppy, you were probably following common advice.",
-              "show": "A row of happy dog icons appears, then a leash tightens between the puppy and the next dog and a small red label appears: 'Frustration'.",
+              "show": "The crowd clears; a row of happy dog icons appears with party sparkles, then a leash pulls tight between the puppy and the next dog and a small red label appears: 'Frustration'.",
               "onscreen": "Every dog means a party"
             },
             {
-              "say": "Socialization isn't about checking off a list of people, dogs, places, and experiences. It's about helping a puppy build positive, flexible associations while giving them appropriate support and choice. Socialization is one ingredient in the larger picture we need to consider when we're trying to understand behavior.",
+              "say": "Early experiences are only one part of the picture, but they can become an important part of a dog's history.",
               "show": "The party row clears and the 'Socialization' chip drops into the bowl beside the earlier chips.",
-              "onscreen": "Socialization is one ingredient"
+              "onscreen": "Early experiences become part of the history"
             }
           ]
         },
         {
-          "id": "ch01s08",
+          "id": "ch01s06",
           "heading": "Age",
           "visual_concept": "Bowl scene. Age chip, life-stage ruler with adolescence and social maturity bands, Teen and Adult party cards, the dog park card, then the senior dog with icons, everyday interactions and a lowering tolerance meter. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
@@ -289,7 +227,7 @@
           ],
           "beats": [
             {
-              "say": "Ingredient five, age. Adolescence runs from about six to eighteen months, up to two years in some big breeds. Think teenager with fur: big feelings, less self-control.",
+              "say": "Ingredient three, age. Adolescence runs from about six to eighteen months, up to two years in some big breeds. Think teenager with fur: big feelings, less self-control.",
               "show": "On the first sentence the 'Age' chip drops in and the bowl shifts left; on 'Adolescence runs', a life-stage ruler draws beneath it with a shaded band labeled 'Adolescence, 6 to 18 months'.",
               "onscreen": "Adolescence: about 6 to 18 months"
             },
@@ -304,19 +242,19 @@
               "onscreen": "More selective with age"
             },
             {
-              "say": "That's normal, not a problem. But the dog who loved the dog park at one may not want it at three, and pushing them can end in a fight.",
+              "say": "That's normal, not a problem. But the dog who loved the dog park at one may not want it at three, and pushing them can end in a scuffle.",
               "show": "A small dog park card appears with a trees icon: 'Age 1: loved it' with a green check, then 'Age 3: not anymore' with an amber caution badge.",
               "onscreen": "Normal, not a problem"
             },
             {
               "say": "Senior dogs change too. Sore joints, fading senses, or changes in memory can affect how much they want to deal with the little things they used to tolerate. A dog who once ignored being bumped, crowded, startled, or bothered may have less patience for those interactions as they get older.",
-              "show": "The cards clear; an older dog appears with small icons for sore joints, fading vision, hearing and memory. Around the dog, everyday interactions appear: Bumped, Crowded, Startled, Touched, New experiences. A 'Tolerance' meter gradually lowers.",
+              "show": "The cards clear; an older dog appears with small icons for sore joints, fading vision, hearing and memory. Around the dog, everyday interactions appear one per word: Bumped, Crowded, Startled, Bothered. A 'Tolerance' meter gradually lowers.",
               "onscreen": "Senior dogs change too"
             }
           ]
         },
         {
-          "id": "ch01s09",
+          "id": "ch01s07",
           "heading": "Past experiences",
           "visual_concept": "Bowl scene. Past experiences chip and a lightning strike on a one-event timeline; a person, dog and toy sequence that repeats with the dog's response growing; a repeating encounter strip where the response comes sooner each time; then the lawn path with a new path forming. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
@@ -329,7 +267,7 @@
           ],
           "beats": [
             {
-              "say": "Ingredient six, past experiences. A single event can be enough: if an off-leash dog rushes yours once, they may never forget it.",
+              "say": "Ingredient four, past experiences. A single event can be enough: if an off-leash dog rushes yours once, they may never forget it.",
               "show": "The 'Past experiences' chip drops in and a lightning bolt strikes a single point on a short timeline labeled 'One event'.",
               "onscreen": "One event can be enough"
             },
@@ -351,7 +289,7 @@
           ]
         },
         {
-          "id": "ch01s10",
+          "id": "ch01s08",
           "heading": "Training tools and methods",
           "visual_concept": "Bowl scene. Training tools chip with red-outlined tool tags; a dog surrounded by daily-life icons each linked to 'Human decides'; a 'Boss?' crown appears and fades; 'Suppress' over a dog replaced by 'Understand' and 'Help'; then a green heart pulses over the bowl. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
@@ -370,7 +308,7 @@
           ],
           "beats": [
             {
-              "say": "Ingredient seven, training tools and methods. The tools and techniques we use also affect behavior. Research links harsh methods with more fear, stress, and aggression. Think leash jerks, prong, choke or shock collars, and pinning a dog down.",
+              "say": "Ingredient five, training tools and methods. The tools and techniques we use can also affect behavior. Research links harsh methods with more fear, stress, and aggression. Think leash jerks, prong, choke or shock collars, and pinning a dog down.",
               "show": "The 'Training tools and methods' chip drops in and a short row of red-outlined tags appears beside it, one per phrase: Leash pops, Prong and choke collars, Shock collars, Alpha rolls.",
               "onscreen": "Training can affect behavior too"
             },
@@ -385,7 +323,7 @@
               "onscreen": "A reaction isn't a power struggle"
             },
             {
-              "say": "The idea that dogs need to be dominated has led to tools and techniques designed to suppress behavior through force or intimidation. But suppressing behavior isn't the same as understanding why a dog is responding that way and helping them change that response. We will get into this much more later.",
+              "say": "The idea that dogs need to be dominated has led to tools and techniques designed to suppress behavior through force or intimidation. But suppressing behavior isn't the same as understanding why a dog is responding that way and helping them change that response.",
               "show": "'Suppress' appears in red over the dog icon and fades away; the words 'Understand' and 'Help' replace it in green.",
               "onscreen": "Suppressing behavior ≠ changing behavior"
             },
@@ -397,7 +335,7 @@
           ]
         },
         {
-          "id": "ch01s11",
+          "id": "ch01s09",
           "heading": "Pain and discomfort",
           "visual_concept": "Bowl scene. Pain chip drops in; a dog with small body indicators and six sensitivity icons; a dog standing normally with faint question marks, then a second panel of the same dog avoiding a reaching hand; a sudden-change arrow that branches to Behavior and Physical health. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
@@ -412,9 +350,9 @@
           ],
           "beats": [
             {
-              "say": "Ingredient eight, pain and discomfort. A dog who is in pain can have a lower tolerance for their environment.",
+              "say": "Ingredient six, pain and discomfort. A dog who is hurting may respond differently to things they previously tolerated. Pain can lower a dog's tolerance for being touched, bumped, approached, handled, or for things happening around them in their environment.",
               "show": "The 'Pain and discomfort' chip drops into the bowl. A dog appears with small indicators at different areas of the body, then icons pop in one per word: Touch, Bumping, Approach, Handling, Noise, Movement.",
-              "onscreen": "Pain can exacerbate behavior"
+              "onscreen": "Pain can change behavior"
             },
             {
               "say": "And pain isn't always obvious. Dogs don't always limp, cry, or show us exactly where something hurts. A change in behavior may sometimes be one of the first clues that something isn't right.",
@@ -429,30 +367,31 @@
           ]
         },
         {
-          "id": "ch01s12",
+          "id": "ch01s10",
           "heading": "Putting it together",
-          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then the visible behavior at the top with the ingredient chips beneath it, partly hidden below a surface line; then the view shifts toward the surrounding context as a transition to the next chapter, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "The bowl at center, all eight chips dropping in on their spoken words; then 'Aggressive behavior' beside a dog while 'Aggressive dog' appears and fades; then a simple situation, behavior, outcome diagram resolving into 'Understand' then 'Change' with a forward arrow, and a short Calling All Dogs logo close. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
             "logo.png",
-            "icon:dog"
+            "icon:dog",
+            "icon:arrow-right"
           ],
           "beats": [
             {
-              "say": "By now, you can see that a dog's behavior usually isn't explained by one thing. Genetics and temperament, prenatal environment, breed history and purpose, socialization, age, pain and discomfort, past experiences, and the methods used with the dog can all become ingredients in the behavior we see.",
-              "show": "The mixing bowl returns to center screen with eight blank chips above it. The chips drop in as they are named: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Pain and discomfort, Past experiences, Training tools and methods.",
+              "say": "By now, you can see that a dog's behavior usually isn't explained by one thing. Genetics, early life, age, pain and discomfort, past experiences, and the methods used with the dog can all become part of the picture.",
+              "show": "The mixing bowl returns to center screen with all eight blank chips above it. The chips drop in as they are named: Genetics and temperament, Prenatal environment and Breed traits on 'Genetics', Socialization on 'early life', Age, Pain and discomfort, Past experiences, and Training tools and methods on 'the methods'.",
               "onscreen": "Behavior is shaped by many factors"
             },
             {
-              "say": "But not all of those ingredients are visible on the surface. What we see is the behavior. And to understand it more fully, we need to look at what is happening around it.",
-              "show": "The bowl clears. The visible behavior (a dog barking) sits at the top above a surface line, while the eight ingredient chips appear beneath it, partly hidden and faded.",
-              "onscreen": "Look beyond the behavior"
+              "say": "Aggression and reactivity describe what we see, but they don't explain why the dog is responding that way. A dog can display aggressive behavior without being an aggressive dog.",
+              "show": "The bowl shrinks aside; the words 'Aggressive behavior' appear beside a dog icon showing the behavior. The phrase 'Aggressive dog' appears briefly, is crossed out, and fades away.",
+              "onscreen": "Describe the behavior, not the dog"
             },
             {
-              "say": "That's where we'll go next.",
-              "show": "The view shifts from the visible behavior toward the surrounding context: simple situation elements appear around the dog and an arrow points forward to the next chapter. The Calling All Dogs logo closes the video.",
-              "onscreen": "Next: what's happening around it"
+              "say": "There is more to understanding behavior than what we see on the surface. In the next chapter, we'll look at what the behavior may be accomplishing, how that helps us understand what's happening for that individual dog, and how we can use that information to change the behavior.",
+              "show": "The labels fade; a dog appears at center surrounded by three simple elements: the situation, the behavior, and what happens around it. They resolve into 'Understand', then an arrow to 'Change' pointing forward to the next chapter. The Calling All Dogs logo closes the video.",
+              "onscreen": "Understand it. Then change it."
             }
           ]
         }

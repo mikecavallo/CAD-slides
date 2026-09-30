@@ -342,7 +342,7 @@
   });
 
   // ================================================================== ch01s05 Early life and socialization
-  registerScene('ch01s05', ctx => {
+  registerScene('ch01s07', ctx => {
     const { stage, tl, cue, dur } = ctx;
     const { sayAt, clamp, STD, CAP_Y, ING } = C1;
     const C = col();

@@ -159,7 +159,7 @@
   }
 
   // ================================================================== ch01s08 Training tools and methods
-  registerScene('ch01s08', ctx => {
+  registerScene('ch01s10', ctx => {
     const { stage, tl, cue, end, dur } = ctx;
     const { B } = C1.sceneBase(ctx, 'Training tools and methods', 6);
     css(stage);
@@ -322,7 +322,7 @@
   });
 
   // ================================================================== ch01s09 Pain and discomfort
-  registerScene('ch01s09', ctx => {
+  registerScene('ch01s11', ctx => {
     const { stage, tl, cue, end } = ctx;
     const { B } = C1.sceneBase(ctx, 'Pain and discomfort', 7);
     css(stage);
@@ -451,7 +451,7 @@
   });
 
   // ================================================================== ch01s10 Putting it together
-  registerScene('ch01s10', ctx => {
+  registerScene('ch01s12', ctx => {
     const { stage, tl, cue, end, dur, chrome } = ctx;
     C1.style(stage);
     css(stage);

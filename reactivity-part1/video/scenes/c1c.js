@@ -44,7 +44,7 @@
   };
 
   // ================================================================== ch01s06 Age
-  registerScene('ch01s06', ctx => {
+  registerScene('ch01s08', ctx => {
     const { stage, tl, cue, end } = ctx;
     styleC(stage);
     const { B } = sceneBase(ctx, 'Age', 4, 84);
@@ -227,7 +227,7 @@
     A.in(tl, [mlab, tube], tTol, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
     // everyday interactions, one per word, around the dog's right side
-    const chips = [['Bumped', 'bumped', -52], ['Crowded', 'crowded', -17], ['Startled', 'startled', 17], ['Bothered', 'bothered', 52]].map(([t, w, a]) => {
+    const chips = [['Bumped', 'bumped', -60], ['Crowded', 'crowded', -30], ['Startled', 'startled', 0], ['Touched', 'bothered', 30], ['New experiences', 'interactions', 60]].map(([t, w, a]) => {
       const r = (a * Math.PI) / 180, px = DX + 255 * Math.cos(r), py = DY + 206 * Math.sin(r);
       const c = boxC(stage, 'c1c-chip', null, { x: px - 6, y: py - 34 });
       c.appendChild(K.el('div', 'd'));
@@ -242,7 +242,7 @@
       return tPrev;
     });
     const tLow0 = chipAt[0] - 0.1;
-    const tLow1 = Math.max(chipAt[3] + 1.2, phraseAt(ctx, 4, 'get older', 0.95) + 0.5);
+    const tLow1 = Math.max(chipAt[chipAt.length - 1] + 1.2, phraseAt(ctx, 4, 'get older', 0.95) + 0.5);
     const D = Math.min(tLow1, end(4)) - tLow0;
     tl.to(fill, { height: '24%', duration: D, ease: 'power1.inOut' }, tLow0);
     tl.to(fill, { backgroundColor: 'hsl(35, 70%, 51%)', duration: D * 0.5, ease: 'none' }, tLow0 + D * 0.2);
@@ -250,7 +250,7 @@
   });
 
   // ================================================================== ch01s07 Past experiences
-  registerScene('ch01s07', ctx => {
+  registerScene('ch01s09', ctx => {
     const { stage, tl, cue, end, dur } = ctx;
     styleC(stage);
     const { B } = sceneBase(ctx, 'Past experiences', 5, 80);

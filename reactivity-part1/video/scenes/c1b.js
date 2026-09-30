@@ -1,7 +1,8 @@
-// Chapter 1 (v5): scenes built by group b. Bowl parts come from window.C1 (c1_bowl.js).
-//   ch01s03  Why this response?            photo + heading, eight blank chips in an arc, then the bowl arrives under them
-//   ch01s04  Nature and genetics           genetics + smoke alarm, prenatal hub, breed tags with dog silhouettes, three chips glow
-//   ch01s05  Early life and socialization  timeline window, gaps, overfilled window, pass the puppy, crowd, party and leash
+// Chapter 1 (v6): scenes built by group b. Bowl parts come from window.C1 (c1_bowl.js).
+//   ch01s03  Why?                          photo + 'Why?', the bowl with eight blank chips, the chips start drifting down
+//   ch01s04  Genetics and temperament      genetics chip drops in, a sensitive and an easygoing dog, a tiny smoke alarm
+//   ch01s05  Before birth                  prenatal chip drops in; health, nutrition and experiences gather around it
+//   ch01s07  Early life and socialization  timeline window, gaps, how we expose, pass the puppy, no break, party and leash
 (() => {
   const CSS = `
   .c1b-sub { position: absolute; font: 600 54px/1.16 var(--font-head); color: var(--ink); white-space: nowrap; }
@@ -10,13 +11,7 @@
   .c1b-note .ic { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; background: var(--green-pale); color: var(--green-dark); flex: 0 0 auto; }
   .c1b-note .ic svg { width: 42px; height: 42px; stroke-width: 2.1; }
   .c1b-note b { font-weight: 700; color: var(--green); }
-  .c1b-btag { position: absolute; display: flex; align-items: center; gap: 20px; height: 92px; padding: 0 30px 0 18px; background: #fff;
-    border-radius: 24px; border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); }
-  .c1b-btag .ic { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--green-pale); color: var(--green-dark); flex: 0 0 auto; }
-  .c1b-btag .ic svg { width: 36px; height: 36px; stroke-width: 2.2; }
-  .c1b-btag .nm { font: 700 34px/1 var(--font-head); color: var(--green-dark); white-space: nowrap; }
-  .c1b-btag .ds { font: 500 29px/1 var(--font-body); color: var(--ink); margin-top: 8px; white-space: nowrap; }
-  .c1b-lab { position: absolute; font: 700 32px/1 var(--font-body); color: var(--ink); text-align: center; white-space: nowrap; }
+  .c1b-lab { position: absolute; font: 700 34px/1 var(--font-body); color: var(--ink); text-align: center; white-space: nowrap; }
   .c1b-tick { position: absolute; font: 600 30px/1 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
   .c1b-win { position: absolute; font: 700 42px/1 var(--font-head); color: var(--green-dark); white-space: nowrap; }
   .c1b-miss { position: absolute; display: inline-flex; align-items: center; gap: 14px; padding: 9px 28px 9px 9px; border-radius: 999px;
@@ -24,6 +19,10 @@
   .c1b-miss .ic { width: 50px; height: 50px; border-radius: 50%; background: #eceee8; color: var(--muted); display: grid; place-items: center; }
   .c1b-miss .ic svg { width: 30px; height: 30px; stroke-width: 2.2; }
   .c1b-pin { position: absolute; display: inline-flex; align-items: center; gap: 12px; font: 700 30px/1 var(--font-body); color: var(--green-dark); white-space: nowrap; }
+  .c1b-opt { position: absolute; display: inline-flex; align-items: center; gap: 14px; height: 62px; padding: 0 28px 0 8px; border-radius: 999px;
+    background: #fff; border: 2px solid var(--green-light); box-shadow: var(--shadow-soft); font: 700 32px/1 var(--font-body); color: var(--green-deep); white-space: nowrap; }
+  .c1b-opt .ic { width: 46px; height: 46px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
+  .c1b-opt .ic svg { width: 26px; height: 26px; stroke-width: 2.4; }
   .c1b-meter { position: absolute; width: 300px; }
   .c1b-meter .t { font: 700 34px/1 var(--font-head); color: var(--ink); display: flex; justify-content: space-between; align-items: baseline; }
   .c1b-meter .t span { font: 600 28px/1 var(--font-body); color: var(--muted); }
@@ -33,10 +32,6 @@
   .c1b-red { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 14px 30px 14px 20px; border-radius: 999px;
     border: 3px solid var(--red); background: #fff; color: var(--red); font: 700 36px/1 var(--font-body); white-space: nowrap; box-shadow: var(--shadow-soft); }
   .c1b-red svg { width: 34px; height: 34px; stroke-width: 2.4; }
-  .c1b-list { position: absolute; display: flex; flex-direction: column; gap: 26px; align-items: flex-start; }
-  .c1b-list .c1-cap { font-size: 34px; padding: 12px 36px 12px 12px; }
-  .c1b-list .c1-dot { width: 60px; height: 60px; }
-  .c1b-list .c1-dot svg { width: 34px; height: 34px; }
   `;
   function css(stage) {
     C1.style(stage);
@@ -69,9 +64,10 @@
     const g = K.group(parent);
     gsap.set(g, { x, y });
     const inner = K.group(g);
-    K.circle(inner, 0, 0, r, { fill, stroke: o.stroke || '#fff', 'stroke-width': o.sw ?? 5 });
+    const ring = K.circle(inner, 0, 0, r, { fill, stroke: o.stroke || '#fff', 'stroke-width': o.sw ?? 5 });
+    if (o.dash) ring.setAttribute('stroke-dasharray', o.dash);
     sIcon(inner, name, 0, 0, r * (o.k ?? 1.1), { stroke: fg, 'stroke-width': o.iw ?? 2.1 });
-    return { g, inner };
+    return { g, inner, ring };
   }
   /** Subheading swap: a fades up and out, b fades up in. */
   function swap(tl, a, b, t) {
@@ -89,23 +85,32 @@
     parent.appendChild(n);
     return n;
   }
+  /** Soft halo behind the first n tokens in the bowl, glowing together at t. */
+  function glowTokens(tl, B, n, t) {
+    const C = col();
+    const halos = [];
+    for (let k = 0; k < n; k++) {
+      const o = B.tokens[k].outer;
+      const c = K.circle(o, 0, 0, 58, { fill: '#e6f3d6', stroke: C.greenLight, 'stroke-width': 4, opacity: 0 });
+      o.insertBefore(c, o.firstChild);
+      halos.push(c);
+    }
+    tl.fromTo(halos, { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' }, { opacity: 0.95, scale: 1, duration: 0.8, stagger: 0.12, ease: 'power2.out' }, t);
+    tl.to(B.glow, { opacity: 0.9, duration: 1.2, ease: 'sine.inOut' }, t);
+    tl.to(B.tokens.slice(0, n).map(tk => tk.inner), { scale: 1.12, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, stagger: 0.12, ease: 'sine.inOut' }, t + 0.1);
+  }
 
   // simple dog silhouettes, side view facing right, drawn in a 100 x 70 box with the feet on y = 68
   const POSE = {
     stand: {
-      parts: [['e', 47, 36, 26, 12], ['l', 64, 33, 74, 20, 13], ['c', 77, 16, 9.5], ['l', 81, 19, 93, 22, 8],
-        ['l', 29, 40, 27, 66, 7], ['l', 37, 42, 39, 66, 7], ['l', 58, 42, 57, 66, 7], ['l', 66, 40, 68, 66, 7], ['p', 'M 24 32 Q 12 28 11 14', 6]],
-      prick: '70,12 73,0 79,9', flop: [71, 19],
-    },
-    sit: {
-      parts: [['l', 42, 50, 59, 29, 22], ['c', 40, 54, 13], ['l', 34, 66, 52, 66, 7], ['l', 57, 36, 58, 66, 7], ['l', 64, 34, 66, 66, 7],
-        ['l', 61, 27, 69, 17, 13], ['c', 72, 13, 9.5], ['l', 76, 16, 87, 19, 8], ['p', 'M 29 62 Q 18 67 9 61', 6]],
-      prick: '65,9 68,-3 74,6', flop: [66, 16],
+      parts: [['e', 46, 37, 24, 10.5], ['c', 63, 36, 11], ['l', 63, 32, 73, 17, 12], ['c', 76, 14, 9], ['l', 79, 17, 90, 20, 9],
+        ['l', 29, 40, 27, 66, 6], ['l', 36, 42, 38, 66, 6], ['l', 59, 42, 58, 66, 6], ['l', 66, 41, 67, 66, 6], ['p', 'M 24 33 Q 13 27 14 12', 5]],
+      prick: '69,10 72,-2 78,7', flop: [71, 17], mid: 33,
     },
     down: {
       parts: [['e', 45, 56, 28, 10], ['c', 29, 57, 10], ['l', 62, 51, 73, 38, 12], ['c', 76, 34, 9.5], ['l', 80, 37, 91, 40, 8],
         ['l', 60, 64, 93, 64, 7], ['p', 'M 19 60 Q 9 64 2 61', 6]],
-      prick: '69,30 72,18 78,27', flop: [70, 37],
+      prick: '69,30 72,18 78,27', flop: [70, 37], mid: 45,
     },
   };
   /** Dog silhouette standing on (x, y) (bottom centre), scale s. o: {flip, ear:'prick'|'flop'} */
@@ -124,101 +129,155 @@
     return outer;
   }
 
-  // ================================================================== ch01s03 Why this response?
+  // ================================================================== ch01s03 Why?
   registerScene('ch01s03', ctx => {
     const { stage, tl, cue, dur } = ctx;
     const { sayAt, clamp } = C1;
+    const C = col();
     css(stage);
 
-    // beat 0: photo card at left, the heading writes on beside it
+    // beat 0: photo card at left; the owner's question bubble and the heading 'Why?' write on beside it
     const ph = K.photo(stage, 'photo_why.jpg', { x: 100, y: 150, w: 580, h: 790, pos: '35% 50%' });
     A.in(tl, ph.root, Math.max(0, cue(0) - 0.4), 'fadeRight', { dur: 1.0 });
     A.kenburns(tl, ph.img, { from: 1.03, to: 1.1, t0: 0, t1: cue(1) + 1 });
-    const h = K.heading(stage, 'Why this response?', { x: 100, y: 120, w: 1100, size: 92 });
-    gsap.set(h.root, { x: 680, y: 290, transformOrigin: '0% 0%' });
-    A.in(tl, h.title, cue(0) + 0.2, 'wipe', { dur: 1.1 });
+    const QX = 1250, QY = 430;
+    const q = C1.badge(stage, 'message-circle-question', QX, QY, 250, C.pale, C.green);
+    A.in(tl, q, cue(0) + 0.1, 'pop', { dur: 0.8 });
+    tl.to(q, { rotation: -8, duration: 0.18, yoyo: true, repeat: 3, ease: 'sine.inOut' }, clamp(sayAt(ctx, 0, 'Why is my dog', 0.75), cue(0) + 2, cue(1) - 1.2));
+    const h = K.heading(stage, 'Why?', { x: 100, y: 120, w: 800, size: 96 });
+    const HX0 = QX - 100 - 116, HY0 = 590 - 120;
+    gsap.set(h.root, { x: HX0, y: HY0, transformOrigin: '0% 0%' });
+    A.in(tl, h.title, cue(0) + 0.3, 'wipe', { dur: 1.0 });
     A.in(tl, h.bar, cue(0) + 1.0, 'grow', { dur: 0.6 });
 
-    // beat 1: the photo slides away, the heading rises, "usually a mix", eight blank chips pop up in an arc
+    // beat 1: the photo slides away, the heading rises; the bowl arrives and eight blank chips hover above it
     const t1 = cue(1) - 0.2;
     tl.to(ph.root, { x: -260, opacity: 0, duration: 0.8, ease: 'power2.in' }, t1);
-    tl.fromTo(h.root, { x: 680, y: 290, scale: 1 }, { x: 0, y: 0, scale: 0.87, duration: 1.0, ease: 'power3.inOut', immediateRender: false }, t1 + 0.3);
-    const mix = C1.put(stage, 'c1b-mix', 'Usually a *mix*', { x: 100, y: 450 });
-    const tMix = clamp(sayAt(ctx, 1, 'usually not one thing', 0.2), t1 + 1.2, cue(2) - 3);
-    A.in(tl, mix, tMix, 'fadeUp', { dur: 0.8 });
+    tl.to(q, { scale: 0.6, opacity: 0, duration: 0.5, ease: 'power2.in' }, t1);
+    tl.fromTo(h.root, { x: HX0, y: HY0, scale: 1 }, { x: 0, y: 0, scale: 0.84, duration: 1.0, ease: 'power3.inOut', immediateRender: false }, t1 + 0.3);
 
-    const B = C1.makeBowl(stage, { cx: 1370, y: 660, s: 0.9, filled: 0 });
+    const B = C1.makeBowl(stage, { cx: 1370, y: 650, s: 0.9, filled: 0 });
     const shadow = B.bodyAll.previousElementSibling;
-    const tChips = clamp(sayAt(ctx, 1, 'many underlying factors', 0.55), tMix + 0.8, cue(2) - 1.5);
-    tl.fromTo(B.slots.map(sl => sl.g), { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.55, stagger: 0.12, ease: 'back.out(2.2)' }, tChips);
-    C1.bob(tl, B, tChips + 1.3, dur);
-
-    // beat 2: the bowl rises in under the hovering chips
-    const tB = cue(2) - 0.1;
+    const tB = t1 + 0.8;
     tl.fromTo(B.bodyAll, { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, tB);
     tl.fromTo(shadow, { opacity: 0 }, { opacity: 0.2, duration: 0.9, ease: 'power2.out' }, tB + 0.3);
-    tl.fromTo(B.glow, { opacity: 0 }, { opacity: 0.85, duration: 1.2, ease: 'sine.inOut' }, tB + 0.6);
-    const sev = pill(stage, 'c1b-note', 'list-checks', 'Several factors <b>contribute</b>', 100, 592);
-    const tSev = clamp(sayAt(ctx, 2, 'several ingredients', 0.5), tB + 0.8, dur - 1.5);
+    tl.fromTo(B.glow, { opacity: 0 }, { opacity: 0.85, duration: 1.2, ease: 'sine.inOut' }, tB + 0.5);
+
+    const mix = C1.put(stage, 'c1b-mix', "It's not just<br>*one reason*", { x: 100, y: 400 });
+    const tMix = clamp(sayAt(ctx, 1, 'not just one reason', 0.1), tB + 0.4, cue(2) - 3);
+    A.in(tl, mix, tMix, 'fadeUp', { dur: 0.8 });
+
+    const tChips = clamp(sayAt(ctx, 1, 'many factors', 0.4), tMix + 0.8, cue(2) - 1.5);
+    tl.fromTo(B.slots.map(sl => sl.g), { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.55, stagger: 0.12, ease: 'back.out(2.2)' }, tChips);
+    const tDrift = cue(2) + 0.1;
+    C1.bob(tl, B, tChips + 1.3, tDrift);
+
+    // beat 2: the blank chips begin drifting down toward the bowl (they do not land here)
+    // the arc closes in around its centre (just above the rim), so every chip sinks and funnels toward the bowl
+    B.slots.forEach((sl, k) => {
+      const f = 0.7, ord = Math.abs(k - 3.5);
+      tl.to(sl.g, { x: sl.x * f, y: 30 + (sl.y - 60) * f, scale: 0.94, transformOrigin: '50% 50%', duration: Math.max(3, dur - tDrift - 0.4 - ord * 0.12), ease: 'sine.inOut' }, tDrift + ord * 0.12);
+    });
+    tl.to(B.glow, { opacity: 1, duration: 1.5, ease: 'sine.inOut' }, tDrift);
+    const sev = pill(stage, 'c1b-note', 'chef-hat', 'Several things <b>come together</b>', 100, 640);
+    const tSev = clamp(sayAt(ctx, 2, 'several ingredients', 0.4), tDrift + 0.6, dur - 1.8);
     A.in(tl, sev, tSev, 'fadeUp', { dur: 0.8 });
   });
 
-  // ================================================================== ch01s04 Nature and genetics
+  // ================================================================== ch01s04 Genetics and temperament
   registerScene('ch01s04', ctx => {
     const { stage, tl, cue, dur } = ctx;
-    const { sayAt, phraseAt, clamp, STD, CAP_Y, ING } = C1;
+    const { sayAt, clamp, STD, CAP_Y } = C1;
     const C = col();
     css(stage);
-    const { B } = C1.sceneBase(ctx, 'Nature and genetics', 0);
+    const { B } = C1.sceneBase(ctx, 'Genetics and temperament', 0);
     const SUB_Y = 296;
 
-    // ---------- beat 0: genetics drops in; some dogs are born more sensitive; a tiny smoke alarm blinks
+    // ---------- beat 0: the genetics chip drops in; a more sensitive and a more easygoing dog
     const cap0 = C1.caption(stage, 0, STD.cx, CAP_Y);
     const land0 = C1.dropIn(tl, B, 0, clamp(sayAt(ctx, 0, 'genetics', 0.1), cue(0) + 0.1, cue(0) + 2));
     A.in(tl, cap0, land0 - 0.2, 'fadeUp', { dur: 0.6 });
 
-    const LA = C1.layer(stage);
-    const card = K.el('div', 'c1-card');
-    Object.assign(card.style, { left: '100px', top: '330px', width: '1000px', height: '250px' });
-    LA.appendChild(card);
-    const dna = C1.badge(LA, 'dna', 206, 455, 130, ING[0].col, '#fff');
-    const sens = C1.put(LA, 'c1-big', 'Some dogs are born<br>*more sensitive*', { x: 310, y: 388 });
-    A.in(tl, card, land0 - 0.3, 'fadeUp', { dur: 0.7 });
-    A.in(tl, dna, land0 - 0.1, 'pop', { dur: 0.6 });
-    A.in(tl, sens, land0, 'fadeUp', { dur: 0.7 });
+    const sub0 = C1.put(stage, 'c1b-sub', 'Some dogs are born *more sensitive*', { x: 100, y: SUB_Y });
+    const dsvg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
+    const DY = 610, DR = 118, DS = 1.65;
+    const DOGS = [
+      { x: 330, pose: 'stand', ear: 'prick', ring: C.amber, bg: C.amberPale, fill: '#9a5f12', lab: 'More sensitive', say: 'more sensitive' },
+      { x: 810, pose: 'down', ear: 'flop', ring: C.green, bg: C.pale, fill: C.greenDark, lab: 'More easygoing', say: 'more easygoing' },
+    ];
+    const dogs = DOGS.map(d => {
+      const g = K.group(dsvg);
+      gsap.set(g, { x: d.x, y: DY });
+      const inner = K.group(g);
+      const disc = K.circle(inner, 0, 0, DR, { fill: '#fff', stroke: '#d6ddcc', 'stroke-width': 6 });
+      dogSil(inner, d.pose, 0, (68 - POSE[d.pose].mid) * DS, DS, '#8f978a', { ear: d.ear });
+      const lab = C1.label(stage, d.lab, d.x, DY + DR + 30, { cls: 'c1b-lab', w: 400 });
+      return { g, inner, disc, lab, d };
+    });
+    // both dogs arrive with "different temperaments", then each is named in turn
+    const tDogs = clamp(sayAt(ctx, 0, 'different temperaments', 0.25), land0 + 0.2, cue(1) - 6);
+    tl.fromTo(dogs.map(o => o.inner), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.6, stagger: 0.15, ease: 'back.out(1.8)' }, tDogs);
+    const tSub = clamp(sayAt(ctx, 0, 'Some are naturally', 0.45), tDogs + 0.8, cue(1) - 4);
+    A.in(tl, sub0, tSub, 'fadeUp', { dur: 0.8 });
+    let tPrev = tSub;
+    dogs.forEach((o, i) => {
+      const t = Math.max(tPrev + 0.6, sayAt(ctx, 0, o.d.say, 0.55 + i * 0.2, 0.2));
+      tPrev = t;
+      tl.to(o.disc, { attr: { fill: o.d.bg, stroke: o.d.ring }, duration: 0.5, ease: 'power2.out' }, t);
+      tl.to(o.inner.querySelectorAll('g[fill]'), { attr: { fill: o.d.fill, stroke: o.d.fill }, duration: 0.5, ease: 'power2.out' }, t);
+      tl.to(o.inner, { scale: 1.08, transformOrigin: '50% 50%', duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut' }, t);
+      A.in(tl, o.lab, t + 0.1, 'fadeUp', { dur: 0.6 });
+    });
 
-    const asvg = K.svg(LA, { x: 860, y: 365, w: 240, h: 180 });
-    const aBody = K.group(asvg);
-    K.circle(aBody, 70, 90, 54, { fill: C.redPale, stroke: '#fff', 'stroke-width': 5 });
-    C1.svgIcon(aBody, 'alarm-smoke', 70, 92, 64, { stroke: C.red, 'stroke-width': 1.9 });
+    // ---------- beat 1: a tiny smoke alarm blinks beside the sensitive dog
+    const sub1 = C1.put(stage, 'c1b-sub', 'A more sensitive *smoke alarm*', { x: 100, y: SUB_Y });
+    swap(tl, sub0, sub1, cue(1));
+    tl.to([dogs[1].inner, dogs[1].lab], { opacity: 0.4, duration: 0.6 }, cue(1) + 0.2);
+    const AX = DOGS[0].x + 128, AY = DY - 118;
+    const aBody = K.group(dsvg);
+    K.circle(aBody, AX, AY, 46, { fill: C.redPale, stroke: '#fff', 'stroke-width': 5 });
+    C1.svgIcon(aBody, 'alarm-smoke', AX, AY + 2, 54, { stroke: C.red, 'stroke-width': 2 });
     const arcD = r => {
-      const a = (30 * Math.PI) / 180;
-      return `M${70 + r * Math.cos(-a)} ${90 + r * Math.sin(-a)} A${r} ${r} 0 0 1 ${70 + r * Math.cos(a)} ${90 + r * Math.sin(a)}`;
+      const a = (38 * Math.PI) / 180;
+      return `M${AX + r * Math.cos(-a)} ${AY + r * Math.sin(-a)} A${r} ${r} 0 0 1 ${AX + r * Math.cos(a)} ${AY + r * Math.sin(a)}`;
     };
-    const arcs = [86, 114, 142].map((r, i) => K.path(asvg, arcD(r), { stroke: C.red, 'stroke-width': 8 - i * 1.5, opacity: 0 }));
-    const tAl = Math.max(land0 + 0.7, phraseAt(ctx, 0, 'smoke alarm', 0.6) - 0.3);
-    tl.fromTo(aBody, { opacity: 0, scale: 0.5, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, tAl);
-    const blinkEnd = cue(1) - 0.5;
+    const arcs = [64, 86, 108].map((r, i) => K.path(dsvg, arcD(r), { stroke: C.red, 'stroke-width': 7 - i * 1.5, opacity: 0 }));
+    const tAl = clamp(sayAt(ctx, 1, 'smoke alarm', 0.4), cue(1) + 0.4, dur - 3);
+    tl.fromTo(aBody, { opacity: 0, scale: 0.4, transformOrigin: `${AX}px ${AY}px` }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, tAl);
+    const blinkEnd = dur - 0.6;
     const nBl = Math.max(2, Math.floor((blinkEnd - tAl - 0.5) / 0.9));
     tl.fromTo(arcs, { opacity: 0 }, { opacity: 1, duration: 0.18, stagger: 0.09, yoyo: true, repeat: nBl * 2 - 1, repeatDelay: 0.27, ease: 'power1.out' }, tAl + 0.5);
-    tl.to(aBody, { rotation: 8, transformOrigin: '50% 50%', duration: 0.07, yoyo: true, repeat: 7, ease: 'sine.inOut' }, tAl + 0.5);
+    tl.to(aBody, { rotation: 8, svgOrigin: `${AX} ${AY}`, duration: 0.07, yoyo: true, repeat: 7, ease: 'sine.inOut' }, tAl + 0.5);
+    // the sensitive dog startles when the alarm goes off: "easily triggered"
+    const tTrig = clamp(sayAt(ctx, 1, 'easily triggered', 0.7), tAl + 1.0, dur - 1.5);
+    tl.to(dogs[0].inner, { x: 5, duration: 0.07, yoyo: true, repeat: 9, ease: 'sine.inOut' }, tTrig);
+    tl.to(dogs[0].disc, { attr: { stroke: C.red }, duration: 0.4 }, tTrig);
+  });
 
-    // ---------- beat 1: prenatal environment drops in; health, nutrition and stress gather around it
-    A.out(tl, LA, cue(1) - 0.35, 'fadeUp', { dur: 0.45 });
-    A.out(tl, cap0, cue(1) - 0.3, 'fade', { dur: 0.35 });
+  // ================================================================== ch01s05 Before birth
+  registerScene('ch01s05', ctx => {
+    const { stage, tl, cue, dur } = ctx;
+    const { sayAt, clamp, STD, CAP_Y, ING } = C1;
+    const C = col();
+    css(stage);
+    const { B } = C1.sceneBase(ctx, 'Before birth', 1);
+    const SUB_Y = 296;
+
+    // the prenatal chip drops in beside the DNA chip
     const cap1 = C1.caption(stage, 1, STD.cx, CAP_Y);
-    const land1 = C1.dropIn(tl, B, 1, cue(1) + 0.1);
+    const land1 = C1.dropIn(tl, B, 1, clamp(sayAt(ctx, 0, 'prenatal environment', 0.08), cue(0) + 0.1, cue(0) + 2));
     A.in(tl, cap1, land1 - 0.2, 'fadeUp', { dur: 0.6 });
 
-    const LB = C1.layer(stage);
-    const sub1 = C1.put(LB, 'c1b-sub', 'Before birth *matters too*', { x: 100, y: SUB_Y });
-    A.in(tl, sub1, cue(1) + 0.3, 'fadeUp', { dur: 0.8 });
-    const HX = 600, HY = 570;
-    const hsvg = K.svg(LB, { x: 0, y: 0, w: 1920, h: 1080 });
+    const sub = C1.put(stage, 'c1b-sub', 'Before birth *matters too*', { x: 100, y: SUB_Y });
+    A.in(tl, sub, clamp(sayAt(ctx, 0, 'before it is even born', 0.3), land1 + 0.3, dur - 6), 'fadeUp', { dur: 0.8 });
+
+    // a hub for the prenatal environment with health, nutrition and experiences around it, one per word
+    const HX = 600, HY = 580;
+    const hsvg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     const SAT = [
-      { x: 300, y: 550, ic: 'dog', lab: 'Health', say: 'health', bg: '#fff', fg: C.greenDark, ring: C.green },
-      { x: 600, y: 800, ic: 'soup', lab: 'Nutrition', say: 'nutrition', bg: '#fff', fg: C.greenDark, ring: C.green },
-      { x: 900, y: 550, ic: 'zap', lab: 'Stress', say: 'significant stress', bg: C.amberPale, fg: C.amber, ring: C.amber },
+      { x: 300, y: 560, ic: 'dog', lab: 'Health', say: 'health', bg: '#fff', fg: C.greenDark, ring: C.green },
+      { x: 600, y: 810, ic: 'soup', lab: 'Nutrition', say: 'nutrition', bg: '#fff', fg: C.greenDark, ring: C.green },
+      { x: 900, y: 560, ic: 'zap', lab: 'Experiences', say: 'experiences', bg: C.amberPale, fg: C.amber, ring: C.amber },
     ];
     const links = SAT.map(s => {
       const dx = s.x - HX, dy = s.y - HY, d = Math.hypot(dx, dy);
@@ -230,14 +289,13 @@
     let tPrev = land1 + 0.5;
     SAT.forEach((s, i) => {
       const b = sBadge(hsvg, s.ic, s.x, s.y, 64, s.bg, s.fg, { stroke: s.ring, sw: 4, k: 1.0, iw: 2 });
-      let extra = null;
-      if (i === 0) { // pregnant mum: dog with a small heart badge
-        extra = K.group(b.inner);
+      if (i === 0) { // the mother: a dog with a small heart badge
+        const extra = K.group(b.inner);
         K.circle(extra, 44, -44, 22, { fill: C.red, stroke: '#fff', 'stroke-width': 4 });
         C1.svgIcon(extra, 'heart', 44, -43, 24, { stroke: '#fff', fill: '#fff', 'stroke-width': 2 });
       }
-      const lab = C1.label(LB, s.lab, s.x, s.y + 82, { cls: 'c1b-lab', w: 300 });
-      const t = Math.max(tPrev + 0.5, sayAt(ctx, 1, s.say, 0.3 + i * 0.2, 0.2));
+      const lab = C1.label(stage, s.lab, s.x, s.y + 84, { cls: 'c1b-lab', w: 320 });
+      const t = Math.max(tPrev + 0.5, sayAt(ctx, 0, s.say, 0.42 + i * 0.05, 0.2));
       tPrev = t;
       A.draw(tl, links[i], t - 0.1, 0.5);
       tl.fromTo(b.inner, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, t + 0.15);
@@ -245,103 +303,11 @@
       if (i === 2) tl.to(b.inner, { rotation: 7, transformOrigin: '50% 50%', duration: 0.07, yoyo: true, repeat: 7, ease: 'sine.inOut' }, t + 0.8);
     });
 
-    // ---------- beat 2: the Lab and Pyrenees photo with the three breed tags, one per phrase
-    A.out(tl, LB, cue(2) - 0.35, 'fadeUp', { dur: 0.45 });
-    A.out(tl, cap1, cue(2) - 0.3, 'fade', { dur: 0.35 });
-    const LC = C1.layer(stage);
-    const sub2 = C1.put(LC, 'c1b-sub', 'What was this dog *bred to do?*', { x: 100, y: SUB_Y });
-    A.in(tl, sub2, cue(2) + 0.3, 'fadeUp', { dur: 0.8 });
-    const ph = K.photo(LC, 'photo_why.jpg', { x: 100, y: 392, w: 340, h: 556, pos: '38% 60%' });
-    A.in(tl, ph.root, cue(2) - 0.05, 'fadeRight', { dur: 0.9 });
-    A.kenburns(tl, ph.img, { from: 1.02, to: 1.08, t0: cue(2) - 0.05, t1: cue(4) });
-    const TAGS = [
-      { nm: 'Herders', ds: 'control movement', ic: 'move', say: 'Herders', ear: 'prick' },
-      { nm: 'Terriers', ds: 'hunt and pursue', ic: 'rabbit', say: 'terriers', ear: 'prick' },
-      { nm: 'Guardians', ds: 'monitor and respond to threats', ic: 'shield', say: 'guardian breeds', ear: 'flop' },
-    ];
-    const TY0 = 392, TSTEP = 198, TX = 480;
-    const dsvg = K.svg(LC, { x: 0, y: 0, w: 1920, h: 1080 });
-    const tagEls = [];
-    let tT = cue(2) + 1.0;
-    TAGS.forEach((g, i) => {
-      const y = TY0 + i * TSTEP;
-      const n = K.el('div', 'c1b-btag');
-      Object.assign(n.style, { left: TX + 'px', top: y + 'px' });
-      const ic = K.el('div', 'ic');
-      ic.appendChild(K.icon(g.ic));
-      n.appendChild(ic);
-      const tx = K.el('div');
-      tx.appendChild(K.el('div', 'nm', g.nm));
-      tx.appendChild(K.el('div', 'ds', g.ds));
-      n.appendChild(tx);
-      LC.appendChild(n);
-      tagEls.push(n);
-      tT = Math.max(tT + 0.7, sayAt(ctx, 2, g.say, 0.25 + i * 0.2, 0.25));
-      A.in(tl, n, tT, 'fadeLeft', { dur: 0.6 });
-    });
-
-    // ---------- beat 3: several dogs of different sizes and poses under each tag
-    const sub3 = C1.put(LC, 'c1b-sub', 'Breed gives us *clues*', { x: 100, y: SUB_Y });
-    swap(tl, sub2, sub3, cue(3));
-    const ROWS = [
-      [['stand', 0.74], ['sit', 0.66], ['down', 0.72], ['stand', 0.56, 1], ['sit', 0.8, 1]],
-      [['sit', 0.52], ['stand', 0.62, 1], ['down', 0.66], ['stand', 0.8], ['sit', 0.64, 1]],
-      [['stand', 0.82], ['down', 0.8, 1], ['sit', 0.82], ['stand', 0.64, 1], ['down', 0.7]],
-    ];
-    const DC = [C.greenDark, C.green, C.olive, '#7a8f2e', C.greenDeep];
-    const dogs = [], grounds = [];
-    ROWS.forEach((row, r) => {
-      const base = TY0 + r * TSTEP + 92 + 66;
-      grounds.push(K.line(dsvg, TX + 12, base + 1, TX + 560, base + 1, { stroke: '#dfe8d3', 'stroke-width': 4 }));
-      let x = TX + 20;
-      row.forEach(([pose, s, flip], j) => {
-        const w = 100 * s;
-        const d = dogSil(dsvg, pose, x + w / 2, base, s, DC[(r * 2 + j) % DC.length], { flip, ear: TAGS[r].ear });
-        x += w + 30;
-        dogs.push(d);
-      });
-    });
-    const tDogs = clamp(sayAt(ctx, 3, 'Individual dogs', 0.45, 0.6), cue(3) + 0.3, cue(4) - 2.5);
-    A.draw(tl, grounds, tDogs - 0.3, 0.6, { stagger: 0.1 });
-    tl.fromTo(dogs, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.07, ease: 'back.out(2)' }, tDogs);
-
-    // ---------- beat 4: the breed traits chip drops in; the three chips glow together
-    tl.to(ph.root, { x: -140, opacity: 0, duration: 0.6, ease: 'power2.in' }, cue(4) - 0.4);
-    A.out(tl, [sub3, ...tagEls, dsvg], cue(4) - 0.35, 'fadeUp', { dur: 0.45 });
-    const land2 = C1.dropIn(tl, B, 2, cue(4) + 0.2);
-    const LD = C1.layer(stage);
-    const sub4 = C1.put(LD, 'c1b-sub', 'Every dog *starts somewhere*', { x: 100, y: SUB_Y });
-    A.in(tl, sub4, cue(4) + 0.3, 'fadeUp', { dur: 0.8 });
-    const list = K.el('div', 'c1b-list');
-    Object.assign(list.style, { left: '100px', top: '440px' });
-    LD.appendChild(list);
-    const items = [0, 1, 2].map(k => {
-      const p = K.el('div', 'c1-cap');
-      const dot = K.el('div', 'c1-dot');
-      dot.style.background = ING[k].col;
-      dot.appendChild(K.icon(ING[k].icon));
-      p.appendChild(dot);
-      p.appendChild(K.el('span', null, ING[k].name));
-      list.appendChild(p);
-      return p;
-    });
-    A.in(tl, items.slice(0, 2), cue(4) + 0.6, 'fadeRight', { dur: 0.6, stagger: 0.15 });
-    A.in(tl, items[2], land2 - 0.1, 'fadeRight', { dur: 0.6 });
-    const tGlow = land2 + 0.5;
-    const halos = [0, 1, 2].map(k => {
-      const o = B.tokens[k].outer;
-      const c = K.circle(o, 0, 0, 58, { fill: '#e6f3d6', stroke: C.greenLight, 'stroke-width': 4, opacity: 0 });
-      o.insertBefore(c, o.firstChild);
-      return c;
-    });
-    tl.fromTo(halos, { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' }, { opacity: 0.95, scale: 1, duration: 0.8, stagger: 0.12, ease: 'power2.out' }, tGlow);
-    tl.to(B.glow, { opacity: 0.9, duration: 1.2, ease: 'sine.inOut' }, tGlow);
-    tl.to([0, 1, 2].map(k => B.tokens[k].inner), { scale: 1.12, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, stagger: 0.12, ease: 'sine.inOut' }, tGlow + 0.1);
-    tl.to(items, { boxShadow: '0 0 0 4px rgba(184,217,154,0.9), 0 12px 30px rgba(97,149,55,0.25)', duration: 0.6, stagger: 0.12 }, tGlow);
-    void dur;
+    // "part of the foundation": both chips in the bowl glow together
+    glowTokens(tl, B, 2, clamp(sayAt(ctx, 0, 'foundation', 0.85), tPrev + 1.2, dur - 1.8));
   });
 
-  // ================================================================== ch01s05 Early life and socialization
+  // ================================================================== ch01s07 Early life and socialization
   registerScene('ch01s07', ctx => {
     const { stage, tl, cue, dur } = ctx;
     const { sayAt, clamp, STD, CAP_Y, ING } = C1;
@@ -395,15 +361,16 @@
     const tCells = Math.max(tFew + 0.9, at(0, 'especially influenced', 0.85));
     tl.fromTo(cells, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.14, ease: 'back.out(2)' }, tCells);
 
-    // ---------- beat 1: too little. Gaps open in the window; the missing experiences are named
+    // ---------- beat 1: too little exposure. Gaps open in the window; the missing experiences are named
     const sub1 = C1.put(stage, 'c1b-sub', 'Too little *exposure*', { x: 100, y: SUB_Y });
     swap(tl, sub0, sub1, cue(1));
     const GAP = [1, 2, 3, 4];
     const gaps = GAP.map(k => K.rect(tsvg, cx(k) - 36, TY, 72, TH, { fill: '#e1e7d9' }));
-    const tGap = Math.max(cue(1) + 0.3, at(1, 'Too little', 0.05));
+    const tGap = Math.max(cue(1) + 0.3, at(1, "don't have enough", 0.05));
     tl.to(GAP.map(k => cells[k]), { opacity: 0, y: 30, duration: 0.4, stagger: 0.12, ease: 'power2.in' }, tGap);
     tl.fromTo(gaps, { scaleY: 0, transformOrigin: '50% 50%' }, { scaleY: 1, duration: 0.45, stagger: 0.12, ease: 'power2.out' }, tGap + 0.2);
-    const TAGS = [['user', 'Strangers', 'people'], ['bus', 'Buses', 'experiences'], ['skateboard', 'Skateboards', 'experiences'], ['map-pin', 'New places', 'places']];
+    // tags in the order the narration names them: people, places, experiences
+    const TAGS = [['user', 'Strangers', 'people'], ['map-pin', 'New places', 'places'], ['bus', 'Buses', 'experiences'], ['skateboard', 'Skateboards', 'experiences']];
     const trow = K.el('div', null);
     Object.assign(trow.style, { position: 'absolute', left: TX0 + 'px', top: TY + TH + 110 + 'px', display: 'flex', gap: '22px' });
     LT.appendChild(trow);
@@ -413,9 +380,10 @@
       n.style.left = n.style.top = '';
       return n;
     });
+    let tTag = tGap + 0.4;
     TAGS.forEach(([, , ph], i) => {
-      const t = Math.max(tGap + 1.0, at(1, ph, 0.3 + i * 0.08, 0.2)) + (i === 2 ? 0.45 : 0);
-      A.in(tl, tags[i], t, 'fadeUp', { dur: 0.55 });
+      tTag = Math.max(tTag + 0.45, at(1, ph, 0.3 + i * 0.08, 0.2));
+      A.in(tl, tags[i], tTag, 'fadeUp', { dur: 0.55 });
     });
     // an adopted dog: you meet them after the window has closed
     const MX = 1030;
@@ -425,46 +393,69 @@
     C1.svgIcon(mk, 'heart-handshake', MX, TY + TH / 2, 34, { stroke: C.greenDark, 'stroke-width': 2.2 });
     const mlab = C1.label(LT, 'You meet them', MX, TY - 88, { cls: 'c1b-pin', w: 300 });
     mlab.style.justifyContent = 'center';
-    const tMeet = Math.max(tGap + 3, at(1, 'adopt an older dog', 0.5));
+    const tMeet = Math.max(tTag + 1.2, at(1, 'adopt an older dog', 0.5));
     tl.fromTo(mk, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(2)' }, tMeet);
     A.in(tl, mlab, tMeet + 0.2, 'fadeUp', { dur: 0.6 });
 
-    // ---------- beat 2: more is not always better. The window swells and overfills
-    const sub2 = C1.put(stage, 'c1b-sub', 'More is not *always better*', { x: 100, y: SUB_Y });
+    // ---------- beat 2: how we expose matters. The puppy watches from different distances and has options
+    A.out(tl, LT, cue(2) - 0.35, 'fadeUp', { dur: 0.45 });
+    const sub2 = C1.put(stage, 'c1b-sub', 'How we expose *matters*', { x: 100, y: SUB_Y });
     swap(tl, sub1, sub2, cue(2));
-    A.out(tl, [...tags, mlab, mk, ticks[1]], cue(2) - 0.3, 'fade', { dur: 0.4 });
-    tl.to(gaps, { opacity: 0, duration: 0.4 }, cue(2) - 0.2);
-    tl.to(GAP.map(k => cells[k]), { opacity: 1, y: 0, duration: 0.4 }, cue(2));
-    const WX1 = 960, WY1 = 900;
-    const tSwell = Math.max(cue(2) + 0.3, at(2, 'go too far', 0.3));
-    tl.to(win, { attr: { width: WX1 - TX0, height: WY1 - TY, rx: 40 }, duration: 1.0, ease: 'power3.inOut' }, tSwell);
-    tl.to(brk, { attr: { d: `M ${TX0 + 2} ${TY - 12} V ${TY - 25} H ${WX1 - 2} V ${TY - 12}` }, duration: 1.0, ease: 'power3.inOut' }, tSwell);
-    tl.to(ticks[0], { opacity: 0, duration: 0.3 }, tSwell);
-    // a fixed scatter of people, dogs, hands and places that piles up and spills over the edges
-    const PILE = ['user', 'dog', 'hand', 'map-pin', 'users', 'dog', 'house', 'hand', 'store', 'user', 'bus', 'dog', 'hand', 'trees',
-      'user', 'car', 'dog', 'hand', 'user', 'map-pin', 'dog', 'users', 'hand', 'house', 'user', 'dog', 'store', 'hand'];
-    let seed = 11;
-    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-    const spots = [];
-    for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++) spots.push([200 + c * 104 + (r % 2) * 40 + (rnd() - 0.5) * 44, TY + TH + 58 + r * 88 + (rnd() - 0.5) * 36]);
-    spots.push([1000, TY + 150], [1016, TY + 262], [930, WY1 + 12], [560, WY1 + 16], [250, WY1 + 10], [700, TY + TH + 20]);
-    const order = spots.map((_, i) => [rnd(), i]).sort((a, b) => a[0] - b[0]).map(v => v[1]);
-    const pile = order.map((si, i) => {
-      const [x, y] = spots[si];
-      const r = 32 + rnd() * 12;
-      const solid = i % 3 !== 1;
-      return sBadge(tsvg, PILE[i % PILE.length], x, y, r, solid ? '#fff' : C.greenDark, solid ? C.greenDark : '#fff', { stroke: solid ? C.greenLight : '#fff', sw: 3, k: 1.15, iw: 2.1 });
+    const LX = C1.layer(stage);
+    const xsvg = K.svg(LX, { x: 0, y: 0, w: 1920, h: 1080 });
+    const PX = 576, PY = 640;
+    const pupX = sBadge(xsvg, 'dog', PX, PY, 54, C.amber, '#fff', { sw: 5, k: 1.1, iw: 2.1 });
+    tl.fromTo(pupX.inner, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, cue(2) + 0.3);
+    // a person, a dog and a new place, each a little farther away (and smaller) than the last
+    const WORLD = [
+      { ic: 'user', x: 1060, y: 470, r: 52, lab: 'Person', fill: '#fff', fg: C.inkSoft, st: '#cfd8c4', sw: 3 },
+      { ic: 'dog', x: 1190, y: 720, r: 46, lab: 'Dog', fill: C.green, fg: '#fff', st: '#fff', sw: 5 },
+      { ic: 'map-pin', x: 1300, y: 460, r: 40, lab: 'New place', fill: C.pale, fg: C.olive, st: '#fff', sw: 4 },
+    ];
+    const world = WORLD.map(w => {
+      const b = sBadge(xsvg, w.ic, w.x, w.y, w.r, w.fill, w.fg, { stroke: w.st, sw: w.sw, k: 1.1, iw: 2 });
+      const lab = C1.label(LX, w.lab, w.x, w.y + w.r + 14, { cls: 'c1b-tick', w: 240 });
+      return { b, lab };
     });
-    const tPile = Math.max(tSwell + 0.8, at(2, 'More exposure', 0.6, 0.6));
-    const pileEnd = Math.max(tPile + 1.5, cue(3) - 1.0);
-    pile.forEach((p, i) => {
-      const f = Math.pow(i / (pile.length - 1), 0.75);
-      tl.fromTo(p.inner, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2.4)' }, tPile + f * (pileEnd - tPile));
+    const tWorld = clamp(at(2, 'exposing a puppy', 0.18), cue(2) + 0.9, cue(3) - 10);
+    tl.fromTo(world.map(o => o.b.inner), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.55, stagger: 0.25, ease: 'back.out(2)' }, tWorld);
+    A.in(tl, world.map(o => o.lab), tWorld + 0.3, 'fadeUp', { dur: 0.5, stagger: 0.25 });
+    // the puppy looks from one to the next
+    tl.to(pupX.inner, { rotation: -8, transformOrigin: '50% 50%', duration: 0.5, yoyo: true, repeat: 3, ease: 'sine.inOut' }, clamp(at(2, 'The way those experiences', 0.35), tWorld + 1.2, cue(3) - 8));
+    // four small option arrows around the puppy, one per word
+    const OPTS = [
+      { lab: 'Observe', ic: 'eye', ang: -40, dash: true, say: 'observe' },
+      { lab: 'Approach', ic: 'footprints', ang: 0, say: 'approach' },
+      { lab: 'Move away', ic: 'undo-2', ang: 180, say: 'move away' },
+      { lab: 'Take a break', ic: 'pause', ang: 90, say: 'take a break' },
+    ];
+    const R0 = 72, R1 = 160;
+    const opts = [];
+    let tOpt = tWorld + 1.0;
+    OPTS.forEach((o, i) => {
+      const a = (o.ang * Math.PI) / 180, ux = Math.cos(a), uy = Math.sin(a);
+      const x0 = PX + ux * R0, y0 = PY + uy * R0, x1 = PX + ux * R1, y1 = PY + uy * R1;
+      const g = K.group(xsvg);
+      const shaft = K.line(g, x0, y0, x1 - ux * 6, y1 - uy * 6, { stroke: C.greenDark, 'stroke-width': 6, 'stroke-linecap': 'round' });
+      if (o.dash) shaft.setAttribute('stroke-dasharray', '4 14');
+      const hx = -uy, hy = ux, L = 22, W = 15;
+      K.path(g, `M ${x1 - ux * L + hx * W} ${y1 - uy * L + hy * W} L ${x1} ${y1} L ${x1 - ux * L - hx * W} ${y1 - uy * L - hy * W}`, { stroke: C.greenDark, 'stroke-width': 6, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+      const p = pill(LX, 'c1b-opt', o.ic, o.lab, 0, 0);
+      // pills sit just past the arrow tip
+      if (o.ang === 180) Object.assign(p.style, { left: 'auto', right: 1920 - (x1 - 16) + 'px', top: y1 - 31 + 'px' });
+      else if (o.ang === 90) Object.assign(p.style, { left: x1 + 'px', top: y1 + 16 + 'px', transform: 'translateX(-50%)' });
+      else Object.assign(p.style, { left: x1 + 16 + 'px', top: y1 - 31 - (o.ang < 0 ? 12 : 0) + 'px' });
+      tOpt = Math.max(tOpt + 0.45, at(2, o.say, 0.55 + i * 0.04, 0.2));
+      tl.fromTo(g, { opacity: 0, scale: 0.3, svgOrigin: `${x0} ${y0}` }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, tOpt);
+      tl.fromTo(p, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, tOpt + 0.12);
+      opts.push(p);
     });
-    tl.to(win, { attr: { fill: '#7fa84f' }, duration: 1.2 }, pileEnd - 0.8);
+    // "some choice": the options pulse together
+    const tChoice = clamp(at(2, 'some choice', 0.8), tOpt + 0.8, cue(3) - 1.2);
+    tl.to(opts, { scale: 1.08, duration: 0.25, yoyo: true, repeat: 1, stagger: 0.1, ease: 'sine.inOut' }, tChoice);
 
     // ---------- beat 3: pass the puppy
-    A.out(tl, LT, cue(3) - 0.35, 'fadeUp', { dur: 0.45 });
+    A.out(tl, LX, cue(3) - 0.35, 'fadeUp', { dur: 0.45 });
     const sub3 = C1.put(stage, 'c1b-sub', 'Pass the *puppy*', { x: 100, y: SUB_Y });
     swap(tl, sub2, sub3, cue(3));
     const LP = C1.layer(stage);
@@ -507,7 +498,7 @@
     gsap.set(pupIn, { rotation: -ang(0), transformOrigin: '50% 50%' });
     const tPup = Math.max(cue(3) + 0.4, at(3, 'pass the puppy', 0.1));
     tl.fromTo(pupIn, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, tPup);
-    const stops = [at(3, 'picking up', 0.3, 0.2)];
+    const stops = [Math.max(tPup + 1.2, at(3, 'picking up', 0.3, 0.2))];
     const tPass = Math.max(stops[0] + 1.6, at(3, 'passing them', 0.45, 0.1));
     const tLast = Math.max(tPass + 4, cue(4) - 1.4);
     for (let i = 1; i < 6; i++) stops.push(tPass + ((tLast - tPass) * (i - 1)) / 4);
@@ -532,44 +523,42 @@
     tl.fromTo(mfill, { scaleX: 0.02 }, { scaleX: 0.1, duration: 0.8, ease: 'power2.out' }, tMeter + 0.4);
     tl.to(mfill, { scaleX: 0.06, duration: 0.25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tMeter + 1.4);
 
-    // ---------- beat 4: too much, too fast. The crowd closes in and the puppy shrinks
-    const sub4 = C1.put(stage, 'c1b-sub', 'Too much, *too fast*', { x: 100, y: SUB_Y });
+    // ---------- beat 4: no choice, no break. Hands all around; a pause and an exit sit just out of reach
+    const sub4 = C1.put(stage, 'c1b-sub', 'No choice, *no break*', { x: 100, y: SUB_Y });
     swap(tl, sub3, sub4, cue(4));
     tl.to(pupPos, { x: CX, duration: 0.8, ease: 'power2.inOut' }, cue(4));
-    [0, 1, 2, 3, 4, 5].forEach(i => { if (i !== 5) reach(i, cue(4) + 0.2 + i * 0.08); });
-    const MORE = {
-      people: [['user', -60, 236], ['user', 120, 236], ['users', 35, 345], ['user', 215, 345]],
-      dogs: [['dog', 0, 236], ['dog', 180, 236], ['dog', -35, 345], ['dog', 145, 345]],
-      hands: [['hand', -60, 150], ['hand', 0, 150], ['hand', 120, 150], ['hand', 180, 150]],
-      places: [['house', 60, 236], ['store', 240, 236], ['map-pin', 0, 345], ['trees', 180, 345]],
-    };
-    const PH = { people: 'new people', dogs: 'dogs', hands: 'handling', places: 'environments' };
-    let tPrevM = cue(4) + 0.6;
-    Object.keys(MORE).forEach((key, gi) => {
-      const els = MORE[key].map(([n, a, r]) => {
-        const [x, y] = pos(a, r);
-        if (n === 'hand') {
-          const g = K.group(crowd);
-          gsap.set(g, { x, y });
-          const inner = K.group(g);
-          const rot = K.group(inner, { transform: `rotate(${a - 90})` });
-          C1.svgIcon(rot, 'hand', 0, 0, 50, { stroke: '#8a6a4a', 'stroke-width': 2.1, fill: '#f6e7d6' });
-          return inner;
-        }
-        const fill = key === 'dogs' ? C.green : key === 'places' ? C.pale : '#fff';
-        const fg = key === 'dogs' ? '#fff' : key === 'places' ? C.olive : C.inkSoft;
-        return sBadge(crowd, n, x, y, 42, fill, fg, { stroke: key === 'people' ? '#cfd8c4' : '#fff', sw: key === 'people' ? 3 : 4, k: 1.1, iw: 2 }).inner;
-      });
-      const t = Math.max(tPrevM + 0.6, at(4, PH[key], 0.3 + gi * 0.1, 0.2));
-      tPrevM = t;
-      tl.fromTo(els, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.45, stagger: 0.1, ease: 'back.out(2.2)' }, t);
+    const tHands = clamp(at(4, 'repeated handling', 0.3, 0.2), cue(4) + 0.3, cue(5) - 6);
+    [0, 1, 2, 3, 4].forEach(i => reach(i, tHands + i * 0.1));
+    // just outside the ring, on the left: a pause sign and an exit arrow
+    const OUT = [
+      { ic: 'pause', a: 202, lab: 'Pause', say: 'pause' },
+      { ic: 'log-out', a: 158, lab: 'Exit', say: 'move away', flip: true },
+    ];
+    const outs = OUT.map(o => {
+      const [x, y] = pos(o.a, 392);
+      const b = sBadge(psvg, o.ic, x, y, 48, C.mist, C.greenDark, { stroke: C.green, sw: 4, dash: '10 8', k: 1.05, iw: 2.3 });
+      if (o.flip) gsap.set(b.inner.lastChild, { scaleX: -1, transformOrigin: '50% 50%' });
+      const lab = C1.label(LP, o.lab, x, y + 62, { cls: 'c1b-tick', w: 200 });
+      return { b, lab, x, y, o };
     });
-    const tSqueeze = tPrevM + 0.6;
-    const tOver = Math.max(tSqueeze + 1, at(4, 'overwhelming', 0.9));
-    tl.to(crowd, { scale: 0.8, svgOrigin: `${CX} ${CY}`, duration: tOver + 0.5 - tSqueeze, ease: 'power1.inOut' }, tSqueeze);
-    tl.to(pupIn, { scale: 0.42, duration: tOver + 0.6 - cue(4), ease: 'power1.in' }, cue(4) + 0.4);
-    tl.to(mfill, { scaleX: 0.025, backgroundColor: C.red, duration: 0.8, ease: 'power2.out' }, Math.max(tPrevM, at(4, 'without enough opportunity', 0.55)));
-    tl.to(pupIn, { x: 3, duration: 0.07, yoyo: true, repeat: 11, ease: 'sine.inOut' }, tOver);
+    let tOut = tHands + 0.6;
+    outs.forEach((u, i) => {
+      tOut = Math.max(tOut + 0.5, at(4, u.o.say, 0.45 + i * 0.08, 0.2));
+      tl.fromTo(u.b.inner, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tOut);
+      A.in(tl, u.lab, tOut + 0.15, 'fadeUp', { dur: 0.5 });
+    });
+    // the puppy leans toward them, a hand closes the gap, and it is back in the middle
+    const tLean = clamp(at(4, 'choose whether', 0.6), tOut + 0.8, cue(5) - 3);
+    const la = ((180 - ang(5)) * Math.PI) / 180;
+    tl.to(pupPos, { x: CX + Math.cos(la) * 70, y: CY + Math.sin(la) * 70, duration: 0.45, ease: 'power2.out' }, tLean);
+    tl.to(pupPos, { x: CX, y: CY, duration: 0.45, ease: 'power2.in' }, tLean + 0.75);
+    reach(5, tLean + 0.35);
+    tl.to(outs.map(u => u.b.inner), { x: -14, duration: 0.3, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tLean + 0.35);
+    tl.to(mfill, { scaleX: 0.025, backgroundColor: C.red, duration: 0.8, ease: 'power2.out' }, tLean + 0.6);
+    const tOver = clamp(at(4, 'overwhelming', 0.8), tLean + 1.4, cue(5) - 1.2);
+    tl.to(pupIn, { scale: 0.72, duration: 0.8, ease: 'power2.inOut' }, tOver - 0.4);
+    tl.to(crowd, { scale: 0.92, svgOrigin: `${CX} ${CY}`, duration: 1.0, ease: 'power2.inOut' }, tOver - 0.4);
+    tl.to(pupIn, { x: 3, duration: 0.07, yoyo: true, repeat: 11, ease: 'sine.inOut' }, tOver + 0.4);
 
     // ---------- beat 5: every dog means a party, until the leash says no
     A.out(tl, LP, cue(5) - 0.35, 'fade', { dur: 0.45 });
@@ -643,13 +632,12 @@
     const fr = K.el('div', 'c1b-red');
     fr.appendChild(K.icon('frown'));
     fr.appendChild(K.el('span', null, 'Frustration'));
-    Object.assign(fr.style, { left: '0px', top: '0px' });
     LQ.appendChild(fr);
     Object.assign(fr.style, { left: (PX2 + 22 + DX) / 2 - 150 + 'px', top: LY - 150 + 'px', width: '300px', justifyContent: 'center' });
     const tFr = Math.max(tTaut + 0.8, at(5, 'frustration', 0.85, 0.2));
     A.in(tl, fr, tFr, 'pop', { dur: 0.6 });
 
-    // ---------- beat 6: the chip drops into the bowl beside the others
+    // ---------- beat 6: the party row clears; the socialization chip drops into the bowl beside the others
     A.out(tl, LQ, cue(6) - 0.35, 'fade', { dur: 0.45 });
     A.out(tl, sub5, cue(6) - 0.35, 'fadeUp', { dur: 0.4 });
     tl.to(B.wrap, { scale: 1, x: 0, y: 0, duration: 0.9, ease: 'power3.inOut' }, cue(6) + 0.1);
@@ -660,11 +648,12 @@
     const card = K.el('div', 'c1-card');
     Object.assign(card.style, { left: '100px', top: '400px', width: '1000px', height: '250px' });
     LZ.appendChild(card);
-    const hb = C1.badge(LZ, 'history', 206, 525, 130, ING[3].col, '#fff');
-    const htxt = C1.put(LZ, 'c1-big', 'Early experiences become<br>part of the *history*', { x: 310, y: 458 });
-    A.in(tl, card, cue(6) + 0.1, 'fadeUp', { dur: 0.7 });
-    A.in(tl, hb, cue(6) + 0.3, 'pop', { dur: 0.6 });
-    A.in(tl, htxt, cue(6) + 0.4, 'fadeUp', { dur: 0.7 });
-    void dur;
+    const hb = C1.badge(LZ, ING[3].icon, 206, 525, 130, ING[3].col, '#fff');
+    const htxt = C1.put(LZ, 'c1-big', 'Socialization is<br>*one ingredient*', { x: 310, y: 458 });
+    A.in(tl, card, land - 0.3, 'fadeUp', { dur: 0.7 });
+    A.in(tl, hb, land - 0.1, 'pop', { dur: 0.6 });
+    A.in(tl, htxt, land, 'fadeUp', { dur: 0.7 });
+    // "in the larger picture": every ingredient so far glows together
+    glowTokens(tl, B, 4, clamp(at(6, 'one ingredient', 0.72), land + 1.5, dur - 1.8));
   });
 })();

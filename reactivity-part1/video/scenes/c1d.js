@@ -334,18 +334,20 @@
     A.in(tl, cap, cue(0) + 0.35, 'fadeUp', { dur: 0.6 });
     tl.fromTo(B.glow, { opacity: 0 }, { opacity: 0.4, duration: 1.0, ease: 'power2.out', immediateRender: false }, cue(0) + 1.4);
     const LA = C1.layer(stage);
-    const l0 = C1.put(LA, 'c1-big', 'Pain can *change behavior*', { x: 100, y: 300 });
+    const l0 = C1.put(LA, 'c1-big', 'Pain can *exacerbate behavior*', { x: 100, y: 300 });
     A.in(tl, l0, cue(0) + 0.5, 'fadeUp', { dur: 0.8 });
     const sa = K.svg(LA, { x: 0, y: 0, w: 1920, h: 1080 });
     const D = dogAt(sa, 610, 572, 0.95);
-    const tDog = clamp(at(0, 'A dog who is hurting', 0.2, 0.3), cue(0) + 1.0, end(0) - 9);
+    const tDog = clamp(at(0, 'A dog who is in pain', 0.35, 0.3), cue(0) + 1.0, end(0) - 3);
     A.in(tl, D.outer, tDog, 'fadeUp', { dur: 0.8 });
     const SPOTS = [[290, 150], [204, 124], [128, 160], [302, 250], [124, 254]];
-    SPOTS.forEach(([x, y], i) => soreSpot(tl, D, x, y, tDog + 0.8 + i * 0.18, cue(1) - 0.4));
-    const SENS = [['Touch', 'hand', 'touched'], ['Bumping', 'chevrons-right-left', 'bumped'], ['Approach', 'footprints', 'approached'],
-      ['Handling', 'grab', 'handled'], ['Noise', 'volume-2', 'things happening'], ['Movement', 'move', 'their environment']];
-    let tPrev = tDog + 0.8;
-    SENS.forEach(([nm, ic, w], i) => {
+    SPOTS.forEach(([x, y], i) => soreSpot(tl, D, x, y, tDog + 0.5 + i * 0.12, cue(1) - 0.4));
+    // six sensitivities, staggered evenly across the second sentence (none of them is a spoken word)
+    const SENS = [['Touch', 'hand'], ['Bumping', 'chevrons-right-left'], ['Approach', 'footprints'],
+      ['Handling', 'grab'], ['Noise', 'volume-2'], ['Movement', 'move']];
+    const tS0 = Math.max(tDog + 0.9, at(0, 'in pain', 0.45, 0));
+    const tS1 = Math.max(tS0 + 1.5, end(0) - 1.0);
+    SENS.forEach(([nm, ic], i) => {
       const n = K.el('div', 'c1d-sens');
       const ib = K.el('div', 'ib');
       ib.appendChild(K.icon(ic));
@@ -353,9 +355,7 @@
       n.appendChild(K.el('div', 't', nm));
       Object.assign(n.style, { left: 610 + (i - 2.5) * 172 - 85 + 'px', top: '768px' });
       LA.appendChild(n);
-      const t = Math.max(tPrev + 0.4, at(0, w, 0.62 + i * 0.06, 0.2));
-      A.in(tl, n, t, 'pop', { dur: 0.55 });
-      tPrev = t;
+      A.in(tl, n, tS0 + ((tS1 - tS0) * i) / (SENS.length - 1), 'pop', { dur: 0.55 });
     });
 
     // ---------- beat 1: the icons clear; a dog who looks fine, question marks around them; then the same dog leans away from a hand

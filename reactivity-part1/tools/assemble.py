@@ -106,6 +106,7 @@ def main():
     ap.add_argument("--no-chapters", action="store_true")
     ap.add_argument("--music", help="optional background music file, looped and ducked under the voice")
     ap.add_argument("--music-db", type=float, default=-24, help="music level in dB (default -24)")
+    ap.add_argument("--silent", action="store_true", help="leave the narration out (a visuals-only preview; captions are still written)")
     ap.add_argument("--chapter-max-mb", type=float, default=29, help="re-encode any chapter file bigger than this (default 29 MB)")
     args = ap.parse_args()
     timing = json.loads((BUILD / "timing.json").read_text())
@@ -128,7 +129,7 @@ def main():
         if s["kind"] == "bumper":
             a = int(SR * (s["start"] + 0.05))
             mix[a:a + len(ch)] += ch[: len(mix) - a]
-        for item in s["audio"]:
+        for item in ([] if args.silent else s["audio"]):
             f = ROOT / item["file"]
             if f not in cache:
                 cache[f] = decode(f)
@@ -150,6 +151,9 @@ def main():
               f"[v][md]amix=inputs=2:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11[out]")
         run("ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", str(raw), "-i", args.music,
             "-filter_complex", fc, "-map", "[out]", "-ar", str(SR), "-ac", "2", "-c:a", "aac", "-b:a", "192k", str(audio))
+    elif args.silent:
+        run("ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", str(raw),
+            "-ar", str(SR), "-ac", "2", "-c:a", "aac", "-b:a", "96k", str(audio))
     else:
         run("ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", str(raw),
             "-af", "highpass=f=70,loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", str(SR), "-ac", "2", "-c:a", "aac", "-b:a", "192k", str(audio))

@@ -20,12 +20,15 @@ const fps = timing.fps;
 const OUT = path.join(ROOT, 'build/segments');
 fs.mkdirSync(OUT, { recursive: true });
 
-const shared = ['video/lib.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
-// which scene file registers each scene id (files are not always named after their chapter)
+let shared = ['video/lib.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
+// which scene file registers each scene id (files are not always named after their chapter);
+// helper files that register no scenes (e.g. the shared bowl) count as shared, so editing them re-renders everything
 const SCENE_FILE = {};
-for (const f of fs.readdirSync(path.join(ROOT, 'video/scenes')).filter(f => f.endsWith('.js'))) {
+for (const f of fs.readdirSync(path.join(ROOT, 'video/scenes')).filter(f => f.endsWith('.js')).sort()) {
   const src = fs.readFileSync(path.join(ROOT, 'video/scenes', f), 'utf8');
-  for (const m of src.matchAll(/registerScene\('([^']+)'/g)) SCENE_FILE[m[1]] = src;
+  const ids = [...src.matchAll(/registerScene\('([^']+)'/g)].map(m => m[1]);
+  ids.forEach(id => { SCENE_FILE[id] = src; });
+  if (!ids.length) shared += '\n' + src;
 }
 function segHash(seg) {
   const code = seg.kind === 'bumper' ? '' : (SCENE_FILE[seg.id] || '');

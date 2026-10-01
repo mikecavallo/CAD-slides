@@ -1,7 +1,54 @@
 {
-  "title": "Understanding Reactivity and Aggression, Part 1",
-  "notes": "v6: Chapter 1 from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Twelve scenes. Material below that line is not part of this video. v5 is in script/archive/lesson-v5-chapter1-10scenes.json. The trainer records the narration herself.",
+  "title": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression",
+  "notes": "v7: a short welcome chapter (ch00: title slide, then the problem, promise and plan) before Chapter 1 from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. v5 is in script/archive/lesson-v5-chapter1-10scenes.json. The trainer records the narration.",
   "chapters": [
+    {
+      "id": "ch00",
+      "title": "Welcome",
+      "slide_refs": [],
+      "scenes": [
+        {
+          "id": "ch00s01",
+          "heading": "Getting Started with Dog Behavior",
+          "visual_concept": "Title slide: the presentation title at left, Tori's headshot in a large circle at right with the training photo (Tori with a Golden Retriever) as a smaller tilted card, and a name block with credentials.",
+          "assets": [
+            "trainer_headshot.jpg",
+            "trainer_with_dog.jpg",
+            "logo.png"
+          ],
+          "beats": [
+            {
+              "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome to Getting Started with Dog Behavior: Understanding Reactivity and Aggression.",
+              "show": "The title 'Getting Started with Dog Behavior' and the subtitle 'Understanding Reactivity and Aggression' write on at left; the headshot scales in inside a green ring; the name block 'Tori Ganino, BS, CDBC, CPDT-KA, Calling All Dogs' appears as the name is said; the training photo card tilts in over the corner of the headshot.",
+              "onscreen": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression"
+            }
+          ]
+        },
+        {
+          "id": "ch00s02",
+          "heading": "Where we're headed",
+          "visual_concept": "Three cards across the slide, one per beat: The problem (why you're here), The promise (what you'll walk away with), The plan (how we'll get there, three numbered steps). The current card is outlined in green.",
+          "assets": [],
+          "beats": [
+            {
+              "say": "If you're here, your dog's behavior is probably making life harder than it should be. Maybe walks feel stressful. Maybe your dog barks, lunges, or growls, and you're not sure why. And the advice out there can be confusing.",
+              "show": "The 'The problem' card slides up with the line 'Why you're here', and three rows appear as they are said: Stressful walks; Barking, lunging, growling; Confusing advice.",
+              "onscreen": "The problem"
+            },
+            {
+              "say": "By the end, you'll understand why your dog reacts the way they do, what that behavior is doing for them, and where to start helping them.",
+              "show": "The 'The promise' card slides up with the line 'What you'll walk away with', and three checked rows appear as they are said: Why your dog reacts; What the behavior is doing; Where to start.",
+              "onscreen": "The promise"
+            },
+            {
+              "say": "Here's how we'll get there. First, we'll look at what aggression and reactivity really mean. Second, we'll look at the ingredients that shape how a dog responds. And third, we'll look at what fuels the behavior.",
+              "show": "The 'The plan' card slides up with the line 'How we'll get there', and three numbered steps appear on 'First', 'Second' and 'third': What the words really mean; What shapes behavior; What fuels behavior.",
+              "onscreen": "The plan"
+            }
+          ]
+        }
+      ]
+    },
     {
       "id": "ch01",
       "title": "Aggression and Reactivity: Starting with the Basics",
@@ -436,12 +483,13 @@
         {
           "id": "ch01s12",
           "heading": "Putting it together",
-          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then the visible behavior at the top with the ingredient chips beneath it, partly hidden below a surface line; then the view shifts toward the surrounding context as a transition to the next chapter, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then a new amber 'fuel' chip drops in and settles on top of the others under the line 'What fuels the behavior?'; then the view shifts to a barking dog with the surrounding context around it as a transition to the next chapter, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
             "logo.png",
-            "icon:dog"
+            "icon:dog",
+            "icon:flame"
           ],
           "beats": [
             {
@@ -450,14 +498,14 @@
               "onscreen": "Behavior is shaped by many factors"
             },
             {
-              "say": "But not all of those ingredients are visible on the surface. What we see is the behavior. And to understand it more fully, we need to look at what is happening around it.",
-              "show": "The bowl clears. The visible behavior (a dog barking) sits at the top above a surface line, while the eight ingredient chips appear beneath it, partly hidden and faded.",
-              "onscreen": "Look beyond the behavior"
+              "say": "These ingredients can help set the stage for the behavior we see. But there's another piece we need to understand: what fuels the behavior once those ingredients are in place.",
+              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. A new amber chip with a flame icon drops in and settles on top of them, and the line changes to 'What fuels the behavior?'.",
+              "onscreen": "What fuels the behavior?"
             },
             {
-              "say": "That's where we'll go next.",
-              "show": "The view shifts from the visible behavior toward the surrounding context: simple situation elements appear around the dog and an arrow points forward to the next chapter. The Calling All Dogs logo closes the video.",
-              "onscreen": "Next: what's happening around it"
+              "say": "Next, we'll start looking at what is happening around the behavior.",
+              "show": "The bowl clears. A barking dog appears with simple situation elements in a ring around it and an arrow pointing forward to the next chapter. The Calling All Dogs logo closes the video.",
+              "onscreen": "Next: what's happening around the behavior"
             }
           ]
         }

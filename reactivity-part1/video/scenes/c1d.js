@@ -3,8 +3,8 @@
 //                                         Suppress gives way to Understand and Help; a green heart over the bowl
 //   ch01s11  Pain and discomfort          chip; sore spots on a dog + six sensitivities; two panels (looks fine / leans away);
 //                                         a sudden change forks into Behavior and Physical health, then 'Vet visit first'
-//   ch01s12  Putting it together          all eight ingredients drop into the bowl as named; a barking dog above a surface line
-//                                         with the ingredients faded beneath; the context around the dog, an arrow on; logo close
+//   ch01s12  Putting it together          all eight ingredients drop into the bowl as named; an amber 'fuel' chip settles on top;
+//                                         a barking dog with the context around it, an arrow on; logo close
 (() => {
   const C = C1.C;
   const DOG = '#2c4a17', DOG_FAR = '#56822f', DOG_EAR = '#1d3310';
@@ -509,98 +509,61 @@
     tl.fromTo(B.glow, { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' }, { opacity: 0.9, scale: 1, duration: 1.1, ease: 'power2.out' }, tLast + 0.2);
     tl.to(B.tokens.map(t => t.inner), { scale: 1.12, transformOrigin: '50% 50%', duration: 0.22, yoyo: true, repeat: 1, stagger: 0.06, ease: 'power1.out' }, tLast + 0.4);
 
-    // ---------- beat 1: the bowl clears; a barking dog above a surface line, the eight ingredients faded beneath it
+    // ---------- beat 1: the eight stay in the bowl and pulse; a new amber "fuel" chip drops in and settles on top of them
     const t1 = cue(1);
-    A.out(tl, LA, t1 - 0.35, 'fade', { dur: 0.45 });
-    tl.to(B.wrap, { opacity: 0, scale: 0.86, y: 40, duration: 0.6, ease: 'power2.in' }, t1 - 0.3);
-    const LB = C1.layer(stage);
-    const l1 = C1.put(LB, 'c1-big', 'Look beyond the *behavior*', { x: 100, y: 300 });
-    A.in(tl, l1, t1 + 0.2, 'fadeUp', { dur: 0.8 });
-    // the surface: a wavy line across the frame, pale water below it, soft at both ends
-    const WL = 632, W0 = 100, W1 = 1820;
-    const ws = K.svg(LB, { x: 0, y: 0, w: 1920, h: 1080 });
-    const defs = K.svgEl('defs', {}, ws);
-    const wg = K.svgEl('linearGradient', { id: 'c1d-water', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
-    K.svgEl('stop', { offset: '0', 'stop-color': '#b8d99a', 'stop-opacity': 0.5 }, wg);
-    K.svgEl('stop', { offset: '1', 'stop-color': '#e8f1dc', 'stop-opacity': 0 }, wg);
-    const wf = K.svgEl('linearGradient', { id: 'c1d-wfade', gradientUnits: 'userSpaceOnUse', x1: W0, y1: 0, x2: W1, y2: 0 }, defs);
-    [[0, 0], [0.1, 1], [0.9, 1], [1, 0]].forEach(([o, v]) => K.svgEl('stop', { offset: o, 'stop-color': '#fff', 'stop-opacity': v }, wf));
-    const wm = K.svgEl('mask', { id: 'c1d-wmask', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 1920, height: 1080 }, defs);
-    K.rect(wm, W0, 0, W1 - W0, 1080, { fill: 'url(#c1d-wfade)' });
-    let wave = `M ${W0} ${WL}`;
-    for (let x = W0; x < W1; x += 40) wave += ` Q ${x + 10} ${WL - 8} ${x + 20} ${WL} Q ${x + 30} ${WL + 8} ${x + 40} ${WL}`;
-    const water = K.group(ws, { mask: 'url(#c1d-wmask)' });
-    K.path(water, `${wave} L ${W1} 950 L ${W0} 950 Z`, { fill: 'url(#c1d-water)', stroke: 'none' });
-    // the ingredients, sunk below the surface: the deeper the row, the fainter
-    const ROWS = [[0, 1, 4], [2, 3, 5], [6, 7]], FAINT = [0.62, 0.42, 0.26];
-    const sunk = K.el('div', 'c1d-sunk');
-    sunk.style.top = WL + 40 + 'px';
-    LB.appendChild(sunk);
-    const chipRows = ROWS.map(ks => {
-      const rw = K.el('div', 'rw');
-      sunk.appendChild(rw);
-      return ks.map(k => {
-        const g = C1.ING[k];
-        const n = K.el('div', 'c1d-ing');
-        const dt = K.el('div', 'dt');
-        dt.style.background = g.col;
-        dt.appendChild(K.icon(g.icon));
-        n.appendChild(dt);
-        n.appendChild(K.el('span', null, g.name));
-        rw.appendChild(n);
-        return n;
-      });
-    });
-    const wlG = K.group(ws, { mask: 'url(#c1d-wmask)' });
-    const wline = K.path(wlG, wave, { stroke: C.green, 'stroke-width': 5, fill: 'none' });
-    A.draw(tl, wline, t1 + 0.2, 1.0);
-    A.in(tl, water, t1 + 0.4, 'fade', { dur: 0.8 });
-    const tIng = clamp(at(1, 'ingredients are visible', 0.12, 0.3), t1 + 0.7, end(1) - 8);
-    chipRows.forEach((row, r) => row.forEach((n, i) => {
-      tl.fromTo(n, { opacity: 0, y: -26 }, { opacity: FAINT[r], y: 0, duration: 0.8, ease: 'power2.out' }, tIng + r * 0.28 + i * 0.1);
-    }));
-    // the visible behavior: a barking dog standing on the surface
-    const DS = 0.8, DX = 960, DY = WL - 14 - 129 * DS;
-    const D = dogAt(ws, DX, DY, DS);
-    const barks = [[412, 58, 102], [436, 42, 118], [460, 26, 134]].map(([x, y0, y1], i) =>
-      K.path(D.fx, `M ${x} ${y0} Q ${x + 18 + i * 8} ${(y0 + y1) / 2} ${x} ${y1}`, { stroke: C.amber, 'stroke-width': 10, fill: 'none', opacity: 0 }));
-    const tDog = clamp(at(1, 'What we see', 0.36, 0.3), tIng + 1.2, end(1) - 5);
-    A.in(tl, D.outer, tDog, 'fadeUp', { dur: 0.8 });
-    tl.to(D.fig, { rotation: 3, transformOrigin: '50% 100%', duration: 0.4, ease: 'power2.out' }, tDog + 0.6);
-    tl.to(D.tail, { rotation: 22, transformOrigin: '92% 92%', duration: 0.4, ease: 'power2.out' }, tDog + 0.6);
-    const nb = Math.max(1, Math.floor((cue(2) - tDog - 1.4) / 0.9));
-    barks.forEach((b, i) => tl.fromTo(b, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: nb * 2 - 1, repeatDelay: 0.15, ease: 'power1.inOut' }, tDog + 0.8 + i * 0.12));
-    const bp = pill(LB, 'white', 'eye', 'Barking', { x: 1230, y: DY - 150 });
-    A.in(tl, bp, Math.max(tDog + 0.7, at(1, 'is the behavior', 0.45, 0.2)), 'fadeRight', { dur: 0.6 });
+    tl.to(legs.filter(Boolean), { opacity: 0.5, duration: 0.6, ease: 'power2.out' }, t1);
+    A.out(tl, l0, t1 - 0.2, 'fade', { dur: 0.4 });
+    const tSet = clamp(at(1, 'set the stage', 0.3, 0.2), t1 + 0.2, end(1) - 6);
+    tl.to(B.tokens.map(t => t.inner), { scale: 1.15, transformOrigin: '50% 50%', duration: 0.25, yoyo: true, repeat: 1, stagger: 0.05, ease: 'sine.inOut' }, tSet);
+    const FY = -152;
+    const fuel = K.group(B.svg);
+    const fglow = K.circle(fuel, 0, 0, 84, { fill: C.amberPale, opacity: 0 });
+    const fchip = K.group(fuel);
+    K.circle(fchip, 0, 0, 54, { fill: C.amber, stroke: '#fff', 'stroke-width': 6 });
+    C1.svgIcon(fchip, 'flame', 0, 0, 56, { stroke: '#fff', 'stroke-width': 2.3 });
+    gsap.set(fuel, { x: 0, y: FY - 340, opacity: 0 });
+    const tFuel = clamp(at(1, 'another piece', 0.45, 0.2), tSet + 1.2, end(1) - 3);
+    tl.to(fuel, { opacity: 1, duration: 0.25, ease: 'power1.out' }, tFuel);
+    tl.to(fuel, { y: FY, duration: 0.6, ease: 'power2.in' }, tFuel);
+    const tLand = tFuel + 0.6;
+    tl.to(fchip, { scaleX: 1.14, scaleY: 0.86, transformOrigin: '50% 100%', duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, tLand);
+    tl.to(B.bodyAll, { y: 5, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, tLand);
+    C1.splash(tl, B, 0, FY + 40, tLand, C.amber);
+    tl.to(fglow, { opacity: 0.9, scale: 1.25, transformOrigin: '50% 50%', duration: 0.8, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tLand + 0.3);
+    const l1 = C1.label(LA, 'What *fuels* the behavior?', 960, 850, { cls: 'c1-big', w: 1400 });
+    A.in(tl, l1, clamp(at(1, 'what fuels the behavior', 0.6, 0.3), tLand + 0.3, end(1) - 1), 'fadeUp', { dur: 0.8 });
 
-    // ---------- beat 2: the view shifts to what surrounds the dog; an arrow points on to the next chapter
+    // ---------- beat 2: the bowl clears; a barking dog with the context in a ring around it; an arrow points on to the next chapter
     const t2 = cue(2);
-    A.out(tl, l1, t2 - 0.3, 'fade', { dur: 0.35 });
-    tl.to([water, sunk, wlG], { opacity: 0, y: 70, duration: 0.6, ease: 'power2.in' }, t2 - 0.3);
-    A.out(tl, bp, t2 - 0.3, 'fade', { dur: 0.35 });
-    const DX2 = 700, DY2 = 650, DS2 = 0.66;
-    tl.to(D.outer, { x: DX2 - DX, y: DY2 - DY, scale: DS2 / DS, svgOrigin: `${DX} ${DY}`, duration: 0.8, ease: 'power3.inOut' }, t2 - 0.2);
-    tl.to(D.fig, { rotation: 0, duration: 0.5, ease: 'power2.out' }, t2 - 0.2);
+    A.out(tl, LA, t2 - 0.35, 'fade', { dur: 0.45 });
+    tl.to(B.wrap, { opacity: 0, scale: 0.86, y: 40, duration: 0.6, ease: 'power2.in' }, t2 - 0.3);
     const LC = C1.layer(stage);
-    const l2 = C1.put(LC, 'c1-big', 'Next: *what’s happening around it*', { x: 100, y: 300 });
+    const l2 = C1.put(LC, 'c1-big', 'Next: *what’s happening around the behavior*', { x: 100, y: 300 });
     A.in(tl, l2, t2 + 0.05, 'fadeUp', { dur: 0.7 });
     const cs = K.svg(LC, { x: 0, y: 0, w: 1920, h: 1080 });
+    const DX2 = 700, DY2 = 650, DS2 = 0.66;
     const ERX = 330, ERY = 196;
     const ring = K.svgEl('ellipse', { cx: DX2, cy: DY2 + 6, rx: ERX, ry: ERY, fill: 'none', stroke: C.greenLight, 'stroke-width': 5, 'stroke-dasharray': '2 14', 'stroke-linecap': 'round' }, cs);
-    tl.fromTo(ring, { opacity: 0, scale: 0.7, svgOrigin: `${DX2} ${DY2 + 6}` }, { opacity: 1, scale: 1, duration: 0.7, ease: 'power3.out' }, t2 + 0.1);
+    const D = dogAt(cs, DX2, DY2, DS2);
+    A.in(tl, D.outer, t2 + 0.1, 'fadeUp', { dur: 0.7 });
+    const barks = [[412, 58, 102], [436, 42, 118], [460, 26, 134]].map(([x, y0, y1], i) =>
+      K.path(D.fx, `M ${x} ${y0} Q ${x + 18 + i * 8} ${(y0 + y1) / 2} ${x} ${y1}`, { stroke: C.amber, 'stroke-width': 10, fill: 'none', opacity: 0 }));
+    const nb = Math.max(1, Math.floor((dur - t2 - 4) / 0.9));
+    barks.forEach((b, i) => tl.fromTo(b, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: nb * 2 - 1, repeatDelay: 0.15, ease: 'power1.inOut' }, t2 + 0.6 + i * 0.12));
+    tl.fromTo(ring, { opacity: 0, scale: 0.7, svgOrigin: `${DX2} ${DY2 + 6}` }, { opacity: 1, scale: 1, duration: 0.7, ease: 'power3.out' }, t2 + 0.3);
     const CTX = [['user', -150], ['dog', -90], ['car', -30], ['door-open', 150], ['trees', 90], ['bike', 30]];
     CTX.forEach(([ic, a], i) => {
       const r = (a * Math.PI) / 180;
       const b = C1.badge(LC, ic, DX2 + ERX * Math.cos(r), DY2 + 6 + ERY * Math.sin(r), 96, '#fff', C.greenDark);
       Object.assign(b.style, { border: '5px solid ' + C.greenLight, boxShadow: 'var(--shadow-soft)' });
-      A.in(tl, b, t2 + 0.15 + i * 0.08, 'pop', { dur: 0.5 });
+      A.in(tl, b, t2 + 0.4 + i * 0.08, 'pop', { dur: 0.5 });
     });
     const [aS, aH] = arrow(cs, 1150, DY2 + 6, 1600, DY2 + 6, { width: 12, head: 36 });
-    A.draw(tl, [aS, aH], t2 + 0.5, 0.45, { stagger: 0.3 });
+    A.draw(tl, [aS, aH], t2 + 0.8, 0.45, { stagger: 0.3 });
 
     // ---------- close: the corner logo steps aside; the Calling All Dogs logo and url settle at centre
     const tL = Math.max(t2 + 2.0, Math.min(end(2) + 0.5, dur - 2.2));
-    tl.to([h.root, LB, LC], { opacity: 0, duration: 0.5, ease: 'power2.in' }, tL - 0.1);
+    tl.to([h.root, LC], { opacity: 0, duration: 0.5, ease: 'power2.in' }, tL - 0.1);
     tl.to(chrome.logo, { opacity: 0, duration: 0.4 }, tL);
     const halo = K.el('div', 'c1d-halo');
     Object.assign(halo.style, { left: '360px', top: '190px', width: '1200px', height: '560px' });

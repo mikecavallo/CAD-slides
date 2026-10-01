@@ -1,7 +1,7 @@
 // Welcome chapter (ch00): the title slide and the problem / promise / plan slide.
 //   ch00s01  Welcome             presentation title at left; Tori's headshot in a green ring at right, the training photo as a
 //                                tilted card over its corner; name and credentials appear as the name is said
-//   ch00s02  Where we're headed  three cards, one per beat: The problem, The promise, The plan (three numbered steps)
+//   ch00s02  Where we're headed  three cards, one per beat: The problem, The promise, The plan (two numbered steps)
 (() => {
   const CSS = `
   .c0-col { position: absolute; display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
@@ -125,15 +125,15 @@
         rows: ['Stressful walks', 'Barking, lunging, growling', 'Confusing advice'], rowIcons: ['footprints', 'volume-2', 'message-circle-warning'],
         rowBg: 'var(--amber-pale)', rowFg: 'var(--amber)' }),
       card(stage, 680, { icon: 'target', bg: 'var(--green-pale)', fg: 'var(--green-dark)', lab: 'The promise', sub: 'What you\'ll walk away with',
-        rows: ['Why your dog reacts', 'What the behavior is doing', 'Where to start'], rowBg: 'var(--green-pale)', rowFg: 'var(--green-dark)' }),
+        rows: ['Look past the label', 'Why your dog reacts', 'What\'s behind the behavior'], rowBg: 'var(--green-pale)', rowFg: 'var(--green-dark)' }),
       card(stage, 1260, { icon: 'route', bg: 'var(--green)', fg: '#fff', lab: 'The plan', sub: 'How we\'ll get there',
-        rows: ['What the words mean', 'What shapes behavior', 'What fuels behavior'], num: true, rowBg: 'var(--green)', rowFg: '#fff' }),
+        rows: ['What the words mean', 'What sets the stage'], num: true, rowBg: 'var(--green)', rowFg: '#fff' }),
     ];
     // each beat: its card slides up and takes the green outline; its rows land as they are said
     const CUES = [
       [['walks feel stressful', 0.35], ['barks, lunges', 0.6], ['the advice', 0.85]],
-      [['why your dog reacts', 0.3], ['what that behavior', 0.6], ['where to start', 0.85]],
-      [['First', 0.2], ['Second', 0.5], ['third', 0.8]],
+      [['look past the label', 0.3], ['why your dog reacts', 0.6], ['really behind', 0.85]],
+      [['First', 0.25], ['Second', 0.65]],
     ];
     cards.forEach((k, b) => {
       const t = cue(b) + 0.05;

@@ -27,7 +27,7 @@
         {
           "id": "ch00s02",
           "heading": "Where we're headed",
-          "visual_concept": "Three cards across the slide, one per beat: The problem (why you're here), The promise (what you'll walk away with), The plan (how we'll get there, three numbered steps). The current card is outlined in green.",
+          "visual_concept": "Three cards across the slide, one per beat: The problem (why you're here), The promise (what you'll walk away with), The plan (how we'll get there, two numbered steps). The current card is outlined in green.",
           "assets": [],
           "beats": [
             {
@@ -36,13 +36,13 @@
               "onscreen": "The problem"
             },
             {
-              "say": "By the end, you'll understand why your dog reacts the way they do, what that behavior is doing for them, and where to start helping them.",
-              "show": "The 'The promise' card slides up with the line 'What you'll walk away with', and three checked rows appear as they are said: Why your dog reacts; What the behavior is doing; Where to start.",
+              "say": "By the end, you'll be able to look past the label, understand why your dog reacts the way they do, and see what's really behind the behavior.",
+              "show": "The 'The promise' card slides up with the line 'What you'll walk away with', and three checked rows appear as they are said: Look past the label; Why your dog reacts; What's behind the behavior.",
               "onscreen": "The promise"
             },
             {
-              "say": "Here's how we'll get there. First, we'll look at what aggression and reactivity really mean. Second, we'll look at the ingredients that shape how a dog responds. And third, we'll look at what fuels the behavior.",
-              "show": "The 'The plan' card slides up with the line 'How we'll get there', and three numbered steps appear on 'First', 'Second' and 'third': What the words really mean; What shapes behavior; What fuels behavior.",
+              "say": "Here's how we'll get there. First, we'll look at what aggression and reactivity really mean. Second, we'll look at the ingredients that set the stage for the behavior we see.",
+              "show": "The 'The plan' card slides up with the line 'How we'll get there', and two numbered steps appear on 'First' and 'Second': What the words mean; What sets the stage.",
               "onscreen": "The plan"
             }
           ]

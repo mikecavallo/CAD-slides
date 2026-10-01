@@ -63,13 +63,14 @@ def build_narration(script, align):
     for ci, ch in enumerate(script["chapters"]):
         rec = align["chapters"].get(ch["id"])
         if not rec:
-            raise SystemExit(f"no aligned recording for {ch['id']} (run tools/align.py)")
-        if ci > 0:
+            print(f"  {ch['id']}: not recorded yet, left out")
+            continue
+        if segs:
             b = bumper(ch, t)
             segs.append(b)
             t += b["dur"]
-        # scene boundaries in chapter-audio time
-        scenes = ch["scenes"]
+        # scene boundaries in chapter-audio time (a chapter recorded scene by scene may be partly recorded)
+        scenes = [sc for sc in ch["scenes"] if sc["id"] in rec.get("scenes", [sc["id"]])]
         firsts = [rec["beats"][f"{sc['id']}:0"]["start"] for sc in scenes]
         lasts = [rec["beats"][f"{sc['id']}:{len(sc['beats']) - 1}"]["end"] for sc in scenes]
         bounds = [0.0]

@@ -1,7 +1,9 @@
 """Sync the trainer's recorded narration to the script.
 
 Drop recordings in narration/ as either
-  - one file per chapter: ch00.wav, ch01.m4a, ... (any format ffmpeg reads), or
+  - one file per scene: ch01s01.m4a, ch01s02.m4a, ... (any format ffmpeg reads; a chapter may be partly recorded,
+    and then only its recorded scenes go into the video), or
+  - one file per chapter: ch00.wav, ch01.m4a, ..., or
   - one file for everything: full.wav (or full.m4a, full.mp3 ...)
 then run
     python3 tools/align.py && python3 tools/timing.py --mode narration
@@ -190,7 +192,38 @@ def find_recordings(chapters):
     files = {p.stem.lower(): p for p in NARRATION_DIR.glob("*") if p.suffix.lower() in AUDIO_EXT}
     per = {c: files[c] for c in chapters if c in files}
     full = next((files[k] for k in ("full", "all", "narration") if k in files), None)
-    return per, full
+    return per, full, files
+
+
+def align_scenes(rec, c, beats, files, work):
+    """Chapter recorded one file per scene: align each scene to its own file, then join the files into one chapter
+    track (only the recorded scenes, in script order). Returns the chapter's align record, or None if none recorded."""
+    groups = {}
+    for k, ws in beats:
+        groups.setdefault(k.split(":")[0], []).append((k, ws))
+    recorded = [sid for sid in groups if sid.lower() in files]
+    if not recorded:
+        return None
+    timed, parts, off = {}, [], 0.0
+    for sid in recorded:
+        f = files[sid.lower()]
+        audio = load_audio(f)
+        dur = len(audio) / SR
+        t = time_beats(groups[sid], transcribe(rec, audio), dur)
+        for k, v in t.items():
+            v["start"] += off
+            v["end"] += off
+            for w in v["words"]:
+                w["t"] += off
+                w["e"] += off
+            timed[k] = v
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(f), "-ac", "1", "-ar", "48000", "-f", "f32le", "-"], capture_output=True, check=True).stdout
+        parts.append(np.frombuffer(raw, dtype=np.float32))
+        off += len(parts[-1]) / 48000
+    import soundfile as sf
+    out = work / f"{c}.wav"
+    sf.write(out, np.concatenate(parts), 48000)
+    return {"file": str(out.resolve().relative_to(BUILD.parent)), "dur": off, "beats": timed, "scenes": recorded}
 
 
 def main():
@@ -203,7 +236,7 @@ def main():
         NARRATION_DIR = Path(args.dir).resolve()
     script = load_script()
     items = chapter_items(script)
-    per, full = find_recordings(list(items))
+    per, full, files = find_recordings(list(items))
     rec = recognizer()
     out = {"chapters": {}}
     work = BUILD / "narration"
@@ -224,12 +257,19 @@ def main():
             f = work / f"{c}.wav"
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(full), "-ss", f"{a:.3f}", "-to", f"{b:.3f}", "-ac", "1", "-ar", "48000", str(f)], check=True)
             per[c] = f
-    missing = [c for c in items if c not in per]
-    if missing:
-        raise SystemExit(f"missing recordings for: {', '.join(missing)} (put them in {NARRATION_DIR})")
-
     report = []
     for c, beats in items.items():
+        if c not in per:
+            r = align_scenes(rec, c, beats, files, work)
+            if not r:
+                print(f"{c}: no recording, left out", flush=True)
+                continue
+            out["chapters"][c] = r
+            rate = np.mean([v["match"] for v in r["beats"].values()])
+            weak = [k for k, v in r["beats"].items() if v["match"] < 0.6]
+            report.append(f"{c}: {r['dur'] / 60:.1f} min ({len(r['scenes'])} scenes recorded), {rate * 100:.0f}% of script words matched" + (f", check beats: {', '.join(weak)}" if weak else ""))
+            print(report[-1], flush=True)
+            continue
         audio = load_audio(per[c])
         dur = len(audio) / SR
         heard = transcribe(rec, audio)
@@ -239,6 +279,8 @@ def main():
         weak = [k for k, v in timed.items() if v["match"] < 0.6]
         report.append(f"{c}: {dur / 60:.1f} min, {rate * 100:.0f}% of script words matched" + (f", check beats: {', '.join(weak)}" if weak else ""))
         print(report[-1], flush=True)
+    if not out["chapters"]:
+        raise SystemExit(f"no recordings found in {NARRATION_DIR}")
     (BUILD / "align.json").write_text(json.dumps(out, indent=1))
     (BUILD / "align_report.txt").write_text("\n".join(report) + "\n")
 

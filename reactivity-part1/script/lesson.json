@@ -127,7 +127,7 @@
           ],
           "beats": [
             {
-              "say": "Ingredient one: genetics. Dogs are born with different temperaments and personality traits. Some are naturally more sensitive to their surroundings, while others may be more easygoing or less reactive to change.",
+              "say": "Ingredient one: genetics. Dogs are born with different temperaments and personality traits. Some are naturally more sensitive to their surroundings, while others may be more easygoing and accepting of change.",
               "show": "The first chip, a DNA icon labeled 'Genetics and temperament', drops into the bowl with a small splash. Two small dog badges appear on the left, one labeled 'More sensitive' and one labeled 'More easygoing'.",
               "onscreen": "Some dogs are born more sensitive"
             },
@@ -178,16 +178,6 @@
               "onscreen": "Different jobs, different tendencies"
             },
             {
-              "say": "These broad categories are based on the kinds of jobs dogs were developed to perform, and a breed can have a history of more than one type of work.",
-              "show": "The cards light up one after another; a small note appears: 'A breed can have more than one job'.",
-              "onscreen": ""
-            },
-            {
-              "say": "Those original jobs can influence the kinds of things a dog notices, how they respond to movement or their environment, and what behaviors they may be more likely to offer.",
-              "show": "All six cards pulse gently together.",
-              "onscreen": ""
-            },
-            {
               "say": "For example, a herding dog may be especially tuned in to movement and may naturally want to follow, control, or redirect it.",
               "show": "The Herding card enlarges. Livestock and movement icons appear.",
               "onscreen": ""
@@ -208,12 +198,12 @@
               "onscreen": ""
             },
             {
-              "say": "A sporting dog may be especially interested in searching, finding, carrying, or working closely with a person, depending on the job it was bred to perform.",
+              "say": "A sporting dog may be interested in searching, finding and retrieving items, depending on the job it was bred to perform.",
               "show": "The Sporting work card enlarges. Search, retrieve, and handler icons appear.",
               "onscreen": ""
             },
             {
-              "say": "Dogs bred for working and assistance roles may have been selected for traits that help them perform specialized tasks, such as persistence, physical engagement, environmental awareness, or working closely with people.",
+              "say": "Dogs bred for working and assistance roles may have been selected for traits that help them perform specialized tasks for people.",
               "show": "The Working and assistance card enlarges. Simple icons appear for rescue, pulling, guarding, and assistance.",
               "onscreen": ""
             },

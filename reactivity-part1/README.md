@@ -18,8 +18,9 @@ script PDF. `build/` is scratch space.
 
 ## How the narration works
 
-1. Read `out/Narration-Script.pdf` (or the `.md`). The lesson is one chapter, so record one audio file
-   named `ch01` (any format: .m4a from a phone is fine). A take named `full` works too.
+1. Read `out/Narration-Script.pdf` (or the `.md`). Record one file per slide named by scene id
+   (`ch01s01`, `ch01s02`, ...; any format, .m4a from a phone is fine), or one file for the chapter named
+   `ch01`. With per-slide files, a partly recorded chapter builds a video of just the recorded slides.
 2. Put the files in `narration/` and rebuild (below). Speech recognition finds when you said each line,
    so every animation fires as you say it. Ad-libs and small wording changes are fine.
 3. Pauses are yours. The video follows your recording, so any pause you take (inside a line or between

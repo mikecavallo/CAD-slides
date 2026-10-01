@@ -6,10 +6,6 @@
 (() => {
   const CSS = `
   .c1e-q { position: absolute; font: 600 40px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
-  .c1e-note { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 8px 24px 8px 10px; border-radius: 999px;
-    background: var(--green-pale); color: var(--green-deep); font: 600 28px/1 var(--font-body); white-space: nowrap; }
-  .c1e-note .ai { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; }
-  .c1e-note .ai svg { width: 23px; height: 23px; stroke-width: 2.3; }
   .c1e-card { position: absolute; width: 680px; height: 178px; background: #fff; border-radius: 24px; border: 1px solid #e6e9e1; }
   .c1e-card .nm { position: absolute; left: 243px; top: 18px; font: 700 32px/1.1 var(--font-head); color: var(--green-dark); white-space: nowrap; }
   .c1e-card .job { position: absolute; left: 243px; top: 64px; width: 414px; font: 500 26px/1.22 var(--font-body); color: var(--ink-soft); }
@@ -22,7 +18,6 @@
   .c1e-det .djob { position: absolute; left: 763px; top: 142px; width: 910px; font: 500 36px/1.25 var(--font-body); color: var(--ink-soft); }
   .c1e-det .photo .tag { left: 20px; bottom: 20px; padding: 10px 20px; font: 600 28px/1 var(--font-body); color: var(--green-deep); }
   .c1e-vig { position: absolute; left: 763px; top: 250px; width: 909px; height: 290px; overflow: hidden; }
-  .c1e-noterow { position: absolute; display: flex; justify-content: flex-end; }
   .c1e-pills { position: absolute; left: 0; top: 214px; width: 909px; display: flex; justify-content: center; gap: 18px; }
   .c1e-pill { padding: 12px 28px; border-radius: 999px; background: var(--green-pale); color: var(--green-deep); font: 700 30px/1 var(--font-body); white-space: nowrap; }
   .c1e-tiles { position: absolute; left: 0; top: 20px; width: 909px; display: flex; justify-content: center; gap: 46px; }
@@ -59,7 +54,7 @@
     { key: 'hunting', nm: 'Hunting and pursuit', job: 'Locate, track, chase, or capture animals', ic: 'footprints', img: 'breed_hunting.jpg', breed: 'Beagle' },
     { key: 'terrier', nm: 'Terrier work', job: 'Locate and pursue small animals and vermin', ic: 'rat', img: 'breed_terrier.jpg', breed: 'Jack Russell Terrier' },
     { key: 'sporting', nm: 'Sporting work', job: 'Find, flush, point to, or retrieve game', ic: 'bird', img: 'breed_sporting.jpg', breed: 'Golden Retriever' },
-    { key: 'working', nm: 'Working and assistance', job: 'Perform physical, specialized, or human-directed tasks', ic: 'hard-hat', img: 'breed_working.jpg', breed: 'Labrador Retriever' },
+    { key: 'working', nm: 'Working and assistance', job: 'Perform physical, specialized, or human-directed tasks', ic: 'hard-hat', img: 'breed_working.jpg', breed: 'Service dog' },
   ];
   const CW = 680, CH = 178;
   const GX = [100, 1140], GY = [296, 490, 684];
@@ -214,29 +209,11 @@
 
     const tCards = clamp(sayAt(ctx, 0, 'specific jobs', 0.5), tQ + 0.6, cue(1) - 2.2);
     cards.forEach((k, i) => A.in(tl, k.c, tCards + i * 0.18, 'fadeUp', { dur: 0.7 }));
+    // a soft wave across the cards on "naturally notice, respond to, or be motivated to do"
+    const tW = clamp(sayAt(ctx, 0, 'naturally notice', 0.75), tCards + 1.8, cue(1) - 1.6);
+    cards.forEach((k, i) => tl.to(k.c, { boxShadow: SHG, scale: 1.02, duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: 1 }, tW + i * 0.18));
 
-    // ---------- beat 1: the cards light up one after another; "more than one job" note
-    const tW = clamp(sayAt(ctx, 1, 'broad categories', 0.1), cue(1), end(1) - 3);
-    cards.forEach((k, i) => tl.to(k.c, { boxShadow: SHG, scale: 1.02, duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: 1 }, tW + i * 0.22));
-    const note = K.el('div', 'c1e-note');
-    const ai = K.el('div', 'ai');
-    ai.appendChild(K.icon('layers'));
-    note.appendChild(ai);
-    note.appendChild(K.el('span', null, 'A breed can have more than one job'));
-    const noteRow = K.el('div', 'c1e-noterow');
-    Object.assign(noteRow.style, { left: '100px', top: '228px', width: '1720px' });
-    noteRow.appendChild(note);
-    stage.appendChild(noteRow);
-    const tNote = clamp(sayAt(ctx, 1, 'more than one type', 0.7), tW + 1.5, cue(2) - 0.8);
-    A.in(tl, note, tNote, 'fadeLeft', { dur: 0.6 });
-    A.in(tl, ai, tNote + 0.15, 'pop', { dur: 0.5 });
-
-    // ---------- beat 2: all six pulse gently together
-    const pulseAll = t => tl.to(cardEls, { scale: 1.025, boxShadow: SHG, duration: 0.45, ease: 'sine.inOut', yoyo: true, repeat: 1 }, t);
-    pulseAll(cue(2) + 0.15);
-    pulseAll(clamp(sayAt(ctx, 2, 'what behaviors', 0.7, 0.2), cue(2) + 1.8, end(2) - 1));
-
-    // ---------- beats 3 to 8: each card enlarges into its panel (and shrinks back before the next one)
+    // ---------- beats 1 to 6: each card enlarges into its panel (and shrinks back before the next one)
     const OPEN = 0.65;
     const open = (j, t) => {
       const k = cards[j], D = dets[j].d;
@@ -249,10 +226,10 @@
       tl.to(D, { x: k.cx - DCX, y: k.cy - DCY, scale: 1 / DS, opacity: 0, duration: 0.55, ease: 'power3.inOut' }, t);
       tl.to(k.c, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.55, ease: 'power3.inOut' }, t);
     };
-    const tOpen = j => cue(j + 3) + (j ? 0.4 : 0.05);
+    const tOpen = j => cue(j + 1) + (j ? 0.4 : 0.05);
     JOBS.forEach((_, j) => {
       open(j, tOpen(j));
-      close(j, (j < 5 ? cue(j + 4) : cue(9)) - 0.2);
+      close(j, (j < 5 ? cue(j + 2) : cue(7)) - 0.2);
     });
 
     const ink = C.greenDark;
@@ -270,12 +247,12 @@
       const arr = K.group(V.svg);
       const curve = K.path(arr, 'M 620 150 C 760 150 800 40 700 26 C 640 18 590 34 560 52', { stroke: C.green, 'stroke-width': 6, fill: 'none' });
       const head = arrowHead(arr, 560, 52, 150, C.green);
-      const tA = at(3, 'redirect', 0.85, t0 + 1.6);
+      const tA = at(1, 'redirect', 0.85, t0 + 1.6);
       A.draw(tl, curve, tA - 0.3, 0.9);
       A.in(tl, head, tA + 0.5, 'fade', { dur: 0.3 });
       tl.to(flock, { x: -40, duration: 1.2, ease: 'power2.inOut' }, tA + 0.5);
       const ps = pills(V.vig, ['Follow', 'Control', 'Redirect']);
-      [['follow', 0.7], ['control', 0.78], ['redirect', 0.86]].forEach(([w, fb], i) => A.in(tl, ps[i], at(3, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
+      [['follow', 0.7], ['control', 0.78], ['redirect', 0.86]].forEach(([w, fb], i) => A.in(tl, ps[i], at(1, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
     }
 
     // guarding: a person walks toward a home; the home's "alert" eye pops; "people, animals, activity"
@@ -293,7 +270,7 @@
       tl.fromTo(alert, { opacity: 0, scale: 0.4, svgOrigin: '846 46' }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, t0 + 2.3);
       tl.to(alert, { scale: 1.15, svgOrigin: '846 46', duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 }, t0 + 3);
       const ps = pills(V.vig, ['People', 'Animals', 'Activity']);
-      [['unfamiliar people', 0.55], ['animals', 0.62], ['activity', 0.7]].forEach(([w, fb], i) => A.in(tl, ps[i], at(4, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
+      [['unfamiliar people', 0.55], ['animals', 0.62], ['activity', 0.7]].forEach(([w, fb], i) => A.in(tl, ps[i], at(2, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
     }
 
     // hunting and pursuit: a rabbit runs along a wavy scent trail that appears behind it; "tracking, chasing, following"
@@ -310,7 +287,7 @@
       tl.to(rab, { opacity: 1, duration: 0.3 }, t0);
       tl.to(rab, { keyframes: [{ x: 60, y: yAt(60), duration: 0 }, ...keys.map(k => ({ x: k.x, y: k.y, duration: RUN / keys.length, ease: 'none' }))] }, t0);
       const ps = pills(V.vig, ['Tracking', 'Chasing', 'Following']);
-      [['tracking', 0.62], ['chasing', 0.7], ['following', 0.78]].forEach(([w, fb], i) => A.in(tl, ps[i], at(5, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
+      [['tracking', 0.62], ['chasing', 0.7], ['following', 0.78]].forEach(([w, fb], i) => A.in(tl, ps[i], at(3, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
     }
 
     // terrier work: a squirrel darts across, then back, with speed lines; "notice, pursue"
@@ -327,15 +304,15 @@
       tl.to(lines, { opacity: 0, duration: 0.3 }, t0 + 2.3);
       tl.to(body, { y: -10, duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 3 }, t0 + 2.4);
       const ps = pills(V.vig, ['Notice', 'Pursue']);
-      [['notice', 0.55], ['pursue', 0.7]].forEach(([w, fb], i) => A.in(tl, ps[i], at(6, w, fb, t0 + 0.6 + i * 0.4), 'fadeUp', { dur: 0.5 }));
+      [['notice', 0.55], ['pursue', 0.7]].forEach(([w, fb], i) => A.in(tl, ps[i], at(4, w, fb, t0 + 0.6 + i * 0.4), 'fadeUp', { dur: 0.5 }));
     }
 
     // sporting work: search, retrieve and handler icons
     {
       const V = dets[4], t0 = tOpen(4) + OPEN;
       const ts = tiles(V.vig, [['search', 'Search'], ['bird', 'Retrieve'], ['person-standing', 'Handler']]);
-      [['searching', 0.3], ['carrying', 0.5], ['closely with a person', 0.6]].forEach(([w, fb], i) => {
-        const t = at(7, w, fb, t0 + 0.2 + i * 0.5);
+      [['searching', 0.3], ['retrieving', 0.45], ['the job', 0.72]].forEach(([w, fb], i) => {
+        const t = at(5, w, fb, t0 + 0.2 + i * 0.5);
         A.in(tl, ts[i].t, t, 'fadeUp', { dur: 0.55 });
         A.in(tl, ts[i].b, t + 0.1, 'pop', { dur: 0.5 });
       });
@@ -351,7 +328,7 @@
       });
     }
 
-    // ---------- beat 9: "clues, not guarantees" lands over the dimmed cards; different dog silhouettes appear beneath them
+    // ---------- beat 7: "clues, not guarantees" lands over the dimmed cards; different dog silhouettes appear beneath them
     const row = K.el('div', 'c1e-banrow');
     Object.assign(row.style, { left: '100px', top: '500px', width: '1720px' });
     const ban = K.el('div', 'c1e-ban');
@@ -361,7 +338,7 @@
     ban.appendChild(K.el('div', 'bt', K.md('Breed history gives us *clues*, not guarantees')));
     row.appendChild(ban);
     stage.appendChild(row);
-    const tBan = clamp(sayAt(ctx, 9, 'Breed history gives us', 0.35, 0.3), cue(9) + 0.6, end(9) - 3);
+    const tBan = clamp(sayAt(ctx, 7, 'Breed history gives us', 0.35, 0.3), cue(7) + 0.6, end(7) - 3);
     tl.to([...cardEls, B.wrap], { opacity: 0.25, duration: 0.6, ease: 'power2.out' }, tBan - 0.1);
     tl.fromTo(ban, { opacity: 0, y: -44, scale: 1.05 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, tBan);
     A.pulse(tl, bi, tBan + 0.6, { scale: 1.12 });
@@ -371,12 +348,12 @@
     const ground = K.group(sil, { transform: 'translate(0 88)' });
     const shades = [C.greenDeep, C.olive, C.greenDark, C.green, C.greenDeep, C.olive, C.greenDark];
     const dogs = DOGS.map((p, i) => dogSilhouette(ground, 260 + i * 200, p, shades[i]));
-    const tSil = clamp(sayAt(ctx, 9, 'Individual dogs', 0.7), tBan + 1.2, end(9) - 1.5);
+    const tSil = clamp(sayAt(ctx, 7, 'Individual dogs', 0.7), tBan + 1.2, end(7) - 1.5);
     tl.fromTo(dogs, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.14, ease: 'power3.out' }, tSil);
 
-    // ---------- beat 10: the cards fly into the small bowl's third "?" chip; the bowl grows back and that chip drops in
-    const t10 = cue(10);
-    A.out(tl, [row, q, noteRow, sil], t10 - 0.35, 'fadeUp', { dur: 0.45 });
+    // ---------- beat 8: the cards fly into the small bowl's third "?" chip; the bowl grows back and that chip drops in
+    const t10 = cue(8);
+    A.out(tl, [row, q, sil], t10 - 0.35, 'fadeUp', { dur: 0.45 });
     tl.to([...cardEls, B.wrap], { opacity: 1, duration: 0.35, ease: 'power2.out' }, t10 - 0.3);
     const TX = BOWL.cx + SLOT[2][0] * BOWL.scale, TY = BOWL.y + SLOT[2][1] * BOWL.scale;
     const tFly = t10 + 0.1, FD = 0.95, FS = 0.08;
@@ -427,7 +404,7 @@
     puz.appendChild(pi);
     puz.appendChild(K.el('div', 'pt', K.md('Another *ingredient* to consider')));
     stage.appendChild(puz);
-    const tPuz = clamp(sayAt(ctx, 10, 'another ingredient', 0.85, 0.3), land + 1.0, dur - 2.0);
+    const tPuz = clamp(sayAt(ctx, 8, 'another ingredient', 0.85, 0.3), land + 1.0, dur - 2.0);
     A.in(tl, puz, tPuz, 'fadeUp', { dur: 0.8 });
     A.in(tl, pi, tPuz + 0.15, 'pop', { dur: 0.6 });
   });

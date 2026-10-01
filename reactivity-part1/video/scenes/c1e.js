@@ -1,30 +1,35 @@
-// Chapter 1 (v6): breed history and purpose. Bowl parts come from window.C1 (c1_bowl.js).
-//   ch01s06  Breed history and purpose   six AKC breed-group cards in a 2 x 3 grid beside a small bowl; each card highlights in turn,
-//                                         a photo of a dog from that group (with a breed tag) fills its right side and the example
-//                                         breeds appear under its job line; "clues, not guarantees" lands over the grid; the cards
-//                                         fly into the bowl and become the third ingredient
+// Chapter 1 (v9): breed history and purpose. Bowl parts come from window.C1 (c1_bowl.js).
+//   ch01s06  Breed history and purpose   six breed-job cards (photo of an example breed + job line) around a small bowl;
+//                                         each card enlarges in turn into a large panel with a little job vignette;
+//                                         "clues, not guarantees" lands over the cards with a row of different dog
+//                                         silhouettes beneath them; the cards fly into the bowl as the third ingredient
 (() => {
   const CSS = `
   .c1e-q { position: absolute; font: 600 40px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
-  .c1e-q .em-green { font-weight: 600; }
-  .c1e-akc { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 8px 22px 8px 10px; border-radius: 999px;
+  .c1e-note { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 8px 24px 8px 10px; border-radius: 999px;
     background: var(--green-pale); color: var(--green-deep); font: 600 28px/1 var(--font-body); white-space: nowrap; }
-  .c1e-akc .ai { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; }
-  .c1e-akc .ai svg { width: 23px; height: 23px; stroke-width: 2.3; }
-  .c1e-card { position: absolute; width: 848px; height: 212px; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; }
-  .c1e-card .bd { position: absolute; left: 20px; top: 18px; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
-    background: var(--green-pale); color: var(--green-dark); }
-  .c1e-card .bd svg { width: 31px; height: 31px; stroke-width: 2.2; }
-  .c1e-card .nm { position: absolute; left: 92px; top: 18px; height: 56px; display: flex; align-items: center; font: 700 37px/1 var(--font-head);
-    color: var(--green-dark); white-space: nowrap; }
-  .c1e-card .job { position: absolute; left: 22px; top: 86px; width: 537px; font: 500 27px/1.18 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
-  .c1e-card .ex { position: absolute; left: 22px; top: 130px; width: 537px; font: 600 26px/1.2 var(--font-body); color: var(--green-dark); }
-  .c1e-card .btrow { display: none; } /* breed tags hidden: they covered the dogs; the example line names the breeds */
-  .c1e-card .btag { padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.94); box-shadow: 0 3px 10px rgba(40,60,20,0.18);
-    font: 500 26px/1 var(--font-head); color: var(--green-deep); white-space: nowrap; }
-  .c1e-card .photo { background: var(--green-mist); box-shadow: inset 0 0 0 1px rgba(97,149,55,0.10); }
-  .c1e-card .photo .ph0 { position: absolute; inset: 0; display: grid; place-items: center; color: var(--green-light); }
-  .c1e-card .photo .ph0 svg { width: 64px; height: 64px; stroke-width: 1.8; opacity: 0.7; }
+  .c1e-note .ai { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; }
+  .c1e-note .ai svg { width: 23px; height: 23px; stroke-width: 2.3; }
+  .c1e-card { position: absolute; width: 680px; height: 178px; background: #fff; border-radius: 24px; border: 1px solid #e6e9e1; }
+  .c1e-card .nm { position: absolute; left: 243px; top: 18px; font: 700 32px/1.1 var(--font-head); color: var(--green-dark); white-space: nowrap; }
+  .c1e-card .job { position: absolute; left: 243px; top: 64px; width: 414px; font: 500 26px/1.22 var(--font-body); color: var(--ink-soft); }
+  .c1e-det { position: absolute; width: 1720px; height: 566px; background: #fff; border-radius: 30px; border: 1px solid #e6e9e1;
+    box-shadow: 0 24px 60px rgba(40,60,20,0.18); }
+  .c1e-det .dh { position: absolute; left: 763px; top: 36px; display: flex; align-items: center; gap: 22px; }
+  .c1e-det .bd { width: 84px; height: 84px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
+  .c1e-det .bd svg { width: 46px; height: 46px; stroke-width: 2.2; }
+  .c1e-det .dnm { font: 700 60px/1 var(--font-head); color: var(--green-dark); white-space: nowrap; }
+  .c1e-det .djob { position: absolute; left: 763px; top: 142px; width: 910px; font: 500 36px/1.25 var(--font-body); color: var(--ink-soft); }
+  .c1e-det .photo .tag { left: 20px; bottom: 20px; padding: 10px 20px; font: 600 28px/1 var(--font-body); color: var(--green-deep); }
+  .c1e-vig { position: absolute; left: 763px; top: 250px; width: 909px; height: 290px; overflow: hidden; }
+  .c1e-noterow { position: absolute; display: flex; justify-content: flex-end; }
+  .c1e-pills { position: absolute; left: 0; top: 214px; width: 909px; display: flex; justify-content: center; gap: 18px; }
+  .c1e-pill { padding: 12px 28px; border-radius: 999px; background: var(--green-pale); color: var(--green-deep); font: 700 30px/1 var(--font-body); white-space: nowrap; }
+  .c1e-tiles { position: absolute; left: 0; top: 20px; width: 909px; display: flex; justify-content: center; gap: 46px; }
+  .c1e-tile { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 190px; }
+  .c1e-tile .tb { width: 124px; height: 124px; border-radius: 50%; background: var(--green-pale); color: var(--green-dark); display: grid; place-items: center; }
+  .c1e-tile .tb svg { width: 64px; height: 64px; stroke-width: 2; }
+  .c1e-tile .tl { font: 700 32px/1 var(--font-body); color: var(--ink); white-space: nowrap; }
   .c1e-banrow { position: absolute; display: flex; justify-content: center; }
   .c1e-ban { display: flex; align-items: center; gap: 28px; padding: 28px 56px 28px 28px; border-radius: 30px; background: #fff;
     box-shadow: var(--shadow); border: 1px solid #e6e9e1; }
@@ -41,63 +46,141 @@
   .c1e-puz .pt { font: 600 56px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   `;
 
-  // Photos and breed-name tags, one entry per group: swap img/breed here when photos change.
-  // The photos are 4:3 crops already framed on the dog's head, shown centred in a 4:3 frame.
-  const PHOTOS = {
-    sporting: { img: 'breed_sporting.jpg', breed: 'Labrador Retriever' },
-    hound: { img: 'breed_hounds.jpg', breed: 'Beagle' },
-    working: { img: 'breed_working.jpg', breed: 'Great Pyrenees' },
-    terrier: { img: 'breed_terriers.jpg', breed: 'Russell Terrier' },
-    toy: { img: 'breed_toy.jpg', breed: 'Chihuahua' },
-    herding: { img: 'breed_herding.jpg', breed: 'Border Collie' },
-  };
+  // a sheep in the Lucide line style (24 x 24): woolly body, head on the left, legs
+  if (window.ICONS && !window.ICONS.sheep) {
+    window.ICONS.sheep = '<path d="M8 9.2a2.4 2.4 0 0 1 4-1.6a2.4 2.4 0 0 1 4 0a2.4 2.4 0 0 1 3.4 2.4a2.4 2.4 0 0 1 0 3.8a2.4 2.4 0 0 1-3.4 2.4a2.4 2.4 0 0 1-4 0a2.4 2.4 0 0 1-4-1.6"/>'
+      + '<path d="M8 9.2c-1-.6-2.4-.7-3.4 0c-1.3 1-1.4 3.4-.2 4.6c.9.9 2.6 1 3.6.4"/><path d="M4.6 9.3l-1.8-.9"/><path d="M9.5 16.2V20M15.5 16.2V20"/>';
+  }
 
-  // the six AKC breed groups in narration order (beats 2 to 7): icon, job line, example breeds (revealed on `say`, fb = fallback fraction)
-  const GROUPS = [
-    { key: 'sporting', nm: 'Sporting Group', job: 'Find, flush, or retrieve game', ic: 'bird',
-      ex: 'Golden Retrievers, Labrador Retrievers, Pointers, Spaniels', say: 'like Golden Retrievers', fb: 0.32 },
-    { key: 'hound', nm: 'Hound Group', job: 'Pursue game by sight or scent', ic: 'footprints',
-      ex: 'Beagles, Bloodhounds, Greyhounds, Dachshunds', say: 'like Beagles', fb: 0.27 },
-    { key: 'working', nm: 'Working Group', job: 'Guard, pull, rescue and other jobs', ic: 'hard-hat',
-      ex: 'Rottweilers, Great Danes, Siberian Huskies, Newfoundlands', say: 'like Rottweilers', fb: 0.32 },
-    { key: 'terrier', nm: 'Terrier Group', job: 'Hunt vermin and small animals', ic: 'rat',
-      ex: 'Parson Russell Terriers, Airedale Terriers, Miniature Schnauzers', say: 'like Parson Russell', fb: 0.32 },
-    { key: 'toy', nm: 'Toy Group', job: 'Bred for companionship', ic: 'heart',
-      ex: 'Chihuahuas, Pomeranians, Maltese, Yorkshire Terriers', say: 'like Chihuahuas', fb: 0.26 },
-    { key: 'herding', nm: 'Herding Group', job: 'Control and move livestock', ic: 'move',
-      ex: 'German Shepherd Dogs, Border Collies, Australian Shepherds, Corgis', say: 'like German Shepherd', fb: 0.23 },
+  // Photos: one per job, swap img/breed here when photos change (4:3 crops, 960 x 720, centred on the dog).
+  const JOBS = [
+    { key: 'herding', nm: 'Herding', job: 'Control and move livestock', ic: 'sheep', img: 'breed_herding.jpg', breed: 'Border Collie' },
+    { key: 'guarding', nm: 'Guarding', job: 'Monitor and respond to potential threats', ic: 'shield', img: 'breed_guarding.jpg', breed: 'Great Pyrenees' },
+    { key: 'hunting', nm: 'Hunting and pursuit', job: 'Locate, track, chase, or capture animals', ic: 'footprints', img: 'breed_hunting.jpg', breed: 'Beagle' },
+    { key: 'terrier', nm: 'Terrier work', job: 'Locate and pursue small animals and vermin', ic: 'rat', img: 'breed_terrier.jpg', breed: 'Jack Russell Terrier' },
+    { key: 'sporting', nm: 'Sporting work', job: 'Find, flush, point to, or retrieve game', ic: 'bird', img: 'breed_sporting.jpg', breed: 'Golden Retriever' },
+    { key: 'working', nm: 'Working and assistance', job: 'Perform physical, specialized, or human-directed tasks', ic: 'hard-hat', img: 'breed_working.jpg', breed: 'Labrador Retriever' },
   ];
-  const CW = 848, CH = 212;
-  const GX = [100, 972], GY = [300, 524, 748];
-  // 4:3 photo frame at the card's right edge (card inner box is 846 x 210), 8 px inset; the text column gets the rest
-  const PH = { x: 579, y: 8, w: 259, h: 194, r: 18 };
+  const CW = 680, CH = 178;
+  const GX = [100, 1140], GY = [296, 490, 684];
+  const PH = { x: 8, y: 8, w: 213, h: 160, r: 16 }; // 4:3 photo at the card's left edge
+  const DET = { x: 100, y: 296, w: 1720, h: 566 }; // the enlarged card covers the whole card area
+  const DCX = DET.x + DET.w / 2, DCY = DET.y + DET.h / 2, DS = DET.w / CW;
+  const BOWL = { cx: 960, y: 600, scale: 0.36 }; // small bowl between the two columns of cards
   const SH0 = '0 10px 30px rgba(40,60,20,0.10), 0 0 0 0px rgba(97,149,55,0)';
   const SHG = '0 14px 36px rgba(40,60,20,0.14), 0 0 0 4px rgba(184,217,154,1)';
-  const SHH = '0 20px 46px rgba(40,60,20,0.18), 0 0 0 4px rgba(97,149,55,1)';
 
-  /** One breed-group card with a softly tinted, still empty photo frame; returns its parts and centre. */
-  function groupCard(parent, g, x, y) {
-    const P = PHOTOS[g.key];
+  /** One small breed-job card: photo on the left, job name and job line on the right. */
+  function jobCard(parent, g, x, y) {
     const c = K.el('div', 'c1e-card');
     Object.assign(c.style, { left: x + 'px', top: y + 'px', boxShadow: SH0 });
-    const bd = K.el('div', 'bd');
-    bd.appendChild(K.icon(g.ic));
-    c.appendChild(bd);
+    K.photo(c, g.img, { x: PH.x, y: PH.y, w: PH.w, h: PH.h, radius: PH.r });
     c.appendChild(K.el('div', 'nm', g.nm));
     c.appendChild(K.el('div', 'job', g.job));
-    const ex = K.el('div', 'ex', g.ex);
-    c.appendChild(ex);
-    const ph = K.photo(c, P.img, { x: PH.x, y: PH.y, w: PH.w, h: PH.h, radius: PH.r, pos: '50% 50%' });
-    const ph0 = K.el('div', 'ph0');
-    ph0.appendChild(K.icon('paw-print'));
-    ph.root.insertBefore(ph0, ph.img);
-    const tagRow = K.el('div', 'btrow');
-    const tag = K.el('div', 'btag', P.breed);
-    tagRow.appendChild(tag);
-    ph.root.appendChild(tagRow);
     parent.appendChild(c);
-    return { c, bd, ph, ex, tag, cx: x + CW / 2, cy: y + CH / 2 };
+    return { c, cx: x + CW / 2, cy: y + CH / 2 };
   }
+
+  /** The enlarged version of a card: big photo with the breed tag, job name, job line and an empty vignette box. */
+  function detailCard(parent, g) {
+    const d = K.el('div', 'c1e-det');
+    Object.assign(d.style, { left: DET.x + 'px', top: DET.y + 'px', opacity: 0 });
+    K.photo(d, g.img, { x: 24, y: 24, w: 691, h: 518, radius: 22, tag: g.breed });
+    const dh = K.el('div', 'dh');
+    const bd = K.el('div', 'bd');
+    bd.appendChild(K.icon(g.ic));
+    dh.appendChild(bd);
+    dh.appendChild(K.el('div', 'dnm', g.nm));
+    d.appendChild(dh);
+    d.appendChild(K.el('div', 'djob', g.job));
+    const vig = K.el('div', 'c1e-vig');
+    d.appendChild(vig);
+    const svg = K.svgEl('svg', { viewBox: '0 0 909 290', width: 909, height: 290 }, vig);
+    Object.assign(svg.style, { position: 'absolute', left: 0, top: 0, overflow: 'visible' });
+    parent.appendChild(d);
+    return { d, bd, vig, svg };
+  }
+
+  /** Row of keyword pills along the bottom of a vignette. */
+  function pills(vig, words) {
+    const row = K.el('div', 'c1e-pills');
+    const ps = words.map(w => {
+      const p = K.el('div', 'c1e-pill', w);
+      row.appendChild(p);
+      return p;
+    });
+    vig.appendChild(row);
+    return ps;
+  }
+
+  /** Row of round icon tiles with labels. */
+  function tiles(vig, items) {
+    const row = K.el('div', 'c1e-tiles');
+    const ts = items.map(([ic, lab]) => {
+      const t = K.el('div', 'c1e-tile');
+      const b = K.el('div', 'tb');
+      b.appendChild(K.icon(ic));
+      t.appendChild(b);
+      t.appendChild(K.el('div', 'tl', lab));
+      row.appendChild(t);
+      return { t, b };
+    });
+    vig.appendChild(row);
+    return ts;
+  }
+
+  /** Arrow head (open chevron) at (x, y) pointing along angle a (degrees). */
+  function arrowHead(g, x, y, a, col) {
+    const r = (a * Math.PI) / 180, L = 22;
+    const p = d => [x - L * Math.cos(r + d), y - L * Math.sin(r + d)];
+    const [ax, ay] = p(0.5), [bx, by] = p(-0.5);
+    return K.path(g, `M ${ax} ${ay} L ${x} ${y} L ${bx} ${by}`, { stroke: col, 'stroke-width': 6 });
+  }
+
+  /**
+   * A filled dog silhouette standing on y = 0, facing right. p: body length/height, leg length/width, head radius,
+   * snout length, ears ('up' | 'flop'), tail ('up' | 'curl' | 'down' | 'out'), overall scale s.
+   */
+  function dogSilhouette(parent, x, p, col) {
+    const outer = K.group(parent);
+    const g = K.group(outer, { transform: `translate(${x} 0) scale(${p.s})` });
+    const L = p.bl, H = p.bh, LH = p.lh, LW = p.lw, HR = p.hr;
+    const top = -LH - H;
+    const line = (d, w) => K.path(g, d, { stroke: col, 'stroke-width': w, fill: 'none' });
+    // legs (back pair, front pair)
+    [-0.36, -0.22, 0.24, 0.36].forEach(f => line(`M ${f * L} ${-LH - H * 0.4} L ${f * L} ${-LW / 2}`, LW));
+    // body
+    K.svgEl('rect', { x: -L / 2, y: top, width: L, height: H, rx: H / 2, fill: col }, g);
+    // neck and head
+    const hx = L / 2 + HR * 0.55, hy = top - HR * 0.95;
+    line(`M ${L * 0.34} ${top + H * 0.35} L ${hx - HR * 0.2} ${hy + HR * 0.2}`, HR * 1.25);
+    K.circle(g, hx, hy, HR, { fill: col });
+    line(`M ${hx} ${hy + HR * 0.18} L ${hx + HR * 0.4 + p.sn} ${hy + HR * 0.3}`, HR * 0.95);
+    // ears
+    if (p.ears === 'up') K.path(g, `M ${hx - HR * 0.75} ${hy - HR * 0.35} L ${hx - HR * 0.5} ${hy - HR * 1.9} L ${hx + HR * 0.15} ${hy - HR * 0.8} Z`, { fill: col, stroke: col, 'stroke-width': 3 });
+    else K.svgEl('ellipse', { cx: hx - HR * 0.55, cy: hy + HR * 0.35, rx: HR * 0.42, ry: HR * 0.85, fill: col, transform: `rotate(18 ${hx - HR * 0.55} ${hy + HR * 0.35})` }, g);
+    // tail
+    const tx = -L / 2 + 6, ty = top + H * 0.3;
+    const TAIL = {
+      up: `M ${tx} ${ty} Q ${tx - 26} ${ty - 22} ${tx - 22} ${ty - 54}`,
+      curl: `M ${tx} ${ty} C ${tx - 40} ${ty - 10} ${tx - 30} ${ty - 58} ${tx + 6} ${ty - 40}`,
+      down: `M ${tx} ${ty} Q ${tx - 30} ${ty + 20} ${tx - 30} ${ty + 54}`,
+      out: `M ${tx} ${ty} Q ${tx - 36} ${ty + 4} ${tx - 54} ${ty + 22}`,
+    };
+    line(TAIL[p.tail], p.tw || 10);
+    return outer;
+  }
+
+  // seven different dogs, left to right (the row is centred under the cards)
+  const DOGS = [
+    { bl: 120, bh: 54, lh: 50, lw: 16, hr: 23, sn: 22, ears: 'flop', tail: 'out', s: 0.5 }, // retriever type
+    { bl: 82, bh: 38, lh: 22, lw: 13, hr: 19, sn: 16, ears: 'up', tail: 'up', s: 0.5, tw: 8 }, // short-legged terrier
+    { bl: 118, bh: 44, lh: 76, lw: 12, hr: 17, sn: 30, ears: 'flop', tail: 'down', s: 0.46, tw: 7 }, // sighthound
+    { bl: 58, bh: 30, lh: 26, lw: 9, hr: 16, sn: 8, ears: 'up', tail: 'up', s: 0.44, tw: 6 }, // tiny dog
+    { bl: 116, bh: 52, lh: 56, lw: 16, hr: 22, sn: 20, ears: 'up', tail: 'curl', s: 0.5 }, // spitz type
+    { bl: 150, bh: 76, lh: 50, lw: 24, hr: 31, sn: 18, ears: 'flop', tail: 'down', s: 0.47, tw: 16 }, // giant
+    { bl: 100, bh: 48, lh: 36, lw: 14, hr: 21, sn: 24, ears: 'flop', tail: 'up', s: 0.5 }, // beagle type
+  ];
 
   // ================================================================== ch01s06 Breed history and purpose
   registerScene('ch01s06', ctx => {
@@ -109,90 +192,194 @@
     const h = K.heading(stage, 'Breed history and purpose', { x: 100, y: 110, size: 72, barGap: 20 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
-    // the bowl is built at its standard size and parked small at the top right while the cards are up
+    const cards = JOBS.map((g, i) => jobCard(stage, g, GX[Math.floor(i / 3)], GY[i % 3]));
+    const cardEls = cards.map(k => k.c);
+
+    // the bowl is built at its standard size and parked small between the two columns of cards
     const B = C1.makeBowl(stage, { cx: STD.cx, y: STD.y, s: STD.s, filled: 2 });
-    const SM = { x: 1320 - STD.cx, y: 208 - STD.y, scale: 0.25 / STD.s }; // 0.25 = on-screen bowl scale
+    const SM = { x: BOWL.cx - STD.cx, y: BOWL.y - STD.y, scale: BOWL.scale / STD.s };
     gsap.set(B.wrap, { ...SM });
     A.in(tl, B.wrap, 0, 'fade', { dur: 0.6 });
     C1.bob(tl, B, 0, dur);
 
-    // ---------- beat 0: "ingredient three" (its chip blinks), the question, the "AKC breed groups" label, then the six cards
+    const dets = JOBS.map(g => detailCard(stage, g));
+
+    // ---------- beat 0: "ingredient three" (its chip blinks), the line, then the six cards
     const tIng = clamp(sayAt(ctx, 0, 'Ingredient three', 0.02), cue(0) + 0.2, cue(0) + 1.5);
     tl.to(B.slots[2].g, { scale: 1.45, transformOrigin: '50% 50%', duration: 0.3, ease: 'sine.inOut', yoyo: true, repeat: 3 }, tIng);
 
-    const q = C1.put(stage, 'c1e-q', 'What was this dog *bred to do?*', { x: 100, y: 232 });
-    const tQ = clamp(sayAt(ctx, 0, 'selectively bred', 0.22), cue(0) + 0.8, cue(1) - 4);
+    const q = C1.put(stage, 'c1e-q', 'Different jobs, *different tendencies*', { x: 100, y: 232 });
+    const tQ = clamp(sayAt(ctx, 0, 'selectively bred', 0.3), cue(0) + 0.8, cue(1) - 4);
     A.in(tl, q, tQ, 'fadeUp', { dur: 0.7 });
 
-    // small label beside the question, on "The American Kennel Club"
-    const akc = K.el('div', 'c1e-akc');
-    Object.assign(akc.style, { left: '722px', top: '228px' });
+    const tCards = clamp(sayAt(ctx, 0, 'specific jobs', 0.5), tQ + 0.6, cue(1) - 2.2);
+    cards.forEach((k, i) => A.in(tl, k.c, tCards + i * 0.18, 'fadeUp', { dur: 0.7 }));
+
+    // ---------- beat 1: the cards light up one after another; "more than one job" note
+    const tW = clamp(sayAt(ctx, 1, 'broad categories', 0.1), cue(1), end(1) - 3);
+    cards.forEach((k, i) => tl.to(k.c, { boxShadow: SHG, scale: 1.02, duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: 1 }, tW + i * 0.22));
+    const note = K.el('div', 'c1e-note');
     const ai = K.el('div', 'ai');
-    ai.appendChild(K.icon('layout-grid'));
-    akc.appendChild(ai);
-    akc.appendChild(K.el('span', null, 'AKC breed groups'));
-    stage.appendChild(akc);
-    const tAkc = clamp(sayAt(ctx, 0, 'American Kennel Club', 0.44), tQ + 0.8, cue(1) - 3);
-    A.in(tl, akc, tAkc, 'fadeRight', { dur: 0.6 });
-    A.in(tl, ai, tAkc + 0.15, 'pop', { dur: 0.5 });
+    ai.appendChild(K.icon('layers'));
+    note.appendChild(ai);
+    note.appendChild(K.el('span', null, 'A breed can have more than one job'));
+    const noteRow = K.el('div', 'c1e-noterow');
+    Object.assign(noteRow.style, { left: '100px', top: '228px', width: '1720px' });
+    noteRow.appendChild(note);
+    stage.appendChild(noteRow);
+    const tNote = clamp(sayAt(ctx, 1, 'more than one type', 0.7), tW + 1.5, cue(2) - 0.8);
+    A.in(tl, note, tNote, 'fadeLeft', { dur: 0.6 });
+    A.in(tl, ai, tNote + 0.15, 'pop', { dur: 0.5 });
 
-    const cards = GROUPS.map((g, i) => groupCard(stage, g, GX[i % 2], GY[Math.floor(i / 2)]));
-    const cardEls = cards.map(k => k.c);
-    stage.appendChild(B.wrap); // bowl above the cards, so they fly into it
-    const tCards = clamp(sayAt(ctx, 0, 'sorts many breeds into groups', 0.52), tAkc + 0.5, cue(1) - 2.2);
-    cards.forEach((k, i) => {
-      const t = tCards + i * 0.2;
-      A.in(tl, k.c, t, 'fadeUp', { dur: 0.7 });
-      A.in(tl, k.bd, t + 0.2, 'pop', { dur: 0.55 });
-    });
+    // ---------- beat 2: all six pulse gently together
+    const pulseAll = t => tl.to(cardEls, { scale: 1.025, boxShadow: SHG, duration: 0.45, ease: 'sine.inOut', yoyo: true, repeat: 1 }, t);
+    pulseAll(cue(2) + 0.15);
+    pulseAll(clamp(sayAt(ctx, 2, 'what behaviors', 0.7, 0.2), cue(2) + 1.8, end(2) - 1));
 
-    // ---------- beat 1: all six pulse gently together
-    const pulseAll = t => {
-      tl.to(cardEls, { scale: 1.025, boxShadow: SHG, duration: 0.45, ease: 'sine.inOut', yoyo: true, repeat: 1 }, t);
-      tl.to(cards.map(k => k.bd), { scale: 1.18, duration: 0.45, ease: 'sine.inOut', yoyo: true, repeat: 1 }, t);
+    // ---------- beats 3 to 8: each card enlarges into its panel (and shrinks back before the next one)
+    const OPEN = 0.65;
+    const open = (j, t) => {
+      const k = cards[j], D = dets[j].d;
+      tl.to(k.c, { x: DCX - k.cx, y: DCY - k.cy, scale: DS, opacity: 0, duration: OPEN, ease: 'power3.inOut' }, t);
+      tl.fromTo(D, { x: k.cx - DCX, y: k.cy - DCY, scale: 1 / DS, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: OPEN, ease: 'power3.inOut', immediateRender: false }, t);
+      A.pulse(tl, dets[j].bd, t + OPEN, { scale: 1.12 });
     };
-    const tP1 = cue(1) + 0.15;
-    pulseAll(tP1);
-    pulseAll(clamp(sayAt(ctx, 1, 'what behaviors', 0.7, 0.2), tP1 + 1.6, cue(2) - 1.2));
-
-    // ---------- beats 2 to 7: one card at a time lights up (the rest dim), its dog photo fades in with the breed tag,
-    // and the example breeds appear under the job line as they are named ("like Golden Retrievers, ...")
-    cards.forEach((k, j) => {
-      const g = GROUPS[j], b = j + 2, t = cue(b) - 0.15;
-      tl.to(cardEls.filter((_, i) => i !== j), { opacity: 0.3, scale: 1, boxShadow: SH0, duration: 0.5, ease: 'power2.out' }, t);
-      tl.to(k.c, { opacity: 1, scale: 1.03, boxShadow: SHH, duration: 0.55, ease: 'power2.out' }, t);
-      tl.to(k.bd, { backgroundColor: C.green, color: '#fff', duration: 0.45, ease: 'power2.out' }, t + 0.1);
-      A.pulse(tl, k.bd, t + 0.2, { scale: 1.15 });
-      tl.fromTo(k.ph.img, { opacity: 0, scale: 1.14 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'power2.out' }, t + 0.3);
-      A.in(tl, k.tag, t + 0.9, 'fadeUp', { dur: 0.5 });
-      const tEx = clamp(sayAt(ctx, b, g.say, g.fb, 0.15), t + 1.2, end(b) - 1.5);
-      A.in(tl, k.ex, tEx, 'fadeUp', { dur: 0.6 });
+    const close = (j, t) => {
+      const k = cards[j], D = dets[j].d;
+      tl.to(D, { x: k.cx - DCX, y: k.cy - DCY, scale: 1 / DS, opacity: 0, duration: 0.55, ease: 'power3.inOut' }, t);
+      tl.to(k.c, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.55, ease: 'power3.inOut' }, t);
+    };
+    const tOpen = j => cue(j + 3) + (j ? 0.4 : 0.05);
+    JOBS.forEach((_, j) => {
+      open(j, tOpen(j));
+      close(j, (j < 5 ? cue(j + 4) : cue(9)) - 0.2);
     });
-    // then all six stay up, each with its photo
-    const tAll = clamp(end(7) - 0.9, cue(7) + 2.5, cue(8) + 0.3);
-    tl.to(cardEls, { opacity: 1, scale: 1, boxShadow: SH0, duration: 0.6, ease: 'power2.out' }, tAll);
 
-    // ---------- beat 8: "clues, not guarantees" lands over the dimmed cards
+    const ink = C.greenDark;
+    const icon = (g, name, x, y, size, col = ink, sw = 2) => C1.svgIcon(g, name, x, y, size, { stroke: col, 'stroke-width': sw });
+    const at = (b, phrase, fb, lo) => clamp(sayAt(ctx, b, phrase, fb, 0.2), lo, end(b) - 0.6);
+
+    // herding: a small flock trots along, a curved arrow turns it; "follow, control, redirect"
+    {
+      const V = dets[0], t0 = tOpen(0) + OPEN;
+      K.line(V.svg, 40, 166, 870, 166, { stroke: C.line, 'stroke-width': 4, 'stroke-dasharray': '2 14' });
+      const flock = K.group(V.svg);
+      const sheep = [[280, 102, 108], [410, 80, 122], [540, 106, 108]].map(([x, y, s]) => icon(flock, 'sheep', x, y, s, C.olive, 2));
+      tl.fromTo(flock, { x: -160, opacity: 0 }, { x: 0, opacity: 1, duration: 2.6, ease: 'power1.out' }, t0);
+      sheep.forEach((s, i) => tl.fromTo(s, { y: 0 }, { y: -8, duration: 0.3, ease: 'sine.inOut', yoyo: true, repeat: 7 }, t0 + i * 0.12));
+      const arr = K.group(V.svg);
+      const curve = K.path(arr, 'M 620 150 C 760 150 800 40 700 26 C 640 18 590 34 560 52', { stroke: C.green, 'stroke-width': 6, fill: 'none' });
+      const head = arrowHead(arr, 560, 52, 150, C.green);
+      const tA = at(3, 'redirect', 0.85, t0 + 1.6);
+      A.draw(tl, curve, tA - 0.3, 0.9);
+      A.in(tl, head, tA + 0.5, 'fade', { dur: 0.3 });
+      tl.to(flock, { x: -40, duration: 1.2, ease: 'power2.inOut' }, tA + 0.5);
+      const ps = pills(V.vig, ['Follow', 'Control', 'Redirect']);
+      [['follow', 0.7], ['control', 0.78], ['redirect', 0.86]].forEach(([w, fb], i) => A.in(tl, ps[i], at(3, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
+    }
+
+    // guarding: a person walks toward a home; the home's "alert" eye pops; "people, animals, activity"
+    {
+      const V = dets[1], t0 = tOpen(1) + OPEN;
+      K.line(V.svg, 40, 182, 870, 182, { stroke: C.line, 'stroke-width': 4, 'stroke-dasharray': '2 14' });
+      icon(V.svg, 'house', 740, 104, 150, ink, 1.8);
+      icon(V.svg, 'fence', 590, 142, 80, C.muted, 1.8);
+      const who = icon(V.svg, 'person-standing', 120, 116, 120, C.inkSoft, 1.8);
+      tl.fromTo(who, { x: -60, opacity: 0 }, { x: 330, opacity: 1, duration: 3, ease: 'none' }, t0);
+      tl.fromTo(who, { y: 0 }, { y: -6, duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 11 }, t0);
+      const alert = K.group(V.svg);
+      K.circle(alert, 846, 46, 34, { fill: C.green });
+      icon(alert, 'eye', 846, 46, 40, '#fff', 2.4);
+      tl.fromTo(alert, { opacity: 0, scale: 0.4, svgOrigin: '846 46' }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, t0 + 2.3);
+      tl.to(alert, { scale: 1.15, svgOrigin: '846 46', duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 }, t0 + 3);
+      const ps = pills(V.vig, ['People', 'Animals', 'Activity']);
+      [['unfamiliar people', 0.55], ['animals', 0.62], ['activity', 0.7]].forEach(([w, fb], i) => A.in(tl, ps[i], at(4, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
+    }
+
+    // hunting and pursuit: a rabbit runs along a wavy scent trail that appears behind it; "tracking, chasing, following"
+    {
+      const V = dets[2], t0 = tOpen(2) + OPEN, RUN = 3.2;
+      const yAt = x => 100 + 26 * Math.sin((x - 60) / 70);
+      const dots = [];
+      for (let x = 60; x <= 760; x += 28) dots.push(K.circle(V.svg, x, yAt(x) + 34, 6, { fill: C.greenLight, opacity: 0 }));
+      dots.forEach((d, i) => tl.to(d, { opacity: 1, duration: 0.2 }, t0 + (RUN * i) / dots.length));
+      const rab = icon(V.svg, 'rabbit', 0, 0, 112, C.olive, 2);
+      const keys = [];
+      for (let x = 60; x <= 820; x += 38) keys.push({ x, y: yAt(x) });
+      gsap.set(rab, { opacity: 0 });
+      tl.to(rab, { opacity: 1, duration: 0.3 }, t0);
+      tl.to(rab, { keyframes: [{ x: 60, y: yAt(60), duration: 0 }, ...keys.map(k => ({ x: k.x, y: k.y, duration: RUN / keys.length, ease: 'none' }))] }, t0);
+      const ps = pills(V.vig, ['Tracking', 'Chasing', 'Following']);
+      [['tracking', 0.62], ['chasing', 0.7], ['following', 0.78]].forEach(([w, fb], i) => A.in(tl, ps[i], at(5, w, fb, t0 + 0.3 + i * 0.4), 'fadeUp', { dur: 0.5 }));
+    }
+
+    // terrier work: a squirrel darts across, then back, with speed lines; "notice, pursue"
+    {
+      const V = dets[3], t0 = tOpen(3) + OPEN;
+      const sq = K.group(V.svg);
+      const flip = K.group(sq, { transform: 'scale(1 1)' }); // mirrored for the run back
+      const lines = K.group(flip);
+      [[-92, -22, 80], [-112, 6, 100], [-84, 32, 70]].forEach(([x, y, w]) => K.line(lines, x, y, x + w * 0.6, y, { stroke: C.greenLight, 'stroke-width': 6 }));
+      const body = icon(flip, 'squirrel', 0, 0, 112, C.olive, 2);
+      tl.fromTo(sq, { x: -140, y: 100 }, { x: 1060, duration: 0.9, ease: 'power1.inOut' }, t0 + 0.3);
+      tl.set(flip, { attr: { transform: 'scale(-1 1)' } }, t0 + 1.6);
+      tl.to(sq, { x: 470, duration: 0.8, ease: 'power3.out' }, t0 + 1.6);
+      tl.to(lines, { opacity: 0, duration: 0.3 }, t0 + 2.3);
+      tl.to(body, { y: -10, duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 3 }, t0 + 2.4);
+      const ps = pills(V.vig, ['Notice', 'Pursue']);
+      [['notice', 0.55], ['pursue', 0.7]].forEach(([w, fb], i) => A.in(tl, ps[i], at(6, w, fb, t0 + 0.6 + i * 0.4), 'fadeUp', { dur: 0.5 }));
+    }
+
+    // sporting work: search, retrieve and handler icons
+    {
+      const V = dets[4], t0 = tOpen(4) + OPEN;
+      const ts = tiles(V.vig, [['search', 'Search'], ['bird', 'Retrieve'], ['person-standing', 'Handler']]);
+      [['searching', 0.3], ['carrying', 0.5], ['closely with a person', 0.6]].forEach(([w, fb], i) => {
+        const t = at(7, w, fb, t0 + 0.2 + i * 0.5);
+        A.in(tl, ts[i].t, t, 'fadeUp', { dur: 0.55 });
+        A.in(tl, ts[i].b, t + 0.1, 'pop', { dur: 0.5 });
+      });
+    }
+
+    // working and assistance: rescue, pulling, guarding, assistance
+    {
+      const V = dets[5], t0 = tOpen(5) + OPEN;
+      const ts = tiles(V.vig, [['life-buoy', 'Rescue'], ['weight', 'Pulling'], ['shield', 'Guarding'], ['hand-helping', 'Assistance']]);
+      ts.forEach((x, i) => {
+        A.in(tl, x.t, t0 + 0.2 + i * 0.35, 'fadeUp', { dur: 0.55 });
+        A.in(tl, x.b, t0 + 0.3 + i * 0.35, 'pop', { dur: 0.5 });
+      });
+    }
+
+    // ---------- beat 9: "clues, not guarantees" lands over the dimmed cards; different dog silhouettes appear beneath them
     const row = K.el('div', 'c1e-banrow');
-    Object.assign(row.style, { left: '100px', top: '550px', width: '1720px' });
+    Object.assign(row.style, { left: '100px', top: '500px', width: '1720px' });
     const ban = K.el('div', 'c1e-ban');
     const bi = K.el('div', 'bi');
     bi.appendChild(K.icon('search'));
     ban.appendChild(bi);
-    ban.appendChild(K.el('div', 'bt', K.md('Breed history gives us *clues*, not guarantees.')));
+    ban.appendChild(K.el('div', 'bt', K.md('Breed history gives us *clues*, not guarantees')));
     row.appendChild(ban);
     stage.appendChild(row);
-    const tBan = clamp(sayAt(ctx, 8, 'Breed history gives us', 0.55, 0.3), tAll + 0.8, end(8) - 1.2);
-    tl.to(cardEls, { opacity: 0.22, duration: 0.6, ease: 'power2.out' }, tBan - 0.1);
+    const tBan = clamp(sayAt(ctx, 9, 'Breed history gives us', 0.35, 0.3), cue(9) + 0.6, end(9) - 3);
+    tl.to([...cardEls, B.wrap], { opacity: 0.25, duration: 0.6, ease: 'power2.out' }, tBan - 0.1);
     tl.fromTo(ban, { opacity: 0, y: -44, scale: 1.05 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, tBan);
     A.pulse(tl, bi, tBan + 0.6, { scale: 1.12 });
 
-    // ---------- beat 9: the cards fly into the small bowl's third "?" chip; the bowl grows back and that chip drops in
-    const t9 = cue(9);
-    A.out(tl, [row, q, akc], t9 - 0.35, 'fadeUp', { dur: 0.45 });
-    tl.to(cardEls, { opacity: 1, duration: 0.35, ease: 'power2.out' }, t9 - 0.3);
-    const TX = STD.cx + SM.x + SLOT[2][0] * 0.25, TY = STD.y + SM.y + SLOT[2][1] * 0.25;
-    const tFly = t9 + 0.1, FD = 0.95, FS = 0.08;
+    const sil = K.svg(stage, { x: 100, y: 870, w: 1720, h: 92, viewBox: '0 0 1720 92' });
+    sil.style.overflow = 'visible';
+    const ground = K.group(sil, { transform: 'translate(0 88)' });
+    const shades = [C.greenDeep, C.olive, C.greenDark, C.green, C.greenDeep, C.olive, C.greenDark];
+    const dogs = DOGS.map((p, i) => dogSilhouette(ground, 260 + i * 200, p, shades[i]));
+    const tSil = clamp(sayAt(ctx, 9, 'Individual dogs', 0.7), tBan + 1.2, end(9) - 1.5);
+    tl.fromTo(dogs, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.14, ease: 'power3.out' }, tSil);
+
+    // ---------- beat 10: the cards fly into the small bowl's third "?" chip; the bowl grows back and that chip drops in
+    const t10 = cue(10);
+    A.out(tl, [row, q, noteRow, sil], t10 - 0.35, 'fadeUp', { dur: 0.45 });
+    tl.to([...cardEls, B.wrap], { opacity: 1, duration: 0.35, ease: 'power2.out' }, t10 - 0.3);
+    const TX = BOWL.cx + SLOT[2][0] * BOWL.scale, TY = BOWL.y + SLOT[2][1] * BOWL.scale;
+    const tFly = t10 + 0.1, FD = 0.95, FS = 0.08;
     cards.forEach((k, i) => {
       const t = tFly + i * FS;
       tl.to(k.c, { x: TX - k.cx, y: TY - k.cy, scale: 0.03, duration: FD, ease: 'power2.in' }, t);
@@ -207,7 +394,7 @@
     const list = K.el('div', 'c1e-list');
     Object.assign(list.style, { left: '100px', top: '330px' });
     stage.appendChild(list);
-    const pills = [0, 1, 2].map(k => {
+    const caps = [0, 1, 2].map(k => {
       const p = K.el('div', 'c1-cap');
       const dot = K.el('div', 'c1-dot');
       dot.style.background = ING[k].col;
@@ -217,8 +404,8 @@
       list.appendChild(p);
       return p;
     });
-    A.in(tl, pills.slice(0, 2), tGrow + 0.3, 'fadeRight', { dur: 0.6, stagger: 0.15 });
-    A.in(tl, pills[2], land - 0.15, 'fadeRight', { dur: 0.6 });
+    A.in(tl, caps.slice(0, 2), tGrow + 0.3, 'fadeRight', { dur: 0.6, stagger: 0.15 });
+    A.in(tl, caps[2], land - 0.15, 'fadeRight', { dur: 0.6 });
 
     const tGlow = land + 0.45;
     const halos = [0, 1, 2].map(k => {
@@ -230,17 +417,17 @@
     tl.fromTo(halos, { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' }, { opacity: 0.95, scale: 1, duration: 0.8, stagger: 0.12, ease: 'power2.out' }, tGlow);
     tl.fromTo(B.glow, { opacity: 0 }, { opacity: 0.9, duration: 1.2, ease: 'sine.inOut', immediateRender: false }, tGlow);
     tl.to([0, 1, 2].map(k => B.tokens[k].inner), { scale: 1.12, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, stagger: 0.12, ease: 'sine.inOut' }, tGlow + 0.1);
-    tl.to(pills, { boxShadow: '0 0 0 4px rgba(184,217,154,0.9), 0 12px 30px rgba(97,149,55,0.25)', duration: 0.6, stagger: 0.12 }, tGlow);
+    tl.to(caps, { boxShadow: '0 0 0 4px rgba(184,217,154,0.9), 0 12px 30px rgba(97,149,55,0.25)', duration: 0.6, stagger: 0.12 }, tGlow);
 
-    // "another piece of the puzzle"
+    // "another ingredient to consider"
     const puz = K.el('div', 'c1e-puz');
     Object.assign(puz.style, { left: '100px', top: '700px' });
     const pi = K.el('div', 'pi');
-    pi.appendChild(K.icon('puzzle'));
+    pi.appendChild(K.icon('circle-plus'));
     puz.appendChild(pi);
-    puz.appendChild(K.el('div', 'pt', K.md('Another piece of the *puzzle*')));
+    puz.appendChild(K.el('div', 'pt', K.md('Another *ingredient* to consider')));
     stage.appendChild(puz);
-    const tPuz = clamp(sayAt(ctx, 9, 'another piece of the puzzle', 0.88, 0.3), land + 1.0, dur - 2.0);
+    const tPuz = clamp(sayAt(ctx, 10, 'another ingredient', 0.85, 0.3), land + 1.0, dur - 2.0);
     A.in(tl, puz, tPuz, 'fadeUp', { dur: 0.8 });
     A.in(tl, pi, tPuz + 0.15, 'pop', { dur: 0.6 });
   });

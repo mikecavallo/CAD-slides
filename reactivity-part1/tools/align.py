@@ -195,6 +195,18 @@ def find_recordings(chapters):
     return per, full, files
 
 
+def level(a, f, target=-23.0):
+    """Bring one take to a common loudness (separate takes are often recorded at different levels).
+    The final mix is normalised again in assemble.py; this only evens out the takes against each other."""
+    log = subprocess.run(["ffmpeg", "-nostats", "-i", str(f), "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+    m = re.findall(r"I:\s+(-?[\d.]+) LUFS", log)
+    if not m:
+        return a
+    gain = 10 ** ((target - float(m[-1])) / 20)
+    peak = float(np.max(np.abs(a))) or 1.0
+    return a * min(gain, 0.95 / peak)
+
+
 def align_scenes(rec, c, beats, files, work):
     """Chapter recorded one file per scene: align each scene to its own file, then join the files into one chapter
     track (only the recorded scenes, in script order). Returns the chapter's align record, or None if none recorded."""
@@ -218,7 +230,7 @@ def align_scenes(rec, c, beats, files, work):
                 w["e"] += off
             timed[k] = v
         raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(f), "-ac", "1", "-ar", "48000", "-f", "f32le", "-"], capture_output=True, check=True).stdout
-        parts.append(np.frombuffer(raw, dtype=np.float32))
+        parts.append(level(np.frombuffer(raw, dtype=np.float32), f))
         off += len(parts[-1]) / 48000
     import soundfile as sf
     out = work / f"{c}.wav"

@@ -36,13 +36,13 @@
               "onscreen": "The problem"
             },
             {
-              "say": "By the end, you'll be able to look past the label, understand why your dog reacts the way they do, and see what's really behind the behavior.",
-              "show": "The 'The promise' card slides up with the line 'What you'll walk away with', and three checked rows appear as they are said: Look past the label; Why your dog reacts; What's behind the behavior.",
+              "say": "By the end, you'll understand the various factors that set the stage for your dog's behavior.",
+              "show": "The 'The promise' card slides up with the line 'What you'll walk away with', and the promise appears as it is said: Understand the factors that set the stage for your dog's behavior.",
               "onscreen": "The promise"
             },
             {
-              "say": "Here's how we'll get there. First, we'll look at what aggression and reactivity really mean. Second, we'll look at the ingredients that set the stage for the behavior we see.",
-              "show": "The 'The plan' card slides up with the line 'How we'll get there', and two numbered steps appear on 'First' and 'Second': What the words mean; What sets the stage.",
+              "say": "Here's how we'll get there. First, we'll look at aggression and reactivity, and what they really mean. And second, we'll look at the ingredients that shape how a dog responds.",
+              "show": "The 'The plan' card slides up with the line 'How we'll get there', and two numbered steps appear on 'First' and 'second': What the words mean; What sets the stage.",
               "onscreen": "The plan"
             }
           ]
@@ -292,7 +292,7 @@
               "onscreen": "Too little exposure"
             },
             {
-              "say": "But appropriate socialization isn't simply about exposing a puppy to as many things as possible. The way those experiences happen matters too. Puppies need opportunities to observe, approach, move away, and take a break. They should have some choice in whether and how they interact with something new.",
+              "say": "But appropriate socialization isn't simply about exposing a puppy to as many things as possible. The way those experiences happen matters too. Puppies need opportunities to observe, approach, move away, and take a break.",
               "show": "The timeline clears. A puppy watches a person, a dog and a new place from different distances; small arrows show its options, one per word: Observe, Approach, Move away, Take a break.",
               "onscreen": "How we expose matters"
             },
@@ -307,12 +307,12 @@
               "onscreen": "No choice, no break"
             },
             {
-              "say": "And then there is the puppy who learned that every dog or person means a party. Running up to meet dog after dog, person after person can make seeing another dog extremely exciting, until the leash prevents the puppy from getting there. Hello, frustration. If that was your puppy, you were probably following common advice.",
+              "say": "And then there is the dog who learned that every dog or person means a party. Often as a puppy, these dogs were running up to meet dog after dog, person after person, which can make seeing them extremely exciting, until the leash prevents the dog from getting there. Hello, frustration. If that was your puppy, you were probably following common advice.",
               "show": "A row of happy dog icons appears, then a leash tightens between the puppy and the next dog and a small red label appears: 'Frustration'.",
               "onscreen": "Every dog means a party"
             },
             {
-              "say": "Socialization isn't about checking off a list of people, dogs, places, and experiences. It's about helping a puppy build positive, flexible associations while giving them appropriate support and choice. Socialization is one ingredient in the larger picture we need to consider when we're trying to understand behavior.",
+              "say": "Socialization isn't about checking off a list of people, dogs, places, and experiences. It's about helping a puppy build positive associations in a variety of situations, while giving them appropriate support and choice. Socialization is one ingredient in the larger picture we need to consider when we're trying to understand behavior.",
               "show": "The party row clears and the 'Socialization' chip drops into the bowl beside the earlier chips.",
               "onscreen": "Socialization is one ingredient"
             }
@@ -386,7 +386,7 @@
               "onscreen": "Repeated experiences shape responses"
             },
             {
-              "say": "And the more a dog practices a response, the easier that response can become. Practice makes patterns stronger. A dog that repeatedly barks, lunges, freezes, or snaps in a particular situation may begin to do it sooner and more automatically the next time.",
+              "say": "And the more a dog practices a response, the more likely they are to choose it the next time. That's because practice makes patterns stronger. A dog that repeatedly barks, lunges, freezes, or snaps in a particular situation may begin to do it sooner and more automatically the next time.",
               "show": "Three rows show the same encounter repeated; in each row the red response marker lands earlier along the row, with labels '1st', '5th', '20th'.",
               "onscreen": "Practice makes patterns stronger"
             },
@@ -437,7 +437,7 @@
               "onscreen": "Suppressing behavior ≠ changing behavior"
             },
             {
-              "say": "If you've used any of these, be kind to yourself. You did your best, and now you know more. A trainer who works without force can help you switch safely to a comfortable harness.",
+              "say": "If you've used any of these, be kind to yourself. You did your best, and now you know more.",
               "show": "Everything fades as a green heart icon pulses once over the bowl.",
               "onscreen": "Be kind to yourself"
             }
@@ -493,13 +493,13 @@
           ],
           "beats": [
             {
-              "say": "By now, you can see that a dog's behavior usually isn't explained by one thing. Genetics and temperament, prenatal environment, breed history and purpose, socialization, age, pain and discomfort, past experiences, and the methods used with the dog can all become ingredients in the behavior we see.",
+              "say": "By now, you can see that a dog's behavior usually isn't explained by one thing. Genetics and temperament, prenatal environment, breed history and purpose, socialization, age, pain and discomfort, past experiences, and the methods used with the dog can all become ingredients that set the stage for the behavior we see.",
               "show": "The mixing bowl returns to center screen with eight blank chips above it. The chips drop in as they are named: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Pain and discomfort, Past experiences, Training tools and methods.",
               "onscreen": "Behavior is shaped by many factors"
             },
             {
-              "say": "These ingredients can help set the stage for the behavior we see. But there's another piece we need to understand: what fuels the behavior once those ingredients are in place.",
-              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. A new amber chip with a flame icon drops in and settles on top of them, and the line changes to 'What fuels the behavior?'.",
+              "say": "But there's another piece we need to understand: what fuels the behavior once those ingredients are in place.",
+              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'another piece', a new amber chip with a flame icon drops in and settles on top of them, and the line changes to 'What fuels the behavior?'.",
               "onscreen": "What fuels the behavior?"
             },
             {

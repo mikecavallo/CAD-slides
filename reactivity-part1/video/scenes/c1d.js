@@ -513,7 +513,7 @@
     const t1 = cue(1);
     tl.to(legs.filter(Boolean), { opacity: 0.5, duration: 0.6, ease: 'power2.out' }, t1);
     A.out(tl, l0, t1 - 0.2, 'fade', { dur: 0.4 });
-    const tSet = clamp(at(1, 'set the stage', 0.3, 0.2), t1 + 0.2, end(1) - 6);
+    const tSet = clamp(at(0, 'set the stage', 0.92, 0.2), tLast + 0.6, cue(1) - 0.2);
     tl.to(B.tokens.map(t => t.inner), { scale: 1.15, transformOrigin: '50% 50%', duration: 0.25, yoyo: true, repeat: 1, stagger: 0.05, ease: 'sine.inOut' }, tSet);
     const FY = -152;
     const fuel = K.group(B.svg);
@@ -522,7 +522,7 @@
     K.circle(fchip, 0, 0, 54, { fill: C.amber, stroke: '#fff', 'stroke-width': 6 });
     C1.svgIcon(fchip, 'flame', 0, 0, 56, { stroke: '#fff', 'stroke-width': 2.3 });
     gsap.set(fuel, { x: 0, y: FY - 340, opacity: 0 });
-    const tFuel = clamp(at(1, 'another piece', 0.45, 0.2), tSet + 1.2, end(1) - 3);
+    const tFuel = clamp(at(1, 'another piece', 0.25, 0.2), t1 + 0.2, end(1) - 3);
     tl.to(fuel, { opacity: 1, duration: 0.25, ease: 'power1.out' }, tFuel);
     tl.to(fuel, { y: FY, duration: 0.6, ease: 'power2.in' }, tFuel);
     const tLand = tFuel + 0.6;

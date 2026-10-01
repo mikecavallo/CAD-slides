@@ -464,7 +464,7 @@
     const cB = K.el('span', null, K.md('*Different context.*'));
     cap2.appendChild(cA); cap2.appendChild(cB);
     A.in(tl, cA, Math.max(t2 + 0.3, at(2, 'the behavior is the same', 0.2, 0.1)), 'fadeUp', { dur: 0.6 });
-    const g0 = at(2, 'what is happening', 0.2, 0.3), g1 = Math.max(g0 + 1.6, at(2, 'different', 0.3, 0.55));
+    const g0 = at(2, 'why it', 0.2, 0.3), g1 = Math.max(g0 + 1.6, at(2, 'different', 0.3, 0.55));
     const step = (g1 - g0) / 4;
     cards.forEach((c, k) => {
       const t = g0 + k * step;

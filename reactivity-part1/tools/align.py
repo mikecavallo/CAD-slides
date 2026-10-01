@@ -2,7 +2,7 @@
 
 Drop recordings in narration/ as either
   - one file per scene: ch01s01.m4a, ch01s02.m4a, ... (any format ffmpeg reads; a chapter may be partly recorded,
-    and then only its recorded scenes go into the video), or
+    and then only its recorded scenes go into the video; a scene may come in parts: ch01s07_part_1, ch01s07_part_2), or
   - one file per chapter: ch00.wav, ch01.m4a, ..., or
   - one file for everything: full.wav (or full.m4a, full.mp3 ...)
 then run
@@ -207,31 +207,91 @@ def level(a, f, target=-23.0):
     return a * min(gain, 0.95 / peak)
 
 
+def scene_takes(files, sid):
+    """The recording(s) for one scene: ch01s07.m4a, or a slide recorded in pieces (ch01s07_part_1, ch01s07 part 2, ...),
+    which are played back to back in part order."""
+    sid = sid.lower()
+    if sid in files:
+        return [files[sid]]
+    parts = []
+    for stem, f in files.items():
+        m = re.fullmatch(re.escape(sid) + r"[ _-]*(?:part|pt)?[ _-]*(\d+)", stem)
+        if m:
+            parts.append((int(m.group(1)), f))
+    return [f for _, f in sorted(parts)]
+
+
+def trim_bounds(beats, heard, audio):
+    """Cut stray speech before the scene's first scripted word and after its last one (a slate like "slide two",
+    a false start, the first word of an abandoned retake). Cuts land in the silence that separates the stray part
+    from the real take, so a first word the recogniser missed is never clipped. Returns (start, end) in seconds."""
+    dur = len(audio) / SR
+    idx = [j for j in align([w for _, ws in beats for w in ws], heard) if j >= 0]
+    if not idx:
+        return 0.0, dur
+    j0, j1 = min(idx), max(idx)
+    win = int(0.02 * SR)
+    n = len(audio) // win
+    rms = np.sqrt(np.mean(audio[: n * win].reshape(n, win) ** 2, axis=1) + 1e-12)
+    loud = rms > max(np.percentile(rms, 95) * 0.06, 1e-4)
+    gap = int(0.35 / 0.02)  # a pause at least this long separates stray speech from the take
+
+    def edge(f, step):
+        """From frame f walk outward through the take until a long enough pause; return the last loud frame."""
+        last, quiet = f, 0
+        while 0 <= f < n:
+            if loud[f]:
+                last, quiet = f, 0
+            else:
+                quiet += 1
+                if quiet >= gap:
+                    break
+            f += step
+        return last
+
+    a, b = 0.0, dur
+    if j0 > 0:
+        a = max(0.0, edge(int(heard[j0]["t"] / 0.02), -1) * 0.02 - 0.25)
+    if j1 < len(heard) - 1:
+        b = min(dur, (edge(int(heard[j1]["e"] / 0.02), 1) + 1) * 0.02 + 0.5)
+    if a > 0.3 or b < dur - 0.3:
+        print(f"  trimmed {beats[0][0].split(':')[0]}: {a:.2f}s at the start, {dur - b:.2f}s at the end", flush=True)
+    else:
+        a, b = 0.0, dur
+    return a, b
+
+
 def align_scenes(rec, c, beats, files, work):
     """Chapter recorded one file per scene: align each scene to its own file, then join the files into one chapter
     track (only the recorded scenes, in script order). Returns the chapter's align record, or None if none recorded."""
     groups = {}
     for k, ws in beats:
         groups.setdefault(k.split(":")[0], []).append((k, ws))
-    recorded = [sid for sid in groups if sid.lower() in files]
+    takes = {sid: scene_takes(files, sid) for sid in groups}
+    recorded = [sid for sid in groups if takes[sid]]
     if not recorded:
         return None
     timed, parts, off = {}, [], 0.0
     for sid in recorded:
-        f = files[sid.lower()]
-        audio = load_audio(f)
+        audio = np.concatenate([load_audio(f) for f in takes[sid]])
         dur = len(audio) / SR
-        t = time_beats(groups[sid], transcribe(rec, audio), dur)
+        heard = transcribe(rec, audio)
+        a, b = trim_bounds(groups[sid], heard, audio)
+        t = time_beats(groups[sid], heard, dur)
         for k, v in t.items():
-            v["start"] += off
-            v["end"] += off
+            v["start"] += off - a
+            v["end"] += off - a
             for w in v["words"]:
-                w["t"] += off
-                w["e"] += off
+                w["t"] += off - a
+                w["e"] += off - a
             timed[k] = v
-        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(f), "-ac", "1", "-ar", "48000", "-f", "f32le", "-"], capture_output=True, check=True).stdout
-        parts.append(level(np.frombuffer(raw, dtype=np.float32), f))
-        off += len(parts[-1]) / 48000
+        take = []
+        for f in takes[sid]:
+            raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(f), "-ac", "1", "-ar", "48000", "-f", "f32le", "-"], capture_output=True, check=True).stdout
+            take.append(level(np.frombuffer(raw, dtype=np.float32), f))
+        take = np.concatenate(take)[int(a * 48000):int(b * 48000)]
+        parts.append(take)
+        off += len(take) / 48000
     import soundfile as sf
     out = work / f"{c}.wav"
     sf.write(out, np.concatenate(parts), 48000)

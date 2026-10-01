@@ -426,8 +426,8 @@
       tl.fromTo(p, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, tOpt + 0.12);
       opts.push(p);
     });
-    // "some choice": the options pulse together
-    const tChoice = clamp(at(2, 'some choice', 0.8), tOpt + 0.8, cue(3) - 1.2);
+    // "take a break": the options pulse together
+    const tChoice = clamp(at(2, 'take a break', 0.9), tOpt + 0.8, cue(3) - 1.2);
     tl.to(opts, { scale: 1.08, duration: 0.25, yoyo: true, repeat: 1, stagger: 0.1, ease: 'sine.inOut' }, tChoice);
 
     // ---------- beat 3: pass the puppy
@@ -557,7 +557,7 @@
     K.circle(pin, 0, 0, 44, { fill: C.amber, stroke: '#fff', 'stroke-width': 5 });
     C1.svgIcon(pin, 'dog', 0, 1, 50, { stroke: '#fff', 'stroke-width': 2.1 });
     gsap.set(pup, { x: 170, y: RY });
-    const tPupP = Math.max(cue(5) + 0.3, at(5, 'the puppy who learned', 0.1));
+    const tPupP = Math.max(cue(5) + 0.3, at(5, 'the dog who learned', 0.1));
     tl.fromTo(pin, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tPupP);
     const confetti = (x, y, t) => {
       const cols = [C.amber, C.green, C.red, C.greenLight, C.amber, C.green];
@@ -567,7 +567,7 @@
         tl.fromTo(dot, { x: 0, y: 0, opacity: 1 }, { x: Math.cos(a) * d, y: Math.sin(a) * d, opacity: 0, duration: 0.7, ease: 'power2.out', immediateRender: false }, t);
       });
     };
-    const hopT = [at(5, 'Running up to meet', 0.3, 0.1), at(5, 'after dog', 0.38, 0.2), at(5, 'person after person', 0.45, 0.2), at(5, 'another dog', 0.55, 0.3)];
+    const hopT = [at(5, 'Running up to meet', 0.3, 0.1), at(5, 'after dog', 0.38, 0.2), at(5, 'person after person', 0.45, 0.2), at(5, 'seeing them', 0.6, 0.3)];
     let px = 170;
     hopT.forEach((t0, i) => {
       const t = Math.max(t0, i ? hopT[i - 1] + 0.9 : tRow + 1.0);

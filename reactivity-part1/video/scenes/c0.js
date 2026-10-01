@@ -26,6 +26,8 @@
   .c0-card .sub { margin-top: 12px; font: 500 30px/1.2 var(--font-body); color: var(--muted); white-space: nowrap; }
   .c0-card .rule { margin: 28px 0 26px; width: 100%; height: 2px; background: #eef1ea; }
   .c0-card .rows { display: flex; flex-direction: column; gap: 22px; width: 100%; }
+  .c0-stmt { font: 600 38px/1.3 var(--font-head); color: var(--ink); }
+  .c0-stmt b { color: var(--green); font-weight: 700; }
   .c0-row { display: flex; align-items: center; gap: 18px; font: 600 30px/1.2 var(--font-body); color: var(--ink); }
   .c0-row .ic { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; }
   .c0-row .ic svg { width: 28px; height: 28px; stroke-width: 2.4; }
@@ -95,6 +97,12 @@
     c.appendChild(K.el('div', 'lab', o.lab));
     c.appendChild(K.el('div', 'sub', o.sub));
     c.appendChild(K.el('div', 'rule'));
+    if (o.text) {
+      const st = K.el('div', 'c0-stmt', K.md(o.text));
+      c.appendChild(st);
+      stage.appendChild(c);
+      return { c, bd, rs: [st] };
+    }
     const rows = K.el('div', 'rows');
     const rs = o.rows.map((t, i) => {
       const r = K.el('div', 'c0-row');
@@ -125,15 +133,15 @@
         rows: ['Stressful walks', 'Barking, lunging, growling', 'Confusing advice'], rowIcons: ['footprints', 'volume-2', 'message-circle-warning'],
         rowBg: 'var(--amber-pale)', rowFg: 'var(--amber)' }),
       card(stage, 680, { icon: 'target', bg: 'var(--green-pale)', fg: 'var(--green-dark)', lab: 'The promise', sub: 'What you\'ll walk away with',
-        rows: ['Look past the label', 'Why your dog reacts', 'What\'s behind the behavior'], rowBg: 'var(--green-pale)', rowFg: 'var(--green-dark)' }),
+        text: 'Understand the *factors that set the stage* for your dog\'s behavior' }),
       card(stage, 1260, { icon: 'route', bg: 'var(--green)', fg: '#fff', lab: 'The plan', sub: 'How we\'ll get there',
         rows: ['What the words mean', 'What sets the stage'], num: true, rowBg: 'var(--green)', rowFg: '#fff' }),
     ];
     // each beat: its card slides up and takes the green outline; its rows land as they are said
     const CUES = [
       [['walks feel stressful', 0.35], ['barks, lunges', 0.6], ['the advice', 0.85]],
-      [['look past the label', 0.3], ['why your dog reacts', 0.6], ['really behind', 0.85]],
-      [['First', 0.25], ['Second', 0.65]],
+      [['various factors', 0.45]],
+      [['First', 0.25], ['second', 0.7]],
     ];
     cards.forEach((k, b) => {
       const t = cue(b) + 0.05;

@@ -9,7 +9,8 @@
 //   abc_cycle   not in script/lesson.json yet. Intended beats when it gets narration:
 //               0 heading   1 before loop builds A, B, C   2 its note   3 during loop builds   4 its note
 //               5 practice: green path strengthens, red path fades   6 old behavior practiced: red path comes back, green fades
-//               7 management: green path strengthens again, red fades (scene ends on the new path)
+//               7 management: green path strengthens again, red fades
+//               8 the green consequence progresses: Space is given, Less space needed, Building dog relationships
 //               (any beats past the last one present are skipped; with fewer beats everything still builds)
 //
 // K.abcCycle is defined here so later scenes can reuse the same loop.
@@ -21,6 +22,8 @@
     display: grid; place-items: center; font: 800 38px/1 var(--font-head); }
   .abcc-card .wd { font: 600 26px/1 var(--font-body); color: var(--abcc); margin-bottom: 8px; }
   .abcc-card .cp { font: 700 28px/1.12 var(--font-body); color: var(--ink); }
+  .abcc-card .cps { display: grid; }
+  .abcc-card .cps > .cp { grid-area: 1 / 1; }
   .abcc-card .sub { font: 500 26px/1.15 var(--font-body); color: var(--ink-soft); margin-top: 4px; }
   .abcc-mid { position: absolute; width: 420px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
   .abcc-mid .pill { padding: 12px 26px; border-radius: 16px; background: var(--abcc); color: #fff; font: 700 32px/1 var(--font-head);
@@ -40,7 +43,8 @@
   /**
    * One ABC loop. Nodes sit on a ring (A at the top), arrows run clockwise A to B to C and back to A.
    * o: {cx, cy, r, variant:'red'|'green'|'olive', angles:[a,b,c] (degrees clockwise from 12 o'clock),
-   *     captions:[a,b,c] (string, or {t, sub} for a smaller second line), sizes:[{w,h}, ...],
+   *     captions:[a,b,c] (string, or {t, sub, next:[...]}: sub is a smaller second line, next are later captions
+   *     the scene can step to via steps[i]), sizes:[{w,h}, ...],
    *     labels:[{t, side:'out'|'in', gap}|null, ...] one per arrow (A to B, B to C, C to A), label, note, midY}
    * Returns {cards, arcs, heads, labels, mid, pill, note, dot, track}.
    */
@@ -108,8 +112,10 @@
       const cap = typeof o.captions[i] === 'string' ? { t: o.captions[i] } : o.captions[i];
       const c = el('div', 'abcc-card');
       c.style.setProperty('--abcc', color);
+      // cap.next: later captions stacked in the same spot, hidden until the scene steps to them
+      const alts = (cap.next || []).map(t => `<div class="cp" style="opacity:0">${md(t)}</div>`).join('');
       c.innerHTML = `<div class="lt">${LETTERS[i]}</div><div><div class="wd">${WORDS[i]}</div>` +
-        `<div class="cp">${md(cap.t)}</div>${cap.sub ? `<div class="sub">${md(cap.sub)}</div>` : ''}</div>`;
+        `<div class="cps"><div class="cp">${md(cap.t)}</div>${alts}</div>${cap.sub ? `<div class="sub">${md(cap.sub)}</div>` : ''}</div>`;
       Object.assign(c.style, { left: `${x - w / 2}px`, top: `${y - h / 2}px`, width: `${w}px`, height: `${h}px` });
       parent.appendChild(c);
       return c;
@@ -125,7 +131,8 @@
     parent.appendChild(mid);
 
     const pale = { [COLORS.red]: '#ecd3cc', [COLORS.green]: '#d6e6c6' }[color] || '#e2e4dc';
-    return { cards, arcs, heads, labels, worn, mid, pill, note, dot, track, color, pale, cx, cy, r };
+    const steps = cards.map(c => [...c.querySelectorAll('.cp')]);
+    return { cards, steps, arcs, heads, labels, worn, mid, pill, note, dot, track, color, pale, cx, cy, r };
   };
 
   // build one loop: A, arrow, B, arrow, C, arrow back to A. Returns when it finishes.
@@ -186,8 +193,9 @@
     });
     const during = K.abcCycle(stage, {
       cx: 1384, cy: CY, r: R, angles: ANG, variant: 'green',
-      captions: ['Another dog appears', { t: 'Replacement behavior', sub: 'e.g. looks to you' }, 'Space is given'],
-      sizes: [null, { w: 360, h: 160 }, null],
+      captions: ['Another dog appears', { t: 'Replacement behavior', sub: 'e.g. looks to you' },
+        { t: 'Space is given', next: ['Less space needed', 'Building dog relationships'] }],
+      sizes: [null, { w: 360, h: 160 }, { w: 350, h: 120 }],
       labels: [{ t: 'Changing<br>emotions' }, Object.assign({ t: 'Lowered<br>arousal/stress' }, BC), null],
       label: 'During training',
       note: 'The new behavior works,<br>so it repeats.',
@@ -236,5 +244,21 @@
     strength(tl, before, t7 + 0.4, 0.45, { dur: 1.8 });
     strength(tl, during, t7 + 0.4, 1.9, { dur: 1.8 });
     A.pulse(tl, during.cards[1], t7 + 1.8, { scale: 1.06 });
+
+    // as emotions change and arousal drops, the green consequence can progress past what the dog wants today:
+    // space is given, then less space needed, then building relationships with other dogs
+    const say4 = K.el('div', 'abcc-say', md('As emotions change, *the consequence can progress* beyond what the dog wants today.'));
+    stage.appendChild(say4);
+    const t8 = at(8) ?? t7 + 4.5;
+    A.out(tl, say3, t8, 'fadeUp', { dur: 0.4 });
+    A.in(tl, say4, t8 + 0.3, 'fadeUp', { dur: 0.7 });
+    A.pulse(tl, during.labels[1], t8 + 0.6, { scale: 1.1 });
+    const S = during.steps[2];
+    [1, 2].forEach((k, j) => {
+      const ts = t8 + 1.2 + j * 1.8;
+      tl.to(S[k - 1], { opacity: 0, y: -14, duration: 0.35, ease: 'power2.in' }, ts);
+      tl.fromTo(S[k], { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', immediateRender: false }, ts + 0.3);
+      A.pulse(tl, during.cards[2], ts + 0.35, { scale: 1.07 });
+    });
   });
 })();

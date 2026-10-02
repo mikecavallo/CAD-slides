@@ -34,7 +34,7 @@ def scene_seg(ch, sc, start, dur, beats, audio):
 
 
 def build_sequential(script, beat_dur, beat_audio):
-    tail = script.get("tail", TAIL)  # a lesson may hold its last slide longer (room for its closing beat)
+    tail = script.get("tail", TAIL)  # a lesson may hold its very last slide longer (room for its closing beat)
     """estimate / scratch: every beat has a known length; lay them out back to back."""
     segs, t = [], 0.0
     for ci, ch in enumerate(script["chapters"]):
@@ -52,7 +52,7 @@ def build_sequential(script, beat_dur, beat_audio):
                 if a:
                     audio.append({"file": a, "at": round(t + local, 4), "dur": d})
                 local += d + GAP
-            local += (tail if last_in_ch else SCENE_GAP) - GAP
+            local += ((tail if ci == len(script["chapters"]) - 1 else TAIL) if last_in_ch else SCENE_GAP) - GAP
             dur = frames(local)
             segs.append(scene_seg(ch, sc, t, dur, beats, audio))
             t += dur
@@ -86,7 +86,7 @@ def build_narration(script, align):
             if b > nxt - 0.15:
                 b = (prev_end + nxt) / 2
             bounds.append(b)
-        bounds.append(max(rec["dur"], lasts[-1]) + tail)
+        bounds.append(max(rec["dur"], lasts[-1]) + (tail if ci == len(script["chapters"]) - 1 else TAIL))
         bounds = [frames(x) for x in bounds]
         # each scene plays its own slice of the recording, followed by a short silent hold
         for k, sc in enumerate(scenes):

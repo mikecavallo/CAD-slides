@@ -43,7 +43,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam.
 - Recordings: `Ch02intro.m4a`, `Ch02plan.m4a`, `Ch02s01.m4a` ... `Ch02s12.m4a` (rename Tori's files to match).
-- The lesson has `"tail": 5.0` so the thermometer reveal holds before the logo close.
+- The lesson has `"tail": 5.0` (applies to its very last slide only) so the thermometer reveal holds before the logo close.
+- Online preview (temporary AI voice): https://claude.ai/artifact/Nzf2aTAYk5iAVNdqKmb1Js (`out/web/chapter2/`).
 
 ## Recordings (Tori's voice)
 

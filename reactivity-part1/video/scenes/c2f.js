@@ -192,9 +192,10 @@
     K.circle(th, TX, 286, 34, { fill: C.red });
     const merc = K.rect(th, TX - 12, 240, 24, 50, { rx: 12, fill: C.red });
     [-90, -30, 30, 90, 150].forEach(y => K.line(th, TX + 6, y, TX + 22, y, { stroke: C.greenDeep, 'stroke-width': 4 }));
-    gsap.set(th, { y: -700, opacity: 0 });
+    gsap.set(th, { y: -170, opacity: 0 });
     tl.to([slot, slotC], { opacity: 0, duration: 0.3 }, t4);
-    tl.fromTo(th, { y: -700, opacity: 0 }, { y: 0, opacity: 1, duration: 0.75, ease: 'power2.in', immediateRender: false }, t4);
+    tl.fromTo(th, { y: -170 }, { y: 0, duration: 0.6, ease: 'power2.in', immediateRender: false }, t4 + 0.1);
+    tl.fromTo(th, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t4 + 0.1);
     P.ripple(tl, t4 + 0.7);
     tl.to(th, { y: 10, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.out' }, t4 + 0.75);
     tl.fromTo(merc, { attr: { y: 240, height: 50 } }, { attr: { y: -70, height: 360 }, duration: 1.6, ease: 'power2.inOut', immediateRender: false }, t4 + 1.0);

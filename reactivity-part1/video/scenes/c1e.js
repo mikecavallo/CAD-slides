@@ -26,6 +26,8 @@
   .c1e-tile .tb svg { width: 64px; height: 64px; stroke-width: 2; }
   .c1e-tile .tl { font: 700 32px/1 var(--font-body); color: var(--ink); white-space: nowrap; }
   .c1e-banrow { position: absolute; display: flex; justify-content: center; }
+  .c1e-sil { position: absolute; display: flex; justify-content: center; align-items: flex-end; gap: 96px; }
+  .c1e-sil img { display: block; width: auto; }
   .c1e-ban { display: flex; align-items: center; gap: 28px; padding: 28px 56px 28px 28px; border-radius: 30px; background: #fff;
     box-shadow: var(--shadow); border: 1px solid #e6e9e1; }
   .c1e-ban .bi { width: 92px; height: 92px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
@@ -132,50 +134,9 @@
     return K.path(g, `M ${ax} ${ay} L ${x} ${y} L ${bx} ${by}`, { stroke: col, 'stroke-width': 6 });
   }
 
-  /**
-   * A filled dog silhouette standing on y = 0, facing right. p: body length/height, leg length/width, head radius,
-   * snout length, ears ('up' | 'flop'), tail ('up' | 'curl' | 'down' | 'out'), overall scale s.
-   */
-  function dogSilhouette(parent, x, p, col) {
-    const outer = K.group(parent);
-    const g = K.group(outer, { transform: `translate(${x} 0) scale(${p.s})` });
-    const L = p.bl, H = p.bh, LH = p.lh, LW = p.lw, HR = p.hr;
-    const top = -LH - H;
-    const line = (d, w) => K.path(g, d, { stroke: col, 'stroke-width': w, fill: 'none' });
-    // legs (back pair, front pair)
-    [-0.36, -0.22, 0.24, 0.36].forEach(f => line(`M ${f * L} ${-LH - H * 0.4} L ${f * L} ${-LW / 2}`, LW));
-    // body
-    K.svgEl('rect', { x: -L / 2, y: top, width: L, height: H, rx: H / 2, fill: col }, g);
-    // neck and head
-    const hx = L / 2 + HR * 0.55, hy = top - HR * 0.95;
-    line(`M ${L * 0.34} ${top + H * 0.35} L ${hx - HR * 0.2} ${hy + HR * 0.2}`, HR * 1.25);
-    K.circle(g, hx, hy, HR, { fill: col });
-    line(`M ${hx} ${hy + HR * 0.18} L ${hx + HR * 0.4 + p.sn} ${hy + HR * 0.3}`, HR * 0.95);
-    // ears
-    if (p.ears === 'up') K.path(g, `M ${hx - HR * 0.75} ${hy - HR * 0.35} L ${hx - HR * 0.5} ${hy - HR * 1.9} L ${hx + HR * 0.15} ${hy - HR * 0.8} Z`, { fill: col, stroke: col, 'stroke-width': 3 });
-    else K.svgEl('ellipse', { cx: hx - HR * 0.55, cy: hy + HR * 0.35, rx: HR * 0.42, ry: HR * 0.85, fill: col, transform: `rotate(18 ${hx - HR * 0.55} ${hy + HR * 0.35})` }, g);
-    // tail
-    const tx = -L / 2 + 6, ty = top + H * 0.3;
-    const TAIL = {
-      up: `M ${tx} ${ty} Q ${tx - 26} ${ty - 22} ${tx - 22} ${ty - 54}`,
-      curl: `M ${tx} ${ty} C ${tx - 40} ${ty - 10} ${tx - 30} ${ty - 58} ${tx + 6} ${ty - 40}`,
-      down: `M ${tx} ${ty} Q ${tx - 30} ${ty + 20} ${tx - 30} ${ty + 54}`,
-      out: `M ${tx} ${ty} Q ${tx - 36} ${ty + 4} ${tx - 54} ${ty + 22}`,
-    };
-    line(TAIL[p.tail], p.tw || 10);
-    return outer;
-  }
-
-  // seven different dogs, left to right (the row is centred under the cards)
-  const DOGS = [
-    { bl: 120, bh: 54, lh: 50, lw: 16, hr: 23, sn: 22, ears: 'flop', tail: 'out', s: 0.5 }, // retriever type
-    { bl: 82, bh: 38, lh: 22, lw: 13, hr: 19, sn: 16, ears: 'up', tail: 'up', s: 0.5, tw: 8 }, // short-legged terrier
-    { bl: 118, bh: 44, lh: 76, lw: 12, hr: 17, sn: 30, ears: 'flop', tail: 'down', s: 0.46, tw: 7 }, // sighthound
-    { bl: 58, bh: 30, lh: 26, lw: 9, hr: 16, sn: 8, ears: 'up', tail: 'up', s: 0.44, tw: 6 }, // tiny dog
-    { bl: 116, bh: 52, lh: 56, lw: 16, hr: 22, sn: 20, ears: 'up', tail: 'curl', s: 0.5 }, // spitz type
-    { bl: 150, bh: 76, lh: 50, lw: 24, hr: 31, sn: 18, ears: 'flop', tail: 'down', s: 0.47, tw: 16 }, // giant
-    { bl: 100, bh: 48, lh: 36, lw: 14, hr: 21, sn: 24, ears: 'flop', tail: 'up', s: 0.5 }, // beagle type
-  ];
+  // dog silhouettes for "individual variation": cut from real dog photos and from the Calling All Dogs logo
+  // (assets/img/sil_*.png, brand green), shown at different heights so size varies too
+  const DOGS = [['standing', 70], ['chihuahua', 44], ['golden', 80], ['terrier', 40], ['collie', 62], ['dane', 92]];
 
   // ================================================================== ch01s06 Breed history and purpose
   registerScene('ch01s06', ctx => {
@@ -343,11 +304,16 @@
     tl.fromTo(ban, { opacity: 0, y: -44, scale: 1.05 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, tBan);
     A.pulse(tl, bi, tBan + 0.6, { scale: 1.12 });
 
-    const sil = K.svg(stage, { x: 100, y: 870, w: 1720, h: 92, viewBox: '0 0 1720 92' });
-    sil.style.overflow = 'visible';
-    const ground = K.group(sil, { transform: 'translate(0 88)' });
-    const shades = [C.greenDeep, C.olive, C.greenDark, C.green, C.greenDeep, C.olive, C.greenDark];
-    const dogs = DOGS.map((p, i) => dogSilhouette(ground, 260 + i * 200, p, shades[i]));
+    const sil = K.el('div', 'c1e-sil');
+    Object.assign(sil.style, { left: '100px', top: '868px', width: '1720px', height: '94px' });
+    const dogs = DOGS.map(([n, hgt]) => {
+      const im = K.el('img');
+      im.src = '../assets/img/sil_' + n + '.png';
+      im.style.height = hgt + 'px';
+      sil.appendChild(im);
+      return im;
+    });
+    stage.appendChild(sil);
     const tSil = clamp(sayAt(ctx, 7, 'Individual dogs', 0.7), tBan + 1.2, end(7) - 1.5);
     tl.fromTo(dogs, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.14, ease: 'power3.out' }, tSil);
 

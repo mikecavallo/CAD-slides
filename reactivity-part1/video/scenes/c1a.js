@@ -456,12 +456,12 @@
       if (k === 0) A.in(tl, cap1, Math.max(tCap, tm + 0.8), 'fadeUp', { dur: 0.7 });
     });
 
-    // ---- beat 3: everything stays; 'Same behavior. Different context.'; the four situations glow in turn
+    // ---- beat 3: everything stays; 'Same behavior, different reasons'; the four situations glow in turn
     const t2 = cue(2);
     A.out(tl, cap1, t2 - 0.1, 'fade', { dur: 0.35 });
     const cap2 = box(stage, 'c1a-cap', null, { x: 160, y: 882, w: 1600 });
-    const cA = K.el('span', null, 'Same behavior. ');
-    const cB = K.el('span', null, K.md('*Different context.*'));
+    const cA = K.el('span', null, 'Same behavior, ');
+    const cB = K.el('span', null, K.md('*different reasons*'));
     cap2.appendChild(cA); cap2.appendChild(cB);
     A.in(tl, cA, Math.max(t2 + 0.3, at(2, 'the behavior is the same', 0.2, 0.1)), 'fadeUp', { dur: 0.6 });
     const g0 = at(2, 'why it', 0.2, 0.3), g1 = Math.max(g0 + 1.6, at(2, 'different', 0.3, 0.55));

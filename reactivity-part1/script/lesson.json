@@ -27,23 +27,23 @@
         {
           "id": "ch00s02",
           "heading": "Where we're headed",
-          "visual_concept": "Three cards across the slide, one per beat: The problem (why you're here), The promise (what you'll walk away with), The plan (how we'll get there, two numbered steps). The current card is outlined in green.",
+          "visual_concept": "Three cards across the slide, one per beat: Why you're here, What you'll gain, How we'll get there (two numbered steps). The current card is outlined in green.",
           "assets": [],
           "beats": [
             {
               "say": "If you're here, your dog's behavior is probably making life harder than it should be. Maybe walks feel stressful. Maybe your dog barks, lunges, or growls, and you're not sure why. And the advice out there can be confusing.",
-              "show": "The 'The problem' card slides up with the line 'Why you're here', and three rows appear as they are said: Stressful walks; Barking, lunging, growling; Confusing advice.",
-              "onscreen": "The problem"
+              "show": "The 'Why you're here' card slides up, and three rows appear as they are said: Stressful walks; Barking, lunging, growling; Confusing advice.",
+              "onscreen": "Why you're here"
             },
             {
               "say": "By the end, you'll understand the various factors that set the stage for your dog's behavior.",
-              "show": "The 'The promise' card slides up with the line 'What you'll walk away with', and the promise appears as it is said: Understand the factors that set the stage for your dog's behavior.",
-              "onscreen": "The promise"
+              "show": "The 'What you'll gain' card slides up, and the promise appears as it is said: Understand the factors that set the stage for your dog's behavior.",
+              "onscreen": "What you'll gain"
             },
             {
               "say": "Here's how we'll get there. First, we'll look at aggression and reactivity, and what they really mean. And second, we'll look at the ingredients that shape how a dog responds.",
-              "show": "The 'The plan' card slides up with the line 'How we'll get there', and two numbered steps appear on 'First' and 'second': What the words mean; What sets the stage.",
-              "onscreen": "The plan"
+              "show": "The 'How we'll get there' card slides up, and two numbered steps appear on 'First' and 'second': What the words mean; What sets the stage.",
+              "onscreen": "How we'll get there"
             }
           ]
         }
@@ -103,7 +103,7 @@
         {
           "id": "ch01s02",
           "heading": "Look beyond the label",
-          "visual_concept": "A row of behavior chips, then one big BARK chip with four simple situations around it (each a small icon scene with its meaning), then those stay while 'Same behavior. Different context.' lands, then they fade and question marks gather around a dog icon.",
+          "visual_concept": "A row of behavior chips, then one big BARK chip with four simple situations around it (each a small icon scene with its meaning), then those stay while 'Same behavior, different reasons' lands, then they fade and question marks gather around a dog icon.",
           "assets": [
             "bg_swirl.jpg",
             "icon:dog",
@@ -126,7 +126,7 @@
             {
               "say": "The behavior is the same, but why it's happening in each situation is different. And that difference matters when we decide how to help the dog.",
               "show": "The four examples remain on screen while the central 'BARK' chip stays unchanged; the four situations glow in turn.",
-              "onscreen": "Same behavior. Different context."
+              "onscreen": "Same behavior, different reasons"
             },
             {
               "say": "So what influences how a dog responds in the first place? There are many factors that contribute to behavior. In this video, we'll take a closer look at some of the influences that shape how a dog responds.",

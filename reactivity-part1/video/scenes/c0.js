@@ -1,7 +1,7 @@
 // Welcome chapter (ch00): the title slide and the problem / promise / plan slide.
 //   ch00s01  Welcome             presentation title at left; Tori's headshot in a green ring at right, the training photo as a
 //                                tilted card over its corner; name and credentials appear as the name is said
-//   ch00s02  Where we're headed  three cards, one per beat: The problem, The promise, The plan (two numbered steps)
+//   ch00s02  Where we're headed  three cards, one per beat: Why you're here, What you'll gain, How we'll get there (two steps)
 (() => {
   const CSS = `
   .c0-col { position: absolute; display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
@@ -95,7 +95,7 @@
     bd.appendChild(K.icon(o.icon));
     c.appendChild(bd);
     c.appendChild(K.el('div', 'lab', o.lab));
-    c.appendChild(K.el('div', 'sub', o.sub));
+    if (o.sub) c.appendChild(K.el('div', 'sub', o.sub));
     c.appendChild(K.el('div', 'rule'));
     if (o.text) {
       const st = K.el('div', 'c0-stmt', K.md(o.text));
@@ -129,12 +129,12 @@
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
     const cards = [
-      card(stage, 100, { icon: 'circle-alert', bg: 'var(--amber-pale)', fg: 'var(--amber)', lab: 'The problem', sub: 'Why you\'re here',
+      card(stage, 100, { icon: 'circle-alert', bg: 'var(--amber-pale)', fg: 'var(--amber)', lab: 'Why you\'re here',
         rows: ['Stressful walks', 'Barking, lunging, growling', 'Confusing advice'], rowIcons: ['footprints', 'volume-2', 'message-circle-warning'],
         rowBg: 'var(--amber-pale)', rowFg: 'var(--amber)' }),
-      card(stage, 680, { icon: 'target', bg: 'var(--green-pale)', fg: 'var(--green-dark)', lab: 'The promise', sub: 'What you\'ll walk away with',
+      card(stage, 680, { icon: 'target', bg: 'var(--green-pale)', fg: 'var(--green-dark)', lab: 'What you\'ll gain',
         text: 'Understand the *factors that set the stage* for your dog\'s behavior' }),
-      card(stage, 1260, { icon: 'route', bg: 'var(--green)', fg: '#fff', lab: 'The plan', sub: 'How we\'ll get there',
+      card(stage, 1260, { icon: 'route', bg: 'var(--green)', fg: '#fff', lab: 'How we\'ll get there',
         rows: ['What the words mean', 'What sets the stage'], num: true, rowBg: 'var(--green)', rowFg: '#fff' }),
     ];
     // each beat: its card slides up and takes the green outline; its rows land as they are said

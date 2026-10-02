@@ -73,8 +73,12 @@ def build_narration(script, align):
         scenes = [sc for sc in ch["scenes"] if sc["id"] in rec.get("scenes", [sc["id"]])]
         firsts = [rec["beats"][f"{sc['id']}:0"]["start"] for sc in scenes]
         lasts = [rec["beats"][f"{sc['id']}:{len(sc['beats']) - 1}"]["end"] for sc in scenes]
-        bounds = [0.0]
-        for k in range(1, len(scenes)):
+        if rec.get("spans"):
+            # recorded one take per scene: cut exactly where one take ends and the next begins
+            bounds = [rec["spans"][sc["id"]][0] for sc in scenes]
+        else:
+            bounds = [0.0]
+        for k in range(1, len(scenes) if not rec.get("spans") else 1):
             prev_end, nxt = lasts[k - 1], firsts[k]
             b = max(prev_end + 0.1, nxt - LEAD)
             if b > nxt - 0.15:

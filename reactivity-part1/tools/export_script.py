@@ -13,7 +13,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from common import PAUSE_RE, ROOT, load_script, words
+from common import LESSON_TAG, PAUSE_RE, ROOT, load_script, words
 
 OUT = ROOT / "out"
 FONTS = ROOT / "assets" / "fonts"
@@ -35,7 +35,7 @@ def main():
         md += [f"## {c['title']}", ""]
         for sc in c["scenes"]:
             md += [" ".join(b["say"] for b in sc["beats"]), ""]
-    (ROOT / "script" / "Narration-Script.md").write_text("\n".join(md))
+    (ROOT / "script" / f"Narration-Script{LESSON_TAG}.md").write_text("\n".join(md))
 
     # ---------- print HTML -> PDF
     css = "".join([font_face("Rubik", 700, "Rubik-700.woff2"), font_face("Montserrat", 400, "Montserrat-400.woff2"),
@@ -87,9 +87,9 @@ def main():
     tmp.parent.mkdir(exist_ok=True)
     tmp.write_text(doc)
     chrome = shutil.which("chromium") or "/opt/pw-browsers/chromium"
-    subprocess.run([chrome, "--headless", "--disable-gpu", "--no-sandbox", "--no-pdf-header-footer", f"--print-to-pdf={OUT / 'Narration-Script.pdf'}", tmp.as_uri()],
+    subprocess.run([chrome, "--headless", "--disable-gpu", "--no-sandbox", "--no-pdf-header-footer", f"--print-to-pdf={OUT / f'Narration-Script{LESSON_TAG}.pdf'}", tmp.as_uri()],
                    check=True, capture_output=True)
-    print(f"script: {total} words (~{minutes:.1f} min). wrote script/Narration-Script.md and out/Narration-Script.pdf")
+    print(f"script: {total} words (~{minutes:.1f} min). wrote script/Narration-Script{LESSON_TAG}.md and out/Narration-Script{LESSON_TAG}.pdf")
 
 
 if __name__ == "__main__":

@@ -20,20 +20,21 @@ def frames(sec):
 
 def bumper(ch, start):
     return {
-        "id": f"bumper_{ch['id']}", "kind": "bumper", "chapter": ch["id"], "chapterNum": chapter_num(ch["id"]),
+        "id": f"bumper_{ch['id']}", "kind": "bumper", "chapter": ch["id"], "chapterNum": ch.get("num", chapter_num(ch["id"])),
         "chapterTitle": ch["title"], "start": start, "dur": frames(BUMPER), "beats": [], "audio": [],
     }
 
 
 def scene_seg(ch, sc, start, dur, beats, audio):
     return {
-        "id": sc["id"], "kind": "scene", "chapter": ch["id"], "chapterNum": chapter_num(ch["id"]),
+        "id": sc["id"], "kind": "scene", "chapter": ch["id"], "chapterNum": ch.get("num", chapter_num(ch["id"])),
         "chapterTitle": ch["title"], "heading": sc.get("heading", ""), "start": start, "dur": frames(dur),
         "beats": beats, "audio": audio,
     }
 
 
 def build_sequential(script, beat_dur, beat_audio):
+    tail = script.get("tail", TAIL)  # a lesson may hold its last slide longer (room for its closing beat)
     """estimate / scratch: every beat has a known length; lay them out back to back."""
     segs, t = [], 0.0
     for ci, ch in enumerate(script["chapters"]):
@@ -51,7 +52,7 @@ def build_sequential(script, beat_dur, beat_audio):
                 if a:
                     audio.append({"file": a, "at": round(t + local, 4), "dur": d})
                 local += d + GAP
-            local += (TAIL if last_in_ch else SCENE_GAP) - GAP
+            local += (tail if last_in_ch else SCENE_GAP) - GAP
             dur = frames(local)
             segs.append(scene_seg(ch, sc, t, dur, beats, audio))
             t += dur
@@ -60,6 +61,7 @@ def build_sequential(script, beat_dur, beat_audio):
 
 def build_narration(script, align):
     segs, t = [], 0.0
+    tail = script.get("tail", TAIL)
     for ci, ch in enumerate(script["chapters"]):
         rec = align["chapters"].get(ch["id"])
         if not rec:
@@ -84,7 +86,7 @@ def build_narration(script, align):
             if b > nxt - 0.15:
                 b = (prev_end + nxt) / 2
             bounds.append(b)
-        bounds.append(max(rec["dur"], lasts[-1]) + TAIL)
+        bounds.append(max(rec["dur"], lasts[-1]) + tail)
         bounds = [frames(x) for x in bounds]
         # each scene plays its own slice of the recording, followed by a short silent hold
         for k, sc in enumerate(scenes):

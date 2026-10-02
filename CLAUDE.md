@@ -11,10 +11,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   animated slide video (HTML + GSAP scenes rendered to MP4, synced to Tori's recorded voice).
 - Script source of truth: Tori's Google Doc "Reactivity & Aggression Part 1: Script v4 (one chapter)",
   id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (read it with the Google Drive connector; Claude cannot
-  edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is done. The
-  material below that line (ABCs, function, four directions, leash walk before/during/after training, warning
-  signals, start your list) is the draft for **Chapter 2 onward**. Sync `script/lesson.json` to the doc before
-  every build; the doc wins.
+  edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
+  that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Understanding Your Dog's Baseline** (CH02,S01 to S12, the
+  water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
+  warning signals) for later chapters; Chapter 3 will add heat and the thermometer to the pot. Sync the lesson
+  file to the doc before every build; the doc wins.
 
 ## Current structure (Chapter 1 is finished, pending Tori's later edits)
 
@@ -26,6 +27,23 @@ pipeline). This file records the state, decisions and working agreements from ea
   together). Last slide ends on a barking dog circled by three "?" badges in a cycle (teases the ABCs).
 - Scene code: `video/scenes/c0.js` (ch00s01, ch00s02), `c1a.js` to `c1e.js` (chapter 1), shared bowl module
   `c1_bowl.js`. Older versions are in `video/scenes/archive/` and `script/archive/`.
+
+## Chapter 2 video (built, preview voice only)
+
+- Its own video and lesson file: `script/lesson-ch2.json`. Every tool takes it through the `LESSON` env var:
+  `LESSON=lesson-ch2.json python3 tools/timing.py ...` (no variable = the Chapter 1 video). Only one lesson's
+  timing lives in `build/` at a time, so re-run timing when switching.
+- Order: `ch02intro` (title slide, like ch00s01, with "Chapter 2: Understanding Your Dog's Baseline"), the chapter
+  card, `ch02plan` (Why it matters / What you'll gain / How we'll get there, three steps), then `ch02s01` to `ch02s12`.
+  The intro and plan narration were written by Claude (not in the doc yet); Tori was sent paste-ready text.
+- Scene code: `video/scenes/c2a.js` to `c2f.js`, shared pot module `c2_pot.js` (glass pot, water level tweens,
+  drips, floating chips, the "room left" bracket, the drawn dog, logo close). Area colours: physical red,
+  activity amber, emotions olive, environment deep green.
+- Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
+  s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
+  doc's eight examples split Too little / Too much under a balance beam.
+- Recordings: `Ch02intro.m4a`, `Ch02plan.m4a`, `Ch02s01.m4a` ... `Ch02s12.m4a` (rename Tori's files to match).
+- The lesson has `"tail": 5.0` so the thermometer reveal holds before the logo close.
 
 ## Recordings (Tori's voice)
 

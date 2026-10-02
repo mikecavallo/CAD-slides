@@ -1,0 +1,560 @@
+{
+ "title": "Getting Started with Dog Behavior, Chapter 2: Understanding Your Dog's Baseline",
+ "notes": "Chapter 2 video. Narration for ch02s01 to ch02s12 is the trainer's doc (Script v4, the 'Chapter 2: Understanding Your Dog's Baseline' section, up to 'END CHAPTER 2 MATERIAL'). The welcome (ch02intro) and plan (ch02plan) narration were drafted for this video and sent to the trainer. Build with LESSON=lesson-ch2.json.",
+ "tail": 5.0,
+ "chapters": [
+  {
+   "id": "ch02w",
+   "num": 0,
+   "title": "Welcome",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "ch02intro",
+     "heading": "Getting Started with Dog Behavior",
+     "visual_concept": "Title slide for Chapter 2, same layout as Chapter 1's: the series title at left with 'Chapter 2: Understanding Your Dog's Baseline' under it, Tori's headshot in a green ring at right with the training photo as a tilted card, and the name block with credentials.",
+     "assets": [
+      "trainer_headshot.jpg",
+      "trainer_with_dog.jpg",
+      "logo.png"
+     ],
+     "beats": [
+      {
+       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior. This is Chapter 2: Understanding Your Dog's Baseline.",
+       "show": "Series title and 'Chapter 2' line write on at left; the headshot scales in inside a green ring; the name block appears as the name is said; the training photo card tilts in; the chapter line pulses as it is said.",
+       "onscreen": "Getting Started with Dog Behavior. Chapter 2: Understanding Your Dog's Baseline"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ch02",
+   "title": "Understanding Your Dog's Baseline",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "ch02plan",
+     "heading": "Where we're headed",
+     "visual_concept": "Three cards across the slide, one per beat, same design as Chapter 1's plan slide: Why it matters, What you'll gain, How we'll get there (three numbered steps). The current card is outlined in green.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Have you noticed that your dog can handle something just fine one day, and the next day, the same thing sends them over the edge? There's usually a reason for that.",
+       "show": "The 'Why it matters' card slides up; rows land as they are said: Fine one day; Over the edge the next; There's a reason.",
+       "onscreen": "Why it matters"
+      },
+      {
+       "say": "By the end of this chapter, you'll know what can raise or lower your dog's baseline, and what you can do about it.",
+       "show": "The 'What you'll gain' card slides up with the promise: Know what raises or lowers your dog's baseline, and what you can do about it.",
+       "onscreen": "What you'll gain"
+      },
+      {
+       "say": "Here's how we'll get there. First, what a baseline is. Second, four areas that can raise or lower it. And third, how those factors add up, and how to bring the baseline back down.",
+       "show": "The 'How we'll get there' card slides up; three numbered steps land on First, Second, third: What a baseline is; Four areas that affect it; How it adds up, and comes down.",
+       "onscreen": "How we'll get there"
+      }
+     ]
+    },
+    {
+     "id": "ch02s01",
+     "heading": "Understanding Your Dog's Baseline",
+     "visual_concept": "Recap with Chapter 1's mixing bowl (all eight ingredients inside). Four ingredients that return in this chapter glow and lift out (Breed history and purpose, Past experiences, Training tools and methods, Pain and discomfort) while the rest dim. Three green tags: Changed, Managed, Improved, plus a 'Right now' clock. The bowl steps aside and 'Your dog's baseline' lands with a level line drawn under it.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:mixing-bowl",
+      "icon:clock",
+      "icon:wrench",
+      "icon:sliders-horizontal",
+      "icon:trending-up"
+     ],
+     "beats": [
+      {
+       "say": "In the last chapter, we looked at the ingredients that can help shape a dog's behavior.",
+       "show": "Chapter 1's bowl fades in full, with the caption 'Chapter 1: the ingredients'.",
+       "onscreen": "Understanding Your Dog's Baseline"
+      },
+      {
+       "say": "You'll notice that some of those factors appear again here. That's intentional.",
+       "show": "Four ingredient tokens glow and their name pills appear beside the bowl (Breed history and purpose, Past experiences, Training tools and methods, Pain and discomfort); the other four dim.",
+       "onscreen": "Some factors appear again"
+      },
+      {
+       "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently.",
+       "show": "Three green tags pop in one per word: Changed, Managed, Improved; a 'Right now' clock badge pulses; at 'a little differently' the bowl and pills slide away.",
+       "onscreen": "Changed, managed, or improved"
+      },
+      {
+       "say": "First, we need to talk about your dog's baseline.",
+       "show": "'Your dog's baseline' lands large at centre and a green level line draws under it.",
+       "onscreen": "Your dog's baseline"
+      }
+     ]
+    },
+    {
+     "id": "ch02s02",
+     "heading": "What Is a Baseline?",
+     "visual_concept": "A definition card, then a time line: a calm dog badge sits on a green 'starting state' band before an amber 'Something new happens' marker. Then the band rises and falls between levels with up and down arrows: 'Not fixed. It can change.'",
+     "assets": [
+      "bg_swirl.jpg",
+      "icon:dog",
+      "icon:bell-ring",
+      "icon:arrow-up-down"
+     ],
+     "beats": [
+      {
+       "say": "When I say baseline, I mean the dog's overall starting state before something new happens.",
+       "show": "Definition card: 'Baseline = the dog's overall starting state before something new happens.' A time line draws; the dog sits on a green band labeled 'Starting state'; an amber bell marker 'Something new happens' drops onto the line to the right.",
+       "onscreen": "Baseline = the dog's overall starting state before something new happens."
+      },
+      {
+       "say": "And that baseline isn't fixed. It can change.",
+       "show": "The green band rises and falls between low and high, with arrows; a chip lands: 'Not fixed. It can change.'",
+       "onscreen": "Not fixed. It can change."
+      }
+     ]
+    },
+    {
+     "id": "ch02s03",
+     "heading": "Picture the Baseline as Water",
+     "visual_concept": "A cooking pot draws on and fills with water (no heat, no thermometer yet). A ruler beside it marks Lower and Higher. The water drops and rises with the words. A bracket between the waterline and the rim shows the room left for what happens next: small when the water is high, large when it is low. Shared pot module video/scenes/c2_pot.js.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:pot"
+     ],
+     "beats": [
+      {
+       "say": "We're going to represent the dog's baseline with water in a pot.",
+       "show": "The pot draws on and water pours in to a middle level; label: 'Water level = the dog's current baseline'.",
+       "onscreen": "Water level = the dog's current baseline"
+      },
+      {
+       "say": "A lower water level represents a lower baseline, and a higher water level represents a higher baseline.",
+       "show": "The water drops and a 'Lower baseline' tag points at it; then it rises and a 'Higher baseline' tag points at it.",
+       "onscreen": "Lower baseline / Higher baseline"
+      },
+      {
+       "say": "Why does that matter?",
+       "show": "A big amber question mark pops beside the pot.",
+       "onscreen": "Why does that matter?"
+      },
+      {
+       "say": "The higher the water level, the less room there is in the pot for whatever happens next. A lower water level leaves more room.",
+       "show": "A bracket from the waterline to the rim: 'Less room' while the water is high; the water lowers and the bracket stretches: 'More room for what happens next'.",
+       "onscreen": "Room for what happens next"
+      },
+      {
+       "say": "We'll come back to why that becomes important when we start adding heat to the pot.",
+       "show": "A small 'We'll come back to this' bookmark tag pins to the bracket.",
+       "onscreen": "We'll come back to this"
+      }
+     ]
+    },
+    {
+     "id": "ch02s04",
+     "heading": "What Can Affect the Water Level?",
+     "visual_concept": "The pot at left with up and down arrows by the waterline. Four area cards stack at right, one per area as it is named (Physical Health; Activity, Stimulation & Natural Needs; Emotions & Recovery; Environment, Predictability & Choice). Then all four drip into the pot at once and the water rises. Shared pot module video/scenes/c2_pot.js.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:pot",
+      "icon:heart-pulse",
+      "icon:footprints",
+      "icon:brain",
+      "icon:house"
+     ],
+     "beats": [
+      {
+       "say": "So, what can raise or lower that water level?",
+       "show": "The pot slides in at left; up and down arrows pulse by the waterline.",
+       "onscreen": "What Can Affect the Water Level?"
+      },
+      {
+       "say": "We're going to look at four areas: Physical health. Activity, stimulation, and natural needs. Emotions and recovery. And environment, predictability, and choice.",
+       "show": "Four area cards slide in at right one per area as it is named, each with its icon and colour.",
+       "onscreen": "Physical Health; Activity, Stimulation & Natural Needs; Emotions & Recovery; Environment, Predictability & Choice"
+      },
+      {
+       "say": "Several of these factors may be affecting the dog at the same time.",
+       "show": "All four cards glow; a drop in each card's colour falls from it into the pot and the water rises.",
+       "onscreen": "At the same time"
+      }
+     ]
+    },
+    {
+     "id": "ch02s05",
+     "heading": "Physical Health",
+     "visual_concept": "Physical Health. A drawn dog with five factor chips around it (Sleep, Illness or medical changes, Nutrition, Medication effects or changes, Other physical changes). A sleep chart: hours out of 24 for adult dogs, puppies and older dogs. A person with a bad night, getting sick and a skipped meal, and a 'What I can handle' bar that shrinks; the person becomes the dog and the bar shrinks the same way. Ends with the pot: 'Improve them, lower the baseline'.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:pot",
+      "icon:moon",
+      "icon:stethoscope",
+      "icon:utensils",
+      "icon:pill",
+      "icon:activity",
+      "icon:user"
+     ],
+     "beats": [
+      {
+       "say": "Let's start with the dog's body.",
+       "show": "Heading with the area badge; the dog draws on at left.",
+       "onscreen": "Physical Health"
+      },
+      {
+       "say": "Sleep, illness, nutrition, medication changes, and other physical changes can all affect the baseline.",
+       "show": "Five chips pop around the dog one per word: Sleep, Illness or medical changes, Nutrition, Medication effects or changes, Other physical changes.",
+       "onscreen": "Sleep · Illness or medical changes · Nutrition · Medication effects or changes · Other physical changes"
+      },
+      {
+       "say": "Many adult dogs sleep around 12 to 16 hours in a 24-hour period. Puppies may need as much as 18 to 20 hours, and older dogs often sleep more.",
+       "show": "The chips clear; a sleep chart on a 24-hour scale: Adult dogs bar grows to 12 to 16 hours, Puppies to 18 to 20 hours, Older dogs 'often more'.",
+       "onscreen": "Sleep in 24 hours"
+      },
+      {
+       "say": "Think about yourself after a terrible night of sleep, when you're getting sick, or when you haven't eaten enough healthy food. Things you normally handle without a problem may bother you much more.",
+       "show": "A person with three small badges (bad night, getting sick, skipped meal) and a 'What I can handle' bar that shrinks.",
+       "onscreen": "What I can handle"
+      },
+      {
+       "say": "Dogs can experience that same change in tolerance.",
+       "show": "The person becomes the dog and the bar shrinks the same way.",
+       "onscreen": "Same change in tolerance"
+      },
+      {
+       "say": "These things don't automatically cause unwanted behaviors, but improving them can help lower the dog's baseline.",
+       "show": "A small pot appears; the water drops with a green arrow: 'Improve them, lower the baseline'.",
+       "onscreen": "Improve them, lower the baseline"
+      }
+     ]
+    },
+    {
+     "id": "ch02s06",
+     "heading": "Pain & Discomfort",
+     "visual_concept": "Pain & Discomfort. A dog with a faint hidden pain glow that a magnifier finds: 'Pain may not always be obvious.' A person with a headache and four everyday demands (touch, bump, noise, a request). Limping, Crying and Obviously injured chips struck through. The dog surrounded by seven examples (Touch, Movement, Handling, People, Other dogs, Noise, Activity). A sudden-change line and a green vet card.",
+     "assets": [
+      "bg_swirl.jpg",
+      "icon:search",
+      "icon:hand",
+      "icon:move",
+      "icon:users",
+      "icon:dog",
+      "icon:volume-2",
+      "icon:activity",
+      "icon:stethoscope"
+     ],
+     "beats": [
+      {
+       "say": "Pain and discomfort deserve some extra attention because they can be easy to miss.",
+       "show": "The dog draws on; a magnifier sweeps over it and finds a faint red glow on the hip: 'Pain may not always be obvious.'",
+       "onscreen": "Pain may not always be obvious."
+      },
+      {
+       "say": "Think about having a headache or back pain. You may still go about your day, but being touched, bumped into, dealing with noise, or even having someone ask something of you may be harder to tolerate.",
+       "show": "A person with a red pulse at the head; four demand badges arrive one per phrase (touched, bumped into, noise, asked something) and each flashes amber.",
+       "onscreen": "Harder to tolerate"
+      },
+      {
+       "say": "A dog doesn't have to be limping, crying, or obviously injured for discomfort to affect behavior.",
+       "show": "Three chips: Limping, Crying, Obviously injured; a red line strikes through each.",
+       "onscreen": "Not always limping, crying, or injured"
+      },
+      {
+       "say": "Pain can change how a dog responds to touch, movement, handling, people, other dogs, noise, activity, and everyday events in their environment.",
+       "show": "The dog at centre; seven example badges pop around it one per word: Touch, Movement, Handling, People, Other dogs, Noise, Activity; the ring glows on 'everyday events'.",
+       "onscreen": "Touch · Movement · Handling · People · Other dogs · Noise · Activity"
+      },
+      {
+       "say": "So when behavior changes, especially if the change is sudden or unusual for that dog, pain and other medical concerns should be considered.",
+       "show": "A behavior line jumps suddenly ('Sudden or unusual change'); a green vet card slides in: 'Consider pain and medical concerns'.",
+       "onscreen": "Consider pain and medical concerns"
+      }
+     ]
+    },
+    {
+     "id": "ch02s07",
+     "heading": "Activity, Stimulation & Natural Needs",
+     "visual_concept": "Activity, Stimulation & Natural Needs. A slider from Too little to Too much with a green sweet spot. Bored all day and Exhausted cards at its ends. A balance beam that four weights land on (Physical activity, Mental activity, Natural behaviors, Rest); it tips to Too little (frustrated, restless) and Too much (overtired, highly activated) with the doc's list of examples on each side. Three dogs with sweet spots in different places. 'The right balance for this dog.'",
+     "assets": [
+      "bg_swirl.jpg",
+      "icon:footprints",
+      "icon:puzzle",
+      "icon:dog",
+      "icon:bed",
+      "icon:battery-low",
+      "icon:sofa",
+      "sil_collie.png",
+      "sil_terrier.png",
+      "sil_dane.png"
+     ],
+     "beats": [
+      {
+       "say": "More activity isn't always better, and less isn't always calmer.",
+       "show": "A slider draws from 'Too little' to 'Too much' with a green middle zone; the knob runs right ('More isn't always better'), then left ('Less isn't always calmer').",
+       "onscreen": "More isn't always better. Less isn't always calmer."
+      },
+      {
+       "say": "Think about the difference between being bored all day and being completely exhausted after an overly busy day.",
+       "show": "Two person cards at the slider's ends: 'Bored all day' and 'Exhausted'.",
+       "onscreen": "Bored all day / Exhausted"
+      },
+      {
+       "say": "Neither one necessarily leaves you feeling your best.",
+       "show": "Both cards fade to amber with a flat face.",
+       "onscreen": "Neither feels your best"
+      },
+      {
+       "say": "Dogs need an appropriate balance of physical activity, mental activity, opportunities to engage in natural behaviors, and rest.",
+       "show": "The slider clears; a balance beam with four weights landing one per phrase: Physical activity, Mental activity, Natural behaviors, Rest; the beam levels.",
+       "onscreen": "Physical activity · Mental activity · Natural behaviors · Rest"
+      },
+      {
+       "say": "A dog who doesn't have enough appropriate outlets may become frustrated or restless. But constantly exercising, entertaining, or stimulating a dog can also leave them overtired or highly activated.",
+       "show": "The beam tips to 'Too little' with 'Frustrated, restless' and the too-little examples; then tips to 'Too much' with 'Overtired, highly activated' and the too-much examples.",
+       "onscreen": "Too little: frustrated, restless. Too much: overtired, highly activated."
+      },
+      {
+       "say": "What that balance looks like will be different for each dog.",
+       "show": "Three dog silhouettes, each with its own small slider whose green zone sits in a different place.",
+       "onscreen": "Different for each dog"
+      },
+      {
+       "say": "The goal isn't simply more exercise or more enrichment. It's finding the right balance for that individual dog.",
+       "show": "'More exercise' and 'More enrichment' are struck through; 'The right balance for this dog' lands.",
+       "onscreen": "The right balance for this dog"
+      },
+      {
+       "say": "We'll go much more into this later.",
+       "show": "A small 'More on this later' bookmark tag.",
+       "onscreen": "More on this later"
+      }
+     ]
+    },
+    {
+     "id": "ch02s08",
+     "heading": "Emotions & Recovery",
+     "visual_concept": "Emotions & Recovery. A time graph: a tense conversation raises a mood line that stays high after the conversation ends; a second person arrives while it is still high and gets a snappy reply. The person becomes the dog. Then the pot: Fear, Anxiety, Frustration and Stressful experiences drip in and the water rises; a quiet event with no visible reaction still nudges it up. 'Limited opportunity for recovery' with a 'Next chapter' tag. Shared pot module video/scenes/c2_pot.js.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:pot",
+      "icon:user",
+      "icon:message-circle-warning",
+      "icon:dog",
+      "icon:hourglass"
+     ],
+     "beats": [
+      {
+       "say": "The dog's emotional experiences also affect the baseline.",
+       "show": "Heading with the area badge; the pot sits at right.",
+       "onscreen": "Emotions & Recovery"
+      },
+      {
+       "say": "Think about having a difficult conversation with a coworker that leaves you upset or frustrated.",
+       "show": "A graph draws at left; a 'Difficult conversation' block appears on the time axis; the mood line climbs during it.",
+       "onscreen": "Difficult conversation"
+      },
+      {
+       "say": "The conversation ends, but your emotions don't necessarily disappear with it.",
+       "show": "The block ends; the mood line keeps going, staying high: 'Still upset'.",
+       "onscreen": "The feeling stays"
+      },
+      {
+       "say": "If someone else approaches you shortly afterward, you may be shorter or snappier with them than you normally would be.",
+       "show": "A second person arrives while the line is still high; a sharp red speech burst: 'Snappier'.",
+       "onscreen": "Shorter, snappier"
+      },
+      {
+       "say": "Dogs can be affected by emotional experiences in a similar way.",
+       "show": "The person icon swaps to a dog.",
+       "onscreen": "Dogs too"
+      },
+      {
+       "say": "Fear, anxiety, frustration, and repeated stressful experiences can all affect the baseline.",
+       "show": "Four chips (Fear, Anxiety, Frustration, Stressful experiences) each drip into the pot; the water rises in steps.",
+       "onscreen": "Fear · Anxiety · Frustration · Stressful experiences"
+      },
+      {
+       "say": "And an experience doesn't have to produce a big, obvious response to have an effect.",
+       "show": "A calm dog badge with a quiet event; no visible reaction, but the water still edges up: 'No big reaction, still an effect'.",
+       "onscreen": "No big reaction, still an effect"
+      },
+      {
+       "say": "We'll look much more closely at what happens when experiences occur close together, or when there isn't enough time to recover, in the next chapter.",
+       "show": "A 'Limited opportunity for recovery' chip with an hourglass, and a 'Next chapter' tag.",
+       "onscreen": "Limited opportunity for recovery"
+      }
+     ]
+    },
+    {
+     "id": "ch02s09",
+     "heading": "Environment, Predictability & Choice",
+     "visual_concept": "Environment, Predictability & Choice. Three amber cards for the human example (What's next?, Plans keep changing, No say), which turn green (Predictability, Control). A dog badge joins. Then the pot: Changes in routine, Unpredictability, Social conflict, Can't move away, Punishment or confrontational handling, Little control drip in one per phrase and the water rises. Shared pot module video/scenes/c2_pot.js.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:pot",
+      "icon:house",
+      "icon:calendar",
+      "icon:shuffle",
+      "icon:ban",
+      "icon:calendar-check",
+      "icon:sliders-horizontal",
+      "icon:dog"
+     ],
+     "beats": [
+      {
+       "say": "A dog's environment can also affect their baseline.",
+       "show": "Heading with the area badge; a house icon.",
+       "onscreen": "Environment, Predictability & Choice"
+      },
+      {
+       "say": "Think about how stressful it can be when you don't know what is going to happen next, plans keep changing, or you have very little say in decisions that affect you.",
+       "show": "Three amber cards one per phrase: 'What's next?', 'Plans keep changing', 'No say'.",
+       "onscreen": "What's next? Plans keep changing. No say."
+      },
+      {
+       "say": "Having some predictability and control often makes situations easier to handle.",
+       "show": "The cards flip green: 'Predictability' and 'Control'; 'Easier to handle'.",
+       "onscreen": "Predictability and control"
+      },
+      {
+       "say": "Dogs benefit from that too.",
+       "show": "A dog badge joins the green cards.",
+       "onscreen": "Dogs benefit too"
+      },
+      {
+       "say": "Changes in routine, an unpredictable household, social conflict, limited opportunities to move away or opt out, punishment, and having little control over what happens to them can all raise the water level.",
+       "show": "The cards clear; the pot at right; six chips drip in one per phrase and the water rises: Changes in routine, Unpredictability, Social conflict, Can't move away or opt out, Punishment or confrontational handling, Little control.",
+       "onscreen": "These can raise the water level"
+      }
+     ]
+    },
+    {
+     "id": "ch02s10",
+     "heading": "These Factors Can Add Up",
+     "visual_concept": "These Factors Can Add Up. A stack of the day's problems grows beside a person (Slept poorly, Headache, Skipped lunch, Stress at work, Unexpected problem); the last block makes it wobble. Then one pot: Poor sleep, Pain, Too much or too little stimulation, Change at home, Stressful experiences drop in and the water rises step by step to just under the rim. Ends on two pots, same dog: 'Same dog. Different baseline.' Shared pot module video/scenes/c2_pot.js.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:pot",
+      "icon:user",
+      "icon:bed",
+      "icon:brain",
+      "icon:utensils-crossed",
+      "icon:briefcase",
+      "icon:house",
+      "icon:dog"
+     ],
+     "beats": [
+      {
+       "say": "These factors rarely exist in isolation.",
+       "show": "Heading; a row of small factor dots joins into a cluster.",
+       "onscreen": "These Factors Can Add Up"
+      },
+      {
+       "say": "Imagine you slept poorly, have a headache, skipped lunch, had a stressful interaction at work, and then came home to an unexpected problem.",
+       "show": "Blocks stack up beside a person, one per phrase: Slept poorly, Headache, Skipped lunch, Stress at work, Unexpected problem.",
+       "onscreen": "One day, piling up"
+      },
+      {
+       "say": "That problem might normally be manageable, but on that particular day, your response may be very different.",
+       "show": "A small 'Normal day' stack with just the problem: 'Manageable'; the tall stack wobbles: 'That day: very different'.",
+       "onscreen": "Normally manageable. That day: very different."
+      },
+      {
+       "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, and several stressful experiences.",
+       "show": "Switch to one pot; five chips drop in one per phrase and the water rises a step each time.",
+       "onscreen": "Poor sleep · Pain · Too much or too little stimulation · Change at home · Stressful experiences"
+      },
+      {
+       "say": "Each one can affect the baseline, and together their effects can add up.",
+       "show": "Plus signs link the chips; the water reaches just under the rim; the bracket shows 'Little room left'.",
+       "onscreen": "Together, they add up"
+      },
+      {
+       "say": "Same dog. Different baseline.",
+       "show": "Two pots side by side with the same dog above them: low water and high water. 'Same dog. Different baseline.'",
+       "onscreen": "Same dog. Different baseline."
+      }
+     ]
+    },
+    {
+     "id": "ch02s11",
+     "heading": "The Baseline Can Change",
+     "visual_concept": "The Baseline Can Change. The full pot from the last slide with its chips; a magnifier finds them; green checks appear. Then one change per phrase lifts a chip out and the water drops a step (Address pain or illness, Improve sleep or nutrition, Adjust activity, Meet natural needs, More predictability and choice, More time to recover). Ends low with a big down arrow and 'Identify what can be improved'. Shared pot module video/scenes/c2_pot.js.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:pot",
+      "icon:search",
+      "icon:stethoscope",
+      "icon:moon",
+      "icon:footprints",
+      "icon:dog",
+      "icon:calendar-check",
+      "icon:hourglass"
+     ],
+     "beats": [
+      {
+       "say": "This is why identifying these factors is so important.",
+       "show": "The full pot; a magnifier sweeps over the floating chips.",
+       "onscreen": "Identify what can be improved."
+      },
+      {
+       "say": "Many of them are things we can do something about.",
+       "show": "Green checks pop onto the chips.",
+       "onscreen": "We can do something"
+      },
+      {
+       "say": "We may be able to address pain or illness, improve sleep or nutrition, adjust physical or mental activity, better meet natural needs, create more predictability and choice, or provide more opportunity for recovery.",
+       "show": "Six green action rows appear at left one per phrase; with each, a chip lifts out of the pot and the water drops a step.",
+       "onscreen": "Address · Improve · Adjust · Meet needs · Predictability and choice · Recovery"
+      },
+      {
+       "say": "As we improve these factors, we can lower the water level.",
+       "show": "The water settles low; a big green down arrow; the bracket stretches: 'More room'.",
+       "onscreen": "Lower the water level"
+      }
+     ]
+    },
+    {
+     "id": "ch02s12",
+     "heading": "The Water Level Is Only Part of the Picture",
+     "visual_concept": "The pot with three checks (what the water level represents, why it matters, what changes it). 'We know how much water is in the pot.' Three questions appear around it (something occurs, how the dog feels, arousal and stress). A dashed slot appears on the pot, then a thermometer drops in for the first time and its line rises: 'Now, how hot is it?' Calling All Dogs logo close. Shared pot module video/scenes/c2_pot.js.",
+     "assets": [
+      "bg_swirl.jpg",
+      "diagram:pot",
+      "icon:thermometer",
+      "icon:bell-ring",
+      "icon:heart",
+      "icon:activity",
+      "logo.png"
+     ],
+     "beats": [
+      {
+       "say": "Now we know what the water level represents, why it matters, and some of the things that can change it.",
+       "show": "The pot at left; three check rows land one per phrase: What it represents, Why it matters, What changes it.",
+       "onscreen": "We know how much water is in the pot."
+      },
+      {
+       "say": "But knowing how much water is in the pot is only part of the picture.",
+       "show": "The rows clear; 'We know how much water is in the pot.' with a puzzle frame: the pot fills one half, the other half is dashed and empty.",
+       "onscreen": "Only part of the picture"
+      },
+      {
+       "say": "What happens when something occurs around the dog? How does the dog feel about it? And what happens to their arousal and stress?",
+       "show": "Three question cards appear in the empty half one per question: Something happens; How does the dog feel?; Arousal and stress.",
+       "onscreen": "What happens? How does the dog feel? Arousal and stress?"
+      },
+      {
+       "say": "For that, we need to add another part to our pot.",
+       "show": "A dashed outline appears on the pot where a new part will go.",
+       "onscreen": "Another part"
+      },
+      {
+       "say": "Temperature.",
+       "show": "A thermometer drops into the pot and its line rises; 'Now, how hot is it?' lands; then the logo close.",
+       "onscreen": "Now, how hot is it?"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

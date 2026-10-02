@@ -1,10 +1,13 @@
 """Shared paths and helpers for the video build tools."""
 import json
+import os
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPT = ROOT / "script" / "lesson.json"
+# which video to build: LESSON=lesson-ch2.json python3 tools/... (default: the Chapter 1 video)
+SCRIPT = ROOT / "script" / os.environ.get("LESSON", "lesson.json")
+LESSON_TAG = "" if SCRIPT.name == "lesson.json" else "-" + SCRIPT.stem.replace("lesson-", "")  # e.g. "-ch2", for file names
 BUILD = ROOT / "build"
 AUDIO = BUILD / "audio"
 NARRATION_DIR = ROOT / "narration"  # the trainer's recordings go here: ch00.wav, ch01.m4a, ...

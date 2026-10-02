@@ -3,8 +3,12 @@
 // The consequence is the same in both loops (space is given); what changes is the A and the B.
 // Arrow labels: A to B 'Emotions' / 'Changing emotions'; B to C 'Increased' / 'Lowered arousal/stress'.
 //
+// Then the paths change strength: practice thickens the new (green) path while the old (red) one fades,
+// and practicing the old behavior brings the red path back.
+//
 //   abc_cycle   not in script/lesson.json yet. Intended beats when it gets narration:
 //               0 heading   1 before loop builds A, B, C   2 its note   3 during loop builds   4 its note
+//               5 practice: green path strengthens, red path fades   6 old behavior practiced: red path comes back
 //               (any beats past the last one present are skipped; with fewer beats everything still builds)
 //
 // K.abcCycle is defined here so later scenes can reuse the same loop.
@@ -21,10 +25,13 @@
   .abcc-mid .pill { padding: 12px 26px; border-radius: 16px; background: var(--abcc); color: #fff; font: 700 32px/1 var(--font-head);
     white-space: nowrap; box-shadow: 0 4px 0 rgba(0,0,0,0.12); }
   .abcc-mid .nt { font: 600 27px/1.3 var(--font-body); color: var(--ink-soft); }
+  .abcc-say { position: absolute; left: 100px; width: 1720px; top: 916px; text-align: center; font: 600 32px/1.2 var(--font-body); color: var(--ink); }
+  .abcc-say b.em-red { color: var(--red); }
   .abcc-lab { position: absolute; font: italic 700 27px/1.18 var(--font-body); color: var(--abcc); white-space: nowrap; }
   `;
 
   const { el, md } = K;
+  const HEAD = k => `M${-4 * k} ${-17 * k} L${26 * k} 0 L${-4 * k} ${17 * k} Z`;
   const COLORS = { red: '#b8452d', green: '#619537', olive: '#4b5a1e' };
   const LETTERS = ['A', 'B', 'C'];
   const WORDS = ['Antecedent', 'Behavior', 'Consequence'];
@@ -56,7 +63,7 @@
       const [x, y] = pt(d);
       return ANG.some((a, i) => { const [nx, ny] = pt(a); return Math.abs(x - nx) < SZ[i].w / 2 + m && Math.abs(y - ny) < SZ[i].h / 2 + m; });
     };
-    const arcs = [], heads = [], labels = [];
+    const arcs = [], heads = [], labels = [], worn = [];
     ANG.forEach((a0, i) => {
       const a1 = i < 2 ? ANG[i + 1] : ANG[0] + 360;
       let s = a0; while (s < a1 && hidden(s)) s += 0.5;
@@ -64,11 +71,14 @@
       const mida = (s + e) / 2;
       e -= 7; // room for the arrowhead
       const [x0, y0] = pt(s), [x1, y1] = pt(e);
+      const d = `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`;
+      // worn path under the arrow: shows up when this loop gets practiced
+      worn.push(K.path(svg, d, { fill: 'none', stroke: color, 'stroke-width': 40, 'stroke-linecap': 'round', opacity: 0 }));
       arcs.push(K.path(svg, `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`,
         { fill: 'none', stroke: color, 'stroke-width': 10, 'stroke-linecap': 'round' }));
       // arrowhead pointing along the clockwise tangent at the arc's end
       const g = K.group(svg, { transform: `translate(${x1.toFixed(1)} ${y1.toFixed(1)}) rotate(${e.toFixed(1)})` });
-      K.path(g, 'M-4 -17 L26 0 L-4 17 Z', { fill: color, stroke: color, 'stroke-width': 4, 'stroke-linejoin': 'round' });
+      K.path(g, HEAD(1), { fill: color, stroke: color, 'stroke-width': 4, 'stroke-linejoin': 'round' });
       heads.push(g);
 
       // label beside the arrow: outside the ring, or inside it (the bottom arrow's label sits just above it)
@@ -113,7 +123,7 @@
     Object.assign(mid.style, { left: `${cx - 210}px`, top: `${o.midY ?? cy - r + SZ[0].h / 2 + 26}px` });
     parent.appendChild(mid);
 
-    return { cards, arcs, heads, labels, mid, pill, note, dot, track, color, cx, cy, r };
+    return { cards, arcs, heads, labels, worn, mid, pill, note, dot, track, color, cx, cy, r };
   };
 
   // build one loop: A, arrow, B, arrow, C, arrow back to A. Returns when it finishes.
@@ -129,6 +139,21 @@
       if (L.labels[i]) A.in(tl, L.labels[i], ti + step * 1.3, 'fade', { dur: 0.5 });
     });
     return t + 0.25 + 6 * step + 0.4;
+  }
+
+  // path strength: k = 1 normal, > 1 practiced (thicker arrows, worn path under them), < 1 fading
+  function strength(tl, L, t, k, o = {}) {
+    const dur = o.dur ?? 1.4, ease = 'power2.inOut';
+    tl.to(L.arcs, { attr: { 'stroke-width': 10 * k }, duration: dur, ease }, t);
+    tl.to(L.heads.map(g => g.firstChild), { attr: { d: HEAD(Math.max(0.75, Math.min(k, 1.5))) }, duration: dur, ease }, t);
+    tl.to(L.worn, { opacity: k > 1 ? 0.16 : 0, duration: dur, ease }, t);
+    const fade = k < 1 ? 0.3 : 1;
+    tl.to([...L.arcs, ...L.heads, L.dot], { opacity: k < 1 ? 0.35 : 1, duration: dur, ease }, t);
+    // cards keep a solid white face so the ring behind them never shows through; their content and border fade
+    tl.to(L.cards.flatMap(c => [...c.children]), { opacity: fade, duration: dur, ease }, t);
+    tl.to(L.cards, { borderColor: k < 1 ? '#ecd3cc' : L.color, boxShadow: k < 1 ? 'none' : 'var(--shadow-soft)', duration: dur, ease }, t);
+    tl.to([L.mid, ...L.labels.filter(Boolean)], { opacity: fade, duration: dur, ease }, t);
+    tl.to(L.track, { opacity: k < 1 ? 0.06 : 0.18, duration: dur, ease }, t);
   }
 
   // dot laps the full ring from A, clockwise, until the scene ends
@@ -152,18 +177,18 @@
     const BC = { side: 'in', gap: 40 };
     const before = K.abcCycle(stage, {
       cx: 506, cy: CY, r: R, angles: ANG, variant: 'red',
-      captions: ['Other dog too close', 'Bark and lunge', 'Space is given'],
+      captions: ['Another dog appears', 'Bark and lunge', 'Space is given'],
       labels: [{ t: 'Emotions' }, Object.assign({ t: 'Increased<br>arousal/stress' }, BC), null],
       label: 'Before training',
-      note: 'Barking works,<br>so it comes back.',
+      note: 'Barking works,<br>so it repeats.',
     });
     const during = K.abcCycle(stage, {
       cx: 1384, cy: CY, r: R, angles: ANG, variant: 'green',
-      captions: ['More distance', { t: 'Replacement behavior', sub: 'e.g. looks to you' }, 'Space is given'],
+      captions: ['Another dog appears', { t: 'Replacement behavior', sub: 'e.g. looks to you' }, 'Space is given'],
       sizes: [null, { w: 360, h: 160 }, null],
       labels: [{ t: 'Changing<br>emotions' }, Object.assign({ t: 'Lowered<br>arousal/stress' }, BC), null],
       label: 'During training',
-      note: 'The new behavior works,<br>so it comes back.',
+      note: 'The new behavior works,<br>so it repeats.',
     });
 
     const t0 = at(0) ?? 0;
@@ -180,7 +205,23 @@
     runDot(tl, during, Math.max(b3, at(4) ?? b3), dur);
 
     // same consequence in both loops: the two C cards pulse together once both are up
-    const tc = Math.max(b3, at(4) ?? b3) + 0.8;
-    if (tc < dur - 1.2) A.pulse(tl, [before.cards[2], during.cards[2]], tc, { scale: 1.06 });
+    const built = Math.max(b3, at(4) ?? b3);
+    A.pulse(tl, [before.cards[2], during.cards[2]], built + 0.8, { scale: 1.06 });
+
+    // practice: the new path gets stronger, the old one fades
+    const say1 = K.el('div', 'abcc-say', md('Practice builds a *stronger new path*. The old path fades.'));
+    const say2 = K.el('div', 'abcc-say', md('Practice the old behavior and !!the old path comes back!!.'));
+    stage.appendChild(say1); stage.appendChild(say2);
+    const t5 = at(5) ?? built + 2;
+    A.in(tl, say1, t5, 'fadeUp', { dur: 0.7 });
+    strength(tl, during, t5 + 0.3, 1.9, { dur: 2.2 });
+    strength(tl, before, t5 + 0.3, 0.45, { dur: 2.2 });
+
+    // relapse: the old behavior gets practiced and its path is back at full strength
+    const t6 = at(6) ?? t5 + 5;
+    A.out(tl, say1, t6, 'fadeUp', { dur: 0.4 });
+    A.in(tl, say2, t6 + 0.3, 'fadeUp', { dur: 0.7 });
+    strength(tl, before, t6 + 0.4, 1.6, { dur: 1.2 });
+    A.pulse(tl, before.cards[1], t6 + 1.4, { scale: 1.07 });
   });
 })();

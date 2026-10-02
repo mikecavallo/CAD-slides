@@ -135,7 +135,7 @@
       card(stage, 680, { icon: 'target', bg: 'var(--green-pale)', fg: 'var(--green-dark)', lab: 'What you\'ll gain',
         text: 'Understand the *factors that set the stage* for your dog\'s behavior' }),
       card(stage, 1260, { icon: 'route', bg: 'var(--green)', fg: '#fff', lab: 'How we\'ll get there',
-        rows: ['What the words mean', 'What sets the stage'], num: true, rowBg: 'var(--green)', rowFg: '#fff' }),
+        rows: ['The difference between reactivity and aggression', 'The ingredients that shape behavior'], num: true, rowBg: 'var(--green)', rowFg: '#fff' }),
     ];
     // each beat: its card slides up and takes the green outline; its rows land as they are said
     const CUES = [

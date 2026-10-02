@@ -279,10 +279,10 @@
       });
     }
 
-    // working and assistance: rescue, pulling, guarding, assistance
+    // working and assistance: rescue, pulling, assistance
     {
       const V = dets[5], t0 = tOpen(5) + OPEN;
-      const ts = tiles(V.vig, [['life-buoy', 'Rescue'], ['weight', 'Pulling'], ['shield', 'Guarding'], ['hand-helping', 'Assistance']]);
+      const ts = tiles(V.vig, [['life-buoy', 'Rescue'], ['weight', 'Pulling'], ['hand-helping', 'Assistance']]);
       ts.forEach((x, i) => {
         A.in(tl, x.t, t0 + 0.2 + i * 0.35, 'fadeUp', { dur: 0.55 });
         A.in(tl, x.b, t0 + 0.3 + i * 0.35, 'pop', { dur: 0.5 });

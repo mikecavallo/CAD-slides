@@ -170,15 +170,32 @@
     Object.assign(fr.style, { left: '1020px', top: '262px', width: '780px', height: '690px', border: '5px dashed #c9d2bf' });
     stage.insertBefore(fl, LA);
     stage.insertBefore(fr, LA);
-    const p1 = C2.pill(stage, 'droplets', 'Part 1: *Distant antecedents*', { x: 146, y: 284, size: 28, col: C.water });
-    const p2 = C2.pill(stage, 'circle-help', 'Part 2: ?', { x: 1046, y: 284, size: 28, col: C.muted });
-    const p2b = C2.pill(stage, 'thermometer', 'Part 2: *Temperature*', { x: 1046, y: 284, size: 28, col: C.red });
+    // Part 1 is the ingredients (Chapter 1), Part 2 is the water (this chapter); together they are the distant antecedents.
+    // Part 3, the temperature, is still unknown
+    const p1 = C2.pill(stage, 'book-open', 'Part 1: *Ingredients*', { x: 146, y: 284, size: 28, col: C1.ING[0].col });
+    const p1b = C2.pill(stage, 'droplets', 'Part 2: *The water*', { x: 536, y: 284, size: 28, col: C.water });
+    const p2 = C2.pill(stage, 'circle-help', 'Part 3: ?', { x: 1046, y: 284, size: 28, col: C.muted });
+    const p2b = C2.pill(stage, 'thermometer', 'Part 3: *Temperature*', { x: 1046, y: 284, size: 28, col: C.red });
     gsap.set(p2b, { opacity: 0 });
     A.in(tl, fl, t2 + 0.2, 'fade', { dur: 0.5 });
-    A.in(tl, p1, t2 + 0.4, 'fadeRight', { dur: 0.5 });
-    const know = C2.put(stage, 'c2f-know', 'We know how much<br>*water* is in the pot.', { x: 160, y: 830 });
+    const lead = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
+    const g0 = P.ing[1], [ix, iy] = P.toStage(g0.x, C2.surfY(0.5) + g0.depth);
+    const [wx, wy] = P.toStage(10, C2.surfY(0.5) + 150);
+    const l1 = K.path(lead, `M 290 350 L ${ix} ${iy - 34}`, { stroke: C1.ING[0].col, 'stroke-width': 4, 'stroke-dasharray': '10 8', fill: 'none' });
+    const l2 = K.path(lead, `M 680 350 L ${wx} ${wy}`, { stroke: '#2f7fae', 'stroke-width': 4, 'stroke-dasharray': '10 8', fill: 'none' });
+    const d1 = K.circle(lead, ix, iy - 34, 7, { fill: C1.ING[0].col, opacity: 0 });
+    const d2 = K.circle(lead, wx, wy, 7, { fill: '#2f7fae', opacity: 0 });
+    const tP1 = clamp(at(2, 'knowing how much water', 0.1, 0.3), t2 + 0.3, end(2) - 2.4);
+    A.in(tl, p1, tP1, 'fadeRight', { dur: 0.5 });
+    A.draw(tl, l1, tP1 + 0.4, 0.5);
+    A.in(tl, d1, tP1 + 0.85, 'pop', { dur: 0.3 });
+    A.in(tl, p1b, tP1 + 0.7, 'fadeRight', { dur: 0.5 });
+    A.draw(tl, l2, tP1 + 1.1, 0.5);
+    A.in(tl, d2, tP1 + 1.55, 'pop', { dur: 0.3 });
+    const know = C2.put(stage, 'c2f-know', 'Parts 1 and 2 = *distant antecedents*', { x: 160, y: 862 });
     know.style.fontSize = '38px';
-    A.in(tl, know, t2 + 0.5, 'fadeUp', { dur: 0.6 });
+    know.querySelector('b').style.color = 'var(--green)';
+    A.in(tl, know, tP1 + 1.6, 'fadeUp', { dur: 0.6 });
     const tPart = clamp(at(2, 'only part of the picture', 0.7, 0.3), t2 + 0.8, end(2) - 0.6);
     A.in(tl, fr, tPart, 'fade', { dur: 0.5 });
     A.in(tl, p2, tPart + 0.2, 'fadeRight', { dur: 0.5 });
@@ -215,6 +232,7 @@
     A.in(tl, [slot, slotC], tSlot, 'fade', { dur: 0.5 });
     tl.to([slot, slotC], { opacity: 0.35, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tSlot + 0.5);
     A.dim(tl, qcs, t4 + 0.2, 0.45);
+    tl.to(lead, { opacity: 0, duration: 0.4 }, t4 + 0.1);
 
     // ---------- beat 5: temperature: the thermometer drops in, its line rises; Part 2 is temperature
     const t5 = cue(5);
@@ -242,6 +260,6 @@
 
     // ---------- close: the Calling All Dogs logo
     const tL = Math.max(t5 + 3.2, Math.min(end(5) + 2.4, dur - 2.4));
-    C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2, p1, p2b]);
+    C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2, p1, p1b, p2b, lead]);
   });
 })();

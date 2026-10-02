@@ -44,7 +44,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   the eight ingredients float in every pot and ride the water level; factors that raise the water are red/amber
   pills that drip in (never chip tokens); fixes lift drops out; s07 "different for each dog" sentence and slides
   removed, "more on this later" sits on the beam slide; s08 is a three-step strip, not a graph; s12 has a new line
-  naming the water and everything in it "distant antecedents", with Part 1 / Part 2 (temperature) frames.
+  naming the water and everything in it "distant antecedents". Last slide frames: Part 1 = the ingredients
+  (Chapter 1), Part 2 = the water (this chapter), together the distant antecedents; Part 3 = temperature (next).
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

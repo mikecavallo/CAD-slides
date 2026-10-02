@@ -5,6 +5,7 @@
 //   node tools/render.mjs --chapter ch03  render one chapter
 //   node tools/render.mjs --force         ignore cache
 //   node tools/render.mjs --workers 3
+//   node tools/render.mjs --scale 2       true 4K (3840 x 2160) for the YouTube upload, cached in build/segments@2x
 //   node tools/render.mjs --rehash        mark the segments on disk as current (no rendering)
 import fs from 'node:fs';
 import path from 'node:path';
@@ -18,7 +19,9 @@ const has = k => argv.includes(k);
 
 const timing = JSON.parse(fs.readFileSync(path.join(ROOT, 'build/timing.json'), 'utf8'));
 const fps = timing.fps;
-const OUT = path.join(ROOT, 'build/segments');
+// --scale 2 renders at 3840 x 2160 (true 4K, sharper text on YouTube) into its own cache, build/segments@2x
+const SCALE = Number(arg('--scale', 1));
+const OUT = path.join(ROOT, SCALE > 1 ? `build/segments@${SCALE}x` : 'build/segments');
 fs.mkdirSync(OUT, { recursive: true });
 
 let shared = ['video/lib.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
@@ -87,7 +90,7 @@ async function renderSeg(page, seg) {
 
 const queue = [...todo].sort((a, b) => b.dur - a.dur);
 await Promise.all(Array.from({ length: Math.min(workers, queue.length) }, async () => {
-  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: SCALE });
   while (queue.length) {
     const seg = queue.shift();
     const s = Date.now();

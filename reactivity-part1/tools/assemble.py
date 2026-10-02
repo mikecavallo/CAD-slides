@@ -106,6 +106,7 @@ def main():
     ap.add_argument("--no-chapters", action="store_true")
     ap.add_argument("--music", help="optional background music file, looped and ducked under the voice")
     ap.add_argument("--music-db", type=float, default=-24, help="music level in dB (default -24)")
+    ap.add_argument("--segments", default="segments", help="segment folder inside build/ (segments@2x for the 4K render)")
     ap.add_argument("--silent", action="store_true", help="leave the narration out (a visuals-only preview; captions are still written)")
     ap.add_argument("--chapter-max-mb", type=float, default=29, help="re-encode any chapter file bigger than this (default 29 MB)")
     args = ap.parse_args()
@@ -116,7 +117,7 @@ def main():
 
     # 1) video: concat the segment files (each starts on a keyframe, so chapter cuts are exact)
     lst = BUILD / "concat.txt"
-    lst.write_text("".join(f"file '{(BUILD / 'segments' / (s['id'] + '.mp4')).resolve()}'\n" for s in segs))
+    lst.write_text("".join(f"file '{(BUILD / args.segments / (s['id'] + '.mp4')).resolve()}'\n" for s in segs))
     video = BUILD / "video_only.mp4"
     run("ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", str(video))
 

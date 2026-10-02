@@ -483,13 +483,12 @@
         {
           "id": "ch01s12",
           "heading": "Putting it together",
-          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then a new amber 'fuel' chip drops in and settles on top of the others under the line 'What fuels the behavior?'; then the view shifts to a barking dog with the surrounding context around it as a transition to the next chapter, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then the bowl clears and a barking dog appears with three question marks around it, joined by arrows in a loop like the ABCs, under the line 'What fuels the behavior?'; the loop stays up for the transition to the next chapter, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
             "logo.png",
-            "icon:dog",
-            "icon:flame"
+            "icon:dog"
           ],
           "beats": [
             {
@@ -499,12 +498,12 @@
             },
             {
               "say": "But there's another piece we need to understand: what fuels the behavior once those ingredients are in place.",
-              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'another piece', a new amber chip with a flame icon drops in and settles on top of them, and the line changes to 'What fuels the behavior?'.",
+              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'another piece', the bowl clears and a barking dog appears at center; three question marks pop in around it, one at a time, joined by clockwise arrows like the ABC loop, and the line reads 'What fuels the behavior?'.",
               "onscreen": "What fuels the behavior?"
             },
             {
               "say": "Next, we'll start looking at what is happening around the behavior.",
-              "show": "The bowl clears. A barking dog appears with simple situation elements in a ring around it and an arrow pointing forward to the next chapter. The Calling All Dogs logo closes the video.",
+              "show": "The dog and the question-mark loop stay up; the question marks pulse in turn and the line changes to 'Next: what's happening around the behavior'. The Calling All Dogs logo closes the video.",
               "onscreen": "Next: what's happening around the behavior"
             }
           ]

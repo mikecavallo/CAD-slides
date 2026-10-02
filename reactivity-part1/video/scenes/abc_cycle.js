@@ -4,11 +4,12 @@
 // Arrow labels: A to B 'Emotions' / 'Changing emotions'; B to C 'Increased' / 'Lowered arousal/stress'.
 //
 // Then the paths change strength: practice thickens the new (green) path while the old (red) one fades,
-// and practicing the old behavior brings the red path back.
+// and practicing the old behavior brings the red path back while the green one fades.
 //
 //   abc_cycle   not in script/lesson.json yet. Intended beats when it gets narration:
 //               0 heading   1 before loop builds A, B, C   2 its note   3 during loop builds   4 its note
-//               5 practice: green path strengthens, red path fades   6 old behavior practiced: red path comes back
+//               5 practice: green path strengthens, red path fades   6 old behavior practiced: red path comes back, green fades
+//               7 management: green path strengthens again, red fades (scene ends on the new path)
 //               (any beats past the last one present are skipped; with fewer beats everything still builds)
 //
 // K.abcCycle is defined here so later scenes can reuse the same loop.
@@ -123,7 +124,8 @@
     Object.assign(mid.style, { left: `${cx - 210}px`, top: `${o.midY ?? cy - r + SZ[0].h / 2 + 26}px` });
     parent.appendChild(mid);
 
-    return { cards, arcs, heads, labels, worn, mid, pill, note, dot, track, color, cx, cy, r };
+    const pale = { [COLORS.red]: '#ecd3cc', [COLORS.green]: '#d6e6c6' }[color] || '#e2e4dc';
+    return { cards, arcs, heads, labels, worn, mid, pill, note, dot, track, color, pale, cx, cy, r };
   };
 
   // build one loop: A, arrow, B, arrow, C, arrow back to A. Returns when it finishes.
@@ -151,7 +153,7 @@
     tl.to([...L.arcs, ...L.heads, L.dot], { opacity: k < 1 ? 0.35 : 1, duration: dur, ease }, t);
     // cards keep a solid white face so the ring behind them never shows through; their content and border fade
     tl.to(L.cards.flatMap(c => [...c.children]), { opacity: fade, duration: dur, ease }, t);
-    tl.to(L.cards, { borderColor: k < 1 ? '#ecd3cc' : L.color, boxShadow: k < 1 ? 'none' : 'var(--shadow-soft)', duration: dur, ease }, t);
+    tl.to(L.cards, { borderColor: k < 1 ? L.pale : L.color, boxShadow: k < 1 ? 'none' : 'var(--shadow-soft)', duration: dur, ease }, t);
     tl.to([L.mid, ...L.labels.filter(Boolean)], { opacity: fade, duration: dur, ease }, t);
     tl.to(L.track, { opacity: k < 1 ? 0.06 : 0.18, duration: dur, ease }, t);
   }
@@ -217,11 +219,22 @@
     strength(tl, during, t5 + 0.3, 1.9, { dur: 2.2 });
     strength(tl, before, t5 + 0.3, 0.45, { dur: 2.2 });
 
-    // relapse: the old behavior gets practiced and its path is back at full strength
+    // relapse: the old behavior gets practiced; its path is back at full strength while the new one fades
     const t6 = at(6) ?? t5 + 5;
     A.out(tl, say1, t6, 'fadeUp', { dur: 0.4 });
     A.in(tl, say2, t6 + 0.3, 'fadeUp', { dur: 0.7 });
-    strength(tl, before, t6 + 0.4, 1.6, { dur: 1.2 });
+    strength(tl, before, t6 + 0.4, 1.6, { dur: 1.6 });
+    strength(tl, during, t6 + 0.4, 0.45, { dur: 1.6 });
     A.pulse(tl, before.cards[1], t6 + 1.4, { scale: 1.07 });
+
+    // management: keep the old behavior from being practiced so the new path can take over again
+    const say3 = K.el('div', 'abcc-say', md('That’s why *management* is so important: so we can create a *stronger new path*.'));
+    stage.appendChild(say3);
+    const t7 = at(7) ?? t6 + 4.5;
+    A.out(tl, say2, t7, 'fadeUp', { dur: 0.4 });
+    A.in(tl, say3, t7 + 0.3, 'fadeUp', { dur: 0.7 });
+    strength(tl, before, t7 + 0.4, 0.45, { dur: 1.8 });
+    strength(tl, during, t7 + 0.4, 1.9, { dur: 1.8 });
+    A.pulse(tl, during.cards[1], t7 + 1.8, { scale: 1.06 });
   });
 })();

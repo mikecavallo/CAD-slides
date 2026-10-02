@@ -511,7 +511,7 @@
     {
      "id": "ch02s12",
      "heading": "The Water Level Is Only Part of the Picture",
-     "visual_concept": "The pot (ingredients floating) with three checks; 'Distant antecedents' wraps the pot, the water and everything in it; a Part 1 (ingredients) and Part 2 (water) frame beside an empty dashed Part 3 frame with three questions; a dashed slot, then a thermometer drops in: Part 3 is temperature. Logo close. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "The pot (ingredients floating) with three checks; 'Distant antecedents' outlines the water only; a Part 1 (ingredients) and Part 2 (water) frame beside an empty dashed Part 3 frame with three questions; a dashed slot, then a thermometer drops in: Part 3 is temperature. Logo close. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -528,13 +528,13 @@
        "onscreen": "We know how much water is in the pot."
       },
       {
-       "say": "Together, the water and everything in it are what we call distant antecedents.",
-       "show": "The checks clear; a dashed outline wraps the pot, water and ingredients together, and a label lands: 'Distant antecedents: the water and everything in it'.",
+       "say": "The water in the pot represents what we call distant antecedents.",
+       "show": "The checks clear; a dashed outline traces the water only (not the ingredients) and a label lands: 'Distant antecedents: the water in the pot'.",
        "onscreen": "Distant antecedents"
       },
       {
        "say": "But knowing how much water is in the pot is only part of the picture.",
-       "show": "The pot sits in a frame with two labels, each with a dashed line to its part: 'Part 1: Ingredients' (Chapter 1's chips) and 'Part 2: The water'; under it 'Parts 1 and 2 = distant antecedents'. A dashed empty frame beside it is labeled 'Part 3: ?'.",
+       "show": "The pot sits in a frame with two labels, each with a dashed line to its part: 'Part 1: Ingredients' (Chapter 1's chips) and 'Part 2: The water'; under it 'The water = distant antecedents'. A dashed empty frame beside it is labeled 'Part 3: ?'.",
        "onscreen": "Only part of the picture"
       },
       {

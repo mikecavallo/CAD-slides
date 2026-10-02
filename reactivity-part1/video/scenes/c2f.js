@@ -145,18 +145,22 @@
       return n;
     });
 
-    // ---------- beat 1: the water and everything in it: distant antecedents
+    // ---------- beat 1: the water (not the ingredients) is the distant antecedents
     const t1 = cue(1);
     tl.to(cks, { opacity: 0, x: 40, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t1 - 0.1);
-    const ring = K.el('div', 'c2f-frame');
-    Object.assign(ring.style, { left: '250px', top: '330px', width: '620px', height: '510px', border: '6px dashed ' + C.green });
-    stage.insertBefore(ring, LA);
+    // a dashed outline hugs the water only, from the waterline down to the bottom of the pot
+    const sy = C2.surfY(0.5), OX = C2.R + 30, OB = C2.H + 78;
+    const ring = K.path(P.svg, `M ${-OX} ${sy - 34} L ${-OX} ${OB - 70} Q ${-OX} ${OB} 0 ${OB} Q ${OX} ${OB} ${OX} ${OB - 70} L ${OX} ${sy - 34} Z`,
+      { stroke: '#2f7fae', 'stroke-width': 7, 'stroke-dasharray': '18 12', fill: 'rgba(95,168,207,0.10)' });
     const tDA = clamp(at(1, 'distant antecedents', 0.7, 0.6), t1 + 0.3, end(1) - 0.8);
-    tl.fromTo(ring, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, t1 + 0.3);
-    tl.to(P.ing.map(g => g.inner), { scale: 1.25, svgOrigin: '0 0', duration: 0.25, yoyo: true, repeat: 1, stagger: 0.05 }, t1 + 0.6);
+    tl.fromTo(ring, { opacity: 0 }, { opacity: 1, duration: 0.6, immediateRender: true }, t1 + 0.3);
+    tl.to(P.wTop, { attr: { fill: '#cfeaf7' }, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, t1 + 0.8);
+    // the ingredients step back while the water is named, then return
+    tl.to(P.ing.map(g => g.mid), { opacity: 0.25, duration: 0.4 }, t1 + 0.3);
+    tl.to(P.ing.map(g => g.mid), { opacity: 1, duration: 0.4 }, cue(2));
     const da = K.el('div', 'c2f-da');
     da.appendChild(K.el('div', 'a', 'Distant antecedents'));
-    da.appendChild(K.el('div', 'b', 'The water and everything in it'));
+    da.appendChild(K.el('div', 'b', 'The water in the pot'));
     Object.assign(da.style, { left: '1000px', top: '470px' });
     stage.appendChild(da);
     A.in(tl, da, tDA, 'fadeLeft', { dur: 0.7 });
@@ -192,7 +196,7 @@
     A.in(tl, p1b, tP1 + 0.7, 'fadeRight', { dur: 0.5 });
     A.draw(tl, l2, tP1 + 1.1, 0.5);
     A.in(tl, d2, tP1 + 1.55, 'pop', { dur: 0.3 });
-    const know = C2.put(stage, 'c2f-know', 'Parts 1 and 2 = *distant antecedents*', { x: 160, y: 862 });
+    const know = C2.put(stage, 'c2f-know', 'The water = *distant antecedents*', { x: 160, y: 862 });
     know.style.fontSize = '38px';
     know.querySelector('b').style.color = 'var(--green)';
     A.in(tl, know, tP1 + 1.6, 'fadeUp', { dur: 0.6 });

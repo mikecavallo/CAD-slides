@@ -1,6 +1,6 @@
 # Getting Started with Dog Behavior: Understanding Reactivity and Aggression. Chapter 2: Understanding Your Dog's Baseline
 
-Narration script. About 1,090 words, roughly 7 minutes at a relaxed pace.
+Narration script. About 1,088 words, roughly 7 minutes at a relaxed pace.
 
 ## Welcome
 
@@ -32,4 +32,4 @@ These factors rarely exist in isolation. Imagine you slept poorly, have a headac
 
 This is why identifying these factors is so important. Many of them are things we can do something about. We may be able to address pain or illness, improve sleep or nutrition, adjust physical or mental activity, better meet natural needs, create more predictability and choice, or provide more opportunity for recovery. As we improve these factors, we can lower the water level.
 
-Now we know what the water level represents, why it matters, and some of the things that can change it. Together, the water and everything in it are what we call distant antecedents. But knowing how much water is in the pot is only part of the picture. What happens when something occurs around the dog? How does the dog feel about it? And what happens to their arousal and stress? For that, we need to add another part to our pot. Temperature.
+Now we know what the water level represents, why it matters, and some of the things that can change it. The water in the pot represents what we call distant antecedents. But knowing how much water is in the pot is only part of the picture. What happens when something occurs around the dog? How does the dog feel about it? And what happens to their arousal and stress? For that, we need to add another part to our pot. Temperature.

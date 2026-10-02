@@ -211,7 +211,7 @@
     A.pulse(tl, [before.cards[2], during.cards[2]], built + 0.8, { scale: 1.06 });
 
     // practice: the new path gets stronger, the old one fades
-    const say1 = K.el('div', 'abcc-say', md('Practice builds a *stronger new path*. The old path fades.'));
+    const say1 = K.el('div', 'abcc-say', md('Practice creates *a new, strong path*. The old path fades.'));
     const say2 = K.el('div', 'abcc-say', md('Practice the old behavior and !!the old path comes back!!.'));
     stage.appendChild(say1); stage.appendChild(say2);
     const t5 = at(5) ?? built + 2;
@@ -228,7 +228,7 @@
     A.pulse(tl, before.cards[1], t6 + 1.4, { scale: 1.07 });
 
     // management: keep the old behavior from being practiced so the new path can take over again
-    const say3 = K.el('div', 'abcc-say', md('That’s why *management* is so important: so we can create a *stronger new path*.'));
+    const say3 = K.el('div', 'abcc-say', md('That’s why *management* is so important: so we can create *a new, strong path*.'));
     stage.appendChild(say3);
     const t7 = at(7) ?? t6 + 4.5;
     A.out(tl, say2, t7, 'fadeUp', { dur: 0.4 });

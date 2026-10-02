@@ -4,7 +4,7 @@
 //   ch01s11  Pain and discomfort          chip; sore spots on a dog + six sensitivities; two panels (looks fine / leans away);
 //                                         a sudden change forks into Behavior and Physical health, then 'Vet visit first'
 //   ch01s12  Putting it together          all eight ingredients drop into the bowl as named; an amber 'fuel' chip settles on top;
-//                                         a barking dog with the context around it, an arrow on; logo close
+//                                         a barking dog circled by three '?' badges in a cycle (like the ABCs to come); logo close
 (() => {
   const C = C1.C;
   const DOG = '#2c4a17', DOG_FAR = '#56822f', DOG_EAR = '#1d3310';
@@ -533,7 +533,7 @@
     const l1 = C1.label(LA, 'What *fuels* the behavior?', 960, 850, { cls: 'c1-big', w: 1400 });
     A.in(tl, l1, clamp(at(1, 'what fuels the behavior', 0.6, 0.3), tLand + 0.3, end(1) - 1), 'fadeUp', { dur: 0.8 });
 
-    // ---------- beat 2: the bowl clears; a barking dog with the context in a ring around it; an arrow points on to the next chapter
+    // ---------- beat 2: the bowl clears; a barking dog with three question marks circling it in a cycle, like the ABCs to come
     const t2 = cue(2);
     A.out(tl, LA, t2 - 0.35, 'fade', { dur: 0.45 });
     tl.to(B.wrap, { opacity: 0, scale: 0.86, y: 40, duration: 0.6, ease: 'power2.in' }, t2 - 0.3);
@@ -541,25 +541,47 @@
     const l2 = C1.put(LC, 'c1-big', 'Next: *what’s happening around the behavior*', { x: 100, y: 300 });
     A.in(tl, l2, t2 + 0.05, 'fadeUp', { dur: 0.7 });
     const cs = K.svg(LC, { x: 0, y: 0, w: 1920, h: 1080 });
-    const DX2 = 700, DY2 = 650, DS2 = 0.66;
-    const ERX = 330, ERY = 196;
-    const ring = K.svgEl('ellipse', { cx: DX2, cy: DY2 + 6, rx: ERX, ry: ERY, fill: 'none', stroke: C.greenLight, 'stroke-width': 5, 'stroke-dasharray': '2 14', 'stroke-linecap': 'round' }, cs);
+    const DX2 = 960, DY2 = 684, DS2 = 0.66;
+    const RCX = DX2, RCY = DY2 + 6, ERX = 330, ERY = 228;
     const D = dogAt(cs, DX2, DY2, DS2);
     A.in(tl, D.outer, t2 + 0.1, 'fadeUp', { dur: 0.7 });
     const barks = [[412, 58, 102], [436, 42, 118], [460, 26, 134]].map(([x, y0, y1], i) =>
       K.path(D.fx, `M ${x} ${y0} Q ${x + 18 + i * 8} ${(y0 + y1) / 2} ${x} ${y1}`, { stroke: C.amber, 'stroke-width': 10, fill: 'none', opacity: 0 }));
     const nb = Math.max(1, Math.floor((dur - t2 - 4) / 0.9));
     barks.forEach((b, i) => tl.fromTo(b, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: nb * 2 - 1, repeatDelay: 0.15, ease: 'power1.inOut' }, t2 + 0.6 + i * 0.12));
-    tl.fromTo(ring, { opacity: 0, scale: 0.7, svgOrigin: `${DX2} ${DY2 + 6}` }, { opacity: 1, scale: 1, duration: 0.7, ease: 'power3.out' }, t2 + 0.3);
-    const CTX = [['user', -150], ['dog', -90], ['car', -30], ['door-open', 150], ['trees', 90], ['bike', 30]];
-    CTX.forEach(([ic, a], i) => {
-      const r = (a * Math.PI) / 180;
-      const b = C1.badge(LC, ic, DX2 + ERX * Math.cos(r), DY2 + 6 + ERY * Math.sin(r), 96, '#fff', C.greenDark);
-      Object.assign(b.style, { border: '5px solid ' + C.greenLight, boxShadow: 'var(--shadow-soft)' });
-      A.in(tl, b, t2 + 0.4 + i * 0.08, 'pop', { dur: 0.5 });
+    // three "?" badges on an ellipse around the dog (top, lower right, lower left), joined clockwise by curved arrows
+    const ANG = [-90, 30, 150], GAP = 21;
+    const pt = deg => { const r = (deg * Math.PI) / 180; return [RCX + ERX * Math.cos(r), RCY + ERY * Math.sin(r)]; };
+    const qs = ANG.map(deg => {
+      const [x, y] = pt(deg);
+      const q = K.el('div', null, '?');
+      Object.assign(q.style, { position: 'absolute', left: x - 58 + 'px', top: y - 58 + 'px', width: '116px', height: '116px', borderRadius: '50%',
+        background: C.green, color: '#fff', border: '6px solid #fff', boxSizing: 'border-box', display: 'grid', placeItems: 'center',
+        font: '700 64px/1 var(--font-head)', boxShadow: '0 12px 28px rgba(44,74,23,0.28)' });
+      LC.appendChild(q);
+      return q;
     });
-    const [aS, aH] = arrow(cs, 1150, DY2 + 6, 1600, DY2 + 6, { width: 12, head: 36 });
-    A.draw(tl, [aS, aH], t2 + 0.8, 0.45, { stagger: 0.3 });
+    const arcs = ANG.map((deg, i) => {
+      const t1 = deg + GAP, t2a = ANG[(i + 1) % 3] + (i === 2 ? 360 : 0) - GAP;
+      const [x1, y1] = pt(t1), [x2, y2] = pt(t2a);
+      const arc = K.path(cs, `M ${x1} ${y1} A ${ERX} ${ERY} 0 0 1 ${x2} ${y2}`, { stroke: C.greenLight, 'stroke-width': 9, fill: 'none' });
+      const r = (t2a * Math.PI) / 180;
+      const dx = -ERX * Math.sin(r), dy = ERY * Math.cos(r), L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+      const wing = s => [x2 - 30 * (ux * Math.cos(0.5) - s * uy * Math.sin(0.5)), y2 - 30 * (uy * Math.cos(0.5) + s * ux * Math.sin(0.5))];
+      const [ax, ay] = wing(1), [bx, by] = wing(-1);
+      const head = K.path(cs, `M ${ax} ${ay} L ${x2} ${y2} L ${bx} ${by}`, { stroke: C.greenLight, 'stroke-width': 9, fill: 'none' });
+      return [arc, head];
+    });
+    qs.forEach((q, i) => A.in(tl, q, t2 + 0.35 + i * 0.18, 'pop', { dur: 0.5 }));
+    arcs.forEach(([arc, head], i) => {
+      A.draw(tl, arc, t2 + 0.8 + i * 0.25, 0.45);
+      A.in(tl, head, t2 + 1.15 + i * 0.25, 'fade', { dur: 0.2 });
+    });
+    // the cycle keeps turning: the badges light up in order, round and round, until the logo close
+    const tLoop = t2 + 1.9, tEnd = Math.max(t2 + 2.0, Math.min(end(2) + 0.5, dur - 2.2));
+    for (let k = 0, t = tLoop; t + 0.5 < tEnd; k++, t += 0.55) {
+      tl.to(qs[k % 3], { scale: 1.14, duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 1 }, t);
+    }
 
     // ---------- close: the corner logo steps aside; the Calling All Dogs logo and url settle at centre
     const tL = Math.max(t2 + 2.0, Math.min(end(2) + 0.5, dur - 2.2));

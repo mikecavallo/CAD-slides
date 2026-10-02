@@ -5,6 +5,7 @@
 //   node tools/render.mjs --chapter ch03  render one chapter
 //   node tools/render.mjs --force         ignore cache
 //   node tools/render.mjs --workers 3
+//   node tools/render.mjs --rehash        mark the segments on disk as current (no rendering)
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -32,13 +33,23 @@ for (const f of fs.readdirSync(path.join(ROOT, 'video/scenes')).filter(f => f.en
 }
 function segHash(seg) {
   const code = seg.kind === 'bumper' ? '' : (SCENE_FILE[seg.id] || '');
+  // start, audio and (for scenes) the chapter title never change what a scene draws, so they do not force a re-render
   const { start, audio, ...rest } = seg;
+  if (seg.kind !== 'bumper') delete rest.chapterTitle;
   return crypto.createHash('sha1').update(shared + code + JSON.stringify(rest) + fps).digest('hex').slice(0, 16);
 }
 
 let segs = timing.segments;
 if (arg('--only')) { const ids = new Set(arg('--only').split(',')); segs = segs.filter(s => ids.has(s.id)); }
 if (arg('--chapter')) { const c = new Set(arg('--chapter').split(',')); segs = segs.filter(s => c.has(s.chapter)); }
+// --rehash: the segments on disk already match the current timeline; just record their hashes (after a change to
+// the hash rules itself, so nothing re-renders for no reason)
+if (has('--rehash')) {
+  let n = 0;
+  for (const s of segs) if (fs.existsSync(path.join(OUT, s.id + '.mp4'))) { fs.writeFileSync(path.join(OUT, s.id + '.hash'), segHash(s)); n++; }
+  console.log(`rehashed ${n} segments`);
+  process.exit(0);
+}
 const todo = segs.filter(s => has('--force') || !fs.existsSync(path.join(OUT, s.id + '.mp4')) || (fs.existsSync(path.join(OUT, s.id + '.hash')) ? fs.readFileSync(path.join(OUT, s.id + '.hash'), 'utf8') : '') !== segHash(s));
 console.log(`render: ${todo.length} of ${segs.length} segments need rendering`);
 if (!todo.length) process.exit(0);

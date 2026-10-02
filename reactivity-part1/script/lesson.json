@@ -1,6 +1,6 @@
 {
   "title": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression",
-  "notes": "v7: a short welcome chapter (ch00: title slide, then the problem, promise and plan) before Chapter 1 from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. v5 is in script/archive/lesson-v5-chapter1-10scenes.json. The trainer records the narration.",
+  "notes": "v8: a welcome slide (ch00), then Chapter 1 'Starting with the Basics': the plan slide (ch00s02, id kept so its recording still matches) and the material from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. The trainer records the narration.",
   "chapters": [
     {
       "id": "ch00",
@@ -23,7 +23,22 @@
               "onscreen": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression"
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "id": "ch01",
+      "title": "Starting with the Basics",
+      "slide_refs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "scenes": [
         {
           "id": "ch00s02",
           "heading": "Where we're headed",
@@ -46,22 +61,7 @@
               "onscreen": "How we'll get there"
             }
           ]
-        }
-      ]
-    },
-    {
-      "id": "ch01",
-      "title": "Aggression and Reactivity: Starting with the Basics",
-      "slide_refs": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
-      "scenes": [
+        },
         {
           "id": "ch01s01",
           "heading": "Aggression and reactivity",
@@ -483,7 +483,7 @@
         {
           "id": "ch01s12",
           "heading": "Putting it together",
-          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then a new amber 'fuel' chip drops in and settles on top of the others under the line 'What fuels the behavior?'; then the view shifts to a barking dog with the surrounding context around it as a transition to the next chapter, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then a new amber 'fuel' chip drops in and settles on top of the others under the line 'What fuels the behavior?'; then a barking dog with three question marks circling it in a cycle, like the ABCs to come, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
@@ -504,7 +504,7 @@
             },
             {
               "say": "Next, we'll start looking at what is happening around the behavior.",
-              "show": "The bowl clears. A barking dog appears with simple situation elements in a ring around it and an arrow pointing forward to the next chapter. The Calling All Dogs logo closes the video.",
+              "show": "The bowl clears. A barking dog appears with three question marks circling it in a cycle, joined by curved arrows like the ABCs to come. The Calling All Dogs logo closes the video.",
               "onscreen": "Next: what's happening around the behavior"
             }
           ]

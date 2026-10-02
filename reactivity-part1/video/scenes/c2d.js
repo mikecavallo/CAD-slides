@@ -47,6 +47,18 @@
   .c2d-burst { position: absolute; left: 100px; top: -6px; width: 64px; height: 64px; display: grid; place-items: center; color: #fff;
     font: 800 44px/1 var(--font-head); background: var(--red);
     clip-path: polygon(50% 0, 62% 30%, 96% 22%, 74% 50%, 98% 78%, 62% 70%, 50% 100%, 38% 70%, 4% 78%, 26% 50%, 4% 22%, 38% 30%); }
+  .c2d-leg { position: absolute; display: flex; align-items: center; gap: 16px; padding: 10px 26px 10px 10px; border-radius: 999px; background: #fff;
+    border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); }
+  .c2d-leg .lb { position: relative; width: 60px; height: 60px; border-radius: 50%; border: 4px solid var(--green); color: var(--green-dark); background: #fff; }
+  .c2d-leg .lb svg { position: absolute; left: 11px; top: 11px; width: 30px; height: 30px; stroke-width: 2.3; }
+  .c2d-leg .sw { width: 48px; height: 10px; border-radius: 5px; background: var(--red); }
+  .c2d-leg .tw { position: relative; height: 34px; width: 392px; }
+  .c2d-leg .tx { position: absolute; left: 0; top: 0; font: 600 30px/34px var(--font-body); color: var(--ink); white-space: nowrap; }
+  .c2d-leg .tx b { color: var(--red); }
+  .c2d-ev { position: absolute; width: 220px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .c2d-ev .b { width: 56px; height: 56px; border-radius: 50%; color: #fff; display: grid; place-items: center; border: 4px solid #fff; box-shadow: 0 6px 14px rgba(40,60,20,0.18); }
+  .c2d-ev .b svg { width: 30px; height: 30px; stroke-width: 2.3; }
+  .c2d-ev .t { font: 700 26px/1.12 var(--font-body); color: var(--ink); text-align: center; }
   .c2d-gl { position: absolute; font: 600 28px/1 var(--font-body); color: var(--muted); white-space: nowrap; }
   .c2d-band { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 12px; }
   .c2d-band .t { font: 700 28px/1.15 var(--font-body); color: var(--ink); text-align: center; white-space: nowrap; }
@@ -143,9 +155,9 @@
     LB.appendChild(beamWrap);
     A.in(tl, bar, t3 + 0.2, 'grow', { dur: 0.6 });
     tl.set(bar, { transformOrigin: '50% 50%' }, 0);
-    const NEEDS = [['footprints', 'Physical<br>activity', 'physical activity', 0.35], ['puzzle', 'Mental<br>activity', 'mental activity', 0.5],
+    const NEEDS = [['paws', 'Physical<br>activity', 'physical activity', 0.35], ['puzzle', 'Mental<br>activity', 'mental activity', 0.5],
       ['dog', 'Natural<br>behaviors', 'natural behaviors', 0.75], ['bed', 'Rest', 'and rest', 0.95]];
-    const NC = ['#d9912b', '#7a8f2e', '#3f6b22', '#4a6fa5'];
+    const NC = ['#619537', '#7a8f2e', '#3f6b22', '#4a6fa5'];
     let lo = t3 + 0.6;
     NEEDS.forEach(([ic, t, p, fb], k) => {
       const b = K.el('div', 'c2d-blk');
@@ -255,90 +267,96 @@
     A.in(tl, P.wrap, cue(0) + 0.3, 'fadeUp', { dur: 0.8 });
     P.waves(tl, 0, dur);
 
-    // ---------- beats 1 to 4: a three-step strip. 1: a difficult conversation fills the "upset" meter. 2: it ends, the meter
-    // stays up. 3: someone else approaches and gets a snappy reply. 4: "you" becomes the dog in every step
+    // ---------- beats 1 to 4: the mood graph, laid out cleanly: a legend names the line, events sit under the time axis,
+    // words sit above the line where nothing else is
     const LA = C2.layer(stage, tl, cue(1));
-    const STEP = [['1', 'Difficult conversation'], ['2', 'It ends'], ['3', 'Someone else<br>approaches']];
-    const cards = STEP.map(([n, t], k) => {
-      const c = K.el('div', 'c2d-step');
-      Object.assign(c.style, { left: 100 + k * 330 + 'px', top: '300px' });
-      const hd = K.el('div', 'hd');
-      hd.appendChild(K.el('div', 'n', n));
-      hd.appendChild(K.el('div', 't', t));
-      c.appendChild(hd);
-      const sc = K.el('div', 'sc');
-      c.appendChild(sc);
-      const mt = K.el('div', 'mt');
-      mt.appendChild(K.el('div', 'ml', 'How upset'));
-      const tr = K.el('div', 'tr');
-      const fill = K.el('div', 'fl');
-      tr.appendChild(fill);
-      mt.appendChild(tr);
-      c.appendChild(mt);
-      LA.appendChild(c);
-      gsap.set(fill, { width: '0%' });
-      return { c, sc, fill };
-    });
-    /** A round person/dog badge inside a step's scene box at (x, y) (box-relative, centre). */
-    const who = (box, icon, x, y, size, o = {}) => {
-      const b = K.el('div', 'c2-badge');
-      Object.assign(b.style, { left: x - size / 2 + 'px', top: y - size / 2 + 'px', width: size + 'px', height: size + 'px',
-        background: o.bg || '#fff', color: o.fg || C.greenDark, border: o.border || '5px solid var(--green)' });
-      b.appendChild(K.icon(icon));
-      box.appendChild(b);
-      return b;
-    };
-    const you = [], youDog = [];
-    cards.forEach(({ sc }) => {
-      you.push(who(sc, 'user', 70, 92, 104));
-      const d = who(sc, 'dog', 70, 92, 104);
-      gsap.set(d, { opacity: 0 });
-      youDog.push(d);
-    });
-    const other1 = who(cards[0].sc, 'user', 206, 92, 92, { bg: C.pale, border: '5px solid #fff' });
-    const warn = who(cards[0].sc, 'message-circle-warning', 138, 30, 62, { bg: C.amber, fg: '#fff', border: '4px solid #fff' });
-    const gone = who(cards[1].sc, 'user', 206, 92, 92, { bg: 'transparent', fg: '#c3cbb9', border: '4px dashed #c3cbb9' });
-    const other3 = who(cards[2].sc, 'user', 206, 92, 92, { bg: C.pale, border: '5px solid #fff' });
-
+    const g = K.svg(LA, { x: 0, y: 0, w: 1920, h: 1080 });
+    const GX = 190, GY = 790, GR = 1080, GT = 400; // axis origin, right end, top
+    const ZX0 = 300, ZX1 = 500, SX = 790;          // conversation span, someone-else moment
     const t1 = cue(1);
-    const tConv = clamp(at(1, 'difficult conversation', 0.25, 0.3), t1 + 0.1, end(1) - 2);
-    A.in(tl, cards[0].c, tConv, 'fadeUp', { dur: 0.6 });
-    A.in(tl, other1, tConv + 0.4, 'pop', { dur: 0.45 });
-    A.in(tl, warn, tConv + 0.8, 'pop', { dur: 0.45 });
-    tl.to(cards[0].fill, { width: '85%', duration: 1.4, ease: 'power2.inOut' }, clamp(at(1, 'upset or frustrated', 0.8, 0.4), tConv + 1.0, end(1)));
+    // legend: whose feelings the line shows
+    const leg = K.el('div', 'c2d-leg');
+    const lb = K.el('div', 'lb');
+    const lbU = K.icon('user'), lbD = K.icon('dog');
+    lb.appendChild(lbU);
+    lb.appendChild(lbD);
+    gsap.set(lbD, { opacity: 0 });
+    leg.appendChild(lb);
+    leg.appendChild(K.el('div', 'sw'));
+    const legT = K.el('div', 'tx', 'How upset <b>you</b> feel');
+    const legT2 = K.el('div', 'tx', 'How upset <b>your dog</b> feels');
+    const tw = K.el('div', 'tw');
+    tw.appendChild(legT);
+    tw.appendChild(legT2);
+    gsap.set(legT2, { opacity: 0 });
+    leg.appendChild(tw);
+    Object.assign(leg.style, { left: GX - 10 + 'px', top: '284px' });
+    LA.appendChild(leg);
+    A.in(tl, leg, t1 + 0.1, 'fadeRight', { dur: 0.6 });
+    const axes = K.path(g, `M ${GX} ${GT} L ${GX} ${GY} L ${GR} ${GY} M ${GR - 18} ${GY - 13} L ${GR} ${GY} L ${GR - 18} ${GY + 13}`, { stroke: '#b9c6ad', 'stroke-width': 6, fill: 'none' });
+    A.draw(tl, axes, t1 + 0.2, 0.8);
+    const xl = C2.put(LA, 'c2d-gl', 'time', { x: GR - 60, y: GY + 18 });
+    A.in(tl, xl, t1 + 0.8, 'fade', { dur: 0.4 });
+    // the difficult conversation: a shaded stretch with its label under the axis
+    const zone = K.rect(g, ZX0, GT, ZX1 - ZX0, GY - GT, { fill: C.amberPale, opacity: 0.95 });
+    g.insertBefore(zone, axes);
+    const ev1 = K.el('div', 'c2d-ev');
+    const e1b = K.el('div', 'b');
+    e1b.style.background = C.amber;
+    e1b.appendChild(K.icon('message-circle-warning'));
+    ev1.appendChild(e1b);
+    ev1.appendChild(K.el('div', 't', 'Difficult<br>conversation'));
+    Object.assign(ev1.style, { left: (ZX0 + ZX1) / 2 - 110 + 'px', top: GY + 14 + 'px' });
+    LA.appendChild(ev1);
+    const tConv = clamp(at(1, 'difficult conversation', 0.25, 0.3), t1 + 0.6, end(1) - 2);
+    tl.fromTo(zone, { attr: { width: 0 } }, { attr: { width: ZX1 - ZX0 }, duration: 0.8, ease: 'power2.out', immediateRender: false }, tConv);
+    tl.set(zone, { attr: { width: 0 } }, 0);
+    A.in(tl, ev1, tConv + 0.2, 'fadeUp', { dur: 0.5 });
+    const L1 = K.path(g, `M ${GX} 730 C 240 728 270 732 ${ZX0} 728 C 380 720 430 500 ${ZX1} 470`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
+    A.draw(tl, L1, tConv + 0.4, 1.6, { ease: 'power1.inOut' });
 
+    // beat 2: the conversation ends, the feeling stays up
     const t2 = cue(2);
+    const endL = K.line(g, ZX1, GT, ZX1, GY, { stroke: C.amber, 'stroke-width': 5, 'stroke-dasharray': '12 10' });
     const tEnd = clamp(at(2, 'conversation ends', 0.15, 0.2), t2, end(2) - 2);
-    A.in(tl, cards[1].c, tEnd, 'fadeUp', { dur: 0.6 });
-    A.in(tl, gone, tEnd + 0.3, 'fade', { dur: 0.5 });
-    tl.fromTo(cards[1].fill, { width: '85%' }, { width: '78%', duration: 1.6, ease: 'power1.inOut', immediateRender: false }, tEnd + 0.6);
-    const still = C2.pill(cards[1].sc, null, 'Still upset', { variant: 'red', size: 26 });
-    Object.assign(still.style, { left: '50%', top: '170px' });
-    gsap.set(still, { xPercent: -50 });
-    A.in(tl, still, clamp(at(2, "don't necessarily disappear", 0.6, 0.3), tEnd + 0.8, end(2)), 'fadeUp', { dur: 0.5 });
+    A.draw(tl, endL, tEnd, 0.4);
+    const L2 = K.path(g, `M ${ZX1} 470 C 590 460 690 478 ${SX - 20} 490`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
+    A.draw(tl, L2, tEnd + 0.5, 1.4, { ease: 'none' });
+    const still = C2.pill(LA, null, 'Still upset', { x: 645, y: 0, center: true, variant: 'red', size: 28 });
+    still.style.top = '398px';
+    A.in(tl, still, clamp(at(2, "don't necessarily disappear", 0.6, 0.3), tEnd + 1.0, end(2)), 'fadeUp', { dur: 0.5 });
 
+    // beat 3: someone else approaches (an event under the axis); the line spikes: snappier
     const t3 = cue(3);
     const tSome = clamp(at(3, 'someone else approaches', 0.15, 0.3), t3, end(3) - 3);
-    A.in(tl, cards[2].c, tSome, 'fadeUp', { dur: 0.6 });
-    tl.set(cards[2].fill, { width: '78%' }, tSome);
-    tl.fromTo(other3, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' }, tSome + 0.4);
-    const tSnap = clamp(at(3, 'shorter or snappier', 0.55, 0.3), tSome + 1.0, end(3) - 0.8);
+    const someL = K.line(g, SX, GT, SX, GY, { stroke: '#9fb38d', 'stroke-width': 5, 'stroke-dasharray': '12 10' });
+    const ev2 = K.el('div', 'c2d-ev');
+    const e2b = K.el('div', 'b');
+    e2b.style.background = C.greenDark;
+    e2b.appendChild(K.icon('user'));
+    ev2.appendChild(e2b);
+    ev2.appendChild(K.el('div', 't', 'Someone else<br>approaches'));
+    Object.assign(ev2.style, { left: SX - 110 + 'px', top: GY + 14 + 'px' });
+    LA.appendChild(ev2);
+    A.draw(tl, someL, tSome, 0.4);
+    A.in(tl, ev2, tSome + 0.2, 'fadeUp', { dur: 0.5 });
+    const tSnap = clamp(at(3, 'shorter or snappier', 0.55, 0.3), tSome + 0.9, end(3) - 0.8);
+    const L3 = K.path(g, `M ${SX - 20} 490 C ${SX - 5} 492 ${SX} 430 ${SX + 18} 420 C ${SX + 40} 412 ${SX + 60} 500 ${GR - 30} 520`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
+    A.draw(tl, L3, tSnap - 0.3, 1.2);
     const burst = K.el('div', 'c2d-burst', '!');
-    cards[2].sc.appendChild(burst);
+    Object.assign(burst.style, { left: SX + 34 + 'px', top: '362px' });
+    LA.appendChild(burst);
     tl.fromTo(burst, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.4)' }, tSnap);
-    const snp = C2.pill(cards[2].sc, null, 'Snappier', { variant: 'red', size: 26 });
-    Object.assign(snp.style, { left: '50%', top: '170px' });
-    gsap.set(snp, { xPercent: -50 });
-    A.in(tl, snp, tSnap + 0.3, 'fadeUp', { dur: 0.5 });
+    const snp = C2.pill(LA, null, 'Snappier', { x: SX + 112, y: 366, variant: 'red', size: 28 });
+    A.in(tl, snp, tSnap + 0.3, 'fadeRight', { dur: 0.5 });
 
-    // beat 4: dogs too: "you" becomes the dog in every step
+    // beat 4: dogs too: the legend switches to the dog
     const t4 = cue(4);
-    you.forEach((b, k) => {
-      tl.to(b, { opacity: 0, scale: 0.7, duration: 0.3, ease: 'power2.in' }, t4 + 0.1 + k * 0.15);
-      tl.fromTo(youDog[k], { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', immediateRender: false }, t4 + 0.35 + k * 0.15);
-    });
-    const sim = C2.pill(LA, 'dog', 'Dogs can be affected the same way', { x: 575, y: 810, center: true, variant: 'green', size: 32 });
-    A.in(tl, sim, t4 + 0.9, 'fadeUp', { dur: 0.6 });
+    tl.to(lbU, { opacity: 0, duration: 0.3 }, t4 + 0.1);
+    tl.fromTo(lbD, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', immediateRender: false }, t4 + 0.35);
+    tl.to(legT, { opacity: 0, duration: 0.3 }, t4 + 0.1);
+    tl.fromTo(legT2, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t4 + 0.4);
+    tl.to(leg, { scale: 1.05, transformOrigin: '0% 50%', duration: 0.3, yoyo: true, repeat: 1 }, t4 + 0.5);
 
     // ---------- beat 5: four emotions drip into the pot; the water rises
     const t5 = cue(5);

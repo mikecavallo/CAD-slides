@@ -1,6 +1,6 @@
 # Getting Started with Dog Behavior: Understanding Reactivity and Aggression. Chapter 2: Understanding Your Dog's Baseline
 
-Narration script. About 1,088 words, roughly 7 minutes at a relaxed pace.
+Narration script. About 1,136 words, roughly 8 minutes at a relaxed pace.
 
 ## Welcome
 
@@ -10,7 +10,7 @@ Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with 
 
 Have you noticed that your dog can handle something just fine one day, and the next day, the same thing sends them over the edge? There's usually a reason for that. By the end of this chapter, you'll know what can raise or lower your dog's baseline, and what you can do about it. Here's how we'll get there. First, what a baseline is. Second, four areas that can raise or lower it. And third, how those factors add up, and how to bring the baseline back down.
 
-In the last chapter, we looked at the ingredients that can help shape a dog's behavior. You'll notice that some of those factors appear again here. That's intentional. In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently. First, we need to talk about your dog's baseline.
+In the last chapter, we looked at the ingredients that can help shape a dog's behavior. You'll notice that some of those factors appear again here. That's intentional. In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently. So we're going to add those ingredients to a pot of water. First, we need to talk about your dog's baseline.
 
 When I say baseline, I mean the dog's overall starting state before something new happens. And that baseline isn't fixed. It can change.
 
@@ -20,7 +20,7 @@ So, what can raise or lower that water level? We're going to look at four areas:
 
 Let's start with the dog's body. Sleep, illness, nutrition, medication changes, and other physical changes can all affect the baseline. Many adult dogs sleep around 12 to 16 hours in a 24-hour period. Puppies may need as much as 18 to 20 hours, and older dogs often sleep more. Think about yourself after a terrible night of sleep, when you're getting sick, or when you haven't eaten enough healthy food. Things you normally handle without a problem may bother you much more. Dogs can experience that same change in tolerance. These things don't automatically cause unwanted behaviors, but improving them can help lower the dog's baseline.
 
-Pain and discomfort deserve some extra attention because they can be easy to miss. Think about having a headache or back pain. You may still go about your day, but being touched, bumped into, dealing with noise, or even having someone ask something of you may be harder to tolerate. A dog doesn't have to be limping, crying, or obviously injured for discomfort to affect behavior. Pain can change how a dog responds to touch, movement, handling, people, other dogs, noise, activity, and everyday events in their environment. So when behavior changes, especially if the change is sudden or unusual for that dog, pain and other medical concerns should be considered.
+Pain and discomfort deserve some extra attention because they can be easy to miss. Think about having a headache or back pain. You may still go about your day, but being touched, bumped into, dealing with noise, or even having someone ask something of you may be harder to tolerate. A dog doesn't have to be limping, crying, or obviously injured for discomfort to affect behavior. Dogs can be naturally very stoic. Unless it's a sudden injury, like a broken leg, by the time you see obvious signs like a limp, the dog may have been in pain for quite a while. Pain can change how a dog responds to touch, movement, handling, people, other dogs, noise, activity, and everyday events in their environment. So when behavior changes, especially if the change is sudden or unusual for that dog, pain and other medical concerns should be considered.
 
 More activity isn't always better, and less isn't always calmer. Think about the difference between being bored all day and being completely exhausted after an overly busy day. Neither one necessarily leaves you feeling your best. Dogs need an appropriate balance of physical activity, mental activity, opportunities to engage in natural behaviors, and rest. A dog who doesn't have enough appropriate outlets may become frustrated or restless. But constantly exercising, entertaining, or stimulating a dog can also leave them overtired or highly activated. The goal isn't simply more exercise or more enrichment. It's finding the right balance for that individual dog. We'll go much more into this later.
 

@@ -26,6 +26,12 @@
   .c2c-strike { position: absolute; height: 8px; border-radius: 4px; background: var(--red); transform-origin: 0% 50%; }
   .c2c-ex { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 200px; }
   .c2c-ex .lb { font: 700 30px/1 var(--font-body); color: var(--ink); white-space: nowrap; }
+  .c2c-sud { position: absolute; width: 430px; display: flex; gap: 20px; align-items: flex-start; padding: 26px 28px; background: #fff; border-radius: 26px;
+    border: 3px solid #f1dcb4; box-shadow: var(--shadow-soft); }
+  .c2c-sud .ic { width: 70px; height: 70px; border-radius: 50%; background: var(--amber); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
+  .c2c-sud .ic svg { width: 40px; height: 40px; stroke-width: 2.3; }
+  .c2c-sud .t1 { font: 700 36px/1.1 var(--font-head); color: var(--ink); }
+  .c2c-sud .t2 { font: 600 30px/1.25 var(--font-body); color: var(--ink-soft); margin-top: 8px; }
   .c2c-vet { position: absolute; display: flex; align-items: center; gap: 26px; padding: 30px 44px 30px 30px; border-radius: 30px;
     background: var(--green); color: #fff; box-shadow: var(--shadow); }
   .c2c-vet .vi { width: 104px; height: 104px; border-radius: 50%; background: rgba(255,255,255,0.18); display: grid; place-items: center; flex: 0 0 auto; }
@@ -92,7 +98,7 @@
 
     // ---------- beat 1: five chips, one per word
     const F = [['moon', 'Sleep', 'Sleep'], ['stethoscope', 'Illness or medical changes', 'illness'], ['utensils', 'Nutrition', 'nutrition'],
-      ['pill', 'Medication effects or changes', 'medication'], ['activity', 'Other physical changes', 'other physical']];
+      ['pill', 'Medication effects or changes', 'medication'], ['weight', 'Other physical changes', 'other physical']];
     let lo = cue(1);
     const rows = F.map(([ic, t, p], k) => {
       const r = row(LA, ic, t, 1010, 276 + k * 122);
@@ -179,7 +185,7 @@
       lo = tt + 0.4;
       return s.n;
     });
-    const M = meter(LC, 'What I can handle', 880, 470);
+    const M = meter(LC, 'What you can handle', 880, 470);
     const tM = clamp(at(3, 'Things you normally handle', 0.6, 0.3), lo, end(3) - 2);
     A.in(tl, M.root, tM, 'fadeLeft', { dur: 0.6 });
     const tShrink = clamp(at(3, 'bother you much more', 0.9, 0.2), tM + 1.0, end(3) - 0.6);
@@ -308,9 +314,64 @@
     const still = C2.put(LC, 'c2-big', 'Discomfort can still *affect behavior*', { x: 0, y: 600, w: 1920, align: 'center' });
     A.in(tl, still, clamp(at(2, 'affect behavior', 0.85, 0.3), lo + 0.3, end(2)), 'fadeUp', { dur: 0.7 });
 
-    // ---------- beat 3: seven examples around the dog
-    const t3 = cue(3);
-    tl.to(LC, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t3 - 0.2);
+    // ---------- beat 3: dogs can be very stoic: pain builds long before the limp you notice (unless it is a sudden injury)
+    const tS = cue(3);
+    tl.to(LC, { opacity: 0, duration: 0.45, ease: 'power2.in' }, tS - 0.2);
+    const LS = C2.layer(stage, tl, tS);
+    const st = C2.pill(LS, 'shield', 'Dogs can be *very stoic*', { x: 160, y: 286, size: 36 });
+    A.in(tl, st, tS + 0.1, 'fadeRight', { dur: 0.6 });
+    const ss = K.svg(LS, { x: 0, y: 0, w: 1920, h: 1080 });
+    const AX0 = 170, AX1 = 1290, AY = 780;
+    const axis = K.path(ss, `M ${AX0} ${AY} L ${AX1} ${AY} M ${AX1 - 20} ${AY - 14} L ${AX1} ${AY} L ${AX1 - 20} ${AY + 14}`, { stroke: '#b9c6ad', 'stroke-width': 6, fill: 'none' });
+    A.draw(tl, axis, tS + 0.3, 0.8);
+    const tml = C2.put(LS, 'c2c-tick', 'time', { x: AX1 - 60, y: AY + 22 });
+    A.in(tl, tml, tS + 0.9, 'fade', { dur: 0.4 });
+    const painL = K.path(ss, `M ${AX0} ${AY - 30} C 420 ${AY - 50} 700 ${AY - 120} 900 ${AY - 200} S 1100 ${AY - 290} 1160 ${AY - 310}`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
+    const pl = C2.put(LS, 'c2c-tick', '!!pain!!', { x: 1170, y: AY - 350 });
+    pl.style.width = 'auto';
+    // the dog looks fine the whole time
+    const fine = [380, 640, 900].map((x, k) => {
+      const b = C2.badge(LS, 'dog', x, AY + 70, 76, '#fff', C.greenDark);
+      b.style.border = '4px solid var(--green)';
+      A.in(tl, b, tS + 0.8 + k * 0.5, 'pop', { dur: 0.4 });
+      return b;
+    });
+    const looks = C2.put(LS, 'c2c-tick', 'Looks fine', { x: 120, y: AY + 56 });
+    looks.style.width = 'auto';
+    looks.style.fontSize = '28px';
+    A.in(tl, looks, tS + 0.8, 'fade', { dur: 0.4 });
+    A.draw(tl, painL, tS + 0.8, Math.max(1.5, Math.min(4, end(3) - tS - 3.5)), { ease: 'none' });
+    // the limp shows up only at the end
+    const tLimp = clamp(at(3, 'a limp', 0.7, 0.3), tS + 2.5, end(3) - 1.6);
+    const limpB = C2.badge(LS, 'paws', 1180, AY + 70, 84, C.amber, '#fff');
+    limpB.style.border = '4px solid #fff';
+    const limpT = C2.put(LS, 'c2c-tick', '**Limp you notice**', { x: 1080, y: AY + 120 });
+    Object.assign(limpT.style, { width: '200px', fontSize: '28px', color: 'var(--ink)' });
+    A.in(tl, limpB, tLimp, 'pop', { dur: 0.5 });
+    A.in(tl, pl, tLimp - 0.4, 'fade', { dur: 0.4 });
+    A.in(tl, limpT, tLimp + 0.2, 'fadeUp', { dur: 0.4 });
+    const brk = K.path(ss, `M ${AX0} 470 L ${AX0} 450 L 1150 450 L 1150 470`, { stroke: C.red, 'stroke-width': 5, fill: 'none' });
+    const brT = C2.put(LS, 'c2-lab', '!!Already in pain for quite a while!!', { x: AX0, y: 396 });
+    brT.style.fontSize = '32px';
+    const tWhile = clamp(at(3, 'quite a while', 0.9, 0.3), tLimp + 0.6, end(3) - 0.4);
+    A.draw(tl, brk, tWhile, 0.6);
+    A.in(tl, brT, tWhile + 0.2, 'fadeUp', { dur: 0.5 });
+    // the exception: a sudden injury shows right away
+    const card = K.el('div', 'c2c-sud');
+    const ci = K.el('div', 'ic');
+    ci.appendChild(K.icon('zap'));
+    card.appendChild(ci);
+    const ct = K.el('div');
+    ct.appendChild(K.el('div', 't1', 'Sudden injury'));
+    ct.appendChild(K.el('div', 't2', 'like a broken leg:<br>signs right away'));
+    card.appendChild(ct);
+    Object.assign(card.style, { left: '1370px', top: '470px' });
+    LS.appendChild(card);
+    A.in(tl, card, clamp(at(3, 'sudden injury', 0.15, 0.3), tS + 0.6, end(3) - 2), 'fadeLeft', { dur: 0.6 });
+
+    // ---------- beat 4: eight examples around the dog
+    const t3 = cue(4);
+    tl.to(LS, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t3 - 0.2);
     const LD = C2.layer(stage, tl, t3);
     const sv3 = K.svg(LD, { x: 0, y: 0, w: 1920, h: 1080 });
     const DCX = 960, DCY = 600;
@@ -320,7 +381,7 @@
     A.in(tl, D2.outer, t3 + 0.1, 'fadeUp', { dur: 0.6 });
     A.draw(tl, ring, t3 + 0.3, 1.0);
     const EX = [['hand', 'Touch', 'touch'], ['move', 'Movement', 'movement'], ['hand-helping', 'Handling', 'handling'], ['users', 'People', 'people'],
-      ['dog', 'Other dogs', 'other dogs'], ['volume-2', 'Noise', 'noise'], ['activity', 'Activity', 'activity'], ['calendar-days', 'Everyday events', 'everyday events']];
+      ['dog', 'Other dogs', 'other dogs'], ['volume-2', 'Noise', 'noise'], ['volleyball', 'Activity', 'activity'], ['calendar-days', 'Everyday events', 'everyday events']];
     const ANG = [-155, -115, -65, -25, 25, 155, 115, 65].map(a => a * Math.PI / 180);
     lo = t3 + 0.5;
     EX.forEach(([ic, t, p], k) => {
@@ -333,15 +394,15 @@
       e.appendChild(b);
       e.appendChild(K.el('div', 'lb', t));
       LD.appendChild(e);
-      const tt = clamp(at(3, p, 0.25 + k * 0.08, 0.25), lo, end(3) - 0.6);
+      const tt = clamp(at(4, p, 0.25 + k * 0.08, 0.25), lo, end(4) - 0.6);
       A.in(tl, e, tt, 'pop', { dur: 0.5 });
       lo = tt + 0.3;
     });
-    const tEv = clamp(at(3, 'everyday events', 0.88, 0.2), lo, end(3) - 0.3);
+    const tEv = clamp(at(4, 'everyday events', 0.88, 0.2), lo, end(4) - 0.3);
     tl.to(glow, { opacity: 0.7, duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tEv);
 
-    // ---------- beat 4: a sudden change, then the vet card
-    const t4 = cue(4);
+    // ---------- beat 5: a sudden change, then the vet card
+    const t4 = cue(5);
     tl.to(LD, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t4 - 0.2);
     const LE = C2.layer(stage, tl, t4);
     const sv4 = K.svg(LE, { x: 0, y: 0, w: 1920, h: 1080 });
@@ -352,7 +413,7 @@
     const jump = K.path(sv4, 'M 560 642 L 600 420 C 640 400 720 440 800 410 S 860 404 900 412', { stroke: C.red, 'stroke-width': 10, fill: 'none' });
     A.in(tl, lab, t4 + 0.1, 'fade', { dur: 0.4 });
     A.draw(tl, calm, t4 + 0.2, 0.9, { ease: 'none' });
-    const tSud = clamp(at(4, 'sudden or unusual', 0.3, 0.3), t4 + 1.1, end(4) - 4);
+    const tSud = clamp(at(5, 'sudden or unusual', 0.3, 0.3), t4 + 1.1, end(5) - 4);
     A.draw(tl, jump, tSud, 0.8, { ease: 'power2.out' });
     const sud = C2.pill(LE, 'zap', 'Sudden or unusual change', { x: 360, y: 300, variant: 'red', size: 32 });
     A.in(tl, sud, tSud + 0.5, 'fadeUp', { dur: 0.6 });
@@ -365,7 +426,7 @@
     vet.appendChild(tx);
     Object.assign(vet.style, { left: '1010px', top: '470px' });
     LE.appendChild(vet);
-    const tVet = clamp(at(4, 'pain and other medical', 0.75, 0.4), tSud + 1.2, end(4) - 0.8);
+    const tVet = clamp(at(5, 'pain and other medical', 0.75, 0.4), tSud + 1.2, end(5) - 0.8);
     tl.fromTo(vet, { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, tVet);
   });
 })();

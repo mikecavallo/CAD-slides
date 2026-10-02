@@ -18,9 +18,15 @@
     water: '#5fa8cf', waterDeep: '#2f7fae', waterTop: '#a9d6ec', glass: '#f4f9f1', rim: '#3f6b22',
   });
 
+  // two dog paw prints (Lucide line style), for activity and natural needs
+  if (window.ICONS && window.ICONS['paw-print'] && !window.ICONS.paws) {
+    const pp = window.ICONS['paw-print'];
+    window.ICONS.paws = `<g transform="translate(-0.5 9.5) scale(0.6)" stroke-width="3.4">${pp}</g><g transform="translate(10 -0.5) scale(0.6)" stroke-width="3.4">${pp}</g>`;
+  }
+
   const AREAS = [
     { name: 'Physical Health', short: 'Physical health', icon: 'heart-pulse', col: '#b8452d' },
-    { name: 'Activity, Stimulation & Natural Needs', short: 'Activity and needs', icon: 'footprints', col: '#d9912b' },
+    { name: 'Activity, Stimulation & Natural Needs', short: 'Activity and needs', icon: 'paws', col: '#d9912b' },
     { name: 'Emotions & Recovery', short: 'Emotions and recovery', icon: 'brain', col: '#7a8f2e' },
     { name: 'Environment, Predictability & Choice', short: 'Environment and choice', icon: 'house', col: '#3f6b22' },
   ];

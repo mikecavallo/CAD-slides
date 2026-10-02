@@ -115,9 +115,9 @@
     const P = C2.makePot(LB, { cx: 1450, y: 430, s: 0.85, level: 0.3 });
     A.in(tl, P.wrap, t4 + 0.1, 'fadeLeft', { dur: 0.7 });
     P.waves(tl, t4, dur);
-    const ST = [['calendar-x', 'Changes in routine', 'Changes in routine', 0.02], ['shuffle', 'Unpredictability', 'unpredictable household', 0.15],
-      ['swords', 'Social conflict', 'social conflict', 0.27], ['door-closed', 'Can’t move away or opt out', 'move away or opt out', 0.42],
-      ['circle-alert', 'Punishment or confrontational handling', 'punishment', 0.6], ['lock', 'Little control', 'little control', 0.75]];
+    const ST = [['calendar-x', 'Changes in routine', 'Changes in routine', 0.02, C.amber], ['shuffle', 'Unpredictability', 'unpredictable household', 0.15, C.amber],
+      ['swords', 'Social conflict', 'social conflict', 0.27, C.red], ['door-closed', 'Can’t move away or opt out', 'move away or opt out', 0.42, C.red],
+      ['circle-alert', 'Punishment or confrontational handling', 'punishment', 0.6, C.red], ['lock', 'Little control', 'little control', 0.75, C.amber]];
     lo = t4 + 0.5;
     let L = 0.3, tLast = 0;
     ST.forEach(([ic, t, p, fb, col], k) => {
@@ -207,7 +207,7 @@
     const fd = C2.pill(LC, 'dog', 'For a dog', { x: 100, y: 278, variant: 'green', size: 32 });
     A.in(tl, fd, t3 + 0.2, 'fadeRight', { dur: 0.5 });
     const FAC = [['moon', 'Poor sleep', 'poor sleep', 0.15, C.red], ['stethoscope', 'Pain', 'pain', 0.25, C.red],
-      ['activity', 'Too much or too little stimulation', 'too much or too little', 0.42, C.amber], ['house', 'Change at home', 'changes at home', 0.68, C.amber],
+      ['volleyball', 'Too much or too little stimulation', 'too much or too little', 0.42, C.amber], ['house', 'Change at home', 'changes at home', 0.68, C.amber],
       ['zap', 'Stressful experiences', 'stressful experiences', 0.92, C.red]];
     lo = t3 + 0.5;
     let L = 0.22;
@@ -225,8 +225,8 @@
 
     // ---------- beat 4: together they add up; little room left
     const t4 = cue(4);
-    const plus = [0, 1, 2, 3].map(k => {
-      const n = C2.put(LC, 'c2e-plus', '+', { x: 112, y: 380 + k * 104 + 82 });
+    const plus = [0, 1, 2, 3, 4].map(k => {
+      const n = C2.put(LC, 'c2e-plus', '+', { x: 92, y: 380 + k * 104 + 15 });
       A.in(tl, n, t4 + 0.1 + k * 0.12, 'pop', { dur: 0.4 });
       return n;
     });

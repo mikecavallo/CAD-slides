@@ -489,7 +489,7 @@
             "diagram:mixing-bowl",
             "logo.png",
             "icon:dog",
-            "icon:flame"
+            "icon:droplet"
           ],
           "beats": [
             {
@@ -499,7 +499,7 @@
             },
             {
               "say": "But there's another piece we need to understand: what fuels the behavior once those ingredients are in place.",
-              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'another piece', a new amber chip with a flame icon drops in and settles on top of them, and the line changes to 'What fuels the behavior?'.",
+              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'another piece', a new blue chip with a water-drop icon (the fuel is the water, the baseline of Chapter 2) drops in and settles on top of them, and the line changes to 'What fuels the behavior?'.",
               "onscreen": "What fuels the behavior?"
             },
             {

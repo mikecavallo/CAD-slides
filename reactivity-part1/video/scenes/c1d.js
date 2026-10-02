@@ -517,10 +517,10 @@
     tl.to(B.tokens.map(t => t.inner), { scale: 1.15, transformOrigin: '50% 50%', duration: 0.25, yoyo: true, repeat: 1, stagger: 0.05, ease: 'sine.inOut' }, tSet);
     const FY = -152;
     const fuel = K.group(B.svg);
-    const fglow = K.circle(fuel, 0, 0, 84, { fill: C.amberPale, opacity: 0 });
+    const fglow = K.circle(fuel, 0, 0, 84, { fill: '#d8ecf6', opacity: 0 });
     const fchip = K.group(fuel);
-    K.circle(fchip, 0, 0, 54, { fill: C.amber, stroke: '#fff', 'stroke-width': 6 });
-    C1.svgIcon(fchip, 'flame', 0, 0, 56, { stroke: '#fff', 'stroke-width': 2.3 });
+    K.circle(fchip, 0, 0, 54, { fill: '#5fa8cf', stroke: '#fff', 'stroke-width': 6 });
+    C1.svgIcon(fchip, 'droplet', 0, 0, 56, { stroke: '#fff', 'stroke-width': 2.3 });
     gsap.set(fuel, { x: 0, y: FY - 340, opacity: 0 });
     const tFuel = clamp(at(1, 'another piece', 0.25, 0.2), t1 + 0.2, end(1) - 3);
     tl.to(fuel, { opacity: 1, duration: 0.25, ease: 'power1.out' }, tFuel);
@@ -528,7 +528,7 @@
     const tLand = tFuel + 0.6;
     tl.to(fchip, { scaleX: 1.14, scaleY: 0.86, transformOrigin: '50% 100%', duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, tLand);
     tl.to(B.bodyAll, { y: 5, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, tLand);
-    C1.splash(tl, B, 0, FY + 40, tLand, C.amber);
+    C1.splash(tl, B, 0, FY + 40, tLand, '#5fa8cf');
     tl.to(fglow, { opacity: 0.9, scale: 1.25, transformOrigin: '50% 50%', duration: 0.8, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tLand + 0.3);
     const l1 = C1.label(LA, 'What *fuels* the behavior?', 960, 850, { cls: 'c1-big', w: 1400 });
     A.in(tl, l1, clamp(at(1, 'what fuels the behavior', 0.6, 0.3), tLand + 0.3, end(1) - 1), 'fadeUp', { dur: 0.8 });

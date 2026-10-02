@@ -12,7 +12,7 @@
     {
      "id": "ch02intro",
      "heading": "Getting Started with Dog Behavior",
-     "visual_concept": "Title slide with the presentation's own title, unchanged ('Getting Started with Dog Behavior' / 'Understanding Reactivity and Aggression'), then a chapter tag carrying Chapter 1's amber fuel chip: 'Chapter 2: Understanding Your Dog's Baseline'. Tori's headshot in a green ring, the training photo card, name and credentials.",
+     "visual_concept": "Title slide identical to Chapter 1's: the presentation title and subtitle at left with a small 'Chapter 2' kicker, Tori's headshot in a green ring, the training photo card, name and credentials. The chapter title itself appears on the chapter card that follows.",
      "assets": [
       "trainer_headshot.jpg",
       "trainer_with_dog.jpg",
@@ -21,7 +21,7 @@
      "beats": [
       {
        "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior: Understanding Reactivity and Aggression. This is Chapter 2: Understanding Your Dog's Baseline.",
-       "show": "Presentation title and subtitle as in Chapter 1; the headshot scales in; the name block appears as the name is said; the training photo tilts in; the chapter tag with the amber fuel chip slides in on 'Chapter 2'.",
+       "show": "Presentation title and subtitle as in Chapter 1, with a 'Chapter 2' kicker; the headshot scales in; the name block appears as the name is said; the training photo tilts in.",
        "onscreen": "Getting Started with Dog Behavior. Chapter 2: Understanding Your Dog's Baseline"
       }
      ]
@@ -59,7 +59,7 @@
     {
      "id": "ch02s01",
      "heading": "Understanding Your Dog's Baseline",
-     "visual_concept": "Recap with Chapter 1's bowl: the eight ingredients and the amber fuel chip on top ('What fuels the behavior?'). Four returning ingredients glow. Changed / Managed / Improved; the fuel chip glows on 'right now'. At 'a little differently' the ingredients pour from the bowl into a glass pot and the fuel chip melts into it as water. 'Your dog's baseline' points at the waterline.",
+     "visual_concept": "Recap with Chapter 1's bowl: the eight ingredients and the fuel chip on top, now a blue water drop ('What fuels the behavior?'). Four returning ingredients glow. 'Additional factors that can be: Changed / Managed / Improved'; the fuel drop glows on 'right now'. On the new line the ingredients pour into a glass pot and the fuel drop becomes the water. 'The fuel = your dog's baseline' points at the waterline.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:mixing-bowl",
@@ -71,7 +71,7 @@
      "beats": [
       {
        "say": "In the last chapter, we looked at the ingredients that can help shape a dog's behavior.",
-       "show": "Chapter 1's bowl with its eight ingredients and the amber fuel chip on top; pills: 'The ingredients' and 'What fuels the behavior?'.",
+       "show": "Chapter 1's bowl with its eight ingredients and the blue fuel drop on top; pills: 'Chapter 1: the ingredients' and 'What fuels the behavior?'.",
        "onscreen": "Understanding Your Dog's Baseline"
       },
       {
@@ -81,12 +81,17 @@
       },
       {
        "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently.",
-       "show": "Changed, Managed, Improved pop in; the fuel chip glows with 'Affecting your dog right now'; at 'a little differently' the bowl tips, the ingredients drop into a glass pot and the fuel chip melts into it as water.",
+       "show": "'Additional factors that can be:' then Changed, Managed, Improved pop in; the fuel drop glows with 'Affecting your dog right now'.",
        "onscreen": "Changed, managed, or improved"
       },
       {
+       "say": "So we're going to add those ingredients to a pot of water.",
+       "show": "The bowl tips and the ingredients drop into a glass pot; the blue fuel drop falls in and becomes the water. Caption: 'Adding the ingredients to the pot'.",
+       "onscreen": "Adding the ingredients to the pot"
+      },
+      {
        "say": "First, we need to talk about your dog's baseline.",
-       "show": "'Your dog's baseline' points at the waterline of the pot, the ingredients floating in it.",
+       "show": "'The fuel = your dog's baseline' points at the waterline of the pot, the ingredients floating in it.",
        "onscreen": "Your dog's baseline"
       }
      ]
@@ -212,8 +217,8 @@
       },
       {
        "say": "Think about yourself after a terrible night of sleep, when you're getting sick, or when you haven't eaten enough healthy food. Things you normally handle without a problem may bother you much more.",
-       "show": "A person with three small badges (bad night, getting sick, skipped meal) and a 'What I can handle' bar that shrinks.",
-       "onscreen": "What I can handle"
+       "show": "A person with three small badges (bad night, getting sick, skipped meal) and a 'What you can handle' bar that shrinks.",
+       "onscreen": "What you can handle"
       },
       {
        "say": "Dogs can experience that same change in tolerance.",
@@ -230,7 +235,7 @@
     {
      "id": "ch02s06",
      "heading": "Pain & Discomfort",
-     "visual_concept": "Pain & Discomfort. A dog with a faint hidden pain glow that a magnifier finds: 'Pain may not always be obvious.' A person with a headache and four everyday demands (touch, bump, noise, a request). Limping, Crying and Obviously injured chips struck through. The dog surrounded by seven examples (Touch, Movement, Handling, People, Other dogs, Noise, Activity). A sudden-change line and a green vet card.",
+     "visual_concept": "Pain & Discomfort. A dog with a faint hidden pain glow that a magnifier finds: 'Pain may not always be obvious.' A person with a headache and four everyday demands (touch, bump, noise, a request). Limping, Crying and Obviously injured chips struck through. The dog surrounded by seven examples (Touch, Movement, Handling, People, Other dogs, Noise, Activity). A sudden-change line and a green vet card. A stoic-dog time line: pain builds long before the limp you notice, unless it is a sudden injury.",
      "assets": [
       "bg_swirl.jpg",
       "icon:search",
@@ -257,6 +262,11 @@
        "say": "A dog doesn't have to be limping, crying, or obviously injured for discomfort to affect behavior.",
        "show": "Three chips: Limping, Crying, Obviously injured; a red line strikes through each.",
        "onscreen": "Not always limping, crying, or injured"
+      },
+      {
+       "say": "Dogs can be naturally very stoic. Unless it's a sudden injury, like a broken leg, by the time you see obvious signs like a limp, the dog may have been in pain for quite a while.",
+       "show": "A time line: a red pain line climbs slowly for a long stretch while the dog looks fine; only at the end does a 'Limp you notice' marker appear; a bracket over the stretch reads 'Already in pain'. A side card: 'Sudden injury (like a broken leg): signs right away'.",
+       "onscreen": "Dogs can be very stoic"
       },
       {
        "say": "Pain can change how a dog responds to touch, movement, handling, people, other dogs, noise, activity, and everyday events in their environment.",
@@ -327,7 +337,7 @@
     {
      "id": "ch02s08",
      "heading": "Emotions & Recovery",
-     "visual_concept": "Emotions & Recovery. A three-step strip with an 'How upset' meter in each: 1 Difficult conversation (meter fills), 2 It ends (meter stays up: Still upset), 3 Someone else approaches (Snappier). Then 'you' becomes the dog in every step. Then the pot: Fear, Anxiety, Frustration, Stressful experiences (red and amber) drip in and the water rises; a quiet event still nudges it up; limited recovery, next chapter. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "Emotions & Recovery. A clean mood graph: a legend ('How upset you feel'), a shaded 'Difficult conversation' stretch with its label under the time axis, the line rising and staying up after the 'Conversation ends' marker ('Still upset'), then a 'Someone else approaches' marker under the axis and a spike with 'Snappier'. The legend switches to the dog. Then the pot: Fear, Anxiety, Frustration, Stressful experiences (red and amber) drip in; a quiet event still nudges the water up; limited recovery, next chapter. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",

@@ -39,14 +39,14 @@
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
     // ---------- beat 0: the full pot (ingredients floating) and the factors that filled it; a magnifier finds them
-    const PX = 1290, PY = 430, S = 0.95;
+    const PX = 1170, PY = 430, S = 0.95;
     const P = C2.makePot(stage, { cx: PX, y: PY, s: S, level: 0.88 });
     A.in(tl, P.wrap, 0.1, 'fade', { dur: 0.6 });
     P.waves(tl, 0, dur);
-    const FAC = [['stethoscope', 'Pain or illness', C.red], ['moon', 'Poor sleep or nutrition', C.red], ['activity', 'Activity out of balance', C.amber],
+    const FAC = [['stethoscope', 'Pain or illness', C.red], ['moon', 'Poor sleep or nutrition', C.red], ['volleyball', 'Activity out of balance', C.amber],
       ['paw-print', 'Unmet natural needs', C.amber], ['shuffle', 'Little predictability or choice', C.amber], ['hourglass', 'Not enough recovery', C.red]];
     const ACT = [['stethoscope', 'Address pain or illness', 'address pain'], ['moon', 'Improve sleep or nutrition', 'improve sleep'],
-      ['activity', 'Adjust physical or mental activity', 'adjust physical'], ['paw-print', 'Better meet natural needs', 'better meet natural'],
+      ['volleyball', 'Adjust physical or mental activity', 'adjust physical'], ['paw-print', 'Better meet natural needs', 'better meet natural'],
       ['calendar-check', 'More predictability and choice', 'more predictability'], ['hourglass', 'More time to recover', 'opportunity for recovery']];
     const YS = FAC.map((_, k) => 280 + k * 100);
     const facs = FAC.map(([ic, t, col], k) => {

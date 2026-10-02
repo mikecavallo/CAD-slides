@@ -46,10 +46,17 @@ pipeline). This file records the state, decisions and working agreements from ea
   removed, "more on this later" sits on the beam slide; s08 is a three-step strip, not a graph; s12 has a new line
   naming the water (only the water, NOT the ingredients) "distant antecedents". Last slide frames: Part 1 = the ingredients
   (Chapter 1), Part 2 = the water (this chapter) = distant antecedents; Part 3 = temperature (next).
+- Round 2 feedback (applied): title slide has only "Chapter 2" in the kicker (chapter title lives on the chapter card);
+  the fuel chip is a blue water drop in both chapters (the fuel IS the water, the baseline; c1d.js ch01s12 changed but
+  Chapter 1's narrated video still needs a re-render once Tori re-uploads the Ch01 takes); s01 says "Additional factors
+  that can be" and has a new line about adding the ingredients to the pot; s06 has a new stoic-dog line and time line;
+  activity area and physical activity use the two-paw icon ("paws", defined in c2_pot.js); s08 is a clean graph again
+  (legend, events under the axis); "What you can handle".
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc
-  yet: the intro/plan narration and s12's distant antecedents line.
+  yet: the intro/plan narration, s01's "add those ingredients to a pot of water" line, s06's stoic line and s12's
+  distant antecedents line.
 - Recordings: `Ch02intro.m4a`, `Ch02plan.m4a`, `Ch02s01.m4a` ... `Ch02s12.m4a` (rename Tori's files to match).
 - The lesson has `"tail": 5.0` (applies to its very last slide only) so the thermometer reveal holds before the logo close.
 - Online preview (temporary AI voice): https://claude.ai/artifact/Nzf2aTAYk5iAVNdqKmb1Js (`out/web/chapter2/`).

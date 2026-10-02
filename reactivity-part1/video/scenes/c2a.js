@@ -23,10 +23,10 @@
   .c2a-ctag .n { font: 700 24px/1 var(--font-body); letter-spacing: 5px; text-transform: uppercase; color: var(--amber-text, #a8650f); white-space: nowrap; }
   .c2a-ctag .t { font: 700 38px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; margin-top: 8px; }
   .c2a-blt { position: absolute; display: flex; align-items: center; gap: 0; }
-  .c2a-blt .tx { font: 700 60px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
+  .c2a-blt .tx { font: 700 52px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2a-blt .tx b { color: var(--green); }
   .c2a-blt .ln { width: 90px; height: 0; border-top: 5px dashed #2f7fae; margin-left: 24px; }
-  .c2a-who { display: flex; flex-direction: column; gap: 12px; padding-left: 26px; border-left: 8px solid var(--green); margin-top: 6px; }
+  .c2a-who { display: flex; flex-direction: column; gap: 12px; padding-left: 26px; border-left: 8px solid var(--green); margin-top: 26px; }
   .c2a-who .nm { font: 700 46px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2a-who .cr { font: 700 30px/1 var(--font-body); color: var(--green-dark); letter-spacing: 1px; white-space: nowrap; }
   .c2a-who .og { font: 500 28px/1 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
@@ -68,22 +68,14 @@
     css(stage);
     // the presentation's own title, exactly as in Chapter 1; the chapter is a tag under it, carrying Chapter 1's fuel chip
     const col = K.el('div', 'c2a-col');
-    Object.assign(col.style, { left: '100px', top: '172px', width: '1000px' });
-    const kick = K.el('div', 'c2a-kick', 'Calling All Dogs');
+    Object.assign(col.style, { left: '100px', top: '232px', width: '1000px' });
+    const kick = K.el('div', 'c2a-kick', 'Calling All Dogs \u00b7 Chapter 2');
     const title = K.el('div', 'c2a-title', 'Getting Started with Dog Behavior');
     const bar = K.el('div', 'c2a-bar');
     const sub = K.el('div', 'c2a-sub', 'Understanding Reactivity and Aggression');
-    const chap = K.el('div', 'c2a-ctag');
-    const fuel = K.el('div', 'fu');
-    fuel.appendChild(K.icon('flame'));
-    chap.appendChild(fuel);
-    const ct = K.el('div', 'tx');
-    ct.appendChild(K.el('div', 'n', 'Chapter 2'));
-    ct.appendChild(K.el('div', 't', 'Understanding Your Dog’s Baseline'));
-    chap.appendChild(ct);
     const who = K.el('div', 'c2a-who');
     [['nm', 'Tori Ganino'], ['cr', 'BS, CDBC, CPDT-KA'], ['og', 'Calling All Dogs · Training for all breeds']].forEach(([c, t]) => who.appendChild(K.el('div', c, t)));
-    [kick, title, bar, sub, chap, who].forEach(n => col.appendChild(n));
+    [kick, title, bar, sub, who].forEach(n => col.appendChild(n));
     stage.appendChild(col);
 
     const RR = 270, CX = 1450, CY = 532;
@@ -112,10 +104,6 @@
     tl.fromTo(snap, { opacity: 0, y: 40, rotation: 3 }, { opacity: 1, y: 0, rotation: -5, duration: 0.9, ease: 'power3.out' }, tSnap);
     const tTitle = clamp(sayAt(ctx, 0, 'Getting Started', 0.4), tSnap + 0.6, end(0) - 3);
     tl.to(bar, { width: 260, duration: 0.8, ease: 'power2.inOut' }, tTitle);
-    const tCh = clamp(sayAt(ctx, 0, 'Chapter 2', 0.75), tTitle + 0.8, end(0) - 1);
-    A.in(tl, chap, tCh, 'fadeRight', { dur: 0.7 });
-    A.in(tl, fuel, tCh + 0.2, 'pop', { dur: 0.55 });
-    tl.to(fuel, { boxShadow: '0 0 0 14px rgba(217,145,43,0.18)', duration: 0.6, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tCh + 0.8);
   });
 
   /** One plan card: icon badge, label, then rows (or a statement). */
@@ -206,14 +194,14 @@
     tl.fromTo(B.glow, { opacity: 0 }, { opacity: 0.8, duration: 1.0 }, cue(0) + 0.4);
     const fuel = K.el('div');
     Object.assign(fuel.style, { position: 'absolute', left: BX - 54 + 'px', top: BY - 152 - 54 + 'px', width: '108px', height: '108px', borderRadius: '50%',
-      background: C2.C.amber, color: '#fff', border: '6px solid #fff', display: 'grid', placeItems: 'center', boxShadow: '0 10px 24px rgba(140,90,20,0.3)' });
-    const fic = K.icon('flame');
+      background: C2.C.water, color: '#fff', border: '6px solid #fff', display: 'grid', placeItems: 'center', boxShadow: '0 10px 24px rgba(30,90,130,0.3)' });
+    const fic = K.icon('droplet');
     Object.assign(fic.style, { width: '56px', height: '56px' });
     fuel.appendChild(fic);
     LB.appendChild(fuel);
     tl.fromTo(fuel, { opacity: 0, y: -160 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.in' }, cue(0) + 0.9);
     const ingP = C2.pill(LB, 'book-open', 'Chapter 1: *the ingredients*', { x: BX, y: 860, center: true, variant: 'pale' });
-    const fuelP = C2.pill(LB, 'flame', 'What *fuels* the behavior?', { x: BX, y: 262, center: true, variant: 'amber', col: C2.C.amber });
+    const fuelP = C2.pill(LB, 'droplet', 'What *fuels* the behavior?', { x: BX, y: 262, center: true, col: C2.C.water });
     A.in(tl, ingP, cue(0) + 0.6, 'fadeUp', { dur: 0.6 });
     A.in(tl, fuelP, cue(0) + 1.4, 'fadeDown', { dur: 0.6 });
 
@@ -238,23 +226,30 @@
     const t2 = cue(2);
     tl.to([...pills, intent], { opacity: 0, x: 40, duration: 0.45, stagger: 0.05, ease: 'power2.in' }, t2 - 0.1);
     tl.to(B.tokens.map(t => t.outer), { opacity: 1, duration: 0.5 }, t2);
+    const addl = C2.put(LB, 'c2-lab', '**Additional factors that can be:**', { x: 1080, y: 300 });
+    addl.style.fontSize = '38px';
+    addl.style.color = 'var(--ink)';
+    A.in(tl, addl, t2 + 0.2, 'fadeUp', { dur: 0.5 });
     const TAGS = [['wrench', 'Changed', 'changed'], ['sliders-horizontal', 'Managed', 'managed'], ['trending-up', 'Improved', 'improved']];
     let lo = t2 + 0.4;
     const tags = TAGS.map(([ic, t, p], j) => {
-      const n = C2.pill(LB, ic, t, { x: 1080, y: 300 + j * 112, variant: 'green', size: 36 });
+      const n = C2.pill(LB, ic, t, { x: 1080, y: 380 + j * 104, variant: 'green', size: 36 });
       const tt = clamp(at(2, p, 0.15 + j * 0.06, 0.2), lo, end(2) - 4);
       A.in(tl, n, tt, 'pop', { dur: 0.5 });
       lo = tt + 0.35;
       return n;
     });
-    const now = C2.pill(LB, 'clock', 'Affecting your dog *right now*', { x: 1080, y: 660, variant: 'amber', size: 34 });
-    const tNow = clamp(at(2, 'right now', 0.6, 0.3), lo + 0.3, end(2) - 2.4);
+    const now = C2.pill(LB, 'clock', 'Affecting your dog *right now*', { x: 1080, y: 720, variant: 'amber', size: 34 });
+    const tNow = clamp(at(2, 'right now', 0.6, 0.3), lo + 0.3, end(2) - 0.8);
     A.in(tl, now, tNow, 'fadeUp', { dur: 0.6 });
-    tl.to(fuel, { scale: 1.18, boxShadow: '0 0 0 18px rgba(217,145,43,0.22)', duration: 0.5, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tNow + 0.2);
+    tl.to(fuel, { scale: 1.18, boxShadow: '0 0 0 18px rgba(95,168,207,0.25)', duration: 0.5, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tNow + 0.2);
 
-    // at "a little differently": the bowl tips, the ingredients drop into a pot, and the fuel chip melts into it as water
-    const tDiff = clamp(at(2, 'a little differently', 0.9, 0.3), tNow + 1.2, end(2) - 0.6);
-    tl.to([...tags, now, fuelP], { opacity: 0, duration: 0.4, stagger: 0.04, ease: 'power2.in' }, tDiff - 0.2);
+    // ---------- beat 3: "we're going to add those ingredients to a pot of water": the bowl tips, the ingredients drop into a
+    // pot, and the fuel drop falls in and becomes the water
+    const tDiff = cue(3);
+    tl.to([...tags, now, fuelP, addl], { opacity: 0, duration: 0.4, stagger: 0.04, ease: 'power2.in' }, tDiff - 0.3);
+    const cap = C2.pill(LB, 'arrow-down', 'Adding the ingredients *to the pot*', { x: 960, y: 880, center: true, variant: 'pale', size: 32 });
+    A.in(tl, cap, tDiff + 0.3, 'fadeUp', { dur: 0.6 });
     const PX = 1350, PY = 470;
     const P = C2.makePot(LB, { cx: PX, y: PY, s: 0.92, level: 0 });
     tl.fromTo(P.wrap, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' }, tDiff);
@@ -264,19 +259,20 @@
     tl.to(fuel, { left: PX - 54 + 'px', top: PY - 140 + 'px', duration: 0.7, ease: 'power2.inOut' }, tDiff + 0.5);
     tl.to(fuel, { scale: 0.2, opacity: 0, duration: 0.4, ease: 'power2.in' }, tIn - 0.2);
     tl.to(B.wrap, { opacity: 0, duration: 0.5 }, tIn - 0.4);
-    P.ripple(tl, tIn, C2.C.amber);
+    P.ripple(tl, tIn, '#ffffff');
     const tFull = P.setLevel(tl, 0.5, tIn, 1.4, 'power1.inOut');
     P.waves(tl, tIn, dur);
 
-    // ---------- beat 3: your dog's baseline points at the waterline
-    const t3 = Math.max(cue(3), tFull - 0.6);
+    // ---------- beat 4: the fuel is the water: your dog's baseline
+    const t4 = Math.max(cue(4), tFull - 0.6);
+    A.out(tl, cap, t4 - 0.2, 'fade', { dur: 0.4 });
     const bl = K.el('div', 'c2a-blt');
-    bl.appendChild(K.el('div', 'tx', K.md('Your dog’s *baseline*')));
+    bl.appendChild(K.el('div', 'tx', K.md('The fuel = your dog\u2019s *baseline*')));
     bl.appendChild(K.el('div', 'ln'));
     Object.assign(bl.style, { right: 1920 - (PX - (C2.R + 70) * 0.92) + 'px' });
     LB.appendChild(bl);
     P.follow(bl, 'surface', -38);
-    A.in(tl, bl, t3, 'fadeRight', { dur: 0.7 });
+    A.in(tl, bl, t4, 'fadeRight', { dur: 0.7 });
   });
 
   // ================================================================== ch02s02 What is a baseline?

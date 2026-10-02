@@ -51,12 +51,12 @@
 
   // Photos: one per job, swap img/breed here when photos change (4:3 crops, 960 x 720, centred on the dog).
   const JOBS = [
-    { key: 'herding', nm: 'Herding', job: 'Control and move livestock', ic: 'sheep', img: 'breed_herding.jpg', breed: 'Border Collie' },
+    { key: 'herding', nm: 'Herding', job: 'Control and move livestock', ic: 'sheep', img: 'breed_herding.jpg', breed: 'Australian Shepherd' },
     { key: 'guarding', nm: 'Guarding', job: 'Monitor and respond to potential threats', ic: 'shield', img: 'breed_guarding.jpg', breed: 'Great Pyrenees' },
     { key: 'hunting', nm: 'Hunting and pursuit', job: 'Locate, track, chase, or capture animals', ic: 'footprints', img: 'breed_hunting.jpg', breed: 'Beagle' },
     { key: 'terrier', nm: 'Terrier work', job: 'Locate and pursue small animals and vermin', ic: 'rat', img: 'breed_terrier.jpg', breed: 'Jack Russell Terrier' },
     { key: 'sporting', nm: 'Sporting work', job: 'Find, flush, point to, or retrieve game', ic: 'bird', img: 'breed_sporting.jpg', breed: 'Golden Retriever' },
-    { key: 'working', nm: 'Working and assistance', job: 'Perform physical, specialized, or human-directed tasks', ic: 'hard-hat', img: 'breed_working.jpg', breed: 'Service dog' },
+    { key: 'working', nm: 'Working and assistance', job: 'Perform physical, specialized, or human-directed tasks', ic: 'hard-hat', img: 'breed_working.jpg', breed: 'Labrador Retriever' },
   ];
   const CW = 680, CH = 178;
   const GX = [100, 1140], GY = [296, 490, 684];

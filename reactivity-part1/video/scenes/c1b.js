@@ -181,8 +181,8 @@
     // two round photo portraits: they arrive in grey and take on colour (and their ring colour) as each is named
     const DY = 615, DR = 172;
     const DOGS = [
-      { x: 330, img: 'temperament_sensitive.jpg', pos: '50% 40%', ring: C.amber, lab: 'More sensitive', say: 'more sensitive' },
-      { x: 810, img: 'temperament_easygoing.jpg', pos: '50% 40%', ring: C.green, lab: 'More easygoing', say: 'more easygoing' },
+      { x: 330, img: 'temperament_sensitive.jpg', pos: '50% 50%', ring: C.amber, lab: 'More sensitive', say: 'more sensitive' },
+      { x: 810, img: 'temperament_easygoing.jpg', pos: '50% 50%', ring: C.green, lab: 'More easygoing', say: 'more easygoing' },
     ];
     const dogs = DOGS.map(d => {
       const p = portrait(stage, d.img, d.x, DY, DR, d.pos);

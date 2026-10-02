@@ -14,7 +14,19 @@
   .c2a-chap { display: flex; flex-direction: column; gap: 10px; }
   .c2a-chap .n { font: 700 30px/1 var(--font-body); letter-spacing: 5px; text-transform: uppercase; color: var(--green-dark); white-space: nowrap; }
   .c2a-chap .t { font: 600 52px/1.12 var(--font-head); color: var(--green); white-space: nowrap; }
-  .c2a-who { display: flex; flex-direction: column; gap: 12px; padding-left: 26px; border-left: 8px solid var(--green); margin-top: 18px; }
+  .c2a-sub { font: 600 48px/1.14 var(--font-head); color: var(--green); white-space: nowrap; }
+  .c2a-ctag { display: flex; align-items: center; gap: 22px; margin-top: 6px; padding: 14px 30px 14px 14px; border-radius: 999px; background: #fff;
+    border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); }
+  .c2a-ctag .fu { width: 84px; height: 84px; border-radius: 50%; background: var(--amber); color: #fff; display: grid; place-items: center; border: 5px solid #fff;
+    box-shadow: 0 6px 16px rgba(140,90,20,0.25); flex: 0 0 auto; }
+  .c2a-ctag .fu svg { width: 46px; height: 46px; stroke-width: 2.2; }
+  .c2a-ctag .n { font: 700 24px/1 var(--font-body); letter-spacing: 5px; text-transform: uppercase; color: var(--amber-text, #a8650f); white-space: nowrap; }
+  .c2a-ctag .t { font: 700 38px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; margin-top: 8px; }
+  .c2a-blt { position: absolute; display: flex; align-items: center; gap: 0; }
+  .c2a-blt .tx { font: 700 60px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
+  .c2a-blt .tx b { color: var(--green); }
+  .c2a-blt .ln { width: 90px; height: 0; border-top: 5px dashed #2f7fae; margin-left: 24px; }
+  .c2a-who { display: flex; flex-direction: column; gap: 12px; padding-left: 26px; border-left: 8px solid var(--green); margin-top: 6px; }
   .c2a-who .nm { font: 700 46px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2a-who .cr { font: 700 30px/1 var(--font-body); color: var(--green-dark); letter-spacing: 1px; white-space: nowrap; }
   .c2a-who .og { font: 500 28px/1 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
@@ -54,18 +66,24 @@
   registerScene('ch02intro', ctx => {
     const { stage, tl, end, dur } = ctx;
     css(stage);
+    // the presentation's own title, exactly as in Chapter 1; the chapter is a tag under it, carrying Chapter 1's fuel chip
     const col = K.el('div', 'c2a-col');
-    Object.assign(col.style, { left: '100px', top: '190px', width: '1000px' });
+    Object.assign(col.style, { left: '100px', top: '172px', width: '1000px' });
     const kick = K.el('div', 'c2a-kick', 'Calling All Dogs');
     const title = K.el('div', 'c2a-title', 'Getting Started with Dog Behavior');
     const bar = K.el('div', 'c2a-bar');
-    const chap = K.el('div', 'c2a-chap');
-    chap.appendChild(K.el('div', 'n', 'Chapter 2'));
-    const chT = K.el('div', 't', 'Understanding Your Dog’s Baseline');
-    chap.appendChild(chT);
+    const sub = K.el('div', 'c2a-sub', 'Understanding Reactivity and Aggression');
+    const chap = K.el('div', 'c2a-ctag');
+    const fuel = K.el('div', 'fu');
+    fuel.appendChild(K.icon('flame'));
+    chap.appendChild(fuel);
+    const ct = K.el('div', 'tx');
+    ct.appendChild(K.el('div', 'n', 'Chapter 2'));
+    ct.appendChild(K.el('div', 't', 'Understanding Your Dog’s Baseline'));
+    chap.appendChild(ct);
     const who = K.el('div', 'c2a-who');
     [['nm', 'Tori Ganino'], ['cr', 'BS, CDBC, CPDT-KA'], ['og', 'Calling All Dogs · Training for all breeds']].forEach(([c, t]) => who.appendChild(K.el('div', c, t)));
-    [kick, title, bar, chap, who].forEach(n => col.appendChild(n));
+    [kick, title, bar, sub, chap, who].forEach(n => col.appendChild(n));
     stage.appendChild(col);
 
     const RR = 270, CX = 1450, CY = 532;
@@ -85,17 +103,19 @@
     A.in(tl, kick, 0.1, 'fadeUp', { dur: 0.6 });
     A.in(tl, title, 0.25, 'fadeUp', { dur: 0.8 });
     A.in(tl, bar, 0.55, 'grow', { dur: 0.6 });
-    A.in(tl, chap, 0.7, 'fadeUp', { dur: 0.8 });
+    A.in(tl, sub, 0.7, 'fadeUp', { dur: 0.8 });
     tl.fromTo(ring, { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 1.0, ease: 'power3.out' }, 0.45);
     tl.fromTo(head, { scale: 1.08 }, { scale: 1.0, duration: Math.max(1, dur - 0.5), ease: 'none' }, 0.45);
-    const tName = clamp(sayAt(ctx, 0, 'Tori Ganino', 0.1), 1.1, end(0) - 5);
+    const tName = clamp(sayAt(ctx, 0, 'Tori Ganino', 0.1), 1.1, end(0) - 6);
     A.in(tl, who, tName, 'fadeRight', { dur: 0.7 });
-    const tSnap = clamp(sayAt(ctx, 0, 'Calling All Dogs', 0.25), tName + 0.6, end(0) - 4);
+    const tSnap = clamp(sayAt(ctx, 0, 'Calling All Dogs', 0.2), tName + 0.6, end(0) - 5);
     tl.fromTo(snap, { opacity: 0, y: 40, rotation: 3 }, { opacity: 1, y: 0, rotation: -5, duration: 0.9, ease: 'power3.out' }, tSnap);
-    const tTitle = clamp(sayAt(ctx, 0, 'Getting Started', 0.5), tSnap + 0.6, end(0) - 2.5);
+    const tTitle = clamp(sayAt(ctx, 0, 'Getting Started', 0.4), tSnap + 0.6, end(0) - 3);
     tl.to(bar, { width: 260, duration: 0.8, ease: 'power2.inOut' }, tTitle);
-    const tCh = clamp(sayAt(ctx, 0, 'Chapter 2', 0.75), tTitle + 0.6, end(0) - 1);
-    tl.to(chT, { scale: 1.06, transformOrigin: '0% 50%', duration: 0.3, yoyo: true, repeat: 1, ease: 'power2.out' }, tCh);
+    const tCh = clamp(sayAt(ctx, 0, 'Chapter 2', 0.75), tTitle + 0.8, end(0) - 1);
+    A.in(tl, chap, tCh, 'fadeRight', { dur: 0.7 });
+    A.in(tl, fuel, tCh + 0.2, 'pop', { dur: 0.55 });
+    tl.to(fuel, { boxShadow: '0 0 0 14px rgba(217,145,43,0.18)', duration: 0.6, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tCh + 0.8);
   });
 
   /** One plan card: icon badge, label, then rows (or a statement). */
@@ -177,66 +197,86 @@
     const h = K.heading(stage, 'Understanding Your Dog’s Baseline', { x: 100, y: 120, w: 1450, size: 76 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
-    // ---------- beat 0: chapter 1's bowl, full
+    // ---------- beat 0: chapter 1's bowl, its eight ingredients and the fuel chip on top
     const LB = C2.layer(stage);
-    const B = C1.makeBowl(LB, { cx: 600, y: 560, s: 1.05, filled: 8 });
+    const BX = 560, BY = 600;
+    const B = C1.makeBowl(LB, { cx: BX, y: BY, s: 1.0, filled: 8 });
     B.slots.forEach(sl => gsap.set(sl.g, { opacity: 0 }));
     tl.fromTo(B.wrap, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }, cue(0) + 0.1);
     tl.fromTo(B.glow, { opacity: 0 }, { opacity: 0.8, duration: 1.0 }, cue(0) + 0.4);
-    const cap = C2.pill(LB, 'book-open', 'Chapter 1: *the ingredients*', { x: 600, y: 850, center: true, variant: 'pale' });
-    A.in(tl, cap, cue(0) + 0.6, 'fadeUp', { dur: 0.6 });
+    const fuel = K.el('div');
+    Object.assign(fuel.style, { position: 'absolute', left: BX - 54 + 'px', top: BY - 152 - 54 + 'px', width: '108px', height: '108px', borderRadius: '50%',
+      background: C2.C.amber, color: '#fff', border: '6px solid #fff', display: 'grid', placeItems: 'center', boxShadow: '0 10px 24px rgba(140,90,20,0.3)' });
+    const fic = K.icon('flame');
+    Object.assign(fic.style, { width: '56px', height: '56px' });
+    fuel.appendChild(fic);
+    LB.appendChild(fuel);
+    tl.fromTo(fuel, { opacity: 0, y: -160 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.in' }, cue(0) + 0.9);
+    const ingP = C2.pill(LB, 'book-open', 'Chapter 1: *the ingredients*', { x: BX, y: 860, center: true, variant: 'pale' });
+    const fuelP = C2.pill(LB, 'flame', 'What *fuels* the behavior?', { x: BX, y: 262, center: true, variant: 'amber', col: C2.C.amber });
+    A.in(tl, ingP, cue(0) + 0.6, 'fadeUp', { dur: 0.6 });
+    A.in(tl, fuelP, cue(0) + 1.4, 'fadeDown', { dur: 0.6 });
 
     // ---------- beat 1: four returning ingredients glow and their names appear at right; the rest dim
     const BACK = [2, 5, 6, 7]; // breed history, past experiences, training tools, pain
     const t1 = at(1, 'some of those factors', 0.2, 0.2);
-    A.out(tl, cap, t1, 'fade', { dur: 0.4 });
+    A.out(tl, ingP, t1, 'fade', { dur: 0.4 });
     tl.to(B.glow, { opacity: 0.25, duration: 0.6 }, t1);
-    B.tokens.forEach((tk, k) => {
-      if (!BACK.includes(k)) tl.to(tk.outer, { opacity: 0.25, duration: 0.6, ease: 'power2.out' }, t1);
-    });
+    B.tokens.forEach((tk, k) => { if (!BACK.includes(k)) tl.to(tk.outer, { opacity: 0.25, duration: 0.6, ease: 'power2.out' }, t1); });
     const pills = BACK.map((k, j) => {
       const g = C1.ING[k];
-      const p = C2.pill(LB, g.icon, g.name, { x: 1010, y: 300 + j * 112, col: g.col });
-      const tk = B.tokens[k];
-      tl.to(tk.inner, { scale: 1.3, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' }, t1 + 0.3 + j * 0.25);
+      const p = C2.pill(LB, g.icon, g.name, { x: 1080, y: 300 + j * 112, col: g.col });
+      tl.to(B.tokens[k].inner, { scale: 1.3, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' }, t1 + 0.3 + j * 0.25);
       A.in(tl, p, t1 + 0.45 + j * 0.25, 'fadeRight', { dur: 0.6 });
       return p;
     });
     const tInt = clamp(at(1, "That's intentional", 0.8, 0.2), t1 + 1.6, end(1) - 0.3);
-    const intent = C2.pill(LB, 'check', 'On purpose', { x: 1010, y: 760, variant: 'green' });
+    const intent = C2.pill(LB, 'check', 'On purpose', { x: 1080, y: 760, variant: 'green' });
     A.in(tl, intent, tInt, 'pop', { dur: 0.55 });
 
-    // ---------- beat 2: changed, managed, improved; right now; at "a little differently" the bowl view slides away
+    // ---------- beat 2: changed, managed, improved; the fuel chip glows on "right now"
     const t2 = cue(2);
     tl.to([...pills, intent], { opacity: 0, x: 40, duration: 0.45, stagger: 0.05, ease: 'power2.in' }, t2 - 0.1);
+    tl.to(B.tokens.map(t => t.outer), { opacity: 1, duration: 0.5 }, t2);
     const TAGS = [['wrench', 'Changed', 'changed'], ['sliders-horizontal', 'Managed', 'managed'], ['trending-up', 'Improved', 'improved']];
     let lo = t2 + 0.4;
     const tags = TAGS.map(([ic, t, p], j) => {
-      const n = C2.pill(LB, ic, t, { x: 1010, y: 300 + j * 112, variant: 'green', size: 36 });
+      const n = C2.pill(LB, ic, t, { x: 1080, y: 300 + j * 112, variant: 'green', size: 36 });
       const tt = clamp(at(2, p, 0.15 + j * 0.06, 0.2), lo, end(2) - 4);
       A.in(tl, n, tt, 'pop', { dur: 0.5 });
       lo = tt + 0.35;
       return n;
     });
-    const now = C2.pill(LB, 'clock', 'Affecting your dog *right now*', { x: 1010, y: 660, variant: 'amber', size: 34 });
-    const tNow = clamp(at(2, 'right now', 0.6, 0.3), lo + 0.3, end(2) - 2);
+    const now = C2.pill(LB, 'clock', 'Affecting your dog *right now*', { x: 1080, y: 660, variant: 'amber', size: 34 });
+    const tNow = clamp(at(2, 'right now', 0.6, 0.3), lo + 0.3, end(2) - 2.4);
     A.in(tl, now, tNow, 'fadeUp', { dur: 0.6 });
-    tl.to(now.querySelector('.ic'), { rotation: 360, duration: 1.2, ease: 'power2.inOut' }, tNow + 0.4);
-    const tDiff = clamp(at(2, 'a little differently', 0.9, 0.2), tNow + 1.0, end(2) - 0.5);
-    tl.to(B.wrap, { x: -260, opacity: 0, duration: 0.8, ease: 'power2.in' }, tDiff);
-    tl.to([...tags, now], { opacity: 0, x: 60, duration: 0.5, stagger: 0.05, ease: 'power2.in' }, tDiff + 0.1);
+    tl.to(fuel, { scale: 1.18, boxShadow: '0 0 0 18px rgba(217,145,43,0.22)', duration: 0.5, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tNow + 0.2);
 
-    // ---------- beat 3: "Your dog's baseline" on a level line
-    const t3 = Math.max(cue(3), tDiff + 0.9);
-    const LC = C2.layer(stage, tl, t3);
-    const bl = C2.put(LC, 'c2a-bl', 'Your dog’s *baseline*', { x: 0, y: 470, w: 1920 });
-    A.in(tl, bl, t3, 'fadeUp', { dur: 0.8 });
-    const sv = K.svg(LC, { x: 0, y: 0, w: 1920, h: 1080 });
-    const ln = K.line(sv, 460, 640, 1460, 640, { stroke: C2.C.water, 'stroke-width': 12 });
-    A.draw(tl, ln, t3 + 0.3, 1.0);
-    const wv = K.path(sv, 'M 460 676 q 31 -14 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 62 0 t 0 0', { stroke: C2.C.waterTop, 'stroke-width': 7, fill: 'none' });
-    A.draw(tl, wv, t3 + 0.6, 1.0);
-    tl.fromTo(wv, { x: 0 }, { x: -62, duration: 1.4, ease: 'none', repeat: Math.max(0, Math.floor((dur - t3 - 2) / 1.4)) }, t3 + 1.6);
+    // at "a little differently": the bowl tips, the ingredients drop into a pot, and the fuel chip melts into it as water
+    const tDiff = clamp(at(2, 'a little differently', 0.9, 0.3), tNow + 1.2, end(2) - 0.6);
+    tl.to([...tags, now, fuelP], { opacity: 0, duration: 0.4, stagger: 0.04, ease: 'power2.in' }, tDiff - 0.2);
+    const PX = 1350, PY = 470;
+    const P = C2.makePot(LB, { cx: PX, y: PY, s: 0.92, level: 0 });
+    tl.fromTo(P.wrap, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' }, tDiff);
+    tl.to(B.wrap, { rotation: 32, x: 260, y: -120, duration: 0.7, ease: 'power2.inOut' }, tDiff + 0.3);
+    tl.to(B.tokens.map(t => t.outer), { opacity: 0, duration: 0.3, stagger: 0.04 }, tDiff + 0.8);
+    const tIn = P.dropIng(tl, tDiff + 0.9);
+    tl.to(fuel, { left: PX - 54 + 'px', top: PY - 140 + 'px', duration: 0.7, ease: 'power2.inOut' }, tDiff + 0.5);
+    tl.to(fuel, { scale: 0.2, opacity: 0, duration: 0.4, ease: 'power2.in' }, tIn - 0.2);
+    tl.to(B.wrap, { opacity: 0, duration: 0.5 }, tIn - 0.4);
+    P.ripple(tl, tIn, C2.C.amber);
+    const tFull = P.setLevel(tl, 0.5, tIn, 1.4, 'power1.inOut');
+    P.waves(tl, tIn, dur);
+
+    // ---------- beat 3: your dog's baseline points at the waterline
+    const t3 = Math.max(cue(3), tFull - 0.6);
+    const bl = K.el('div', 'c2a-blt');
+    bl.appendChild(K.el('div', 'tx', K.md('Your dog’s *baseline*')));
+    bl.appendChild(K.el('div', 'ln'));
+    Object.assign(bl.style, { right: 1920 - (PX - (C2.R + 70) * 0.92) + 'px' });
+    LB.appendChild(bl);
+    P.follow(bl, 'surface', -38);
+    A.in(tl, bl, t3, 'fadeRight', { dur: 0.7 });
   });
 
   // ================================================================== ch02s02 What is a baseline?

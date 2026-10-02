@@ -19,6 +19,9 @@
     border-radius: 26px; border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); font: 700 36px/1.15 var(--font-head); color: var(--ink); }
   .c2f-qc .ic { width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; background: var(--amber-pale); color: var(--amber); }
   .c2f-qc .ic svg { width: 46px; height: 46px; stroke-width: 2.2; }
+  .c2f-da .a { font: 700 72px/1.05 var(--font-head); color: var(--green); white-space: nowrap; }
+  .c2f-da .b { font: 600 38px/1.2 var(--font-body); color: var(--ink); white-space: nowrap; margin-top: 16px; }
+  .c2f-da { position: absolute; }
   .c2f-hot { position: absolute; font: 700 84px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2f-hot b { color: var(--red); font-weight: 700; }
   `;
@@ -35,41 +38,47 @@
     const h = K.heading(stage, 'The Baseline Can Change', { x: 100, y: 120, size: 80 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
-    // ---------- beat 0: the full pot with its factors floating; a magnifier finds them
-    const PX = 1250, PY = 430, S = 0.95;
+    // ---------- beat 0: the full pot (ingredients floating) and the factors that filled it; a magnifier finds them
+    const PX = 1290, PY = 430, S = 0.95;
     const P = C2.makePot(stage, { cx: PX, y: PY, s: S, level: 0.88 });
     A.in(tl, P.wrap, 0.1, 'fade', { dur: 0.6 });
     P.waves(tl, 0, dur);
-    const FACT = [['stethoscope', C2.AREAS[0].col, -150, 70], ['moon', C2.AREAS[0].col, -60, 100], ['activity', C2.AREAS[1].col, 30, 66],
-      ['paw-print', C2.AREAS[1].col, 130, 96], ['shuffle', C2.AREAS[3].col, -110, 160], ['hourglass', C2.AREAS[2].col, 70, 150]];
-    const toks = FACT.map(([ic, col, x, y]) => { const t = P.addToken(ic, col, x, y, 38); P.showToken(t); return t; });
-    gsap.set(toks.map(t => t.outer), { opacity: 0 });
-    A.in(tl, toks.map(t => t.outer), 0.4, 'fade', { dur: 0.5, stagger: 0.06 });
-    P.bob(tl, 0.5, dur);
-    const lens = K.el('div');
-    Object.assign(lens.style, { position: 'absolute', left: '0px', top: '0px', width: '170px', height: '170px', borderRadius: '50%', border: '12px solid var(--green-dark)',
-      background: 'rgba(255,255,255,0.22)', boxShadow: '0 14px 30px rgba(40,60,20,0.25)' });
-    const hnd = K.el('div');
-    Object.assign(hnd.style, { position: 'absolute', left: '134px', top: '134px', width: '22px', height: '100px', borderRadius: '11px', background: 'var(--green-dark)', transform: 'rotate(-45deg)', transformOrigin: '50% 0%' });
-    lens.appendChild(hnd);
-    stage.appendChild(lens);
-    const pts = toks.map(t => P.toStage(t.x, C2.surfY(0.88) + t.y));
-    const t0 = cue(0) + 0.6;
-    tl.fromTo(lens, { opacity: 0, x: pts[0][0] - 85 - 120, y: pts[0][1] - 85 }, { opacity: 1, x: pts[0][0] - 85, duration: 0.5, ease: 'power2.out' }, t0);
-    [1, 2, 3].forEach((k, j) => tl.to(lens, { x: pts[k][0] - 85, y: pts[k][1] - 85, duration: 0.55, ease: 'power2.inOut' }, t0 + 0.6 + j * 0.65));
-    tl.to(lens, { opacity: 0, duration: 0.4 }, Math.min(t0 + 2.8, cue(1) + 0.2));
-    const idn = C2.pill(stage, 'search', 'Identify what *can be improved*', { x: PX, y: 852, center: true, size: 32 });
-    A.in(tl, idn, t0 + 0.8, 'fadeUp', { dur: 0.6 });
-
-    // ---------- beat 1: many of them we can do something about: green rings
-    const t1 = cue(1);
-    toks.forEach((t, k) => tl.fromTo(t.ring, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, t1 + 0.3 + k * 0.15));
-
-    // ---------- beat 2: one change per phrase lifts a factor out; the water drops a step
-    const t2 = cue(2);
+    const FAC = [['stethoscope', 'Pain or illness', C.red], ['moon', 'Poor sleep or nutrition', C.red], ['activity', 'Activity out of balance', C.amber],
+      ['paw-print', 'Unmet natural needs', C.amber], ['shuffle', 'Little predictability or choice', C.amber], ['hourglass', 'Not enough recovery', C.red]];
     const ACT = [['stethoscope', 'Address pain or illness', 'address pain'], ['moon', 'Improve sleep or nutrition', 'improve sleep'],
       ['activity', 'Adjust physical or mental activity', 'adjust physical'], ['paw-print', 'Better meet natural needs', 'better meet natural'],
       ['calendar-check', 'More predictability and choice', 'more predictability'], ['hourglass', 'More time to recover', 'opportunity for recovery']];
+    const YS = FAC.map((_, k) => 280 + k * 100);
+    const facs = FAC.map(([ic, t, col], k) => {
+      const c = C2.pill(stage, ic, t, { x: 160, y: YS[k], size: 30, col });
+      A.in(tl, c, 0.4 + k * 0.12, 'fadeRight', { dur: 0.5 });
+      return c;
+    });
+    const lens = K.el('div');
+    Object.assign(lens.style, { position: 'absolute', left: '0px', top: '0px', width: '150px', height: '150px', borderRadius: '50%', border: '11px solid var(--green-dark)',
+      background: 'rgba(255,255,255,0.22)', boxShadow: '0 14px 30px rgba(40,60,20,0.25)' });
+    const hnd = K.el('div');
+    Object.assign(hnd.style, { position: 'absolute', left: '118px', top: '118px', width: '20px', height: '90px', borderRadius: '10px', background: 'var(--green-dark)', transform: 'rotate(-45deg)', transformOrigin: '50% 0%' });
+    lens.appendChild(hnd);
+    stage.appendChild(lens);
+    const t0 = cue(0) + 1.0;
+    tl.fromTo(lens, { opacity: 0, x: 250, y: YS[0] - 40 }, { opacity: 1, duration: 0.4 }, t0);
+    tl.to(lens, { y: YS[5] - 40, duration: 2.2, ease: 'power1.inOut' }, t0 + 0.3);
+    tl.to(lens, { opacity: 0, duration: 0.4 }, Math.min(t0 + 2.6, cue(1) + 0.3));
+    const idn = C2.pill(stage, 'search', 'Identify what *can be improved*', { x: PX, y: 852, center: true, size: 32 });
+    A.in(tl, idn, t0 + 0.6, 'fadeUp', { dur: 0.6 });
+
+    // ---------- beat 1: many of them are things we can do something about: a green check on each
+    const t1 = cue(1);
+    const cks = YS.map((y, k) => {
+      const b = C2.badge(stage, 'check', 118, y + 37, 50, C.green, '#fff');
+      b.style.border = '4px solid #fff';
+      A.in(tl, b, t1 + 0.3 + k * 0.15, 'pop', { dur: 0.4 });
+      return b;
+    });
+
+    // ---------- beat 2: one change per phrase: the factor turns into its fix, a drop leaves the pot, the water drops a step
+    const t2 = cue(2);
     let lo = t2 + 0.2, L = 0.88;
     ACT.forEach(([ic, t, p], k) => {
       const r = K.el('div', 'c2f-act');
@@ -77,13 +86,16 @@
       icn.appendChild(K.icon(ic));
       r.appendChild(icn);
       r.appendChild(K.el('span', null, K.md(t)));
-      Object.assign(r.style, { left: '100px', top: 278 + k * 100 + 'px' });
+      Object.assign(r.style, { left: '160px', top: YS[k] - 3 + 'px' });
       stage.appendChild(r);
+      gsap.set(r, { opacity: 0 });
       const tt = clamp(at(2, p, 0.08 + k * 0.15, 0.3), lo, end(2) - 1);
-      A.in(tl, r, tt, 'fadeRight', { dur: 0.5 });
-      P.liftToken(tl, toks[k], tt + 0.3);
+      tl.to(facs[k], { rotationX: 90, opacity: 0, duration: 0.25, ease: 'power2.in' }, tt);
+      tl.fromTo(r, { rotationX: -90, opacity: 0 }, { rotationX: 0, opacity: 1, duration: 0.3, ease: 'power2.out', immediateRender: false }, tt + 0.25);
+      tl.to(cks[k], { opacity: 0, duration: 0.2 }, tt);
+      P.lift(tl, 160 + 30, YS[k] + 37, tt + 0.3, C.water, 0.8);
       L -= 0.095;
-      P.setLevel(tl, L, tt + 0.5, 0.8);
+      P.setLevel(tl, L, tt + 0.4, 0.8);
       lo = tt + 0.6;
     });
 
@@ -111,9 +123,9 @@
     const h = K.heading(stage, 'The Water Level Is Only Part of the Picture', { x: 100, y: 120, w: 1480, size: 58 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
-    // ---------- beat 0: the pot and three checks
+    // ---------- beat 0: the pot (ingredients floating) and three checks
     const LA = C2.layer(stage);
-    const PX = 560, PY = 440, S = 0.92;
+    const PX = 560, PY = 450, S = 0.9;
     const P = C2.makePot(LA, { cx: PX, y: PY, s: S, level: 0.5 });
     A.in(tl, P.wrap, 0.1, 'fadeUp', { dur: 0.7 });
     P.waves(tl, 0, dur);
@@ -133,58 +145,79 @@
       return n;
     });
 
-    // ---------- beat 1: we know how much water is in the pot; that's only half the picture
+    // ---------- beat 1: the water and everything in it: distant antecedents
     const t1 = cue(1);
     tl.to(cks, { opacity: 0, x: 40, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t1 - 0.1);
+    const ring = K.el('div', 'c2f-frame');
+    Object.assign(ring.style, { left: '250px', top: '330px', width: '620px', height: '510px', border: '6px dashed ' + C.green });
+    stage.insertBefore(ring, LA);
+    const tDA = clamp(at(1, 'distant antecedents', 0.7, 0.6), t1 + 0.3, end(1) - 0.8);
+    tl.fromTo(ring, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, t1 + 0.3);
+    tl.to(P.ing.map(g => g.inner), { scale: 1.25, svgOrigin: '0 0', duration: 0.25, yoyo: true, repeat: 1, stagger: 0.05 }, t1 + 0.6);
+    const da = K.el('div', 'c2f-da');
+    da.appendChild(K.el('div', 'a', 'Distant antecedents'));
+    da.appendChild(K.el('div', 'b', 'The water and everything in it'));
+    Object.assign(da.style, { left: '1000px', top: '470px' });
+    stage.appendChild(da);
+    A.in(tl, da, tDA, 'fadeLeft', { dur: 0.7 });
+
+    // ---------- beat 2: that's only part of the picture: Part 1 frame, empty Part 2 frame
+    const t2 = cue(2);
+    tl.to([ring, da], { opacity: 0, duration: 0.4, ease: 'power2.in' }, t2 - 0.1);
     const fl = K.el('div', 'c2f-frame');
     Object.assign(fl.style, { left: '120px', top: '262px', width: '880px', height: '690px', background: 'rgba(232,241,220,0.5)', border: '5px solid ' + C.greenLight });
     const fr = K.el('div', 'c2f-frame');
     Object.assign(fr.style, { left: '1020px', top: '262px', width: '780px', height: '690px', border: '5px dashed #c9d2bf' });
     stage.insertBefore(fl, LA);
     stage.insertBefore(fr, LA);
-    A.in(tl, fl, t1 + 0.2, 'fade', { dur: 0.5 });
-    const know = C2.put(stage, 'c2f-know', 'We know how much<br>*water* is in the pot.', { x: 160, y: 820 });
-    know.style.fontSize = '40px';
-    A.in(tl, know, t1 + 0.3, 'fadeUp', { dur: 0.6 });
-    tl.to(P.wrap, { y: -40, duration: 0.6, ease: 'power2.inOut' }, t1 + 0.2);
-    const tPart = clamp(at(1, 'only part of the picture', 0.7, 0.3), t1 + 0.8, end(1) - 0.6);
+    const p1 = C2.pill(stage, 'droplets', 'Part 1: *Distant antecedents*', { x: 146, y: 284, size: 28, col: C.water });
+    const p2 = C2.pill(stage, 'circle-help', 'Part 2: ?', { x: 1046, y: 284, size: 28, col: C.muted });
+    const p2b = C2.pill(stage, 'thermometer', 'Part 2: *Temperature*', { x: 1046, y: 284, size: 28, col: C.red });
+    gsap.set(p2b, { opacity: 0 });
+    A.in(tl, fl, t2 + 0.2, 'fade', { dur: 0.5 });
+    A.in(tl, p1, t2 + 0.4, 'fadeRight', { dur: 0.5 });
+    const know = C2.put(stage, 'c2f-know', 'We know how much<br>*water* is in the pot.', { x: 160, y: 830 });
+    know.style.fontSize = '38px';
+    A.in(tl, know, t2 + 0.5, 'fadeUp', { dur: 0.6 });
+    const tPart = clamp(at(2, 'only part of the picture', 0.7, 0.3), t2 + 0.8, end(2) - 0.6);
     A.in(tl, fr, tPart, 'fade', { dur: 0.5 });
+    A.in(tl, p2, tPart + 0.2, 'fadeRight', { dur: 0.5 });
     const qbig = C2.put(stage, 'c2-q', '?', { x: 1350, y: 545 });
-    A.in(tl, qbig, tPart + 0.2, 'pop', { dur: 0.5 });
+    A.in(tl, qbig, tPart + 0.3, 'pop', { dur: 0.5 });
 
-    // ---------- beat 2: three questions in the empty half
-    const t2 = cue(2);
-    A.out(tl, qbig, t2, 'shrink', { dur: 0.35 });
+    // ---------- beat 3: three questions in the empty half
+    const t3 = cue(3);
+    A.out(tl, qbig, t3, 'shrink', { dur: 0.35 });
     const QS = [['bell-ring', 'What happens around<br>the dog?', 'What happens', 0.05], ['heart', 'How does the dog feel?', 'How does the dog feel', 0.4], ['activity', 'Arousal and stress?', 'arousal and stress', 0.8]];
-    lo = t2 + 0.2;
+    lo = t3 + 0.2;
     const qcs = QS.map(([ic, t, p, fb], k) => {
       const c = K.el('div', 'c2f-qc');
       const icn = K.el('div', 'ic');
       icn.appendChild(K.icon(ic));
       c.appendChild(icn);
       c.appendChild(K.el('div', null, t));
-      Object.assign(c.style, { left: '1060px', top: 330 + k * 180 + 'px' });
+      Object.assign(c.style, { left: '1060px', top: 400 + k * 170 + 'px' });
       stage.appendChild(c);
-      const tt = clamp(at(2, p, fb, 0.3), lo, end(2) - 0.5);
+      const tt = clamp(at(3, p, fb, 0.3), lo, end(3) - 0.5);
       A.in(tl, c, tt, 'fadeLeft', { dur: 0.6 });
       lo = tt + 0.5;
       return c;
     });
 
-    // ---------- beat 3: a dashed slot on the pot for another part
-    const t3 = cue(3);
+    // ---------- beat 4: a dashed slot on the pot for another part
+    const t4 = cue(4);
     const TX = 120; // thermometer x in pot coordinates
     const slot = K.path(P.svg, `M ${TX - 30} 250 L ${TX - 30} -110 A 30 30 0 0 1 ${TX + 30} -110 L ${TX + 30} 250`, { stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10', fill: 'rgba(255,255,255,0.4)' });
     P.svg.insertBefore(slot, P.front);
     const slotC = K.circle(P.svg, TX, 286, 50, { fill: 'rgba(255,255,255,0.4)', stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10' });
     P.svg.insertBefore(slotC, P.front);
-    const tSlot = clamp(at(3, 'another part', 0.6, 0.3), t3 + 0.2, end(3) - 0.4);
+    const tSlot = clamp(at(4, 'another part', 0.6, 0.3), t4 + 0.2, end(4) - 0.4);
     A.in(tl, [slot, slotC], tSlot, 'fade', { dur: 0.5 });
     tl.to([slot, slotC], { opacity: 0.35, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tSlot + 0.5);
-    A.dim(tl, qcs, t3 + 0.2, 0.45);
+    A.dim(tl, qcs, t4 + 0.2, 0.45);
 
-    // ---------- beat 4: temperature: the thermometer drops in, its line rises
-    const t4 = cue(4);
+    // ---------- beat 5: temperature: the thermometer drops in, its line rises; Part 2 is temperature
+    const t5 = cue(5);
     const th = K.group(P.svg);
     P.svg.insertBefore(th, P.front);
     K.rect(th, TX - 28, -140, 56, 420, { rx: 28, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
@@ -193,20 +226,22 @@
     const merc = K.rect(th, TX - 12, 240, 24, 50, { rx: 12, fill: C.red });
     [-90, -30, 30, 90, 150].forEach(y => K.line(th, TX + 6, y, TX + 22, y, { stroke: C.greenDeep, 'stroke-width': 4 }));
     gsap.set(th, { y: -170, opacity: 0 });
-    tl.to([slot, slotC], { opacity: 0, duration: 0.3 }, t4);
-    tl.fromTo(th, { y: -170 }, { y: 0, duration: 0.6, ease: 'power2.in', immediateRender: false }, t4 + 0.1);
-    tl.fromTo(th, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t4 + 0.1);
-    P.ripple(tl, t4 + 0.7);
-    tl.to(th, { y: 10, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.out' }, t4 + 0.75);
-    tl.fromTo(merc, { attr: { y: 240, height: 50 } }, { attr: { y: -70, height: 360 }, duration: 1.6, ease: 'power2.inOut', immediateRender: false }, t4 + 1.0);
-    tl.to(qcs, { opacity: 0, x: 40, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t4 + 0.2);
-    const hot = C2.put(stage, 'c2f-hot', 'Now, how<br><b>hot</b> is it?', { x: 1020, y: 560, w: 780, align: 'center' });
-    A.in(tl, hot, t4 + 0.9, 'fadeUp', { dur: 0.7 });
-    const th2 = C2.badge(stage, 'thermometer', 1410, 450, 130, C.redPale, C.red);
-    A.in(tl, th2, t4 + 0.7, 'pop', { dur: 0.5 });
+    tl.to([slot, slotC], { opacity: 0, duration: 0.3 }, t5);
+    tl.fromTo(th, { y: -170 }, { y: 0, duration: 0.6, ease: 'power2.in', immediateRender: false }, t5 + 0.1);
+    tl.fromTo(th, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t5 + 0.1);
+    P.ripple(tl, t5 + 0.7);
+    tl.to(th, { y: 10, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.out' }, t5 + 0.75);
+    tl.fromTo(merc, { attr: { y: 240, height: 50 } }, { attr: { y: -70, height: 360 }, duration: 1.6, ease: 'power2.inOut', immediateRender: false }, t5 + 1.0);
+    tl.to(qcs, { opacity: 0, x: 40, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t5 + 0.2);
+    tl.to(p2, { opacity: 0, duration: 0.3 }, t5 + 0.5);
+    tl.fromTo(p2b, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t5 + 0.7);
+    const hot = C2.put(stage, 'c2f-hot', 'Now, how<br><b>hot</b> is it?', { x: 1020, y: 580, w: 780, align: 'center' });
+    A.in(tl, hot, t5 + 0.9, 'fadeUp', { dur: 0.7 });
+    const th2 = C2.badge(stage, 'thermometer', 1410, 470, 130, C.redPale, C.red);
+    A.in(tl, th2, t5 + 0.7, 'pop', { dur: 0.5 });
 
     // ---------- close: the Calling All Dogs logo
-    const tL = Math.max(t4 + 3.2, Math.min(end(4) + 2.4, dur - 2.4));
-    C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2]);
+    const tL = Math.max(t5 + 3.2, Math.min(end(5) + 2.4, dur - 2.4));
+    C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2, p1, p2b]);
   });
 })();

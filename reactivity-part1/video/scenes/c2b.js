@@ -62,12 +62,13 @@
     def.style.left = PX + C2.R + 20 + 'px';
     stage.appendChild(def);
     P.follow(def, 'surface', -54);
-    A.in(tl, def, tPour + 1.6, 'fadeRight', { dur: 0.7 });
 
     // ---------- beat 1: lower, then higher
     const XR = PX - C2.R - 6;
     const tLow = at(1, 'lower water level', 0.1, 0.2);
-    A.out(tl, def, tLow - 0.1, 'fade', { dur: 0.4 });
+    const tDef = Math.min(tPour + 1.5, tLow - 1.2);
+    A.in(tl, def, tDef, 'fadeRight', { dur: 0.6 });
+    tl.to(def, { opacity: 0, duration: 0.4, ease: 'power2.in', immediateRender: false }, Math.max(tLow - 0.1, tDef + 0.7));
     P.setLevel(tl, 0.25, tLow, 1.0);
     const lowT = levelTag(stage, 'Lower baseline', XR, P.surfaceStageY(0.25));
     A.in(tl, lowT, tLow + 0.7, 'fadeRight', { dur: 0.6 });

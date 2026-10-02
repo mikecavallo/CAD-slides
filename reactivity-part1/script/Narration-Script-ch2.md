@@ -1,10 +1,10 @@
-# Getting Started with Dog Behavior, Chapter 2: Understanding Your Dog's Baseline
+# Getting Started with Dog Behavior: Understanding Reactivity and Aggression. Chapter 2: Understanding Your Dog's Baseline
 
-Narration script. About 1,084 words, roughly 7 minutes at a relaxed pace.
+Narration script. About 1,090 words, roughly 7 minutes at a relaxed pace.
 
 ## Welcome
 
-Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior. This is Chapter 2: Understanding Your Dog's Baseline.
+Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior: Understanding Reactivity and Aggression. This is Chapter 2: Understanding Your Dog's Baseline.
 
 ## Understanding Your Dog's Baseline
 
@@ -22,7 +22,7 @@ Let's start with the dog's body. Sleep, illness, nutrition, medication changes, 
 
 Pain and discomfort deserve some extra attention because they can be easy to miss. Think about having a headache or back pain. You may still go about your day, but being touched, bumped into, dealing with noise, or even having someone ask something of you may be harder to tolerate. A dog doesn't have to be limping, crying, or obviously injured for discomfort to affect behavior. Pain can change how a dog responds to touch, movement, handling, people, other dogs, noise, activity, and everyday events in their environment. So when behavior changes, especially if the change is sudden or unusual for that dog, pain and other medical concerns should be considered.
 
-More activity isn't always better, and less isn't always calmer. Think about the difference between being bored all day and being completely exhausted after an overly busy day. Neither one necessarily leaves you feeling your best. Dogs need an appropriate balance of physical activity, mental activity, opportunities to engage in natural behaviors, and rest. A dog who doesn't have enough appropriate outlets may become frustrated or restless. But constantly exercising, entertaining, or stimulating a dog can also leave them overtired or highly activated. What that balance looks like will be different for each dog. The goal isn't simply more exercise or more enrichment. It's finding the right balance for that individual dog. We'll go much more into this later.
+More activity isn't always better, and less isn't always calmer. Think about the difference between being bored all day and being completely exhausted after an overly busy day. Neither one necessarily leaves you feeling your best. Dogs need an appropriate balance of physical activity, mental activity, opportunities to engage in natural behaviors, and rest. A dog who doesn't have enough appropriate outlets may become frustrated or restless. But constantly exercising, entertaining, or stimulating a dog can also leave them overtired or highly activated. The goal isn't simply more exercise or more enrichment. It's finding the right balance for that individual dog. We'll go much more into this later.
 
 The dog's emotional experiences also affect the baseline. Think about having a difficult conversation with a coworker that leaves you upset or frustrated. The conversation ends, but your emotions don't necessarily disappear with it. If someone else approaches you shortly afterward, you may be shorter or snappier with them than you normally would be. Dogs can be affected by emotional experiences in a similar way. Fear, anxiety, frustration, and repeated stressful experiences can all affect the baseline. And an experience doesn't have to produce a big, obvious response to have an effect. We'll look much more closely at what happens when experiences occur close together, or when there isn't enough time to recover, in the next chapter.
 
@@ -32,4 +32,4 @@ These factors rarely exist in isolation. Imagine you slept poorly, have a headac
 
 This is why identifying these factors is so important. Many of them are things we can do something about. We may be able to address pain or illness, improve sleep or nutrition, adjust physical or mental activity, better meet natural needs, create more predictability and choice, or provide more opportunity for recovery. As we improve these factors, we can lower the water level.
 
-Now we know what the water level represents, why it matters, and some of the things that can change it. But knowing how much water is in the pot is only part of the picture. What happens when something occurs around the dog? How does the dog feel about it? And what happens to their arousal and stress? For that, we need to add another part to our pot. Temperature.
+Now we know what the water level represents, why it matters, and some of the things that can change it. Together, the water and everything in it are what we call distant antecedents. But knowing how much water is in the pot is only part of the picture. What happens when something occurs around the dog? How does the dog feel about it? And what happens to their arousal and stress? For that, we need to add another part to our pot. Temperature.

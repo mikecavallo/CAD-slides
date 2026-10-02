@@ -109,7 +109,7 @@
     const LB = C2.layer(stage, tl, t2);
     const ttl = C2.put(LB, 'c2c-ttl', 'Sleep in a *24-hour* day', { x: 100, y: 278 });
     A.in(tl, ttl, t2 + 0.15, 'fadeUp', { dur: 0.6 });
-    const X0 = 440, PXH = 54, YS = [430, 580, 730];
+    const X0 = 440, PXH = 50, YS = [430, 580, 730];
     const cs = K.svg(LB, { x: 0, y: 0, w: 1920, h: 1080 });
     // axis ticks every 6 hours
     const axis = K.group(cs);
@@ -122,7 +122,7 @@
     const BARS = [
       { who: 'Adult dogs', icon: 'dog', a: 12, b: 16, txt: '12 to 16 hours', p: 'adult dogs', fb: 0.08 },
       { who: 'Puppies', icon: 'baby', a: 18, b: 20, txt: '18 to 20 hours', p: 'Puppies', fb: 0.5 },
-      { who: 'Older dogs', icon: 'hourglass', a: 15, b: 19, txt: 'Often more', p: 'older dogs', fb: 0.85, more: true },
+      { who: 'Older dogs', icon: 'hourglass', a: 16, b: 22.6, txt: 'Often more', p: 'older dogs', fb: 0.85, more: true },
     ];
     lo = t2 + 0.6;
     BARS.forEach((bb, k) => {
@@ -145,6 +145,9 @@
       A.in(tl, range, t + 0.9, 'grow', { dur: 0.5 });
       A.in(tl, hr, t + 1.1, 'fadeRight', { dur: 0.5 });
       if (bb.more) {
+        const chev = K.path(cs, `M ${X0 + bb.b * PXH - 6} ${y - 22} L ${X0 + bb.b * PXH + 16} ${y} L ${X0 + bb.b * PXH - 6} ${y + 22}`, { stroke: '#3d5f8f', 'stroke-width': 7, fill: 'none' });
+        A.in(tl, chev, t + 1.2, 'fadeRight', { dur: 0.5 });
+        hr.style.left = X0 + bb.b * PXH + 34 + 'px';
         const mv = C2.svgIcon(cs, 'moon', X0 + 8 * PXH, y, 34, { stroke: '#fff', 'stroke-width': 2.4 });
         A.in(tl, mv, t + 0.8, 'fade', { dur: 0.4 });
       } else {
@@ -154,7 +157,7 @@
       lo = t + 1.0;
     });
     const defs = K.svgEl('defs', {}, cs);
-    defs.innerHTML = '<linearGradient id="c2cfade" x1="0" x2="1"><stop offset="0" stop-color="#8ea9cf"/><stop offset="1" stop-color="#8ea9cf" stop-opacity="0"/></linearGradient>';
+    defs.innerHTML = '<linearGradient id="c2cfade" x1="0" x2="1"><stop offset="0" stop-color="#3d5f8f"/><stop offset="0.6" stop-color="#8ea9cf"/><stop offset="1" stop-color="#8ea9cf" stop-opacity="0.35"/></linearGradient>';
 
     // ---------- beat 3: a person after a bad night, getting sick, a skipped meal; the bar of what they can handle shrinks
     const t3 = cue(3);
@@ -317,8 +320,8 @@
     A.in(tl, D2.outer, t3 + 0.1, 'fadeUp', { dur: 0.6 });
     A.draw(tl, ring, t3 + 0.3, 1.0);
     const EX = [['hand', 'Touch', 'touch'], ['move', 'Movement', 'movement'], ['hand-helping', 'Handling', 'handling'], ['users', 'People', 'people'],
-      ['dog', 'Other dogs', 'other dogs'], ['volume-2', 'Noise', 'noise'], ['activity', 'Activity', 'activity']];
-    const ANG = [-150, -110, -70, -30, 30, 150, 90].map(a => a * Math.PI / 180);
+      ['dog', 'Other dogs', 'other dogs'], ['volume-2', 'Noise', 'noise'], ['activity', 'Activity', 'activity'], ['calendar-days', 'Everyday events', 'everyday events']];
+    const ANG = [-155, -115, -65, -25, 25, 155, 115, 65].map(a => a * Math.PI / 180);
     lo = t3 + 0.5;
     EX.forEach(([ic, t, p], k) => {
       const x = DCX + 620 * Math.cos(ANG[k]), y = DCY + 250 * Math.sin(ANG[k]);
@@ -330,7 +333,7 @@
       e.appendChild(b);
       e.appendChild(K.el('div', 'lb', t));
       LD.appendChild(e);
-      const tt = clamp(at(3, p, 0.25 + k * 0.08, 0.25), lo, end(3) - 1.5);
+      const tt = clamp(at(3, p, 0.25 + k * 0.08, 0.25), lo, end(3) - 0.6);
       A.in(tl, e, tt, 'pop', { dur: 0.5 });
       lo = tt + 0.3;
     });

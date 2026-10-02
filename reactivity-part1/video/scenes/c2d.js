@@ -34,6 +34,19 @@
   .c2d-mini .z { position: absolute; top: 0; bottom: 0; border-radius: 15px; background: var(--green); }
   .c2d-mini .k { position: absolute; top: -9px; width: 48px; height: 48px; border-radius: 50%; background: #fff; border: 6px solid var(--green-dark); box-sizing: border-box; }
   .c2d-mlab { display: flex; justify-content: space-between; width: 360px; font: 600 26px/1 var(--font-body); color: var(--muted); }
+  .c2d-step { position: absolute; width: 310px; height: 470px; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); }
+  .c2d-step .hd { position: absolute; left: 22px; right: 18px; top: 22px; display: flex; gap: 14px; align-items: flex-start; }
+  .c2d-step .hd .n { width: 44px; height: 44px; border-radius: 50%; background: var(--green-pale); color: var(--green-dark); display: grid; place-items: center;
+    font: 700 26px/1 var(--font-head); flex: 0 0 auto; }
+  .c2d-step .hd .t { font: 700 28px/1.15 var(--font-body); color: var(--ink); padding-top: 6px; }
+  .c2d-step .sc { position: absolute; left: 14px; top: 120px; width: 280px; height: 230px; }
+  .c2d-step .mt { position: absolute; left: 22px; right: 22px; bottom: 26px; }
+  .c2d-step .ml { font: 600 26px/1 var(--font-body); color: var(--muted); margin-bottom: 10px; }
+  .c2d-step .tr { height: 26px; border-radius: 13px; background: #eef1ea; overflow: hidden; }
+  .c2d-step .fl { height: 100%; border-radius: 13px; background: var(--red); }
+  .c2d-burst { position: absolute; left: 100px; top: -6px; width: 64px; height: 64px; display: grid; place-items: center; color: #fff;
+    font: 800 44px/1 var(--font-head); background: var(--red);
+    clip-path: polygon(50% 0, 62% 30%, 96% 22%, 74% 50%, 98% 78%, 62% 70%, 50% 100%, 38% 70%, 4% 78%, 26% 50%, 4% 22%, 38% 30%); }
   .c2d-gl { position: absolute; font: 600 28px/1 var(--font-body); color: var(--muted); white-space: nowrap; }
   .c2d-band { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 12px; }
   .c2d-band .t { font: 700 28px/1.15 var(--font-body); color: var(--ink); text-align: center; white-space: nowrap; }
@@ -201,66 +214,32 @@
     A.in(tl, much.ex, tMuch + 0.8, 'fadeUp', { dur: 0.45, stagger: 0.15 });
     A.in(tl, much.md, clamp(at(4, 'overtired or highly activated', 0.85, 0.3), tMuch + 1.6, end(4)), 'fadeUp', { dur: 0.5 });
 
-    // ---------- beat 5: three dogs, each with its sweet spot in a different place
+    // ---------- beat 5: still on the beam: not simply more; the right balance for this dog
     const t5 = cue(5);
-    tl.to(LB, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t5 - 0.2);
-    const LC = C2.layer(stage, tl, t5);
-    const DOGS = [['collie', 0.18, 0.42], ['terrier', 0.5, 0.82], ['dane', 0.08, 0.3]];
-    const sils = DOGS.map(([n, a, b], k) => {
-      const w = K.el('div', 'c2d-sil');
-      Object.assign(w.style, { left: 150 + k * 560 + 'px', top: '330px' });
-      const im = K.el('img');
-      im.src = '../assets/img/sil_' + n + '.png';
-      w.appendChild(im);
-      const mini = K.el('div', 'c2d-mini');
-      const z = K.el('div', 'z');
-      Object.assign(z.style, { left: a * 100 + '%', width: (b - a) * 100 + '%' });
-      const kn = K.el('div', 'k');
-      kn.style.left = ((a + b) / 2) * 360 - 24 + 'px';
-      mini.appendChild(z);
-      mini.appendChild(kn);
-      w.appendChild(mini);
-      const ml = K.el('div', 'c2d-mlab');
-      ml.appendChild(K.el('span', null, 'Less'));
-      ml.appendChild(K.el('span', null, 'More'));
-      w.appendChild(ml);
-      LC.appendChild(w);
-      A.in(tl, w, t5 + 0.2 + k * 0.35, 'fadeUp', { dur: 0.6 });
-      tl.fromTo(z, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'power2.out' }, t5 + 0.6 + k * 0.35);
-      return w;
-    });
-    const diff = C2.put(LC, 'c2-big', 'Different for *each dog*', { x: 0, y: 760, w: 1920, align: 'center' });
-    A.in(tl, diff, clamp(at(5, 'different for each dog', 0.7, 0.3), t5 + 1.2, end(5)), 'fadeUp', { dur: 0.6 });
-
-    // ---------- beat 6: not simply more; the right balance for this dog
-    const t6 = cue(6);
-    tl.to(LC, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t6 - 0.2);
-    const LD = C2.layer(stage, tl, t6);
-    const m1 = C2.pill(LD, 'dumbbell', 'More exercise', { x: 520, y: 340, size: 38, col: C.muted });
-    const m2 = C2.pill(LD, 'puzzle', 'More enrichment', { x: 1010, y: 340, size: 38, col: C.muted });
-    const tM1 = clamp(at(6, 'more exercise', 0.3, 0.3), t6 + 0.1, end(6) - 4);
-    const tM2 = clamp(at(6, 'more enrichment', 0.42, 0.3), tM1 + 0.5, end(6) - 3.5);
+    tl.to([little.c, much.c], { opacity: 0, y: 20, duration: 0.45, ease: 'power2.in' }, t5 - 0.1);
+    tl.to(beamWrap, { rotation: 0, duration: 1.0, ease: 'elastic.out(1, 0.6)' }, t5 + 0.1);
+    const m1 = C2.pill(LB, 'dumbbell', 'More exercise', { x: 560, y: 690, size: 34, col: C.muted });
+    const m2 = C2.pill(LB, 'puzzle', 'More enrichment', { x: 1000, y: 690, size: 34, col: C.muted });
+    const tM1 = clamp(at(5, 'more exercise', 0.3, 0.3), t5 + 0.3, end(5) - 4);
+    const tM2 = clamp(at(5, 'more enrichment', 0.42, 0.3), tM1 + 0.5, end(5) - 3.5);
     A.in(tl, m1, tM1, 'fadeUp', { dur: 0.5 });
     A.in(tl, m2, tM2, 'fadeUp', { dur: 0.5 });
-    [[m1, 520, tM1], [m2, 1010, tM2]].forEach(([m, x, t]) => {
-      const st = K.el('div', 'c2c-strike');
-      Object.assign(st.style, { position: 'absolute', left: x - 12 + 'px', top: '377px', height: '8px', borderRadius: '4px', background: C.red, width: '0px' });
-      LD.appendChild(st);
+    [[m1, 560, tM1], [m2, 1000, tM2]].forEach(([m, x, t]) => {
+      const st = K.el('div');
+      Object.assign(st.style, { position: 'absolute', left: x - 12 + 'px', top: '724px', height: '8px', borderRadius: '4px', background: C.red, width: '0px' });
+      LB.appendChild(st);
       tl.fromTo(st, { width: 0 }, { width: () => m.offsetWidth + 24, duration: 0.4, ease: 'power2.inOut', immediateRender: false }, t + 0.6);
       tl.to(m, { opacity: 0.5, duration: 0.3 }, t + 0.8);
     });
-    const sc = C2.badge(LD, 'scale', 960, 560, 150, C.green, '#fff');
-    const right = C2.put(LD, 'c2-big', 'The *right balance* for this dog', { x: 0, y: 680, w: 1920, align: 'center' });
-    const tR = clamp(at(6, 'right balance', 0.7, 0.3), tM2 + 1.0, end(6) - 0.5);
-    A.in(tl, sc, tR, 'pop', { dur: 0.6 });
-    A.in(tl, right, tR + 0.2, 'fadeUp', { dur: 0.7 });
-    tl.to(sc, { rotation: -8, duration: 0.5, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tR + 0.6);
+    const right = C2.put(LB, 'c2-big', 'The *right balance* for this dog', { x: 0, y: 800, w: 1920, align: 'center' });
+    const tR = clamp(at(5, 'right balance', 0.7, 0.3), tM2 + 1.0, end(5) - 0.5);
+    A.in(tl, right, tR, 'fadeUp', { dur: 0.7 });
+    tl.to(fulc, { fill: C.green, duration: 0.4, yoyo: true, repeat: 1 }, tR);
 
-    // ---------- beat 7: more on this later
-    const mk = C2.bookmark(LD, 'More on this later', 0, 820);
-    mk.style.left = '50%';
-    gsap.set(mk, { xPercent: -50 });
-    A.in(tl, mk, cue(7) + 0.1, 'fadeUp', { dur: 0.6 });
+    // ---------- beat 6: more on this later, on the same slide
+    const mk = C2.bookmark(LB, 'More on this later', 0, 0);
+    Object.assign(mk.style, { left: '1500px', top: '300px' });
+    A.in(tl, mk, cue(6) + 0.1, 'fadeLeft', { dur: 0.6 });
   });
 
   // ================================================================== ch02s08 Emotions and recovery
@@ -276,91 +255,103 @@
     A.in(tl, P.wrap, cue(0) + 0.3, 'fadeUp', { dur: 0.8 });
     P.waves(tl, 0, dur);
 
-    // ---------- beat 1: the mood graph; a difficult conversation pushes the line up
+    // ---------- beats 1 to 4: a three-step strip. 1: a difficult conversation fills the "upset" meter. 2: it ends, the meter
+    // stays up. 3: someone else approaches and gets a snappy reply. 4: "you" becomes the dog in every step
     const LA = C2.layer(stage, tl, cue(1));
-    const g = K.svg(LA, { x: 0, y: 0, w: 1920, h: 1080 });
-    const GX = 200, GY = 840, GW = 860, GT = 400;
-    const axes = K.path(g, `M ${GX} ${GT} L ${GX} ${GY} L ${GX + GW} ${GY}`, { stroke: '#b9c6ad', 'stroke-width': 6, fill: 'none' });
+    const STEP = [['1', 'Difficult conversation'], ['2', 'It ends'], ['3', 'Someone else<br>approaches']];
+    const cards = STEP.map(([n, t], k) => {
+      const c = K.el('div', 'c2d-step');
+      Object.assign(c.style, { left: 100 + k * 330 + 'px', top: '300px' });
+      const hd = K.el('div', 'hd');
+      hd.appendChild(K.el('div', 'n', n));
+      hd.appendChild(K.el('div', 't', t));
+      c.appendChild(hd);
+      const sc = K.el('div', 'sc');
+      c.appendChild(sc);
+      const mt = K.el('div', 'mt');
+      mt.appendChild(K.el('div', 'ml', 'How upset'));
+      const tr = K.el('div', 'tr');
+      const fill = K.el('div', 'fl');
+      tr.appendChild(fill);
+      mt.appendChild(tr);
+      c.appendChild(mt);
+      LA.appendChild(c);
+      gsap.set(fill, { width: '0%' });
+      return { c, sc, fill };
+    });
+    /** A round person/dog badge inside a step's scene box at (x, y) (box-relative, centre). */
+    const who = (box, icon, x, y, size, o = {}) => {
+      const b = K.el('div', 'c2-badge');
+      Object.assign(b.style, { left: x - size / 2 + 'px', top: y - size / 2 + 'px', width: size + 'px', height: size + 'px',
+        background: o.bg || '#fff', color: o.fg || C.greenDark, border: o.border || '5px solid var(--green)' });
+      b.appendChild(K.icon(icon));
+      box.appendChild(b);
+      return b;
+    };
+    const you = [], youDog = [];
+    cards.forEach(({ sc }) => {
+      you.push(who(sc, 'user', 70, 92, 104));
+      const d = who(sc, 'dog', 70, 92, 104);
+      gsap.set(d, { opacity: 0 });
+      youDog.push(d);
+    });
+    const other1 = who(cards[0].sc, 'user', 206, 92, 92, { bg: C.pale, border: '5px solid #fff' });
+    const warn = who(cards[0].sc, 'message-circle-warning', 138, 30, 62, { bg: C.amber, fg: '#fff', border: '4px solid #fff' });
+    const gone = who(cards[1].sc, 'user', 206, 92, 92, { bg: 'transparent', fg: '#c3cbb9', border: '4px dashed #c3cbb9' });
+    const other3 = who(cards[2].sc, 'user', 206, 92, 92, { bg: C.pale, border: '5px solid #fff' });
+
     const t1 = cue(1);
-    A.draw(tl, axes, t1 + 0.1, 0.8);
-    const yl = C2.put(LA, 'c2d-gl', 'How upset', { x: GX - 100, y: GT - 52 });
-    Object.assign(yl.style, { left: GX - 160 + 'px', top: GT + 120 + 'px', transform: 'rotate(-90deg)', transformOrigin: '50% 50%' });
-    const xl = C2.put(LA, 'c2d-gl', 'time', { x: GX + GW - 60, y: GY + 18 });
-    A.in(tl, [yl, xl], t1 + 0.5, 'fade', { dur: 0.4 });
-    const who = C2.badge(LA, 'user', GX - 10, GY + 70, 0, '#fff', C.greenDark);
-    const whoW = 96;
-    Object.assign(who.style, { left: GX - 140 + 'px', top: GY - 140 + 'px', width: whoW + 'px', height: whoW + 'px', border: '5px solid var(--green)' });
-    const whoDog = C2.badge(LA, 'dog', 0, 0, whoW, '#fff', C.greenDark);
-    Object.assign(whoDog.style, { left: GX - 140 + 'px', top: GY - 140 + 'px', border: '5px solid var(--green)' });
-    gsap.set(whoDog, { opacity: 0 });
-    A.in(tl, who, t1 + 0.4, 'pop', { dur: 0.5 });
-    const C0 = 320, C1x = 520; // conversation spans x C0..C1x
-    const zone = K.rect(g, C0, GT, C1x - C0, GY - GT, { fill: C.amberPale, opacity: 0.9 });
-    g.insertBefore(zone, axes);
-    const conv = K.el('div', 'c2d-band');
-    Object.assign(conv.style, { left: (C0 + C1x) / 2 - 200 + 'px', top: GT - 126 + 'px', width: '400px' });
-    const cb = C2.badge(conv, 'message-circle-warning', 0, 0, 72, C.amber, '#fff');
-    cb.style.position = 'relative';
-    cb.style.left = cb.style.top = '';
-    conv.appendChild(K.el('div', 't', 'Difficult conversation'));
-    LA.appendChild(conv);
-    const tConv = clamp(at(1, 'difficult conversation', 0.25, 0.3), t1 + 0.6, end(1) - 2);
-    tl.fromTo(zone, { attr: { width: 0 } }, { attr: { width: C1x - C0 }, duration: 0.8, ease: 'power2.out', immediateRender: false }, tConv);
-    tl.set(zone, { attr: { width: 0 } }, 0);
-    A.in(tl, conv, tConv + 0.2, 'fade', { dur: 0.5 });
-    const L1 = K.path(g, `M ${GX} 770 C 240 768 280 772 ${C0} 768 C 400 760 450 520 ${C1x} 480`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
-    A.draw(tl, L1, tConv + 0.4, 1.6, { ease: 'power1.inOut' });
+    const tConv = clamp(at(1, 'difficult conversation', 0.25, 0.3), t1 + 0.1, end(1) - 2);
+    A.in(tl, cards[0].c, tConv, 'fadeUp', { dur: 0.6 });
+    A.in(tl, other1, tConv + 0.4, 'pop', { dur: 0.45 });
+    A.in(tl, warn, tConv + 0.8, 'pop', { dur: 0.45 });
+    tl.to(cards[0].fill, { width: '85%', duration: 1.4, ease: 'power2.inOut' }, clamp(at(1, 'upset or frustrated', 0.8, 0.4), tConv + 1.0, end(1)));
 
-    // ---------- beat 2: the conversation ends; the feeling stays
     const t2 = cue(2);
-    const L2 = K.path(g, `M ${C1x} 480 C 600 470 690 490 760 500`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
-    const endL = K.line(g, C1x, GT, C1x, GY, { stroke: C.amber, 'stroke-width': 5, 'stroke-dasharray': '12 10' });
     const tEnd = clamp(at(2, 'conversation ends', 0.15, 0.2), t2, end(2) - 2);
-    A.draw(tl, endL, tEnd, 0.4);
-    A.draw(tl, L2, tEnd + 0.5, 1.4, { ease: 'none' });
-    const still = C2.pill(LA, null, 'Still upset', { x: 560, y: 380, variant: 'red', size: 30 });
-    A.in(tl, still, clamp(at(2, "don't necessarily disappear", 0.6, 0.3), tEnd + 1.0, end(2)), 'fadeUp', { dur: 0.5 });
+    A.in(tl, cards[1].c, tEnd, 'fadeUp', { dur: 0.6 });
+    A.in(tl, gone, tEnd + 0.3, 'fade', { dur: 0.5 });
+    tl.fromTo(cards[1].fill, { width: '85%' }, { width: '78%', duration: 1.6, ease: 'power1.inOut', immediateRender: false }, tEnd + 0.6);
+    const still = C2.pill(cards[1].sc, null, 'Still upset', { variant: 'red', size: 26 });
+    Object.assign(still.style, { left: '50%', top: '170px' });
+    gsap.set(still, { xPercent: -50 });
+    A.in(tl, still, clamp(at(2, "don't necessarily disappear", 0.6, 0.3), tEnd + 0.8, end(2)), 'fadeUp', { dur: 0.5 });
 
-    // ---------- beat 3: someone else approaches; a snappy reply
     const t3 = cue(3);
-    const XS = 780;
-    const someone = C2.badge(LA, 'user', XS, GY - 70, 88, C.pale, C.greenDark);
     const tSome = clamp(at(3, 'someone else approaches', 0.15, 0.3), t3, end(3) - 3);
-    tl.fromTo(someone, { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, tSome);
-    const L3 = K.path(g, `M 760 500 C 780 500 790 430 810 420 C 830 410 850 500 ${GX + GW - 20} 520`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
-    const tSnap = clamp(at(3, 'shorter or snappier', 0.55, 0.3), tSome + 0.9, end(3) - 0.8);
-    A.draw(tl, L3, tSnap - 0.3, 1.2);
-    const burst = K.group(g);
-    K.path(burst, 'M 0 -62 L 16 -24 L 58 -36 L 30 -4 L 62 26 L 18 22 L 10 64 L -10 26 L -52 40 L -28 6 L -60 -24 L -18 -22 Z', { fill: C.red, stroke: '#fff', 'stroke-width': 5 });
-    K.svgText(burst, 0, 14, '!', { 'font-size': 52, 'font-weight': 800, 'font-family': 'Rubik', fill: '#fff', 'text-anchor': 'middle' });
-    gsap.set(burst, { x: 880, y: 330 });
-    tl.fromTo(burst, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.4)', immediateRender: false }, tSnap);
-    tl.set(burst, { opacity: 0 }, 0);
-    const snp = C2.pill(LA, null, 'Snappier', { x: 830, y: 220, variant: 'red', size: 30 });
-    snp.style.top = '226px';
+    A.in(tl, cards[2].c, tSome, 'fadeUp', { dur: 0.6 });
+    tl.set(cards[2].fill, { width: '78%' }, tSome);
+    tl.fromTo(other3, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' }, tSome + 0.4);
+    const tSnap = clamp(at(3, 'shorter or snappier', 0.55, 0.3), tSome + 1.0, end(3) - 0.8);
+    const burst = K.el('div', 'c2d-burst', '!');
+    cards[2].sc.appendChild(burst);
+    tl.fromTo(burst, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.4)' }, tSnap);
+    const snp = C2.pill(cards[2].sc, null, 'Snappier', { variant: 'red', size: 26 });
+    Object.assign(snp.style, { left: '50%', top: '170px' });
+    gsap.set(snp, { xPercent: -50 });
     A.in(tl, snp, tSnap + 0.3, 'fadeUp', { dur: 0.5 });
 
-    // ---------- beat 4: dogs too
+    // beat 4: dogs too: "you" becomes the dog in every step
     const t4 = cue(4);
-    tl.to(who, { opacity: 0, scale: 0.7, duration: 0.35, ease: 'power2.in' }, t4 + 0.1);
-    tl.fromTo(whoDog, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)', immediateRender: false }, t4 + 0.4);
-    tl.to(someone, { background: C.amberPale, duration: 0.3 }, t4 + 0.4);
-    const sim = C2.pill(LA, 'dog', 'Dogs can feel it too', { x: 560, y: 900, center: true, variant: 'green', size: 32 });
-    sim.style.top = '890px';
-    A.in(tl, sim, t4 + 0.8, 'fadeUp', { dur: 0.6 });
+    you.forEach((b, k) => {
+      tl.to(b, { opacity: 0, scale: 0.7, duration: 0.3, ease: 'power2.in' }, t4 + 0.1 + k * 0.15);
+      tl.fromTo(youDog[k], { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', immediateRender: false }, t4 + 0.35 + k * 0.15);
+    });
+    const sim = C2.pill(LA, 'dog', 'Dogs can be affected the same way', { x: 575, y: 810, center: true, variant: 'green', size: 32 });
+    A.in(tl, sim, t4 + 0.9, 'fadeUp', { dur: 0.6 });
 
     // ---------- beat 5: four emotions drip into the pot; the water rises
     const t5 = cue(5);
     tl.to(LA, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t5 - 0.2);
     const LB = C2.layer(stage, tl, t5);
-    const EM = [['frown', 'Fear', 'Fear', 0.05], ['cloud-drizzle', 'Anxiety', 'anxiety', 0.18], ['angry', 'Frustration', 'frustration', 0.32], ['zap', 'Stressful experiences', 'repeated stressful', 0.5]];
+    const EM = [['frown', 'Fear', 'Fear', 0.05, C.red], ['cloud-drizzle', 'Anxiety', 'anxiety', 0.18, C.amber], ['angry', 'Frustration', 'frustration', 0.32, C.red], ['zap', 'Stressful experiences', 'repeated stressful', 0.5, C.amber]];
     let lo = t5 + 0.2, L = 0.4;
-    EM.forEach(([ic, t, p, fb], k) => {
+    EM.forEach(([ic, t, p, fb, col], k) => {
       const x = 120 + (k % 2) * 440, y = 330 + Math.floor(k / 2) * 120;
-      const c = C2.pill(LB, ic, t, { x, y, size: 34, col: C2.AREAS[2].col });
+      const c = C2.pill(LB, ic, t, { x, y, size: 34, col });
       const tt = clamp(at(5, p, fb, 0.3), lo, end(5) - 1.6);
       A.in(tl, c, tt, 'fadeRight', { dur: 0.5 });
-      const land = P.drip(tl, x + 37, y + 37, tt + 0.3, C2.AREAS[2].col, 0.95);
+      const land = P.drip(tl, x + 37, y + 37, tt + 0.3, col, 0.95);
       L += 0.085;
       P.setLevel(tl, L, land - 0.05, 0.6);
       lo = tt + 0.6;
@@ -379,7 +370,7 @@
     noR.style.fontSize = '34px';
     A.in(tl, noR, tEv + 0.9, 'fade', { dur: 0.5 });
     const tEff = clamp(at(6, 'to have an effect', 0.85, 0.3), tEv + 1.4, end(6) - 0.4);
-    const land = P.drip(tl, 420, 610, tEff - 0.6, C2.AREAS[2].col, 0.8);
+    const land = P.drip(tl, 420, 610, tEff - 0.6, C.amber, 0.8);
     P.setLevel(tl, L + 0.06, land, 0.8);
     L += 0.06;
     const eff = C2.put(LB, 'c2-lab', '**...still an effect**', { x: 320, y: 724 });

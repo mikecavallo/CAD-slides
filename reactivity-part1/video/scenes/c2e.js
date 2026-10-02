@@ -120,12 +120,12 @@
       ['circle-alert', 'Punishment or confrontational handling', 'punishment', 0.6], ['lock', 'Little control', 'little control', 0.75]];
     lo = t4 + 0.5;
     let L = 0.3, tLast = 0;
-    ST.forEach(([ic, t, p, fb], k) => {
+    ST.forEach(([ic, t, p, fb, col], k) => {
       const y = 286 + k * 106;
-      const c = C2.pill(LB, ic, t, { x: 100, y, size: 31, col: C2.AREAS[3].col });
+      const c = C2.pill(LB, ic, t, { x: 100, y, size: 31, col });
       const tt = clamp(at(4, p, fb, 0.3), lo, end(4) - 1.8);
       A.in(tl, c, tt, 'fadeRight', { dur: 0.5 });
-      const land = P.drip(tl, 1060, y + 37, tt + 0.35, C2.AREAS[3].col, 0.8);
+      const land = P.drip(tl, 1060, y + 37, tt + 0.35, col, 0.8);
       L += 0.09;
       P.setLevel(tl, L, land - 0.05, 0.6);
       lo = tt + 0.55;
@@ -206,25 +206,22 @@
     P.waves(tl, t3, dur);
     const fd = C2.pill(LC, 'dog', 'For a dog', { x: 100, y: 278, variant: 'green', size: 32 });
     A.in(tl, fd, t3 + 0.2, 'fadeRight', { dur: 0.5 });
-    const FAC = [['moon', 'Poor sleep', 'poor sleep', 0.15, C2.AREAS[0].col], ['stethoscope', 'Pain', 'pain', 0.25, C2.AREAS[0].col],
-      ['activity', 'Too much or too little stimulation', 'too much or too little', 0.42, C2.AREAS[1].col], ['house', 'Change at home', 'changes at home', 0.68, C2.AREAS[3].col],
-      ['zap', 'Stressful experiences', 'stressful experiences', 0.92, C2.AREAS[2].col]];
-    const TX = [-140, -40, 60, 150, -90], TY = [70, 92, 66, 96, 128];
+    const FAC = [['moon', 'Poor sleep', 'poor sleep', 0.15, C.red], ['stethoscope', 'Pain', 'pain', 0.25, C.red],
+      ['activity', 'Too much or too little stimulation', 'too much or too little', 0.42, C.amber], ['house', 'Change at home', 'changes at home', 0.68, C.amber],
+      ['zap', 'Stressful experiences', 'stressful experiences', 0.92, C.red]];
     lo = t3 + 0.5;
     let L = 0.22;
     const pills = FAC.map(([ic, t, p, fb, col], k) => {
       const y = 380 + k * 104;
       const c = C2.pill(LC, ic, t, { x: 140, y, size: 30, col });
-      const tok = P.addToken(ic, col, TX[k], TY[k], 38);
       const tt = clamp(at(3, p, fb, 0.3), lo, end(3) - 1.0);
       A.in(tl, c, tt, 'fadeRight', { dur: 0.5 });
-      const land = P.dropToken(tl, tok, tt + 0.2);
+      const land = P.drip(tl, 140 + 37, y + 37, tt + 0.25, col, 0.8);
       L += 0.13;
-      P.setLevel(tl, L, land - 0.1, 0.5, 'power2.out');
+      P.setLevel(tl, L, land - 0.05, 0.5, 'power2.out');
       lo = tt + 0.55;
       return c;
     });
-    P.bob(tl, t3 + 1.0, dur);
 
     // ---------- beat 4: together they add up; little room left
     const t4 = cue(4);

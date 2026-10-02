@@ -195,6 +195,7 @@
     const wave = K.path(water, 'M -520 4 q 40 -12 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0', { stroke: '#ffffff', 'stroke-width': 5, opacity: 0.55, fill: 'none' });
     const tokG = K.group(water);
     const rip = K.group(water);
+    const ingG = K.group(clip);
     // front of the glass: sheen, outline, rim
     const front = K.group(svg);
     K.path(front, BODY, { fill: `url(#${id}g)`, stroke: C.rim, 'stroke-width': 8 });
@@ -209,7 +210,21 @@
     const brLine = K.path(br, '', { stroke: C.greenDark, 'stroke-width': 7, fill: 'none' });
     const brDash = K.path(br, '', { stroke: C.greenDark, 'stroke-width': 3, fill: 'none', 'stroke-dasharray': '10 10', opacity: 0.6 });
 
-    const P = { wrap, svg, body, water, wBody, wTop, wave, tokG, rip, front, br, s, cx: o.cx, y: o.y, R, H, L: o.level ?? 0.5, followers: [], tokens: [] };
+    const P = { wrap, svg, body, water, wBody, wTop, wave, tokG, rip, front, br, s, cx: o.cx, y: o.y, R, H, L: o.level ?? 0.5, followers: [], tokens: [], ing: [] };
+    // Chapter 1's eight ingredients are already in the pot: they float just under the surface and ride the waterline
+    // up and down; when the water is low they rest on the bottom
+    if (o.ingredients !== false && window.C1) {
+      const SPOT = [[-150, 40, 286], [-50, 30, 292], [50, 42, 288], [150, 32, 284], [-100, 92, 322], [0, 100, 326], [100, 90, 322], [-178, 96, 312]];
+      C1.ING.forEach((g, k) => {
+        const outer = K.group(ingG);
+        const mid = K.group(outer);
+        const inner = K.group(mid);
+        K.circle(inner, 0, 0, 30, { fill: g.col, stroke: '#fff', 'stroke-width': 4, filter: `url(#${id}t)` });
+        svgIcon(inner, g.icon, 0, 0, 32, { stroke: '#fff', 'stroke-width': 2.3 });
+        const [x, depth, rest] = SPOT[k];
+        P.ing.push({ outer, mid, inner, x, depth, rest });
+      });
+    }
     const proxy = { L: P.L };
     P.toStage = (lx, ly) => [o.cx + lx * s, o.y + ly * s];
     P.surfaceStageY = (L = P.L) => o.y + surfY(L) * s;
@@ -217,6 +232,7 @@
       const y = surfY(proxy.L);
       water.setAttribute('transform', `translate(0 ${y})`);
       water.setAttribute('opacity', Math.min(1, proxy.L / 0.04));
+      P.ing.forEach(t => t.outer.setAttribute('transform', `translate(${t.x} ${Math.min(y + t.depth, t.rest)})`));
       brLine.setAttribute('d', `M ${BX - 18} 0 L ${BX + 18} 0 M ${BX} 0 L ${BX} ${y} M ${BX - 18} ${y} L ${BX + 18} ${y}`);
       brDash.setAttribute('d', `M ${R + 8} ${y} L ${BX - 24} ${y}`);
       P.followers.forEach(f => {
@@ -240,7 +256,20 @@
       const per = 1.6, n = Math.max(1, Math.floor((t1 - t0) / per));
       tl.fromTo(wave, { x: 0 }, { x: -160, duration: per, ease: 'none', repeat: n - 1 }, t0);
       tl.fromTo(wTop, { attr: { ry: RY - 8 } }, { attr: { ry: RY - 12 }, duration: per / 2, ease: 'sine.inOut', yoyo: true, repeat: 2 * n - 1 }, t0);
+      P.ing.forEach((t, k) => {
+        const pk = 1.3 + (k % 3) * 0.14, st = t0 + k * 0.16, m = Math.max(1, Math.floor((t1 - st) / pk));
+        tl.fromTo(t.inner, { y: -4, rotation: -5, svgOrigin: '0 0' }, { y: 4, rotation: 5, svgOrigin: '0 0', duration: pk, ease: 'sine.inOut', yoyo: true, repeat: m - 1 }, st);
+      });
     };
+    /** The ingredients drop into the pot from above (staggered), starting at t. Returns when the last one lands. */
+    P.dropIng = (tl, t, from = -420) => {
+      P.ing.forEach((g, k) => {
+        tl.fromTo(g.mid, { y: from, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.in', immediateRender: true }, t + k * 0.1);
+      });
+      return t + (P.ing.length - 1) * 0.1 + 0.6;
+    };
+    /** Hide or show the ingredients (no animation). */
+    P.ingOpacity = v => P.ing.forEach(g => gsap.set(g.mid, { opacity: v }));
     /** Ripple rings on the surface at t. */
     P.ripple = (tl, t, col = '#ffffff') => {
       [0, 0.18].forEach((d, i) => {
@@ -264,6 +293,22 @@
       tl.to(d, { opacity: 0, duration: 0.12 }, t0 + dur);
       P.ripple(tl, t0 + dur, col);
       return t0 + dur;
+    };
+    /** The reverse of a drip: a drop lifts off the surface and flies out to stage point (sx, sy), fading as it arrives. */
+    P.lift = (tl, sx, sy, t, col = C.water, dur = 0.85) => {
+      const lx = (sx - o.cx) / s, ly = (sy - o.y) / s, fy = surfY(P.L) - 10;
+      const top = Math.min(ly, 0) - 150;
+      const d = K.group(svg);
+      svg.insertBefore(d, front);
+      K.path(d, 'M 0 -30 C 12 -12 20 -2 20 10 A 20 20 0 0 1 -20 10 C -20 -2 -12 -12 0 -30 Z', { fill: col, stroke: '#fff', 'stroke-width': 4 });
+      gsap.set(d, { x: 0, y: fy, opacity: 0 });
+      P.ripple(tl, t, '#ffffff');
+      tl.fromTo(d, { opacity: 0, scale: 0.5, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.2, immediateRender: false }, t);
+      tl.fromTo(d, { x: 0 }, { x: lx, duration: dur, ease: 'power1.inOut', immediateRender: false }, t);
+      tl.fromTo(d, { y: fy }, { y: top, duration: dur * 0.55, ease: 'power2.out', immediateRender: false }, t);
+      tl.fromTo(d, { y: top }, { y: ly, duration: dur * 0.45, ease: 'power2.in', immediateRender: false }, t + dur * 0.55);
+      tl.to(d, { opacity: 0, scale: 0.5, duration: 0.15 }, t + dur - 0.05);
+      return t + dur;
     };
     /** A chip (icon in a coloured circle) that floats in the water at local x, `y` px under the surface. Hidden until dropped. */
     P.addToken = (icon, col, x, y = 70, r = 40) => {

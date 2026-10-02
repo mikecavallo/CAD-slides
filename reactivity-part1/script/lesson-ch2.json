@@ -1,5 +1,5 @@
 {
- "title": "Getting Started with Dog Behavior, Chapter 2: Understanding Your Dog's Baseline",
+ "title": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression. Chapter 2: Understanding Your Dog's Baseline",
  "notes": "Chapter 2 video. Narration for ch02s01 to ch02s12 is the trainer's doc (Script v4, the 'Chapter 2: Understanding Your Dog's Baseline' section, up to 'END CHAPTER 2 MATERIAL'). The welcome (ch02intro) and plan (ch02plan) narration were drafted for this video and sent to the trainer. Build with LESSON=lesson-ch2.json.",
  "tail": 5.0,
  "chapters": [
@@ -12,7 +12,7 @@
     {
      "id": "ch02intro",
      "heading": "Getting Started with Dog Behavior",
-     "visual_concept": "Title slide for Chapter 2, same layout as Chapter 1's: the series title at left with 'Chapter 2: Understanding Your Dog's Baseline' under it, Tori's headshot in a green ring at right with the training photo as a tilted card, and the name block with credentials.",
+     "visual_concept": "Title slide with the presentation's own title, unchanged ('Getting Started with Dog Behavior' / 'Understanding Reactivity and Aggression'), then a chapter tag carrying Chapter 1's amber fuel chip: 'Chapter 2: Understanding Your Dog's Baseline'. Tori's headshot in a green ring, the training photo card, name and credentials.",
      "assets": [
       "trainer_headshot.jpg",
       "trainer_with_dog.jpg",
@@ -20,8 +20,8 @@
      ],
      "beats": [
       {
-       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior. This is Chapter 2: Understanding Your Dog's Baseline.",
-       "show": "Series title and 'Chapter 2' line write on at left; the headshot scales in inside a green ring; the name block appears as the name is said; the training photo card tilts in; the chapter line pulses as it is said.",
+       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior: Understanding Reactivity and Aggression. This is Chapter 2: Understanding Your Dog's Baseline.",
+       "show": "Presentation title and subtitle as in Chapter 1; the headshot scales in; the name block appears as the name is said; the training photo tilts in; the chapter tag with the amber fuel chip slides in on 'Chapter 2'.",
        "onscreen": "Getting Started with Dog Behavior. Chapter 2: Understanding Your Dog's Baseline"
       }
      ]
@@ -59,7 +59,7 @@
     {
      "id": "ch02s01",
      "heading": "Understanding Your Dog's Baseline",
-     "visual_concept": "Recap with Chapter 1's mixing bowl (all eight ingredients inside). Four ingredients that return in this chapter glow and lift out (Breed history and purpose, Past experiences, Training tools and methods, Pain and discomfort) while the rest dim. Three green tags: Changed, Managed, Improved, plus a 'Right now' clock. The bowl steps aside and 'Your dog's baseline' lands with a level line drawn under it.",
+     "visual_concept": "Recap with Chapter 1's bowl: the eight ingredients and the amber fuel chip on top ('What fuels the behavior?'). Four returning ingredients glow. Changed / Managed / Improved; the fuel chip glows on 'right now'. At 'a little differently' the ingredients pour from the bowl into a glass pot and the fuel chip melts into it as water. 'Your dog's baseline' points at the waterline.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:mixing-bowl",
@@ -71,7 +71,7 @@
      "beats": [
       {
        "say": "In the last chapter, we looked at the ingredients that can help shape a dog's behavior.",
-       "show": "Chapter 1's bowl fades in full, with the caption 'Chapter 1: the ingredients'.",
+       "show": "Chapter 1's bowl with its eight ingredients and the amber fuel chip on top; pills: 'The ingredients' and 'What fuels the behavior?'.",
        "onscreen": "Understanding Your Dog's Baseline"
       },
       {
@@ -81,12 +81,12 @@
       },
       {
        "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently.",
-       "show": "Three green tags pop in one per word: Changed, Managed, Improved; a 'Right now' clock badge pulses; at 'a little differently' the bowl and pills slide away.",
+       "show": "Changed, Managed, Improved pop in; the fuel chip glows with 'Affecting your dog right now'; at 'a little differently' the bowl tips, the ingredients drop into a glass pot and the fuel chip melts into it as water.",
        "onscreen": "Changed, managed, or improved"
       },
       {
        "say": "First, we need to talk about your dog's baseline.",
-       "show": "'Your dog's baseline' lands large at centre and a green level line draws under it.",
+       "show": "'Your dog's baseline' points at the waterline of the pot, the ingredients floating in it.",
        "onscreen": "Your dog's baseline"
       }
      ]
@@ -117,7 +117,7 @@
     {
      "id": "ch02s03",
      "heading": "Picture the Baseline as Water",
-     "visual_concept": "A cooking pot draws on and fills with water (no heat, no thermometer yet). A ruler beside it marks Lower and Higher. The water drops and rises with the words. A bracket between the waterline and the rim shows the room left for what happens next: small when the water is high, large when it is low. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "A cooking pot draws on and fills with water (no heat, no thermometer yet). A ruler beside it marks Lower and Higher. The water drops and rises with the words. A bracket between the waterline and the rim shows the room left for what happens next: small when the water is high, large when it is low. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot"
@@ -153,7 +153,7 @@
     {
      "id": "ch02s04",
      "heading": "What Can Affect the Water Level?",
-     "visual_concept": "The pot at left with up and down arrows by the waterline. Four area cards stack at right, one per area as it is named (Physical Health; Activity, Stimulation & Natural Needs; Emotions & Recovery; Environment, Predictability & Choice). Then all four drip into the pot at once and the water rises. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "The pot at left with up and down arrows by the waterline. Four area cards stack at right, one per area as it is named (Physical Health; Activity, Stimulation & Natural Needs; Emotions & Recovery; Environment, Predictability & Choice). Then all four drip into the pot at once and the water rises. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -207,7 +207,7 @@
       },
       {
        "say": "Many adult dogs sleep around 12 to 16 hours in a 24-hour period. Puppies may need as much as 18 to 20 hours, and older dogs often sleep more.",
-       "show": "The chips clear; a sleep chart on a 24-hour scale: Adult dogs bar grows to 12 to 16 hours, Puppies to 18 to 20 hours, Older dogs 'often more'.",
+       "show": "Sleep chart on a 24-hour scale: Adult dogs 12 to 16 hours, Puppies 18 to 20 hours, Older dogs the longest bar, ending in an arrow: 'Often more'.",
        "onscreen": "Sleep in 24 hours"
       },
       {
@@ -260,7 +260,7 @@
       },
       {
        "say": "Pain can change how a dog responds to touch, movement, handling, people, other dogs, noise, activity, and everyday events in their environment.",
-       "show": "The dog at centre; seven example badges pop around it one per word: Touch, Movement, Handling, People, Other dogs, Noise, Activity; the ring glows on 'everyday events'.",
+       "show": "The dog at centre; eight example badges pop around it one per word: Touch, Movement, Handling, People, Other dogs, Noise, Activity, Everyday events.",
        "onscreen": "Touch · Movement · Handling · People · Other dogs · Noise · Activity"
       },
       {
@@ -273,7 +273,7 @@
     {
      "id": "ch02s07",
      "heading": "Activity, Stimulation & Natural Needs",
-     "visual_concept": "Activity, Stimulation & Natural Needs. A slider from Too little to Too much with a green sweet spot. Bored all day and Exhausted cards at its ends. A balance beam that four weights land on (Physical activity, Mental activity, Natural behaviors, Rest); it tips to Too little (frustrated, restless) and Too much (overtired, highly activated) with the doc's list of examples on each side. Three dogs with sweet spots in different places. 'The right balance for this dog.'",
+     "visual_concept": "Activity, Stimulation & Natural Needs. Slider from Too little to Too much; Bored all day and Exhausted cards; a balance beam with the four needs that tips to each side with the doc's examples; then it levels: 'The right balance for this dog', 'More exercise' and 'More enrichment' struck through, and 'More on this later', all on the beam slide.",
      "assets": [
       "bg_swirl.jpg",
       "icon:footprints",
@@ -313,18 +313,13 @@
        "onscreen": "Too little: frustrated, restless. Too much: overtired, highly activated."
       },
       {
-       "say": "What that balance looks like will be different for each dog.",
-       "show": "Three dog silhouettes, each with its own small slider whose green zone sits in a different place.",
-       "onscreen": "Different for each dog"
-      },
-      {
        "say": "The goal isn't simply more exercise or more enrichment. It's finding the right balance for that individual dog.",
-       "show": "'More exercise' and 'More enrichment' are struck through; 'The right balance for this dog' lands.",
+       "show": "The columns fade and the beam levels; 'More exercise' and 'More enrichment' are struck through; 'The right balance for this dog' lands under the beam.",
        "onscreen": "The right balance for this dog"
       },
       {
        "say": "We'll go much more into this later.",
-       "show": "A small 'More on this later' bookmark tag.",
+       "show": "A 'More on this later' tag on the same slide.",
        "onscreen": "More on this later"
       }
      ]
@@ -332,7 +327,7 @@
     {
      "id": "ch02s08",
      "heading": "Emotions & Recovery",
-     "visual_concept": "Emotions & Recovery. A time graph: a tense conversation raises a mood line that stays high after the conversation ends; a second person arrives while it is still high and gets a snappy reply. The person becomes the dog. Then the pot: Fear, Anxiety, Frustration and Stressful experiences drip in and the water rises; a quiet event with no visible reaction still nudges it up. 'Limited opportunity for recovery' with a 'Next chapter' tag. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "Emotions & Recovery. A three-step strip with an 'How upset' meter in each: 1 Difficult conversation (meter fills), 2 It ends (meter stays up: Still upset), 3 Someone else approaches (Snappier). Then 'you' becomes the dog in every step. Then the pot: Fear, Anxiety, Frustration, Stressful experiences (red and amber) drip in and the water rises; a quiet event still nudges it up; limited recovery, next chapter. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -387,7 +382,7 @@
     {
      "id": "ch02s09",
      "heading": "Environment, Predictability & Choice",
-     "visual_concept": "Environment, Predictability & Choice. Three amber cards for the human example (What's next?, Plans keep changing, No say), which turn green (Predictability, Control). A dog badge joins. Then the pot: Changes in routine, Unpredictability, Social conflict, Can't move away, Punishment or confrontational handling, Little control drip in one per phrase and the water rises. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "Environment, Predictability & Choice. Three amber cards for the human example (What's next?, Plans keep changing, No say), which turn green (Predictability, Control). A dog badge joins. Then the pot: Changes in routine, Unpredictability, Social conflict, Can't move away, Punishment or confrontational handling, Little control drip in one per phrase and the water rises. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -422,7 +417,7 @@
       },
       {
        "say": "Changes in routine, an unpredictable household, social conflict, limited opportunities to move away or opt out, punishment, and having little control over what happens to them can all raise the water level.",
-       "show": "The cards clear; the pot at right; six chips drip in one per phrase and the water rises: Changes in routine, Unpredictability, Social conflict, Can't move away or opt out, Punishment or confrontational handling, Little control.",
+       "show": "The cards clear; the pot at right; six red and amber stressor chips drip in one per phrase and the water rises.",
        "onscreen": "These can raise the water level"
       }
      ]
@@ -430,7 +425,7 @@
     {
      "id": "ch02s10",
      "heading": "These Factors Can Add Up",
-     "visual_concept": "These Factors Can Add Up. A stack of the day's problems grows beside a person (Slept poorly, Headache, Skipped lunch, Stress at work, Unexpected problem); the last block makes it wobble. Then one pot: Poor sleep, Pain, Too much or too little stimulation, Change at home, Stressful experiences drop in and the water rises step by step to just under the rim. Ends on two pots, same dog: 'Same dog. Different baseline.' Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "These Factors Can Add Up. A stack of the day's problems grows beside a person (Slept poorly, Headache, Skipped lunch, Stress at work, Unexpected problem); the last block makes it wobble. Then one pot: Poor sleep, Pain, Too much or too little stimulation, Change at home, Stressful experiences drop in and the water rises step by step to just under the rim. Ends on two pots, same dog: 'Same dog. Different baseline.' Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -460,7 +455,7 @@
       },
       {
        "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, and several stressful experiences.",
-       "show": "Switch to one pot; five chips drop in one per phrase and the water rises a step each time.",
+       "show": "Five red and amber factor pills appear one per phrase; each drips into the pot and the water rises a step (the ingredients ride up with it).",
        "onscreen": "Poor sleep · Pain · Too much or too little stimulation · Change at home · Stressful experiences"
       },
       {
@@ -478,7 +473,7 @@
     {
      "id": "ch02s11",
      "heading": "The Baseline Can Change",
-     "visual_concept": "The Baseline Can Change. The full pot from the last slide with its chips; a magnifier finds them; green checks appear. Then one change per phrase lifts a chip out and the water drops a step (Address pain or illness, Improve sleep or nutrition, Adjust activity, Meet natural needs, More predictability and choice, More time to recover). Ends low with a big down arrow and 'Identify what can be improved'. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "The Baseline Can Change. The full pot (ingredients floating) beside six red and amber factor pills; a magnifier scans them; green checks; one change per phrase turns a factor into its fix and a drop lifts out of the pot, so the water drops a step. Ends low with a down arrow and 'More room'. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -493,17 +488,17 @@
      "beats": [
       {
        "say": "This is why identifying these factors is so important.",
-       "show": "The full pot; a magnifier sweeps over the floating chips.",
+       "show": "The full pot and six factor pills; a magnifier scans down the list.",
        "onscreen": "Identify what can be improved."
       },
       {
        "say": "Many of them are things we can do something about.",
-       "show": "Green checks pop onto the chips.",
+       "show": "A green check pops beside each factor.",
        "onscreen": "We can do something"
       },
       {
        "say": "We may be able to address pain or illness, improve sleep or nutrition, adjust physical or mental activity, better meet natural needs, create more predictability and choice, or provide more opportunity for recovery.",
-       "show": "Six green action rows appear at left one per phrase; with each, a chip lifts out of the pot and the water drops a step.",
+       "show": "One per phrase: the factor pill flips to its green fix, a drop lifts out of the pot to it, and the water drops a step.",
        "onscreen": "Address · Improve · Adjust · Meet needs · Predictability and choice · Recovery"
       },
       {
@@ -516,7 +511,7 @@
     {
      "id": "ch02s12",
      "heading": "The Water Level Is Only Part of the Picture",
-     "visual_concept": "The pot with three checks (what the water level represents, why it matters, what changes it). 'We know how much water is in the pot.' Three questions appear around it (something occurs, how the dog feels, arousal and stress). A dashed slot appears on the pot, then a thermometer drops in for the first time and its line rises: 'Now, how hot is it?' Calling All Dogs logo close. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "The pot (ingredients floating) with three checks; 'Distant antecedents' wraps the pot, the water and everything in it; Part 1 frame and an empty dashed Part 2 frame with three questions; a dashed slot, then a thermometer drops in: Part 2 is temperature. Logo close.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -533,8 +528,13 @@
        "onscreen": "We know how much water is in the pot."
       },
       {
+       "say": "Together, the water and everything in it are what we call distant antecedents.",
+       "show": "The checks clear; a dashed outline wraps the pot, water and ingredients together, and a label lands: 'Distant antecedents: the water and everything in it'.",
+       "onscreen": "Distant antecedents"
+      },
+      {
        "say": "But knowing how much water is in the pot is only part of the picture.",
-       "show": "The rows clear; 'We know how much water is in the pot.' with a puzzle frame: the pot fills one half, the other half is dashed and empty.",
+       "show": "The pot sits in a frame labeled 'Part 1: Distant antecedents' with 'We know how much water is in the pot.'; a dashed empty frame beside it is labeled 'Part 2: ?'.",
        "onscreen": "Only part of the picture"
       },
       {
@@ -549,7 +549,7 @@
       },
       {
        "say": "Temperature.",
-       "show": "A thermometer drops into the pot and its line rises; 'Now, how hot is it?' lands; then the logo close.",
+       "show": "A thermometer drops into the pot and its line rises; the second frame becomes 'Part 2: Temperature' with 'Now, how hot is it?'; then the logo close.",
        "onscreen": "Now, how hot is it?"
       }
      ]

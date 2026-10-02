@@ -39,9 +39,16 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Scene code: `video/scenes/c2a.js` to `c2f.js`, shared pot module `c2_pot.js` (glass pot, water level tweens,
   drips, floating chips, the "room left" bracket, the drawn dog, logo close). Area colours: physical red,
   activity amber, emotions olive, environment deep green.
+- Tori's round 1 feedback (applied): the title slide keeps the presentation title unchanged, chapter is a tag with
+  Chapter 1's amber fuel chip; s01 pours the bowl's ingredients into the pot and the fuel chip melts in as water;
+  the eight ingredients float in every pot and ride the water level; factors that raise the water are red/amber
+  pills that drip in (never chip tokens); fixes lift drops out; s07 "different for each dog" sentence and slides
+  removed, "more on this later" sits on the beam slide; s08 is a three-step strip, not a graph; s12 has a new line
+  naming the water and everything in it "distant antecedents", with Part 1 / Part 2 (temperature) frames.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
-  doc's eight examples split Too little / Too much under a balance beam.
+  doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc
+  yet: the intro/plan narration and s12's distant antecedents line.
 - Recordings: `Ch02intro.m4a`, `Ch02plan.m4a`, `Ch02s01.m4a` ... `Ch02s12.m4a` (rename Tori's files to match).
 - The lesson has `"tail": 5.0` (applies to its very last slide only) so the thermometer reveal holds before the logo close.
 - Online preview (temporary AI voice): https://claude.ai/artifact/Nzf2aTAYk5iAVNdqKmb1Js (`out/web/chapter2/`).

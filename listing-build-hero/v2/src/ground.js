@@ -4,74 +4,90 @@
      variants: { soil, gravel, mulch, lawnBox },          box pieces with world-scaled UVs (core.worldUV)
      lawnMaterial(sizeFeet) -> MeshStandardMaterial      for ONE flat PlaneGeometry(sizeFeet, sizeFeet), plain 0..1 UVs
    }
-   REAL.ground.grass(THREE, renderer, {areas:[{x0,x1,z0,z1}], density, height, seed, max}) -> InstancedMesh of 3D grass tufts
+   REAL.ground.grass(THREE, renderer, {areas:[{x0,x1,z0,z1}], density, height, seed, max, y}) -> InstancedMesh of 3D grass tufts
 
-   How it is made (no images; deterministic seeds; canvas 2D + REAL.core noise):
-   - Detail maps are drawn by a small JS scanline rasteriser that writes colour, tangent normal, height and roughness
-     for every primitive at once, so the maps agree pixel for pixel: individual grass blades (V-folded, leaning, cut or
-     pointed tips), clover leaflets, shredded-bark strips with fibres, faceted crushed stones (each facet a plane with an
-     analytic normal), soil clods and partly buried stones.
-   - Each material gets a shader patch (groundPatch) that, in WORLD space:
-       * samples every map twice (second copy rotated + rescaled) and picks between the two by height with a
-         low-frequency world noise bias, so the tile never repeats visibly and transitions stay crisp (taller blade /
-         chip / stone wins instead of a blurry cross-fade);
-       * applies a 256px macro noise texture at four unrelated scales for tone, hue and roughness variation;
-       * lawn only: clover patches (a second detail texture), dry/yellow patches, lush dark patches, view-dependent
-         mowing stripes (anti-aliased with fwidth so they never moire at distance), and a grazing-angle canopy fill
-         (looking across a lawn you see blade sides, not the dark gaps between them);
-       * soil only: damp, darker, glossier patches.
-   - Data maps: roughness texture R = height (0..1, used for the height blend), G = roughness (three reads .g). */
+   How it is made (no images; deterministic seeds; canvas 2D + typed-array rasterising):
+   - Detail maps come from a small JS scanline rasteriser that writes colour, tangent normal, height and roughness for
+     every primitive at once, so the maps agree pixel for pixel: individual grass blades (leaning, V-folded, mower-cut
+     or pointed), clover leaflets, shredded-bark strips with fibres and ragged ends, faceted crushed stones (every facet
+     a plane with an analytic normal), flat-topped soil clods and partly buried stones.
+     Texel density: lawn 0.07 in, soil 0.07 in, gravel and mulch 0.07 in (512px per 3 ft).
+   - Each material gets a shader patch (groundPatch) that works in WORLD space:
+       * every map is sampled twice (second copy rotated + rescaled) and the two are picked per pixel by HEIGHT plus a
+         low-frequency world-noise bias, so the tile never repeats visibly and the switch is crisp (the taller blade,
+         chip or stone wins) instead of a blurry cross-fade;
+       * a 256px macro noise texture at four unrelated scales varies tone, hue and roughness;
+       * lawn: clover patches whose plants appear one by one at the fringe (plant rank stored in the clover normal map's
+         spare B channel), dry/yellow and lush/dark patches, view-dependent mowing stripes (fwidth anti-aliased so they
+         never moire at distance), and a grazing-angle canopy fill (across a lawn you see blade sides, not the gaps);
+       * soil: damp, darker, glossier patches.
+   - Data maps: roughness texture R = height (0..1, drives the height blend), G = roughness (three reads .g).
+   - Hot loops live in small monomorphic functions (V8 optimises them once instead of deopting a big generator). */
 (function(){
 "use strict";
 const REAL = window.REAL = window.REAL || {};
 
 /* ---------------------------------------------------------------- small helpers */
-function cl(v, a, b){ return v < a ? a : v > b ? b : v; }
-function c255(v){ return v < 0 ? 0 : v > 255 ? 255 : v; }
-function wrap(v, n){ return v < 0 ? v + n : v >= n ? v - n : v; }
 function sstep(a, b, x){ let t = (x - a) / (b - a); t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
 
-/* uniform white noise -0.5..0.5 (xorshift32) */
-function white(n, seed){
-  const f = new Float32Array(n);
+/* scratch arrays reused between generators (cuts GC pauses): tmp(n, slot) */
+const TMP = {};
+function tmp(n, slot){ const k = n + ":" + slot; return TMP[k] || (TMP[k] = new Float32Array(n)); }
+
+/* uniform white noise -0.5..0.5 (xorshift32), optionally into a given array */
+function white(n, seed, out){
+  const f = out || new Float32Array(n);
   let s = (Math.imul(seed | 0, 2654435761) | 0) || 1;
   for (let i = 0; i < n; i++){ s ^= s << 13; s ^= s >>> 17; s ^= s << 5; f[i] = (s >>> 0) / 4294967296 - 0.5; }
   return f;
 }
-/* tileable separable box blur, radius r px, `passes` times */
-function blur(f, W, H, r, passes){
-  if (r < 1) return f;
-  const tmp = new Float32Array(Math.max(W, H)), inv = 1 / (2 * r + 1);
-  for (let p = 0; p < (passes || 1); p++){
-    for (let y = 0; y < H; y++){
-      const row = y * W; let s = 0;
-      for (let k = -r; k <= r; k++) s += f[row + ((k % W) + W) % W];
-      for (let x = 0; x < W; x++){
-        tmp[x] = s * inv;
-        let a = x + r + 1; if (a >= W) a -= W;
-        let b = x - r; if (b < 0) b += W;
-        s += f[row + a] - f[row + b];
-      }
-      for (let x = 0; x < W; x++) f[row + x] = tmp[x];
-    }
-    for (let x = 0; x < W; x++){
-      let s = 0;
-      for (let k = -r; k <= r; k++) s += f[(((k % H) + H) % H) * W + x];
-      for (let y = 0; y < H; y++){
-        tmp[y] = s * inv;
-        let a = y + r + 1; if (a >= H) a -= H;
-        let b = y - r; if (b < 0) b += H;
-        s += f[a * W + x] - f[b * W + x];
-      }
-      for (let y = 0; y < H; y++) f[y * W + x] = tmp[y];
-    }
+/* 3x3 box blur in place (wrapping); t = scratch array of the same size */
+function blur1(f, W, H, t){
+  for (let y = 0; y < H; y++){
+    const row = y * W;
+    t[row] = (f[row + W - 1] + f[row] + f[row + 1]) * 0.3333333;
+    for (let x = 1; x < W - 1; x++) t[row + x] = (f[row + x - 1] + f[row + x] + f[row + x + 1]) * 0.3333333;
+    t[row + W - 1] = (f[row + W - 2] + f[row + W - 1] + f[row]) * 0.3333333;
+  }
+  for (let y = 0; y < H; y++){
+    const r0 = (y === 0 ? H - 1 : y - 1) * W, r1 = y * W, r2 = (y === H - 1 ? 0 : y + 1) * W;
+    for (let x = 0; x < W; x++) f[r1 + x] = (t[r0 + x] + t[r1 + x] + t[r2 + x]) * 0.3333333;
   }
   return f;
 }
-/* low-res tileable fbm (-0.5..0.5) upsampled bilinearly (wrapping) to W x H */
-function field(C, W, H, lw, lh, o){
-  const f = C.normalize(C.fbm(lw, lh, o));
+/* one octave of tileable value noise (gx x gy lattice, smoothstep weights) added into out, scaled by amp */
+function octave(out, W, H, lat, gx, gy, amp){
+  const xi0 = new Int32Array(W), xi1 = new Int32Array(W), xw = new Float32Array(W), row = new Float32Array(gx);
+  for (let x = 0; x < W; x++){ const fx = x / W * gx, a = fx | 0, t = fx - a; xi0[x] = a; xi1[x] = a + 1 === gx ? 0 : a + 1; xw[x] = t * t * (3 - 2 * t); }
+  for (let y = 0; y < H; y++){
+    const fy = y / H * gy, y0 = fy | 0, t = fy - y0, wy = t * t * (3 - 2 * t), y1 = y0 + 1 === gy ? 0 : y0 + 1, r0 = y0 * gx, r1 = y1 * gx;
+    for (let x = 0; x < gx; x++) row[x] = lat[r0 + x] + (lat[r1 + x] - lat[r0 + x]) * wy;
+    const o = y * W;
+    for (let x = 0; x < W; x++){ const a = row[xi0[x]]; out[o + x] += amp * (a + (row[xi1[x]] - a) * xw[x]); }
+  }
+}
+/* fast tileable fbm, normalised to -0.5..0.5 */
+function fbm(C, W, H, o){
+  const oct = o.octaves || 4, base = o.base || 4, pers = o.persistence == null ? 0.5 : o.persistence, rnd = C.rng(o.seed || 1);
   const out = new Float32Array(W * H);
+  let amp = 1;
+  for (let k = 0; k < oct; k++){
+    const gx = Math.min(W, base << k), gy = Math.min(H, base << k), lat = new Float32Array(gx * gy);
+    for (let i = 0; i < lat.length; i++) lat[i] = rnd();
+    octave(out, W, H, lat, gx, gy, amp);
+    amp *= pers;
+  }
+  let lo = Infinity, hi = -Infinity;
+  for (let i = 0; i < out.length; i++){ const v = out[i]; if (v < lo) lo = v; if (v > hi) hi = v; }
+  const r = 1 / ((hi - lo) || 1);
+  for (let i = 0; i < out.length; i++) out[i] = (out[i] - lo) * r - 0.5;
+  return out;
+}
+/* low-res fbm (lw x lh) upsampled bilinearly (wrapping) to W x H; values -0.5..0.5 */
+function field(C, W, H, lw, lh, o, outArr){
+  const f = fbm(C, lw, lh, o);
+  if (lw === W && lh === H) return f;
+  const out = outArr || new Float32Array(W * H);
   const xi0 = new Int32Array(W), xi1 = new Int32Array(W), xt = new Float32Array(W), row = new Float32Array(lw);
   for (let x = 0; x < W; x++){ let fx = (x + 0.5) / W * lw - 0.5; if (fx < 0) fx += lw; const a = fx | 0; xi0[x] = a; xi1[x] = a + 1 === lw ? 0 : a + 1; xt[x] = fx - a; }
   for (let y = 0; y < H; y++){
@@ -79,14 +95,13 @@ function field(C, W, H, lw, lh, o){
     const y0 = fy | 0, y1 = y0 + 1 === lh ? 0 : y0 + 1, ty = fy - y0, r0 = y0 * lw, r1 = y1 * lw;
     for (let x = 0; x < lw; x++) row[x] = f[r0 + x] + (f[r1 + x] - f[r0 + x]) * ty;
     const o2 = y * W;
-    for (let x = 0; x < W; x++){ const a = row[xi0[x]]; out[o2 + x] = a + (row[xi1[x]] - a) * xt[x] - 0.5; }
+    for (let x = 0; x < W; x++){ const a = row[xi0[x]]; out[o2 + x] = a + (row[xi1[x]] - a) * xt[x]; }
   }
   return out;
 }
 /* smooth periodic 1D noise table (len 1024, -1..1) for fibres and ragged edges */
 function table(seed){
-  const n = 1024, f = white(n, seed);
-  const g = new Float32Array(n);
+  const n = 1024, f = white(n, seed), g = new Float32Array(n);
   for (let p = 0; p < 2; p++){
     for (let i = 0; i < n; i++){ let s = 0; for (let k = -3; k <= 3; k++) s += f[(i + k + n) & (n - 1)]; g[i] = s / 7; }
     f.set(g);
@@ -96,10 +111,10 @@ function table(seed){
   return f;
 }
 
-/* raster buffers: colour in sRGB 0..255, normal xy in CANVAS coords (x right, y down), height 0..1-ish, roughness 0..1 */
+/* raster buffers: colour in sRGB 0..255, normal xy in CANVAS coords (x right, y down), height, roughness 0..1.
+   Pooled per size: every generator initialises every channel it uses in its base pass. */
 const POOL = {};
 function buffers(n){
-  /* pooled: every generator initialises all channels in its base pass, so buffers are reused across textures */
   if (!POOL[n]) POOL[n] = { r: new Float32Array(n), g: new Float32Array(n), b: new Float32Array(n),
            nx: new Float32Array(n), ny: new Float32Array(n), h: new Float32Array(n), ro: new Float32Array(n) };
   return POOL[n];
@@ -108,52 +123,63 @@ function buffers(n){
 /* ---------------------------------------------------------------- canvases */
 function rgbCanvas(C, W, H, B){
   const c = C.canvas(W, H), ctx = c.getContext("2d"), img = ctx.createImageData(W, H), d = img.data;
-  for (let i = 0, k = 0; i < W * H; i++, k += 4){ d[k] = c255(B.r[i]); d[k+1] = c255(B.g[i]); d[k+2] = c255(B.b[i]); d[k+3] = 255; }
+  const R = B.r, G = B.g, Bb = B.b;
+  for (let i = 0, k = 0; i < W * H; i++, k += 4){ d[k] = R[i]; d[k+1] = G[i]; d[k+2] = Bb[i]; d[k+3] = 255; }   /* Uint8Clamped clamps */
   ctx.putImageData(img, 0, 0);
   return c;
 }
-/* normal map from explicit normals (canvas coords); OpenGL convention, canvas up = +V */
-function nrmCanvas(C, W, H, B){
+/* normal map from explicit normals (canvas coords); OpenGL convention, canvas up = +V. bch: optional B channel data (0..1) */
+function nrmCanvas(C, W, H, B, bch){
   const c = C.canvas(W, H), ctx = c.getContext("2d"), img = ctx.createImageData(W, H), d = img.data;
+  const NX = B.nx, NY = B.ny;
   for (let i = 0, k = 0; i < W * H; i++, k += 4){
-    let x = B.nx[i], y = B.ny[i], q = x * x + y * y;
+    let x = NX[i], y = NY[i], q = x * x + y * y;
     if (q > 0.92){ const s = Math.sqrt(0.92 / q); x *= s; y *= s; q = 0.92; }
-    const z = Math.sqrt(1 - q);
-    d[k] = (x * 0.5 + 0.5) * 255; d[k+1] = (-y * 0.5 + 0.5) * 255; d[k+2] = (z * 0.5 + 0.5) * 255; d[k+3] = 255;
+    d[k] = (x * 0.5 + 0.5) * 255; d[k+1] = (-y * 0.5 + 0.5) * 255;
+    d[k+2] = bch ? bch[i] * 255 : (Math.sqrt(1 - q) * 0.5 + 0.5) * 255; d[k+3] = 255;
   }
   ctx.putImageData(img, 0, 0);
   return c;
 }
-/* normal map from a height field in INCHES (pixel = pu inches), slope gain k, optionally mixed with explicit normals */
-function heightNrmCanvas(C, W, H, hf, pu, k, B){
+/* normal map from a height field in INCHES (pixel = pu inches), slope gain k */
+function heightNrmCanvas(C, W, H, hf, pu, k){
   const c = C.canvas(W, H), ctx = c.getContext("2d"), img = ctx.createImageData(W, H), d = img.data;
   const s = k / (2 * pu);
   for (let y = 0; y < H; y++){
     const ru = ((y - 1 + H) % H) * W, rd = ((y + 1) % H) * W, row = y * W;
     for (let x = 0; x < W; x++){
-      const xl = x === 0 ? W - 1 : x - 1, xr = x === W - 1 ? 0 : x + 1, i = row + x;
-      let nx = -(hf[row + xr] - hf[row + xl]) * s, ny = (hf[ru + x] - hf[rd + x]) * s, nz = 1;   /* ny: +V = canvas up */
-      if (B){ nx += B.nx[i]; ny -= B.ny[i]; }
-      const inv = 1 / Math.sqrt(nx * nx + ny * ny + nz * nz), k4 = i * 4;
-      d[k4] = (nx * inv * 0.5 + 0.5) * 255; d[k4+1] = (ny * inv * 0.5 + 0.5) * 255; d[k4+2] = (nz * inv * 0.5 + 0.5) * 255; d[k4+3] = 255;
+      const xl = x === 0 ? W - 1 : x - 1, xr = x === W - 1 ? 0 : x + 1;
+      const nx = -(hf[row + xr] - hf[row + xl]) * s, ny = (hf[rd + x] - hf[ru + x]) * s;   /* -dh/dv, +V = canvas up */
+      const inv = 1 / Math.sqrt(nx * nx + ny * ny + 1), k4 = (row + x) * 4;
+      d[k4] = (nx * inv * 0.5 + 0.5) * 255; d[k4+1] = (ny * inv * 0.5 + 0.5) * 255; d[k4+2] = (inv * 0.5 + 0.5) * 255; d[k4+3] = 255;
     }
   }
   ctx.putImageData(img, 0, 0);
   return c;
 }
-/* data map: R = height (0..1), G = roughness, B = 0 */
+/* data map: R = height (0..1 over hlo..hhi), G = roughness, B = 0 */
 function dataCanvas(C, W, H, hgt, ro, hlo, hhi){
   const c = C.canvas(W, H), ctx = c.getContext("2d"), img = ctx.createImageData(W, H), d = img.data;
-  const hr = 1 / ((hhi - hlo) || 1);
-  for (let i = 0, k = 0; i < W * H; i++, k += 4){ d[k] = c255((hgt[i] - hlo) * hr * 255); d[k+1] = c255(ro[i] * 255); d[k+2] = 0; d[k+3] = 255; }
+  const hr = 255 / ((hhi - hlo) || 1);
+  for (let i = 0, k = 0; i < W * H; i++, k += 4){ d[k] = (hgt[i] - hlo) * hr; d[k+1] = ro[i] * 255; d[k+2] = 0; d[k+3] = 255; }
   ctx.putImageData(img, 0, 0);
   return c;
 }
 
-/* ---------------------------------------------------------------- rasteriser: one leaning grass blade
-   Base at (bx,by), unit direction (dx,dy), projected length L px, base width w px, curv = sideways bend,
-   blunt = mower-cut tip. Colour c0 (base) -> c1 (tip). nL/nR = normals of the two halves of the V-fold (canvas
-   coords). Height z0 (base) -> z1 (tip). Everything wraps so the tile is seamless. */
+/* ================================================================ LAWN
+   512px = 3 ft (0.07 in/px). Blades are drawn bottom layer first, darker with depth. */
+const LAWN_FT = 3;
+const LAWN_PAL = [
+  [122, 156, 52],   /* sunny yellow-green */
+  [106, 144, 50],
+  [92, 132, 48],    /* mid green */
+  [80, 120, 48],
+  [70, 112, 56],    /* deep blue-green */
+  [114, 148, 58],
+  [130, 154, 64]    /* pale */
+];
+/* rasterise one leaning grass blade. Base (bx,by), unit direction (dx,dy), projected length L px, base width w px,
+   curv = sideways bend, blunt = mower-cut tip. BL holds colours (base->tip) and the two V-fold half normals. */
 const BL = { c0: [0,0,0], c1: [0,0,0], nL: [0,0], nR: [0,0] };
 function blade(B, W, H, bx, by, dx, dy, L, w, curv, blunt, z0, z1, ro){
   const hl = L * 0.5, cx = bx + dx * hl, cy = by + dy * hl;
@@ -161,9 +187,11 @@ function blade(B, W, H, bx, by, dx, dy, L, w, curv, blunt, z0, z1, ro){
   const ax = Math.abs(dx), ay = Math.abs(dy);
   const ex = ax * A + ay * hwm, ey = ay * A + ax * hwm;
   const y0 = Math.floor(cy - ey), y1 = Math.ceil(cy + ey);
-  const c0 = BL.c0, c1 = BL.c1, nL = BL.nL, nR = BL.nR, iL = 1 / L, hw0 = w * 0.5;
+  const iL = 1 / L, hw0 = w * 0.5, tp = blunt ? 0.3 : 1.0;
   const Rr = B.r, Rg = B.g, Rb = B.b, Nx = B.nx, Ny = B.ny, Hh = B.h, Ro = B.ro;
+  const c0 = BL.c0, c1 = BL.c1;
   const c0r = c0[0], c0g = c0[1], c0b = c0[2], dr = c1[0] - c0r, dg = c1[1] - c0g, db = c1[2] - c0b;
+  const nLx = BL.nL[0], nLy = BL.nL[1], nRx = BL.nR[0], nRy = BL.nR[1], dz = z1 - z0;
   for (let y = y0; y <= y1; y++){
     const py = y + 0.5 - cy;
     let lo = -ex - 1, hi = ex + 1;
@@ -177,7 +205,8 @@ function blade(B, W, H, bx, by, dx, dy, L, w, curv, blunt, z0, z1, ro){
       if (u < -0.5 || u > L + 0.5) continue;
       const t = u < 0 ? 0 : u > L ? 1 : u * iL;
       const vc = v - curv * u * t;
-      const hw = blunt ? hw0 * (1 - 0.3 * t) : hw0 * (1 - t * Math.sqrt(t));
+      /* blunt (cut) blades taper 30%, pointed ones taper to nothing (t^2 approximates t^1.5 well enough) */
+      const hw = hw0 * (1 - tp * (blunt ? t : t * t));
       const av = vc < 0 ? -vc : vc;
       let cov = hw - av + 0.5; if (cov <= 0) continue; if (cov > 1) cov = 1;
       const e0 = u + 0.5, e1 = L - u + 0.5;
@@ -188,15 +217,14 @@ function blade(B, W, H, bx, by, dx, dy, L, w, curv, blunt, z0, z1, ro){
       Rr[i] += ((c0r + dr * t) * k - Rr[i]) * cov;
       Rg[i] += ((c0g + dg * t) * k - Rg[i]) * cov;
       Rb[i] += ((c0b + db * t) * k - Rb[i]) * cov;
-      const n = vc >= 0 ? nL : nR;
-      Nx[i] += (n[0] - Nx[i]) * cov; Ny[i] += (n[1] - Ny[i]) * cov;
-      Hh[i] += (z0 + (z1 - z0) * t - Hh[i]) * cov;
+      if (vc >= 0){ Nx[i] += (nLx - Nx[i]) * cov; Ny[i] += (nLy - Ny[i]) * cov; }
+      else { Nx[i] += (nRx - Nx[i]) * cov; Ny[i] += (nRy - Ny[i]) * cov; }
+      Hh[i] += (z0 + dz * t - Hh[i]) * cov;
       Ro[i] += (ro - Ro[i]) * cov;
     }
   }
 }
-
-/* one leaning blade with random parameters; px = inches per pixel */
+/* one blade with random parameters; px = inches per pixel; z = canopy depth 0 (bottom) .. 1 (top) */
 function grassBlade(B, W, H, rnd, px, z, pal, o){
   const ang = rnd() * 6.2831853, dx = Math.cos(ang), dy = Math.sin(ang);
   const sinT = o.lean0 + o.lean1 * rnd(), cosT = Math.sqrt(1 - sinT * sinT);
@@ -205,16 +233,14 @@ function grassBlade(B, W, H, rnd, px, z, pal, o){
   const w = (o.w0 + o.w1 * rnd()) / px;
   const curv = (rnd() - 0.5) * 0.3;
   const blunt = rnd() < o.cut;
-  /* colour: palette pick with jitter; depth shading; dead straw blades */
-  let c;
-  const pr = rnd();
-  if (pr < o.dead) c = [136 + rnd() * 20, 128 + rnd() * 16, 78 + rnd() * 14];
-  else { const p = pal[(rnd() * pal.length) | 0], j = 0.9 + rnd() * 0.2, jh = (rnd() - 0.5) * 0.12; c = [p[0] * j * (1 + jh), p[1] * j, p[2] * j * (1 - jh)]; }
+  let r, g, b;
+  if (rnd() < o.dead){ r = 136 + rnd() * 20; g = 128 + rnd() * 16; b = 78 + rnd() * 14; }
+  else { const p = pal[(rnd() * pal.length) | 0], j = 0.9 + rnd() * 0.2, jh = (rnd() - 0.5) * 0.12; r = p[0] * j * (1 + jh); g = p[1] * j; b = p[2] * j * (1 - jh); }
   const sh = o.sh0 + o.sh1 * Math.pow(z, 0.9);
-  BL.c0[0] = c[0] * sh * 0.72; BL.c0[1] = c[1] * sh * 0.74; BL.c0[2] = c[2] * sh * 0.72;
-  BL.c1[0] = c[0] * sh; BL.c1[1] = c[1] * sh; BL.c1[2] = c[2] * sh;
+  BL.c0[0] = r * sh * 0.72; BL.c0[1] = g * sh * 0.74; BL.c0[2] = b * sh * 0.72;
+  BL.c1[0] = r * sh; BL.c1[1] = g * sh; BL.c1[2] = b * sh;
   if (blunt && rnd() < o.frayed){ BL.c1[0] = BL.c1[0] * 0.75 + 34 * sh; BL.c1[1] = BL.c1[1] * 0.8 + 30 * sh; BL.c1[2] = BL.c1[2] * 0.75 + 18 * sh; }
-  /* normals: blade face normal (-d cos, sin) plus a sideways V-fold, in canvas coords (x right, y down) */
+  /* blade face normal (-d cos, sin) plus a sideways V-fold, canvas coords */
   const f = o.fold, pxv = -dy, pyv = dx;
   let ax = -dx * cosT + pxv * f, ay = -dy * cosT + pyv * f, az = sinT, il = 1 / Math.sqrt(ax * ax + ay * ay + az * az);
   BL.nL[0] = ax * il; BL.nL[1] = ay * il;
@@ -222,56 +248,41 @@ function grassBlade(B, W, H, rnd, px, z, pal, o){
   BL.nR[0] = ax * il; BL.nR[1] = ay * il;
   blade(B, W, H, rnd() * W, rnd() * H, dx, dy, L, w, curv, blunt, z - 0.12, z, o.ro0 + o.ro1 * rnd());
 }
-
-/* base under the canopy: dark thatch / soil */
-function thatch(C, B, W, H, seed, lo, hi){
-  const n = W * H;
-  const f1 = field(C, W, H, 64, 64, {octaves: 4, base: 4, seed: seed});
-  const wn = blur(white(n, seed + 7), W, H, 1, 1);
+/* under the canopy: dark thatch / soil */
+function thatchPass(B, n, f1, wn, lo, hi){
+  const R = B.r, G = B.g, Bb = B.b, NX = B.nx, NY = B.ny, Hh = B.h, Ro = B.ro;
   for (let i = 0; i < n; i++){
-    const t = cl(0.5 + f1[i] * 0.8 + wn[i] * 2.4, 0, 1);
-    B.r[i] = lo[0] + (hi[0] - lo[0]) * t; B.g[i] = lo[1] + (hi[1] - lo[1]) * t; B.b[i] = lo[2] + (hi[2] - lo[2]) * t;
-    B.nx[i] = wn[i] * 0.6; B.ny[i] = f1[i] * 0.2; B.h[i] = 0; B.ro[i] = 0.95;
+    let t = 0.5 + f1[i] * 0.8 + wn[i] * 2.4; t = t < 0 ? 0 : t > 1 ? 1 : t;
+    R[i] = lo[0] + (hi[0] - lo[0]) * t; G[i] = lo[1] + (hi[1] - lo[1]) * t; Bb[i] = lo[2] + (hi[2] - lo[2]) * t;
+    NX[i] = wn[i] * 0.6; NY[i] = f1[i] * 0.2; Hh[i] = 0; Ro[i] = 0.95;
   }
 }
-
-/* ---------------------------------------------------------------- lawn: 512px = 3 ft (0.07 in/px) */
-const LAWN_FT = 3;
-const LAWN_PAL = [
-  [116, 148, 38],   /* sunny yellow-green */
-  [100, 136, 36],
-  [86, 124, 34],    /* mid green */
-  [74, 112, 34],
-  [64, 104, 40],    /* deep blue-green */
-  [108, 140, 44],
-  [124, 146, 50]    /* pale */
-];
+const LAWN_O = { lean0: 0.32, lean1: 0.6, len0: 0.7, len1: 1.6, w0: 0.13, w1: 0.17, cut: 0.72, frayed: 0.3, dead: 0.012,
+                 sh0: 0.36, sh1: 0.64, fold: 0.38, ro0: 0.52, ro1: 0.18 };
 function makeLawn(C, N, seed){
-  const W = N, H = N, px = LAWN_FT * 12 / N, B = buffers(W * H), rnd = C.rng(seed);
-  thatch(C, B, W, H, seed + 1, [22, 28, 10], [50, 54, 22]);
-  const o = { lean0: 0.32, lean1: 0.6, len0: 0.7, len1: 1.6, w0: 0.13, w1: 0.17, cut: 0.72, frayed: 0.3, dead: 0.012,
-              sh0: 0.36, sh1: 0.64, fold: 0.38, ro0: 0.52, ro1: 0.18 };
-  const layers = 8, total = Math.round(14000 * (N * N) / (512 * 512));
+  const W = N, H = N, n = W * H, px = LAWN_FT * 12 / N, B = buffers(n), rnd = C.rng(seed);
+  thatchPass(B, n, field(C, W, H, 64, 64, {octaves: 4, base: 4, seed: seed + 1}, tmp(n, 0)), blur1(white(n, seed + 7, tmp(n, 1)), W, H, tmp(n, 2)), [24, 30, 14], [52, 56, 28]);
+  const layers = 8, total = 14000;     /* per 3 ft tile */
   for (let k = 0; k < layers; k++){
     const cnt = Math.round(total / layers);
-    for (let j = 0; j < cnt; j++) grassBlade(B, W, H, rnd, px, (k + rnd()) / layers, LAWN_PAL, o);
+    for (let j = 0; j < cnt; j++) grassBlade(B, W, H, rnd, px, (k + rnd()) / layers, LAWN_PAL, LAWN_O);
   }
   return { W, H, B };
 }
 
-/* clover / broadleaf plants drawn ONTO the finished lawn buffers (same tile, same UVs), so where a clover plant is absent
-   the clover texture is identical to the lawn. Each plant writes a random rank (0..1, 0 = no leaf) that the shader
-   compares with the local patch density, revealing whole plants one by one at a patch fringe. */
+/* clover / broadleaf plants drawn ONTO the finished lawn buffers (same tile, same UVs): where no plant is drawn the
+   clover texture equals the lawn. Each plant writes a random rank (0..1; 0 = no leaf) into h; the shader compares it
+   with the local patch density so whole plants appear one by one at a patch fringe. */
 function makeCloverOnto(C, lawn, seed){
   const W = lawn.W, H = lawn.H, B = lawn.B, px = LAWN_FT * 12 / W, rnd = C.rng(seed);
   B.h.fill(0);
-  const plants = Math.round(3600 * (W * H) / (512 * 512)), lLayers = 6;
-  const leafPal = [[118, 158, 50], [104, 148, 48], [92, 138, 50], [126, 164, 58], [84, 128, 48]];
+  const plants = 2800, lLayers = 6;    /* per 3 ft tile */
+  const leafPal = [[112, 150, 58], [102, 142, 56], [92, 134, 58], [118, 154, 64], [84, 126, 56]];
   for (let k = 0; k < lLayers; k++){
     for (let j = 0; j < plants / lLayers; j++){
       const z = 0.45 + 0.55 * (k + rnd()) / lLayers, rank = 0.03 + 0.97 * rnd();
-      const cx = rnd() * W, cy = rnd() * H, a = (0.2 + 0.14 * rnd()) / px, phi = rnd() * 6.283;
-      const p = leafPal[(rnd() * leafPal.length) | 0], sh = 0.6 + 0.4 * z, j2 = 0.9 + 0.2 * rnd();
+      const cx = rnd() * W, cy = rnd() * H, a = (0.22 + 0.15 * rnd()) / px, phi = rnd() * 6.283;
+      const p = leafPal[(rnd() * leafPal.length) | 0], sh = 0.55 + 0.4 * z, j2 = 0.9 + 0.2 * rnd();
       const tilt = (rnd() - 0.5) * 0.5, tx = Math.cos(phi + 1.3) * tilt, ty = Math.sin(phi + 1.3) * tilt;
       for (let l = 0; l < 3; l++){
         const an = phi + l * 2.0944 + (rnd() - 0.5) * 0.4, dx = Math.cos(an), dy = Math.sin(an);
@@ -282,165 +293,276 @@ function makeCloverOnto(C, lawn, seed){
   }
   return lawn;
 }
-/* clover normal map: RG = normal xy, B = plant rank (the shader rebuilds z from xy) */
-function cloverNrmCanvas(C, W, H, B){
-  const c = C.canvas(W, H), ctx = c.getContext("2d"), img = ctx.createImageData(W, H), d = img.data;
-  for (let i = 0, k = 0; i < W * H; i++, k += 4){
-    let x = B.nx[i], y = B.ny[i], q = x * x + y * y;
-    if (q > 0.92){ const s = Math.sqrt(0.92 / q); x *= s; y *= s; }
-    d[k] = (x * 0.5 + 0.5) * 255; d[k+1] = (-y * 0.5 + 0.5) * 255; d[k+2] = c255(B.h[i] * 255); d[k+3] = 255;
-  }
-  ctx.putImageData(img, 0, 0);
-  return c;
-}
-/* one obovate leaflet with a pale chevron; slightly cupped */
-function leaflet(B, W, H, cx, cy, dx, dy, a, b, cr, cg, cb, z, tx, ty){
-  const R = Math.ceil(a + 1);
+/* one obovate leaflet with a pale chevron; slightly cupped; writes rank into h */
+function leaflet(B, W, H, cx, cy, dx, dy, a, b, cr, cg, cb, rank, tx, ty){
+  const R = Math.ceil(a + 1), Rr = B.r, Rg = B.g, Rb = B.b, Nx = B.nx, Ny = B.ny, Hh = B.h, Ro = B.ro;
+  const ia = 1 / a, ib = 1 / b;
   for (let y = Math.floor(cy - R); y <= Math.ceil(cy + R); y++){
-    const py = y + 0.5 - cy, row = wrap(y, H) * W;
+    const py = y + 0.5 - cy, row = (y < 0 ? y + H : y >= H ? y - H : y) * W;
     for (let x = Math.floor(cx - R); x <= Math.ceil(cx + R); x++){
-      const qx = x + 0.5 - cx, u = (qx * dx + py * dy) / a, v = (-qx * dy + py * dx) / b;
+      const qx = x + 0.5 - cx, u = (qx * dx + py * dy) * ia, v = (-qx * dy + py * dx) * ib;
       /* obovate: wider toward the outer end (u>0), notched at the tip */
-      const wv = v / (0.8 + 0.25 * u);
-      const d = Math.sqrt(u * u + wv * wv) + (u > 0.6 ? Math.max(0, 0.18 - Math.abs(v) * 0.9) : 0);
+      const wv = v / (0.8 + 0.25 * u), av = v < 0 ? -v : v;
+      const d = Math.sqrt(u * u + wv * wv) + (u > 0.6 && av < 0.2 ? 0.18 - av * 0.9 : 0);
       let cov = (1 - d) * a + 0.5; if (cov <= 0) continue; if (cov > 1) cov = 1;
-      const i = row + wrap(x, W);
-      const chev = Math.abs(Math.abs(v) - (0.25 + u * 0.45));
-      const k = (chev < 0.09 && u > -0.4 && u < 0.6 ? 1.22 : 1) * (0.9 + 0.12 * (u + 1) * 0.5);
-      B.r[i] += (cr * k - B.r[i]) * cov; B.g[i] += (cg * k - B.g[i]) * cov; B.b[i] += (cb * k - B.b[i]) * cov;
-      /* cupped: normal tilts toward the leaflet axis, plus whole-leaf tilt */
+      const i = row + (x < 0 ? x + W : x >= W ? x - W : x);
+      const chev = Math.abs(av - (0.25 + u * 0.45));
+      const k = (chev < 0.09 && u > -0.4 && u < 0.6 ? 1.22 : 1) * (0.9 + 0.06 * (u + 1));
+      Rr[i] += (cr * k - Rr[i]) * cov; Rg[i] += (cg * k - Rg[i]) * cov; Rb[i] += (cb * k - Rb[i]) * cov;
       const nx = tx + (dx * u * 0.3 - dy * v * 0.25) * 0.8, ny = ty + (dy * u * 0.3 + dx * v * 0.25) * 0.8;
-      B.nx[i] += (nx - B.nx[i]) * cov; B.ny[i] += (ny - B.ny[i]) * cov;
-      if (cov > 0.5) B.h[i] = z; B.ro[i] += (0.48 - B.ro[i]) * cov;
+      Nx[i] += (nx - Nx[i]) * cov; Ny[i] += (ny - Ny[i]) * cov;
+      if (cov > 0.5) Hh[i] = rank;
+      Ro[i] += (0.48 - Ro[i]) * cov;
     }
   }
 }
 
-/* ---------------------------------------------------------------- soil: 1024px = 6 ft (0.07 in/px)
-   Connecticut glacial till as dug: yellowish/greyish brown silt-sand with darker topsoil streaks, clods, crumbs,
-   rounded grey stones from grit to small cobbles, damp darker patches. */
+/* ================================================================ SOIL
+   1024px = 6 ft (0.07 in/px). Connecticut glacial till as dug: yellowish/greyish brown silt-sand with darker topsoil
+   streaks, flat-topped tilted clods, crumbs, rounded stones from grit to small cobbles, damp halos. */
 const SOIL_FT = 6;
+function soilBase(B, W, H, tone, hue, lumpH, mid, wn, wn2, lump, hr, hg, hb){
+  const W2 = W >> 1, H2 = H >> 1, R = B.r, G = B.g, Bb = B.b, Hh = B.h, Ro = B.ro;
+  /* half-res base colour: yellowish / greyish till, softly darker organic streaks */
+  for (let i2 = 0; i2 < W2 * H2; i2++){
+    let hh = 0.5 + hue[i2] * 1.3; hh = hh < 0 ? 0 : hh > 1 ? 1 : hh;
+    const dk = 0.35 + 0.65 * sstep(-0.42, 0.1, tone[i2]);
+    const r = 120 - 12 * hh, g = 100 - 2 * hh, b = 77 + 8 * hh;
+    hr[i2] = 86 + (r - 86) * dk; hg[i2] = 69 + (g - 69) * dk; hb[i2] = 52 + (b - 52) * dk;
+  }
+  for (let y = 0; y < H; y++){
+    const rowh = (y >> 1) * W2;
+    for (let x = 0; x < W; x++){
+      const i = y * W + x, i2 = rowh + (x >> 1);
+      const gr = 1 + wn[i] * 0.55 + wn2[i] * 0.1 + mid[i] * 0.14;
+      R[i] = hr[i2] * gr; G[i] = hg[i2] * gr; Bb[i] = hb[i2] * gr;
+      lump[i] = lumpH[i2] * 0.3 + mid[i] * 0.12;          /* base relief in inches (the bed) */
+      Hh[i] = lump[i] + wn[i] * 0.07 + wn2[i] * 0.015;
+      Ro[i] = 0.93 + wn[i] * 0.1;
+    }
+  }
+}
+/* soft crumb / small ped: rounded lump with a noisy outline, a touch lighter (dry) on top */
+function crumb(B, W, H, lump, wn, cx, cy, r, amp, lift){
+  const R = Math.ceil(r * 1.3 + 1), Rr = B.r, Rg = B.g, Rb = B.b, Hh = B.h, ir2 = 1 / (r * r);
+  for (let y = Math.floor(cy - R); y <= Math.ceil(cy + R); y++){
+    const py = y + 0.5 - cy, row = (y < 0 ? y + H : y >= H ? y - H : y) * W;
+    for (let x = Math.floor(cx - R); x <= Math.ceil(cx + R); x++){
+      const qx = x + 0.5 - cx, i = row + (x < 0 ? x + W : x >= W ? x - W : x);
+      const d2 = (qx * qx + py * py) * ir2 + wn[i] * 0.9;
+      if (d2 >= 1) continue;
+      const e = 1 - d2, top = lump[i] + amp * e * Math.sqrt(e);
+      if (top > Hh[i]){ Hh[i] = top; const k = 1 + lift * e; Rr[i] *= k; Rg[i] *= k; Rb[i] *= k; }
+    }
+  }
+}
+/* angular clod: convex polygon whose facets are planes rising from each edge to a blunt crest (no step at the rim) */
+function clodPoly(B, W, H, lump, wn, nv, cap, bx0, bx1, by0, by1, lift){
+  const enx = ST.enx, eny = ST.eny, es = ST.es, ec = ST.ec, fsh = ST.fsh;
+  const Rr = B.r, Rg = B.g, Rb = B.b, Hh = B.h, Ro = B.ro;
+  for (let y = Math.floor(by0); y <= Math.ceil(by1); y++){
+    const py = y + 0.5, row = (y < 0 ? y + H : y >= H ? y - H : y) * W;
+    for (let x = Math.floor(bx0); x <= Math.ceil(bx1); x++){
+      const qx = x + 0.5;
+      let hmin = 1e9, fi = -1;
+      for (let v = 0; v < nv; v++){
+        const d = qx * enx[v] + py * eny[v] + ec[v];
+        if (d < 0){ fi = -2; break; }
+        const hh = d * es[v];
+        if (hh < hmin){ hmin = hh; fi = v; }
+      }
+      if (fi < 0) continue;
+      const i = row + (x < 0 ? x + W : x >= W ? x - W : x);
+      let fs = fsh[fi];
+      if (hmin > cap){ hmin = cap; fs = fsh[nv]; }
+      const top = lump[i] + hmin + wn[i] * 0.08;
+      if (top > Hh[i]){
+        Hh[i] = top;
+        const k = fs * (1 + lift * hmin / cap);
+        Rr[i] *= k; Rg[i] *= k; Rb[i] *= k; Ro[i] = 0.97;
+      }
+    }
+  }
+}
+/* rounded stone, partly buried and coated with soil, with a damp halo */
+function pebble(B, W, H, lump, mid, wn, cx, cy, r, ar, ca, sa, amp, coat, pr, pg, pb){
+  const R = Math.ceil(r * 1.5 + 1), Rr = B.r, Rg = B.g, Rb = B.b, Hh = B.h, Ro = B.ro, ir = 1 / r, ira = 1 / (r * ar);
+  for (let y = Math.floor(cy - R); y <= Math.ceil(cy + R); y++){
+    const py = y + 0.5 - cy, row = (y < 0 ? y + H : y >= H ? y - H : y) * W;
+    for (let x = Math.floor(cx - R); x <= Math.ceil(cx + R); x++){
+      const qx = x + 0.5 - cx, i = row + (x < 0 ? x + W : x >= W ? x - W : x);
+      const u = (qx * ca + py * sa) * ir, v = (-qx * sa + py * ca) * ira;
+      const ds = u * u + v * v + mid[i] * 0.9, d2 = ds + wn[i] * 0.45;   /* ds: smooth (height), d2: ragged (outline) */
+      if (d2 >= 2.0) continue;
+      if (d2 >= 1){   /* damp halo, and the soil ramps up to meet the stone (a fillet, no step) */
+        const e = 2 - d2, k = 1 - 0.06 * e; Rr[i] *= k; Rg[i] *= k; Rb[i] *= k;
+        const fl = lump[i] + 0.1 * e * e; if (fl > Hh[i]) Hh[i] = fl;
+        continue;
+      }
+      const e1 = ds < 1 ? 1 - ds : 0, hgt = lump[i] + amp * e1 * (2 - e1) * 0.75 + 0.1;   /* rounded, gentle at the rim; rises out of the crumbs */
+      if (hgt > Hh[i] - 0.02){
+        if (hgt > Hh[i]) Hh[i] = hgt;
+        let m = coat + mid[i] * 1.6 + wn[i] * 0.9 - (1 - d2) * 0.3; m = m < 0 ? 0 : m > 1 ? 1 : m;
+        const q = 1 + wn[i] * 0.45 + mid[i] * 0.35, sr = pr * q, sg = pg * q, sb = pb * q;
+        Rr[i] = sr + (Rr[i] - sr) * m; Rg[i] = sg + (Rg[i] - sg) * m; Rb[i] = sb + (Rb[i] - sb) * m;
+        Ro[i] = 0.6 + 0.32 * m;
+      }
+    }
+  }
+}
 function makeSoil(C, N, seed){
   const W = N, H = N, n = W * H, pu = SOIL_FT * 12 / N, rnd = C.rng(seed);
-  const B = buffers(n), hf = B.h;
-  const Rr = B.r, Rg = B.g, Rb = B.b, Ro = B.ro;
+  const B = buffers(n);
   /* smooth fields at half resolution (looked up with x>>1, y>>1), detail fields at full resolution */
   const W2 = W >> 1, H2 = H >> 1;
-  const tone = field(C, W2, H2, 32, 32, {octaves: 4, base: 2, seed: seed + 1});
-  const hue = field(C, W2, H2, 32, 32, {octaves: 3, base: 3, seed: seed + 2});
-  const lumpH = field(C, W2, H2, 64, 64, {octaves: 4, base: 5, seed: seed + 6});
-  const mid = field(C, W, H, 128, 128, {octaves: 4, base: 10, seed: seed + 3});
-  const wn2 = white(n, seed + 5), wn = blur(Float32Array.from(wn2), W, H, 1, 1);
-  const lump = new Float32Array(n);
-  /* base: crumbly till. colours (sRGB): yellowish till, greyish till, dark topsoil streaks */
-  for (let i = 0; i < n; i++){
-    const i2 = ((i / W | 0) >> 1) * W2 + ((i % W) >> 1);
-    const hh = cl(0.5 + hue[i2] * 1.3, 0, 1), dk = sstep(-0.32, 0.12, tone[i2]);
-    let r = 128 - 16 * hh, g = 104 - 4 * hh, b = 76 + 10 * hh;
-    r = 74 + (r - 74) * dk; g = 58 + (g - 58) * dk; b = 44 + (b - 44) * dk;
-    const gr = 1 + wn[i] * 0.5 + wn2[i] * 0.09 + mid[i] * 0.16;
-    Rr[i] = r * gr; Rg[i] = g * gr; Rb[i] = b * gr;
-    lump[i] = lumpH[i2] * 0.32 + mid[i] * 0.1;          /* base relief in inches (the clod bed) */
-    hf[i] = lump[i] + wn[i] * 0.07 + wn2[i] * 0.012;
-    Ro[i] = 0.93 + wn[i] * 0.1;
+  const n2 = W2 * H2;
+  const tone = field(C, W2, H2, 32, 32, {octaves: 4, base: 3, seed: seed + 1}, tmp(n2, 0));
+  const hue = field(C, W2, H2, 32, 32, {octaves: 3, base: 3, seed: seed + 2}, tmp(n2, 1));
+  const lumpH = field(C, W2, H2, 64, 64, {octaves: 4, base: 5, seed: seed + 6}, tmp(n2, 2));
+  const mid = field(C, W, H, 128, 128, {octaves: 4, base: 12, seed: seed + 3}, tmp(n, 0));
+  const wn2 = white(n, seed + 5, tmp(n, 1)), wn = tmp(n, 2);
+  wn.set(wn2); blur1(wn, W, H, tmp(n, 3));
+  const lump = tmp(n, 3);
+  soilBase(B, W, H, tone, hue, lumpH, mid, wn, wn2, lump, tmp(n2, 3), tmp(n2, 4), tmp(n2, 5));
+  /* crumbs and small peds (0.1-0.45 in) */
+  const ncr = 9000;
+  for (let c = 0; c < ncr; c++){
+    const rIn = 0.07 + 0.32 * Math.pow(rnd(), 1.8), r = rIn / pu;
+    crumb(B, W, H, lump, wn, rnd() * W, rnd() * H, r, rIn * (0.18 + 0.32 * rnd()), 0.02 + 0.07 * rnd());
   }
-  /* clods: flat-topped, tilted, irregular lumps sitting on the bed; dry crust slightly lighter */
-  const clods = Math.round(1200 * n / (1024 * 1024));
-  for (let c = 0; c < clods; c++){
-    const rIn = 0.18 + 1.9 * Math.pow(rnd(), 2.3), r = rIn / pu, cx = rnd() * W, cy = rnd() * H;
-    const ar = 0.55 + 0.45 * rnd(), ang = rnd() * 3.1416, ca = Math.cos(ang), sa = Math.sin(ang);
-    const amp = rIn * (0.1 + 0.16 * rnd()), tu = (rnd() - 0.5) * 0.5 * amp, tv = (rnd() - 0.5) * 0.5 * amp;
-    const lift = 1.0 + 0.08 * rnd(), R = Math.ceil(r * 1.2 + 1), sharp = 0.25 + 0.3 * rnd();
-    for (let y = Math.floor(cy - R); y <= Math.ceil(cy + R); y++){
-      const py = y + 0.5 - cy, row = wrap(y, H) * W;
-      for (let x = Math.floor(cx - R); x <= Math.ceil(cx + R); x++){
-        const qx = x + 0.5 - cx, i = row + wrap(x, W);
-        const u = (qx * ca + py * sa) / r, v = (-qx * sa + py * ca) / (r * ar);
-        const d2 = u * u + v * v + mid[i] * 1.2 + wn[i] * 0.5;
-        if (d2 >= 1) continue;
-        const prof = sstep(0, sharp, 1 - d2);
-        const top = lump[i] + amp * prof + (tu * u + tv * v) * prof + wn[i] * 0.05;
-        if (top > hf[i]){
-          hf[i] = top;
-          const k = 1 + (lift - 1) * prof;
-          Rr[i] *= k; Rg[i] *= k; Rb[i] *= k;
-          Ro[i] = 0.96;
-        }
-      }
+  /* angular clods (0.4-2.4 in) */
+  const vx = ST.vx, vy = ST.vy, enx = ST.enx, eny = ST.eny, es = ST.es, ec = ST.ec, fsh = ST.fsh;
+  const ncl = 420;
+  for (let c = 0; c < ncl; c++){
+    const rIn = 0.4 + 2.0 * Math.pow(rnd(), 2.2), r = rIn / pu, cx = rnd() * W, cy = rnd() * H;
+    const nv = 6 + ((rnd() * 4) | 0), a0 = rnd() * 6.283, elong = 0.6 + 0.4 * rnd(), ea = rnd() * 3.1416, eca = Math.cos(ea), esa = Math.sin(ea);
+    for (let v = 0; v < nv; v++){
+      const an = a0 + (v + (rnd() - 0.5) * 0.8) * 6.2832 / nv, rr = r * (0.65 + 0.5 * rnd());
+      const lx = Math.cos(an) * rr, ly = Math.sin(an) * rr * elong;
+      vx[v] = cx + lx * eca - ly * esa; vy[v] = cy + lx * esa + ly * eca;
     }
+    const pkx = cx + (rnd() - 0.5) * r * 0.5, pky = cy + (rnd() - 0.5) * r * 0.5, pkh = rIn * (0.16 + 0.16 * rnd());   /* crest height, inches */
+    let ok = true;
+    for (let v = 0; v < nv; v++){
+      const w2 = (v + 1) % nv, ex = vx[w2] - vx[v], ey = vy[w2] - vy[v], el = Math.sqrt(ex * ex + ey * ey) || 1;
+      let nx = -ey / el, ny = ex / el, dp = (pkx - vx[v]) * nx + (pky - vy[v]) * ny;
+      if (dp < 0){ nx = -nx; ny = -ny; dp = -dp; }
+      if (dp < 0.5){ ok = false; break; }
+      enx[v] = nx; eny[v] = ny; es[v] = pkh / dp; ec[v] = -(vx[v] * nx + vy[v] * ny); fsh[v] = 0.93 + 0.12 * rnd();
+    }
+    if (!ok) continue;
+    fsh[nv] = 1.02 + 0.06 * rnd();
+    let bx0 = 1e9, bx1 = -1e9, by0 = 1e9, by1 = -1e9;
+    for (let v = 0; v < nv; v++){ if (vx[v] < bx0) bx0 = vx[v]; if (vx[v] > bx1) bx1 = vx[v]; if (vy[v] < by0) by0 = vy[v]; if (vy[v] > by1) by1 = vy[v]; }
+    clodPoly(B, W, H, lump, wn, nv, pkh * (0.55 + 0.3 * rnd()), bx0, bx1, by0, by1, 0.04 + 0.06 * rnd());
   }
-  /* stones: grit to small cobbles, rounded, partly buried and coated with soil; damp ring around */
-  const stonePal = [[124, 120, 114], [106, 104, 100], [136, 124, 112], [160, 154, 144], [114, 102, 88], [92, 92, 92], [130, 128, 122]];
-  const nst = Math.round(800 * n / (1024 * 1024));
-  for (let s2 = 0; s2 < nst; s2++){
+  /* stones: grit to small cobbles */
+  const stonePal = [[108, 104, 98], [94, 92, 88], [116, 108, 98], [128, 122, 114], [102, 92, 80], [84, 84, 84], [112, 110, 104]];
+  const nst = 760;
+  for (let s = 0; s < nst; s++){
     const big = rnd();
-    const rIn = big < 0.86 ? 0.05 + 0.18 * rnd() : big < 0.99 ? 0.28 + 0.6 * rnd() : 1.0 + 1.2 * rnd();
+    const rIn = big < 0.9 ? 0.05 + 0.16 * rnd() : big < 0.993 ? 0.26 + 0.55 * rnd() : 0.9 + 1.1 * rnd();
     const r = rIn / pu, cx = rnd() * W, cy = rnd() * H, ar = 0.6 + 0.4 * rnd(), ang = rnd() * 3.1416;
-    const ca = Math.cos(ang), sa = Math.sin(ang), p = stonePal[(rnd() * stonePal.length) | 0], j = 0.88 + 0.24 * rnd();
-    const amp = rIn * (0.3 + 0.25 * rnd()), coat = 0.25 + 0.45 * rnd(), R = Math.ceil(r * 1.45 + 1);
-    for (let y = Math.floor(cy - R); y <= Math.ceil(cy + R); y++){
-      const py = y + 0.5 - cy, row = wrap(y, H) * W;
-      for (let x = Math.floor(cx - R); x <= Math.ceil(cx + R); x++){
-        const qx = x + 0.5 - cx, i = row + wrap(x, W);
-        const u = (qx * ca + py * sa) / r, v = (-qx * sa + py * ca) / (r * ar);
-        const d2 = u * u + v * v + mid[i] * 0.3;
-        if (d2 >= 2.0) continue;
-        if (d2 >= 1){ const k = 1 - 0.1 * (2 - d2); Rr[i] *= k; Rg[i] *= k; Rb[i] *= k; continue; }  /* damp halo */
-        const hgt = lump[i] + amp * Math.sqrt(1 - d2 * d2) * 0.8 + 0.03;
-        if (hgt > hf[i] - 0.03){
-          if (hgt > hf[i]) hf[i] = hgt;
-          const m = cl(coat + mid[i] * 1.6 + wn[i] * 0.8 - (1 - d2) * 0.35, 0, 1);   /* soil coating, thicker toward the rim */
-          const q = j * (1 + wn[i] * 0.2), sr = p[0] * q, sg = p[1] * q, sb = p[2] * q;
-          Rr[i] = sr + (Rr[i] - sr) * m; Rg[i] = sg + (Rg[i] - sg) * m; Rb[i] = sb + (Rb[i] - sb) * m;
-          Ro[i] = 0.62 + 0.3 * m;
-        }
-      }
-    }
+    const p = stonePal[(rnd() * stonePal.length) | 0], j = 0.88 + 0.24 * rnd();
+    pebble(B, W, H, lump, mid, wn, cx, cy, r, ar, Math.cos(ang), Math.sin(ang), rIn * (0.35 + 0.25 * rnd()), 0.38 + 0.4 * rnd(), p[0] * j, p[1] * j, p[2] * j);
   }
-  /* crumbs: tiny light and dark specks */
-  const ncr = Math.round(16000 * n / (1024 * 1024));
-  for (let k2 = 0; k2 < ncr; k2++){
-    const x = (rnd() * W) | 0, y = (rnd() * H) | 0, i = y * W + x, k = rnd() < 0.55 ? 0.78 : 1.15;
-    Rr[i] *= k; Rg[i] *= k; Rb[i] *= k; hf[i] += 0.03;
-    if (rnd() < 0.5){ const i2 = y * W + ((x + 1) % W); Rr[i2] *= k; Rg[i2] *= k; Rb[i2] *= k; hf[i2] += 0.02; }
+  /* specks */
+  const nsp = 16000, Rr = B.r, Rg = B.g, Rb = B.b, Hh = B.h;
+  for (let k2 = 0; k2 < nsp; k2++){
+    const x = (rnd() * W) | 0, y = (rnd() * H) | 0, i = y * W + x, k = rnd() < 0.55 ? 0.8 : 1.14;
+    Rr[i] *= k; Rg[i] *= k; Rb[i] *= k; Hh[i] += 0.02;
   }
-  return { W, H, B, hf, pu };
+  return { W, H, B, hf: B.h, pu };
 }
 
-/* ---------------------------------------------------------------- crushed stone: 1024px = 3 ft (0.035 in/px)
-   3/4 in clean crushed stone: angular stones with flat fracture facets, piled in layers, dark fines between. */
+/* ================================================================ CRUSHED STONE
+   512px = 3 ft (0.07 in/px). 3/4 in clean crushed stone: angular stones with flat fracture facets, piled in layers,
+   dusty grey fines between. Height is a z-buffer in pixel units; each facet is a plane through one polygon edge and
+   the stone's crest, so normals are exact and facets are crisp. */
 const GRAVEL_FT = 3;
-function makeGravel(C, N, seed){
-  const W = N, H = N, n = W * H, pu = GRAVEL_FT * 12 / N, rnd = C.rng(seed);
-  const B = buffers(n), Z = new Float32Array(n);
-  const f1 = field(C, W, H, 64, 64, {octaves: 4, base: 8, seed: seed + 1});
-  const wn = white(n, seed + 2);
+function gravelBase(B, n, f1, wn, Z){
+  const R = B.r, G = B.g, Bb = B.b, NX = B.nx, NY = B.ny, Ro = B.ro;
   for (let i = 0; i < n; i++){
     const t = 0.5 + f1[i] * 0.8 + wn[i] * 0.5;
-    B.r[i] = 62 + 26 * t; B.g[i] = 59 + 25 * t; B.b[i] = 55 + 22 * t;
-    B.nx[i] = wn[i] * 0.8; B.ny[i] = f1[i] * 0.8; B.ro[i] = 0.92; Z[i] = -1e3; B.h[i] = 0;
+    R[i] = 62 + 26 * t; G[i] = 59 + 25 * t; Bb[i] = 55 + 22 * t;
+    NX[i] = wn[i] * 0.8; NY[i] = f1[i] * 0.8; Ro[i] = 0.92; Z[i] = -1e3;
   }
-  const pal = [[120, 121, 123], [130, 129, 126], [140, 138, 134], [110, 111, 113], [128, 123, 117], [136, 130, 126], [116, 117, 116], [148, 146, 141]];
-  const vx = new Float32Array(10), vy = new Float32Array(10), enx = new Float32Array(10), eny = new Float32Array(10), es = new Float32Array(10), ec = new Float32Array(10), fsh = new Float32Array(11);
-  const layers = 4, perLayer = Math.round(2700 * n / (1024 * 1024));
-  for (let k = 0; k < layers; k++){
+}
+const ST = { vx: new Float32Array(10), vy: new Float32Array(10), enx: new Float32Array(10), eny: new Float32Array(10),
+             es: new Float32Array(10), ec: new Float32Array(10), fsh: new Float32Array(11) };
+function stone(B, Z, W, H, wn, nv, cap, tX, tY, cx, cy, base, sr, sg, sb, bx0, bx1, by0, by1){
+  const enx = ST.enx, eny = ST.eny, es = ST.es, ec = ST.ec, fsh = ST.fsh;
+  const zTop = base + cap + (Math.abs(tX) + Math.abs(tY)) * Math.max(bx1 - bx0, by1 - by0);
+  const Rr = B.r, Rg = B.g, Rb = B.b, Nx = B.nx, Ny = B.ny, Ro = B.ro;
+  for (let y = Math.floor(by0); y <= Math.ceil(by1); y++){
+    const py = y + 0.5, row = (y < 0 ? y + H : y >= H ? y - H : y) * W;
+    for (let x = Math.floor(bx0); x <= Math.ceil(bx1); x++){
+      const qx = x + 0.5, i0 = row + (x < 0 ? x + W : x >= W ? x - W : x);
+      if (zTop <= Z[i0]) continue;
+      let hmin = 1e9, fi = -1;
+      for (let v = 0; v < nv; v++){
+        const d = qx * enx[v] + py * eny[v] + ec[v];
+        if (d < 0){ fi = -2; break; }
+        const hh = d * es[v];
+        if (hh < hmin){ hmin = hh; fi = v; }
+      }
+      if (fi < 0) continue;
+      let gx = 0, gy = 0, fs = fsh[nv];
+      if (hmin > cap) hmin = cap; else { gx = es[fi] * enx[fi]; gy = es[fi] * eny[fi]; fs = fsh[fi]; }
+      const zz = base + hmin + tX * (qx - cx) + tY * (py - cy);
+      const i = row + (x < 0 ? x + W : x >= W ? x - W : x);
+      if (zz <= Z[i]) continue;
+      Z[i] = zz;
+      gx += tX; gy += tY;
+      const g2 = gx * gx + gy * gy, steep = g2 > 1 ? 1 : Math.sqrt(g2);
+      const kk = fs * (1 + 0.08 * (1 - steep)) * (1 + wn[i] * 0.12);    /* dust on flat tops */
+      Rr[i] = sr * kk; Rg[i] = sg * kk; Rb[i] = sb * kk;
+      const il = 1 / Math.sqrt(1 + g2);
+      Nx[i] = -gx * il; Ny[i] = -gy * il; Ro[i] = 0.62 + 0.18 * steep;
+    }
+  }
+}
+/* crevice occlusion: darken pixels lying below their neighbours (gaps between stones, undersides of facets) */
+function gravelAO(B, Z, W, H, d, k, amt){
+  const R = B.r, G = B.g, Bb = B.b;
+  for (let y = 0; y < H; y++){
+    const ru = ((y - d + H) % H) * W, rd = ((y + d) % H) * W, row = y * W;
+    for (let x = 0; x < W; x++){
+      const i = row + x, xl = x - d < 0 ? x - d + W : x - d, xr = x + d >= W ? x + d - W : x + d;
+      const zl = Z[row + xl], zr = Z[row + xr], zu = Z[ru + x], zd = Z[rd + x];
+      const m = (zl + zr + zu + zd) * 0.25 - Z[i];
+      if (m <= 0) continue;
+      let o = m * k; if (o > 1) o = 1;
+      const f = 1 - amt * o;
+      R[i] *= f; G[i] *= f; Bb[i] *= f;
+    }
+  }
+}
+function makeGravel(C, N, seed){
+  const W = N, H = N, n = W * H, pu = GRAVEL_FT * 12 / N, rnd = C.rng(seed);
+  const B = buffers(n), Z = B.h;
+  const wn = white(n, seed + 2, tmp(n, 1));
+  gravelBase(B, n, field(C, W, H, 64, 64, {octaves: 4, base: 8, seed: seed + 1}, tmp(n, 0)), wn, Z);
+  const pal = [[120, 121, 124], [128, 127, 124], [136, 134, 130], [110, 111, 114], [126, 122, 117], [134, 129, 124], [116, 117, 117], [144, 142, 137]];
+  const vx = ST.vx, vy = ST.vy, enx = ST.enx, eny = ST.eny, es = ST.es, ec = ST.ec, fsh = ST.fsh;
+  const layers = 4, perLayer = 2700;   /* per 3 ft tile, independent of resolution */
+  for (let k = layers - 1; k >= 0; k--){          /* top layer first: lower stones are mostly rejected by the z early-out */
     for (let s = 0; s < perLayer; s++){
       const fine = rnd() < 0.22;
       const rIn = fine ? 0.08 + 0.12 * rnd() : 0.24 + 0.22 * rnd();   /* radius in inches: 1/2..1 in stones, plus fines */
-      const r = rIn / pu, cx = rnd() * W, cy = rnd() * H, base = (k + rnd() * 0.8) * 0.28 / pu;   /* layer base in px-height units */
+      const r = rIn / pu, cx = rnd() * W, cy = rnd() * H, base = (k + rnd() * 0.8) * 0.28 / pu;
       const nv = 5 + ((rnd() * 4) | 0), a0 = rnd() * 6.283;
       const elong = 0.7 + 0.3 * rnd(), ea = rnd() * 3.1416, eca = Math.cos(ea), esa = Math.sin(ea);
       for (let v = 0; v < nv; v++){
         const an = a0 + (v + (rnd() - 0.5) * 0.7) * 6.2832 / nv, rr = r * (0.75 + 0.4 * rnd());
-        let lx = Math.cos(an) * rr, ly = Math.sin(an) * rr * elong;
+        const lx = Math.cos(an) * rr, ly = Math.sin(an) * rr * elong;
         vx[v] = cx + lx * eca - ly * esa; vy[v] = cy + lx * esa + ly * eca;
       }
-      /* peak (crest of the stone) and facet planes through each edge */
-      const pkx = cx + (rnd() - 0.5) * r * 0.6, pky = cy + (rnd() - 0.5) * r * 0.6, pkh = r * (0.45 + 0.35 * rnd());
+      const pkx = cx + (rnd() - 0.5) * r * 0.6, pky = cy + (rnd() - 0.5) * r * 0.6, pkh = r * (0.3 + 0.25 * rnd());
       let ok = true;
       for (let v = 0; v < nv; v++){
         const w2 = (v + 1) % nv, ex = vx[w2] - vx[v], ey = vy[w2] - vy[v], el = Math.sqrt(ex * ex + ey * ey) || 1;
-        let nx = -ey / el, ny = ex / el;                 /* inward for CCW */
+        let nx = -ey / el, ny = ex / el;
         let dp = (pkx - vx[v]) * nx + (pky - vy[v]) * ny;
         if (dp < 0){ nx = -nx; ny = -ny; dp = -dp; }
         if (dp < 0.5){ ok = false; break; }
@@ -450,63 +572,72 @@ function makeGravel(C, N, seed){
       if (!ok) continue;
       const cap = pkh * (0.6 + 0.35 * rnd()), tX = (rnd() - 0.5) * 0.5, tY = (rnd() - 0.5) * 0.5;
       fsh[nv] = 1.0 + 0.08 * rnd();
-      const p = pal[(rnd() * pal.length) | 0], j = 0.86 + 0.28 * rnd();
-      const sh = 0.62 + 0.38 * (k + 1) / layers;
-      const sr = p[0] * j * sh, sg = p[1] * j * sh, sb = p[2] * j * sh;
+      const p = pal[(rnd() * pal.length) | 0], j = 0.86 + 0.28 * rnd(), sh = 0.62 + 0.38 * (k + 1) / layers;
       let bx0 = 1e9, bx1 = -1e9, by0 = 1e9, by1 = -1e9;
       for (let v = 0; v < nv; v++){ if (vx[v] < bx0) bx0 = vx[v]; if (vx[v] > bx1) bx1 = vx[v]; if (vy[v] < by0) by0 = vy[v]; if (vy[v] > by1) by1 = vy[v]; }
-      for (let y = Math.floor(by0); y <= Math.ceil(by1); y++){
-        const py = y + 0.5, row = wrap(y, H) * W;
-        for (let x = Math.floor(bx0); x <= Math.ceil(bx1); x++){
-          const qx = x + 0.5;
-          let hmin = 1e9, fi = -1;
-          for (let v = 0; v < nv; v++){
-            const d = qx * enx[v] + py * eny[v] + ec[v];
-            if (d < 0){ fi = -2; break; }
-            const hh = d * es[v];
-            if (hh < hmin){ hmin = hh; fi = v; }
-          }
-          if (fi < 0) continue;
-          let gx, gy, fs;
-          if (hmin > cap){ hmin = cap; gx = 0; gy = 0; fs = fsh[nv]; } else { gx = es[fi] * enx[fi]; gy = es[fi] * eny[fi]; fs = fsh[fi]; }
-          const zz = base + hmin + tX * (qx - cx) + tY * (py - cy);
-          const i = row + wrap(x, W);
-          if (zz <= Z[i]) continue;
-          Z[i] = zz;
-          gx += tX; gy += tY;
-          /* edge darkening where facets are steep (tiny shadowed chips) and dust on flat tops */
-          const steep = Math.min(1, Math.sqrt(gx * gx + gy * gy));
-          const dust = 1 + 0.08 * (1 - steep);
-          const kk = fs * dust * (1 + wn[i] * 0.12);
-          B.r[i] = sr * kk; B.g[i] = sg * kk; B.b[i] = sb * kk;
-          const gl2 = 1 / Math.sqrt(1 + gx * gx + gy * gy);
-          B.nx[i] = -gx * gl2; B.ny[i] = -gy * gl2; B.ro[i] = 0.62 + 0.18 * steep;
-        }
-      }
+      stone(B, Z, W, H, wn, nv, cap, tX, tY, cx, cy, base, p[0] * j * sh, p[1] * j * sh, p[2] * j * sh, bx0, bx1, by0, by1);
     }
   }
   let zmax = -1e9;
   for (let i = 0; i < n; i++){ if (Z[i] < -100) Z[i] = -0.1 / pu; if (Z[i] > zmax) zmax = Z[i]; }
-  for (let i = 0; i < n; i++) B.h[i] = Z[i];
+  gravelAO(B, Z, W, H, 3, 0.22, 0.5);
   return { W, H, B, zlo: -0.1 / pu, zhi: zmax };
 }
 
-/* ---------------------------------------------------------------- shredded bark mulch: 1024px = 3 ft (0.035 in/px) */
+/* ================================================================ SHREDDED BARK MULCH
+   512px = 3 ft (0.07 in/px). Dark-dyed hardwood bark shreds in layers, fibrous, ragged ends, a few weathered grey
+   and paler inner-wood pieces, near-black voids. Normals from the height field. */
 const MULCH_FT = 3;
-function makeMulch(C, N, seed){
-  const W = N, H = N, n = W * H, pu = MULCH_FT * 12 / N, rnd = C.rng(seed);
-  const B = buffers(n), hf = new Float32Array(n);
-  const f1 = field(C, W, H, 64, 64, {octaves: 4, base: 6, seed: seed + 1});
-  const wn = white(n, seed + 2);
+function mulchBase(B, n, f1, wn, hf){
+  const R = B.r, G = B.g, Bb = B.b, Ro = B.ro;
   for (let i = 0; i < n; i++){
     const t = 0.5 + f1[i] * 0.8 + wn[i] * 0.4;
-    B.r[i] = 22 + 14 * t; B.g[i] = 16 + 10 * t; B.b[i] = 12 + 7 * t; B.ro[i] = 0.95; hf[i] = 0;
+    R[i] = 22 + 14 * t; G[i] = 16 + 10 * t; Bb[i] = 12 + 7 * t; Ro[i] = 0.95; hf[i] = 0;
   }
+}
+/* one bark shred: ragged rectangle with fibres along its length, slightly convex across its width */
+function strip(B, hf, W, H, cx, cy, dx, dy, L, w, curv, cr, cg, cb, zh, thick, tu, tv, fib, fph, fsc, rag, rph, eph){
+  const hl = L * 0.5, hw = w * 0.5, hwm = hw * 1.25 + Math.abs(curv) * hl + 1, A = hl + 1;
+  const ax = Math.abs(dx), ay = Math.abs(dy), ex = ax * A + ay * hwm, ey = ay * A + ax * hwm;
+  const y0 = Math.floor(cy - ey), y1 = Math.ceil(cy + ey), ihl = 1 / (hl || 1), ihw2 = 1 / (hw * hw);
+  const Rr = B.r, Rg = B.g, Rb = B.b, Ro = B.ro;
+  for (let y = y0; y <= y1; y++){
+    const py = y + 0.5 - cy;
+    let lo = -ex - 1, hi = ex + 1;
+    if (ax > 1e-4){ let a = (-A - py * dy) / dx, b = (A - py * dy) / dx; if (a > b){ const t = a; a = b; b = t; } if (a > lo) lo = a; if (b < hi) hi = b; }
+    if (ay > 1e-4){ let a = (py * dx - hwm) / dy, b = (py * dx + hwm) / dy; if (a > b){ const t = a; a = b; b = t; } if (a > lo) lo = a; if (b < hi) hi = b; }
+    if (lo > hi) continue;
+    const xa = Math.ceil(cx + lo - 0.5), xb = Math.floor(cx + hi - 0.5), row = (y < 0 ? y + H : y >= H ? y - H : y) * W;
+    for (let x = xa; x <= xb; x++){
+      const qx = x + 0.5 - cx, u = qx * dx + py * dy;
+      const v = -qx * dy + py * dx - curv * u * u * ihl;
+      const av = v < 0 ? -v : v, au = u < 0 ? -u : u;
+      /* ragged width along the length; ragged, fibrous ends (end position varies across the width) */
+      const fe = fib[((v * 1.7 + eph) | 0) & 1023];
+      let cov = hl * (0.88 - 0.12 * fe) - au + 0.5;
+      if (cov <= 0) continue;
+      const c2 = hw * (1 + 0.22 * rag[((u * 0.35 + rph) | 0) & 1023]) - av + 0.5;
+      if (c2 < cov) cov = c2;
+      if (cov <= 0) continue; if (cov > 1) cov = 1;
+      const i = row + (x < 0 ? x + W : x >= W ? x - W : x);
+      const vn2 = av * av * ihw2;
+      const fv = fib[((v * fsc + fph) | 0) & 1023];
+      const k = 1 + 0.17 * fv - 0.06 * vn2;
+      Rr[i] += (cr * k - Rr[i]) * cov; Rg[i] += (cg * k - Rg[i]) * cov; Rb[i] += (cb * k - Rb[i]) * cov;
+      const hh = zh + thick * (vn2 < 1 ? 1 - vn2 : 0) + 0.012 * fv + u * tu + v * tv;
+      hf[i] += (hh - hf[i]) * cov;
+      Ro[i] += (0.82 + 0.1 * fv - Ro[i]) * cov;
+    }
+  }
+}
+function makeMulch(C, N, seed){
+  const W = N, H = N, n = W * H, pu = MULCH_FT * 12 / N, rnd = C.rng(seed);
+  const B = buffers(n), hf = B.h;
+  mulchBase(B, n, field(C, W, H, 64, 64, {octaves: 4, base: 6, seed: seed + 1}, tmp(n, 0)), white(n, seed + 2, tmp(n, 1)), hf);
   const fib = table(seed + 3), rag = table(seed + 4);
-  /* dark-dyed hardwood bark shreds, a few grey weathered and paler inner-wood pieces */
-  const pal = [[78, 54, 38], [90, 62, 44], [68, 47, 34], [98, 66, 46], [84, 60, 44], [108, 92, 78], [118, 102, 86], [58, 41, 31], [124, 96, 70]];
-  const pw = [0.18, 0.17, 0.16, 0.12, 0.12, 0.07, 0.05, 0.09, 0.04];
-  const layers = 9, total = Math.round(11500 * n / (1024 * 1024));
+  const pal = [[74, 52, 38], [84, 59, 43], [64, 45, 33], [90, 62, 44], [80, 58, 44], [100, 86, 74], [110, 96, 82], [54, 39, 30], [116, 90, 66]];
+  const pw = [0.19, 0.17, 0.16, 0.12, 0.12, 0.07, 0.04, 0.10, 0.03];
+  const layers = 7, total = 9300;      /* per 3 ft tile (the hidden bottom layers are left out) */
   for (let k = 0; k < layers; k++){
     for (let s = 0; s < total / layers; s++){
       const z = (k + rnd()) / layers;
@@ -514,73 +645,47 @@ function makeMulch(C, N, seed){
       const L = Lin / pu, w = Math.min(Win, Lin * 0.6) / pu;
       const ang = rnd() * 6.2832, dx = Math.cos(ang), dy = Math.sin(ang);
       let pr = rnd(), pi = 0; while (pi < pw.length - 1 && pr > pw[pi]){ pr -= pw[pi]; pi++; }
-      const p = pal[pi], j = 0.85 + 0.3 * rnd(), sh = 0.38 + 0.62 * Math.pow(z, 0.8);
-      const cr = p[0] * j * sh, cg = p[1] * j * sh, cb = p[2] * j * sh;
-      const zh = z * 0.9, thick = (0.02 + 0.04 * rnd()), curv = (rnd() - 0.5) * 0.2;
-      const tu = (rnd() - 0.5) * 0.12, tv = (rnd() - 0.5) * 0.25;      /* tilt (in/in) along and across */
-      const fph = rnd() * 1024, fsc = 2.5 + 2.0 * rnd(), rph = rnd() * 1024, rph2 = rnd() * 1024;
-      strip(B, hf, W, H, rnd() * W, rnd() * H, dx, dy, L, w, curv, cr, cg, cb, zh, thick, tu * pu, tv * pu, fib, fph, fsc, rag, rph, rph2, pu);
+      const p = pal[pi], j = 0.85 + 0.3 * rnd(), sh = 0.45 + 0.55 * Math.pow(z, 0.8);
+      const zh = z * 0.45, thick = 0.02 + 0.04 * rnd(), curv = (rnd() - 0.5) * 0.26;
+      const tu = (rnd() - 0.5) * 0.12 * pu, tv = (rnd() - 0.5) * 0.25 * pu;      /* tilt, inches per pixel */
+      strip(B, hf, W, H, rnd() * W, rnd() * H, dx, dy, L, w, curv, p[0] * j * sh, p[1] * j * sh, p[2] * j * sh, zh, thick, tu, tv,
+            fib, rnd() * 1024, 2.5 + 2.0 * rnd(), rag, rnd() * 1024, rnd() * 1024);
+    }
+    /* stringy bark fibres lying across the top layers */
+    if (k >= layers - 3){
+      for (let s = 0; s < 700; s++){
+        const z = (k + rnd()) / layers, L = (0.8 + 2.4 * rnd()) / pu, w = (0.035 + 0.04 * rnd()) / pu;
+        const ang = rnd() * 6.2832, p = pal[(rnd() * 5) | 0], j = 0.9 + 0.35 * rnd(), sh = 0.45 + 0.55 * z;
+        strip(B, hf, W, H, rnd() * W, rnd() * H, Math.cos(ang), Math.sin(ang), L, w, (rnd() - 0.5) * 0.5, p[0] * j * sh, p[1] * j * sh, p[2] * j * sh,
+              z * 0.45 + 0.02, 0.01, 0, 0, fib, rnd() * 1024, 3.0, rag, rnd() * 1024, rnd() * 1024);
+      }
     }
   }
   return { W, H, B, hf, pu };
 }
-/* one bark shred: ragged rectangle with fibres along its length, convex across its width */
-function strip(B, hf, W, H, cx, cy, dx, dy, L, w, curv, cr, cg, cb, zh, thick, tu, tv, fib, fph, fsc, rag, rph, rph2, pu){
-  const hl = L * 0.5, hw = w * 0.5, hwm = hw * 1.3 + Math.abs(curv) * hl + 1, A = hl + 1;
-  const ax = Math.abs(dx), ay = Math.abs(dy), ex = ax * A + ay * hwm, ey = ay * A + ax * hwm;
-  const y0 = Math.floor(cy - ey), y1 = Math.ceil(cy + ey);
-  for (let y = y0; y <= y1; y++){
-    const py = y + 0.5 - cy;
-    let lo = -ex - 1, hi = ex + 1;
-    if (ax > 1e-4){ let a = (-A - py * dy) / dx, b = (A - py * dy) / dx; if (a > b){ const t = a; a = b; b = t; } if (a > lo) lo = a; if (b < hi) hi = b; }
-    if (ay > 1e-4){ let a = (py * dx - hwm) / dy, b = (py * dx + hwm) / dy; if (a > b){ const t = a; a = b; b = t; } if (a > lo) lo = a; if (b < hi) hi = b; }
-    if (lo > hi) continue;
-    const xa = Math.ceil(cx + lo - 0.5), xb = Math.floor(cx + hi - 0.5), row = wrap(y, H) * W;
-    for (let x = xa; x <= xb; x++){
-      const qx = x + 0.5 - cx, u = qx * dx + py * dy;
-      let v = -qx * dy + py * dx;
-      v -= curv * u * u / (hl || 1);
-      /* ragged width along the length and ragged, fibrous ends */
-      const ru = rag[((u * 0.35 + rph) | 0) & 1023], rv = rag[((v * 1.7 + rph2) | 0) & 1023];
-      const hwu = hw * (1 + 0.22 * ru);
-      const hlu = hl * (1 - 0.12 - 0.12 * rv);
-      const av = v < 0 ? -v : v, au = u < 0 ? -u : u;
-      let cov = Math.min(hwu - av + 0.5, hlu - au + 0.5);
-      if (cov <= 0) continue; if (cov > 1) cov = 1;
-      const i = row + wrap(x, W);
-      const vn = av / hwu;
-      const fv = fib[((v * fsc + fph) | 0) & 1023], fu = fib[((u * 0.08 + fph * 0.5) | 0) & 1023];
-      const k = 1 + 0.16 * fv + 0.05 * fu - 0.06 * vn * vn;
-      B.r[i] += (cr * k - B.r[i]) * cov; B.g[i] += (cg * k - B.g[i]) * cov; B.b[i] += (cb * k - B.b[i]) * cov;
-      const hh = zh + thick * Math.sqrt(Math.max(0, 1 - vn * vn)) + 0.012 * fv + u * tu + v * tv;
-      hf[i] += (hh - hf[i]) * cov;
-      B.ro[i] += (0.82 + 0.1 * fv - B.ro[i]) * cov;
-    }
-  }
-}
 
-/* ---------------------------------------------------------------- macro noise: 256px RGB, three independent fbm fields */
+/* ================================================================ macro noise: 256px RGB, three independent fbm fields */
 function makeMacro(C, THREE){
   const S = 256, a = field(C, S, S, 128, 128, {octaves: 5, base: 4, seed: 9101}),
         b = field(C, S, S, 128, 128, {octaves: 5, base: 4, seed: 9203}),
         c = field(C, S, S, 128, 128, {octaves: 5, base: 4, seed: 9307});
-  for (let i = 0; i < S * S; i++){ a[i] += 0.5; b[i] += 0.5; c[i] += 0.5; }
   const cv = C.canvas(S, S), ctx = cv.getContext("2d"), img = ctx.createImageData(S, S), d = img.data;
-  for (let i = 0, k = 0; i < S * S; i++, k += 4){ d[k] = a[i] * 255; d[k+1] = b[i] * 255; d[k+2] = c[i] * 255; d[k+3] = 255; }
+  for (let i = 0, k = 0; i < S * S; i++, k += 4){ d[k] = (a[i] + 0.5) * 255; d[k+1] = (b[i] + 0.5) * 255; d[k+2] = (c[i] + 0.5) * 255; d[k+3] = 255; }
   ctx.putImageData(img, 0, 0);
   const t = C.texture(THREE, cv);
   t.anisotropy = 1;
   return t;
 }
 
-/* ---------------------------------------------------------------- the shader patch
+/* ================================================================ the shader patch
    o = { key,
          rep: number | 0         plane mode: vUv = uv * rep (one large plane, plain UVs; textures stay shared)
-         s: [s0,s1,s2,s3] ft     macro scales;  a: [a0..a3] tone amplitudes;  hue: warm/cool shift amplitude
+         s: [s0..s3] ft          macro scales;  a: [a0..a3] tone amplitudes;  hue: warm/cool shift amplitude
          r: [r0, r1]             roughness amplitudes
          blend: [scaleFt, rotRad, uvScale, bias]   second-sample anti-tiling
-         lawn: { side:[r,g,b] linear canopy colour seen at grazing, graze, stripe, band, cloverK, dry } | null
-         damp: [lo, hi, darken, roughness] | null } */
+         lawn: { side:[r,g,b] linear canopy colour seen at grazing, graze, stripe, band ft, clover:[lo,hi], dry, mow:[x,z] } | null
+         damp: [lo, hi, darken, roughness] | null
+         scrape: [teethPerTile, bandsPerTile, unused, slope strength] | null   vertical faces only */
 function groundPatch(THREE, m, T, o){
   const f = v => (+v).toFixed(5);
   const prev = m.onBeforeCompile, prevKey = m.customProgramCacheKey;
@@ -611,32 +716,50 @@ function groundPatch(THREE, m, T, o){
           float gGr = pow(1.0 - gNV, 2.0) * ${f(L.graze)};
           gCol = mix(gCol, vec3(${f(L.side[0])}, ${f(L.side[1])}, ${f(L.side[2])}) * (0.85 + 0.3 * gH), gGr * (1.0 - gH * 0.6));
           /* clover / broadleaf patches: plants appear one by one (rank in cloverN.b) as patch density rises;
-             at distance (minified) fall back to blending the mip colour by density */
-          float gMC = texture2D(gMacro, mat2(0.96, -0.28, 0.28, 0.96) * gP * ${f(1 / 37.0)} + vec2(0.61, 0.17)).b;
+             minified (far) it falls back to blending the mip colour by density */
+          float gMC = texture2D(gMacro, mat2(0.96, -0.28, 0.28, 0.96) * gP * ${f(1 / 53.0)} + vec2(0.61, 0.17)).b;
           float gMC2 = texture2D(gMacro, mat2(0.6, 0.8, -0.8, 0.6) * gP * ${f(1 / 6.3)} + vec2(0.33, 0.77)).g;
           float gMask = smoothstep(${f(L.clover[0])}, ${f(L.clover[1])}, gMC + (gMC2 - 0.5) * 0.35);
-          vec4 gCNa = texture2D(gCloN, vUv), gCNb = texture2D(gCloN, gUvB);
-          vec4 gCN = mix(gCNa, gCNb, gBl);
+          vec4 gCN = mix(texture2D(gCloN, vUv), texture2D(gCloN, gUvB), gBl);
           vec3 gTC = mix(mapTexelToLinear(texture2D(gClo, vUv)).rgb, mapTexelToLinear(texture2D(gClo, gUvB)).rgb, gBl);
-          vec2 gTs = vec2(textureSize(gCloN, 0));
-          float gLod = log2(max(1.0, max(length(dFdx(vUv) * gTs), length(dFdy(vUv) * gTs))));
+          float gLod = log2(max(1.0, max(length(dFdx(vUv)), length(dFdy(vUv))) * ${f(T.lawnRes)}));
           float gFar = smoothstep(0.6, 2.2, gLod);
-          float gNear = smoothstep(-0.03, 0.03, gCN.b - (1.0 - gMask)) * step(0.015, gCN.b);
-          gCl = mix(gNear, gMask, gFar);
+          float gNear = smoothstep(-0.03, 0.03, gCN.b - (1.0 - gMask * 0.85)) * step(0.015, gCN.b);
+          gCl = mix(gNear, gMask * 0.6, gFar);
           gCol = mix(gCol, gTC, gCl);
           /* dry, yellower patches and lusher, darker patches */
           float gDry = smoothstep(0.56, 0.8, gM2 * 0.7 + gMC2 * 0.3);
           gCol *= mix(vec3(1.0), vec3(1.32, 1.1, 0.78), gDry * ${f(L.dry)});
           float gLush = smoothstep(0.55, 0.8, gM0);
-          gCol *= mix(vec3(1.0), vec3(0.86, 0.94, 0.92), gLush * 0.8);
-          /* mowing stripes: passes along gMw; each pass lies the grass one way, so it reads light or dark by view */
-          vec2 gMw = vec2(0.8, 0.6);
+          gCol *= mix(vec3(1.0), vec3(0.9, 0.96, 0.94), gLush * 0.7);
+          /* mowing stripes: passes along gMw; each pass lays the grass one way, so it reads light or dark by view */
+          vec2 gMw = vec2(${f(L.mow[0])}, ${f(L.mow[1])});
           float gSc = dot(gP, vec2(-gMw.y, gMw.x)) / ${f(L.band)} + (gM1 - 0.5) * 1.6;
           float gSg = clamp(sin(gSc * 3.14159) * 3.0, -1.0, 1.0);
-          float gAA = 1.0 - smoothstep(0.12, 0.45, fwidth(gSc));
+          float gAA = 1.0 - smoothstep(0.05, 0.2, fwidth(gSc));
           vec2 gVh = gV.xz / max(length(gV.xz), 1e-3);
           gStr = gSg * dot(gVh, gMw) * gAA * smoothstep(0.6, 0.9, gAN.y) * (1.0 - gCl * 0.6);
-          gCol *= 1.0 + ${f(L.stripe)} * gStr;` : "";
+          gCol *= 1.0 + ${f(L.stripe)} * gStr;
+          /* cut sod edges (vertical faces of lawn pieces) are soil and roots, not canopy */
+          float gSod = 1.0 - smoothstep(0.3, 0.6, gAN.y);
+          gCol = mix(gCol, vec3(0.06, 0.045, 0.03) * (0.8 + 0.4 * gH) + gCol * 0.25, gSod * 0.85);` : "";
+    const sc = o.scrape;
+    const scrapeMap = sc ? `
+          /* excavator bucket-tooth scrapes on cut walls: broad, shallow, near-vertical U-grooves in bands (one band per
+             bucket pass), each band offset at random, each groove its own depth, fading toward the band ends and out
+             where the wall is smeared */
+          float gWall = 1.0 - smoothstep(0.3, 0.6, gAN.y);
+          float gBv = vUv.y * ${f(sc[1])} + gM3 * 1.2;
+          float gBand = floor(gBv), gBf = gBv - gBand;
+          float gHb = fract(sin(gBand * 12.9898 + 4.1) * 43758.5453);
+          float gS = vUv.x * ${f(sc[0])} + gHb * 7.0 + (gM1 - 0.5) * 0.6 + gBf * (gHb - 0.5) * 0.5;
+          float gT = fract(gS) - 0.5;
+          float gHg = fract(sin(floor(gS) * 78.233 + gBand * 3.7) * 43758.5453);
+          float gC = 0.5 + 0.5 * cos(6.2832 * gT);
+          gGrv = gC * gC * gC;
+          gScr = gWall * smoothstep(0.3, 0.6, gM2 * 0.7 + gHb * 0.5) * smoothstep(0.0, 0.18, gBf) * smoothstep(1.0, 0.75, gBf) * (0.3 + 0.7 * gHg);
+          gGrs = -gC * gC * sin(6.2832 * gT) * gScr;
+          gCol *= 1.0 - 0.04 * gGrv * gScr;` : "";
     const dampMap = o.damp ? `
           gDp = smoothstep(${f(o.damp[0])}, ${f(o.damp[1])}, gM0 * 0.55 + gM2 * 0.3 + gM3 * 0.15);
           gCol *= 1.0 - ${f(o.damp[2])} * gDp;` : "";
@@ -659,8 +782,9 @@ function groundPatch(THREE, m, T, o){
           vec4 gTB = mapTexelToLinear(texture2D(map, gUvB));
           vec3 gCol = mix(gTA.rgb, gTB.rgb, gBl);
           float gH = mix(gRA.r, gRB.r, gBl);
-          float gCl = 0.0, gStr = 0.0, gDp = 0.0;
+          float gCl = 0.0, gStr = 0.0, gDp = 0.0, gGrv = 0.0, gScr = 0.0, gGrs = 0.0;
           ${lawnMap}
+          ${scrapeMap}
           ${dampMap}
           gCol *= max(0.2, 1.0 + ${f(o.a[0])} * (gM0 - 0.5) * 2.0 + ${f(o.a[1])} * (gM1 - 0.5) * 2.0 + ${f(o.a[2])} * (gM2 - 0.5) * 2.0 + ${f(o.a[3])} * (gM3 - 0.5) * 2.0);
           gCol *= 1.0 + ${f(o.hue)} * (gM1 - 0.5) * 2.0 * vec3(1.0, 0.15, -0.9);
@@ -669,7 +793,8 @@ function groundPatch(THREE, m, T, o){
           float roughnessFactor = roughness * mix(gRA.g, gRB.g, gBl);
           roughnessFactor = clamp(roughnessFactor + ${f(o.r[0])} * (gM0 - 0.5) * 2.0 + ${f(o.r[1])} * (gM2 - 0.5) * 2.0, 0.04, 1.0);
           ${L ? "roughnessFactor = mix(roughnessFactor, 0.5, gCl * 0.5) * (1.0 - 0.06 * gStr);" : ""}
-          ${o.damp ? `roughnessFactor = mix(roughnessFactor, ${f(o.damp[3])}, gDp);` : ""}`)
+          ${o.damp ? `roughnessFactor = mix(roughnessFactor, ${f(o.damp[3])}, gDp);` : ""}
+          ${sc ? "roughnessFactor -= 0.08 * gGrv * gScr;" : ""}`)
         .replace("#include <normal_fragment_maps>", `
           vec3 gNA = texture2D(normalMap, vUv).xyz * 2.0 - 1.0;
           vec3 gNB = texture2D(normalMap, gUvB).xyz * 2.0 - 1.0;
@@ -677,6 +802,7 @@ function groundPatch(THREE, m, T, o){
           vec3 mapN = normalize(mix(gNA, gNB, gBl));
           ${L ? "vec3 gNC = vec3(gCN.xy * 2.0 - 1.0, 0.0); gNC.z = sqrt(max(0.08, 1.0 - dot(gNC.xy, gNC.xy))); mapN = normalize(mix(mapN, gNC, gCl * (1.0 - gFar * 0.5)));" : ""}
           ${o.damp ? "mapN = normalize(mix(mapN, vec3(0.0, 0.0, 1.0), gDp * 0.35));" : ""}
+          ${sc ? `mapN = normalize(mapN + vec3(gGrs * ${f(sc[3])}, 0.0, 0.0));` : ""}
           mapN.xy *= normalScale;
           normal = perturbNormal2Arb(-vViewPosition, normal, mapN, faceDirection);`);
   };
@@ -686,24 +812,23 @@ function groundPatch(THREE, m, T, o){
   return m;
 }
 
-/* ---------------------------------------------------------------- 3D grass tufts (optional) */
+/* ================================================================ 3D grass tufts (optional) */
 function tuftTexture(C, seed){
   const S = 256, col = C.canvas(S, S), alp = C.canvas(S, S), rnd = C.rng(seed);
   const cc = col.getContext("2d"), ac = alp.getContext("2d");
-  cc.fillStyle = "rgb(64,92,36)"; cc.fillRect(0, 0, S, S);
+  cc.fillStyle = "rgb(78,108,40)"; cc.fillRect(0, 0, S, S);
   ac.fillStyle = "#000"; ac.fillRect(0, 0, S, S);
-  const n = 46;
-  for (let b = 0; b < n; b++){
-    const x0 = S * (0.2 + 0.6 * rnd()), lean = (rnd() - 0.5) * S * 0.5, hgt = S * (0.55 + 0.43 * rnd());
-    const w = S * (0.012 + 0.014 * rnd()), x1 = x0 + lean, y1 = S - hgt;
-    const p = LAWN_PAL[(rnd() * LAWN_PAL.length) | 0], j = 0.85 + 0.3 * rnd();
+  for (let b = 0; b < 70; b++){
+    const x0 = S * (0.08 + 0.84 * rnd()), lean = (rnd() - 0.5) * S * 0.45, hgt = S * (0.35 + 0.63 * Math.pow(rnd(), 0.7));
+    const w = S * (0.008 + 0.012 * rnd()), x1 = x0 + lean, y1 = S - hgt;
+    const p = LAWN_PAL[(rnd() * LAWN_PAL.length) | 0], j = 0.8 + 0.3 * rnd();
     const g = cc.createLinearGradient(0, S, 0, y1);
-    g.addColorStop(0, `rgb(${p[0] * 0.45 * j | 0},${p[1] * 0.5 * j | 0},${p[2] * 0.45 * j | 0})`);
+    g.addColorStop(0, `rgb(${p[0] * 0.62 * j | 0},${p[1] * 0.68 * j | 0},${p[2] * 0.62 * j | 0})`);
     g.addColorStop(1, `rgb(${p[0] * j | 0},${p[1] * j | 0},${p[2] * j | 0})`);
     const path = new Path2D();
     path.moveTo(x0 - w, S);
-    path.quadraticCurveTo(x0 + lean * 0.2 - w, S - hgt * 0.6, x1, y1);
-    path.quadraticCurveTo(x0 + lean * 0.2 + w, S - hgt * 0.6, x0 + w, S);
+    path.quadraticCurveTo(x0 + lean * 0.25 - w, S - hgt * 0.6, x1, y1);
+    path.quadraticCurveTo(x0 + lean * 0.25 + w, S - hgt * 0.6, x0 + w, S);
     path.closePath();
     cc.fillStyle = g; cc.fill(path);
     ac.fillStyle = "#fff"; ac.fill(path);
@@ -723,50 +848,53 @@ REAL.ground = {
     const T = {};
     T.macro = makeMacro(C, THREE); lap("macro");
 
-    /* lawn */
+    /* lawn + clover (clover is drawn onto the same buffers after the lawn canvases are taken) */
     const lawn = makeLawn(C, 512, 4101); lap("lawnRaster");
-    const lawnCol = rgbCanvas(C, lawn.W, lawn.H, lawn.B), lawnN = nrmCanvas(C, lawn.W, lawn.H, lawn.B), lawnD = dataCanvas(C, lawn.W, lawn.H, lawn.B.h, lawn.B.ro, 0, 1);
+    T.lawnRes = lawn.W;
+    const lawnTex = { map: C.texture(THREE, rgbCanvas(C, lawn.W, lawn.H, lawn.B), {srgb: true}),
+                      normalMap: C.texture(THREE, nrmCanvas(C, lawn.W, lawn.H, lawn.B)),
+                      roughnessMap: C.texture(THREE, dataCanvas(C, lawn.W, lawn.H, lawn.B.h, lawn.B.ro, 0, 1)) };
     lap("lawnCanvas");
     makeCloverOnto(C, lawn, 4207); lap("cloverRaster");
     T.clover = C.texture(THREE, rgbCanvas(C, lawn.W, lawn.H, lawn.B), {srgb: true});
-    T.cloverN = C.texture(THREE, cloverNrmCanvas(C, lawn.W, lawn.H, lawn.B));
+    T.cloverN = C.texture(THREE, nrmCanvas(C, lawn.W, lawn.H, lawn.B, lawn.B.h));
     lap("cloverCanvas");
-    const lawnTex = { map: C.texture(THREE, lawnCol, {srgb: true}), normalMap: C.texture(THREE, lawnN), roughnessMap: C.texture(THREE, lawnD) };
-    /* average blade-side colour (linear) seen at grazing angles */
-    const lawnSide = [0.085, 0.15, 0.032];
+    const lawnSide = [0.09, 0.16, 0.045];
+    /* mowing direction in world XZ (opts.mowDeg, degrees from +X toward +Z); stripes run along it */
+    const mowA = (opts.mowDeg == null ? 37 : opts.mowDeg) * Math.PI / 180, mowDir = [Math.cos(mowA), Math.sin(mowA)];      /* blade-side colour (linear) seen at grazing angles */
     const lawnPatch = (key, rep) => ({
-      key, rep, s: [97, 41, 13.3, 5.7], a: [0.12, 0.06, 0.07, 0.04], hue: 0.05, r: [0.05, 0.04],
+      key, rep, s: [97, 41, 13.3, 5.7], a: [0.09, 0.05, 0.045, 0.025], hue: 0.04, r: [0.05, 0.04],
       blend: [17.0, 0.6, 0.731, 5.0],
-      lawn: { side: lawnSide, graze: 0.75, stripe: 0.07, band: 1.75, clover: [0.60, 0.80], dry: 0.55 }
+      lawn: { side: lawnSide, graze: 0.75, stripe: 0.045, band: 1.75, clover: [0.66, 0.88], dry: 0.4, mow: mowDir }
     });
-    function lawnMat(rep){
+    function lawnMat(){
       const m = new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1.0, metalness: 0});
       m.map = lawnTex.map; m.normalMap = lawnTex.normalMap; m.roughnessMap = lawnTex.roughnessMap;
       m.normalScale = new THREE.Vector2(0.9, 0.9);
       m.envMapIntensity = 0.85;
       return m;
     }
-    const lawnBox = lawnMat(0);
+    const lawnBox = lawnMat();
     C.worldUV(lawnBox, {tile: [LAWN_FT, LAWN_FT], grain: "none", jitter: 1});
     groundPatch(THREE, lawnBox, T, lawnPatch("lawnBox", 0));
-    lap("lawnMat");
 
     /* soil */
     const so = makeSoil(C, 1024, 5101); lap("soilRaster");
     const soil = C.material(THREE, {
-      map: rgbCanvas(C, so.W, so.H, so.B), normalMap: heightNrmCanvas(C, so.W, so.H, so.hf, so.pu, 1.0, null),
+      map: rgbCanvas(C, so.W, so.H, so.B), normalMap: heightNrmCanvas(C, so.W, so.H, so.hf, so.pu, 1.0),
       roughnessMap: dataCanvas(C, so.W, so.H, so.hf, so.B.ro, -0.3, 0.8), normalScale: 1.0, roughness: 1.0,
       tile: [SOIL_FT, SOIL_FT], grain: "none", jitter: 1
     });
     groundPatch(THREE, soil, T, { key: "soil", s: [23, 11.3, 4.1, 1.9], a: [0.10, 0.05, 0.06, 0.04], hue: 0.06, r: [0.03, 0.02],
-      blend: [9.0, 2.1, 0.77, 5.0], lawn: null, damp: [0.52, 0.72, 0.32, 0.62] });
+      blend: [9.0, 2.1, 0.77, 5.0], lawn: null, damp: [0.52, 0.72, 0.32, 0.62],
+      scrape: [SOIL_FT / 0.6, SOIL_FT / 2.3, 0, 0.75] });   /* teeth every 0.6 ft, passes 2.3 ft tall, (unused), groove slope */
     lap("soilCanvas");
 
     /* gravel */
     const gr = makeGravel(C, 512, 6101); lap("gravelRaster");
     const gravel = C.material(THREE, {
       map: rgbCanvas(C, gr.W, gr.H, gr.B), normalMap: nrmCanvas(C, gr.W, gr.H, gr.B),
-      roughnessMap: dataCanvas(C, gr.W, gr.H, gr.B.h, gr.B.ro, gr.zlo, gr.zhi), normalScale: 1.0, roughness: 1.0,
+      roughnessMap: dataCanvas(C, gr.W, gr.H, gr.B.h, gr.B.ro, gr.zlo, gr.zhi), normalScale: 0.95, roughness: 1.0,
       tile: [GRAVEL_FT, GRAVEL_FT], grain: "none", jitter: 1
     });
     groundPatch(THREE, gravel, T, { key: "gravel", s: [19, 8.7, 3.3, 1.3], a: [0.08, 0.04, 0.05, 0.03], hue: 0.03, r: [0.03, 0.02],
@@ -777,7 +905,7 @@ REAL.ground = {
     const mu = makeMulch(C, 512, 7101); lap("mulchRaster");
     let hmax = 0; for (let i = 0; i < mu.hf.length; i++) if (mu.hf[i] > hmax) hmax = mu.hf[i];
     const mulch = C.material(THREE, {
-      map: rgbCanvas(C, mu.W, mu.H, mu.B), normalMap: heightNrmCanvas(C, mu.W, mu.H, mu.hf, mu.pu, 1.0, null),
+      map: rgbCanvas(C, mu.W, mu.H, mu.B), normalMap: heightNrmCanvas(C, mu.W, mu.H, mu.hf, mu.pu, 0.8),
       roughnessMap: dataCanvas(C, mu.W, mu.H, mu.hf, mu.B.ro, 0, hmax), normalScale: 1.0, roughness: 1.0,
       tile: [MULCH_FT, MULCH_FT], grain: "none", jitter: 1
     });
@@ -785,6 +913,9 @@ REAL.ground = {
       blend: [4.7, 0.9, 0.79, 4.0], lawn: null, damp: null });
     lap("mulchCanvas");
 
+    /* let the raster buffers go (the canvases hold the results) */
+    for (const k in POOL) delete POOL[k];
+    for (const k in TMP) delete TMP[k];
     const ms = performance.now() - t0;
     REAL.ground.buildMs = ms; REAL.ground.timing = Tm;
     return {
@@ -798,23 +929,22 @@ REAL.ground = {
       },
       /* one big flat lawn plane: PlaneGeometry(sizeFeet, sizeFeet) with plain 0..1 UVs */
       lawnMaterial: function(sizeFeet){
-        const m = lawnMat((sizeFeet || 100) / LAWN_FT);
-        groundPatch(THREE, m, T, lawnPatch("lawnPlane", (sizeFeet || 100) / LAWN_FT));
+        const rep = (sizeFeet || 100) / LAWN_FT, m = lawnMat();
+        groundPatch(THREE, m, T, lawnPatch("lawnPlane", rep));
         return m;
       }
     };
   },
 
-  /* 3D grass tufts for lawn edges (foundation, walks, beds): crossed alpha-tested cards, normals pointing up so they
-     shade like the lawn they grow from. areas: [{x0,x1,z0,z1}] in feet at y = o.y (default 0). density: tufts / sq ft. */
+  /* 3D grass tufts for lawn edges (foundation, walks, beds): crossed alpha-tested cards whose normals point up so they
+     shade like the lawn they grow from. areas: [{x0,x1,z0,z1}] feet at y = o.y (default 0). density: tufts per sq ft. */
   grass: function(THREE, renderer, o){
     o = o || {};
     const C = REAL.core, rnd = C.rng(o.seed || 77);
     const areas = o.areas || [{x0: -4, x1: 4, z0: -0.5, z1: 0.5}], dens = o.density == null ? 6 : o.density;
-    const hgt = o.height || 0.32, maxN = o.max || 6000, y0 = o.y || 0;
+    const hgt = o.height || 0.24, maxN = o.max || 6000, y0 = o.y || 0;
     let area = 0; areas.forEach(a => area += Math.abs((a.x1 - a.x0) * (a.z1 - a.z0)));
     const count = Math.max(1, Math.min(maxN, Math.round(area * dens)));
-    /* geometry: two crossed quads, 4 triangles */
     const pos = [], uv = [], nrm = [], idx = [];
     for (let q = 0; q < 2; q++){
       const a = q * Math.PI / 2, cx = Math.cos(a) * 0.5, sz = Math.sin(a) * 0.5, b = pos.length / 3;
@@ -839,12 +969,12 @@ REAL.ground = {
     areas.forEach(a => {
       const n = Math.round(count * Math.abs((a.x1 - a.x0) * (a.z1 - a.z0)) / (area || 1));
       for (let k = 0; k < n && i < count; k++, i++){
-        p.set(a.x0 + (a.x1 - a.x0) * rnd(), y0 - 0.02, a.z0 + (a.z1 - a.z0) * rnd());
+        p.set(a.x0 + (a.x1 - a.x0) * rnd() + (rnd() - 0.5) * 0.25, y0 - 0.02, a.z0 + (a.z1 - a.z0) * rnd() + (rnd() - 0.5) * 0.25);   /* ragged edge */
         qq.setFromEuler(e.set((rnd() - 0.5) * 0.25, rnd() * Math.PI, (rnd() - 0.5) * 0.25));
-        const h = hgt * (0.6 + 0.7 * rnd()), w = h * (0.7 + 0.6 * rnd());
+        const h = hgt * (0.55 + 0.75 * rnd()), w = h * (1.0 + 0.8 * rnd());
         m4.compose(p, qq, s.set(w, h, w));
         mesh.setMatrixAt(i, m4);
-        const v = 0.9 + 0.15 * rnd();
+        const v = 0.78 + 0.12 * rnd();      /* a little darker than white: the lawn texture carries canopy AO, the cards do not */
         mesh.setColorAt(i, c.setRGB(v * (0.97 + rnd() * 0.06), v, v * (0.95 + rnd() * 0.05)));
       }
     });

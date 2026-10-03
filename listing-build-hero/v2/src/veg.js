@@ -2,35 +2,47 @@
 
    REAL.veg.create(THREE, renderer, opts) -> {
      types:   ["pine","hemlock","oak","shrub","maple","rose","hydrangea"],
-     samples: [{type, size, seed, label, footprint}],     one or more per type (the lab lays them out in a row)
-     make(type, size, seed) -> THREE.Group               base at the origin, ~size ft tall. Children: "wood" (bark tubes)
-                                                         and "foliage" (alpha-tested cards): 2 draw calls per plant.
-     batch(list) -> THREE.Group                          many plants merged into one mesh per material, so a whole wooded
-                                                         backdrop costs <= 4 draw calls. Items: {type, size, seed, x, y, z, rot, scale}
-     materials: {bark, conifer, broadleaf, flower},      shared; foliage meshes carry customDepthMaterial/customDistanceMaterial
-     triangles(object3D) -> number,  buildMs, timing
+     samples: [{type, size, seed, label, footprint}],     one per type (the lab lays them out in a row)
+     make(type, size, seed) -> THREE.Group               base at the origin, ~size ft tall (size defaults per type).
+                                                         Children: "wood" (bark tubes, Mesh) + "foliage" (alpha-tested
+                                                         cards, Mesh with customDepthMaterial/customDistanceMaterial):
+                                                         2 draw calls per plant. group.userData.triangles is set.
+     batch(list) -> THREE.Group                          many plants merged into one mesh per material (bark + up to three
+                                                         foliage atlases), i.e. <= 4 draw calls for the whole planting.
+                                                         Items: {type, size, seed, x, y, z, rot (yaw, radians), scale}
+     materials: {bark, conifer, broadleaf, flower},      shared by every plant
+     triangles(object3D) -> number,  buildMs, timing,  atlases (the painted canvases, for inspection)
    }
-   opts: { density: 1 (foliage card multiplier), dirAO: 0.5 (how much crown self-occlusion also dims direct sun) }
+   opts: { density: 1 (foliage card multiplier, e.g. 0.6 for weak devices),
+           dirAO: 0.5 (how much crown occlusion also dims direct sun inside the shadow frustum; outside it, it is full) }
+
+   Typical sizes (ft): pine 40-60, hemlock 25-40, oak 35-50, shrub 3-5, maple (lace-leaf) 4-6, rose (of sharon) 7-9,
+   hydrangea 3-4. Average triangles: pine ~7k, hemlock ~11k, oak ~11k, shrub ~2k, maple ~3.5k, rose ~5k, hydrangea ~1k,
+   so 25 trees + 12 shrubs is ~280k. The "oak" type is a generic hardwood: by seed it carries lobed oak or palmate
+   maple leaves, with varied crown width, height and lean.
 
    Technique
-   - Three 1024x1024 foliage atlases (2x2 cells of 512) are painted with canvas-2D vector strokes: white-pine needle tufts,
-     hemlock sprays, oak and maple leaf clusters, azalea/boxwood rosettes, lace-leaf maple, rose of sharon (leaves, flowers,
-     buds), hydrangea leaves and mophead flowers. Each atlas has an sRGB colour map, a separate alpha map (no premultiplied
-     black fringes) and a hand-painted normal map where every leaf half carries its own tilt (midrib fold), so sunlight
-     glints leaf by leaf.
-   - Plants are built from tapered bark tubes (parallel-transport frames) and many randomly oriented cards. Card vertex
-     normals are bent toward the outside of their foliage clump / crown ellipsoid so canopies shade as volumes; a per-vertex
-     "leafAO" attribute darkens the crown interior (ambient fully, direct partly, so trees outside the shadow camera still
-     read as volumes). Back faces keep the bent normal (not flipped), and a thin-leaf transmission term lets backlit edge
-     leaves glow. Alpha test is boosted with mip level so distant foliage does not thin out, and the same rule is used in
-     the shadow depth material, so foliage casts and receives dappled shadows.
-   All deterministic (REAL.core.rng with fixed seeds). */
+   - Three 1024x1024 foliage atlases (2x2 cells of 512) are painted with canvas-2D vector shapes: white-pine needle tufts,
+     hemlock sprays, oak and maple leaf clusters, azalea/boxwood rosettes, lace-leaf maple, rose of sharon (leaves +
+     flowers, leaves + buds), hydrangea leaves and mophead flowers. Each atlas has an sRGB colour map, a separate alpha map
+     (no premultiplied black fringes) and a painted normal map in which every leaf half carries its own tilt (midrib
+     fold), so sunlight glints leaf by leaf. Bark is painted the same way (ridges + furrows, colour and normal map).
+     Nothing is read back from a canvas; textures build in ~100 ms.
+   - Plants are tapered bark tubes (parallel-transport frames) plus many randomly oriented cards. Card vertex normals are
+     bent toward the outside of their clump / crown ellipsoid so canopies shade as volumes; a per-vertex "leafAO"
+     attribute darkens the crown interior (ambient fully; direct sun partly inside the shadow frustum, fully outside it,
+     so backdrop trees beyond the shadow camera still read as volumes) and adds a green inter-reflection tint.
+     Back faces keep the bent normal (not flipped); a thin-leaf transmission term lets backlit edge leaves glow.
+   - Alpha test is boosted with mip level (foliage does not thin out with distance; the same rule runs in the shadow depth
+     material so foliage casts dappled shadows), cards seen edge-on fade out instead of showing as streaks, and leaf
+     colour/alpha lookups use a small negative LOD bias for crisper foliage.
+   All deterministic per (type, size, seed): REAL.core.rng with fixed seeds, never Math.random. */
 (function(){
 "use strict";
 const REAL = window.REAL = window.REAL || {};
 const TAU = Math.PI * 2;
 const AT = 1024, CS = 512, PAD = 3;          /* atlas size, cell size, uv inset in px */
-const BARK_U = 1.3, BARK_V = 2.4;            /* feet per bark repeat around / along a limb */
+const BARK_U = 1.3, BARK_V = 2.6;            /* feet per bark repeat around / along a limb */
 
 /* ------------------------------------------------------------------ math */
 function clamp(x, a, b){ return x < a ? a : x > b ? b : x; }
@@ -294,7 +306,7 @@ function tiltR(r, a){ return [(r() - 0.5) * 2 * a, (r() - 0.5) * 2 * a]; }
 
 /* eastern white pine: soft 5-needle fascicles along a twig, a brush-like tuft at the tip */
 function pinePainter(variant){
-  return {bg: [58, 80, 66], paint(cell, r){
+  return {bg: [54, 78, 58], paint(cell, r){
     const twigs = [];
     if (variant === 0){
       twigs.push({pts: walk(r, 0.5, 0.99, -Math.PI / 2 + (r() - 0.5) * 0.12, 0.6, 8, (r() - 0.5) * 0.03, 0.06), sc: 1});
@@ -326,7 +338,7 @@ function pinePainter(variant){
       }
     }
     for (const tw of twigs) cell.twig(tw.pts, 0.012 * tw.sc, 0.005, [92, 78, 58]);
-    const dark = [46, 70, 58], light = [122, 148, 120];
+    const dark = [44, 68, 50], light = [118, 144, 108];
     for (let b = 0; b < NB; b++){
       const t = b / (NB - 1);
       cell.strokes(B[b], 0.0034, jit(mixc(dark, light, t), r, 0.05, 0.05), nstyle((r() - 0.5) * 0.9, (r() - 0.5) * 0.9, 1));
@@ -336,7 +348,7 @@ function pinePainter(variant){
 
 /* eastern hemlock: flat pinnate spray, two-ranked short flat needles, light new growth at the tips */
 function hemlockPainter(variant){
-  return {bg: [38, 58, 34], paint(cell, r){
+  return {bg: [42, 62, 38], paint(cell, r){
     const axes = [];
     const main = walk(r, 0.5 + (r() - 0.5) * 0.06, 0.985, -Math.PI / 2 + (r() - 0.5) * 0.18, 0.9, 10, (r() - 0.5) * 0.035, 0.05);
     axes.push({pts: main, w: 0.0065});
@@ -372,7 +384,7 @@ function hemlockPainter(variant){
       }
     }
     for (const ax of axes) cell.twig(ax.pts, ax.w, ax.w * 0.6, [86, 66, 46]);
-    const dark = [36, 58, 34], light = [74, 102, 56];
+    const dark = [40, 63, 37], light = [80, 108, 60];
     for (let b = 0; b < NB; b++) cell.strokes(B[b], 0.0046, jit(mixc(dark, light, b / (NB - 1)), r, 0.05, 0.04), nstyle((r() - 0.5) * 0.8, (r() - 0.5) * 0.8, 1));
     cell.strokes(G[0], 0.0046, [92, 122, 58], nstyle(0.2, -0.2, 1));
     cell.strokes(G[1], 0.0046, [108, 136, 66], nstyle(-0.25, 0.1, 1));
@@ -382,35 +394,35 @@ function hemlockPainter(variant){
 /* hardwood twig cluster: oak (lobed) or maple (palmate) leaves, whorled at the twig tips */
 function broadleafPainter(kind){
   return {bg: kind === "oak" ? [48, 66, 30] : [50, 70, 32], paint(cell, r){
-    const main = walk(r, 0.5, 0.99, -Math.PI / 2, 0.3, 4, 0, 0.08), fork = main[main.length - 1];
+    const main = walk(r, 0.5, 0.99, -Math.PI / 2, 0.22, 3, 0, 0.08), fork = main[main.length - 1];
     const twigs = [main], tips = [];
-    const nT = 3;
+    const nT = 4;
     for (let k = 0; k < nT; k++){
-      const a = -Math.PI / 2 + (k - (nT - 1) / 2) * 0.72 + (r() - 0.5) * 0.25;
-      const tw = walk(r, fork[0], fork[1], a, 0.2 + r() * 0.07, 4, (r() - 0.5) * 0.08, 0.1);
-      twigs.push(tw); tips.push({p: tw[tw.length - 1], a: a});
+      const a = -Math.PI / 2 + (k - (nT - 1) / 2) * 0.62 + (r() - 0.5) * 0.2;
+      const tw = walk(r, fork[0], fork[1], a, 0.3 + r() * 0.12, 4, (r() - 0.5) * 0.1, 0.12);
+      twigs.push(tw); tips.push({p: tw[tw.length - 1], a: a, f: along2(tw)});
     }
     const leaves = [];
     for (const tp of tips){
       const n = 5 + ((r() * 3) | 0);
-      for (let j = 0; j < n; j++) leaves.push({x: tp.p[0], y: tp.p[1], a: tp.a + (j / (n - 1) - 0.5) * 2.7 + (r() - 0.5) * 0.3, d: r(), s: 1});
-    }
-    for (let k = 0; k < 5; k++){
-      const tw = twigs[(r() * twigs.length) | 0], f = along2(tw), q = f(0.35 + r() * 0.5);
-      leaves.push({x: q.x, y: q.y, a: q.a + (r() < 0.5 ? -1 : 1) * (0.8 + r() * 0.5), d: r() * 0.6, s: 0.8});
+      for (let j = 0; j < n; j++) leaves.push({x: tp.p[0], y: tp.p[1], a: tp.a + (j / (n - 1) - 0.5) * 2.9 + (r() - 0.5) * 0.3, d: 0.3 + r() * 0.7, s: 0.8 + r() * 0.25});
+      for (let j = 0; j < 3; j++){
+        const q = tp.f(0.25 + r() * 0.55);
+        leaves.push({x: q.x, y: q.y, a: q.a + (j % 2 ? 1 : -1) * (0.7 + r() * 0.6), d: r() * 0.8, s: 0.7 + r() * 0.2});
+      }
     }
     leaves.sort((p, q) => p.d - q.d);
-    for (const tw of twigs) cell.twig(tw, 0.009, 0.004, [88, 74, 56]);
-    const dark = kind === "oak" ? [50, 72, 30] : [54, 78, 32], light = kind === "oak" ? [108, 130, 50] : [114, 138, 52];
+    for (const tw of twigs) cell.twig(tw, 0.008, 0.0035, [88, 74, 56]);
+    const dark = kind === "oak" ? [46, 70, 30] : [50, 76, 32], light = kind === "oak" ? [94, 122, 50] : [100, 128, 52];
     for (const lf of leaves){
-      const col = jit(mixc(dark, light, clamp(lf.d * 0.75 + r() * 0.35, 0, 1)), r, 0.07, 0.05);
-      const off = 0.018;
+      const col = jit(mixc(dark, light, clamp(lf.d * 0.75 + r() * 0.3, 0, 1)), r, 0.07, 0.05);
+      const off = 0.014;
       const x = lf.x + Math.cos(lf.a) * off, y = lf.y + Math.sin(lf.a) * off;
       if (kind === "oak"){
-        const L = (0.18 + 0.07 * r()) * lf.s;
+        const L = (0.15 + 0.05 * r()) * lf.s;
         cell.leaf(x, y, lf.a, outline(L, L * 0.34, oakShape, 56, r, 0.1), col, {fold: 0.25 + r() * 0.3, tilt: tiltR(r, 0.35), rib: true, veins: 4});
       } else {
-        const R = (0.13 + 0.05 * r()) * lf.s, la = [0, 0.78, -0.78, 1.5, -1.5], ll = [1, 0.86, 0.86, 0.5, 0.5];
+        const R = (0.1 + 0.035 * r()) * lf.s, la = [0, 0.78, -0.78, 1.5, -1.5], ll = [1, 0.86, 0.86, 0.5, 0.5];
         const tilt = tiltR(r, 0.3);
         for (let k = 4; k >= 0; k--){
           const L = R * ll[k];
@@ -431,7 +443,7 @@ function shrubPainter(){
     }
     for (let k = 0; k < 26; k++) leaves.push({x: 0.18 + 0.64 * r(), y: 0.12 + 0.76 * r(), a: r() * TAU, d: r() * 0.7, L: 0.1 + 0.05 * r()});
     leaves.sort((p, q) => p.d - q.d);
-    const dark = [54, 76, 32], light = [108, 128, 52];
+    const dark = [48, 74, 32], light = [92, 120, 50];
     for (const lf of leaves){
       const col = jit(mixc(dark, light, clamp(lf.d * 0.8 + r() * 0.25, 0, 1)), r, 0.06, 0.06);
       cell.leaf(lf.x, lf.y, lf.a, outline(lf.L, lf.L * 0.36, ellip(0.92, 0.75), 20, r, 0.05), col, {fold: 0.35, tilt: tiltR(r, 0.45), rib: true, shade: 0.9});
@@ -441,25 +453,26 @@ function shrubPainter(){
 
 /* lace-leaf Japanese maple: finely dissected palmate leaves hanging from a twig, dark red-purple */
 function lacePainter(){
-  return {bg: [56, 18, 26], paint(cell, r){
-    const tw = walk(r, 0.5, 0.99, -Math.PI / 2 + (r() - 0.5) * 0.1, 0.86, 8, (r() - 0.5) * 0.04, 0.08), f = along2(tw);
+  return {bg: [48, 14, 22], paint(cell, r){
+    const tw = walk(r, 0.5, 0.99, -Math.PI / 2 + (r() - 0.5) * 0.1, 0.88, 8, (r() - 0.5) * 0.04, 0.08), f = along2(tw);
     const leaves = [];
     let side = 1;
-    for (let s = 0.12; s < 0.97; s += 0.11 + r() * 0.04){
+    for (let s = 0.1; s < 0.98; s += 0.085 + r() * 0.03){
       side = -side;
-      const q = f(s), pa = q.a + side * (0.9 + r() * 0.5), pl = 0.05 + r() * 0.04;
-      leaves.push({x: q.x + Math.cos(pa) * pl, y: q.y + Math.sin(pa) * pl, a: pa, d: r(), R: 0.11 + 0.05 * r(), px: q.x, py: q.y});
+      const q = f(s), pa = q.a + side * (0.8 + r() * 0.6), pl = 0.04 + r() * 0.04;
+      leaves.push({x: q.x + Math.cos(pa) * pl, y: q.y + Math.sin(pa) * pl, a: pa + (r() - 0.5) * 0.6, d: r(), R: 0.13 + 0.06 * r(), px: q.x, py: q.y});
     }
     leaves.sort((p, q) => p.d - q.d);
     cell.twig(tw, 0.008, 0.004, [70, 30, 32]);
-    const dark = [62, 18, 28], light = [118, 32, 40];
+    const dark = [48, 15, 22], light = [98, 32, 34];
     for (const lf of leaves){
       cell.twig([[lf.px, lf.py], [lf.x, lf.y]], 0.003, 0.003, [90, 30, 34]);
       const base = jit(mixc(dark, light, clamp(lf.d * 0.7 + r() * 0.35, 0, 1)), r, 0.08, 0.04);
-      const nl = 7 + ((r() * 3) | 0), fan = 4.6, tilt = tiltR(r, 0.35);
+      const nl = 9 + ((r() * 3) | 0), fan = 4.4, tilt = tiltR(r, 0.35);
       for (let k = 0; k < nl; k++){
-        const t = k / (nl - 1) - 0.5, L = lf.R * (1 - 0.45 * Math.abs(t) * Math.abs(t) * 4) * (0.85 + 0.25 * r());
-        cell.leaf(lf.x, lf.y, lf.a + t * fan + (r() - 0.5) * 0.15, outline(L, L * 0.17, serr(ellip(0.8, 0.9), 9, 1.35), 54, r, 0.05), jit(base, r, 0.06, 0.03), {fold: 0.3, tilt: [tilt[0] + (r() - 0.5) * 0.3, tilt[1] + (r() - 0.5) * 0.3], rib: true, ribCol: mixc(base, [150, 50, 50], 0.2), shade: 0.6});
+        const t = k / (nl - 1) - 0.5, L = lf.R * (1 - 0.4 * t * t * 4) * (0.8 + 0.3 * r());
+        const a = lf.a + t * fan + (r() - 0.5) * 0.2, curl = (r() - 0.5) * 0.3;
+        cell.leaf(lf.x, lf.y, a + curl, outline(L, L * 0.13, serr(ellip(0.85, 0.9), 11, 1.5), 66, r, 0.08), jit(base, r, 0.07, 0.03), {fold: 0.35, tilt: [tilt[0] + (r() - 0.5) * 0.35, tilt[1] + (r() - 0.5) * 0.35], rib: true, ribCol: mixc(base, [130, 46, 44], 0.25), shade: 0.5});
       }
     }
   }};
@@ -521,7 +534,7 @@ function hydFlowerPainter(){
     const cx = 0.5, cy = 0.5, R = 0.43, fl = [];
     for (let k = 0; k < 230; k++){ const rr = Math.sqrt(r()) * R * 0.97, a = r() * TAU; const dx = Math.cos(a) * rr, dy = Math.sin(a) * rr; fl.push({dx, dy, z: Math.sqrt(Math.max(0, R * R - rr * rr)) / R}); }
     fl.sort((p, q) => p.z - q.z);
-    const pal = [[172, 194, 232], [186, 190, 230], [222, 228, 238], [210, 196, 226], [194, 212, 238]];
+    const pal = [[140, 172, 236], [158, 170, 234], [206, 218, 242], [182, 178, 232], [168, 196, 244]];
     for (const F of fl){
       const base = jit(pal[(r() * pal.length) | 0], r, 0.05, 0.03);
       const sh = 0.78 + 0.22 * F.z + 0.08 * (-F.dx - F.dy) / R;
@@ -565,28 +578,65 @@ function cellUV(k, mirror){
   return mirror ? [u1, vb, u0, vt] : [u0, vb, u1, vt];
 }
 
-/* furrowed bark (neutral grey-brown; species tint comes from vertex colour) */
+/* ridged bark: staggered columns of long flat-topped ridges separated by dark furrows, merging and splitting
+   (oak / pine / hemlock all use it, tinted per species by vertex colour). Colour and normal map are both painted as
+   vector shapes (the normal map with per-ridge gradients), so nothing is read back from a canvas.
+   256 x 512 = one repeat of BARK_U x BARK_V feet; tiles in both directions. */
 function paintBark(core){
-  const S = 256;
-  const f1 = core.normalize(core.fbm(S, S, {base: 3, sx: 5, sy: 0.6, octaves: 4, persistence: 0.55, seed: 41}));
-  const f2 = core.normalize(core.fbm(S, S, {base: 3, sx: 1.6, sy: 3, octaves: 3, seed: 42}));
-  const f3 = core.normalize(core.fbm(S, S, {base: 2, octaves: 3, seed: 43}));
-  const f4 = core.fbm(S, S, {base: 24, octaves: 2, seed: 44});
-  const h = new Float32Array(S * S);
-  for (let i = 0; i < S * S; i++){
-    const fur = sstep(0.0, 0.42, Math.abs(f1[i] * 2 - 1));
-    const brk = 0.65 + 0.35 * sstep(0.0, 0.18, Math.abs(f2[i] * 2 - 1));
-    h[i] = fur * brk * (0.85 + 0.15 * f4[i]);
+  const BW = 256, BH = 512, r = core.rng(4242);
+  const col = core.canvas(BW, BH), nor = core.canvas(BW, BH);
+  const cc = col.getContext("2d"), nc = nor.getContext("2d");
+  cc.fillStyle = "rgb(50,45,40)"; cc.fillRect(0, 0, BW, BH);
+  nc.fillStyle = FLATN; nc.fillRect(0, 0, BW, BH);
+  const nCol = 8, cw = BW / nCol, plates = [];
+  const mk = (x, y, L, w, sk) => { const j = []; for (let i = 0; i <= 24; i++) j.push((r() - 0.5) * 0.35); plates.push({x, y, L, w, sk, tone: r(), lich: r(), ph: r() * 6, j}); };
+  for (let c = 0; c < nCol; c++){
+    let y = r() * BH;
+    const yEnd = y + BH;
+    while (y < yEnd){
+      const L = 110 + r() * 220, w = cw * (0.6 + r() * 0.35), x = (c + 0.5) * cw + (r() - 0.5) * cw * 0.35;
+      mk(x, y, L, w, (r() - 0.5) * 0.1);
+      if (r() < 0.3) mk(x + (r() < 0.5 ? -1 : 1) * cw * 0.5, y + L * 0.5, 40 + r() * 50, w * 0.7, (r() - 0.5) * 0.9);
+      y += L + 2 + r() * 6;
+    }
   }
-  const col = core.paint(h, S, S, (v, x, y) => {
-    const i = y * S + x, l = f3[i];
-    const lo = [36, 31, 28], hi = mixc([128, 116, 104], [118, 122, 108], sstep(0.55, 0.8, l));
-    const c = mixc(lo, hi, Math.pow(v, 0.8));
-    const g = 0.9 + 0.2 * f4[i];
-    return [c[0] * g, c[1] * g, c[2] * g];
-  });
-  const nm = core.normalFromHeight(h, S, S, 3);
-  return {col, nm};
+  /* ridge outline: flat-topped, slightly wavy sides, rounded ends */
+  function platePath(ctx, p, ox, oy, inset){
+    const n = 12;
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++){ const t = i / n, hw = Math.pow(Math.sin(Math.PI * t), 0.16) * 0.5 * (p.w - inset) * (0.8 + 0.2 * Math.sin(t * 7 + p.ph) + p.j[i]); ctx.lineTo(ox + p.x + hw + (t - 0.5) * p.L * p.sk, oy + p.y + inset + t * (p.L - inset * 2)); }
+    for (let i = n; i >= 0; i--){ const t = i / n, hw = Math.pow(Math.sin(Math.PI * t), 0.16) * 0.5 * (p.w - inset) * (0.8 + 0.2 * Math.sin(t * 5 + p.ph * 1.7) + p.j[i + 12]); ctx.lineTo(ox + p.x - hw + (t - 0.5) * p.L * p.sk, oy + p.y + inset + t * (p.L - inset * 2)); }
+    ctx.closePath();
+  }
+  const nL = nstyle(-0.75, 0, 1), nR = nstyle(0.75, 0, 1), nT = nstyle(0, -0.5, 1), nB = nstyle(0, 0.5, 1);
+  for (const p of plates){
+    for (const ox of [-BW, 0, BW]) for (const oy of [-BH, 0, BH]){
+      if (p.x + ox + p.w < 0 || p.x + ox - p.w > BW || p.y + oy > BH || p.y + oy + p.L < 0) continue;
+      const g = 100 + p.tone * 34, lich = p.lich > 0.78;
+      cc.fillStyle = lich ? "rgb(" + (g * 0.93 | 0) + "," + (g * 0.99 | 0) + "," + (g * 0.84 | 0) + ")" : "rgb(" + (g | 0) + "," + (g * 0.96 | 0) + "," + (g * 0.9 | 0) + ")";
+      platePath(cc, p, ox, oy, 0); cc.fill();
+      cc.fillStyle = "rgba(255,252,245,0.08)"; platePath(cc, p, ox - 1, oy, 5); cc.fill();
+      const x0 = ox + p.x - p.w / 2, gx = nc.createLinearGradient(x0, 0, x0 + p.w, 0);
+      gx.addColorStop(0, nL); gx.addColorStop(0.28, FLATN); gx.addColorStop(0.72, FLATN); gx.addColorStop(1, nR);
+      nc.fillStyle = gx; platePath(nc, p, ox, oy, 0); nc.fill();
+      const y0 = oy + p.y, gy = nc.createLinearGradient(0, y0, 0, y0 + p.L);
+      gy.addColorStop(0, nT); gy.addColorStop(0.08, "rgba(128,128,255,0)"); gy.addColorStop(0.92, "rgba(128,128,255,0)"); gy.addColorStop(1, nB);
+      nc.fillStyle = gy; nc.fill();
+    }
+  }
+  /* fine cross-checks and vertical cracks */
+  cc.lineWidth = 1; nc.lineWidth = 1.2;
+  for (let i = 0; i < 300; i++){
+    const x = r() * BW, y = r() * BH, horiz = r() < 0.35, L = horiz ? 4 + r() * 8 : 8 + r() * 30;
+    const x2 = horiz ? x + L : x + (r() - 0.5) * 5, y2 = horiz ? y + (r() - 0.5) * 3 : y + L;
+    cc.strokeStyle = "rgba(38,33,29," + (0.3 + r() * 0.4).toFixed(2) + ")";
+    cc.beginPath(); cc.moveTo(x, y); cc.lineTo(x2, y2); cc.stroke();
+    nc.strokeStyle = horiz ? nT : (r() < 0.5 ? nL : nR);
+    nc.beginPath(); nc.moveTo(x, y); nc.lineTo(x2, y2); nc.stroke();
+  }
+  const noise = noiseCanvas(core, 77);
+  cc.save(); cc.globalCompositeOperation = "soft-light"; cc.globalAlpha = 0.6; cc.drawImage(noise, 0, 0, BW, BH / 2); cc.drawImage(noise, 0, BH / 2, BW, BH / 2); cc.restore();
+  return {col, nm: nor};
 }
 
 /* ------------------------------------------------------------------ shaders */
@@ -594,14 +644,27 @@ const ALPHA_CODE = `
 #ifdef USE_ALPHAMAP
   vec2 vegG = vUv * ${AT.toFixed(1)};
   vec2 vegDx = dFdx( vegG ), vegDy = dFdy( vegG );
-  float vegLod = max( 0.0, 0.5 * log2( max( dot( vegDx, vegDx ), dot( vegDy, vegDy ) ) ) );
-  diffuseColor.a *= texture2D( alphaMap, vUv ).g * ( 1.0 + vegLod * 0.3 );
+  float vegLod = max( 0.0, 0.5 * log2( max( dot( vegDx, vegDx ), dot( vegDy, vegDy ) ) ) - VEG_BIAS );
+  diffuseColor.a *= texture2D( alphaMap, vUv, - VEG_BIAS ).g * ( 1.0 + vegLod * 0.3 );
 #endif`;
+/* cards seen nearly edge-on read as streaks: thin them out using the true (flat) face normal */
+const EDGE_CODE = `
+  vec3 vegFN = normalize( cross( dFdx( vViewPosition ), dFdy( vViewPosition ) ) );
+  diffuseColor.a *= smoothstep( 0.05, 0.3, abs( dot( vegFN, normalize( vViewPosition ) ) ) );`;
+/* crown occlusion: always on ambient; on direct sun only partly where the shadow map already self-shadows the crown,
+   fully outside the sun's shadow frustum (backdrop trees far from the house) */
 const AO_CODE = `
-  reflectedLight.indirectDiffuse *= vLeafAO;
+  float vegIn = 0.0;
+  #if defined( USE_SHADOWMAP ) && NUM_DIR_LIGHT_SHADOWS > 0
+    vec3 vegSC = vDirectionalShadowCoord[ 0 ].xyz / vDirectionalShadowCoord[ 0 ].w;
+    vegIn = smoothstep( 0.0, 0.06, min( min( vegSC.x, 1.0 - vegSC.x ), min( vegSC.y, 1.0 - vegSC.y ) ) ) * step( vegSC.z, 1.0 );
+  #endif
+  float vegDA = mix( 1.0, vegDirAO, vegIn );
+  float vegAOd = mix( vLeafAO * min( vLeafAO, 1.0 ), vLeafAO, vegIn );
+  reflectedLight.indirectDiffuse *= vegAmb * vLeafAO * mix( vegBounce, vec3( 1.0 ), clamp( vLeafAO, 0.0, 1.0 ) );
   reflectedLight.indirectSpecular *= vLeafAO * vLeafAO * vegSpec;
-  reflectedLight.directDiffuse *= mix( 1.0, vLeafAO, vegDirAO );
-  reflectedLight.directSpecular *= mix( 1.0, vLeafAO, vegDirAO ) * vLeafAO;`;
+  reflectedLight.directDiffuse *= mix( 1.0, vegAOd, vegDA );
+  reflectedLight.directSpecular *= mix( 1.0, vegAOd, vegDA ) * vLeafAO * vegSpec;`;
 const TRANS_CODE = `
 void RE_Direct_Veg( const in IncidentLight directLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
   RE_Direct_Physical( directLight, geometry, material, reflectedLight );
@@ -618,17 +681,20 @@ function patchMaterial(THREE, m, leaf, trans, dirAO, key){
     sh.uniforms.vegTrans = {value: trans};
     sh.uniforms.vegDirAO = {value: dirAO};
     sh.uniforms.vegSpec = {value: leaf ? 0.55 : 1.0};
+    sh.uniforms.vegAmb = {value: leaf ? 1.6 : 1.15};
+    sh.uniforms.vegBounce = {value: leaf ? new THREE.Vector3(1.15, 1.3, 0.72) : new THREE.Vector3(1.0, 1.05, 0.85)};
     sh.vertexShader = sh.vertexShader
       .replace("#include <common>", "#include <common>\nattribute float leafAO;\nvarying float vLeafAO;")
       .replace("#include <begin_vertex>", "#include <begin_vertex>\nvLeafAO = leafAO;");
     let fs = sh.fragmentShader
-      .replace("#include <common>", "#include <common>\nvarying float vLeafAO;\nuniform float vegTrans;\nuniform float vegDirAO;\nuniform float vegSpec;")
+      .replace("#include <common>", "#include <common>\nvarying float vLeafAO;\nuniform float vegTrans;\nuniform float vegDirAO;\nuniform float vegSpec;\nuniform vec3 vegBounce;\nuniform float vegAmb;")
       .replace("#include <aomap_fragment>", "#include <aomap_fragment>\n" + AO_CODE);
     if (leaf){
-      fs = fs
+      fs = "#define VEG_BIAS 0.6\n" + fs
+        .replace("#include <map_fragment>", THREE.ShaderChunk.map_fragment.replace("texture2D( map, vUv )", "texture2D( map, vUv, - VEG_BIAS )"))
         .replace("#include <normal_fragment_begin>", THREE.ShaderChunk.normal_fragment_begin.replace("normal = normal * faceDirection;", ""))
         .replace("#include <normal_fragment_maps>", THREE.ShaderChunk.normal_fragment_maps.replace("perturbNormal2Arb( -vViewPosition, normal, mapN, faceDirection )", "perturbNormal2Arb( -vViewPosition, normal, mapN, 1.0 )"))
-        .replace("#include <alphamap_fragment>", ALPHA_CODE)
+        .replace("#include <alphamap_fragment>", ALPHA_CODE + EDGE_CODE)
         .replace("#include <lights_physical_pars_fragment>", "#include <lights_physical_pars_fragment>\n" + TRANS_CODE);
     }
     sh.fragmentShader = fs;
@@ -637,7 +703,7 @@ function patchMaterial(THREE, m, leaf, trans, dirAO, key){
   return m;
 }
 function patchDepth(m, key){
-  m.onBeforeCompile = function(sh){ sh.fragmentShader = sh.fragmentShader.replace("#include <alphamap_fragment>", ALPHA_CODE); };
+  m.onBeforeCompile = function(sh){ sh.fragmentShader = "#define VEG_BIAS 0.0\n" + sh.fragmentShader.replace("#include <alphamap_fragment>", ALPHA_CODE); };
   m.customProgramCacheKey = function(){ return "vegd-" + key; };
   m.extensions = {derivatives: true};
   return m;
@@ -678,9 +744,9 @@ function genPine(S, H, r){
   const pads = [];
   let y = cb;
   while (y < H - 1.2){
-    const t = (y - cb) / (H - cb), nb = 3 + ((r() * 2.5) | 0), az0 = r() * TAU;
+    const t = (y - cb) / (H - cb), nb = 2 + ((r() * 3) | 0), az0 = r() * TAU;
     for (let k = 0; k < nb; k++){
-      if (r() < 0.08 + 0.2 * (1 - t)) continue;
+      if (r() < 0.12 + 0.25 * (1 - t)) continue;
       const az = az0 + k * TAU / nb + (r() - 0.5) * 0.9;
       let L = Lmax * env(t) * (0.6 + 0.65 * r());
       if (r() < 0.14 && t < 0.6) L *= 1.35;
@@ -691,7 +757,7 @@ function genPine(S, H, r){
       W.tube(pts, pts.map((_, i) => lerp(rb, 0.025, i / (pts.length - 1))), 5, BARK.pine, aoWood);
       const bf = along3(pts);
       let side = r() < 0.5 ? 1 : -1;
-      for (let s = 0.3 + r() * 0.12; s < 0.95; s += (0.75 + r() * 0.5) / L){
+      for (let s = 0.34 + r() * 0.12; s < 0.95; s += (0.95 + r() * 0.6) / L){
         side = -side;
         const q = bf(s), hd = nrm([q.d[0], 0, q.d[2]]);
         const bd = nrm(add(rotate(hd, UP, side * (0.6 + r() * 0.5)), [0, 0.12 + r() * 0.2, 0]));
@@ -703,17 +769,17 @@ function genPine(S, H, r){
       const tip = pts[pts.length - 1];
       pads.push({c: tip, d: nrm(sub(tip, pts[pts.length - 2])), pr: 1.3 + r() * 0.6, t});
     }
-    y += 1.2 + r() * 1.2;
+    y += 1.4 + r() * 1.5;
   }
   const top = trunkAt(H * 0.985);
   pads.push({c: add(top, [0, 0.2, 0]), d: UP, pr: 1.2, t: 1});
   pads.push({c: add(top, [0, -1.0, 0]), d: UP, pr: 1.5, t: 1});
   for (const pd of pads){
-    const n = Math.max(3, Math.round((3 + pd.pr * pd.pr * 3.6) * D));
+    const n = Math.max(3, Math.round((2 + pd.pr * pd.pr * 3.0) * D));
     const k = 0.9 + r() * 0.2, hue = (r() - 0.5) * 0.1, tint = [k * (1 + hue), k, k * (1 - hue)];
     const ty = pd.t, ctr = trunkAt(pd.c[1]);
     const rel = Math.hypot(pd.c[0] - ctr[0], pd.c[2] - ctr[2]) / (Lmax * env(clamp(ty, 0, 1)) + 1.5);
-    const ao = lerp(0.5, 1.0, sstep(0.05, 0.85, rel)) * lerp(0.88, 1.05, ty);
+    const ao = lerp(0.55, 1.0, sstep(0.05, 0.85, rel)) * lerp(0.88, 1.05, ty);
     const vc = [pd.c[0], pd.c[1] - pd.pr * 0.55, pd.c[2]], vr = [pd.pr * 1.3, pd.pr * 1.0, pd.pr * 1.3];
     const cy = pd.c[1], pr = pd.pr;
     const aoFn = v => clamp(0.8 + 0.5 * (v[1] - cy) / pr, 0.55, 1.12);
@@ -739,36 +805,37 @@ function genHemlock(S, H, r){
   const sp = [], rd = [], nS = Math.ceil(H / 1.2);
   for (let i = 0; i <= nS; i++){ const y = i / nS * H; sp.push(trunkAt(y)); rd.push(radAt(y)); }
   sp[0] = [sp[0][0], -0.4, sp[0][2]];
-  W.tube(sp, rd, 8, BARK.hemlock, p => lerp(0.45, 0.8, p[1] / H));
-  const Lmax = H * (0.24 + r() * 0.04);
+  W.tube(sp, rd, 8, BARK.hemlock, p => lerp(0.55, 0.8, p[1] / H));
+  const Lmax = H * (0.28 + r() * 0.06);
   const env = t => Math.pow(1 - t, 0.9) * (0.84 + 0.16 * sstep(0, 0.12, t)) + 0.04;
   const vc = [0, H * 0.3, 0], vr = [Lmax * 1.1, H * 0.62, Lmax * 1.1];
   let y = 0.8 + r() * 0.8, az = r() * TAU;
   while (y < H - 0.4){
     const t = y / H;
     az += 2.4 + (r() - 0.5) * 0.7;
-    const L = Lmax * env(t) * (0.72 + 0.5 * r()) + 0.5;
-    const el0 = lerp(-0.3, 0.45, t) + (r() - 0.5) * 0.2, p0 = trunkAt(y);
-    const pts = grow(p0, dirAE(az, el0), L, 5, (s, d) => add(d, [0, -0.07 - 0.12 * s, 0]));
+    if (r() < 0.06){ y += 0.3 + r() * 0.4; continue; }
+    const L = Lmax * env(t) * (0.65 + 0.6 * r()) + 0.5;
+    const el0 = lerp(-0.12, 0.5, t) + (r() - 0.5) * 0.3, p0 = trunkAt(y);
+    const pts = grow(p0, dirAE(az, el0), L, 5, (s, d) => add(d, [0, -0.03 - (0.08 + 0.12 * (1 - t)) * s * s, 0]));
     const rb = clamp(0.035 + L * 0.014, 0.035, radAt(y) * 0.5);
     W.tube(pts, pts.map((_, i) => lerp(rb, 0.018, i / (pts.length - 1))), 4, BARK.hemlock, () => 0.5);
-    const bf = along3(pts), step = 0.34 / Math.max(L, 0.5);
+    const bf = along3(pts), step = 0.3 / Math.max(L, 0.5);
     for (let s = Math.min(0.4, 0.3 / L); s <= 1.0001; s += step){
       const q = bf(s), ctr = trunkAt(q.p[1]);
       const rel = Math.hypot(q.p[0] - ctr[0], q.p[2] - ctr[2]) / (Lmax * env(clamp(q.p[1] / H, 0, 1)) + 0.5);
-      const ao = lerp(0.38, 1.0, sstep(0.05, 0.95, rel)) * lerp(0.8, 1.04, t);
+      const ao = lerp(0.5, 1.0, sstep(0.05, 0.95, rel)) * lerp(0.82, 1.04, t);
       const k0 = 0.92 + r() * 0.18, tint = [k0, k0 * (1 + (r() - 0.5) * 0.06), k0];
-      const nC = 2 + (r() < 0.6 * D ? 1 : 0);
+      const nC = 3 + (r() < 0.3 * D ? 1 : 0);
       for (let k = 0; k < nC; k++){
-        const sd = k === 2 ? (r() - 0.5) : (k ? 1 : -1);
+        const sd = k >= 2 ? (r() - 0.5) : (k ? 1 : -1);
         let up = rotate(q.d, UP, sd * (0.35 + r() * 0.6));
-        up = nrm(add(up, [0, -0.15 - 0.35 * s + (k === 2 ? 0.3 : 0), 0]));
-        const face = nrm(add(sph(r), mul(UP, 0.55)));
-        const sz = (1.3 + r() * 0.6) * (0.75 + 0.25 * Math.min(1, L / 3));
+        up = nrm(add(add(up, mul(sph(r), 0.55)), [0, -0.1 - 0.3 * s + (k >= 2 ? 0.35 : 0), 0]));
+        const face = nrm(add(sph(r), mul(UP, 0.4)));
+        const sz = (1.6 + r() * 0.8) * (0.7 + 0.3 * Math.min(1, L / 3));
         F.card(mad(q.p, sph(r), 0.15), up, face, sz, sz, 0.08, uvr(r() < 0.5 ? 2 : 3, r), tint, ao, vc, vr, 0.5, null);
       }
     }
-    y += (0.32 + r() * 0.3) / Math.sqrt(D);
+    y += (0.3 + r() * 0.28) / Math.sqrt(D);
   }
   for (let i = 0; i < 7; i++){
     const p = trunkAt(H - 2.8 + i * 0.42);
@@ -776,59 +843,79 @@ function genHemlock(S, H, r){
   }
 }
 
-/* oak / maple: short trunk forking into scaffold limbs; each limb carries lateral and terminal children kept inside a
-   broad crown ellipsoid; foliage as clumps of leaf-cluster cards on the outer branches (leaf species by seed) */
+/* oak / maple: short trunk forking into scaffold limbs that branch (lateral + terminal children) inside a broad crown
+   ellipsoid; leaf clumps are sampled over the outer crown shell (with a few deliberate sky holes) and tied to the nearest
+   limb by a twig, so the canopy is full and rounded but never a ball. Leaf species by seed: lobed oak or palmate maple. */
 function genOak(S, H, r){
   const W = S.wood, F = S.leaf, D = S.density;
   const leafCell = r() < 0.55 ? 0 : 1;
   const R0 = H * (0.019 + r() * 0.004);
-  const hb = H * (0.24 + r() * 0.08);
-  const cr = {c: [0, lerp(hb, H, 0.5), 0], r: [H * (0.38 + r() * 0.08), (H - hb) * 0.53, 0]};
-  cr.r[2] = cr.r[0] * (0.85 + r() * 0.25);
-  const aoAt = p => { const e = ellDist(p, cr.c, cr.r); return lerp(0.36, 1.0, sstep(0.35, 1.0, e)) * lerp(0.82, 1.05, sstep(cr.c[1] - cr.r[1], cr.c[1] + cr.r[1], p[1])); };
-  const trunk = grow([0, -0.4, 0], [(r() - 0.5) * 0.08, 1, (r() - 0.5) * 0.08], hb + 0.4 + 1.5, 6, (s, d) => add(d, mul(sph(r), 0.04)));
-  W.tube(trunk, trunk.map((p, i) => R0 * (1 - 0.25 * i / 6) + R0 * 0.5 * Math.exp(-Math.max(0, p[1]) / 0.8)), 10, BARK.oak, p => lerp(0.85, 0.6, sstep(0, hb + 2, p[1])));
+  const hb = H * (0.2 + r() * 0.14);
+  const lean = [(r() - 0.5) * H * 0.1, (r() - 0.5) * H * 0.1];
+  const cr = {c: [lean[0], lerp(hb, H, 0.47), lean[1]], r: [H * (0.3 + r() * 0.2), (H - hb) * (0.46 + r() * 0.08), 0]};
+  cr.r[2] = cr.r[0] * (0.8 + r() * 0.35);
+  const aoAt = p => { const e = ellDist(p, cr.c, cr.r); return lerp(0.5, 1.0, sstep(0.4, 1.0, e)) * lerp(0.8, 1.05, sstep(cr.c[1] - cr.r[1], cr.c[1] + cr.r[1], p[1])); };
+  const trunk = grow([0, -0.4, 0], [lean[0] / H * 0.8 + (r() - 0.5) * 0.06, 1, lean[1] / H * 0.8 + (r() - 0.5) * 0.06], hb + 0.4 + 1.5, 6, (s, d) => add(d, mul(sph(r), 0.04)));
+  const tPts = trunk.concat([mad(trunk[6], nrm(sub(trunk[6], trunk[5])), R0 * 0.6)]);
+  W.tube(tPts, tPts.map((p, i) => i === 7 ? R0 * 0.3 : R0 * (1 - 0.3 * Math.pow(i / 6, 1.5)) + R0 * 0.5 * Math.exp(-Math.max(0, p[1]) / 0.8)), 10, BARK.oak, p => lerp(0.85, 0.6, sstep(0, hb + 2, p[1])));
   const fork = trunk[4];
-  const clumps = [];
-  const MAXD = 3, KIDS = [[0.3, 0.5, 0.7, 1, 1], [0.55, 1, 1], [1, 1]];
+  const nodes = [];
+  const MAXD = 3, KIDS = [[0.3, 0.5, 0.7, 1, 1], [0.5, 1, 1], [1, 1]];
   function limb(p0, d, L, rad, depth){
     const nseg = depth < 2 ? 5 : 3;
     const pts = grow(p0, d, L, nseg, (s, dd) => add(dd, add(mul(sph(r), 0.12), [0, 0.03, 0])));
-    W.tube(pts, pts.map((_, i) => lerp(rad, rad * 0.62, i / nseg)), depth < 1 ? 8 : depth < 3 ? 5 : 3, BARK.oak, aoAt);
+    const rads = pts.map((_, i) => lerp(rad, rad * 0.62, i / nseg));
+    W.tube(pts, rads, depth < 1 ? 8 : depth < 3 ? 5 : 3, BARK.oak, aoAt);
+    for (let i = 1; i < pts.length; i++) if (depth >= 1 || i > nseg / 2) nodes.push({p: pts[i], r: rads[i]});
+    if (depth >= MAXD) return;
     const f = along3(pts), end = pts[nseg];
-    if (depth >= MAXD){
-      clumps.push({c: end, d: d, R: 2.3 + r() * 1.1});
-      if (r() < 0.6) clumps.push({c: f(0.45).p, d: d, R: 1.7 + r() * 0.6});
-      return;
-    }
     for (const s0 of KIDS[depth]){
       const s = s0 >= 1 ? 1 : s0 + (r() - 0.5) * 0.12, q = s >= 1 ? {p: end, d: d} : f(s);
       const out = nrm([q.p[0] - cr.c[0] + 1e-3, 0, q.p[2] - cr.c[2]]);
       let nd = rotate(q.d, nrm(cross(q.d, sph(r))), (s >= 1 ? 0.3 : 0.65) + r() * 0.4);
-      nd = nrm(add(add(nd, mul(out, 0.45)), [0, 0.12, 0]));
+      nd = nrm(add(add(nd, mul(out, 0.4)), [0, 0.12, 0]));
       const room = roomTo(q.p, nd, cr.c, cr.r);
-      if (room < 1.3){ clumps.push({c: q.p, d: nd, R: 2.0 + r()}); continue; }
-      const nl = Math.min(L * (s >= 1 ? 0.7 : 0.62) * (0.85 + r() * 0.3), room * 0.92);
+      if (room < 1.2) continue;
+      const nl = Math.min(L * (s >= 1 ? 0.72 : 0.64) * (0.85 + r() * 0.3), room * (0.55 + 0.25 * r()));
       limb(q.p, nd, nl, rad * (s >= 1 ? 0.66 : 0.5), depth + 1);
     }
   }
-  const nS = 2 + ((r() * 2.2) | 0), az0 = r() * TAU;
+  const nS = 3 + ((r() * 1.6) | 0), az0 = r() * TAU;
   for (let k = 0; k < nS; k++){
-    const az = az0 + k * TAU / nS + (r() - 0.5) * 0.8, el = 0.75 + r() * 0.4;
-    const d = dirAE(az, el), L = (H - hb) * (0.34 + r() * 0.1);
-    limb(fork, d, Math.min(L, roomTo(fork, d, cr.c, cr.r) * 0.55), R0 * 0.6, 0);
+    const az = az0 + k * TAU / nS + (r() - 0.5) * 0.7, el = 0.7 + r() * 0.45;
+    const d = dirAE(az, el), L = (H - hb) * (0.3 + r() * 0.08);
+    limb(fork, d, Math.min(L, roomTo(fork, d, cr.c, cr.r) * 0.5), R0 * 0.5, 0);
   }
-  limb(trunk[6], nrm([(r() - 0.5) * 0.3, 1, (r() - 0.5) * 0.3]), (H - hb) * 0.42, R0 * 0.55, 1);
+  limb(trunk[5], nrm([(r() - 0.5) * 0.3, 1, (r() - 0.5) * 0.3]), (H - hb) * 0.38, R0 * 0.5, 1);
+
+  /* leaf clumps over the crown shell */
+  const holes = []; for (let k = 0; k < 7; k++){ const d = sph(r); holes.push({d: nrm([d[0], d[1] * 0.6, d[2]]), c: 0.93 + r() * 0.04}); }
+  const ravg = (cr.r[0] + cr.r[1] + cr.r[2]) / 3, nC = Math.round(4 * Math.PI * ravg * ravg / 26 * Math.sqrt(D));
   const tintBase = leafCell === 0 ? [1, 1, 1] : [1.02, 1.03, 0.98];
-  for (const cl of clumps){
-    const R = cl.R, n = Math.max(4, Math.round(R * R * 2.3 * D));
-    const ctr = add(cl.c, mul(cl.d, R * 0.3));
-    const vc = vlerp(ctr, cr.c, 0.3), vr = [R * 1.7, R * 1.5, R * 1.7];
+  let made = 0, tries = 0;
+  while (made < nC && tries++ < nC * 6){
+    let d = sph(r);
+    if (d[1] < -0.35 && r() < 0.7) continue;            /* fewer clumps on the crown underside */
+    let hole = false; for (const h of holes) if (dot(d, h.d) > h.c){ hole = true; break; }
+    if (hole) continue;
+    const e = 0.64 + 0.36 * Math.pow(r(), 0.6);
+    const c = [cr.c[0] + d[0] * cr.r[0] * e, cr.c[1] + d[1] * cr.r[1] * e, cr.c[2] + d[2] * cr.r[2] * e];
+    if (c[1] < hb + 1.5) continue;
+    let best = null, bd = 1e9;
+    for (const nd of nodes){ const q = sub(c, nd.p), dd = dot(q, q) - nd.r * 40; if (dd < bd){ bd = dd; best = nd; } }
+    if (!best) break;
+    let tw = sub(c, best.p), tl = vlen(tw);
+    if (tl > 4.5){ tw = mul(tw, 4.5 / tl); tl = 4.5; c[0] = best.p[0] + tw[0]; c[1] = best.p[1] + tw[1]; c[2] = best.p[2] + tw[2]; }
+    if (tl > 0.6) W.tube([best.p, add(vlerp(best.p, c, 0.5), [0, tl * 0.08, 0]), c], [Math.min(0.07, best.r * 0.6), 0.035, 0.018], 3, BARK.oak, aoAt);
+    made++;
+    const R = 2.3 + r() * 1.3, n = Math.max(5, Math.round(R * R * 2.2 * Math.sqrt(D)));
+    const cd = tl > 0.3 ? mul(tw, 1 / tl) : d;
+    const vc = vlerp(c, cr.c, 0.3), vr = [R * 1.7, R * 1.5, R * 1.7];
     const k0 = 0.9 + r() * 0.22, hue = (r() - 0.5) * 0.12, tint = [tintBase[0] * k0 * (1 + hue), tintBase[1] * k0, tintBase[2] * k0 * (1 - hue)];
-    const out = nrm(sub(ctr, cr.c));
+    const out = nrm(sub(c, cr.c));
     for (let i = 0; i < n; i++){
-      const q = inBall(r), p = [ctr[0] + q[0] * R, ctr[1] + q[1] * R * 0.75, ctr[2] + q[2] * R];
-      const up = nrm(add(add(cl.d, mul(sph(r), 1.0)), [0, 0.35, 0]));
+      const q = inBall(r), p = [c[0] + q[0] * R, c[1] + q[1] * R * 0.75, c[2] + q[2] * R];
+      const up = nrm(add(add(cd, mul(sph(r), 1.0)), [0, 0.35, 0]));
       const face = nrm(add(sph(r), mul(out, 0.6)));
       const sz = 2.1 + r() * 0.9;
       F.card(p, up, face, sz, sz, 0.25, uvr(leafCell, r), tint, aoAt(p), vc, vr, 0.62, null);
@@ -839,7 +926,7 @@ function genOak(S, H, r){
 /* rounded foundation shrub (azalea / boxwood) */
 function genShrub(S, H, r){
   const W = S.wood, F = S.leaf, D = S.density;
-  const rx = H * (0.55 + r() * 0.15), rz = rx * (0.85 + r() * 0.25), ry = H * 0.5, c = [0, H * 0.5, 0];
+  const rx = H * (0.48 + r() * 0.12), rz = rx * (0.85 + r() * 0.25), ry = H * 0.46, c = [0, H * 0.47, 0];
   const bumps = []; for (let k = 0; k < 6; k++) bumps.push({d: sph(r), a: 0.06 + r() * 0.1});
   const bump = d => { let m = 1; for (const b of bumps) m += b.a * Math.pow(Math.max(0, dot(d, b.d)), 3); return m; };
   for (let k = 0; k < 7; k++){
@@ -847,18 +934,18 @@ function genShrub(S, H, r){
     W.tube(pts, [0.05, 0.04, 0.03, 0.02], 4, BARK.shrub, () => 0.35);
   }
   const area = 4 * Math.PI * Math.pow((Math.pow(rx * ry, 1.6) + Math.pow(rx * rz, 1.6) + Math.pow(ry * rz, 1.6)) / 3, 1 / 1.6);
-  const n = Math.round(area * 11 * D);
+  const n = Math.round(area * 13 * D);
   const vc = [0, H * 0.32, 0], vr = [rx, ry * 1.15, rz];
   for (let i = 0; i < n; i++){
     let d = sph(r); if (d[1] < -0.55) d = nrm([d[0], -d[1] * 0.4, d[2]]);
-    const k = 1 - 0.36 * Math.pow(r(), 1.6), m = bump(d) * k;
+    const k = 1 - 0.28 * Math.pow(r(), 1.8), m = bump(d) * k;
     const p = [c[0] + d[0] * rx * m, Math.max(0.12 + r() * 0.15, c[1] + d[1] * ry * m), c[2] + d[2] * rz * m];
-    const up = nrm(add(add(d, mul(sph(r), 0.9)), [0, 0.5, 0]));
-    const face = nrm(add(d, mul(sph(r), 0.75)));
-    const sz = (0.65 + r() * 0.25) * Math.min(1.2, Math.max(0.8, H / 4));
+    const face = nrm(add(d, mul(sph(r), 0.5)));
+    const up = nrm(add(cross(face, perp(face)), add(mul(sph(r), 0.8), [0, 0.6, 0])));
+    const sz = (0.68 + r() * 0.2) * Math.min(1.2, Math.max(0.8, H / 4));
     const ao = lerp(0.38, 1.0, sstep(0.66, 1.0, k)) * lerp(0.6, 1.0, sstep(0.1, H * 0.55, p[1]));
     const kk = 0.9 + r() * 0.18;
-    F.card(p, up, face, sz, sz, 0.3, uvr(2, r), [kk, kk, kk * (0.95 + r() * 0.1)], ao, vc, vr, 0.72, null);
+    F.card(p, up, face, sz, sz, 0.3, uvr(2, r), [kk, kk, kk * (0.95 + r() * 0.1)], ao, vc, vr, 0.8, null);
   }
 }
 
@@ -891,46 +978,50 @@ function genMaple(S, H, r){
     const f = along3(ar.pts), L = vlen(sub(ar.pts[ar.pts.length - 1], ar.pts[0])) + 0.5;
     for (let s = 0.2; s <= 1.0001; s += 0.2 / L){
       const q = f(s);
-      const nC = 3 + (r() < 0.5 * D ? 1 : 0);
+      const nC = 2 + (r() < 0.4 * D ? 1 : 0);
       for (let k = 0; k < nC; k++){
         const p = add(q.p, mul(inBall(r), 0.4));
         const up = nrm(add(add([0, -1, 0], mul(ar.dir, 0.45 + 0.4 * (1 - s))), mul(sph(r), 0.45)));
         const face = nrm(add(add(ar.dir, mul(sph(r), 0.7)), [0, 0.35, 0]));
-        const sz = 0.75 + r() * 0.35;
+        const sz = 0.7 + r() * 0.3;
+        if (p[1] - sz < 0.05 || (s > 0.8 && r() < 0.5)) continue;
         const kk = 0.86 + r() * 0.26;
         F.card(p, up, face, sz, sz * 1.05, 0.06, uvr(3, r), [kk, kk * 0.96, kk * 0.96], aoAt(p), vc, vr, 0.6, null);
       }
     }
   }
-  const nf = Math.round(Wd * Wd * 10 * D);
+  const nf = Math.round(Wd * Wd * 22 * D);
   for (let i = 0; i < nf; i++){
-    let d = sph(r); d = [d[0], Math.abs(d[1]) * 0.9 + 0.05, d[2]]; d = nrm(d);
-    const k = 0.75 + 0.22 * r(), p = [d[0] * Wd * k, Math.max(0.3, d[1] * H * k), d[2] * Wd * k];
+    let d = sph(r); d = nrm([d[0], Math.abs(d[1]) * 1.1 + 0.08, d[2]]);
+    const k = 0.8 + 0.22 * Math.pow(r(), 0.7), sk = 1 + 0.12 * (1 - d[1]);
+    const p = [d[0] * Wd * k * sk, d[1] * H * k, d[2] * Wd * k * sk];
+    if (p[1] < 0.3) continue;
     const out = nrm([d[0], 0, d[2]]);
-    const up = nrm(add(add([0, -1, 0], mul(out, 0.5)), mul(sph(r), 0.4)));
-    const face = nrm(add(d, mul(sph(r), 0.6)));
-    const kk = 0.86 + r() * 0.26;
-    F.card(p, up, face, 0.9, 0.95, 0.1, uvr(3, r), [kk, kk * 0.96, kk * 0.96], aoAt(p), vc, vr, 0.6, null);
+    const tan = nrm(sub(mul(out, d[1]), mul(UP, Math.hypot(d[0], d[2]))));     /* down the dome surface */
+    const up = nrm(add(add(tan, [0, -0.35, 0]), mul(sph(r), 0.35)));
+    const face = nrm(add(d, mul(sph(r), 0.45)));
+    const kk = 0.86 + r() * 0.26, sz = 0.8 + r() * 0.3;
+    F.card(p, up, face, sz, sz * 1.05, 0.12, uvr(3, r), [kk, kk * 0.96, kk * 0.96], aoAt(p), vc, vr, 0.68, null);
   }
 }
 
 /* rose of sharon (hibiscus syriacus): upright vase of many stems, leafy to the top, pink flowers scattered */
 function genRose(S, H, r){
   const W = S.wood, F = S.leaf, D = S.density;
-  const vc = [0, H * 0.58, 0], vr = [H * 0.3, H * 0.52, H * 0.3];
+  const vc = [0, H * 0.58, 0], vr = [H * 0.26, H * 0.52, H * 0.26];
   const aoAt = p => lerp(0.4, 1.0, sstep(0.35, 1.0, ellDist(p, vc, vr))) * lerp(0.65, 1.0, sstep(0.5, H * 0.6, p[1]));
-  const nS = 13 + ((r() * 6) | 0), stems = [];
+  const nS = 16 + ((r() * 6) | 0), stems = [];
   for (let k = 0; k < nS; k++){
-    const az = r() * TAU, lean = 0.05 + r() * 0.27, b = [Math.cos(az) * 0.25 * r(), -0.2, Math.sin(az) * 0.25 * r()];
+    const az = r() * TAU, lean = 0.03 + r() * 0.17, b = [Math.cos(az) * 0.25 * r(), -0.2, Math.sin(az) * 0.25 * r()];
     const out = [Math.cos(az), 0, Math.sin(az)];
     const L = H * (0.72 + r() * 0.3) / Math.cos(lean);
-    const pts = grow(b, dirAE(az, Math.PI / 2 - lean), L, 6, (s, d) => add(d, add(mul(out, 0.035), mul(sph(r), 0.04))));
+    const pts = grow(b, dirAE(az, Math.PI / 2 - lean), L, 6, (s, d) => add(d, add(mul(out, 0.02), mul(sph(r), 0.04))));
     W.tube(pts, pts.map((_, i) => lerp(0.07, 0.02, i / 6)), 4, BARK.rose, aoAt);
     stems.push({pts, from: 0.3});
     const nsh = 2 + ((r() * 3) | 0), f = along3(pts);
     for (let j = 0; j < nsh; j++){
       const q = f(0.45 + r() * 0.45), sd = nrm(add(rotate(q.d, nrm(cross(q.d, sph(r))), 0.5 + r() * 0.3), mul(out, 0.3)));
-      const sp = grow(q.p, sd, 0.8 + r() * 1.4, 3, null);
+      const sp = grow(q.p, sd, 0.6 + r() * 1.0, 3, null);
       W.tube(sp, [0.03, 0.025, 0.02, 0.012], 3, BARK.rose, aoAt);
       stems.push({pts: sp, from: 0.1});
     }
@@ -940,10 +1031,10 @@ function genRose(S, H, r){
     for (let s = st.from; s <= 1.0001; s += 0.26 / L){
       const q = f(s), nC = 2 + (r() < 0.4 * D ? 1 : 0);
       for (let k = 0; k < nC; k++){
-        const p = add(q.p, mul(inBall(r), 0.25));
-        const up = nrm(add(q.d, mul(sph(r), 0.75)));
+        const p = add(q.p, mul(inBall(r), 0.45));
+        const up = nrm(add(q.d, mul(sph(r), 0.9)));
         const face = nrm(add(sph(r), mul(nrm([p[0], 0, p[2]]), 0.6)));
-        const sz = 0.75 + r() * 0.3;
+        const sz = 0.85 + r() * 0.3;
         const cell = r() < 0.3 ? 0 : 1;
         const kk = 0.9 + r() * 0.18;
         F.card(p, up, face, sz, sz, 0.1, uvr(cell, r), [kk, kk, kk], aoAt(p), vc, vr, 0.5, null);
@@ -955,7 +1046,7 @@ function genRose(S, H, r){
 /* hydrangea: low mound of big leaves topped with pale blue/white mophead flowers */
 function genHydrangea(S, H, r){
   const W = S.wood, F = S.leaf, D = S.density;
-  const rx = H * (0.6 + r() * 0.12), rz = rx * (0.9 + r() * 0.2), ry = H * 0.5, c = [0, H * 0.48, 0];
+  const rx = H * (0.5 + r() * 0.1), rz = rx * (0.9 + r() * 0.2), ry = H * 0.45, c = [0, H * 0.43, 0];
   const vc = [0, H * 0.3, 0], vr = [rx, ry * 1.15, rz];
   for (let k = 0; k < 8; k++){
     const pts = grow([(r() - 0.5) * 0.3, -0.1, (r() - 0.5) * 0.3], dirAE(r() * TAU, 0.8 + r() * 0.5), H * 0.6, 3, (s, d) => add(d, mul(sph(r), 0.15)));
@@ -973,16 +1064,15 @@ function genHydrangea(S, H, r){
     const kk = 0.9 + r() * 0.16;
     F.card(p, up, face, 0.8 + r() * 0.3, 0.85 + r() * 0.3, 0.25, uvr(2, r), [kk, kk, kk], ao, vc, vr, 0.7, null);
   }
-  const nH = Math.round(area * 0.42);
+  const nH = Math.round(area * 0.55);
   for (let i = 0; i < nH; i++){
     let d = sph(r); if (d[1] < 0.05) d = nrm([d[0], Math.abs(d[1]) + 0.1, d[2]]);
     const k = 0.96 + r() * 0.08, hc = [c[0] + d[0] * rx * k, c[1] + d[1] * ry * k, c[2] + d[2] * rz * k];
-    const s = 0.55 + r() * 0.25, hv = [hc[0] - d[0] * 0.15, hc[1] - d[1] * 0.15, hc[2] - d[2] * 0.15];
+    const s = 0.5 + r() * 0.2, hv = [hc[0] - d[0] * 0.12, hc[1] - d[1] * 0.12, hc[2] - d[2] * 0.12];
     const kk = 0.92 + r() * 0.14, tint = [kk, kk, kk];
     const up1 = nrm(add(UP, mul(sph(r), 0.25)));
-    const f1 = nrm([d[0], 0, d[2]]), f2 = rotate(f1, up1, Math.PI / 2);
-    F.card(hc, up1, f1, s, s, 0.5, uvr(3, r), tint, 1.0, hv, [0.4, 0.4, 0.4], 0.85, null);
-    F.card(hc, up1, f2, s, s, 0.5, uvr(3, r), tint, 1.0, hv, [0.4, 0.4, 0.4], 0.85, null);
+    const f1 = rotate(nrm([d[0], 0, d[2]]), up1, r() * 0.6);
+    for (let j = 0; j < 3; j++) F.card(hc, up1, rotate(f1, up1, j * Math.PI / 3), s, s, 0.5, uvr(3, r), tint, 1.0, hv, [0.4, 0.4, 0.4], 0.85, null);
     F.card(hc, f1, nrm(add(UP, mul(d, 0.3))), s, s, 0.5, uvr(3, r), tint, 1.0, hv, [0.4, 0.4, 0.4], 0.85, null);
   }
 }
@@ -1007,7 +1097,7 @@ REAL.veg = {
     const bark = paintBark(core); lap("bark");
 
     const mats = {}, depth = {}, dist = {};
-    const leafCfg = {conifer: {rough: 0.62, trans: 0.28, ns: 0.9}, broadleaf: {rough: 0.52, trans: 0.4, ns: 1.0}, flower: {rough: 0.6, trans: 0.42, ns: 0.9}};
+    const leafCfg = {conifer: {rough: 0.7, trans: 0.28, ns: 0.9}, broadleaf: {rough: 0.6, trans: 0.4, ns: 1.0}, flower: {rough: 0.64, trans: 0.42, ns: 0.9}};
     for (const k in atl){
       const a = atl[k], cfg = leafCfg[k];
       const map = core.texture(THREE, a.col, {srgb: true}), alphaMap = core.texture(THREE, a.alp), normalMap = core.texture(THREE, a.nor);
@@ -1020,7 +1110,7 @@ REAL.veg = {
       dist[k] = patchDepth(new THREE.MeshDistanceMaterial({alphaMap, alphaTest: 0.5, side: THREE.DoubleSide}), k + "x");
     }
     const bmap = core.texture(THREE, bark.col, {srgb: true}), bnor = core.texture(THREE, bark.nm);
-    mats.bark = patchMaterial(THREE, new THREE.MeshStandardMaterial({map: bmap, normalMap: bnor, normalScale: new THREE.Vector2(1.2, 1.2), roughness: 0.93, metalness: 0, vertexColors: true}), false, 0, dirAO * 0.6, "bark");
+    mats.bark = patchMaterial(THREE, new THREE.MeshStandardMaterial({map: bmap, normalMap: bnor, normalScale: new THREE.Vector2(1.0, 1.0), roughness: 0.93, metalness: 0, vertexColors: true}), false, 0, dirAO * 0.6, "bark");
     mats.bark.name = "veg-bark";
     lap("materials");
     const buildMs = performance.now() - t0;
@@ -1069,10 +1159,10 @@ REAL.veg = {
       types: Object.keys(GEN),
       samples: [
         {type: "pine", size: 54, seed: 3, label: "white pine 54'", footprint: 24},
-        {type: "hemlock", size: 33, seed: 2, label: "hemlock 33'", footprint: 15},
-        {type: "oak", size: 46, seed: 4, label: "oak 46'", footprint: 36},
+        {type: "hemlock", size: 33, seed: 2, label: "hemlock 33'", footprint: 19},
+        {type: "oak", size: 46, seed: 3, label: "oak / maple 46'", footprint: 36},
         {type: "shrub", size: 4, seed: 1, label: "azalea 4'", footprint: 5.5},
-        {type: "maple", size: 5, seed: 1, label: "lace-leaf maple 5'", footprint: 8.5},
+        {type: "maple", size: 5, seed: 1, label: "lace-leaf maple 5'", footprint: 10},
         {type: "rose", size: 8.5, seed: 1, label: "rose of sharon 8.5'", footprint: 5.5},
         {type: "hydrangea", size: 3.5, seed: 1, label: "hydrangea 3.5'", footprint: 5}
       ],

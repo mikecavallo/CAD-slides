@@ -45,15 +45,14 @@
     const col = K.el('div', 'c0-col');
     Object.assign(col.style, { left: '100px', top: '232px', width: '1000px' });
     const kick = K.el('div', 'c0-kick', 'Calling All Dogs');
-    const title = K.el('div', 'c0-title', 'Getting Started with Dog Behavior');
+    const title = K.el('div', 'c0-title', 'Understanding<br>Dog Behavior');
     const bar = K.el('div', 'c0-bar');
-    const sub = K.el('div', 'c0-sub', 'Understanding Reactivity and Aggression');
     const who = K.el('div', 'c0-who');
     const nm = K.el('div', 'nm', 'Tori Ganino');
     const cr = K.el('div', 'cr', 'BS, CDBC, CPDT-KA');
     const og = K.el('div', 'og', 'Calling All Dogs · Training for all breeds');
     [nm, cr, og].forEach(n => who.appendChild(n));
-    [kick, title, bar, sub, who].forEach(n => col.appendChild(n));
+    [kick, title, bar, who].forEach(n => col.appendChild(n));
     stage.appendChild(col);
 
     // the headshot in a ring, and the training photo as a tilted card over its lower left
@@ -75,14 +74,13 @@
     A.in(tl, kick, 0.1, 'fadeUp', { dur: 0.6 });
     A.in(tl, title, 0.25, 'fadeUp', { dur: 0.8 });
     A.in(tl, bar, 0.55, 'grow', { dur: 0.6 });
-    A.in(tl, sub, 0.7, 'fadeUp', { dur: 0.8 });
     tl.fromTo(ring, { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 1.0, ease: 'power3.out' }, 0.45);
     tl.fromTo(head, { scale: 1.08 }, { scale: 1.0, duration: Math.max(1, dur - 0.5), ease: 'none' }, 0.45);
     const tName = clamp(sayAt(ctx, 0, 'Tori Ganino', 0.1), 1.1, end(0) - 4);
     A.in(tl, who, tName, 'fadeRight', { dur: 0.7 });
     const tSnap = clamp(sayAt(ctx, 0, 'Calling All Dogs', 0.3), tName + 0.6, end(0) - 3);
     tl.fromTo(snap, { opacity: 0, y: 40, rotation: 3 }, { opacity: 1, y: 0, rotation: -5, duration: 0.9, ease: 'power3.out' }, tSnap);
-    const tTitle = clamp(sayAt(ctx, 0, 'Getting Started', 0.5), tSnap + 0.6, end(0) - 1.5);
+    const tTitle = clamp(sayAt(ctx, 0, 'Understanding Dog Behavior', 0.6), tSnap + 0.6, end(0) - 1.5);
     tl.to(bar, { width: 260, duration: 0.8, ease: 'power2.inOut' }, tTitle);
   });
 

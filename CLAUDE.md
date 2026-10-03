@@ -7,8 +7,8 @@ pipeline). This file records the state, decisions and working agreements from ea
 
 - Trainer and narrator: **Tori Ganino, BS, CDBC, CPDT-KA**, Calling All Dogs (callingalldogsny.com).
   Refer to Tori by name; pronouns were never stated, so do not assume any.
-- Presentation: **"Getting Started with Dog Behavior: Understanding Reactivity and Aggression"**, a narrated,
-  animated slide video (HTML + GSAP scenes rendered to MP4, synced to Tori's recorded voice).
+- Presentation: **"Understanding Dog Behavior"** (renamed by Tori in Chapter 2 round 4; it was "Getting Started with
+  Dog Behavior: Understanding Reactivity and Aggression"), a narrated, animated slide video (HTML + GSAP scenes rendered to MP4, synced to Tori's recorded voice).
 - Script source of truth: Tori's Google Doc "Reactivity & Aggression Part 1: Script v4 (one chapter)",
   id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (read it with the Google Drive connector; Claude cannot
   edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
@@ -59,6 +59,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   improved" / "The rest can't be changed", ingredients go into an empty pot first, then the water ("The water = your
   dog's baseline"); activity area colour blue; s07 Goldilocks line and beat; mental activity light blue; s11 factor
   pills turn green instead of new text; s12 "What triggered the reaction?"; logo close shows Tori's name and credentials.
+- Round 4 feedback (applied): presentation title is now "Understanding Dog Behavior" (both title slides, both lessons;
+  ch00s01 needs a re-record); no "one more piece" anywhere (Chapter 1 line: "something else ... the water they go into",
+  on-screen "Next: the water they go into"); s01 combines the changed/managed/improved message into one header over the
+  four returning ingredients plus a dashed "More factors in this chapter" pill; s01 ends with the ingredients in an
+  EMPTY pot ("First: your dog's baseline"), the water first pours in on s03; puppies icon is a paw print; s06 stoic chart
+  has only pain and time on its axes, "Looks fine on the outside" and the limp as notes on the line.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

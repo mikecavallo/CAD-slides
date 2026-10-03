@@ -1,10 +1,10 @@
-# Getting Started with Dog Behavior: Understanding Reactivity and Aggression. Chapter 2: Understanding Your Dog's Baseline
+# Understanding Dog Behavior. Chapter 2: Understanding Your Dog's Baseline
 
-Narration script. About 1,148 words, roughly 8 minutes at a relaxed pace.
+Narration script. About 1,142 words, roughly 8 minutes at a relaxed pace.
 
 ## Welcome
 
-Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior: Understanding Reactivity and Aggression.
+Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Understanding Dog Behavior.
 
 ## Understanding Your Dog's Baseline
 

@@ -1,5 +1,5 @@
 {
- "title": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression. Chapter 2: Understanding Your Dog's Baseline",
+ "title": "Understanding Dog Behavior. Chapter 2: Understanding Your Dog's Baseline",
  "notes": "Chapter 2 video. Narration for ch02s01 to ch02s12 is the trainer's doc (Script v4, the 'Chapter 2: Understanding Your Dog's Baseline' section, up to 'END CHAPTER 2 MATERIAL'). The welcome (ch02intro) and plan (ch02plan) narration were drafted for this video and sent to the trainer. Build with LESSON=lesson-ch2.json.",
  "tail": 5.0,
  "chapters": [
@@ -11,8 +11,8 @@
    "scenes": [
     {
      "id": "ch02intro",
-     "heading": "Getting Started with Dog Behavior",
-     "visual_concept": "Title slide identical to Chapter 1's: the presentation title and subtitle at left with a small 'Chapter 2' kicker, Tori's headshot in a green ring, the training photo card, name and credentials. The chapter title itself appears on the chapter card that follows.",
+     "heading": "Understanding Dog Behavior",
+     "visual_concept": "Title slide identical to Chapter 1's: 'Understanding Dog Behavior', Tori's headshot in a green ring, the training photo card, name and credentials; the footer tab shows 2. The chapter title is on the narrated chapter card that follows.",
      "assets": [
       "trainer_headshot.jpg",
       "trainer_with_dog.jpg",
@@ -20,9 +20,9 @@
      ],
      "beats": [
       {
-       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior: Understanding Reactivity and Aggression.",
-       "show": "Presentation title and subtitle as in Chapter 1, with a 'Chapter 2' kicker; the headshot scales in; the name block appears as the name is said; the training photo tilts in.",
-       "onscreen": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression"
+       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Understanding Dog Behavior.",
+       "show": "The title 'Understanding Dog Behavior' as in Chapter 1; the headshot scales in; the name block appears as the name is said; the training photo tilts in.",
+       "onscreen": "Understanding Dog Behavior"
       }
      ]
     }
@@ -72,7 +72,7 @@
     {
      "id": "ch02s01",
      "heading": "Understanding Your Dog's Baseline",
-     "visual_concept": "Recap with Chapter 1's bowl: the eight ingredients and the water drop on top ('One more piece: the water'). The four returning ingredients ('Can be changed, managed, or improved') glow, the rest ('Can't be changed') dim. 'Additional factors that can be: Changed / Managed / Improved'. The ingredients pour into an empty pot; then the water drop falls in and the pot fills: 'The water = your dog's baseline'.",
+     "visual_concept": "Recap with Chapter 1's bowl and its eight ingredients. The four returning ingredients glow under one header, 'Can be changed, managed, or improved'; the rest dim ('The rest can't be changed'). On beat 2 the header lights up word by word and a dashed 'More factors in this chapter' pill joins. The ingredients pour into an empty glass pot (no water yet). 'First: your dog's baseline'.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:mixing-bowl",
@@ -84,27 +84,27 @@
      "beats": [
       {
        "say": "In the last chapter, we looked at the ingredients that can help shape a dog's behavior.",
-       "show": "Chapter 1's bowl with its eight ingredients and the water drop on top; pills: 'Chapter 1: the ingredients' and 'One more piece: the water'.",
+       "show": "Chapter 1's bowl with its eight ingredients; pill 'Chapter 1: the ingredients'.",
        "onscreen": "Understanding Your Dog's Baseline"
       },
       {
        "say": "You'll notice that some of those factors appear again here. That's intentional.",
-       "show": "Four ingredient tokens glow and their name pills appear (Breed history and purpose, Past experiences, Training tools and methods, Pain and discomfort) under 'Can be changed, managed, or improved'; the other four dim under 'Can't be changed'.",
+       "show": "Four ingredient pills appear under the header 'Can be changed, managed, or improved'; the other four dim: 'The rest can't be changed'.",
        "onscreen": "Some factors appear again"
       },
       {
        "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently.",
-       "show": "'Additional factors that can be:' then Changed, Managed, Improved pop in; the fuel drop glows with 'Affecting your dog right now'.",
+       "show": "The header words light up as they are said; a dashed 'More factors in this chapter' pill joins; 'Affecting your dog right now'.",
        "onscreen": "Changed, managed, or improved"
       },
       {
        "say": "So we're going to add those ingredients to a pot.",
-       "show": "The bowl tips and the ingredients drop into an empty glass pot. Caption: 'Adding the ingredients to the pot'.",
+       "show": "The bowl tips and the ingredients drop into an empty glass pot. Caption: 'Adding the ingredients to the pot'. No water yet.",
        "onscreen": "Adding the ingredients to the pot"
       },
       {
        "say": "First, we need to talk about your dog's baseline.",
-       "show": "The water drop falls in and the pot fills with water; 'The water = your dog's baseline' points at the waterline, the ingredients floating up with it.",
+       "show": "'First: your dog's baseline' beside the empty pot (the water comes on the water slide).",
        "onscreen": "Your dog's baseline"
       }
      ]

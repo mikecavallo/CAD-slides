@@ -127,7 +127,7 @@
     A.in(tl, axis, t2 + 0.4, 'fade', { dur: 0.5 });
     const BARS = [
       { who: 'Adult dogs', icon: 'dog', a: 12, b: 16, txt: '12 to 16 hours', p: 'adult dogs', fb: 0.08 },
-      { who: 'Puppies', icon: 'baby', a: 18, b: 20, txt: '18 to 20 hours', p: 'Puppies', fb: 0.5 },
+      { who: 'Puppies', icon: 'paw-print', a: 18, b: 20, txt: '18 to 20 hours', p: 'Puppies', fb: 0.5 },
       { who: 'Older dogs', icon: 'hourglass', a: 16, b: 22.6, txt: 'Often more', p: 'older dogs', fb: 0.85, more: true },
     ];
     lo = t2 + 0.6;
@@ -321,36 +321,28 @@
     const st = C2.pill(LS, 'shield', 'Dogs can be *very stoic*', { x: 160, y: 286, size: 36 });
     A.in(tl, st, tS + 0.1, 'fadeRight', { dur: 0.6 });
     const ss = K.svg(LS, { x: 0, y: 0, w: 1920, h: 1080 });
-    const AX0 = 170, AX1 = 1290, AY = 780;
-    const axis = K.path(ss, `M ${AX0} ${AY} L ${AX1} ${AY} M ${AX1 - 20} ${AY - 14} L ${AX1} ${AY} L ${AX1 - 20} ${AY + 14}`, { stroke: '#b9c6ad', 'stroke-width': 6, fill: 'none' });
+    const AX0 = 190, AX1 = 1290, AY = 800, YT = 520;
+    // axes: pain up the side, time along the bottom (the axis holds nothing else)
+    const axis = K.path(ss, `M ${AX0} ${YT} L ${AX0} ${AY} L ${AX1} ${AY} M ${AX1 - 20} ${AY - 14} L ${AX1} ${AY} L ${AX1 - 20} ${AY + 14}`, { stroke: '#b9c6ad', 'stroke-width': 6, fill: 'none' });
     A.draw(tl, axis, tS + 0.3, 0.8);
     const tml = C2.put(LS, 'c2c-tick', 'time', { x: AX1 - 60, y: AY + 22 });
-    A.in(tl, tml, tS + 0.9, 'fade', { dur: 0.4 });
-    const painL = K.path(ss, `M ${AX0} ${AY - 30} C 420 ${AY - 50} 700 ${AY - 120} 900 ${AY - 200} S 1100 ${AY - 290} 1160 ${AY - 310}`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
-    const pl = C2.put(LS, 'c2c-tick', '!!pain!!', { x: 1170, y: AY - 350 });
-    pl.style.width = 'auto';
-    // the dog looks fine the whole time
-    const fine = [380, 640, 900].map((x, k) => {
-      const b = C2.badge(LS, 'dog', x, AY + 70, 76, '#fff', C.greenDark);
-      b.style.border = '4px solid var(--green)';
-      A.in(tl, b, tS + 0.8 + k * 0.5, 'pop', { dur: 0.4 });
-      return b;
-    });
-    const looks = C2.put(LS, 'c2c-tick', 'Looks fine', { x: 120, y: AY + 56 });
-    looks.style.width = 'auto';
-    looks.style.fontSize = '28px';
-    A.in(tl, looks, tS + 0.8, 'fade', { dur: 0.4 });
+    const yl = C2.put(LS, 'c2c-tick', '!!pain!!', { x: AX0 - 120, y: YT - 10 });
+    yl.style.width = '100px';
+    yl.style.textAlign = 'right';
+    A.in(tl, [tml, yl], tS + 0.9, 'fade', { dur: 0.4 });
+    const painL = K.path(ss, `M ${AX0} ${AY - 30} C 440 ${AY - 48} 700 ${AY - 110} 900 ${AY - 180} S 1100 ${AY - 280} 1160 ${AY - 320}`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
+    // on the outside, the dog looks fine (a note inside the chart, over the early part of the line)
+    const looks = C2.put(LS, 'c2-lab', '**Looks fine on the outside**', { x: AX0 + 40, y: AY - 150 });
+    Object.assign(looks.style, { fontSize: '30px', color: 'var(--green-dark)' });
+    A.in(tl, looks, tS + 1.0, 'fadeUp', { dur: 0.5 });
     A.draw(tl, painL, tS + 0.8, Math.max(1.5, Math.min(4, end(3) - tS - 3.5)), { ease: 'none' });
-    // the limp shows up only at the end
+    // the limp shows up only at the end: a marker on the line itself
     const tLimp = clamp(at(3, 'a limp', 0.7, 0.3), tS + 2.5, end(3) - 1.6);
-    const limpB = C2.badge(LS, 'paws', 1180, AY + 70, 84, C.amber, '#fff');
-    limpB.style.border = '4px solid #fff';
-    const limpT = C2.put(LS, 'c2c-tick', '**Limp you notice**', { x: 1080, y: AY + 120 });
-    Object.assign(limpT.style, { width: '200px', fontSize: '28px', color: 'var(--ink)' });
-    A.in(tl, limpB, tLimp, 'pop', { dur: 0.5 });
-    A.in(tl, pl, tLimp - 0.4, 'fade', { dur: 0.4 });
-    A.in(tl, limpT, tLimp + 0.2, 'fadeUp', { dur: 0.4 });
-    const brk = K.path(ss, `M ${AX0} 470 L ${AX0} 450 L 1150 450 L 1150 470`, { stroke: C.red, 'stroke-width': 5, fill: 'none' });
+    const dot = K.circle(ss, 1160, AY - 320, 16, { fill: C.amber, stroke: '#fff', 'stroke-width': 5, opacity: 0 });
+    const limpT = C2.pill(LS, 'paws', 'The limp you notice', { x: 1190, y: AY - 356, variant: 'amber', size: 28, col: C.amber });
+    tl.fromTo(dot, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2.4)' }, tLimp);
+    A.in(tl, limpT, tLimp + 0.2, 'fadeRight', { dur: 0.5 });
+    const brk = K.path(ss, `M ${AX0 + 10} 470 L ${AX0 + 10} 450 L 1150 450 L 1150 470`, { stroke: C.red, 'stroke-width': 5, fill: 'none' });
     const brT = C2.put(LS, 'c2-lab', '!!Already in pain for quite a while!!', { x: AX0, y: 396 });
     brT.style.fontSize = '32px';
     const tWhile = clamp(at(3, 'quite a while', 0.9, 0.3), tLimp + 0.6, end(3) - 0.4);
@@ -365,7 +357,7 @@
     ct.appendChild(K.el('div', 't1', 'Sudden injury'));
     ct.appendChild(K.el('div', 't2', 'like a broken leg:<br>signs right away'));
     card.appendChild(ct);
-    Object.assign(card.style, { left: '1370px', top: '470px' });
+    Object.assign(card.style, { left: '1370px', top: '640px' });
     LS.appendChild(card);
     A.in(tl, card, clamp(at(3, 'sudden injury', 0.15, 0.3), tS + 0.6, end(3) - 2), 'fadeLeft', { dur: 0.6 });
 

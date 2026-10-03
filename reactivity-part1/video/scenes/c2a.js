@@ -26,6 +26,8 @@
   .c2a-blt .tx { font: 700 52px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2a-blt .tx b { color: var(--green); }
   .c2a-blt .ln { width: 90px; height: 0; border-top: 5px dashed #2f7fae; margin-left: 24px; }
+  .c2a-cmi { position: absolute; font: 700 36px/1.2 var(--font-head); color: var(--ink); white-space: nowrap; }
+  .c2a-cmi span { color: var(--green); padding: 0 4px; border-radius: 8px; }
   .c2a-who { display: flex; flex-direction: column; gap: 12px; padding-left: 26px; border-left: 8px solid var(--green); margin-top: 26px; }
   .c2a-who .nm { font: 700 46px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2a-who .cr { font: 700 30px/1 var(--font-body); color: var(--green-dark); letter-spacing: 1px; white-space: nowrap; }
@@ -70,12 +72,11 @@
     const col = K.el('div', 'c2a-col');
     Object.assign(col.style, { left: '100px', top: '232px', width: '1000px' });
     const kick = K.el('div', 'c2a-kick', 'Calling All Dogs');
-    const title = K.el('div', 'c2a-title', 'Getting Started with Dog Behavior');
+    const title = K.el('div', 'c2a-title', 'Understanding<br>Dog Behavior');
     const bar = K.el('div', 'c2a-bar');
-    const sub = K.el('div', 'c2a-sub', 'Understanding Reactivity and Aggression');
     const who = K.el('div', 'c2a-who');
     [['nm', 'Tori Ganino'], ['cr', 'BS, CDBC, CPDT-KA'], ['og', 'Calling All Dogs · Training for all breeds']].forEach(([c, t]) => who.appendChild(K.el('div', c, t)));
-    [kick, title, bar, sub, who].forEach(n => col.appendChild(n));
+    [kick, title, bar, who].forEach(n => col.appendChild(n));
     stage.appendChild(col);
 
     const RR = 270, CX = 1450, CY = 532;
@@ -95,14 +96,13 @@
     A.in(tl, kick, 0.1, 'fadeUp', { dur: 0.6 });
     A.in(tl, title, 0.25, 'fadeUp', { dur: 0.8 });
     A.in(tl, bar, 0.55, 'grow', { dur: 0.6 });
-    A.in(tl, sub, 0.7, 'fadeUp', { dur: 0.8 });
     tl.fromTo(ring, { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 1.0, ease: 'power3.out' }, 0.45);
     tl.fromTo(head, { scale: 1.08 }, { scale: 1.0, duration: Math.max(1, dur - 0.5), ease: 'none' }, 0.45);
     const tName = clamp(sayAt(ctx, 0, 'Tori Ganino', 0.1), 1.1, end(0) - 6);
     A.in(tl, who, tName, 'fadeRight', { dur: 0.7 });
     const tSnap = clamp(sayAt(ctx, 0, 'Calling All Dogs', 0.2), tName + 0.6, end(0) - 5);
     tl.fromTo(snap, { opacity: 0, y: 40, rotation: 3 }, { opacity: 1, y: 0, rotation: -5, duration: 0.9, ease: 'power3.out' }, tSnap);
-    const tTitle = clamp(sayAt(ctx, 0, 'Getting Started', 0.4), tSnap + 0.6, end(0) - 3);
+    const tTitle = clamp(sayAt(ctx, 0, 'Understanding Dog Behavior', 0.6), tSnap + 0.6, end(0) - 3);
     tl.to(bar, { width: 260, duration: 0.8, ease: 'power2.inOut' }, tTitle);
   });
 
@@ -200,73 +200,59 @@
     const h = K.heading(stage, 'Understanding Your Dog’s Baseline', { x: 100, y: 120, w: 1450, size: 76 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
-    // ---------- beat 0: chapter 1's bowl, its eight ingredients and the water drop on top
+    // ---------- beat 0: chapter 1's bowl and its eight ingredients
     const LB = C2.layer(stage);
     const BX = 560, BY = 600;
     const B = C1.makeBowl(LB, { cx: BX, y: BY, s: 1.0, filled: 8 });
     B.slots.forEach(sl => gsap.set(sl.g, { opacity: 0 }));
     tl.fromTo(B.wrap, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }, cue(0) + 0.1);
     tl.fromTo(B.glow, { opacity: 0 }, { opacity: 0.8, duration: 1.0 }, cue(0) + 0.4);
-    const fuel = K.el('div');
-    Object.assign(fuel.style, { position: 'absolute', left: BX - 54 + 'px', top: BY - 152 - 54 + 'px', width: '108px', height: '108px', borderRadius: '50%',
-      background: C2.C.water, color: '#fff', border: '6px solid #fff', display: 'grid', placeItems: 'center', boxShadow: '0 10px 24px rgba(30,90,130,0.3)' });
-    const fic = K.icon('droplet');
-    Object.assign(fic.style, { width: '56px', height: '56px' });
-    fuel.appendChild(fic);
-    LB.appendChild(fuel);
-    tl.fromTo(fuel, { opacity: 0, y: -160 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.in' }, cue(0) + 0.9);
     const ingP = C2.pill(LB, 'book-open', 'Chapter 1: *the ingredients*', { x: BX, y: 860, center: true, variant: 'pale' });
-    const fuelP = C2.pill(LB, 'droplet', 'One more piece: *the water*', { x: BX, y: 262, center: true, col: C2.C.water });
     A.in(tl, ingP, cue(0) + 0.6, 'fadeUp', { dur: 0.6 });
-    A.in(tl, fuelP, cue(0) + 1.4, 'fadeDown', { dur: 0.6 });
 
-    // ---------- beat 1: four returning ingredients glow and their names appear at right; the rest dim
+    // ---------- beat 1: four returning ingredients glow and their names appear at right, under one header that says why
+    // (they can be changed, managed, or improved); the rest dim (they can't)
     const BACK = [2, 5, 6, 7]; // breed history, past experiences, training tools, pain
     const t1 = at(1, 'some of those factors', 0.2, 0.2);
     A.out(tl, ingP, t1, 'fade', { dur: 0.4 });
     tl.to(B.glow, { opacity: 0.25, duration: 0.6 }, t1);
     B.tokens.forEach((tk, k) => { if (!BACK.includes(k)) tl.to(tk.outer, { opacity: 0.25, duration: 0.6, ease: 'power2.out' }, t1); });
+    const hdr = K.el('div', 'c2a-cmi');
+    hdr.innerHTML = 'Can be <span>changed,</span> <span>managed,</span> or <span>improved</span>';
+    Object.assign(hdr.style, { left: '1080px', top: '268px' });
+    LB.appendChild(hdr);
+    const words = [...hdr.querySelectorAll('span')];
     const pills = BACK.map((k, j) => {
       const g = C1.ING[k];
-      const p = C2.pill(LB, g.icon, g.name, { x: 1080, y: 300 + j * 112, col: g.col });
+      const p = C2.pill(LB, g.icon, g.name, { x: 1080, y: 340 + j * 100, col: g.col });
       tl.to(B.tokens[k].inner, { scale: 1.3, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' }, t1 + 0.3 + j * 0.25);
       A.in(tl, p, t1 + 0.45 + j * 0.25, 'fadeRight', { dur: 0.6 });
       return p;
     });
-    // why they return: these can be changed, managed or improved; the others cannot
     const tInt = clamp(at(1, "That's intentional", 0.8, 0.2), t1 + 1.6, end(1) - 0.3);
-    const intent = C2.put(LB, 'c2-lab', '**These can be** *changed,<br>managed, or improved*', { x: 1080, y: 760 });
-    Object.assign(intent.style, { fontSize: '36px', lineHeight: '1.25', paddingLeft: '22px', borderLeft: '8px solid var(--green)' });
-    A.in(tl, intent, tInt, 'pop', { dur: 0.55 });
-    const cant = C2.pill(LB, 'lock', 'The rest can\u2019t be changed', { x: BX, y: 860, center: true, size: 30, col: C2.C.muted, variant: 'pale' });
+    A.in(tl, hdr, tInt, 'fadeUp', { dur: 0.55 });
+    const cant = C2.pill(LB, 'lock', 'The rest can’t be changed', { x: BX, y: 860, center: true, size: 30, col: C2.C.muted, variant: 'pale' });
     A.in(tl, cant, tInt + 0.4, 'fadeUp', { dur: 0.55 });
 
-    // ---------- beat 2: changed, managed, improved; the water drop glows on "right now"
+    // ---------- beat 2: the same header lights up word by word; a dashed pill adds the chapter's other factors; right now
     const t2 = cue(2);
-    tl.to([...pills, intent, cant], { opacity: 0, x: 40, duration: 0.45, stagger: 0.05, ease: 'power2.in' }, t2 - 0.1);
-    tl.to(B.tokens.map(t => t.outer), { opacity: 1, duration: 0.5 }, t2);
-    const addl = C2.put(LB, 'c2-lab', '**Additional factors that can be:**', { x: 1080, y: 300 });
-    addl.style.fontSize = '38px';
-    addl.style.color = 'var(--ink)';
-    A.in(tl, addl, t2 + 0.2, 'fadeUp', { dur: 0.5 });
-    const TAGS = [['wrench', 'Changed', 'changed'], ['sliders-horizontal', 'Managed', 'managed'], ['trending-up', 'Improved', 'improved']];
-    let lo = t2 + 0.4;
-    const tags = TAGS.map(([ic, t, p], j) => {
-      const n = C2.pill(LB, ic, t, { x: 1080, y: 380 + j * 104, variant: 'green', size: 36 });
-      const tt = clamp(at(2, p, 0.15 + j * 0.06, 0.2), lo, end(2) - 4);
-      A.in(tl, n, tt, 'pop', { dur: 0.5 });
-      lo = tt + 0.35;
-      return n;
+    let lo = t2 + 0.2;
+    [['changed', 0.2], ['managed', 0.26], ['improved', 0.32]].forEach(([p, fb], j) => {
+      const tt = clamp(at(2, p, fb, 0.2), lo, end(2) - 3);
+      tl.to(words[j], { color: '#ffffff', backgroundColor: C2.C.green, duration: 0.3 }, tt);
+      lo = tt + 0.3;
     });
-    const now = C2.pill(LB, 'clock', 'Affecting your dog *right now*', { x: 1080, y: 720, variant: 'amber', size: 34 });
-    const tNow = clamp(at(2, 'right now', 0.6, 0.3), lo + 0.3, end(2) - 0.8);
+    const more = C2.pill(LB, 'plus', 'More factors in this chapter', { x: 1080, y: 740, size: 30, col: C2.C.green });
+    Object.assign(more.style, { border: '3px dashed var(--green)', background: 'var(--green-mist)' });
+    A.in(tl, more, lo + 0.2, 'fadeRight', { dur: 0.55 });
+    const now = C2.pill(LB, 'clock', 'Affecting your dog *right now*', { x: 1080, y: 846, variant: 'amber', size: 32 });
+    const tNow = clamp(at(2, 'right now', 0.6, 0.3), lo + 0.6, end(2) - 0.8);
     A.in(tl, now, tNow, 'fadeUp', { dur: 0.6 });
-    tl.to(fuel, { scale: 1.18, boxShadow: '0 0 0 18px rgba(95,168,207,0.25)', duration: 0.5, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tNow + 0.2);
 
-    // ---------- beat 3: "we're going to add those ingredients to a pot": the bowl tips and the ingredients drop into an empty
-    // pot; the water drop waits above it
+    // ---------- beat 3: "we're going to add those ingredients to a pot": the bowl tips and the ingredients drop into an empty pot
     const tDiff = cue(3);
-    tl.to([...tags, now, fuelP, addl], { opacity: 0, duration: 0.4, stagger: 0.04, ease: 'power2.in' }, tDiff - 0.3);
+    tl.to([...pills, hdr, more, now, cant], { opacity: 0, duration: 0.4, stagger: 0.03, ease: 'power2.in' }, tDiff - 0.3);
+    tl.to(B.tokens.map(t => t.outer), { opacity: 1, duration: 0.3 }, tDiff - 0.3);
     const cap = C2.pill(LB, 'arrow-down', 'Adding the ingredients *to the pot*', { x: 960, y: 880, center: true, variant: 'pale', size: 32 });
     A.in(tl, cap, tDiff + 0.3, 'fadeUp', { dur: 0.6 });
     const PX = 1350, PY = 470;
@@ -275,28 +261,17 @@
     tl.to(B.wrap, { rotation: 32, x: 260, y: -120, duration: 0.7, ease: 'power2.inOut' }, tDiff + 0.3);
     tl.to(B.tokens.map(t => t.outer), { opacity: 0, duration: 0.3, stagger: 0.04 }, tDiff + 0.8);
     const tIn = P.dropIng(tl, tDiff + 0.9);
-    tl.to(fuel, { left: PX - 54 + 'px', top: PY - 200 + 'px', duration: 0.7, ease: 'power2.inOut' }, tDiff + 0.5);
     tl.to(B.wrap, { opacity: 0, duration: 0.5 }, tIn - 0.4);
+    P.waves(tl, tIn, dur);
 
-    // ---------- beat 4: then the water goes in: the drop falls, the pot fills, the ingredients float up. The water is the baseline
+    // ---------- beat 4: no water yet (it comes when the baseline is explained): "First: your dog's baseline"
     const t4 = Math.max(cue(4), tIn + 0.2);
     A.out(tl, cap, t4 - 0.2, 'fade', { dur: 0.4 });
-    tl.to(fuel, { top: PY - 60 + 'px', scale: 0.4, duration: 0.45, ease: 'power2.in' }, t4);
-    tl.to(fuel, { opacity: 0, duration: 0.15 }, t4 + 0.4);
-    const stream = K.rect(P.svg, -16, -250, 32, 250 + C2.H, { rx: 16, fill: C2.C.water, opacity: 0 });
-    P.svg.insertBefore(stream, P.front);
-    tl.fromTo(stream, { opacity: 0, scaleY: 0, transformOrigin: '50% 0%' }, { opacity: 0.85, scaleY: 1, duration: 0.35, ease: 'power2.in' }, t4 + 0.35);
-    tl.to(stream, { scaleY: 0, transformOrigin: '50% 100%', opacity: 0, duration: 0.35, ease: 'power2.in' }, t4 + 1.7);
-    P.ripple(tl, t4 + 0.5, '#ffffff');
-    P.setLevel(tl, 0.5, t4 + 0.5, 1.4, 'power1.inOut');
-    P.waves(tl, t4 + 0.5, dur);
     const bl = K.el('div', 'c2a-blt');
-    bl.appendChild(K.el('div', 'tx', K.md('The water = your dog\u2019s *baseline*')));
-    bl.appendChild(K.el('div', 'ln'));
-    Object.assign(bl.style, { right: 1920 - (PX - (C2.R + 70) * 0.92) + 'px' });
+    bl.appendChild(K.el('div', 'tx', K.md('First: your dog’s *baseline*')));
+    Object.assign(bl.style, { right: 1920 - (PX - (C2.R + 90) * 0.92) + 'px', top: PY + 120 + 'px' });
     LB.appendChild(bl);
-    P.follow(bl, 'surface', -38);
-    A.in(tl, bl, t4 + 1.2, 'fadeRight', { dur: 0.7 });
+    A.in(tl, bl, t4 + 0.1, 'fadeRight', { dur: 0.7 });
   });
 
   // ================================================================== ch02s02 What is a baseline?

@@ -522,7 +522,7 @@
     K.circle(fchip, 0, 0, 54, { fill: '#5fa8cf', stroke: '#fff', 'stroke-width': 6 });
     C1.svgIcon(fchip, 'droplet', 0, 0, 56, { stroke: '#fff', 'stroke-width': 2.3 });
     gsap.set(fuel, { x: 0, y: FY - 340, opacity: 0 });
-    const tFuel = clamp(at(1, 'another piece', 0.25, 0.2), t1 + 0.2, end(1) - 3);
+    const tFuel = clamp(at(1, 'something else', 0.25, 0.2), t1 + 0.2, end(1) - 3);
     tl.to(fuel, { opacity: 1, duration: 0.25, ease: 'power1.out' }, tFuel);
     tl.to(fuel, { y: FY, duration: 0.6, ease: 'power2.in' }, tFuel);
     const tLand = tFuel + 0.6;
@@ -530,7 +530,7 @@
     tl.to(B.bodyAll, { y: 5, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, tLand);
     C1.splash(tl, B, 0, FY + 40, tLand, '#5fa8cf');
     tl.to(fglow, { opacity: 0.9, scale: 1.25, transformOrigin: '50% 50%', duration: 0.8, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tLand + 0.3);
-    const l1 = C1.label(LA, 'One more piece: *the water*', 960, 850, { cls: 'c1-big', w: 1400 });
+    const l1 = C1.label(LA, 'Next: *the water* they go into', 960, 850, { cls: 'c1-big', w: 1400 });
     A.in(tl, l1, clamp(at(1, 'the water they go into', 0.75, 0.3), tLand + 0.3, end(1) - 1), 'fadeUp', { dur: 0.8 });
 
     // ---------- beat 2: the bowl clears; a barking dog with three question marks circling it in a cycle, like the ABCs to come

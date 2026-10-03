@@ -1,5 +1,5 @@
 {
-  "title": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression",
+  "title": "Understanding Dog Behavior",
   "notes": "v8: a welcome slide (ch00), then Chapter 1 'Starting with the Basics': the plan slide (ch00s02, id kept so its recording still matches) and the material from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. The trainer records the narration.",
   "chapters": [
     {
@@ -9,7 +9,7 @@
       "scenes": [
         {
           "id": "ch00s01",
-          "heading": "Getting Started with Dog Behavior",
+          "heading": "Understanding Dog Behavior",
           "visual_concept": "Title slide: the presentation title at left, Tori's headshot in a large circle at right with the training photo (Tori with a Golden Retriever) as a smaller tilted card, and a name block with credentials.",
           "assets": [
             "trainer_headshot.jpg",
@@ -18,9 +18,9 @@
           ],
           "beats": [
             {
-              "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome to Getting Started with Dog Behavior: Understanding Reactivity and Aggression.",
-              "show": "The title 'Getting Started with Dog Behavior' and the subtitle 'Understanding Reactivity and Aggression' write on at left; the headshot scales in inside a green ring; the name block 'Tori Ganino, BS, CDBC, CPDT-KA, Calling All Dogs' appears as the name is said; the training photo card tilts in over the corner of the headshot.",
-              "onscreen": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression"
+              "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome to Understanding Dog Behavior.",
+              "show": "The title 'Understanding Dog Behavior' writes on at left; the headshot scales in inside a green ring; the name block 'Tori Ganino, BS, CDBC, CPDT-KA, Calling All Dogs' appears as the name is said; the training photo card tilts in over the corner of the headshot.",
+              "onscreen": "Understanding Dog Behavior"
             }
           ]
         }
@@ -498,9 +498,9 @@
               "onscreen": "Behavior is shaped by many factors"
             },
             {
-              "say": "But there's one more piece we need to understand once those ingredients are in place: the water they go into.",
-              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'one more piece', a blue water-drop chip drops in and settles on top of them, and the line changes to 'One more piece: the water'.",
-              "onscreen": "One more piece: the water"
+              "say": "But there's something else we need to understand once those ingredients are in place: the water they go into.",
+              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'something else', a blue water-drop chip drops in and settles on top of them, and the line changes to 'Next: the water they go into'.",
+              "onscreen": "Next: the water they go into"
             },
             {
               "say": "Next, we'll start looking at what is happening around the behavior.",

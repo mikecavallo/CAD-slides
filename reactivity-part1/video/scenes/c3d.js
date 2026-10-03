@@ -1,9 +1,7 @@
 // Chapter 3: why behavior repeats.
 //   ch03s12  When behavior works   A, B, C ring; a dot runs the loop each time C works (distance, closer, keeps it); more likely again
-//   ch03s13  The ABC cycle         before / during / after training photo strips with the emotional response on the A to B arrow,
-//                                  an arousal and stress meter under each panel and a loop arrow; then the two paths on a lawn
-//                                  (new one wears in, old one fades but stays, comes back with practice, management fences it);
-//                                  then three cards: what the dog needs from C and their arousal, before / during / after
+//   ch03s13  The ABC cycle         two cycles, before training (red) and during training (green); paths strengthen and fade;
+//                                  management; the consequence progresses (space, less space, building relationships)
 (() => {
   const { sayAt, clamp } = C1;
   const { COL } = C3;
@@ -101,233 +99,256 @@
   });
 
   // ================================================================== ch03s13 The ABC cycle
+  // Two cycles side by side (Tori's reference, abc-cycle-preview): before training in red, during training in green.
+  // Each is A (top), B (lower right), C (lower left) on a ring, with arrows between them, "Emotions" on A to B and
+  // arousal and stress on B to C. A dot runs the loop when a pattern repeats. Path strength = arc thickness; a fading
+  // path = the whole cycle fades. The green C box then progresses: space given, less space needed, building relationships.
+  const CY_CSS = `
+  .cy-box { position: absolute; display: flex; align-items: center; gap: 16px; padding: 12px 22px 12px 14px; background: #fff; border-radius: 22px;
+    border: 5px solid; box-shadow: 0 10px 26px rgba(40,60,20,0.10); box-sizing: border-box; }
+  .cy-box .lt { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 800 38px/1 var(--font-head); flex: 0 0 auto; }
+  .cy-box .tx { display: flex; flex-direction: column; gap: 4px; }
+  .cy-box .w { font: 600 26px/1 var(--font-body); }
+  .cy-box .v { font: 700 32px/1.08 var(--font-head); color: var(--ink); }
+  .cy-box .v small { display: block; font: 500 26px/1.2 var(--font-body); color: var(--ink-soft); margin-top: 4px; }
+  .cy-box .vs { position: relative; }
+  .cy-box .vs .v { white-space: nowrap; }
+  .cy-lab { position: absolute; font: italic 600 30px/1.1 var(--font-body); white-space: nowrap; text-align: center; }
+  .cy-pill { position: absolute; padding: 10px 26px; border-radius: 14px; color: #fff; font: 700 34px/1 var(--font-head); white-space: nowrap; }
+  .cy-mid { position: absolute; font: 500 30px/1.2 var(--font-body); color: var(--ink-soft); text-align: center; white-space: nowrap; }
+  .cy-cap { position: absolute; left: 0; width: 1920px; text-align: center; font: 600 38px/1.2 var(--font-body); color: var(--ink); white-space: nowrap; }
+  .cy-cap b { font-weight: 700; }
+  `;
+
+  function makeCycle(stage, o) {
+    const { cx, cy, r, col, pale } = o;
+    const L = C3.layer(stage);
+    const sv = K.svg(L, { x: 0, y: 0, w: 1920, h: 1080 });
+    const pt = a => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)];
+    const arcD = (a0, a1) => { const [x0, y0] = pt(a0), [x1, y1] = pt(a1); return `M ${x0} ${y0} A ${r} ${r} 0 0 1 ${x1} ${y1}`; };
+    const guide = K.circle(sv, cx, cy, r, { fill: 'none', stroke: col, 'stroke-width': 3, 'stroke-dasharray': '2 12', opacity: 0 });
+    const SEG = [[-50, -6], [40, 140], [190, 228]];
+    const arcs = SEG.map(([a0, a1]) => {
+      const glow = K.path(sv, arcD(a0, a1), { stroke: col, 'stroke-width': 8, opacity: 0, 'stroke-linecap': 'round' });
+      const p = K.path(sv, arcD(a0, a1), { stroke: col, 'stroke-width': 8 });
+      const [x1, y1] = pt(a1);
+      const hd = K.path(sv, 'M -22 -20 L 6 0 L -22 20 Z', { fill: col, stroke: col, 'stroke-width': 4, transform: `translate(${x1} ${y1}) rotate(${a1 + 90})` });
+      gsap.set(p, { drawSVG: '0%' });
+      gsap.set(hd, { opacity: 0 });
+      return { glow, p, hd };
+    });
+    const box = (L_, word, html, bx, by, w) => {
+      const b = K.el('div', 'cy-box');
+      Object.assign(b.style, { left: bx + 'px', top: by + 'px', width: w + 'px', borderColor: col });
+      const lt = K.el('div', 'lt', L_);
+      lt.style.background = col;
+      b.appendChild(lt);
+      const tx = K.el('div', 'tx');
+      const wd = K.el('div', 'w', word);
+      wd.style.color = col;
+      tx.appendChild(wd);
+      const vs = K.el('div', 'vs');
+      vs.appendChild(K.el('div', 'v', html));
+      tx.appendChild(vs);
+      b.appendChild(tx);
+      L.appendChild(b);
+      gsap.set(b, { xPercent: -50, yPercent: -50, opacity: 0 });
+      return { b, vs };
+    };
+    const [ax, ay] = pt(-90), [bx, by] = pt(15), [ccx, ccy] = pt(165);
+    const A_ = box('A', 'Antecedent', o.A, ax, ay, 310);
+    const B_ = box('B', 'Behavior', o.B, bx, by + 6, o.bw || 300);
+    const C_ = box('C', 'Consequence', o.C, ccx, ccy + 6, o.cw || 300);
+    const pill = C2.put(L, 'cy-pill', o.label, { x: cx, y: cy - 150 });
+    pill.style.background = col;
+    gsap.set(pill, { xPercent: -50, opacity: 0 });
+    const mid = C2.put(L, 'cy-mid', o.mid, { x: cx, y: cy - 78 });
+    gsap.set(mid, { xPercent: -50, opacity: 0 });
+    const [ex, ey] = pt(-32);
+    const emo = C2.put(L, 'cy-lab', o.emo, { x: ex + 44, y: ey - 26 });
+    emo.style.color = col;
+    gsap.set(emo, { opacity: 0 });
+    const aro = C2.put(L, 'cy-lab', o.aro, { x: cx, y: cy + r - 124 });
+    aro.style.color = col;
+    gsap.set(aro, { xPercent: -50, opacity: 0 });
+    const dot = K.circle(sv, 0, 0, 13, { fill: '#fff', stroke: col, 'stroke-width': 5, opacity: 0 });
+    let width = 8;
+    const Y = {
+      L, arcs, A: A_, B: B_, C: C_, pill, mid, emo, aro, guide, dot,
+      start(tl, t) {
+        tl.to(guide, { opacity: 0.6, duration: 0.5 }, t);
+        tl.to(pill, { opacity: 1, duration: 0.5 }, t + 0.1);
+      },
+      showBox(tl, bx_, t) { tl.fromTo(bx_.b, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(1.6)', immediateRender: false }, t); },
+      draw(tl, k, t, d = 0.8) {
+        tl.to(arcs[k].p, { drawSVG: '100%', duration: d, ease: 'power2.inOut' }, t);
+        tl.to(arcs[k].hd, { opacity: 1, duration: 0.2 }, t + d - 0.1);
+      },
+      show(tl, el, t) { tl.to(el, { opacity: 1, duration: 0.5 }, t); },
+      // stroke width: 8 normal, 22 strong (with a soft glow), 5 weak
+      width(tl, w, t, d = 1.0) {
+        const g = w > 12 ? 0.22 : 0;
+        arcs.forEach(a => {
+          tl.to(a.p, { attr: { 'stroke-width': w }, duration: d, ease: 'power2.inOut' }, t);
+          tl.to(a.glow, { attr: { 'stroke-width': w + 26 }, opacity: g, duration: d, ease: 'power2.inOut' }, t);
+          tl.to(a.hd, { scale: w > 12 ? 1.5 : w < 7 ? 0.8 : 1, transformOrigin: '30% 50%', duration: d }, t);
+        });
+        width = w;
+      },
+      fade(tl, op, t, d = 0.8) { tl.to(L, { opacity: op, duration: d, ease: 'power2.inOut' }, t); },
+      run(tl, t, laps = 1, per = 0.55) {
+        tl.fromTo(dot, { opacity: 0 }, { opacity: 1, duration: 0.15, immediateRender: false }, t);
+        for (let n = 0; n < laps; n++) arcs.forEach((a, k) => {
+          tl.fromTo(dot, { motionPath: { path: a.p, align: a.p, alignOrigin: [0.5, 0.5], start: 0, end: 0 } },
+            { motionPath: { path: a.p, align: a.p, alignOrigin: [0.5, 0.5], start: 0, end: 1 }, duration: per, ease: 'none', immediateRender: false }, t + (n * 3 + k) * per);
+        });
+        tl.to(dot, { opacity: 0, duration: 0.2 }, t + laps * 3 * per);
+        return t + laps * 3 * per;
+      },
+      // swap the text in a box
+      swap(tl, bx_, html, t) {
+        const old = bx_.vs.lastChild;
+        const n = K.el('div', 'v', html);
+        Object.assign(n.style, { position: 'absolute', left: 0, top: 0 });
+        bx_.vs.appendChild(n);
+        gsap.set(n, { opacity: 0 });
+        tl.to(old, { opacity: 0, y: -10, duration: 0.3 }, t);
+        tl.fromTo(n, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, immediateRender: false }, t + 0.25);
+      },
+    };
+    return Y;
+  }
+
   registerScene('ch03s13', ctx => {
     const { stage, tl, cue, end, dur } = ctx;
     C2.style(stage);
     C3.css(stage);
+    stage.appendChild(K.el('style', null, CY_CSS));
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
-    const STAGES = [
-      { label: 'Before training', v: 'red', imgs: ['abc_before_a.jpg', 'abc_before_b.jpg', 'abc_before_c.jpg'],
-        caps: ['Another dog appears', 'Barking and lunging', 'Space is given.<br>The situation ends.'], ar: [0.6, 0.95, 0.7] },
-      { label: 'During training', v: '', imgs: ['abc_during_a.jpg', 'abc_during_b.jpg', 'abc_during_c.jpg'],
-        caps: ['Management', 'Looks back at you', 'Space is still given'], ar: [0.4, 0.5, 0.35] },
-      { label: 'After training', v: 'green', imgs: ['abc_after_a.jpg', 'abc_after_b.jpg', 'abc_after_c.jpg'],
-        caps: ['Less management<br>as skills improve', 'Readily uses the<br>new behavior', 'Space is given.<br>The situation ends.'], ar: [0.22, 0.28, 0.18] },
-    ];
-    const SX = 140, SW = 1640, SG = 70, colW = (SW - 2 * SG) / 3;
-    const strips = STAGES.map(s => C3.strip(stage, { x: SX, y: 110, w: SW, gap: SG, panels: s.imgs, captions: s.caps, label: s.label, labelVariant: s.v }));
-    const V1 = [];
-
-    // emotional response heart on the A to B arrow (one, shared by the strips)
-    const [hx] = strips[0].arrowPt(0);
-    const heart = C2.badge(stage, 'heart', hx, 262, 74, COL.emo, '#fff');
-    heart.style.border = '5px solid #fff';
-    heart.style.boxShadow = '0 8px 20px rgba(80,40,90,0.3)';
-    V1.push(heart);
-
-    // arousal and stress meter under each panel
-    const MY = 752;
-    const mLab = C3.put(stage, 'c3-lab', '<b>Arousal and stress</b>', { x: SX, y: MY - 6 });
-    mLab.style.fontSize = '26px';
-    const meters = [0, 1, 2].map(k => {
-      const x = SX + k * (colW + SG) + (k === 0 ? 270 : 0), w = colW - (k === 0 ? 270 : 0);
-      const tr = C3.put(stage, 'c3-card', null, { x, y: MY, w, h: 26 });
-      Object.assign(tr.style, { borderRadius: '13px', background: '#eceee8', boxShadow: 'none', border: 'none', overflow: 'hidden' });
-      const f = K.el('div', null);
-      Object.assign(f.style, { position: 'absolute', left: 0, top: 0, bottom: 0, width: '100%', borderRadius: '13px', background: C.green, transformOrigin: '0 50%' });
-      tr.appendChild(f);
-      gsap.set(f, { scaleX: 0 });
-      return { tr, f };
-    });
-    V1.push(mLab, ...meters.map(m => m.tr));
-    const arCol = v => (v > 0.75 ? C.red : v > 0.45 ? C.amber : C.green);
-    const setMeter = (k, v, t) => tl.to(meters[k].f, { scaleX: v, backgroundColor: arCol(v), duration: 0.9, ease: 'power2.inOut' }, t);
-
-    // loop arrow from C back to A, with a label pill
-    const lsv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const ax = SX + colW / 2, cxx = SX + 2 * (colW + SG) + colW / 2, LY0 = 800, LY1 = 868;
-    const loopD = `M ${cxx} ${LY0} C ${cxx} ${LY1} ${cxx - 40} ${LY1} ${cxx - 120} ${LY1} L ${ax + 120} ${LY1} C ${ax + 40} ${LY1} ${ax} ${LY1} ${ax} ${LY0 + 6}`;
-    const loop = K.path(lsv, loopD, { stroke: C.red, 'stroke-width': 9 });
-    const loopH = K.path(lsv, `M ${ax - 18} ${LY0 + 22} L ${ax} ${LY0 + 2} L ${ax + 18} ${LY0 + 22}`, { stroke: C.red, 'stroke-width': 9, opacity: 0 });
-    gsap.set(loop, { drawSVG: '0%' });
-    V1.push(lsv);
-    const lp = (txt, col) => {
-      const n = C3.chip(stage, 'repeat', txt, 960, LY1 - 30, { center: true, size: 30, col });
-      n.style.borderColor = col;
+    C3.head(ctx, 'The ABC Cycle', { size: 72 });
+    const RED = C.red, GRN = C.green;
+    const L0 = makeCycle(stage, { cx: 505, cy: 590, r: 255, col: RED, label: 'Before training', mid: 'Barking works,<br>so it repeats.',
+      A: 'Another dog<br>appears', B: 'Bark and<br>lunge', C: 'Space is<br>given', emo: 'Emotions', aro: 'Increased<br>arousal/stress' });
+    const L1 = makeCycle(stage, { cx: 1385, cy: 590, r: 255, col: GRN, label: 'During training', mid: 'The new behavior works,<br>so it repeats.',
+      A: 'Another dog<br>appears', B: 'Replacement<br>behavior<small>e.g. looks to you</small>', C: 'Space is<br>given', bw: 330, cw: 330,
+      emo: 'Changing<br>emotions', aro: 'Lowered<br>arousal/stress' });
+    // bottom caption, swapped beat by beat
+    L1.C.vs.style.minHeight = '70px';
+    let capPrev = null;
+    const cap = (html, t) => {
+      const n = C2.put(stage, 'cy-cap', html, { x: 0, y: 912 });
+      n.querySelectorAll('b').forEach(b => { b.style.color = b.dataset.c || GRN; });
+      if (capPrev) tl.to(capPrev, { opacity: 0, duration: 0.3 }, t - 0.05);
+      tl.fromTo(n, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, immediateRender: false }, t + 0.2);
       gsap.set(n, { opacity: 0 });
-      V1.push(n);
+      capPrev = n;
       return n;
     };
-    const lpB = lp('Practiced: *more likely next time*', C.red);
-    const lpD = lp('New pattern *practiced*', C.green);
-    const lpA = lp('New path *gets stronger*', C.green);
-    lpB.querySelector('b').style.color = C.red;
-    const showLoop = (t, col, pill, prev) => {
-      tl.set(loop, { attr: { stroke: col } }, t - 0.01);
-      tl.set(loopH, { attr: { stroke: col } }, t - 0.01);
-      tl.fromTo(loop, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.9, ease: 'power2.inOut', immediateRender: false }, t);
-      tl.fromTo(loopH, { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, t + 0.85);
-      if (prev) tl.to(prev, { opacity: 0, duration: 0.3 }, t - 0.2);
-      tl.fromTo(pill, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, immediateRender: false }, t + 0.5);
-    };
-    const hideLoop = t => { tl.to(loop, { drawSVG: '0%', duration: 0.4 }, t); tl.to(loopH, { opacity: 0, duration: 0.2 }, t); };
-    const heartBeat = (t0, t1, per) => {
-      const n = Math.max(1, Math.floor((t1 - t0) / per));
-      tl.fromTo(heart, { scale: 1 }, { scale: 1.18, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, t0);
-      for (let k = 1; k < n; k++) tl.to(heart, { scale: 1.18, duration: 0.14, yoyo: true, repeat: 1, ease: 'power2.out' }, t0 + k * per);
-    };
+    const redB = html => html.replace(/<b>/g, `<b data-c="${RED}">`);
 
-    // ---------- beats 0 to 3: before training
-    const S0 = strips[0];
-    S0.frames(tl, 0.1);
-    A.in(tl, mLab, 0.5, 'fade', { dur: 0.5 });
-    A.in(tl, meters.map(m => m.tr), 0.5, 'fade', { dur: 0.5 });
-    S0.show(tl, 0, clamp(at(0, 'Another dog', 0.05), cue(0), end(0) - 0.6));
-    setMeter(0, STAGES[0].ar[0], cue(0) + 0.6);
-    const tEmo = clamp(at(1, 'emotional response', 0.3), cue(1) + 0.1, end(1) - 2.2);
-    tl.fromTo(heart, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tEmo);
-    heartBeat(tEmo + 0.6, cue(4), 0.55);
-    S0.show(tl, 1, clamp(at(1, 'we see the B', 0.6), tEmo + 0.7, end(1) - 0.4));
-    setMeter(1, STAGES[0].ar[1], tEmo + 0.4);
-    S0.show(tl, 2, cue(2) + 0.05);
-    setMeter(2, STAGES[0].ar[2], cue(2) + 0.6);
-    showLoop(clamp(at(3, 'gets practiced', 0.4), cue(3) + 0.2, end(3) - 1.4), C.red, lpB);
+    // ---------- before training: A, then emotions and B, then C, then the loop closes
+    L0.start(tl, cue(0) + 0.05);
+    L0.showBox(tl, L0.A, clamp(at(0, 'Another dog', 0.05), cue(0) + 0.3, end(0) - 0.5));
+    const tE0 = clamp(at(1, 'emotional response', 0.3), cue(1) + 0.1, end(1) - 2);
+    L0.draw(tl, 0, tE0);
+    L0.show(tl, L0.emo, tE0 + 0.3);
+    L0.showBox(tl, L0.B, clamp(at(1, 'barking and lunging', 0.75), tE0 + 0.9, end(1) - 0.4));
+    const tC0 = cue(2) + 0.1;
+    L0.draw(tl, 1, tC0);
+    L0.show(tl, L0.aro, tC0 + 0.3);
+    L0.showBox(tl, L0.C, clamp(at(2, 'space is given', 0.2), tC0 + 0.6, end(2) - 0.4));
+    const tL0 = clamp(at(3, 'gets practiced', 0.4), cue(3) + 0.2, end(3) - 1.8);
+    L0.draw(tl, 2, cue(3) + 0.1, 0.7);
+    L0.show(tl, L0.mid, cue(3) + 0.5);
+    L0.run(tl, tL0, 1, 0.5);
 
-    // ---------- beats 4 to 8: during training
-    const S1 = strips[1];
-    const t4 = cue(4);
-    tl.to(S0.wrap, { opacity: 0, duration: 0.5 }, t4 - 0.1);
-    hideLoop(t4 - 0.1);
-    tl.to(lpB, { opacity: 0, duration: 0.3 }, t4 - 0.1);
-    tl.to(heart, { opacity: 0, duration: 0.3 }, t4 - 0.1);
-    [0, 1, 2].forEach(k => tl.to(meters[k].f, { scaleX: 0, duration: 0.4 }, t4 - 0.1));
-    S1.frames(tl, t4 + 0.1);
-    S1.show(tl, 0, t4 + 0.4);
-    setMeter(0, STAGES[1].ar[0], t4 + 1.0);
-    const t5 = cue(5);
-    const tEmo2 = clamp(at(5, "changing the dog's emotional response", 0.3), t5 + 0.1, end(5) - 3);
-    tl.to(heart, { opacity: 1, duration: 0.4 }, tEmo2);
-    heartBeat(tEmo2 + 0.5, cue(10), 1.0);
-    S1.show(tl, 1, clamp(at(5, 'teaching a new behavior', 0.6), tEmo2 + 0.8, end(5) - 0.6));
-    setMeter(1, STAGES[1].ar[1], tEmo2 + 0.6);
-    // beat 6: the new behavior still needs to work: C frame glows, waiting
-    const t6 = cue(6);
-    tl.to(S1.cols[2].panel, { boxShadow: '0 0 0 8px rgba(217,145,43,0.55)', duration: 0.4, yoyo: true, repeat: 3 }, t6 + 0.2);
+    // ---------- during training: A, changing emotions and the new behavior, C waits, space still given, the loop closes
+    L1.start(tl, cue(4) + 0.05);
+    L1.showBox(tl, L1.A, clamp(at(4, 'another dog may still appear', 0.4), cue(4) + 0.4, end(4) - 0.4));
+    const tE1 = clamp(at(5, 'changing', 0.2), cue(5) + 0.1, end(5) - 3);
+    L1.draw(tl, 0, tE1);
+    L1.show(tl, L1.emo, tE1 + 0.3);
+    L1.showBox(tl, L1.B, clamp(at(5, 'teaching a new behavior', 0.6), tE1 + 1.0, end(5) - 0.5));
+    // beat 6: the new behavior still needs to work: the arc reaches an empty C
+    L1.draw(tl, 1, cue(6) + 0.1);
+    L1.show(tl, L1.aro, cue(6) + 0.4);
+    const ghost = K.el('div', null);
+    const [gx, gy] = [1385 + 255 * Math.cos(165 * Math.PI / 180), 590 + 255 * Math.sin(165 * Math.PI / 180) + 6];
+    Object.assign(ghost.style, { position: 'absolute', left: gx + 'px', top: gy + 'px', width: '330px', height: '100px', borderRadius: '22px', border: `5px dashed ${GRN}`, boxSizing: 'border-box' });
+    L1.L.appendChild(ghost);
+    gsap.set(ghost, { xPercent: -50, yPercent: -50, opacity: 0 });
+    tl.to(ghost, { opacity: 1, duration: 0.4 }, cue(6) + 0.8);
+    tl.to(ghost, { opacity: 0.35, duration: 0.4, yoyo: true, repeat: 3 }, cue(6) + 1.2);
     // beat 7: space is still given
-    S1.show(tl, 2, clamp(at(7, 'give them space', 0.5), cue(7) + 0.1, end(7) - 0.5));
-    setMeter(2, STAGES[1].ar[2], cue(7) + 0.6);
+    const tS = clamp(at(7, 'give them space', 0.5), cue(7) + 0.1, end(7) - 0.4);
+    tl.to(ghost, { opacity: 0, duration: 0.3 }, tS);
+    L1.showBox(tl, L1.C, tS);
     // beat 8: the new pattern gets practiced
-    showLoop(clamp(at(8, 'gets practiced', 0.6), cue(8) + 0.3, end(8) - 1.2), C.green, lpD);
+    L1.draw(tl, 2, cue(8) + 0.1, 0.7);
+    L1.show(tl, L1.mid, cue(8) + 0.5);
+    L1.run(tl, clamp(at(8, 'gets practiced', 0.6), cue(8) + 0.9, end(8) - 1.8), 1, 0.5);
 
-    // ---------- beat 9: after training: the whole strip
-    const S2 = strips[2];
-    const t9 = cue(9);
-    tl.to(S1.wrap, { opacity: 0, duration: 0.5 }, t9 - 0.1);
-    hideLoop(t9 - 0.1);
-    tl.to(lpD, { opacity: 0, duration: 0.3 }, t9 - 0.1);
-    S2.frames(tl, t9 + 0.1);
-    [0, 1, 2].forEach(k => { S2.show(tl, k, t9 + 0.3 + k * 0.45); setMeter(k, STAGES[2].ar[k], t9 + 0.6 + k * 0.45); });
-    tl.to(heart, { backgroundColor: '#b79bbb', duration: 0.6 }, t9 + 0.4);
-    showLoop(t9 + 1.8, C.green, lpA);
+    // ---------- the paths change
+    // beat 9: practice: the new path gets thick and strong
+    const t9 = cue(9) + 0.1;
+    L1.width(tl, 22, t9, 1.4);
+    L1.run(tl, t9 + 0.3, 1, 0.45);
+    cap('Practice creates <b>a new, strong path</b>.', t9);
+    // beat 10: the old path fades
+    const t10 = clamp(at(10, 'begins to fade', 0.6), cue(10) + 0.3, end(10) - 1.2);
+    L0.width(tl, 5, t10, 1.2);
+    L0.fade(tl, 0.28, t10, 1.4);
+    cap('Practice creates <b>a new, strong path</b>. The old path fades.', cue(10) + 0.1);
+    // beat 11: it hasn't vanished: the faint cycle glimmers
+    const t11 = cue(11) + 0.1;
+    L0.fade(tl, 0.5, t11 + 0.2, 0.5);
+    L0.fade(tl, 0.3, t11 + 1.0, 0.6);
+    cap('The old path <b>hasn’t vanished</b>.', t11);
+    // beat 12: practiced again and it works: the old path comes back, the new one dims
+    const t12 = clamp(at(12, 'practicing the old behavior', 0.3), cue(12) + 0.1, end(12) - 3);
+    L0.fade(tl, 1, t12, 0.8);
+    L1.fade(tl, 0.28, t12, 0.8);
+    L1.width(tl, 8, t12, 0.8);
+    L0.width(tl, 22, t12 + 0.6, 1.2);
+    L0.run(tl, t12 + 0.6, 2, 0.4);
+    cap(redB('Practice the old behavior and <b>the old path comes back</b>.'), cue(12) + 0.1);
 
-    // ---------- beats 10 to 14: the two paths on a lawn
-    const t10 = cue(10);
-    tl.to([S2.wrap, ...V1], { opacity: 0, duration: 0.5 }, t10 - 0.1);
-    const LV = C3.layer(stage);
-    const LW = C3.lawn(LV, { x: 160, y: 200, w: 1600, h: 600, old: 0.9, neu: 0.85 });
-    tl.fromTo(LV, { opacity: 0 }, { opacity: 1, duration: 0.6, immediateRender: true }, t10 + 0.2);
-    const [ox, oy] = LW.toStage(...LW.at('old', 0.6)), [nx, ny] = LW.toStage(...LW.at('neu', 0.5));
-    const endB = C2.badge(LV, 'move-horizontal', LW.x + LW.ex, LW.y + LW.ey, 110, C.greenDeep, '#fff');
-    endB.style.border = '6px solid #fff';
-    const eL = C3.put(LV, 'c3-lab', '<b>Space</b>', { x: LW.x + LW.ex - 50, y: LW.y + LW.ey + 66 });
-    const oL = C3.chip(LV, 'volume-2', 'Old path: *barking and lunging*', ox, oy + 40, { center: true, col: C.red, size: 30 });
-    oL.querySelector('b').style.color = C.red;
-    const nL = C3.chip(LV, 'eye', 'New path: *looks back at you*', nx, ny - 104, { center: true, col: C.green, size: 30 });
-    LW.walk(tl, 'neu', t10 + 0.6, 2.2, 10);
-    const tFade = clamp(at(10, 'begins to fade', 0.6), t10 + 1.2, end(10) - 1.4);
-    LW.set(tl, 'old', 0.22, tFade, 1.4);
-    tl.to(oL, { opacity: 0.55, duration: 0.6 }, tFade);
-    // beat 11: still there
-    const t11 = cue(11);
-    const ed = LW.P.old.edge;
-    tl.to(ed, { opacity: 0.9, attr: { 'stroke-width': 5 }, duration: 0.5 }, t11 + 0.2);
-    const sl = C3.chip(LV, 'eye', 'Still there', ox + 300, oy - 30, { col: C.muted, size: 30 });
-    A.in(tl, sl, t11 + 0.5, 'pop', { dur: 0.5 });
-    // beat 12: practiced again, it works: the old path darkens
-    const t12 = cue(12);
-    const tAgain = clamp(at(12, 'practicing the old behavior', 0.3), t12 + 0.1, end(12) - 3);
-    LW.walk(tl, 'old', tAgain, 2.4, 10, '#7a2a1a');
-    LW.set(tl, 'old', 0.8, tAgain + 0.8, 2.0);
-    tl.to(oL, { opacity: 1, duration: 0.4 }, tAgain + 0.8);
-    tl.to(sl, { opacity: 0, duration: 0.3 }, tAgain);
-    const cb = C3.chip(LV, 'triangle-alert', 'It can come back', ox + 300, oy - 30, { col: C.amber, size: 30 });
-    A.in(tl, cb, clamp(at(12, 'stronger again', 0.85), tAgain + 1.4, end(12) - 0.3), 'pop', { dur: 0.5 });
-    // beat 13: management: a fence across the old path
-    const t13 = cue(13);
-    tl.to(cb, { opacity: 0, duration: 0.3 }, t13);
-    LW.set(tl, 'old', 0.3, t13 + 0.1, 1.0);
-    const [fx, fy] = LW.at('old', 0.2);
-    const fence = K.group(LW.svg);
-    for (let k = -2; k <= 2; k++) K.rect(fence, fx - 8 + k * 30, fy - 70, 16, 140, { rx: 6, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 4 });
-    K.rect(fence, fx - 80, fy - 40, 160, 16, { rx: 6, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 4 });
-    K.rect(fence, fx - 80, fy + 20, 160, 16, { rx: 6, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 4 });
-    tl.fromTo(fence, { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.6, ease: 'bounce.out' }, t13 + 0.3);
-    const mg = C3.chip(LV, 'shield-check', '*Management*', LW.x + fx + 100, LW.y + fy - 150, { col: C.greenDeep, size: 32 });
-    A.in(tl, mg, t13 + 0.7, 'fadeUp', { dur: 0.5 });
-    // beat 14: less practice of the old pattern, successful practice of the new one
-    const t14 = cue(14);
-    const tNew = clamp(at(14, 'practice the new one', 0.6), t14 + 0.6, end(14) - 2.2);
-    tl.to(fence, { scale: 1.08, svgOrigin: `${fx} ${fy}`, duration: 0.25, yoyo: true, repeat: 1 }, clamp(at(14, 'reduce unnecessary practice', 0.2), t14, tNew - 0.6));
-    LW.walk(tl, 'neu', tNew, 2.0, 10);
-    LW.set(tl, 'neu', 1, tNew + 0.4, 1.4);
+    // ---------- management
+    const t13 = cue(13) + 0.1;
+    L0.fade(tl, 0.28, t13, 0.8);
+    L0.width(tl, 5, t13, 0.8);
+    L1.fade(tl, 1, t13, 0.8);
+    L1.width(tl, 22, t13 + 0.3, 1.0);
+    cap('That’s why <b>management</b> matters.', t13);
+    const t14 = cue(14) + 0.1;
+    cap('Less practice of the old path. <b>Successful practice of the new one.</b>', t14);
+    L1.run(tl, clamp(at(14, 'successful opportunities', 0.6), t14 + 0.5, end(14) - 1.8), 1, 0.5);
 
-    // ---------- beats 15, 16: what the dog needs from C can change; arousal and stress across the stages
-    const t15 = cue(15);
-    tl.to(LV, { opacity: 0, duration: 0.5 }, t15 - 0.1);
-    const V3 = C3.layer(stage);
-    const NEED = ['Needs a lot of space', 'Needs some space', 'Needs less space'];
-    const cards = STAGES.map((s, k) => {
-      const x = 150 + k * 560, w = 500;
-      const c = C3.put(V3, 'c3-card', null, { x, y: 140, w, h: 660 });
-      const lb = K.el('div', 'abc-label' + (s.v ? ' ' + s.v : ''), s.label);
-      Object.assign(lb.style, { left: '24px', top: '24px', fontSize: '32px', padding: '10px 24px' });
-      c.appendChild(lb);
-      const p = K.photo(c, s.imgs[2], { x: 24, y: 106, w: w - 48, h: 250, radius: 18 });
-      p.root.style.border = '5px solid ' + C.olive;
-      const hb = C2.badge(c, 'heart', w / 2, 440, 100 - k * 22, COL.emo, '#fff');
-      hb.style.border = '5px solid #fff';
-      const nd = C3.put(c, 'c3-mid', `C: <b>${NEED[k]}</b>`, { x: 0, y: 512, w, align: 'center' });
-      nd.style.fontSize = '32px';
-      const tr = K.el('div', null);
-      Object.assign(tr.style, { position: 'absolute', left: '40px', right: '40px', top: '606px', height: '24px', borderRadius: '12px', background: '#eceee8', overflow: 'hidden' });
-      const f = K.el('div', null);
-      Object.assign(f.style, { position: 'absolute', inset: 0, borderRadius: '12px', background: arCol(s.ar[1]), transformOrigin: '0 50%' });
-      tr.appendChild(f);
-      c.appendChild(tr);
-      gsap.set(f, { scaleX: 0 });
-      return { c, hb, nd, tr, f, v: s.ar[1] };
-    });
-    cards.forEach((k, i) => {
-      tl.fromTo(k.c, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, t15 + 0.2 + i * 0.25);
-      gsap.set([k.hb, k.nd, k.tr], { opacity: 0 });
-    });
-    const tNeed = clamp(at(15, 'what they need', 0.55), t15 + 1.0, end(15) - 1.4);
-    cards.forEach((k, i) => {
-      tl.to(k.hb, { opacity: 1, duration: 0.4 }, t15 + 0.6 + i * 0.25);
-      tl.to(k.nd, { opacity: 1, duration: 0.4 }, tNeed + i * 0.35);
-    });
-    // beat 16: arousal and stress meters, then "coming up: temperature"
-    const t16 = cue(16);
-    const ml = C3.put(V3, 'c3-lab', '<b>Arousal and stress</b>', { x: 0, y: 822, w: 1920, align: 'center' });
-    const tAr = clamp(at(16, 'arousal and stress', 0.4), t16 + 0.1, end(16) - 3);
-    A.in(tl, ml, tAr, 'fadeUp', { dur: 0.5 });
-    cards.forEach((k, i) => {
-      tl.to(k.tr, { opacity: 1, duration: 0.3 }, tAr + 0.1);
-      tl.to(k.f, { scaleX: k.v, duration: 0.9, ease: 'power2.inOut' }, tAr + 0.2 + i * 0.3);
-    });
-    tl.to(ml, { opacity: 0, duration: 0.3 }, clamp(at(16, 'add temperature', 0.8), tAr + 2.2, end(16) - 1.0) - 0.2);
-    const up = C2.bookmark(V3, 'Coming up: *temperature*', 780, 836, 'thermometer');
+    // ---------- the consequence can change: less space, then something new; that's a good thing
+    const t15 = cue(15) + 0.1;
+    cap('As emotions change, <b>the consequence can change too</b>.', t15);
+    const tLess = clamp(at(15, 'can change too', 0.75), t15 + 0.8, end(15) - 0.6);
+    L1.swap(tl, L1.C, 'Less space<br>needed', tLess);
+    tl.to(L1.C.b, { scale: 1.08, duration: 0.25, yoyo: true, repeat: 1 }, tLess);
+    const t16 = cue(16) + 0.1;
+    const tRel = clamp(at(16, 'build a relationship', 0.5), t16 + 0.3, end(16) - 1.6);
+    L1.swap(tl, L1.C, 'Building dog<br>relationships', tRel);
+    tl.to(L1.C.b, { scale: 1.08, duration: 0.25, yoyo: true, repeat: 1 }, tRel);
+    cap('The dog may start wanting something new. <b>That’s a good thing.</b>', tRel - 0.2);
+    const good = C2.badge(stage, 'check', 1385 - 255 * Math.cos(15 * Math.PI / 180) - 150, 590 + 66 - 60, 58, GRN, '#fff');
+    good.style.border = '4px solid #fff';
+    A.in(tl, good, clamp(at(16, "that's a good thing", 0.85), tRel + 0.8, end(16) - 0.3), 'pop', { dur: 0.5 });
+
+    // ---------- arousal and stress: the two labels light up; temperature is coming
+    const t17 = cue(17) + 0.1;
+    L0.fade(tl, 0.75, t17, 0.6);
+    const tAr = clamp(at(17, 'arousal and stress', 0.35), t17 + 0.2, end(17) - 3);
+    [L0.aro, L1.aro].forEach((n, k) => tl.to(n, { scale: 1.2, duration: 0.35, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tAr + k * 0.3));
+    tl.to(capPrev, { opacity: 0, duration: 0.3 }, tAr);
+    const up = C2.bookmark(stage, 'Coming up: *temperature*', 0, 904, 'thermometer');
     up.querySelectorAll('b').forEach(b => { b.style.color = '#b8d99a'; });
-    A.in(tl, up, clamp(at(16, 'add temperature', 0.8), tAr + 2.2, end(16) - 1.0), 'fadeUp', { dur: 0.5 });
+    up.style.left = '960px';
+    gsap.set(up, { xPercent: -50 });
+    A.in(tl, up, clamp(at(17, 'add temperature', 0.8), tAr + 1.5, end(17) - 0.6), 'fadeUp', { dur: 0.5 });
   });
 })();

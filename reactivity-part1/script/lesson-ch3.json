@@ -561,173 +561,100 @@
     {
      "id": "ch03s13",
      "heading": "The ABC Cycle",
-     "visual_concept": "The ABC cycle animation with the training photo strips. Before training (red label): A, B, C land; the emotional response sits on the A to B arrow; a loop arrow shows the pattern repeating. During training (olive): management, a new behavior (looking back at you), space still given; green loop. After training: less management, readily uses the new behavior. A strip under the photos shows arousal and stress for each stage: high and red before, lower during, low after. Then the two paths: the new one strengthens, the old one fades but is still there and can come back. Management shields the old path.",
+     "visual_concept": "Tori's two-cycle animation (abc-cycle-preview): Before training (red) and During training (green) side by side, each A top, B lower right, C lower left on a ring with arrows; 'Emotions' / 'Changing emotions' on A to B, 'Increased' / 'Lowered arousal/stress' on B to C; a dot runs the loop when it repeats. Path strength is arc thickness; the old cycle fades, comes back, fades again with management. The green C box progresses: Space is given, Less space needed, Building dog relationships.",
      "assets": [
-      "abc_before_a.jpg",
-      "abc_before_b.jpg",
-      "abc_before_c.jpg",
-      "abc_during_a.jpg",
-      "abc_during_b.jpg",
-      "abc_during_c.jpg",
-      "abc_after_a.jpg",
-      "abc_after_b.jpg",
-      "abc_after_c.jpg"
+      "bg_swirl.jpg"
      ],
      "beats": [
       {
        "say": "Another dog appears. That's the A.",
-       "show": "'Before training' label; panel A (abc_before_a) with 'Another dog appears'.",
+       "show": "Before training cycle: dotted ring and red label; A box 'Another dog appears'.",
        "onscreen": "Before training"
       },
       {
        "say": "The dog has an emotional response, and we see the B: barking and lunging.",
-       "show": "An emotion heart pulses on the A to B arrow; panel B 'Barking and lunging'; the arousal strip rises to red.",
-       "onscreen": "Barking and lunging"
+       "show": "Arc A to B with 'Emotions'; B box 'Bark and lunge'.",
+       "onscreen": "Emotions"
       },
       {
        "say": "Then space is given. That's the C.",
-       "show": "Panel C 'Space is given. The situation ends.'",
+       "show": "Arc B to C with 'Increased arousal/stress'; C box 'Space is given'.",
        "onscreen": "Space is given"
       },
       {
        "say": "The behavior worked, so that pattern gets practiced and is more likely to happen again.",
-       "show": "A red loop arrow from C back to A: 'Practiced: more likely next time'.",
-       "onscreen": "Getting space can make this more likely next time"
+       "show": "Arc C to A closes; 'Barking works, so it repeats.'; a dot runs the loop.",
+       "onscreen": "Barking works, so it repeats."
       },
       {
        "say": "During training, another dog may still appear.",
-       "show": "The strip changes to 'During training'; panel A (management).",
+       "show": "During training cycle (green) starts; A box 'Another dog appears'.",
        "onscreen": "During training"
       },
       {
        "say": "But now we're working on changing the dog's emotional response and teaching a new behavior, such as looking back at you.",
-       "show": "The heart softens to a calmer colour; panel B 'Looks back at you'; arousal strip lower and amber.",
-       "onscreen": "Teaching a new behavior"
+       "show": "Arc with 'Changing emotions'; B box 'Replacement behavior, e.g. looks to you'.",
+       "onscreen": "Changing emotions"
       },
       {
        "say": "The new behavior still needs to work for the dog.",
-       "show": "Panel C frame waits with a dashed outline.",
-       "onscreen": "The new behavior still needs to work"
-      },
-      {
-       "say": "If the dog needs space, we still give them space.",
-       "show": "Panel C 'Space is still given'.",
-       "onscreen": "Space is still given"
-      },
-      {
-       "say": "Now the new behavior leads to the outcome the dog needs, so that new pattern gets practiced instead.",
-       "show": "Green loop arrow: 'New pattern practiced'.",
-       "onscreen": "The new pattern gets practiced"
-      },
-      {
-       "say": "With practice, the new path becomes stronger.",
-       "show": "'After training' strip: less management; readily uses the new behavior; space is given; arousal strip low and green.",
-       "onscreen": "After training"
-      },
-      {
-       "say": "At the same time, when the old behavior is being practiced less, the old path begins to fade.",
-       "show": "The strips shrink; a lawn with two paths: the new one wears in, the old one fades.",
-       "onscreen": "The old path fades"
-      },
-      {
-       "say": "But that old path hasn't vanished.",
-       "show": "The faint old path stays visible with a dashed outline: 'Still there'.",
-       "onscreen": "Still there"
-      },
-      {
-       "say": "If the dog starts practicing the old behavior again and it continues to work, that old path can become stronger again.",
-       "show": "Footprints walk the old path and it darkens again.",
-       "onscreen": "It can come back"
-      },
-      {
-       "say": "That's also why management matters.",
-       "show": "A management fence slides across the old path.",
-       "onscreen": "Management matters"
-      },
-      {
-       "say": "Management helps us reduce unnecessary practice of the old pattern while we create successful opportunities to practice the new one.",
-       "show": "Fence blocks the old path; footprints move along the new path.",
+       "show": "Arc B to C with 'Lowered arousal/stress' reaches an empty dashed C box.",
        "onscreen": ""
       },
       {
+       "say": "If the dog needs space, we still give them space.",
+       "show": "C box 'Space is given'.",
+       "onscreen": "Space is given"
+      },
+      {
+       "say": "Now the new behavior leads to the outcome the dog needs, so that new pattern gets practiced instead.",
+       "show": "Arc C to A closes; 'The new behavior works, so it repeats.'; the dot runs the loop.",
+       "onscreen": "The new behavior works, so it repeats."
+      },
+      {
+       "say": "With practice, the new path becomes stronger.",
+       "show": "The green arcs thicken. Caption: Practice creates a new, strong path.",
+       "onscreen": "Practice creates a new, strong path."
+      },
+      {
+       "say": "At the same time, when the old behavior is being practiced less, the old path begins to fade.",
+       "show": "The red cycle thins and fades.",
+       "onscreen": "The old path fades."
+      },
+      {
+       "say": "But that old path hasn't vanished.",
+       "show": "The faint red cycle glimmers.",
+       "onscreen": "The old path hasn't vanished."
+      },
+      {
+       "say": "If the dog starts practicing the old behavior again and it continues to work, that old path can become stronger again.",
+       "show": "Red comes back and thickens, green dims; the dot runs the red loop.",
+       "onscreen": "Practice the old behavior and the old path comes back."
+      },
+      {
+       "say": "That's also why management matters.",
+       "show": "Green strong again, red faint.",
+       "onscreen": "That's why management matters."
+      },
+      {
+       "say": "Management helps us reduce unnecessary practice of the old pattern while we create successful opportunities to practice the new one.",
+       "show": "The dot runs the green loop.",
+       "onscreen": "Less practice of the old path. Successful practice of the new one."
+      },
+      {
        "say": "And as the dog's emotional response changes through training, what they need from the consequence can change too.",
-       "show": "Three small heart meters (before, during, after) step down; their C labels: needs space, still needs space, less management.",
-       "onscreen": "What they need can change too"
+       "show": "Green C box changes to 'Less space needed'.",
+       "onscreen": "As emotions change, the consequence can change too."
+      },
+      {
+       "say": "Your dog might even start wanting something else, like the chance to build a relationship with another dog. And that's a good thing.",
+       "show": "Green C box changes to 'Building dog relationships'; a green check pops.",
+       "onscreen": "The dog may start wanting something new. That's a good thing."
       },
       {
        "say": "You'll also notice changes in arousal and stress shown in this visual. We're going to unpack that more when we add temperature to our pot.",
-       "show": "The three arousal strips line up: high, lower, low; a thermometer icon lands: 'Coming up: temperature'.",
-       "onscreen": "Arousal and stress: more on this soon"
-      }
-     ]
-    },
-    {
-     "id": "ch03s14",
-     "heading": "Practice Builds the Path",
-     "visual_concept": "A lawn with a deep worn old path and a faint new path between the dog and the goal. Three rows land: Practice the new path (new path wears in), Less practice of the old path (old path fades), Practice the old path again (old path darkens).",
-     "assets": [
-      "bg_swirl.jpg"
-     ],
-     "beats": [
-      {
-       "say": "The important idea is practice.",
-       "show": "The lawn and two paths from the dog to the outcome.",
-       "onscreen": "Practice Builds the Path"
-      },
-      {
-       "say": "The path the dog keeps using gets easier to use again.",
-       "show": "Footprints walk the deep old path; it darkens.",
-       "onscreen": "The path in use gets easier"
-      },
-      {
-       "say": "Training gives the dog another path and creates opportunities to practice it successfully.",
-       "show": "A new path draws; footprints walk it; row 1: 'Practice the new path: new path gets stronger'.",
-       "onscreen": "Practice the new path. New path gets stronger."
-      },
-      {
-       "say": "With less rehearsal, the old path can fade.",
-       "show": "The old path fades; row 2.",
-       "onscreen": "Less practice of the old path. Old path begins to fade."
-      },
-      {
-       "say": "But if the old behavior starts being practiced repeatedly again, that old path can become stronger again too.",
-       "show": "Footprints return to the old path and it darkens; row 3.",
-       "onscreen": "Practice the old path again. Old path can strengthen again."
-      }
-     ]
-    },
-    {
-     "id": "ch03s15",
-     "heading": "Why Management Matters",
-     "visual_concept": "The old path is deep ('months or years of learning'). A management gate closes over it; the new path gets successful footsteps. Two rows: Reduce practice of the old pattern; Create successful practice of the new pattern. Balance: less / more.",
-     "assets": [
-      "bg_swirl.jpg"
-     ],
-     "beats": [
-      {
-       "say": "This is one of the reasons management is such an important part of behavior change.",
-       "show": "The lawn with both paths; heading 'Management protects the new path'.",
-       "onscreen": "Management protects the new path"
-      },
-      {
-       "say": "A new behavior doesn't immediately erase years or months of learning.",
-       "show": "The old path is deep; tag 'Months or years of learning' on it.",
-       "onscreen": "Months or years of learning"
-      },
-      {
-       "say": "While the new path is developing, we want to reduce unnecessary opportunities for the dog to practice the old one.",
-       "show": "A gate swings shut across the old path; row 1 'Reduce practice of the old pattern'.",
-       "onscreen": "Reduce practice of the old pattern"
-      },
-      {
-       "say": "At the same time, we create situations where the dog can successfully use the new response.",
-       "show": "Footprints with green checks on the new path; row 2 'Create successful practice of the new pattern'.",
-       "onscreen": "Create successful practice of the new pattern"
-      },
-      {
-       "say": "Less rehearsal of the old path. More successful practice of the new one.",
-       "show": "Two big labels: 'Less' over the old path, 'More' over the new.",
-       "onscreen": "Less old. More new."
+       "show": "The two arousal/stress labels pulse; 'Coming up: temperature'.",
+       "onscreen": "Coming up: temperature"
       }
      ]
     },

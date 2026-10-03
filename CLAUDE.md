@@ -88,17 +88,23 @@ pipeline). This file records the state, decisions and working agreements from ea
 ## Chapter 3 video (built, preview voice only)
 
 - Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`). Order: `ch03intro` (shared title slide), `ch03card`
-  ("This is Chapter 3: The ABCs of Behavior."), `ch03plan`, `ch03s01` to `ch03s17`. About 10 minutes.
-- Lines Claude wrote (not in the doc yet, sent to Tori): intro, card and plan narration. Everything else is the doc verbatim.
+  ("This is Chapter 3: The ABCs of Behavior."), `ch03plan`, `ch03s01` to `ch03s13`, `ch03s16`, `ch03s17`. About 9.4 minutes.
+  S14 (Practice builds the path) and S15 (Why management matters) are CUT (Tori, round 1: they repeated S13); Tori was
+  asked to delete them from the doc. Recording ids keep the doc's numbers (Ch03s16, Ch03s17).
+- Lines Claude wrote (not in the doc yet, sent to Tori): intro, card and plan narration, and s13's "something else" line. Everything else is the doc verbatim.
 - Scene code: `video/scenes/c3a.js` to `c3e.js`, shared kit `c3_abc.js` (window.C3: photo ABC strip that fills panel by
-  panel, function tag with in/out arrows, A/B/C ring, the lawn with old and new paths and footprints, tiles, chips, rows).
+  panel, function tag with in/out arrows, A/B/C ring, tiles, chips, rows). The s13 two-cycle builder is in c3d.js.
   `C3.potWithThermo` (in c3a.js) is Chapter 2's pot with the thermometer standing in it.
 - Colours: A olive, B green, C deep green; the emotional response is plum (`#8b5d8f`), so it reads as "inside the dog",
   not good or bad; function is green with a target icon. Arousal and stress meters: green low, amber middle, red high.
-- Photo strips use the existing `abc_*` panels (greet, approach, guard for s04 to s07; before, during, after for s13).
-- s13 (ABC cycle): before / during / after strips with the emotion heart on the A to B arrow, an arousal and stress meter
-  under each panel and a loop arrow C back to A; then the lawn (new path wears in, old fades but stays, comes back with
-  practice, a management fence); then three cards, what the dog needs from C (a lot of space / some / less) and arousal.
+- Photo strips use the existing `abc_*` panels (greet, approach, guard for s04 to s07).
+- s13 (ABC cycle) follows Tori's reference clip (abc-cycle-preview): two cycles side by side, Before training (red) and
+  During training (green); A top, B lower right, C lower left with arrows; "Emotions" / "Changing emotions" on A to B,
+  "Increased" / "Lowered arousal/stress" on B to C; a dot runs the loop when it repeats; path strength = arc thickness;
+  the old cycle fades, comes back, fades again with management; the green C box progresses: Space is given, Less space
+  needed, Building dog relationships ("That's a good thing"). No lawn, no photo strips here.
+  New narration line (Claude, from Tori's direction, not in the doc yet): "Your dog might even start wanting something
+  else, like the chance to build a relationship with another dog. And that's a good thing."
 - s16 homework: a worksheet that fills in with the doc's example (another dog appears; same corner, dogs too close;
   barked and lunged; the other dog moved away; more distance?). The B, C and function answers are Claude's example.
 - s17 ends on the pot with the thermometer, the rim marked "Threshold", "Next chapter: Temperature", then the logo close.

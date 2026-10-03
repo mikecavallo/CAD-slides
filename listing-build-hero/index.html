@@ -78,7 +78,8 @@ a{color:inherit}
 .scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,var(--scrim) 0%,var(--scrim) 22%,transparent 50%)}
 
 .topbar{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px var(--gutter)}
-.brand{font-weight:800;font-stretch:125%;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.brand{display:block;line-height:0}
+.brand img{display:block;height:37px;width:auto}
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);text-decoration:none;
   font:600 14px/1 var(--display);padding:11px 16px;border-radius:3px;border:0;cursor:pointer}
 .btn:hover{filter:brightness(1.08)}
@@ -134,7 +135,6 @@ a{color:inherit}
   .rail span{font-size:9.5px;letter-spacing:.03em}
   .tally{display:none}
   .hint{top:96px;bottom:auto}
-  .brand{font-size:11px}
   .btn{padding:10px 13px;font-size:13px}
 }
 @media (max-width:899px) and (max-height:700px){ .phase p.body{display:none} }
@@ -228,7 +228,7 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
     <div class="scrim-b" id="scrim-b"></div>
 
     <header class="topbar">
-      <span class="brand">Independent Realty Group</span>
+      <span class="brand"><img src="logo.png" alt="Independent Realty Group" width="100" height="37"></span>
       <a class="btn" href="#showing">Book a showing</a>
     </header>
 

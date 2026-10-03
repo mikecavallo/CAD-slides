@@ -262,12 +262,60 @@ const STAGES = {
   landscape: {beds:{ambient:1, breeze:0.45, mixer:0}, birds:0.4, events:{shovel:[1.8, 4]}},
   finished:  {beds:{ambient:0.55, breeze:1, mixer:0}, birds:1, events:{}}
 };
+/* recorded layers (supplied by the listing agent): birds before and after the build, real construction during it.
+   Played as long, randomly chosen, crossfaded chunks so neither file ever audibly loops. If they fail to load,
+   the synthesized soundscape above takes over. */
+const REC = {
+  birds:        {url: "audio/birds.mp3",        gain: 1.6, seg: [16, 26], xf: 3.0},
+  construction: {url: "audio/construction.mp3", gain: 0.95, seg: [10, 18], xf: 1.4}
+};
+const REC_MIX = {
+  site: {birds: 1, construction: 0}, finished: {birds: 1, construction: 0},
+  concrete: {birds: 0.1, construction: 1}, framing: {birds: 0.08, construction: 1}, roofing: {birds: 0.08, construction: 1},
+  exterior: {birds: 0.1, construction: 1}, landscape: {birds: 0.3, construction: 0.75}
+};
+let rec = null, recState = "idle", hushed = false;
+function loadRec(){
+  recState = "loading";
+  const decode = ab => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej));
+  Promise.all(Object.keys(REC).map(k => fetch(REC[k].url)
+    .then(r => { if (!r.ok) throw new Error(REC[k].url + " " + r.status); return r.arrayBuffer(); })
+    .then(decode).then(buf => [k, buf])))
+    .then(list => {
+      rec = {};
+      list.forEach(([k, buf]) => {
+        const bus = ctx.createGain(); bus.gain.value = 0; bus.connect(master);
+        rec[k] = {buf, bus, next: 0};
+      });
+      recState = "ready"; applyStage();
+    })
+    .catch(err => { console.warn("recorded sound unavailable, using synthesized", err); recState = "failed"; applyStage(); });
+}
+/* keep each recorded layer running: overlapping chunks from random points in the file, faded in and out */
+function feedRec(now){
+  Object.keys(rec).forEach(k => {
+    const r = rec[k], cfg = REC[k], dur = r.buf.duration;
+    if (r.next > now + 0.6) return;
+    const t = Math.max(r.next, now + 0.03), seg = Math.min(rand(cfg.seg[0], cfg.seg[1]), dur - 1), xf = cfg.xf;
+    const off = rand(0.3, Math.max(0.31, dur - seg - 0.1));
+    const src = ctx.createBufferSource(); src.buffer = r.buf;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(1, t + xf);
+    g.gain.setValueAtTime(1, t + seg - xf); g.gain.linearRampToValueAtTime(0, t + seg);
+    src.connect(g); g.connect(r.bus);
+    src.start(t, off, seg + 0.05);
+    r.next = t + seg - xf;
+  });
+}
+
 let ctx = null, master = null, voices = null, beds = null, on = false, stage = "site", level = 1, timer = null;
 const nextAt = {};
 
 function schedule(){
   if (!ctx || !on) return;
   const now = ctx.currentTime, st = STAGES[stage] || STAGES.site;
+  if (recState === "ready"){ feedRec(now); return; }
+  if (recState === "loading") return;
   const ev = Object.assign({}, st.events);
   if (st.birds > 0) ev.bird = [2.2/st.birds, 6/st.birds];
   Object.keys(ev).forEach(k => {
@@ -281,13 +329,17 @@ function schedule(){
 }
 function applyStage(){
   if (!beds) return;
-  const st = STAGES[stage] || STAGES.site, now = ctx.currentTime;
-  Object.keys(beds).forEach(k => beds[k].gain.setTargetAtTime((st.beds[k] || 0), now, 0.7));
+  const st = STAGES[stage] || STAGES.site, now = ctx.currentTime, useRec = recState === "ready";
+  Object.keys(beds).forEach(k => beds[k].gain.setTargetAtTime(useRec || recState === "loading" ? 0 : (st.beds[k] || 0), now, 0.7));
+  if (useRec){
+    const mix = REC_MIX[stage] || REC_MIX.site;
+    Object.keys(rec).forEach(k => rec[k].bus.gain.setTargetAtTime((mix[k] || 0)*REC[k].gain, now, 0.9));
+  }
   Object.keys(nextAt).forEach(k => { if (!(k in st.events) && k !== "bird") delete nextAt[k]; });
 }
 function applyLevel(){
   if (!master) return;
-  master.gain.setTargetAtTime(on ? 0.9*level : 0, ctx.currentTime, on ? 0.35 : 0.15);
+  master.gain.setTargetAtTime(on && !hushed ? 0.9*level : 0, ctx.currentTime, on && !hushed ? 0.35 : 0.6);
 }
 function start(){
   const AC = window.AudioContext || window.webkitAudioContext;
@@ -300,6 +352,7 @@ function start(){
     master.connect(comp); comp.connect(ctx.destination);
     voices = makeEngine(ctx, master);
     beds = voices.beds(master);
+    loadRec();
     document.addEventListener("visibilitychange", () => {
       if (!ctx) return;
       if (document.hidden) ctx.suspend(); else if (on) ctx.resume();
@@ -328,8 +381,11 @@ const SiteSound = window.SiteSound = {
     stage = s;
     if (on) applyStage();
   },
+  /* fade out (the visitor chose to read the listing details); normal level returns once they reach the details */
+  hush(){ hushed = true; applyLevel(); },
   setLevel(v){
     v = Math.max(0, Math.min(1, v));
+    if (hushed && v < 0.1){ hushed = false; }
     if (Math.abs(v - level) < 0.02) return;
     level = v; applyLevel();
   },
@@ -339,6 +395,7 @@ const SiteSound = window.SiteSound = {
     if (name === "mallet"){ voices.mallet(t, 0.85); voices.mallet(t + 0.42, 0.95); voices.mallet(t + 0.84, 1.1); }
     else if (voices[name]) voices[name](t);
   },
+  state: () => ({rec: recState, stage, level, hushed, buses: rec ? Object.fromEntries(Object.keys(rec).map(k => [k, +rec[k].bus.gain.value.toFixed(3)])) : null}),
   engine: makeEngine
 };
 })();

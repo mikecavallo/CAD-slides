@@ -402,7 +402,7 @@ function pinePainter(variant){
 
 /* eastern hemlock: flat pinnate spray, two-ranked short flat needles, light yellow-green new growth at the tips */
 function hemlockPainter(variant){
-  return {bg: [70, 92, 50], paint(cell, r){
+  return {bg: [68, 92, 44], paint(cell, r){
     const axes = [];
     const main = walk(r, 0.5 + (r() - 0.5) * 0.06, 0.985, -Math.PI / 2 + (r() - 0.5) * 0.18, 0.9, 10, (r() - 0.5) * 0.035, 0.05);
     axes.push({pts: main, w: 0.0065});
@@ -438,10 +438,10 @@ function hemlockPainter(variant){
       }
     }
     for (const ax of axes) cell.twig(ax.pts, ax.w, ax.w * 0.6, [92, 72, 50]);
-    const dark = [64, 86, 46], light = [112, 132, 72];
+    const dark = [62, 85, 38], light = [112, 133, 60];
     for (let b = 0; b < NB; b++) cell.strokes(B[b], 0.0046, jit(mixc(dark, light, b / (NB - 1)), r, 0.05, 0.04), nstyle((r() - 0.5) * 0.8, (r() - 0.5) * 0.8, 1));
-    cell.strokes(G[0], 0.0046, [140, 162, 86], nstyle(0.2, -0.2, 1));
-    cell.strokes(G[1], 0.0046, [156, 176, 96], nstyle(-0.25, 0.1, 1));
+    cell.strokes(G[0], 0.0046, [136, 158, 72], nstyle(0.2, -0.2, 1));
+    cell.strokes(G[1], 0.0046, [150, 170, 82], nstyle(-0.25, 0.1, 1));
   }};
 }
 
@@ -509,8 +509,8 @@ function shrubPainter(){
    olive-tan sunlit leaves and a few bright red ones at the tips. Each lobe is a thread-like blade with 2-3 side
    segments, so the leaf reads as lace rather than a star. */
 function lacePainter(){
-  const dark = [64, 38, 33], light = [116, 88, 72], olive = [116, 106, 72], red = [186, 56, 46];
-  return {bg: [66, 38, 33], paint(cell, r){
+  const dark = [74, 40, 40], light = [128, 98, 80], olive = [130, 118, 78], red = [192, 60, 48];
+  return {bg: [80, 42, 44], paint(cell, r){
     const tw = walk(r, 0.5, 0.99, -Math.PI / 2 + (r() - 0.5) * 0.1, 0.88, 8, (r() - 0.5) * 0.04, 0.08), f = along2(tw);
     const leaves = [];
     let side = 1;
@@ -526,7 +526,7 @@ function lacePainter(){
       const u = r();
       let base;
       if (lf.s > 0.72 && u < 0.22) base = red;
-      else if (u > 0.84 - 0.08 * lf.s) base = olive;
+      else if (u > 0.81 - 0.08 * lf.s) base = olive;
       else base = mixc(dark, light, clamp(lf.d * 0.75 + r() * 0.3, 0, 1));
       base = jit(base, r, 0.07, 0.04);
       const nl = 7 + ((r() * 3) | 0), fan = 4.2, tilt = tiltR(r, 0.35), subs = [];
@@ -631,18 +631,19 @@ function hydFlowerPainter(pal, bg){
   }};
 }
 
+/* a canvas whose 2-D context is CPU-rasterised (willReadFrequently). Every canvas this module paints is one: thousands
+   of small strokes draw faster in software than through the GPU canvas path (no per-path shader warm-up, no GPU
+   start-up stalls), and read-backs / drawImage between them never need a GPU sync */
+function cpuCanvas(core, w, h){ const c = core.canvas(w, h); c.getContext("2d", {willReadFrequently: true}); return c; }
 function noiseCanvas(core, seed){
   const S = 128, f = core.normalize(core.fbm(S, S, {base: 4, octaves: 4, persistence: 0.55, seed: seed}));
-  return core.paint(f, S, S, v => { const g = 128 + (v - 0.5) * 150; return [g, g, g]; });
+  return core.paint(f, S, S, v => { const g = 128 + (v - 0.5) * 150; return [g, g, g]; }, cpuCanvas(core, S, S));
 }
 
 /* paint an atlas from [{p: painter, rect: [x, y, size]}]; measures each cell's painted bounds from the alpha canvas */
 function paintAtlas(core, specs, seed){
-  const col = core.canvas(AT, AT), alp = core.canvas(AT, AT), nor = core.canvas(AT, AT);
-  /* CPU-rasterised contexts: thousands of small strokes draw faster in software than through the GPU canvas path
-     (no per-path shader warm-up), and the alpha read-back below needs no GPU sync */
-  const cx2 = c => c.getContext("2d", {willReadFrequently: true});
-  const cc = cx2(col), ac = cx2(alp), nc = cx2(nor);
+  const col = cpuCanvas(core, AT, AT), alp = cpuCanvas(core, AT, AT), nor = cpuCanvas(core, AT, AT);
+  const cc = col.getContext("2d"), ac = alp.getContext("2d"), nc = nor.getContext("2d");
   ac.fillStyle = "#000"; ac.fillRect(0, 0, AT, AT);
   nc.fillStyle = FLATN; nc.fillRect(0, 0, AT, AT);
   const noise = noiseCanvas(core, seed), cellMs = [];
@@ -749,7 +750,7 @@ function paintBark(core, kind){
   const furrowC = kind ? [46, 36, 31] : [28, 23, 20], ridgeC = kind ? [128, 126, 121] : [116, 110, 102];
   const lichenC = [138, 142, 124];
   /* colour and normal written straight into ImageData (no per-pixel allocations: this runs over 2 x 131k pixels) */
-  const col = core.canvas(BW, BH), nmc = core.canvas(BW, BH);
+  const col = cpuCanvas(core, BW, BH), nmc = cpuCanvas(core, BW, BH);
   const cctx = col.getContext("2d"), nctx = nmc.getContext("2d");
   const ci = cctx.createImageData(BW, BH), ni = nctx.createImageData(BW, BH), cd = ci.data, nd = ni.data;
   const gam = kind ? 1.1 : 1.3, ns = (kind ? 4.5 : 5.5) * 0.5;
@@ -1003,7 +1004,8 @@ function genHemlock(S, H, r){
     if (r() < 0.16){ y += 0.3 + r() * 0.5; continue; }
     const L = Lmax * env(t) * (0.5 + 0.9 * r()) + 0.6;
     const el0 = lerp(0.05, 0.6, t) + (r() - 0.5) * 0.4, p0 = trunkAt(y), ry = radAt(y), d0 = dirAE(az, el0);
-    const pts = withCollar(grow(mad(p0, d0, -ry * 0.5), d0, L + ry * 0.5, 6, (s, d) => add(d, [0, -0.06 - (0.16 + 0.24 * (1 - t)) * s * s, 0])));
+    const dr = Math.min(1, y / 7);   /* low limbs droop less: they would only end up flattened on the ground */
+    const pts = withCollar(grow(mad(p0, d0, -ry * 0.5), d0, L + ry * 0.5, 6, (s, d) => add(d, [0, (-0.06 - (0.16 + 0.24 * (1 - t)) * s * s) * dr, 0])));
     for (const p of pts) if (p[1] < 0.25) p[1] = 0.25;
     const rb = clamp(0.04 + L * 0.016, 0.04, ry * 0.5);
     W.tube(pts, limbRadii(pts, rb, rb * 0.3, true), 4, BARK.hemlock, () => 0.5, {kind: 0});
@@ -1016,7 +1018,7 @@ function genHemlock(S, H, r){
       const kk = k0 * (0.95 + r() * 0.1), tint = [kk, kk * (1 + (r() - 0.5) * 0.06), kk * 0.98];
       for (let k = 0; k < 2; k++){
         let up = rotate(q.d, UP, (k ? 1 : -1) * (0.3 + r() * 0.7));
-        up = nrm(add(add(up, mul(sph(r), 0.45)), [0, -0.15 - 0.6 * s, 0]));
+        up = nrm(add(add(up, mul(sph(r), 0.45)), [0, (-0.15 - 0.6 * s) * dr, 0]));
         const face = nrm(add(sph(r), mul(UP, 0.5)));
         const sz = (2.3 + r() * 1.0) * (0.7 + 0.3 * Math.min(1, L / 3));
         F.card(mad(q.p, sph(r), 0.15), up, face, sz, sz, 0.08, S.fr(r() < 0.5 ? 2 : 3, r), tint, ao, vc, vr, 0.5, null);
@@ -1056,7 +1058,7 @@ function genOak(S, H, r){
   function limb(p0, d, L, rad, depth, prad){
     const nseg = depth < 2 ? 6 : 4, sink = (prad || rad) * 0.6;
     const pts = withCollar(grow(mad(p0, d, -sink), d, L + sink, nseg, (s, dd) => add(dd, add(mul(sph(r), 0.25), [0, 0.035, 0]))));
-    const rEnd = Math.max(0.025, rad * 0.35), rads = limbRadii(pts, rad, rEnd, true);
+    const rEnd = Math.max(0.025, rad * 0.35), rads = limbRadii(pts, rad, rEnd, depth >= 2);   /* scaffold limbs: no collar ring at the fork */
     W.tube(pts, rads, depth < 1 ? 9 : depth < 3 ? 6 : 4, BARK.oak, aoAt, {kind: 0});
     for (let i = 2; i < pts.length; i++) if (depth >= 1 || i > nseg / 2) nodes.push({p: pts[i], r: rads[i]});
     const end = pts[pts.length - 1], endD = nrm(sub(end, pts[pts.length - 2]));
@@ -1102,8 +1104,8 @@ function genOak(S, H, r){
   /* a clump on every bare limb tip */
   for (const tp of tips) clump(mad(tp.p, tp.d, 0.5), tp.d, 1.5 + r() * 0.8);
   /* and a thick crown shell (fewer clumps underneath, a few deliberate sky holes) */
-  const holes = []; for (let k = 0; k < 5; k++){ const d = sph(r); holes.push({d: nrm([d[0], d[1] * 0.6, d[2]]), c: 0.95 + r() * 0.03}); }
-  const ravg = (cr.r[0] + cr.r[1] + cr.r[2]) / 3, nC = Math.round(4 * Math.PI * ravg * ravg / 15 * Math.sqrt(D));
+  const holes = []; for (let k = 0; k < 3; k++){ const d = sph(r); holes.push({d: nrm([d[0], d[1] * 0.6, d[2]]), c: 0.95 + r() * 0.03}); }
+  const ravg = (cr.r[0] + cr.r[1] + cr.r[2]) / 3, nC = Math.round(4 * Math.PI * ravg * ravg / 12 * Math.sqrt(D));
   let made = 0, tries = 0;
   while (made < nC && tries++ < nC * 6){
     const d = sph(r);
@@ -1203,12 +1205,12 @@ function genMaple(S, H, r){
     const face = nrm(add(N, mul(sph(r), 0.6)));
     let up = rotate(T, N, (r() - 0.5) * 2.4), sz = 0.85 + r() * 0.35;
     const v = r();
-    if (tau < 0.55 && v < 0.05) up = nrm(add(add(T, [0, 0.7, 0]), mul(sph(r), 0.3)));
+    if (tau < 0.55 && v < 0.05) up = nrm(add(add(T, [0, 0.3, 0]), mul(sph(r), 0.3)));
     else if (tau > 0.86 && v < 0.08){ up = nrm(add(add([0, -1, 0], mul(T, 0.5)), mul(sph(r), 0.25))); sz *= 0.7; }
     else up = nrm(add(up, [0, -0.15, 0]));
     const hy = p[1] / H, kk = (0.86 + r() * 0.22) * lerp(0.92, 1.06, hy);
     const tint = [kk * (1 + 0.04 * hy), kk * (0.97 + 0.05 * hy), kk * 0.96];
-    const ao = aoAt(p) * lerp(0.62, 1.0, (k - 0.62) / 0.38);
+    const ao = aoAt(p) * lerp(0.72, 1.0, (k - 0.62) / 0.38);
     F.card(p, up, face, sz, sz * 1.05, 0.12, S.fr(3, r), tint, ao, vc, vr, 0.68, null);
   }
 }
@@ -1234,7 +1236,7 @@ function genRose(S, H, r){
       const pts = grow(fp, dirAE(saz, Math.PI / 2 - sl), L, 6, (s, d) => add(d, add(mul(sout, 0.06 * Math.sin(s * TAU + ph)), mul(sph(r), 0.03))));
       W.tube(pts, limbRadii(pts, 0.065, 0.02, true), 4, BARK.rose, aoAt, {kind: 0});
       const outer = br > 0.35 || j === 0 || j === nf - 1;
-      stems.push({pts, y0: outer ? 1.2 : 2.6});
+      stems.push({pts, y0: outer ? 0.9 : 1.8});
       const nsh = 1 + ((r() * 3) | 0), f = along3(pts);
       for (let m = 0; m < nsh; m++){
         const q = f(0.4 + r() * 0.5), sd = nrm(add(rotate(q.d, nrm(cross(q.d, sph(r))), 0.5 + r() * 0.3), mul(sout, 0.3)));
@@ -1247,7 +1249,7 @@ function genRose(S, H, r){
   const flowers = (S.meta[0] && S.meta[0].flowers) || [];
   for (const st of stems){
     const f = along3(st.pts), L = f.total + 0.3;
-    for (let s = 0.05; s <= 1.0001; s += 0.26 / L / D){
+    for (let s = 0.05; s <= 1.0001; s += 0.21 / L / D){
       const q = f(s);
       if (q.p[1] < st.y0) continue;
       const nC = 2;
@@ -1256,11 +1258,11 @@ function genRose(S, H, r){
         const up = nrm(add(q.d, mul(sph(r), 0.9)));
         const face = nrm(add(sph(r), mul(nrm([p[0], 0, p[2]]), 0.6)));
         const sz = 0.85 + r() * 0.3;
-        const cell = r() < 0.3 ? 0 : 1;
+        const cell = r() < 0.18 ? 0 : 1;
         const kk = 0.9 + r() * 0.18, fr = S.fr(cell, r);
         const cb = F.card(p, up, face, sz, sz, 0.1, fr, [kk, kk, kk], aoAt(p), vc, vr, 0.5, null);
         if (cell === 0) for (const fl of flowers){
-          if (r() > 0.34) continue;
+          if (r() > 0.25) continue;
           const fp = mad(featPos(cb, fr, fl.x, fl.y), cb.F, 0.02 * (dot(cb.F, nrm([p[0], 0.3, p[2]])) < 0 ? -1 : 1));
           const ax = nrm(add(cb.R, mul(cb.up, (r() - 0.5) * 1.2))), ang = (r() < 0.5 ? -1 : 1) * (0.52 + r() * 0.26);
           const ff = rotate(cb.F, ax, ang), fu = rotate(cb.up, ax, ang), fs = fl.R * sz * 2.3;
@@ -1297,7 +1299,7 @@ function genHydrangea(S, H, r){
     let d = sph(r); if (d[1] < 0.05) d = nrm([d[0], Math.abs(d[1]) + 0.1, d[2]]);
     const k = 0.96 + r() * 0.08, hc = [c[0] + d[0] * rx * k, c[1] + d[1] * ry * k, c[2] + d[2] * rz * k];
     const s = 0.5 + r() * 0.2, hv = [hc[0] - d[0] * 0.12, hc[1] - d[1] * 0.12, hc[2] - d[2] * 0.12];
-    const kk = 0.92 + r() * 0.14, tint = [kk, kk, kk], cell = r() < 0.6 ? 3 : 5;
+    const kk = 0.8 + r() * 0.14, tint = [kk, kk, kk], cell = r() < 0.6 ? 3 : 5;
     const up1 = nrm(add(UP, mul(sph(r), 0.25)));
     const f1 = rotate(nrm([d[0], 0, d[2]]), up1, r() * 0.6);
     for (let j = 0; j < 3; j++) F.card(hc, up1, rotate(f1, up1, j * Math.PI / 3), s, s, 0.5, S.fr(cell, r), tint, 1.0, hv, [0.4, 0.4, 0.4], 0.85, null);

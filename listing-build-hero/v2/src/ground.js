@@ -1046,7 +1046,7 @@ REAL.ground = {
     const mowA = (opts.mowDeg == null ? 37 : opts.mowDeg) * Math.PI / 180, mowDir = [Math.cos(mowA), Math.sin(mowA)];      /* blade-side colour (linear) seen at grazing angles */
     const lawnPatch = (key, rep) => ({
       key, rep, tile: LAWN_FT, s: [97, 41, 13.3, 5.7], a: [0.09, 0.05, 0.045, 0.025], hue: 0.04, r: [0.05, 0.04],
-      hex: [2.1, 0.55, 0.12],
+      hex: [2.1, 0.3, 0.1],
       lawn: { side: lawnSide, graze: 0.75, stripe: 0.045, band: 1.75, clover: [0.74, 0.92], dry: 0.4, mow: mowDir }
     });
     function lawnMat(){
@@ -1068,7 +1068,7 @@ REAL.ground = {
       tile: [SOIL_FT, SOIL_FT], grain: "none", jitter: 1
     });
     groundPatch(THREE, soil, T, { key: "soil", tile: SOIL_FT, s: [23, 11.3, 4.1, 1.9], a: [0.10, 0.05, 0.06, 0.04], hue: 0.06, r: [0.03, 0.02],
-      hex: [4.0, 0.7, 0.1], lawn: null, damp: [0.52, 0.72, 0.28, 0.78],
+      hex: [4.0, 0.35, 0.08], lawn: null, damp: [0.52, 0.72, 0.28, 0.78],
       relief: [11.0, 0.35, 3.1, 0.07, 0.35],          /* lumps and ruts on disturbed ground; a third as strong on walls */
       scrape: [2.3, 0.4, 0.9, 0.7],                   /* bucket passes 2.3 ft tall, teeth 0.4-0.9 ft apart */
       topsoil: [opts.gradeY == null ? 0 : opts.gradeY, 0.8],
@@ -1084,7 +1084,7 @@ REAL.ground = {
       tile: [GRAVEL_FT, GRAVEL_FT], grain: "none", jitter: 1
     });
     groundPatch(THREE, gravel, T, { key: "gravel", tile: GRAVEL_FT, s: [19, 8.7, 3.3, 1.3], a: [0.08, 0.04, 0.05, 0.03], hue: 0.03, r: [0.03, 0.02],
-      hex: [2.0, 0.8, 0.08], lawn: null, damp: null, bounce: [1.25, 1.6, 0.6, 1.08, 1.0, 0.86] });
+      hex: [1.7, 0.28, 0.06], lawn: null, damp: null, bounce: [1.25, 1.6, 0.6, 1.08, 1.0, 0.86] });
     gravel.envMapIntensity = 1.2;
     lap("gravelCanvas");
 
@@ -1097,7 +1097,7 @@ REAL.ground = {
       tile: [MULCH_FT, MULCH_FT], grain: "none", jitter: 1
     });
     groundPatch(THREE, mulch, T, { key: "mulch", tile: MULCH_FT, s: [17, 7.9, 3.1, 1.4], a: [0.10, 0.05, 0.06, 0.04], hue: 0.05, r: [0.03, 0.02],
-      hex: [2.0, 0.8, 0.08], lawn: null, damp: null });
+      hex: [2.0, 0.32, 0.06], lawn: null, damp: null });
     lap("mulchCanvas");
 
     /* let the raster buffers go (the canvases hold the results) */

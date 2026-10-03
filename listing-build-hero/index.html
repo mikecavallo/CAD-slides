@@ -11,9 +11,9 @@
 /* Layout: a pinned 3D build stage scrubbed by scroll. Listing card at left (bottom on phones), six-phase rail along the bottom, listing details below. */
 :root{
   --bg:#E7ECEE; --sky-top:#C6D6E1; --sky-low:#EDF0EE; --ink:#15202A; --muted:#55636E;
-  --line:#C2CBD1; --panel:#F5F7F7; --accent:#2A5B8B; --accent-ink:#FFFFFF;
+  --line:#C2CBD1; --panel:#F5F7F7; --accent:#087174; --accent-ink:#FFFFFF;
   --ground:#A6B788; --scrim:rgba(231,236,238,.94); --scene-dark:0;
-  --paper:#F3F6F7; --pen:#22466D; --grid:rgba(42,91,139,.08); --ink-tint:.17;
+  --paper:#F3F6F7; --pen:#174B4D; --grid:rgba(8,113,116,.08); --ink-tint:.17;
   --sign-main:#1D3557; --sign-rider:#A8322D;
   --display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --prose:"Newsreader",Georgia,"Times New Roman",serif;
@@ -23,16 +23,16 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#0F161D; --sky-top:#0C141E; --sky-low:#262C36; --ink:#E5EBEF; --muted:#98A6B1;
-    --line:#2B3742; --panel:#151F29; --accent:#8CB6E2; --accent-ink:#0C141E;
+    --line:#2B3742; --panel:#151F29; --accent:#4FC4C6; --accent-ink:#0C141E;
     --ground:#22301F; --scrim:rgba(15,22,29,.92); --scene-dark:1; color-scheme:dark;
-    --paper:#122130; --pen:#9CC3EA; --grid:rgba(140,182,226,.08); --ink-tint:.06;
+    --paper:#11201F; --pen:#8FD6D7; --grid:rgba(79,196,198,.08); --ink-tint:.06;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0F161D; --sky-top:#0C141E; --sky-low:#262C36; --ink:#E5EBEF; --muted:#98A6B1;
-  --line:#2B3742; --panel:#151F29; --accent:#8CB6E2; --accent-ink:#0C141E;
+  --line:#2B3742; --panel:#151F29; --accent:#4FC4C6; --accent-ink:#0C141E;
   --ground:#22301F; --scrim:rgba(15,22,29,.92); --scene-dark:1; color-scheme:dark;
-    --paper:#122130; --pen:#9CC3EA; --grid:rgba(140,182,226,.08); --ink-tint:.06;
+    --paper:#11201F; --pen:#8FD6D7; --grid:rgba(79,196,198,.08); --ink-tint:.06;
 }
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0}
@@ -393,7 +393,7 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
     <div>
       <p class="kicker">Open house · Sunday, Oct 4, 12:00 to 2:30 pm</p>
       <h2>Book a private showing</h2>
-      <p class="lead">Pick a day and we'll confirm a time. Or call <b class="tel">(203) 788-1210</b>.</p>
+      <p class="lead">Pick a day and we'll confirm a time. Or call <b class="tel">203.733.3969</b>.</p>
     </div>
     <form id="showing-form" novalidate>
       <label for="f-name">Name<input id="f-name" name="name" autocomplete="name" required></label>
@@ -411,7 +411,7 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 
   <footer class="foot">
     <span>Listing data from SmartMLS, deemed reliable but not guaranteed. Listing ID 24200006. The construction animation is illustrative and does not show this home's actual framing.</span>
-    <span>Independent Realty Group · Office (203) 775-5514</span>
+    <span>Independent Realty Group · Christina Cavallo · 203.733.3969</span>
   </footer>
 </main>
 
@@ -1104,7 +1104,7 @@ ghostRect(BAY.x0, BAY.x1, F1 - BAND, F1 + BAY.top, hz + BAY.d);
 ghostRect(BAY.x0 + 0.45, BAY.x1 - 0.45, F1 + 2.2, F1 + 7.2, hz + BAY.d + 0.02);
 const ghostGeo = new THREE.BufferGeometry();
 ghostGeo.setAttribute("position", new THREE.Float32BufferAttribute(gp, 3));
-const ghostMat = new THREE.LineBasicMaterial({color:0x2A5B8B, transparent:true, opacity:0.5, depthWrite:false});
+const ghostMat = new THREE.LineBasicMaterial({color:0x087174, transparent:true, opacity:0.5, depthWrite:false});
 const ghost = new THREE.LineSegments(ghostGeo, ghostMat);
 scene.add(ghost);
 
@@ -1140,10 +1140,10 @@ function applyTheme(){
   const cs = getComputedStyle(document.documentElement);
   const tok = (n, f) => cs.getPropertyValue(n).trim() || f;
   INK.paper.value.copy(col(tok("--paper", "#F3F6F7")));
-  INK.pen.value.copy(col(tok("--pen", "#22466D")));
+  INK.pen.value.copy(col(tok("--pen", "#174B4D")));
   INK.tint.value = parseFloat(tok("--ink-tint", "0.17")) || 0.17;
   groundMat.color = col(tok("--paper", "#F3F6F7"));
-  ghostMat.color = col(tok("--accent", "#2A5B8B"));
+  ghostMat.color = col(tok("--accent", "#087174"));
   dirty = true;
 }
 const mq = window.matchMedia("(prefers-color-scheme: dark)");

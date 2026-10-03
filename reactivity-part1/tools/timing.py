@@ -38,7 +38,7 @@ def build_sequential(script, beat_dur, beat_audio):
     """estimate / scratch: every beat has a known length; lay them out back to back."""
     segs, t = [], 0.0
     for ci, ch in enumerate(script["chapters"]):
-        if ci > 0:
+        if ci > 0 and ch.get("bumper", True):  # a chapter may draw its own (narrated) card instead
             b = bumper(ch, t)
             segs.append(b)
             t += b["dur"]
@@ -67,7 +67,7 @@ def build_narration(script, align):
         if not rec:
             print(f"  {ch['id']}: not recorded yet, left out")
             continue
-        if segs:
+        if segs and ch.get("bumper", True):
             b = bumper(ch, t)
             segs.append(b)
             t += b["dur"]

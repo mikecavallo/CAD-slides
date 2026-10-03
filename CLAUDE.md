@@ -52,6 +52,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   that can be" and has a new line about adding the ingredients to the pot; s06 has a new stoic-dog line and time line;
   activity area and physical activity use the two-paw icon ("paws", defined in c2_pot.js); s08 is a clean graph again
   (legend, events under the axis); "What you can handle".
+- Round 3 feedback (code done, full render pending): never call it a "fuel chip", it is just a water drop ("One more
+  piece: the water", Chapter 1 line rewritten in lesson.json, needs Tori's re-record of ch01s12); intro narration ends
+  at the presentation title, the narrated chapter card `ch02card` ("This is Chapter 2...") replaces the auto bumper
+  (chapter `"bumper": false`); welcome chapter num 2 so the footer tab shows 2; s01: "These can be changed, managed, or
+  improved" / "The rest can't be changed", ingredients go into an empty pot first, then the water ("The water = your
+  dog's baseline"); activity area colour blue; s07 Goldilocks line and beat; mental activity light blue; s11 factor
+  pills turn green instead of new text; s12 "What triggered the reaction?"; logo close shows Tori's name and credentials.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

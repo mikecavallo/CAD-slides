@@ -157,7 +157,7 @@
     tl.set(bar, { transformOrigin: '50% 50%' }, 0);
     const NEEDS = [['paws', 'Physical<br>activity', 'physical activity', 0.35], ['puzzle', 'Mental<br>activity', 'mental activity', 0.5],
       ['dog', 'Natural<br>behaviors', 'natural behaviors', 0.75], ['bed', 'Rest', 'and rest', 0.95]];
-    const NC = ['#619537', '#7a8f2e', '#3f6b22', '#4a6fa5'];
+    const NC = ['#619537', '#5aa0c8', '#3f6b22', '#4a6fa5'];
     let lo = t3 + 0.6;
     NEEDS.forEach(([ic, t, p, fb], k) => {
       const b = K.el('div', 'c2d-blk');
@@ -226,14 +226,23 @@
     A.in(tl, much.ex, tMuch + 0.8, 'fadeUp', { dur: 0.45, stagger: 0.15 });
     A.in(tl, much.md, clamp(at(4, 'overtired or highly activated', 0.85, 0.3), tMuch + 1.6, end(4)), 'fadeUp', { dur: 0.5 });
 
-    // ---------- beat 5: still on the beam: not simply more; the right balance for this dog
+    // ---------- beat 5: Goldilocks: not too little, not too much, just right; the beam levels
     const t5 = cue(5);
     tl.to([little.c, much.c], { opacity: 0, y: 20, duration: 0.45, ease: 'power2.in' }, t5 - 0.1);
-    tl.to(beamWrap, { rotation: 0, duration: 1.0, ease: 'elastic.out(1, 0.6)' }, t5 + 0.1);
+    tl.to(beamWrap, { rotation: 0, duration: 1.0, ease: 'elastic.out(1, 0.6)' }, clamp(at(5, 'just right', 0.85, 0.3), t5 + 0.6, end(5) - 0.4));
+    const gold = C2.put(LB, 'c2-big', 'Not too little. Not too much. *Just right.*', { x: 0, y: 720, w: 1920, align: 'center' });
+    const gw = A.words(tl, gold, t5 + 0.2, { stagger: 0.09 });
+    tl.to(bar, { background: C.green, duration: 0.5 }, clamp(at(5, 'just right', 0.85, 0.3), t5 + 0.6, end(5) - 0.4));
+    const gl = C2.pill(LB, 'sparkles', 'Like Goldilocks', { x: 960, y: 640, center: true, variant: 'pale', size: 30 });
+    A.in(tl, gl, t5 + 0.1, 'fadeUp', { dur: 0.5 });
+
+    // ---------- beat 6: still on the beam: not simply more; the right balance for this dog
+    const t6 = cue(6);
+    tl.to([gold, gl], { opacity: 0, duration: 0.4, ease: 'power2.in' }, t6 - 0.1);
     const m1 = C2.pill(LB, 'dumbbell', 'More exercise', { x: 560, y: 690, size: 34, col: C.muted });
     const m2 = C2.pill(LB, 'puzzle', 'More enrichment', { x: 1000, y: 690, size: 34, col: C.muted });
-    const tM1 = clamp(at(5, 'more exercise', 0.3, 0.3), t5 + 0.3, end(5) - 4);
-    const tM2 = clamp(at(5, 'more enrichment', 0.42, 0.3), tM1 + 0.5, end(5) - 3.5);
+    const tM1 = clamp(at(6, 'more exercise', 0.3, 0.3), t6 + 0.3, end(6) - 4);
+    const tM2 = clamp(at(6, 'more enrichment', 0.42, 0.3), tM1 + 0.5, end(6) - 3.5);
     A.in(tl, m1, tM1, 'fadeUp', { dur: 0.5 });
     A.in(tl, m2, tM2, 'fadeUp', { dur: 0.5 });
     [[m1, 560, tM1], [m2, 1000, tM2]].forEach(([m, x, t]) => {
@@ -323,7 +332,7 @@
     const L2 = K.path(g, `M ${ZX1} 470 C 590 460 690 478 ${SX - 20} 490`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
     A.draw(tl, L2, tEnd + 0.5, 1.4, { ease: 'none' });
     const still = C2.pill(LA, null, 'Still upset', { x: 645, y: 0, center: true, variant: 'red', size: 28 });
-    still.style.top = '398px';
+    still.style.top = '370px';
     A.in(tl, still, clamp(at(2, "don't necessarily disappear", 0.6, 0.3), tEnd + 1.0, end(2)), 'fadeUp', { dur: 0.5 });
 
     // beat 3: someone else approaches (an event under the axis); the line spikes: snappier

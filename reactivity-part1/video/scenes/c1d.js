@@ -530,8 +530,8 @@
     tl.to(B.bodyAll, { y: 5, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.out' }, tLand);
     C1.splash(tl, B, 0, FY + 40, tLand, '#5fa8cf');
     tl.to(fglow, { opacity: 0.9, scale: 1.25, transformOrigin: '50% 50%', duration: 0.8, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tLand + 0.3);
-    const l1 = C1.label(LA, 'What *fuels* the behavior?', 960, 850, { cls: 'c1-big', w: 1400 });
-    A.in(tl, l1, clamp(at(1, 'what fuels the behavior', 0.6, 0.3), tLand + 0.3, end(1) - 1), 'fadeUp', { dur: 0.8 });
+    const l1 = C1.label(LA, 'One more piece: *the water*', 960, 850, { cls: 'c1-big', w: 1400 });
+    A.in(tl, l1, clamp(at(1, 'the water they go into', 0.75, 0.3), tLand + 0.3, end(1) - 1), 'fadeUp', { dur: 0.8 });
 
     // ---------- beat 2: the bowl clears; a barking dog with three question marks circling it in a cycle, like the ABCs to come
     const t2 = cue(2);

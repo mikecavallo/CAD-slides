@@ -77,25 +77,20 @@
       return b;
     });
 
-    // ---------- beat 2: one change per phrase: the factor turns into its fix, a drop leaves the pot, the water drops a step
+    // ---------- beat 2: one change per phrase: the factor turns green (no new text to read), a drop leaves the pot, the water
+    // drops a step
     const t2 = cue(2);
     let lo = t2 + 0.2, L = 0.88;
     ACT.forEach(([ic, t, p], k) => {
-      const r = K.el('div', 'c2f-act');
-      const icn = K.el('div', 'ic');
-      icn.appendChild(K.icon(ic));
-      r.appendChild(icn);
-      r.appendChild(K.el('span', null, K.md(t)));
-      Object.assign(r.style, { left: '160px', top: YS[k] - 3 + 'px' });
-      stage.appendChild(r);
-      gsap.set(r, { opacity: 0 });
       const tt = clamp(at(2, p, 0.08 + k * 0.15, 0.3), lo, end(2) - 1);
-      tl.to(facs[k], { rotationX: 90, opacity: 0, duration: 0.25, ease: 'power2.in' }, tt);
-      tl.fromTo(r, { rotationX: -90, opacity: 0 }, { rotationX: 0, opacity: 1, duration: 0.3, ease: 'power2.out', immediateRender: false }, tt + 0.25);
-      tl.to(cks[k], { opacity: 0, duration: 0.2 }, tt);
-      P.lift(tl, 160 + 30, YS[k] + 37, tt + 0.3, C.water, 0.8);
+      const f = facs[k];
+      tl.to(f, { background: C.pale, borderColor: C.greenLight, duration: 0.4 }, tt);
+      tl.to(f.querySelector('.ic'), { background: C.green, duration: 0.4 }, tt);
+      tl.to(f, { scale: 1.06, transformOrigin: '0% 50%', duration: 0.2, yoyo: true, repeat: 1 }, tt);
+      tl.to(cks[k], { scale: 1.25, duration: 0.2, yoyo: true, repeat: 1 }, tt);
+      P.lift(tl, 160 + 30, YS[k] + 37, tt + 0.2, C.water, 0.8);
       L -= 0.095;
-      P.setLevel(tl, L, tt + 0.4, 0.8);
+      P.setLevel(tl, L, tt + 0.3, 0.8);
       lo = tt + 0.6;
     });
 
@@ -209,7 +204,7 @@
     // ---------- beat 3: three questions in the empty half
     const t3 = cue(3);
     A.out(tl, qbig, t3, 'shrink', { dur: 0.35 });
-    const QS = [['bell-ring', 'What happens around<br>the dog?', 'What happens', 0.05], ['heart', 'How does the dog feel?', 'How does the dog feel', 0.4], ['activity', 'Arousal and stress?', 'arousal and stress', 0.8]];
+    const QS = [['zap', 'What triggered<br>the reaction?', 'What happens', 0.05], ['heart', 'How does the dog feel?', 'How does the dog feel', 0.4], ['activity', 'Arousal and stress?', 'arousal and stress', 0.8]];
     lo = t3 + 0.2;
     const qcs = QS.map(([ic, t, p, fb], k) => {
       const c = K.el('div', 'c2f-qc');

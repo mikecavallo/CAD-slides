@@ -5,7 +5,7 @@
  "chapters": [
   {
    "id": "ch02w",
-   "num": 0,
+   "num": 2,
    "title": "Welcome",
    "slide_refs": [],
    "scenes": [
@@ -20,9 +20,9 @@
      ],
      "beats": [
       {
-       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior: Understanding Reactivity and Aggression. This is Chapter 2: Understanding Your Dog's Baseline.",
+       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome back to Getting Started with Dog Behavior: Understanding Reactivity and Aggression.",
        "show": "Presentation title and subtitle as in Chapter 1, with a 'Chapter 2' kicker; the headshot scales in; the name block appears as the name is said; the training photo tilts in.",
-       "onscreen": "Getting Started with Dog Behavior. Chapter 2: Understanding Your Dog's Baseline"
+       "onscreen": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression"
       }
      ]
     }
@@ -33,6 +33,19 @@
    "title": "Understanding Your Dog's Baseline",
    "slide_refs": [],
    "scenes": [
+    {
+     "id": "ch02card",
+     "heading": "Chapter 2: Understanding Your Dog's Baseline",
+     "visual_concept": "The chapter card (same look as the automatic chapter cards: big light-green 02, 'Chapter 2', the chapter title), now narrated.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "This is Chapter 2: Understanding Your Dog's Baseline.",
+       "show": "Big '02', the green bar, 'Chapter 2' and the title 'Understanding Your Dog's Baseline' slide in.",
+       "onscreen": "Chapter 2: Understanding Your Dog's Baseline"
+      }
+     ]
+    },
     {
      "id": "ch02plan",
      "heading": "Where we're headed",
@@ -59,7 +72,7 @@
     {
      "id": "ch02s01",
      "heading": "Understanding Your Dog's Baseline",
-     "visual_concept": "Recap with Chapter 1's bowl: the eight ingredients and the fuel chip on top, now a blue water drop ('What fuels the behavior?'). Four returning ingredients glow. 'Additional factors that can be: Changed / Managed / Improved'; the fuel drop glows on 'right now'. On the new line the ingredients pour into a glass pot and the fuel drop becomes the water. 'The fuel = your dog's baseline' points at the waterline.",
+     "visual_concept": "Recap with Chapter 1's bowl: the eight ingredients and the water drop on top ('One more piece: the water'). The four returning ingredients ('Can be changed, managed, or improved') glow, the rest ('Can't be changed') dim. 'Additional factors that can be: Changed / Managed / Improved'. The ingredients pour into an empty pot; then the water drop falls in and the pot fills: 'The water = your dog's baseline'.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:mixing-bowl",
@@ -71,12 +84,12 @@
      "beats": [
       {
        "say": "In the last chapter, we looked at the ingredients that can help shape a dog's behavior.",
-       "show": "Chapter 1's bowl with its eight ingredients and the blue fuel drop on top; pills: 'Chapter 1: the ingredients' and 'What fuels the behavior?'.",
+       "show": "Chapter 1's bowl with its eight ingredients and the water drop on top; pills: 'Chapter 1: the ingredients' and 'One more piece: the water'.",
        "onscreen": "Understanding Your Dog's Baseline"
       },
       {
        "say": "You'll notice that some of those factors appear again here. That's intentional.",
-       "show": "Four ingredient tokens glow and their name pills appear beside the bowl (Breed history and purpose, Past experiences, Training tools and methods, Pain and discomfort); the other four dim.",
+       "show": "Four ingredient tokens glow and their name pills appear (Breed history and purpose, Past experiences, Training tools and methods, Pain and discomfort) under 'Can be changed, managed, or improved'; the other four dim under 'Can't be changed'.",
        "onscreen": "Some factors appear again"
       },
       {
@@ -85,13 +98,13 @@
        "onscreen": "Changed, managed, or improved"
       },
       {
-       "say": "So we're going to add those ingredients to a pot of water.",
-       "show": "The bowl tips and the ingredients drop into a glass pot; the blue fuel drop falls in and becomes the water. Caption: 'Adding the ingredients to the pot'.",
+       "say": "So we're going to add those ingredients to a pot.",
+       "show": "The bowl tips and the ingredients drop into an empty glass pot. Caption: 'Adding the ingredients to the pot'.",
        "onscreen": "Adding the ingredients to the pot"
       },
       {
        "say": "First, we need to talk about your dog's baseline.",
-       "show": "'The fuel = your dog's baseline' points at the waterline of the pot, the ingredients floating in it.",
+       "show": "The water drop falls in and the pot fills with water; 'The water = your dog's baseline' points at the waterline, the ingredients floating up with it.",
        "onscreen": "Your dog's baseline"
       }
      ]
@@ -323,6 +336,11 @@
        "onscreen": "Too little: frustrated, restless. Too much: overtired, highly activated."
       },
       {
+       "say": "Think of it like Goldilocks: not too little, not too much, but just right.",
+       "show": "The examples fade and the beam levels; 'Not too little. Not too much. Just right.' lands under it, the beam glows green.",
+       "onscreen": "Just right"
+      },
+      {
        "say": "The goal isn't simply more exercise or more enrichment. It's finding the right balance for that individual dog.",
        "show": "The columns fade and the beam levels; 'More exercise' and 'More enrichment' are struck through; 'The right balance for this dog' lands under the beam.",
        "onscreen": "The right balance for this dog"
@@ -549,7 +567,7 @@
       },
       {
        "say": "What happens when something occurs around the dog? How does the dog feel about it? And what happens to their arousal and stress?",
-       "show": "Three question cards appear in the empty half one per question: Something happens; How does the dog feel?; Arousal and stress.",
+       "show": "Three question cards appear in the empty half one per question: What triggered the reaction?; How does the dog feel?; Arousal and stress.",
        "onscreen": "What happens? How does the dog feel? Arousal and stress?"
       },
       {
@@ -564,7 +582,8 @@
       }
      ]
     }
-   ]
+   ],
+   "bumper": false
   }
  ]
 }

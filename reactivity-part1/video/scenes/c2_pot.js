@@ -26,7 +26,7 @@
 
   const AREAS = [
     { name: 'Physical Health', short: 'Physical health', icon: 'heart-pulse', col: '#b8452d' },
-    { name: 'Activity, Stimulation & Natural Needs', short: 'Activity and needs', icon: 'paws', col: '#d9912b' },
+    { name: 'Activity, Stimulation & Natural Needs', short: 'Activity and needs', icon: 'paws', col: '#4a6fa5' },
     { name: 'Emotions & Recovery', short: 'Emotions and recovery', icon: 'brain', col: '#7a8f2e' },
     { name: 'Environment, Predictability & Choice', short: 'Environment and choice', icon: 'house', col: '#3f6b22' },
   ];
@@ -401,6 +401,9 @@
     tl.fromTo(logo, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }, tL + 0.15);
     const url = put(stage, 'c2-close', 'callingalldogsny.com', { x: 0, y: 610 });
     A.in(tl, url, tL + 0.45, 'fadeUp', { dur: 0.6 });
+    const nm = put(stage, 'c2-close', '<b>Tori Ganino</b>, BS, CDBC, CPDT-KA', { x: 0, y: 700 });
+    Object.assign(nm.style, { color: 'var(--ink)', fontSize: '40px' });
+    A.in(tl, nm, tL + 0.7, 'fadeUp', { dur: 0.6 });
   }
 
   window.C2 = { C, AREAS, R, H, CSS, style, layer, put, pill, badge, bookmark, svgIcon, areaHead, makePot, surfY, dog, wag, logoClose };

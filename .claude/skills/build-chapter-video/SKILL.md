@@ -1,6 +1,6 @@
 ---
 name: build-chapter-video
-description: Turns Tori's chapter or section copy plus animation and image directions into a finished narrated, animated Calling All Dogs slide video (HTML + GSAP scenes rendered to MP4), and asks Tori for anything missing before building. Use this whenever Tori sends script copy, a doc section, slide-by-slide narration, "On screen" or "Visual" directions, images for a slide, or says things like "build chapter 3", "make the video for this section", "turn this into slides", "animate this part", or "here's the next chapter", even if they don't say "video". Also use it for a new section or single slide added to an existing chapter.
+description: Turns Tori's chapter or section copy plus animation and image directions into a finished narrated, animated Calling All Dogs slide video (HTML + GSAP scenes rendered to MP4), and asks Tori for anything missing before building. Use this whenever Tori sends script copy, a doc section, slide-by-slide narration, "On screen" or "Visual" directions, images for a slide, or says things like "build chapter 3", "make the video for this section", "turn this into slides", "animate this part", or "here's the next chapter", even if they don't say "video". Also use it for a new section or single slide added to an existing chapter. For a one-off video outside a course (tip, promo, announcement), use build-branded-video.
 ---
 
 # Build a chapter video from Tori's copy

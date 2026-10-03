@@ -1,0 +1,57 @@
+{
+ "title": "Spot It First: a Calling All Dogs walk tip",
+ "notes": "Example standalone branded video (template for the build-branded-video skill). Build with LESSON=video-example.json.",
+ "series": {
+  "title": "Spot It First",
+  "titleLines": [
+   "Spot It First"
+  ]
+ },
+ "tail": 2.5,
+ "chapters": [
+  {
+   "id": "vexample",
+   "num": 0,
+   "title": "Spot It First",
+   "bumper": false,
+   "scenes": [
+    {
+     "id": "vexample01",
+     "heading": "Spot It First",
+     "visual_concept": "Shared title slide.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Here's a quick tip for your next walk: Spot It First.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vexample02",
+     "heading": "See it before your dog does",
+     "visual_concept": "Two dogs on a path; a distance bar stretches; the handler turns early.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Try to spot the other dog before your dog does.",
+       "show": "",
+       "onscreen": "Spot it first"
+      },
+      {
+       "say": "That head start lets you turn around before the alarm goes off.",
+       "show": "",
+       "onscreen": "Turn before the alarm"
+      },
+      {
+       "say": "Want help with your dog's walks? Visit callingalldogsny.com.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

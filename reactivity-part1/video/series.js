@@ -7,7 +7,7 @@
  *   SKIT.titleSlide(ctx)              series title, presenter, headshot ring and training photo
  *   SKIT.chapterCard(ctx, num, title) the narrated chapter card (same look as the automatic bumper)
  *   SKIT.planSlide(ctx, cards, cues)  "Where we're headed": two to four cards, one per beat (any label, icon, colour, rows or text)
- *   SKIT.logoClose(ctx, tL, hide)     the closing logo, url, presenter and credentials
+ *   SKIT.logoClose(ctx, tL, hide, o)  the closing logo, url, presenter and credentials; o.cta adds a call-to-action line
  *
  * Loaded after lib.js and before the scene files. tools/render.mjs hashes this file into every segment.
  */
@@ -188,7 +188,7 @@
   }
 
   /** The closing logo: hide `hide`, the corner logo steps aside, the logo, url, presenter and credentials settle at centre. */
-  function logoClose(ctx, tL, hide) {
+  function logoClose(ctx, tL, hide, o = {}) {
     const { stage, tl, chrome } = ctx;
     style(stage);
     if (hide && (!Array.isArray(hide) || hide.length)) tl.to(hide, { opacity: 0, duration: 0.5, ease: 'power2.in' }, tL - 0.1);
@@ -209,6 +209,12 @@
     Object.assign(nm.style, { top: '700px', color: 'var(--ink)', fontSize: '40px' });
     stage.appendChild(nm);
     A.in(tl, nm, tL + 0.7, 'fadeUp', { dur: 0.6 });
+    if (o.cta) {
+      const cta = K.el('div', 'sk-close', K.md(o.cta));
+      Object.assign(cta.style, { top: '790px', color: 'var(--green)', fontSize: '38px', fontWeight: '700' });
+      stage.appendChild(cta);
+      A.in(tl, cta, tL + 1.0, 'fadeUp', { dur: 0.6 });
+    }
   }
 
   window.BRAND = BRAND;

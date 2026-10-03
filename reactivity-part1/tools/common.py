@@ -43,7 +43,8 @@ def spoken(s):
 
 
 def chapter_num(ch_id):
-    return int(re.sub(r"\D", "", ch_id))
+    d = re.sub(r"\D", "", ch_id)
+    return int(d) if d else 0  # a standalone video has no chapter number (the footer tab stays empty)
 
 
 def iter_scenes(script):

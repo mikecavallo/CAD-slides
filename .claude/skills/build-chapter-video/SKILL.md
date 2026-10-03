@@ -90,6 +90,11 @@ Then build chapter 1 like any other: `SKIT.titleSlide(ctx)` for the intro, `SKIT
 The course's metaphors and decisions get their own section in CLAUDE.md as they are made; the Understanding Dog
 Behavior pot and bowl belong to that course only, unless Tori brings them over.
 
+Cards: `SKIT.planSlide` takes two to four cards and sizes them to fit. Any card can have its own label, icon,
+colours and rows or a statement. When Tori asks for a new kind of card that will come back (a "Try this" or "Key
+takeaway"), add it as a preset next to `SKIT.PLAN.why / gain / how` in `series.js` instead of styling it in one
+scene, so every chapter and course gets the same card.
+
 A brand change (new logo, credentials, url) is one edit in `series.js` and re-renders everything, because the file
 is hashed into every segment.
 

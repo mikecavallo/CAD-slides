@@ -6,7 +6,7 @@
  *                   { title: "Understanding Dog Behavior", titleLines: ["Understanding", "Dog Behavior"] }
  *   SKIT.titleSlide(ctx)              series title, presenter, headshot ring and training photo
  *   SKIT.chapterCard(ctx, num, title) the narrated chapter card (same look as the automatic bumper)
- *   SKIT.planSlide(ctx, cards, cues)  "Where we're headed": three cards, one per beat
+ *   SKIT.planSlide(ctx, cards, cues)  "Where we're headed": two to four cards, one per beat (any label, icon, colour, rows or text)
  *   SKIT.logoClose(ctx, tL, hide)     the closing logo, url, presenter and credentials
  *
  * Loaded after lib.js and before the scene files. tools/render.mjs hashes this file into every segment.
@@ -45,6 +45,9 @@
   .sk-card .lab { margin-top: 24px; font: 700 48px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .sk-card .rule { margin: 28px 0 26px; width: 100%; height: 2px; background: #eef1ea; }
   .sk-card .rows { display: flex; flex-direction: column; gap: 22px; width: 100%; }
+  .sk-card.narrow .lab { font-size: 38px; }
+  .sk-card.narrow .sk-row { font-size: 26px; }
+  .sk-card.narrow .sk-stmt { font-size: 32px; }
   .sk-stmt { font: 600 38px/1.3 var(--font-head); color: var(--ink); }
   .sk-stmt b { color: var(--green); font-weight: 700; }
   .sk-row { display: flex; align-items: center; gap: 18px; font: 600 30px/1.2 var(--font-body); color: var(--ink); }
@@ -116,9 +119,9 @@
   }
 
   /** One plan card: icon badge, label, then rows (or a statement). */
-  function card(stage, x, o) {
-    const c = K.el('div', 'sk-card');
-    Object.assign(c.style, { left: x + 'px', top: '290px', boxShadow: SH0 });
+  function card(stage, x, o, w = 560) {
+    const c = K.el('div', 'sk-card' + (w < 480 ? ' narrow' : ''));
+    Object.assign(c.style, { left: x + 'px', top: '290px', width: w + 'px', boxShadow: SH0 });
     const bd = K.el('div', 'bd');
     Object.assign(bd.style, { background: o.bg, color: o.fg });
     bd.appendChild(K.icon(o.icon));
@@ -156,15 +159,17 @@
   };
 
   /**
-   * "Where we're headed": three cards, one per beat. cards: three option objects (spread a PLAN preset and add rows,
-   * rowIcons or text); cues: per card, [phrase, fallback] for each row, so each row lands as it is said.
+   * "Where we're headed": two to four cards, one per beat. cards: option objects, either a PLAN preset spread with rows,
+   * rowIcons or text, or a card of your own: { icon, bg, fg, lab, rows | text, rowIcons | num, rowBg, rowFg }; cues: per card, [phrase, fallback] for each row, so each row lands as it is said.
    */
   function planSlide(ctx, cards, cues, heading = 'Where we’re headed') {
     const { stage, tl, cue, end } = ctx;
     style(stage);
     const h = K.heading(stage, heading, { x: 100, y: 110, size: 72, barGap: 20 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
-    const ks = cards.map((o, i) => card(stage, 100 + i * 580, o));
+    // two to four cards share the width between the margins (three cards: 560 px each, as in Chapter 2)
+    const n = cards.length, w = (1720 - 20 * (n - 1)) / n;
+    const ks = cards.map((o, i) => card(stage, 100 + i * (w + 20), o, w));
     ks.forEach((k, b) => {
       const t = cue(b) + 0.05;
       if (b > 0) tl.to(ks[b - 1].c, { boxShadow: SH0, duration: 0.5, ease: 'power2.out' }, t);

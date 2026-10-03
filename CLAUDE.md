@@ -119,6 +119,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   Russell, Sporting: Golden Retriever, Working and assistance: black Lab), each enlarges with a small vignette;
   silhouettes row is cut from real photos and the logo (`assets/img/sil_*.png`).
 - "Same behavior, different reasons" on the barking slide.
+- The iceberg is retired: the pot (ingredients + water + temperature) replaces it for "what is under the behavior".
+  Plan for later chapters: water = distant antecedents, burner = immediate antecedent (A), thermometer = arousal and
+  emotion, boiling over = the reaction (B), heat turned down = the consequence (C). After training the thermometer still
+  rises a little but stays below boiling ("a dog with a better plan"), never room temperature.
 - On-screen text never uses em or en dashes.
 
 ## Working with Tori

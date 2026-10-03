@@ -124,7 +124,7 @@
     const P = C2.makePot(LA, { cx: PX, y: PY, s: S, level: 0.5 });
     A.in(tl, P.wrap, 0.1, 'fadeUp', { dur: 0.7 });
     P.waves(tl, 0, dur);
-    const CK = [['What the water level represents', 'represents', 0.35], ['Why it matters', 'why it matters', 0.55], ['What can change it', 'change it', 0.9]];
+    const CK = [['What the water level represents', 'represents', 0.6]];
     let lo = cue(0) + 0.6;
     const cks = CK.map(([t, p, fb], k) => {
       const n = K.el('div', 'c2f-ck');
@@ -140,25 +140,27 @@
       return n;
     });
 
-    // ---------- beat 1: the water (not the ingredients) is the distant antecedents
+    // ---------- beat 1: the water (not the ingredients) is the overall baseline, including cumulative mood
     const t1 = cue(1);
     tl.to(cks, { opacity: 0, x: 40, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t1 - 0.1);
     // a dashed outline hugs the water only, from the waterline down to the bottom of the pot
     const sy = C2.surfY(0.5), OX = C2.R + 30, OB = C2.H + 78;
     const ring = K.path(P.svg, `M ${-OX} ${sy - 34} L ${-OX} ${OB - 70} Q ${-OX} ${OB} 0 ${OB} Q ${OX} ${OB} ${OX} ${OB - 70} L ${OX} ${sy - 34} Z`,
       { stroke: '#2f7fae', 'stroke-width': 7, 'stroke-dasharray': '18 12', fill: 'rgba(95,168,207,0.10)' });
-    const tDA = clamp(at(1, 'distant antecedents', 0.7, 0.6), t1 + 0.3, end(1) - 0.8);
+    const tDA = clamp(at(1, 'overall baseline', 0.4, 0.4), t1 + 0.3, end(1) - 0.8);
     tl.fromTo(ring, { opacity: 0 }, { opacity: 1, duration: 0.6, immediateRender: true }, t1 + 0.3);
     tl.to(P.wTop, { attr: { fill: '#cfeaf7' }, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, t1 + 0.8);
     // the ingredients step back while the water is named, then return
     tl.to(P.ing.map(g => g.mid), { opacity: 0.25, duration: 0.4 }, t1 + 0.3);
     tl.to(P.ing.map(g => g.mid), { opacity: 1, duration: 0.4 }, cue(2));
     const da = K.el('div', 'c2f-da');
-    da.appendChild(K.el('div', 'a', 'Distant antecedents'));
-    da.appendChild(K.el('div', 'b', 'The water in the pot'));
+    da.appendChild(K.el('div', 'a', 'Overall baseline'));
+    const daB = K.el('div', 'b', 'Including cumulative mood');
+    da.appendChild(daB);
     Object.assign(da.style, { left: '1000px', top: '470px' });
     stage.appendChild(da);
     A.in(tl, da, tDA, 'fadeLeft', { dur: 0.7 });
+    tl.fromTo(daB, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, clamp(at(1, 'cumulative mood', 0.8, 0.3), tDA + 0.6, end(1) - 0.2));
 
     // ---------- beat 2: that's only part of the picture: Part 1 frame, empty Part 2 frame
     const t2 = cue(2);
@@ -184,7 +186,7 @@
     const l2 = K.path(lead, `M 680 350 L ${wx} ${wy}`, { stroke: '#2f7fae', 'stroke-width': 4, 'stroke-dasharray': '10 8', fill: 'none' });
     const d1 = K.circle(lead, ix, iy - 34, 7, { fill: C1.ING[0].col, opacity: 0 });
     const d2 = K.circle(lead, wx, wy, 7, { fill: '#2f7fae', opacity: 0 });
-    const tP1 = clamp(at(2, 'knowing how much water', 0.1, 0.3), t2 + 0.3, end(2) - 2.4);
+    const tP1 = clamp(at(2, 'the water level', 0.1, 0.3), t2 + 0.3, end(2) - 2.4);
     A.in(tl, p1, tP1, 'fadeRight', { dur: 0.5 });
     A.draw(tl, l1, tP1 + 0.4, 0.5);
     A.in(tl, d1, tP1 + 0.85, 'pop', { dur: 0.3 });
@@ -195,16 +197,16 @@
     know.style.fontSize = '38px';
     know.querySelector('b').style.color = 'var(--green)';
     A.in(tl, know, tP1 + 1.6, 'fadeUp', { dur: 0.6 });
-    const tPart = clamp(at(2, 'only part of the picture', 0.7, 0.3), t2 + 0.8, end(2) - 0.6);
+    const tPart = clamp(at(2, "doesn't tell us", 0.3, 0.3), tP1 + 1.8, end(2) - 2);
     A.in(tl, fr, tPart, 'fade', { dur: 0.5 });
     A.in(tl, p2, tPart + 0.2, 'fadeRight', { dur: 0.5 });
     const qbig = C2.put(stage, 'c2-q', '?', { x: 1350, y: 545 });
     A.in(tl, qbig, tPart + 0.3, 'pop', { dur: 0.5 });
 
-    // ---------- beat 3: three questions in the empty half
-    const t3 = cue(3);
+    // ---------- still beat 2: what the water can't tell us, in the empty half
+    const t3 = clamp(at(2, 'aroused or stressed', 0.6, 0.4), tPart + 0.8, end(2) - 0.6);
     A.out(tl, qbig, t3, 'shrink', { dur: 0.35 });
-    const QS = [['zap', 'What triggered<br>the reaction?', 'What happens', 0.05], ['heart', 'How does the dog feel?', 'How does the dog feel', 0.4], ['activity', 'Arousal and stress?', 'arousal and stress', 0.8]];
+    const QS = [['activity', 'Arousal and stress<br>in the moment?', 'aroused or stressed', 0.6]];
     lo = t3 + 0.2;
     const qcs = QS.map(([ic, t, p, fb], k) => {
       const c = K.el('div', 'c2f-qc');
@@ -214,27 +216,27 @@
       c.appendChild(K.el('div', null, t));
       Object.assign(c.style, { left: '1060px', top: 400 + k * 170 + 'px' });
       stage.appendChild(c);
-      const tt = clamp(at(3, p, fb, 0.3), lo, end(3) - 0.5);
+      const tt = clamp(at(2, p, fb, 0.3), lo, end(2) - 0.3);
       A.in(tl, c, tt, 'fadeLeft', { dur: 0.6 });
       lo = tt + 0.5;
       return c;
     });
 
-    // ---------- beat 4: a dashed slot on the pot for another part
-    const t4 = cue(4);
+    // ---------- beat 3: a dashed slot on the pot for another part
+    const t4 = cue(3);
     const TX = 120; // thermometer x in pot coordinates
     const slot = K.path(P.svg, `M ${TX - 30} 250 L ${TX - 30} -110 A 30 30 0 0 1 ${TX + 30} -110 L ${TX + 30} 250`, { stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10', fill: 'rgba(255,255,255,0.4)' });
     P.svg.insertBefore(slot, P.front);
     const slotC = K.circle(P.svg, TX, 286, 50, { fill: 'rgba(255,255,255,0.4)', stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10' });
     P.svg.insertBefore(slotC, P.front);
-    const tSlot = clamp(at(4, 'another part', 0.6, 0.3), t4 + 0.2, end(4) - 0.4);
+    const tSlot = clamp(at(3, 'another part', 0.6, 0.3), t4 + 0.2, end(3) - 0.4);
     A.in(tl, [slot, slotC], tSlot, 'fade', { dur: 0.5 });
     tl.to([slot, slotC], { opacity: 0.35, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tSlot + 0.5);
     A.dim(tl, qcs, t4 + 0.2, 0.45);
     tl.to(lead, { opacity: 0, duration: 0.4 }, t4 + 0.1);
 
-    // ---------- beat 5: temperature: the thermometer drops in, its line rises; Part 2 is temperature
-    const t5 = cue(5);
+    // ---------- beat 4: temperature: the thermometer drops in, its line rises; Part 2 is temperature
+    const t5 = cue(4);
     const th = K.group(P.svg);
     P.svg.insertBefore(th, P.front);
     K.rect(th, TX - 28, -140, 56, 420, { rx: 28, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
@@ -258,7 +260,7 @@
     A.in(tl, th2, t5 + 0.7, 'pop', { dur: 0.5 });
 
     // ---------- close: the Calling All Dogs logo
-    const tL = Math.max(t5 + 3.2, Math.min(end(5) + 2.4, dur - 2.4));
+    const tL = Math.max(t5 + 3.2, Math.min(end(4) + 2.4, dur - 2.4));
     C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2, p1, p1b, p2b, lead]);
   });
 })();

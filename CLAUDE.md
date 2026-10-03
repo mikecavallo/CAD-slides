@@ -81,6 +81,17 @@ pipeline). This file records the state, decisions and working agreements from ea
   the list of fixes aloud (Tori cut "We may be able to address pain or illness ... more opportunity for recovery." from the
   narration; it must go from the doc too): the six factors still turn green one after another with drops lifting out
   and the water dropping, during "do something about" and "lower the water level".
+- Round 8 (Tori's new copy, mood): mood is part of the baseline. s02 adds "Part of that baseline is the dog's mood" and
+  the emotions/broader mood line (fast emotions line over a slowly shifting mood band); s03 adds "The water level reflects
+  the dog's overall starting state, including their cumulative mood" and "The water level doesn't tell us how aroused or
+  stressed the dog is in that particular moment. We'll add that part later."; s07 "can also interfere with rest and
+  recovery" + "Over time, either extreme can influence the dog's overall baseline" (Too much column: "Gets in the way of
+  rest and recovery"); s08 is "Emotions, Mood & Recovery" (also the area name everywhere): fast emotions line with Fear /
+  Frustration / Excitement / Settling chips over a slow mood line, the coworker graph ("Something else happens",
+  "Different response"), repeated experiences and too little recovery drip into the pot, quiet event; no next-chapter
+  tag; s10 "several emotional experiences" and "together they can influence the dog's mood and raise the water level";
+  s12 narration no longer says "distant antecedents" (the on-screen "The water = distant antecedents" label stays),
+  one check, "Overall baseline / Including cumulative mood", one card "Arousal and stress in the moment?".
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

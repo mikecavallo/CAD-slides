@@ -203,10 +203,44 @@
     A.in(tl, evT, tEv + 0.3, 'fadeRight', { dur: 0.6 });
     tl.to(ev, { rotation: 12, duration: 0.12, yoyo: true, repeat: 5, ease: 'sine.inOut' }, tEv + 0.6);
 
-    // ---------- beat 1: the band rises and falls between levels; "Not fixed. It can change."
-    const t1 = cue(1);
+    // ---------- beat 1: part of that baseline is the dog's mood
+    const tM = clamp(at(1, 'mood', 0.7, 0.3), cue(1) + 0.2, end(1));
+    const moodP = C2.pill(stage, 'brain', 'Part of the baseline: *mood*', { x: 180, y: 470, size: 34, col: C2.AREAS[2].col });
+    A.in(tl, moodP, tM, 'pop', { dur: 0.55 });
+    tl.to(bandR, { attr: { fill: '#c9dba0' }, duration: 0.4, yoyo: true, repeat: 1 }, tM + 0.2);
+
+    // ---------- beat 2: emotions wiggle up and down all day; the mood band drifts up slowly (over the day, and longer)
+    const t2 = cue(2);
+    const EY = LV0 - 150, pts = [];
+    for (let x = AX, k = 0; x <= EV - 60; x += 18, k++) {
+      const amp = 34 + 26 * Math.sin(k * 0.7) * Math.sin(k * 0.23);
+      pts.push(`${x},${(EY - amp * Math.sin(k * 1.35)).toFixed(1)}`);
+    }
+    const emo = K.svgEl('polyline', { points: pts.join(' '), fill: 'none', stroke: C2.AREAS[2].col, 'stroke-width': 5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, sv);
+    const tEmo = clamp(at(2, 'constantly changing', 0.2, 0.3), t2, end(2) - 4);
+    A.draw(tl, emo, tEmo, 2.6, { ease: 'none' });
+    const emoL = C2.put(stage, 'c2a-axis', '**Emotions:** up and down all day', { x: AX, y: EY - 96 });
+    emoL.style.color = 'var(--ink)';
+    A.in(tl, emoL, tEmo + 0.3, 'fadeUp', { dur: 0.5 });
+    tl.to(moodP, { opacity: 0, duration: 0.3 }, tEmo);
+    const tMood = clamp(at(2, 'broader mood', 0.5, 0.3), tEmo + 1.2, end(2) - 1.5);
+    const LVM = 760;
+    tl.to(band, { y: LVM, duration: 1.6, ease: 'sine.inOut' }, tMood);
+    tl.to(dogB, { y: LVM - LV0, duration: 1.6, ease: 'sine.inOut' }, tMood);
+    tl.to(bandL, { opacity: 0, duration: 0.3 }, tMood);
+    const moodL = K.svgText(band, AX + 30, 11, 'Mood: shifts slowly', { 'font-size': 30, 'font-weight': 700, fill: C2.C.greenDeep, opacity: 0 });
+    tl.to(moodL, { opacity: 1, duration: 0.4 }, tMood + 0.3);
+    const tLong = clamp(at(2, 'longer periods', 0.85, 0.3), tMood + 1.8, end(2) - 0.3);
+    tl.to(band, { y: LVM - 30, duration: 1.2, ease: 'sine.inOut' }, tLong);
+    tl.to(dogB, { y: LVM - 30 - LV0, duration: 1.2, ease: 'sine.inOut' }, tLong);
+
+    // ---------- beat 3: the band rises and falls between levels; "Not fixed. It can change."
+    const t1 = cue(3);
+    tl.to([emo, emoL], { opacity: 0.25, duration: 0.4 }, t1);
+    tl.to(moodL, { opacity: 0, duration: 0.3 }, t1);
+    tl.to(bandL, { opacity: 1, duration: 0.3 }, t1 + 0.2);
     const LVS = [660, 820, 700, 780];
-    let prev = LV0, t = clamp(at(1, "isn't fixed", 0.3, 0.2), t1, end(1) - 1);
+    let prev = LV0, t = clamp(at(3, "isn't fixed", 0.3, 0.2), t1, end(3) - 1);
     LVS.forEach((lv, k) => {
       tl.to(band, { y: lv, duration: 0.7, ease: 'power2.inOut' }, t + k * 0.75);
       tl.to(dogB, { y: lv - LV0, duration: 0.7, ease: 'power2.inOut' }, t + k * 0.75);
@@ -219,7 +253,7 @@
     tl.to(ud, { y: prev - LV0, duration: 0.7, ease: 'power2.inOut' }, t + 3 * 0.75);
     const chip = C2.pill(stage, 'refresh-cw', 'Not fixed. *It can change.*', { x: 540, y: 470, variant: '', size: 36 });
     chip.style.top = '470px';
-    const tCh = clamp(at(1, 'It can change', 0.65, 0.2), t + 0.6, end(1));
-    A.in(tl, chip, Math.max(tCh, cue(1) + 0.4), 'pop', { dur: 0.55 });
+    const tCh = clamp(at(3, 'It can change', 0.65, 0.2), t + 0.6, end(3));
+    A.in(tl, chip, Math.max(tCh, cue(3) + 0.4), 'pop', { dur: 0.55 });
   });
 })();

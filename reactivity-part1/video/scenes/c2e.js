@@ -209,7 +209,7 @@
     A.in(tl, fd, t3 + 0.2, 'fadeRight', { dur: 0.5 });
     const FAC = [['moon', 'Poor sleep', 'poor sleep', 0.15, C.red], ['stethoscope', 'Pain', 'pain', 0.25, C.red],
       ['volleyball', 'Too much or too little stimulation', 'too much or too little', 0.42, C.amber], ['house', 'Change at home', 'changes at home', 0.68, C.amber],
-      ['zap', 'Stressful experiences', 'stressful experiences', 0.92, C.red]];
+      ['zap', 'Emotional experiences', 'emotional experiences', 0.92, C.red]];
     lo = t3 + 0.5;
     let L = 0.22;
     const pills = FAC.map(([ic, t, p, fb, col], k) => {
@@ -231,7 +231,7 @@
       A.in(tl, n, t4 + 0.1 + k * 0.12, 'pop', { dur: 0.4 });
       return n;
     });
-    const tUp = clamp(at(4, 'together their effects', 0.55, 0.3), t4 + 0.8, end(4) - 1.6);
+    const tUp = clamp(at(4, 'raise the water level', 0.75, 0.4), t4 + 0.8, end(4) - 1.6);
     P.setLevel(tl, 0.9, tUp, 0.8);
     tl.fromTo(P.br, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, tUp + 0.3);
     tl.set(P.br, { opacity: 0 }, 0);

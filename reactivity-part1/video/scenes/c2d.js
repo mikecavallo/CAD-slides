@@ -212,7 +212,7 @@
     }
     const little = column(100, 'Too little', 'Frustrated, restless',
       ['Physical activity', 'Mental stimulation', 'Natural behaviors', 'Breed-specific needs'], C.amber, 'battery-low');
-    const much = column(1000, 'Too much', 'Overtired, highly activated',
+    const much = column(1000, 'Too much', 'Gets in the way of rest and recovery',
       ['Physical activity', '“Wear the dog out”', 'Mental stimulation', 'Not enough rest'], C.red, 'zap');
     const tLit = clamp(at(4, "doesn't have enough", 0.1, 0.3), t4 + 0.2, end(4) - 8);
     tl.to(beamWrap, { rotation: -7, duration: 0.9, ease: 'power2.inOut' }, tLit);
@@ -224,25 +224,33 @@
     A.dim(tl, little.c, tMuch, 0.35);
     A.in(tl, much.hh, tMuch + 0.3, 'fadeUp', { dur: 0.5 });
     A.in(tl, much.ex, tMuch + 0.8, 'fadeUp', { dur: 0.45, stagger: 0.15 });
-    A.in(tl, much.md, clamp(at(4, 'overtired or highly activated', 0.85, 0.3), tMuch + 1.6, end(4)), 'fadeUp', { dur: 0.5 });
+    A.in(tl, much.md, clamp(at(4, 'rest and recovery', 0.85, 0.3), tMuch + 1.6, end(4)), 'fadeUp', { dur: 0.5 });
 
-    // ---------- beat 5: Goldilocks: not too little, not too much, just right; the beam levels
-    const t5 = cue(5);
-    tl.to([little.c, much.c], { opacity: 0, y: 20, duration: 0.45, ease: 'power2.in' }, t5 - 0.1);
-    tl.to(beamWrap, { rotation: 0, duration: 1.0, ease: 'elastic.out(1, 0.6)' }, clamp(at(5, 'just right', 0.85, 0.3), t5 + 0.6, end(5) - 0.4));
+    // ---------- beat 5: over time, either extreme can influence the dog's overall baseline
+    const t5e = cue(5);
+    tl.to(beamWrap, { rotation: 0, duration: 0.8, ease: 'power2.inOut' }, t5e + 0.1);
+    A.undim(tl, little.c, t5e + 0.1);
+    const ext = C2.pill(LB, 'droplets', 'Over time, either extreme *affects the baseline*', { x: 960, y: 600, center: true, size: 32, col: C.water });
+    A.in(tl, ext, clamp(at(5, 'either extreme', 0.4, 0.3), t5e + 0.3, end(5) - 0.6), 'pop', { dur: 0.5 });
+    tl.to([little.hh, much.hh], { scale: 1.06, transformOrigin: '0% 50%', duration: 0.25, yoyo: true, repeat: 1 }, clamp(at(5, 'overall baseline', 0.85, 0.3), t5e + 0.8, end(5)));
+
+    // ---------- beat 6: Goldilocks: not too little, not too much, just right; the beam levels
+    const t5 = cue(6);
+    tl.to([little.c, much.c, ext], { opacity: 0, y: 20, duration: 0.45, ease: 'power2.in' }, t5 - 0.1);
+    tl.to(beamWrap, { rotation: 0, duration: 1.0, ease: 'elastic.out(1, 0.6)' }, clamp(at(6, 'just right', 0.85, 0.3), t5 + 0.6, end(6) - 0.4));
     const gold = C2.put(LB, 'c2-big', 'Not too little. Not too much. *Just right.*', { x: 0, y: 720, w: 1920, align: 'center' });
     const gw = A.words(tl, gold, t5 + 0.2, { stagger: 0.09 });
-    tl.to(bar, { background: C.green, duration: 0.5 }, clamp(at(5, 'just right', 0.85, 0.3), t5 + 0.6, end(5) - 0.4));
+    tl.to(bar, { background: C.green, duration: 0.5 }, clamp(at(6, 'just right', 0.85, 0.3), t5 + 0.6, end(6) - 0.4));
     const gl = C2.pill(LB, 'sparkles', 'Like Goldilocks', { x: 960, y: 640, center: true, variant: 'pale', size: 30 });
     A.in(tl, gl, t5 + 0.1, 'fadeUp', { dur: 0.5 });
 
-    // ---------- beat 6: still on the beam: not simply more; the right balance for this dog
-    const t6 = cue(6);
+    // ---------- beat 7: still on the beam: not simply more; the right balance for this dog
+    const t6 = cue(7);
     tl.to([gold, gl], { opacity: 0, duration: 0.4, ease: 'power2.in' }, t6 - 0.1);
     const m1 = C2.pill(LB, 'dumbbell', 'More exercise', { x: 560, y: 690, size: 34, col: C.muted });
     const m2 = C2.pill(LB, 'puzzle', 'More enrichment', { x: 1000, y: 690, size: 34, col: C.muted });
-    const tM1 = clamp(at(6, 'more exercise', 0.3, 0.3), t6 + 0.3, end(6) - 4);
-    const tM2 = clamp(at(6, 'more enrichment', 0.42, 0.3), tM1 + 0.5, end(6) - 3.5);
+    const tM1 = clamp(at(7, 'more exercise', 0.3, 0.3), t6 + 0.3, end(7) - 4);
+    const tM2 = clamp(at(7, 'more enrichment', 0.42, 0.3), tM1 + 0.5, end(7) - 3.5);
     A.in(tl, m1, tM1, 'fadeUp', { dur: 0.5 });
     A.in(tl, m2, tM2, 'fadeUp', { dur: 0.5 });
     [[m1, 560, tM1], [m2, 1000, tM2]].forEach(([m, x, t]) => {
@@ -253,14 +261,14 @@
       tl.to(m, { opacity: 0.5, duration: 0.3 }, t + 0.8);
     });
     const right = C2.put(LB, 'c2-big', 'The *right balance* for this dog', { x: 0, y: 800, w: 1920, align: 'center' });
-    const tR = clamp(at(5, 'right balance', 0.7, 0.3), tM2 + 1.0, end(5) - 0.5);
+    const tR = clamp(at(7, 'right balance', 0.7, 0.3), tM2 + 1.0, end(7) - 0.5);
     A.in(tl, right, tR, 'fadeUp', { dur: 0.7 });
     tl.to(fulc, { fill: C.green, duration: 0.4, yoyo: true, repeat: 1 }, tR);
 
-    // ---------- beat 6: more on this later, on the same slide
+    // ---------- beat 8: more on this later, on the same slide
     const mk = C2.bookmark(LB, 'More on this later', 0, 0);
     Object.assign(mk.style, { left: '1500px', top: '300px' });
-    A.in(tl, mk, cue(6) + 0.1, 'fadeLeft', { dur: 0.6 });
+    A.in(tl, mk, cue(8) + 0.1, 'fadeLeft', { dur: 0.6 });
   });
 
   // ================================================================== ch02s08 Emotions and recovery
@@ -269,20 +277,60 @@
     C2.style(stage);
     css(stage);
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
-    C2.areaHead(ctx, 2, 'Emotions & Recovery');
+    C2.areaHead(ctx, 2, 'Emotions, Mood & Recovery');
 
     // ---------- beat 0: the pot at right
     const P = C2.makePot(stage, { cx: 1480, y: 470, s: 0.82, level: 0.4 });
     A.in(tl, P.wrap, cue(0) + 0.3, 'fadeUp', { dur: 0.8 });
     P.waves(tl, 0, dur);
 
+    // ---------- beats 0 to 2: emotions change all the time (a thin, fast line with a chip at each feeling); they shape
+    // the broader mood (a thick, slow line underneath)
+    const L0 = C2.layer(stage, tl, cue(0));
+    const g0 = K.svg(L0, { x: 0, y: 0, w: 1920, h: 1080 });
+    const QX = 190, QY = 790, QR = 1080, QT = 400;
+    const ax0 = K.path(g0, `M ${QX} ${QT} L ${QX} ${QY} L ${QR} ${QY} M ${QR - 18} ${QY - 13} L ${QR} ${QY} L ${QR - 18} ${QY + 13}`, { stroke: '#b9c6ad', 'stroke-width': 6, fill: 'none' });
+    A.draw(tl, ax0, cue(0) + 0.2, 0.8);
+    const xl0 = C2.put(L0, 'c2d-gl', 'time', { x: QR - 60, y: QY + 18 });
+    A.in(tl, xl0, cue(0) + 0.8, 'fade', { dur: 0.4 });
+    const EMO = '#4a4a4a', MOOD = C2.AREAS[2].col;
+    const wig = (x0, x1, y, amp) => { let d = ''; for (let x = x0, k = 0; x <= x1; x += 16, k++) d += ` L ${x} ${(y - amp * Math.sin(k * 1.4)).toFixed(1)}`; return d; };
+    // pieces of the emotions line, drawn as they are named
+    const E0 = K.path(g0, `M ${QX} 700` + wig(QX, 280, 700, 14), { stroke: EMO, 'stroke-width': 5, fill: 'none' });
+    const E1 = K.path(g0, `M 280 700 C 300 640 320 470 340 470 C 360 470 380 650 420 690`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
+    const E2 = K.path(g0, `M 420 690 C 480 640 530 500 560 500 C 590 500 620 660 670 690`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
+    const E3 = K.path(g0, `M 670 690 C 720 630 750 460 780 460 C 810 460 830 640 860 680`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
+    const E4 = K.path(g0, `M 860 680 C 900 660 930 700 960 692 C 1000 684 1030 700 ${QR - 30} 700`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
+    const lgE = C2.put(L0, 'c2d-gl', '**Emotions:** moment to moment', { x: QX + 20, y: QT - 70 });
+    lgE.style.color = 'var(--ink)';
+    A.draw(tl, E0, cue(0) + 0.6, 0.8, { ease: 'none' });
+    A.in(tl, lgE, cue(0) + 0.7, 'fadeRight', { dur: 0.5 });
+    const FEEL = [['frown', 'Fear', 'fear', 0.15, C.red, 340, 470, E1], ['angry', 'Frustration', 'frustration', 0.4, C.red, 560, 500, E2],
+      ['party-popper', 'Excitement', 'excitement', 0.62, C.amber, 780, 460, E3], ['leaf', 'Settling', 'settle', 0.85, C.green, 980, 690, E4]];
+    let lo0 = cue(1);
+    FEEL.forEach(([ic, t, p, fb, col, x, y, seg]) => {
+      const tt = clamp(at(1, p, fb, 0.4), lo0, end(1) - 0.6);
+      A.draw(tl, seg, tt, 0.6, { ease: 'none' });
+      const c = C2.pill(L0, ic, t, { x, y: y - 96, center: true, size: 26, col });
+      A.in(tl, c, tt + 0.3, 'pop', { dur: 0.4 });
+      lo0 = tt + 0.5;
+    });
+    const M0 = K.path(g0, `M ${QX} 760 C 400 758 600 745 800 728 C 900 720 1000 712 ${QR - 30} 706`, { stroke: MOOD, 'stroke-width': 14, fill: 'none', opacity: 0.9 });
+    g0.insertBefore(M0, E0);
+    const lgM = C2.put(L0, 'c2d-gl', '**Mood:** builds slowly', { x: QX + 520, y: QT - 70 });
+    lgM.style.color = MOOD;
+    const tMd = clamp(at(2, 'broader mood', 0.6, 0.6), cue(2) + 0.2, end(2) - 1.2);
+    A.draw(tl, M0, tMd, 1.6, { ease: 'power1.inOut' });
+    A.in(tl, lgM, tMd + 0.2, 'fadeRight', { dur: 0.5 });
+
     // ---------- beats 1 to 4: the mood graph, laid out cleanly: a legend names the line, events sit under the time axis,
     // words sit above the line where nothing else is
-    const LA = C2.layer(stage, tl, cue(1));
+    const LA = C2.layer(stage, tl, cue(3));
     const g = K.svg(LA, { x: 0, y: 0, w: 1920, h: 1080 });
     const GX = 190, GY = 790, GR = 1080, GT = 400; // axis origin, right end, top
     const ZX0 = 300, ZX1 = 500, SX = 790;          // conversation span, someone-else moment
-    const t1 = cue(1);
+    const t1 = cue(3);
+    tl.to(L0, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t1 - 0.3);
     // legend: whose feelings the line shows
     const leg = K.el('div', 'c2d-leg');
     const lb = K.el('div', 'lb');
@@ -317,7 +365,7 @@
     ev1.appendChild(K.el('div', 't', 'Difficult<br>conversation'));
     Object.assign(ev1.style, { left: (ZX0 + ZX1) / 2 - 110 + 'px', top: GY + 14 + 'px' });
     LA.appendChild(ev1);
-    const tConv = clamp(at(1, 'difficult conversation', 0.25, 0.3), t1 + 0.6, end(1) - 2);
+    const tConv = clamp(at(3, 'difficult conversation', 0.25, 0.3), t1 + 0.6, end(3) - 2);
     tl.fromTo(zone, { attr: { width: 0 } }, { attr: { width: ZX1 - ZX0 }, duration: 0.8, ease: 'power2.out', immediateRender: false }, tConv);
     tl.set(zone, { attr: { width: 0 } }, 0);
     A.in(tl, ev1, tConv + 0.2, 'fadeUp', { dur: 0.5 });
@@ -325,96 +373,91 @@
     A.draw(tl, L1, tConv + 0.4, 1.6, { ease: 'power1.inOut' });
 
     // beat 2: the conversation ends, the feeling stays up
-    const t2 = cue(2);
+    const t2 = cue(4);
     const endL = K.line(g, ZX1, GT, ZX1, GY, { stroke: C.amber, 'stroke-width': 5, 'stroke-dasharray': '12 10' });
-    const tEnd = clamp(at(2, 'conversation ends', 0.15, 0.2), t2, end(2) - 2);
+    const tEnd = clamp(at(4, 'conversation ends', 0.15, 0.2), t2, end(4) - 2);
     A.draw(tl, endL, tEnd, 0.4);
     const L2 = K.path(g, `M ${ZX1} 470 C 590 460 690 478 ${SX - 20} 490`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
     A.draw(tl, L2, tEnd + 0.5, 1.4, { ease: 'none' });
     const still = C2.pill(LA, null, 'Still upset', { x: 645, y: 0, center: true, variant: 'red', size: 28 });
     still.style.top = '370px';
-    A.in(tl, still, clamp(at(2, "don't necessarily disappear", 0.6, 0.3), tEnd + 1.0, end(2)), 'fadeUp', { dur: 0.5 });
+    A.in(tl, still, clamp(at(4, "doesn't necessarily disappear", 0.6, 0.3), tEnd + 1.0, end(4)), 'fadeUp', { dur: 0.5 });
 
-    // beat 3: someone else approaches (an event under the axis); the line spikes: snappier
-    const t3 = cue(3);
-    const tSome = clamp(at(3, 'someone else approaches', 0.15, 0.3), t3, end(3) - 3);
+    // beat 5: something else happens (an event under the axis); the line spikes: a different response
+    const t3 = cue(5);
+    const tSome = clamp(at(5, 'something else happens', 0.15, 0.3), t3, end(5) - 3);
     const someL = K.line(g, SX, GT, SX, GY, { stroke: '#9fb38d', 'stroke-width': 5, 'stroke-dasharray': '12 10' });
     const ev2 = K.el('div', 'c2d-ev');
     const e2b = K.el('div', 'b');
     e2b.style.background = C.greenDark;
-    e2b.appendChild(K.icon('user'));
+    e2b.appendChild(K.icon('bell'));
     ev2.appendChild(e2b);
-    ev2.appendChild(K.el('div', 't', 'Someone else<br>approaches'));
+    ev2.appendChild(K.el('div', 't', 'Something<br>else happens'));
     Object.assign(ev2.style, { left: SX - 110 + 'px', top: GY + 14 + 'px' });
     LA.appendChild(ev2);
     A.draw(tl, someL, tSome, 0.4);
     A.in(tl, ev2, tSome + 0.2, 'fadeUp', { dur: 0.5 });
-    const tSnap = clamp(at(3, 'shorter or snappier', 0.55, 0.3), tSome + 0.9, end(3) - 0.8);
+    const tSnap = clamp(at(5, 'respond differently', 0.55, 0.3), tSome + 0.9, end(5) - 0.8);
     const L3 = K.path(g, `M ${SX - 20} 490 C ${SX - 5} 492 ${SX} 430 ${SX + 18} 420 C ${SX + 40} 412 ${SX + 60} 500 ${GR - 30} 520`, { stroke: C.red, 'stroke-width': 10, fill: 'none' });
     A.draw(tl, L3, tSnap - 0.3, 1.2);
     const burst = K.el('div', 'c2d-burst', '!');
     Object.assign(burst.style, { left: SX + 34 + 'px', top: '362px' });
     LA.appendChild(burst);
     tl.fromTo(burst, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.4)' }, tSnap);
-    const snp = C2.pill(LA, null, 'Snappier', { x: SX + 112, y: 366, variant: 'red', size: 28 });
+    const snp = C2.pill(LA, null, 'Different response', { x: SX + 112, y: 366, variant: 'red', size: 28 });
     A.in(tl, snp, tSnap + 0.3, 'fadeRight', { dur: 0.5 });
 
-    // beat 4: dogs too: the legend switches to the dog
-    const t4 = cue(4);
+    // beat 6: dogs too: the legend switches to the dog
+    const t4 = cue(6);
     tl.to(lbU, { opacity: 0, duration: 0.3 }, t4 + 0.1);
     tl.fromTo(lbD, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', immediateRender: false }, t4 + 0.35);
     tl.to(legT, { opacity: 0, duration: 0.3 }, t4 + 0.1);
     tl.fromTo(legT2, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t4 + 0.4);
     tl.to(leg, { scale: 1.05, transformOrigin: '0% 50%', duration: 0.3, yoyo: true, repeat: 1 }, t4 + 0.5);
 
-    // ---------- beat 5: four emotions drip into the pot; the water rises
-    const t5 = cue(5);
+    // ---------- beat 7: repeated emotional experiences and too little recovery add to the cumulative mood: drops fall in
+    const t5 = cue(7);
     tl.to(LA, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t5 - 0.2);
     const LB = C2.layer(stage, tl, t5);
-    const EM = [['frown', 'Fear', 'Fear', 0.05, C.red], ['cloud-drizzle', 'Anxiety', 'anxiety', 0.18, C.amber], ['angry', 'Frustration', 'frustration', 0.32, C.red], ['zap', 'Stressful experiences', 'repeated stressful', 0.5, C.amber]];
+    const EM = [['repeat', 'Repeated emotional experiences', 'happen repeatedly', 0.12, C.amber], ['hourglass', 'Not enough time to recover', 'opportunity to recover', 0.4, C.red]];
     let lo = t5 + 0.2, L = 0.4;
-    EM.forEach(([ic, t, p, fb, col], k) => {
-      const x = 120 + (k % 2) * 440, y = 330 + Math.floor(k / 2) * 120;
+    const ems = EM.map(([ic, t, p, fb, col], k) => {
+      const x = 120, y = 300 + k * 110;
       const c = C2.pill(LB, ic, t, { x, y, size: 34, col });
-      const tt = clamp(at(5, p, fb, 0.3), lo, end(5) - 1.6);
+      const tt = clamp(at(7, p, fb, 0.3), lo, end(7) - 3);
       A.in(tl, c, tt, 'fadeRight', { dur: 0.5 });
-      const land = P.drip(tl, x + 37, y + 37, tt + 0.3, col, 0.95);
-      L += 0.085;
-      P.setLevel(tl, L, land - 0.05, 0.6);
-      lo = tt + 0.6;
+      lo = tt + 0.8;
+      return { c, x, y, col };
     });
+    const tCum = clamp(at(7, 'cumulative mood', 0.7, 0.4), lo, end(7) - 1.4);
+    ems.forEach(({ x, y, col }, k) => {
+      const land = P.drip(tl, x + 37, y + 37, tCum + k * 0.35, col, 0.95);
+      L += 0.12;
+      P.setLevel(tl, L, land - 0.05, 0.7);
+    });
+    const cum = C2.pill(LB, 'brain', 'Cumulative mood *raises the water*', { x: 120, y: 510, size: 32, col: C2.AREAS[2].col, variant: 'pale' });
+    A.in(tl, cum, clamp(at(7, 'water level', 0.9, 0.3), tCum + 0.8, end(7) - 0.2), 'fadeUp', { dur: 0.5 });
 
-    // ---------- beat 6: a quiet event: no big reaction, still an effect
-    const t6 = cue(6);
-    const calm = C2.badge(LB, 'dog', 220, 680, 130, '#fff', C.greenDark);
+    // ---------- beat 8: a quiet event: no big reaction, still an effect
+    const t6 = cue(8);
+    A.dim(tl, [...ems.map(e => e.c), cum], t6, 0.3);
+    const calm = C2.badge(LB, 'dog', 220, 720, 130, '#fff', C.greenDark);
     calm.style.border = '6px solid var(--green)';
-    const ev = C2.badge(LB, 'bell', 380, 610, 70, C.amberPale, C.amber);
+    const ev = C2.badge(LB, 'bell', 380, 650, 70, C.amberPale, C.amber);
     A.in(tl, calm, t6 + 0.1, 'pop', { dur: 0.5 });
-    const tEv = clamp(at(6, "doesn't have to produce", 0.3, 0.3), t6 + 0.5, end(6) - 3);
+    const tEv = clamp(at(8, "doesn't have to produce", 0.3, 0.3), t6 + 0.5, end(8) - 3);
     A.in(tl, ev, tEv, 'pop', { dur: 0.45 });
     tl.to(ev, { rotation: 14, duration: 0.12, yoyo: true, repeat: 5 }, tEv + 0.4);
-    const noR = C2.put(LB, 'c2-lab', 'No big reaction...', { x: 320, y: 676 });
+    const noR = C2.put(LB, 'c2-lab', 'No big reaction...', { x: 320, y: 716 });
     noR.style.fontSize = '34px';
     A.in(tl, noR, tEv + 0.9, 'fade', { dur: 0.5 });
-    const tEff = clamp(at(6, 'to have an effect', 0.85, 0.3), tEv + 1.4, end(6) - 0.4);
-    const land = P.drip(tl, 420, 610, tEff - 0.6, C.amber, 0.8);
+    const tEff = clamp(at(8, 'to have an effect', 0.85, 0.3), tEv + 1.4, end(8) - 0.4);
+    const land = P.drip(tl, 420, 650, tEff - 0.6, C.amber, 0.8);
     P.setLevel(tl, L + 0.06, land, 0.8);
     L += 0.06;
-    const eff = C2.put(LB, 'c2-lab', '**...still an effect**', { x: 320, y: 724 });
+    const eff = C2.put(LB, 'c2-lab', '**...still an effect**', { x: 320, y: 764 });
     eff.style.fontSize = '38px';
     eff.style.color = 'var(--green-dark)';
     A.in(tl, eff, tEff, 'fadeUp', { dur: 0.5 });
-
-    // ---------- beat 7: limited opportunity for recovery; next chapter
-    const t7 = cue(7);
-    A.dim(tl, [calm, ev, noR, eff], t7, 0.25);
-    const rec = C2.pill(LB, 'hourglass', 'Limited opportunity for *recovery*', { x: 120, y: 840, size: 34, col: C.amber });
-    rec.style.top = '836px';
-    const tRec = clamp(at(7, 'enough time to recover', 0.55, 0.4), t7 + 0.3, end(7) - 2);
-    A.in(tl, rec, tRec, 'fadeRight', { dur: 0.6 });
-    tl.to(rec.querySelector('.ic'), { rotation: 180, duration: 0.8, ease: 'power2.inOut' }, tRec + 0.6);
-    const mk = C2.bookmark(LB, 'Next chapter', 0, 0, 'arrow-right');
-    Object.assign(mk.style, { left: '1340px', top: '890px' });
-    A.in(tl, mk, clamp(at(7, 'next chapter', 0.92, 0.4), tRec + 0.8, end(7)), 'fadeLeft', { dur: 0.6 });
   });
 })();

@@ -27,7 +27,7 @@
   const AREAS = [
     { name: 'Physical Health', short: 'Physical health', icon: 'heart-pulse', col: '#2a8a86' },
     { name: 'Activity, Stimulation & Natural Needs', short: 'Activity and needs', icon: 'paws', col: '#4a6fa5' },
-    { name: 'Emotions & Recovery', short: 'Emotions and recovery', icon: 'brain', col: '#7a8f2e' },
+    { name: 'Emotions, Mood & Recovery', short: 'Emotions, mood and recovery', icon: 'brain', col: '#7a8f2e' },
     { name: 'Environment, Predictability & Choice', short: 'Environment and choice', icon: 'house', col: '#3f6b22' },
   ];
 

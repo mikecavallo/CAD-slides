@@ -127,7 +127,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   threshold. Never say a fuller pot boils with less heat (physically wrong, Tori caught it): a fuller pot has less room
   before it spills over.
   Triggers too close together (stacking) = temperature: heat comes back before the water cools, so a small trigger tips
-  it over. Triggers too close over days or weeks = water level: the baseline itself rises, leaving less room. No new pot parts for either. It answers one question: why
+  it over. Triggers too close over days or weeks = water level: the baseline itself rises, leaving less room. No new pot parts for either.
+  Chapter 3 plan (doc has no Chapter 3 text yet): temperature, threshold zones, two pots same heat, stacking, long-term
+  stress. A drawn dog (C2.dog) stands beside the pot and its body language follows the zone: loose under, stiff at the
+  rim, reacting when it spills. The ABCs come after, in Chapter 4. It answers one question: why
   this reaction, this big, right now. Do NOT map steam, lids, kettles or consequences onto it; the ABC panels and plain
   language carry function, consequences and training. After training: temperature still rises a little but stays
   below boiling ("a dog with a better plan").

@@ -120,8 +120,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   silhouettes row is cut from real photos and the logo (`assets/img/sil_*.png`).
 - "Same behavior, different reasons" on the barking slide.
 - The iceberg is retired: the pot (ingredients + water + temperature) replaces it for "what is under the behavior".
-  Plan for later chapters: water = distant antecedents, burner = immediate antecedent (A), temperature = arousal and
-  stress (emotion decides how much heat), boiling point = threshold (too aroused to think or learn; boiling is still
+  Plan for later chapters: water = distant antecedents, burner = immediate antecedent (A), temperature = arousal, stress
+  and emotional state (Tori's definition; the trigger turns up the heat), boiling point = threshold (too aroused to think or learn; boiling is still
   arousal, excitement boils too), boiling over = the reaction (B), steam = release, heat turned down = the consequence (C). After training the thermometer still
   rises a little but stays below boiling ("a dog with a better plan"), never room temperature.
 - On-screen text never uses em or en dashes.

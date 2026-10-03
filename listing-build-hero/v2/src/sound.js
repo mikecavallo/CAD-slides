@@ -254,19 +254,19 @@ function makeEngine(ctx, dest){
 
 /* ---------- live engine and stage scheduler ---------- */
 const STAGES = {
-  site:      {beds:{ambient:1, breeze:0.35, mixer:0}, birds:0.6, events:{}},
-  concrete:  {beds:{ambient:1, breeze:0.15, mixer:1}, birds:0.15, events:{shovel:[2.2, 5], pour:[6, 10]}},
-  framing:   {beds:{ambient:1, breeze:0.1, mixer:0}, birds:0.1, events:{hammerDrive:[0.9, 2.4], nailBurst:[2.5, 5.5]}},
-  roofing:   {beds:{ambient:1, breeze:0.15, mixer:0}, birds:0.1, events:{roofRun:[1.4, 3.2], hammerDrive:[3, 7]}},
-  exterior:  {beds:{ambient:1, breeze:0.2, mixer:0}, birds:0.15, events:{nailBurst:[1.8, 4], hammerDrive:[3.5, 8]}},
-  landscape: {beds:{ambient:1, breeze:0.45, mixer:0}, birds:0.4, events:{shovel:[1.8, 4]}},
-  finished:  {beds:{ambient:0.55, breeze:1, mixer:0}, birds:1, events:{}}
+  site:      {beds:{ambient:1, breeze:0.35, mixer:0}, birds:0, events:{}},
+  concrete:  {beds:{ambient:1, breeze:0.15, mixer:1}, birds:0, events:{shovel:[2.2, 5], pour:[6, 10]}},
+  framing:   {beds:{ambient:1, breeze:0.1, mixer:0}, birds:0, events:{hammerDrive:[0.9, 2.4], nailBurst:[2.5, 5.5]}},
+  roofing:   {beds:{ambient:1, breeze:0.15, mixer:0}, birds:0, events:{roofRun:[1.4, 3.2], hammerDrive:[3, 7]}},
+  exterior:  {beds:{ambient:1, breeze:0.2, mixer:0}, birds:0, events:{nailBurst:[1.8, 4], hammerDrive:[3.5, 8]}},
+  landscape: {beds:{ambient:1, breeze:0.45, mixer:0}, birds:0, events:{shovel:[1.8, 4]}},
+  finished:  {beds:{ambient:0.55, breeze:1, mixer:0}, birds:0, events:{}}
 };
 /* recorded layers (supplied by the listing agent): birds before and after the build, real construction during it.
    Played as long, randomly chosen, crossfaded chunks so neither file ever audibly loops. If they fail to load,
    the synthesized soundscape above takes over. */
 const REC = {
-  birds:        {url: "audio/birds.mp3",        gain: 1.6, seg: [16, 26], xf: 3.0},
+  birds:        {url: "audio/birds.mp3",        gain: 1.0, seg: [18, 30], xf: 2.0},
   construction: {url: "audio/construction.mp3", gain: 0.95, seg: [10, 18], xf: 1.4}
 };
 const REC_MIX = {

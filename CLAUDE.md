@@ -69,6 +69,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   Dog's Baseline."); s01 beat 2 shows only the header words lighting up; physical health teal; drawn dog's collar runs
   across the whole neck under the ear; s07 line "less activity doesn't always mean a calmer dog" (on screen "Less doesn't
   always mean calmer").
+- Round 6 feedback (applied): s01 no longer labels four ingredients "can be changed" (wrong: breed history and past
+  experiences can't change). It pairs the four Chapter 1 ingredients that return in Chapter 2 with what they mean for
+  the water: Breed history -> Breed needs met today, Past experiences -> Recent stress, Training methods -> How the dog
+  is handled now, Pain -> Pain right now ("Chapter 1: what shaped the dog" / "Now: can be changed, managed, or improved").
+  Rule: an ingredient is what shaped the dog before; the water is what is happening now.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

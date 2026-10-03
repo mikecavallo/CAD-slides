@@ -28,6 +28,16 @@
   .c2a-blt .ln { width: 90px; height: 0; border-top: 5px dashed #2f7fae; margin-left: 24px; }
   .c2a-cmi { position: absolute; font: 700 36px/1.2 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2a-cmi span { color: var(--green); padding: 0 4px; border-radius: 8px; }
+  .c2a-focus { position: absolute; display: flex; flex-direction: column; gap: 18px; }
+  .c2a-focus .k { font: 700 28px/1 var(--font-body); letter-spacing: 5px; text-transform: uppercase; color: var(--muted); }
+  .c2a-focus .w { font: 700 72px/1.05 var(--font-head); color: var(--green); }
+  .c2a-pairs { position: absolute; display: grid; grid-template-columns: auto 52px auto; gap: 22px 10px; align-items: center; justify-items: start; }
+  .c2a-pairs .hd { font: 600 28px/1.2 var(--font-body); color: var(--muted); max-width: 360px; }
+  .c2a-pairs .hd b { color: var(--ink); font-weight: 700; }
+  .c2a-pairs .hd.now { color: #2f7fae; font-weight: 700; }
+  .c2a-pairs .hd.now span { color: var(--ink); padding: 0 4px; border-radius: 6px; }
+  .c2a-pairs .ar { color: var(--muted); display: grid; place-items: center; width: 52px; }
+  .c2a-pairs .ar svg { width: 36px; height: 36px; stroke-width: 2.4; }
   .c2a-who { display: flex; flex-direction: column; gap: 12px; padding-left: 26px; border-left: 8px solid var(--green); margin-top: 26px; }
   .c2a-who .nm { font: 700 46px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2a-who .cr { font: 700 30px/1 var(--font-body); color: var(--green-dark); letter-spacing: 1px; white-space: nowrap; }
@@ -202,7 +212,7 @@
 
     // ---------- beat 0: chapter 1's bowl and its eight ingredients
     const LB = C2.layer(stage);
-    const BX = 560, BY = 600;
+    const BX = 450, BY = 600;
     const B = C1.makeBowl(LB, { cx: BX, y: BY, s: 1.0, filled: 8 });
     B.slots.forEach(sl => gsap.set(sl.g, { opacity: 0 }));
     tl.fromTo(B.wrap, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }, cue(0) + 0.1);
@@ -210,43 +220,52 @@
     const ingP = C2.pill(LB, 'book-open', 'Chapter 1: *the ingredients*', { x: BX, y: 860, center: true, variant: 'pale' });
     A.in(tl, ingP, cue(0) + 0.6, 'fadeUp', { dur: 0.6 });
 
-    // ---------- beat 1: four returning ingredients glow and their names appear at right, under one header that says why
-    // (they can be changed, managed, or improved); the rest dim (they can't)
-    const BACK = [2, 5, 6, 7]; // breed history, past experiences, training tools, pain
+    // ---------- beat 1: the four ingredients that come back, each paired with what it means for the water: the ingredient is
+    // what shaped the dog before, the water is what is happening now
     const t1 = at(1, 'some of those factors', 0.2, 0.2);
     A.out(tl, ingP, t1, 'fade', { dur: 0.4 });
-    tl.to(B.glow, { opacity: 0.25, duration: 0.6 }, t1);
-    B.tokens.forEach((tk, k) => { if (!BACK.includes(k)) tl.to(tk.outer, { opacity: 0.25, duration: 0.6, ease: 'power2.out' }, t1); });
-    const hdr = K.el('div', 'c2a-cmi');
-    hdr.innerHTML = 'Can be <span>changed,</span> <span>managed,</span> or <span>improved</span>';
-    Object.assign(hdr.style, { left: '1080px', top: '268px' });
-    LB.appendChild(hdr);
-    const words = [...hdr.querySelectorAll('span')];
-    const pills = BACK.map((k, j) => {
+    const PAIRS = [[2, 'Breed history', 'Breed needs met today'], [5, 'Past experiences', 'Recent stress'],
+      [6, 'Training methods', 'How the dog is handled now'], [7, 'Pain', 'Pain right now']];
+    const grid = K.el('div', 'c2a-pairs');
+    Object.assign(grid.style, { left: '830px', top: '258px' });
+    const hThen = K.el('div', 'hd', 'Chapter 1: <b>what shaped the dog</b>');
+    const hNow = K.el('div', 'hd now', 'Now: <span>can be changed, managed, or improved</span>');
+    grid.appendChild(hThen);
+    grid.appendChild(K.el('div'));
+    grid.appendChild(hNow);
+    const rows = PAIRS.map(([k, a, b]) => {
       const g = C1.ING[k];
-      const p = C2.pill(LB, g.icon, g.name, { x: 1080, y: 340 + j * 100, col: g.col });
-      tl.to(B.tokens[k].inner, { scale: 1.3, transformOrigin: '50% 50%', duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' }, t1 + 0.3 + j * 0.25);
-      A.in(tl, p, t1 + 0.45 + j * 0.25, 'fadeRight', { dur: 0.6 });
-      return p;
+      const ca = C2.pill(grid, g.icon, a, { col: g.col, size: 28 });
+      const ar = K.el('div', 'ar');
+      ar.appendChild(K.icon('arrow-right'));
+      const cb = C2.pill(grid, 'droplet', b, { col: C2.C.water, size: 28 });
+      [ca, cb].forEach(n => { n.style.position = 'relative'; });
+      grid.insertBefore(ar, cb);
+      return { k, ca, ar, cb };
     });
-    const tInt = clamp(at(1, "That's intentional", 0.8, 0.2), t1 + 1.6, end(1) - 0.3);
-    A.in(tl, hdr, tInt, 'fadeUp', { dur: 0.55 });
-    const cant = C2.pill(LB, 'lock', 'The rest can’t be changed', { x: BX, y: 860, center: true, size: 30, col: C2.C.muted, variant: 'pale' });
-    A.in(tl, cant, tInt + 0.4, 'fadeUp', { dur: 0.55 });
+    LB.appendChild(grid);
+    A.in(tl, hThen, t1 + 0.1, 'fadeUp', { dur: 0.5 });
+    rows.forEach((r, j) => {
+      const t = t1 + 0.4 + j * 0.45;
+      A.in(tl, r.ca, t, 'fadeRight', { dur: 0.5 });
+      tl.to(B.tokens[r.k].inner, { scale: 1.3, transformOrigin: '50% 50%', duration: 0.3, yoyo: true, repeat: 1, ease: 'power2.out' }, t);
+    });
+    const tInt = clamp(at(1, "That's intentional", 0.8, 0.2), t1 + 2.0, end(1) - 0.3);
+    A.in(tl, hNow, tInt, 'fadeUp', { dur: 0.5 });
+    rows.forEach((r, j) => {
+      A.in(tl, r.ar, tInt + 0.2 + j * 0.25, 'fade', { dur: 0.3 });
+      A.in(tl, r.cb, tInt + 0.3 + j * 0.25, 'fadeRight', { dur: 0.5 });
+    });
 
-    // ---------- beat 2: the same header lights up word by word; a dashed pill adds the chapter's other factors; right now
+    // ---------- beat 2: the "now" column's header lights up as "changed, managed, or improved" is said
     const t2 = cue(2);
-    let lo = t2 + 0.2;
-    [['changed', 0.2], ['managed', 0.26], ['improved', 0.32]].forEach(([p, fb], j) => {
-      const tt = clamp(at(2, p, fb, 0.2), lo, end(2) - 3);
-      tl.to(words[j], { color: '#ffffff', backgroundColor: C2.C.green, duration: 0.3 }, tt);
-      lo = tt + 0.3;
-    });
+    tl.to(hNow.querySelector('span'), { color: '#ffffff', backgroundColor: C2.C.green, duration: 0.4 }, clamp(at(2, 'changed', 0.2, 0.2), t2, end(2) - 3));
+    tl.to(rows.map(r => r.cb), { boxShadow: '0 0 0 4px rgba(95,168,207,0.6)', duration: 0.4, stagger: 0.12 }, clamp(at(2, 'right now', 0.6, 0.3), t2 + 1, end(2) - 1));
+    const hdr = grid, cant = grid;
 
     // ---------- beat 3: "we're going to add those ingredients to a pot": the bowl tips and the ingredients drop into an empty pot
     const tDiff = cue(3);
-    tl.to([...pills, hdr, cant], { opacity: 0, duration: 0.4, stagger: 0.03, ease: 'power2.in' }, tDiff - 0.3);
-    tl.to(B.tokens.map(t => t.outer), { opacity: 1, duration: 0.3 }, tDiff - 0.3);
+    tl.to([grid], { opacity: 0, duration: 0.4, stagger: 0.03, ease: 'power2.in' }, tDiff - 0.3);
     const cap = C2.pill(LB, 'arrow-down', 'Adding the ingredients *to the pot*', { x: 960, y: 880, center: true, variant: 'pale', size: 32 });
     A.in(tl, cap, tDiff + 0.3, 'fadeUp', { dur: 0.6 });
     const PX = 1350, PY = 470;

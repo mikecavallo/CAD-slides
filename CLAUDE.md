@@ -76,6 +76,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   the water: Breed history -> Breed needs met today, Past experiences -> Recent stress, Training methods -> How the dog
   is handled now, Pain -> Pain right now ("Chapter 1: what shaped the dog" / "Now: can be changed, managed, or improved").
   Rule: an ingredient is what shaped the dog before; the water is what is happening now.
+- Round 7 feedback (applied): s06 magnifier is blue (#2f7fae) so it doesn't blend into the green dog; s07 slider
+  phrases sit on two lines each; s10 "That day: harder to handle" (red emphasis, it is a bad thing); s11 no longer reads
+  the list of fixes aloud (Tori cut "We may be able to address pain or illness ... more opportunity for recovery." from the
+  narration; it must go from the doc too): the six factors still turn green one after another with drops lifting out
+  and the water dropping, during "do something about" and "lower the water level".
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

@@ -193,7 +193,8 @@
     A.in(tl, ndl, tN + 0.4, 'fadeUp', { dur: 0.5 });
     const tW = clamp(at(2, 'that particular day', 0.6, 0.3), tN + 1.4, end(2) - 1);
     tl.to(stack, { rotation: 3, duration: 0.16, yoyo: true, repeat: 7, ease: 'sine.inOut' }, tW);
-    const td = C2.pill(LB, 'triangle-alert', 'That day: *very different*', { x: 675, y: 300, center: true, variant: 'red', size: 34 });
+    const td = C2.pill(LB, 'triangle-alert', 'That day: *harder to handle*', { x: 675, y: 300, center: true, variant: 'red', size: 34 });
+    td.querySelectorAll('b').forEach(b => { b.style.color = 'var(--red)'; });
     A.in(tl, td, tW + 0.2, 'fadeDown', { dur: 0.5 });
     tl.to(person, { borderColor: C.red, color: C.red, duration: 0.4 }, tW + 0.2);
 

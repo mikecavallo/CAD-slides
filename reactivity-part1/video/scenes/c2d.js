@@ -111,11 +111,11 @@
     A.in(tl, knob, cue(0) + 0.4, 'pop', { dur: 0.5 });
     const tMore = clamp(at(0, 'More activity', 0.05, 0.1), cue(0) + 0.6, end(0) - 3);
     tl.to(knob, { x: TX1 - 40, duration: 0.9, ease: 'power2.inOut' }, tMore);
-    const sR = C2.put(LA, 'c2d-say', 'More isn’t always *better*', { x: TX1 - 470, y: TY + 120 });
+    const sR = C2.put(LA, 'c2d-say', 'More isn’t<br>always *better*', { x: TX1 - 470, y: TY + 120, w: 470, align: 'right' });
     A.in(tl, sR, tMore + 0.6, 'fadeUp', { dur: 0.6 });
     const tLess = clamp(at(0, 'less', 0.6, 0.2), tMore + 1.4, end(0) - 0.5);
     tl.to(knob, { x: TX0 + 40, duration: 1.1, ease: 'power2.inOut' }, tLess);
-    const sL = C2.put(LA, 'c2d-say', 'Less doesn’t always mean *calmer*', { x: TX0, y: TY + 120 });
+    const sL = C2.put(LA, 'c2d-say', 'Less doesn’t always<br>mean *calmer*', { x: TX0, y: TY + 120, w: 470 });
     A.in(tl, sL, tLess + 0.7, 'fadeUp', { dur: 0.6 });
     tl.to(knob, { x: MID, duration: 0.9, ease: 'power2.inOut' }, Math.min(tLess + 1.8, cue(1) + 0.2));
 

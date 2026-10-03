@@ -77,12 +77,12 @@
       return b;
     });
 
-    // ---------- beat 2: one change per phrase: the factor turns green (no new text to read), a drop leaves the pot, the water
-    // drops a step
-    const t2 = cue(2);
-    let lo = t2 + 0.2, L = 0.88;
+    // ---------- beats 1 and 2: no list read aloud (Tori cut it); one after another each factor turns green, a drop leaves the
+    // pot and the water drops a step, running from "do something about" into "lower the water level"
+    let lo = Math.max(t1 + 1.5, cue(1) + 1.5), L = 0.88;
+    const step = clamp((end(2) - 1.4 - lo) / ACT.length, 0.45, 0.8);
     ACT.forEach(([ic, t, p], k) => {
-      const tt = clamp(at(2, p, 0.08 + k * 0.15, 0.3), lo, end(2) - 1);
+      const tt = lo + k * step;
       const f = facs[k];
       tl.to(f, { background: C.pale, borderColor: C.greenLight, duration: 0.4 }, tt);
       tl.to(f.querySelector('.ic'), { background: C.green, duration: 0.4 }, tt);
@@ -91,11 +91,11 @@
       P.lift(tl, 160 + 30, YS[k] + 37, tt + 0.2, C.water, 0.8);
       L -= 0.095;
       P.setLevel(tl, L, tt + 0.3, 0.8);
-      lo = tt + 0.6;
     });
+    const tLast = lo + (ACT.length - 1) * step;
 
-    // ---------- beat 3: the water settles low; more room
-    const t3 = cue(3);
+    // ---------- the water settles low; more room
+    const t3 = Math.max(tLast + 1.0, clamp(sayAt(ctx, 2, 'lower the water level', 0.6, 0.3), cue(2), end(2)));
     P.setLevel(tl, 0.26, t3 + 0.1, 1.0);
     const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     const ax = PX - (C2.R + 70) * S - 40;

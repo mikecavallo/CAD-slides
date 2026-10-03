@@ -485,8 +485,8 @@
       },
       {
        "say": "That problem might normally be manageable, but on that particular day, your response may be very different.",
-       "show": "A small 'Normal day' stack with just the problem: 'Manageable'; the tall stack wobbles: 'That day: very different'.",
-       "onscreen": "Normally manageable. That day: very different."
+       "show": "A small 'Normal day' stack with just the problem: 'Manageable'; the tall stack wobbles: 'That day: harder to handle'.",
+       "onscreen": "Normally manageable. That day: harder to handle."
       },
       {
        "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, and several stressful experiences.",
@@ -508,7 +508,7 @@
     {
      "id": "ch02s11",
      "heading": "The Baseline Can Change",
-     "visual_concept": "The Baseline Can Change. The full pot (ingredients floating) beside six red and amber factor pills; a magnifier scans them; green checks; one change per phrase turns a factor into its fix and a drop lifts out of the pot, so the water drops a step. Ends low with a down arrow and 'More room'. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "The Baseline Can Change. The full pot (ingredients floating) beside six red and amber factor pills; a magnifier scans them; green checks; one change after another (Tori cut the list sentence) turns a factor into its fix and a drop lifts out of the pot, so the water drops a step. Ends low with a down arrow and 'More room'. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -528,13 +528,8 @@
       },
       {
        "say": "Many of them are things we can do something about.",
-       "show": "A green check pops beside each factor.",
+       "show": "A green check pops beside each factor; then, one after another, each factor turns green, a drop lifts out of the pot and the water drops a step (no list read aloud).",
        "onscreen": "We can do something"
-      },
-      {
-       "say": "We may be able to address pain or illness, improve sleep or nutrition, adjust physical or mental activity, better meet natural needs, create more predictability and choice, or provide more opportunity for recovery.",
-       "show": "One per phrase: the factor pill flips to its green fix, a drop lifts out of the pot to it, and the water drops a step.",
-       "onscreen": "Address · Improve · Adjust · Meet needs · Predictability and choice · Recovery"
       },
       {
        "say": "As we improve these factors, we can lower the water level.",

@@ -483,13 +483,12 @@
         {
           "id": "ch01s12",
           "heading": "Putting it together",
-          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then a new amber 'fuel' chip drops in and settles on top of the others under the line 'What fuels the behavior?'; then a barking dog with three question marks circling it in a cycle, like the ABCs to come, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "The bowl at centre with all eight chips dropping in as they are named; then the bowl steps aside and a glass pot of water slides in (the pot from Chapter 2): 'Next: the water they go into'; then 'Next chapter: Your Dog's Baseline' and the logo close.",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
             "logo.png",
-            "icon:dog",
-            "icon:droplet"
+            "diagram:pot"
           ],
           "beats": [
             {
@@ -499,13 +498,13 @@
             },
             {
               "say": "But there's something else we need to understand once those ingredients are in place: the water they go into.",
-              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'something else', a blue water-drop chip drops in and settles on top of them, and the line changes to 'Next: the water they go into'.",
+              "show": "The legend clears and the bowl steps left; a glass pot slides in beside it and a water drop falls in, filling it: 'Next: the water they go into'.",
               "onscreen": "Next: the water they go into"
             },
             {
-              "say": "Next, we'll start looking at what is happening around the behavior.",
-              "show": "The bowl clears. A barking dog appears with three question marks circling it in a cycle, joined by curved arrows like the ABCs to come. The Calling All Dogs logo closes the video.",
-              "onscreen": "Next: what's happening around the behavior"
+              "say": "Next, we'll look at that water: your dog's baseline.",
+              "show": "'Next chapter: Your Dog's Baseline' under the bowl and the pot; the pot pulses; then the Calling All Dogs logo closes the video.",
+              "onscreen": "Next chapter: Your Dog's Baseline"
             }
           ]
         }

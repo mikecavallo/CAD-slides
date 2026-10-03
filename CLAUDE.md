@@ -24,7 +24,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   its recording still matches; cards: Why you're here / What you'll gain / How we'll get there; steps:
   "The difference between reactivity and aggression", "The ingredients that shape behavior"), then
   `ch01s01` to `ch01s12` (definitions, look beyond the label, why, the eight bowl ingredients, putting it
-  together). Last slide ends on a barking dog circled by three "?" badges in a cycle (teases the ABCs).
+  together). Last slide (ch01s12) now matches Chapter 2: after the eight chips drop in, the bowl steps aside, a glass
+  pot of water slides in ("Next: the water they go into"), then "Next chapter: Your Dog's Baseline"; new closing line
+  "Next, we'll look at that water: your dog's baseline." (needs Tori's re-record, with the rest of ch01s12).
 - Scene code: `video/scenes/c0.js` (ch00s01, ch00s02), `c1a.js` to `c1e.js` (chapter 1), shared bowl module
   `c1_bowl.js`. Older versions are in `video/scenes/archive/` and `script/archive/`.
 

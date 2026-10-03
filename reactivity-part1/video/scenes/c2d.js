@@ -284,44 +284,48 @@
     A.in(tl, P.wrap, cue(0) + 0.3, 'fadeUp', { dur: 0.8 });
     P.waves(tl, 0, dur);
 
-    // ---------- beats 0 to 2: emotions change all the time (a thin, fast line with a chip at each feeling); they shape
-    // the broader mood (a thick, slow line underneath)
+    // ---------- beats 0 to 2: emotions in the moment pop up over the dog and fade; the mood is the overall tone of the
+    // panel behind the dog, which shifts a little with each emotion and stays shifted (no line graph)
     const L0 = C2.layer(stage, tl, cue(0));
-    const g0 = K.svg(L0, { x: 0, y: 0, w: 1920, h: 1080 });
-    const QX = 190, QY = 790, QR = 1080, QT = 400;
-    const ax0 = K.path(g0, `M ${QX} ${QT} L ${QX} ${QY} L ${QR} ${QY} M ${QR - 18} ${QY - 13} L ${QR} ${QY} L ${QR - 18} ${QY + 13}`, { stroke: '#b9c6ad', 'stroke-width': 6, fill: 'none' });
-    A.draw(tl, ax0, cue(0) + 0.2, 0.8);
-    const xl0 = C2.put(L0, 'c2d-gl', 'time', { x: QR - 60, y: QY + 18 });
-    A.in(tl, xl0, cue(0) + 0.8, 'fade', { dur: 0.4 });
-    const EMO = '#4a4a4a', MOOD = C2.AREAS[2].col;
-    const wig = (x0, x1, y, amp) => { let d = ''; for (let x = x0, k = 0; x <= x1; x += 16, k++) d += ` L ${x} ${(y - amp * Math.sin(k * 1.4)).toFixed(1)}`; return d; };
-    // pieces of the emotions line, drawn as they are named
-    const E0 = K.path(g0, `M ${QX} 700` + wig(QX, 264, 700, 14) + ' L 280 700', { stroke: EMO, 'stroke-width': 5, fill: 'none' });
-    const E1 = K.path(g0, `M 280 700 C 300 640 320 470 340 470 C 360 470 380 650 420 690`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
-    const E2 = K.path(g0, `M 420 690 C 480 640 530 500 560 500 C 590 500 620 660 670 690`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
-    const E3 = K.path(g0, `M 670 690 C 720 630 750 460 780 460 C 810 460 830 640 860 680`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
-    const E4 = K.path(g0, `M 860 680 C 900 660 930 700 960 692 C 1000 684 1030 700 ${QR - 30} 700`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
-    const lgE = C2.put(L0, 'c2d-gl', '**Emotions:** moment to moment', { x: QX + 20, y: QT - 70 });
-    lgE.style.color = 'var(--ink)';
-    A.draw(tl, E0, cue(0) + 0.6, 0.8, { ease: 'none' });
-    A.in(tl, lgE, cue(0) + 0.7, 'fadeRight', { dur: 0.5 });
-    const FEEL = [['frown', 'Fear', 'fear', 0.15, C.red, 340, 470, E1], ['angry', 'Frustration', 'frustration', 0.4, C.red, 560, 500, E2],
-      ['party-popper', 'Excitement', 'excitement', 0.62, C.amber, 780, 460, E3], ['leaf', 'Settling', 'settle', 0.85, C.green, 980, 690, E4]];
+    const pan = K.el('div');
+    Object.assign(pan.style, { position: 'absolute', left: '140px', top: '280px', width: '940px', height: '600px', borderRadius: '36px', background: '#eef4e6' });
+    L0.appendChild(pan);
+    tl.fromTo(pan, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }, cue(0) + 0.1);
+    const sv0 = K.svg(L0, { x: 0, y: 0, w: 1920, h: 1080 });
+    const D0 = C2.dog(sv0, 560, 630, 1.0);
+    A.in(tl, D0.outer, cue(0) + 0.3, 'fadeUp', { dur: 0.6 });
+    const eL = C2.put(L0, 'c2d-gl', '**Emotions:** constantly changing', { x: 180, y: 312 });
+    eL.style.color = 'var(--ink)';
+    A.in(tl, eL, cue(0) + 0.5, 'fadeRight', { dur: 0.5 });
+    // one bubble per feeling, in the moment: it pops up over the dog and fades; the panel's tone shifts and stays shifted
+    const FEEL = [['frown', 'Fear', 'fear', 0.15, C.red, '#f6ecdc'], ['angry', 'Frustration', 'frustration', 0.4, C.red, '#f4e2cf'],
+      ['party-popper', 'Excitement', 'excitement', 0.62, C.amber, '#f3e4d2'], ['leaf', 'Settling', 'settle', 0.85, C.green, '#f0e9da']];
     let lo0 = cue(1);
-    FEEL.forEach(([ic, t, p, fb, col, x, y, seg]) => {
+    FEEL.forEach(([ic, t, p, fb, col, tint], k) => {
       const tt = clamp(at(1, p, fb, 0.4), lo0, end(1) - 0.6);
-      A.draw(tl, seg, tt, 0.6, { ease: 'none' });
-      const c = C2.pill(L0, ic, t, { x, y: y - 96, center: true, size: 26, col });
-      A.in(tl, c, tt + 0.3, 'pop', { dur: 0.4 });
-      lo0 = tt + 0.5;
+      const c = C2.pill(L0, ic, t, { x: 760 + (k % 2) * 40, y: 380 - (k % 2) * 20, center: true, size: 30, col });
+      tl.fromTo(c, { opacity: 0, y: 30, scale: 0.7 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(2)', immediateRender: false }, tt);
+      tl.set(c, { opacity: 0 }, 0);
+      tl.to(c, { opacity: 0, y: -40, duration: 0.5, ease: 'power2.in' }, tt + 1.3);
+      tl.to(pan, { backgroundColor: tint, duration: 1.4, ease: 'sine.inOut' }, tt + 0.2);
+      lo0 = tt + 0.6;
     });
-    const M0 = K.path(g0, `M ${QX} 760 C 400 758 600 745 800 728 C 900 720 1000 712 ${QR - 30} 706`, { stroke: MOOD, 'stroke-width': 14, fill: 'none', opacity: 0.9 });
-    g0.insertBefore(M0, E0);
-    const lgM = C2.put(L0, 'c2d-gl', '**Mood:** builds over time', { x: QX + 520, y: QT - 70 });
-    lgM.style.color = MOOD;
+    C2.wag(tl, D0, lo0 + 0.2, end(2));
+    // beat 2: those feelings shape the broader mood: name the tone of the panel
+    const mood = K.el('div', 'c2d-moodtag');
+    Object.assign(mood.style, { position: 'absolute', left: '180px', top: '818px', display: 'flex', alignItems: 'center', gap: '16px',
+      font: '700 30px/1 var(--font-body)', color: 'var(--ink)' });
+    const sw = K.el('div');
+    Object.assign(sw.style, { width: '52px', height: '52px', borderRadius: '50%', background: C2.AREAS[2].col, color: '#fff', display: 'grid', placeItems: 'center' });
+    const swi = K.icon('brain');
+    Object.assign(swi.style, { width: '30px', height: '30px' });
+    sw.appendChild(swi);
+    mood.appendChild(sw);
+    mood.appendChild(K.el('span', null, K.md('**Mood:** the overall tone, shaped by all of these')));
+    L0.appendChild(mood);
     const tMd = clamp(at(2, 'broader mood', 0.6, 0.6), cue(2) + 0.2, end(2) - 1.2);
-    A.draw(tl, M0, tMd, 1.6, { ease: 'power1.inOut' });
-    A.in(tl, lgM, tMd + 0.2, 'fadeRight', { dur: 0.5 });
+    A.in(tl, mood, tMd, 'fadeUp', { dur: 0.5 });
+    tl.to(pan, { boxShadow: '0 0 0 6px ' + C2.AREAS[2].col, duration: 0.4, yoyo: true, repeat: 1 }, tMd + 0.3);
 
     // ---------- beats 1 to 4: the mood graph, laid out cleanly: a legend names the line, events sit under the time axis,
     // words sit above the line where nothing else is
@@ -435,8 +439,13 @@
       L += 0.12;
       P.setLevel(tl, L, land - 0.05, 0.7);
     });
-    const cum = C2.pill(LB, 'brain', 'Cumulative mood *raises the water*', { x: 120, y: 510, size: 32, col: C2.AREAS[2].col, variant: 'pale' });
-    A.in(tl, cum, clamp(at(7, 'water level', 0.9, 0.3), tCum + 0.8, end(7) - 0.2), 'fadeUp', { dur: 0.5 });
+    // the mood doesn't raise the water by itself: it affects whether the water goes up or down
+    const cum = C2.pill(LB, 'arrow-up-down', 'Mood affects whether the water *goes up or down*', { x: 120, y: 510, size: 32, col: C2.AREAS[2].col, variant: 'pale' });
+    const tUD = clamp(at(7, 'water level', 0.9, 0.3), tCum + 0.8, end(7) - 0.2);
+    A.in(tl, cum, tUD, 'fadeUp', { dur: 0.5 });
+    P.setLevel(tl, L + 0.05, tUD + 0.4, 0.6, 'sine.inOut');
+    P.setLevel(tl, L - 0.04, tUD + 1.0, 0.8, 'sine.inOut');
+    P.setLevel(tl, L, tUD + 1.8, 0.6, 'sine.inOut');
 
     // ---------- beat 8: a quiet event: no big reaction, still an effect
     const t6 = cue(8);

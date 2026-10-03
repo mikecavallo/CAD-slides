@@ -99,6 +99,13 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Round 10: the pot outline is open at the top (no line across the mouth; c2_pot.js); s02 cut the sentence "Emotions are
   constantly changing throughout the day ... longer periods of time." (repeated s08) and keeps only "Part of that baseline
   is the dog's mood."; the full emotions and mood explanation lives on s08.
+- Round 11: s01 "Now: can be changed, managed, or improved" lights one word at a time as it is said; s08 opening is no
+  longer a line graph: a dog in a soft panel, a bubble pops up and fades for each feeling (emotions in the moment) and
+  the panel's colour shifts a little each time and stays shifted ("Mood: the overall tone, shaped by all of these");
+  s08 beat 7 pill "Mood affects whether the water goes up or down" (mood does not raise the water by itself), the water
+  moves up and down; s12 ends with a Claude-written bridge (Tori asked for it): "We'll get to temperature later. First,
+  in the next chapter, we'll step away from the pot and look at the ABCs of behavior." with a Next chapter / The ABCs of
+  Behavior / A B C card before the logo close.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

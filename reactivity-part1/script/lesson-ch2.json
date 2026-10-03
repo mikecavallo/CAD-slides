@@ -394,17 +394,17 @@
      "beats": [
       {
        "say": "Emotions are constantly changing.",
-       "show": "The pot at right; a thin emotions line starts to wiggle across a graph at left.",
+       "show": "The pot at right; at left a dog in a soft panel: 'Emotions: constantly changing'.",
        "onscreen": "Emotions are constantly changing"
       },
       {
        "say": "A dog may experience fear in one moment, frustration in another, excitement later, and then begin to settle again.",
-       "show": "The line peaks at Fear, Frustration and Excitement, then settles; a chip names each.",
+       "show": "A bubble pops up over the dog for each feeling (Fear, Frustration, Excitement, Settling) and fades; the panel's tone shifts a little each time and stays shifted.",
        "onscreen": "Fear · Frustration · Excitement · Settling"
       },
       {
        "say": "Those individual emotional experiences can influence the dog's broader mood.",
-       "show": "A thick, slow mood line rises under the fast one: 'Mood: builds slowly'.",
+       "show": "'Mood: the overall tone, shaped by all of these' with a swatch of the panel's colour.",
        "onscreen": "Emotions shape mood"
       },
       {
@@ -429,7 +429,7 @@
       },
       {
        "say": "When emotional experiences happen repeatedly, or there isn't enough opportunity to recover between them, they can contribute to the dog's cumulative mood and affect the water level in the pot.",
-       "show": "'Repeated emotional experiences' and 'Not enough time to recover' pills; drops fall into the pot and the water rises.",
+       "show": "'Repeated emotional experiences' and 'Not enough time to recover' drip into the pot and the water rises; 'Mood affects whether the water goes up or down' and the water moves up and down.",
        "onscreen": "Repeated experiences · Not enough recovery · Cumulative mood"
       },
       {
@@ -601,6 +601,11 @@
        "say": "Temperature.",
        "show": "A thermometer drops into the pot and its line rises; the second frame becomes 'Part 3: Temperature' with 'Now, how hot is it?'; then the logo close.",
        "onscreen": "Now, how hot is it?"
+      },
+      {
+       "say": "We'll get to temperature later. First, in the next chapter, we'll step away from the pot and look at the ABCs of behavior.",
+       "show": "The 'Now, how hot is it?' line clears; 'Next chapter: The ABCs of Behavior' with A, B, C badges; then the logo close.",
+       "onscreen": "Next chapter: The ABCs of Behavior"
       }
      ]
     }

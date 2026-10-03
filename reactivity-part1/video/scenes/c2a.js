@@ -32,6 +32,7 @@
   .c2a-pairs .hd { font: 600 28px/1.2 var(--font-body); color: var(--muted); max-width: 360px; }
   .c2a-pairs .hd b { color: var(--ink); font-weight: 700; }
   .c2a-pairs .hd.now { color: #2f7fae; font-weight: 700; }
+  .c2a-pairs .hd.now { color: var(--ink); }
   .c2a-pairs .hd.now span { color: var(--ink); padding: 0 4px; border-radius: 6px; }
   .c2a-pairs .ar { color: var(--muted); display: grid; place-items: center; width: 52px; }
   .c2a-pairs .ar svg { width: 36px; height: 36px; stroke-width: 2.4; }
@@ -95,7 +96,7 @@
     const grid = K.el('div', 'c2a-pairs');
     Object.assign(grid.style, { left: '830px', top: '258px' });
     const hThen = K.el('div', 'hd', 'Chapter 1: <b>what shaped the dog</b>');
-    const hNow = K.el('div', 'hd now', 'Now: <span>can be changed, managed, or improved</span>');
+    const hNow = K.el('div', 'hd now', '<b style="color:#2f7fae">Now:</b> can be <span>changed</span>, <span>managed</span>, or <span>improved</span>');
     grid.appendChild(hThen);
     grid.appendChild(K.el('div'));
     grid.appendChild(hNow);
@@ -125,7 +126,12 @@
 
     // ---------- beat 2: the "now" column's header lights up as "changed, managed, or improved" is said
     const t2 = cue(2);
-    tl.to(hNow.querySelector('span'), { color: '#ffffff', backgroundColor: C2.C.green, duration: 0.4 }, clamp(at(2, 'changed', 0.2, 0.2), t2, end(2) - 3));
+    let loW = t2;
+    [['changed', 0.2], ['managed', 0.27], ['improved', 0.34]].forEach(([w, fb], k) => {
+      const tw = clamp(at(2, w, fb, 0.15), loW, end(2) - 2.5 + k * 0.5);
+      tl.to(hNow.querySelectorAll('span')[k], { color: '#ffffff', backgroundColor: C2.C.green, duration: 0.3 }, tw);
+      loW = tw + 0.3;
+    });
     tl.to(rows.map(r => r.cb), { boxShadow: '0 0 0 4px rgba(95,168,207,0.6)', duration: 0.4, stagger: 0.12 }, clamp(at(2, 'right now', 0.6, 0.3), t2 + 1, end(2) - 1));
     const hdr = grid, cant = grid;
 

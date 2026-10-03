@@ -24,6 +24,9 @@
   .c2f-da { position: absolute; }
   .c2f-hot { position: absolute; font: 700 84px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2f-hot b { color: var(--red); font-weight: 700; }
+  .c2f-nk { font: 700 28px/1 var(--font-body); letter-spacing: 6px; text-transform: uppercase; color: var(--muted); }
+  .c2f-nt { font: 700 64px/1.05 var(--font-head); color: var(--green); white-space: nowrap; }
+  .c2f-abc { width: 96px; height: 96px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font: 700 52px/1 var(--font-head); }
   `;
   const css = stage => stage.appendChild(K.el('style', null, CSS));
   const { sayAt, clamp } = C1;
@@ -260,7 +263,22 @@
     A.in(tl, th2, t5 + 0.7, 'pop', { dur: 0.5 });
 
     // ---------- close: the Calling All Dogs logo
-    const tL = Math.max(t5 + 3.2, Math.min(end(4) + 2.4, dur - 2.4));
-    C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2, p1, p1b, p2b, lead]);
+    // ---------- beat 5: the bridge: temperature later; the next chapter steps away from the pot for the ABCs
+    const t6 = cue(5);
+    tl.to([hot, th2], { opacity: 0, duration: 0.4 }, t6);
+    const nx = K.el('div');
+    Object.assign(nx.style, { position: 'absolute', left: '1060px', top: '560px', width: '700px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '22px' });
+    nx.appendChild(K.el('div', 'c2f-nk', 'Next chapter'));
+    nx.appendChild(K.el('div', 'c2f-nt', 'The ABCs of Behavior'));
+    const abc = K.el('div');
+    Object.assign(abc.style, { display: 'flex', gap: '22px' });
+    const lets = ['A', 'B', 'C'].map(l => { const d = K.el('div', 'c2f-abc', l); abc.appendChild(d); return d; });
+    nx.appendChild(abc);
+    stage.appendChild(nx);
+    const tNx = clamp(sayAt(ctx, 5, 'next chapter', 0.45, 0.3), t6 + 0.3, end(5) - 1.5);
+    A.in(tl, nx, tNx, 'fadeUp', { dur: 0.6 });
+    A.in(tl, lets, clamp(sayAt(ctx, 5, 'ABCs', 0.85, 0.3), tNx + 0.4, end(5)), 'pop', { dur: 0.45, stagger: 0.15 });
+    const tL = Math.max(end(5) + 0.6, Math.min(end(5) + 1.6, dur - 2.4));
+    C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2, p1, p1b, p2b, lead, nx]);
   });
 })();

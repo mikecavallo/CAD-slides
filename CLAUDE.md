@@ -136,8 +136,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   stress. A drawn dog (C2.dog) stands beside the pot and its body language follows the zone: loose under, stiff at the
   rim, reacting when it spills. The ABCs come after, in Chapter 4.
   Concept test clip: `script/lesson-concept.json` + `video/scenes/c3x.js` (boil kit: foam, spill, burner, dial,
-  thermometer, dog body language). To build it, add `<script src="scenes/c3x.js"></script>` to video/index.html (left out
-  so Chapter 2's render cache stays valid), back up build/timing.json, and run the preview pipeline with
+  thermometer, dog body language). It is registered in video/index.html; back up build/timing.json and run the preview pipeline with
   LESSON=lesson-concept.json. It answers one question: why
   this reaction, this big, right now. Do NOT map steam, lids, kettles or consequences onto it; the ABC panels and plain
   language carry function, consequences and training. After training: temperature still rises a little but stays
@@ -150,8 +149,17 @@ pipeline). This file records the state, decisions and working agreements from ea
   slide, logo close); each lesson file has a `"series"` block (course title and title-slide line breaks). Chapter 2
   uses the kit (verified pixel-identical); Chapter 1's c0.js still has its own copy, left alone until Tori's re-records.
   A new course under the same brand = new lesson files with their own series block, nothing else.
+- The render cache ignores the scene `<script>` lines in index.html, so registering a new chapter or video does not
+  re-render the others.
 - Use the project skill `.claude/skills/build-chapter-video/` (Tori sends copy plus directions; Claude asks once
   about real gaps, then builds and delivers). Tori-facing template: its `references/intake-template.md`.
+
+## Standalone videos
+
+- One-off branded videos (tips, promos, announcements) use the skill `.claude/skills/build-branded-video/`: same
+  frame and shared slides, no chapter number or card, `script/video-<slug>.json` + `video/scenes/v_<slug>.js`.
+  Template: `script/video-example.json` / `v_example.js` ("Spot It First", title slide, one tip slide, logo close with
+  a call to action). 16:9 only.
 
 ## Working with Tori
 

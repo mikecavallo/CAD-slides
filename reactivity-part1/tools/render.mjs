@@ -24,7 +24,9 @@ const SCALE = Number(arg('--scale', 1));
 const OUT = path.join(ROOT, SCALE > 1 ? `build/segments@${SCALE}x` : 'build/segments');
 fs.mkdirSync(OUT, { recursive: true });
 
-let shared = ['video/lib.js', 'video/series.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
+// index.html counts without its scene <script> lines, so registering a new chapter or video does not re-render the others
+let shared = ['video/lib.js', 'video/series.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8'))
+  .map(s => s.replace(/<script src="scenes\/[^"]+"><\/script>\n?/g, '')).join('\n');
 // which scene file registers each scene id (files are not always named after their chapter);
 // helper files that register no scenes (e.g. the shared bowl c1_bowl.js) belong to their chapter prefix (c1): editing one
 // re-renders the scenes in files starting with that prefix. c0.js also uses the chapter 1 helpers, so c1 helpers count for c0.
@@ -34,9 +36,10 @@ const files = fs.readdirSync(path.join(ROOT, 'video/scenes')).filter(f => f.ends
 const srcs = Object.fromEntries(files.map(f => [f, fs.readFileSync(path.join(ROOT, 'video/scenes', f), 'utf8')]));
 const sceneIds = src => [...src.matchAll(/registerScene\('([^']+)'/g)].map(m => m[1]);
 for (const f of files) if (!sceneIds(srcs[f]).length) { const k = f.split('_')[0]; HELPERS[k] = (HELPERS[k] || '') + '\n' + srcs[f]; }
-const usesC1 = { c0: ['c1'], c2: ['c1'] };
+// standalone branded videos (v_*.js) and later chapters may use the bowl and pot modules too
+const usesC1 = { c0: ['c1'], c2: ['c1'], c3: ['c1', 'c2'], v_: ['c1', 'c2'] };
 for (const f of files) {
-  const k = f.slice(0, 2);
+  const k = f.startsWith('v_') ? 'v_' : f.slice(0, 2);
   const deps = [k, ...(usesC1[k] || [])].map(d => HELPERS[d] || '').join('\n');
   sceneIds(srcs[f]).forEach(id => { SCENE_FILE[id] = srcs[f] + deps; });
 }

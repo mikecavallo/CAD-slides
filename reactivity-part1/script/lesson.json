@@ -1,5 +1,12 @@
 {
-  "title": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression",
+  "title": "Understanding Dog Behavior",
+  "series": {
+    "title": "Understanding Dog Behavior",
+    "titleLines": [
+      "Understanding",
+      "Dog Behavior"
+    ]
+  },
   "notes": "v8: a welcome slide (ch00), then Chapter 1 'Starting with the Basics': the plan slide (ch00s02, id kept so its recording still matches) and the material from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. The trainer records the narration.",
   "chapters": [
     {
@@ -9,7 +16,7 @@
       "scenes": [
         {
           "id": "ch00s01",
-          "heading": "Getting Started with Dog Behavior",
+          "heading": "Understanding Dog Behavior",
           "visual_concept": "Title slide: the presentation title at left, Tori's headshot in a large circle at right with the training photo (Tori with a Golden Retriever) as a smaller tilted card, and a name block with credentials.",
           "assets": [
             "trainer_headshot.jpg",
@@ -18,9 +25,9 @@
           ],
           "beats": [
             {
-              "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome to Getting Started with Dog Behavior: Understanding Reactivity and Aggression.",
-              "show": "The title 'Getting Started with Dog Behavior' and the subtitle 'Understanding Reactivity and Aggression' write on at left; the headshot scales in inside a green ring; the name block 'Tori Ganino, BS, CDBC, CPDT-KA, Calling All Dogs' appears as the name is said; the training photo card tilts in over the corner of the headshot.",
-              "onscreen": "Getting Started with Dog Behavior: Understanding Reactivity and Aggression"
+              "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome to Understanding Dog Behavior.",
+              "show": "The title 'Understanding Dog Behavior' writes on at left; the headshot scales in inside a green ring; the name block 'Tori Ganino, BS, CDBC, CPDT-KA, Calling All Dogs' appears as the name is said; the training photo card tilts in over the corner of the headshot.",
+              "onscreen": "Understanding Dog Behavior"
             }
           ]
         }
@@ -483,13 +490,12 @@
         {
           "id": "ch01s12",
           "heading": "Putting it together",
-          "visual_concept": "The bowl at center with all eight chips dropping in as they are named; then a new amber 'fuel' chip drops in and settles on top of the others under the line 'What fuels the behavior?'; then a barking dog with three question marks circling it in a cycle, like the ABCs to come, and a short Calling All Dogs logo close. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "The bowl at centre with all eight chips dropping in as they are named; then the bowl steps aside and a glass pot of water slides in (the pot from Chapter 2): 'Next: the water they go into'; then 'Next chapter: Your Dog's Baseline' and the logo close.",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
             "logo.png",
-            "icon:dog",
-            "icon:flame"
+            "diagram:pot"
           ],
           "beats": [
             {
@@ -498,14 +504,14 @@
               "onscreen": "Behavior is shaped by many factors"
             },
             {
-              "say": "But there's another piece we need to understand: what fuels the behavior once those ingredients are in place.",
-              "show": "The eight chips stay in the bowl and pulse on 'set the stage'. On 'another piece', a new amber chip with a flame icon drops in and settles on top of them, and the line changes to 'What fuels the behavior?'.",
-              "onscreen": "What fuels the behavior?"
+              "say": "But there's something else we need to understand once those ingredients are in place: the water they go into.",
+              "show": "The legend clears and the bowl steps left; a glass pot slides in beside it and a water drop falls in, filling it: 'Next: the water they go into'.",
+              "onscreen": "Next: the water they go into"
             },
             {
-              "say": "Next, we'll start looking at what is happening around the behavior.",
-              "show": "The bowl clears. A barking dog appears with three question marks circling it in a cycle, joined by curved arrows like the ABCs to come. The Calling All Dogs logo closes the video.",
-              "onscreen": "Next: what's happening around the behavior"
+              "say": "Next, we'll look at that water: your dog's baseline.",
+              "show": "'Next chapter: Your Dog's Baseline' under the bowl and the pot; the pot pulses; then the Calling All Dogs logo closes the video.",
+              "onscreen": "Next chapter: Your Dog's Baseline"
             }
           ]
         }

@@ -475,10 +475,11 @@
   function buildChrome(stage, info) {
     stage.appendChild(el('div', 'bg'));
     const logo = el('img', 'chrome-logo');
-    logo.src = '../assets/img/logo.png';
+    const B = window.BRAND || {};
+    logo.src = B.logo || '../assets/img/logo.png';
     stage.appendChild(logo);
     const f = el('div', 'chrome-footer');
-    f.appendChild(el('div', 'url', 'www.callingalldogsny.com'));
+    f.appendChild(el('div', 'url', 'www.' + (B.url || 'callingalldogsny.com')));
     f.appendChild(el('div', 'rule'));
     const tab = el('div', 'tab');
     tab.appendChild(el('span', null, info.chapterNum ? String(info.chapterNum) : ''));

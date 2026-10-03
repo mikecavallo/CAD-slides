@@ -24,15 +24,21 @@ const SCALE = Number(arg('--scale', 1));
 const OUT = path.join(ROOT, SCALE > 1 ? `build/segments@${SCALE}x` : 'build/segments');
 fs.mkdirSync(OUT, { recursive: true });
 
-let shared = ['video/lib.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
+let shared = ['video/lib.js', 'video/series.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
 // which scene file registers each scene id (files are not always named after their chapter);
-// helper files that register no scenes (e.g. the shared bowl) count as shared, so editing them re-renders everything
+// helper files that register no scenes (e.g. the shared bowl c1_bowl.js) belong to their chapter prefix (c1): editing one
+// re-renders the scenes in files starting with that prefix. c0.js also uses the chapter 1 helpers, so c1 helpers count for c0.
 const SCENE_FILE = {};
-for (const f of fs.readdirSync(path.join(ROOT, 'video/scenes')).filter(f => f.endsWith('.js')).sort()) {
-  const src = fs.readFileSync(path.join(ROOT, 'video/scenes', f), 'utf8');
-  const ids = [...src.matchAll(/registerScene\('([^']+)'/g)].map(m => m[1]);
-  ids.forEach(id => { SCENE_FILE[id] = src; });
-  if (!ids.length) shared += '\n' + src;
+const HELPERS = {};
+const files = fs.readdirSync(path.join(ROOT, 'video/scenes')).filter(f => f.endsWith('.js')).sort();
+const srcs = Object.fromEntries(files.map(f => [f, fs.readFileSync(path.join(ROOT, 'video/scenes', f), 'utf8')]));
+const sceneIds = src => [...src.matchAll(/registerScene\('([^']+)'/g)].map(m => m[1]);
+for (const f of files) if (!sceneIds(srcs[f]).length) { const k = f.split('_')[0]; HELPERS[k] = (HELPERS[k] || '') + '\n' + srcs[f]; }
+const usesC1 = { c0: ['c1'], c2: ['c1'] };
+for (const f of files) {
+  const k = f.slice(0, 2);
+  const deps = [k, ...(usesC1[k] || [])].map(d => HELPERS[d] || '').join('\n');
+  sceneIds(srcs[f]).forEach(id => { SCENE_FILE[id] = srcs[f] + deps; });
 }
 function segHash(seg) {
   const code = seg.kind === 'bumper' ? '' : (SCENE_FILE[seg.id] || '');

@@ -62,6 +62,10 @@ Web pages: `python3 tools/web_parts.py --video out/X.mp4 --timing build/timing.j
 splits a finished video into parts under the artifact file limit, then `python3 tools/web_page.py --dir out/web/x ...`
 writes a player page with a scene list and captions.
 
+Chapter 2 is its own video with its own script, `script/lesson-ch2.json`. Run any tool with
+`LESSON=lesson-ch2.json` in front to build it (outputs and the narration script get a `-ch2` suffix where
+they would clash).
+
 Quality checks: `node tools/snap.mjs <scene>` makes stills at each beat; `python3 tools/qa_sheets.py`
 makes contact sheets from the rendered video, one frame every 1.5 s.
 

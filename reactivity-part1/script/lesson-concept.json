@@ -1,0 +1,143 @@
+{
+ "title": "Understanding Dog Behavior. Chapter 3 concept test",
+ "series": {
+  "title": "Understanding Dog Behavior",
+  "titleLines": [
+   "Understanding",
+   "Dog Behavior"
+  ]
+ },
+ "notes": "Concept clip to check the pot analogy before Chapter 3 is written. Build with LESSON=lesson-concept.json.",
+ "tail": 1.6,
+ "chapters": [
+  {
+   "id": "ch03x",
+   "num": 3,
+   "title": "Concept test",
+   "bumper": false,
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "c3x01",
+     "heading": "Emotions fluctuate. And they add up.",
+     "visual_concept": "Concept test for Chapter 3 (not in the doc yet).",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Emotions fluctuate, rising and falling throughout the day.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "They also accumulate. Each experience can leave the water a little higher than before.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "With enough time to recover, the level comes back down.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "c3x02",
+     "heading": "Under, at, and over threshold",
+     "visual_concept": "Concept test for Chapter 3 (not in the doc yet).",
+     "assets": [],
+     "beats": [
+      {
+       "say": "The rim of the pot is your dog's threshold.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Under threshold, the water is warm but steady. Your dog notices, but can still think, eat, and learn.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "At threshold, the bubbles rise toward the rim. Your dog stiffens, stares, and is slower to respond.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Over threshold, the pot boils over. Your dog reacts, and learning stops.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "c3x03",
+     "heading": "Same heat, two pots",
+     "visual_concept": "Concept test for Chapter 3 (not in the doc yet).",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Here's a pot with a low water level. When the heat comes on, the bubbles rise, but there's room. Nothing spills.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Now the same heat under a fuller pot. There's less room, so it boils over.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Same trigger. Different baseline.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "c3x04",
+     "heading": "Trigger stacking",
+     "visual_concept": "Concept test for Chapter 3 (not in the doc yet).",
+     "assets": [],
+     "beats": [
+      {
+       "say": "When triggers happen close together, the water doesn't have time to cool down.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Each one starts from a higher temperature, until something small tips it over. The last trigger gets the blame, even if it was the smallest.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Spread those same triggers out, and the water has time to cool in between.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "c3x05",
+     "heading": "Before, during, and after training",
+     "visual_concept": "Concept test for Chapter 3 (not in the doc yet).",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Before training, the pot is full, the trigger turns the heat up high, and it boils over.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "During training, we lower the water. We turn the heat down with distance and management. And we teach new skills while the bubbles stay low.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "After training, your dog turns the heat down on their own. The bubbles rise a little, stay in the pot, and settle quickly. A dog with a better plan.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

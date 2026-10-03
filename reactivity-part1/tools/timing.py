@@ -20,24 +20,25 @@ def frames(sec):
 
 def bumper(ch, start):
     return {
-        "id": f"bumper_{ch['id']}", "kind": "bumper", "chapter": ch["id"], "chapterNum": chapter_num(ch["id"]),
+        "id": f"bumper_{ch['id']}", "kind": "bumper", "chapter": ch["id"], "chapterNum": ch.get("num", chapter_num(ch["id"])),
         "chapterTitle": ch["title"], "start": start, "dur": frames(BUMPER), "beats": [], "audio": [],
     }
 
 
 def scene_seg(ch, sc, start, dur, beats, audio):
     return {
-        "id": sc["id"], "kind": "scene", "chapter": ch["id"], "chapterNum": chapter_num(ch["id"]),
+        "id": sc["id"], "kind": "scene", "chapter": ch["id"], "chapterNum": ch.get("num", chapter_num(ch["id"])),
         "chapterTitle": ch["title"], "heading": sc.get("heading", ""), "start": start, "dur": frames(dur),
         "beats": beats, "audio": audio,
     }
 
 
 def build_sequential(script, beat_dur, beat_audio):
+    tail = script.get("tail", TAIL)  # a lesson may hold its very last slide longer (room for its closing beat)
     """estimate / scratch: every beat has a known length; lay them out back to back."""
     segs, t = [], 0.0
     for ci, ch in enumerate(script["chapters"]):
-        if ci > 0:
+        if ci > 0 and ch.get("bumper", True):  # a chapter may draw its own (narrated) card instead
             b = bumper(ch, t)
             segs.append(b)
             t += b["dur"]
@@ -51,7 +52,7 @@ def build_sequential(script, beat_dur, beat_audio):
                 if a:
                     audio.append({"file": a, "at": round(t + local, 4), "dur": d})
                 local += d + GAP
-            local += (TAIL if last_in_ch else SCENE_GAP) - GAP
+            local += ((tail if ci == len(script["chapters"]) - 1 else TAIL) if last_in_ch else SCENE_GAP) - GAP
             dur = frames(local)
             segs.append(scene_seg(ch, sc, t, dur, beats, audio))
             t += dur
@@ -60,12 +61,13 @@ def build_sequential(script, beat_dur, beat_audio):
 
 def build_narration(script, align):
     segs, t = [], 0.0
+    tail = script.get("tail", TAIL)
     for ci, ch in enumerate(script["chapters"]):
         rec = align["chapters"].get(ch["id"])
         if not rec:
             print(f"  {ch['id']}: not recorded yet, left out")
             continue
-        if segs:
+        if segs and ch.get("bumper", True):
             b = bumper(ch, t)
             segs.append(b)
             t += b["dur"]
@@ -84,7 +86,7 @@ def build_narration(script, align):
             if b > nxt - 0.15:
                 b = (prev_end + nxt) / 2
             bounds.append(b)
-        bounds.append(max(rec["dur"], lasts[-1]) + TAIL)
+        bounds.append(max(rec["dur"], lasts[-1]) + (tail if ci == len(script["chapters"]) - 1 else TAIL))
         bounds = [frames(x) for x in bounds]
         # each scene plays its own slice of the recording, followed by a short silent hold
         for k, sc in enumerate(scenes):
@@ -121,7 +123,7 @@ def main():
     data = {"fps": FPS, "mode": args.mode, "total": round(total, 3), "segments": segs}
     BUILD.mkdir(exist_ok=True)
     (BUILD / "timing.json").write_text(json.dumps(data, indent=1))
-    js = {"fps": FPS, "mode": args.mode, "order": [s["id"] for s in segs], "scenes": {s["id"]: s for s in segs}}
+    js = {"fps": FPS, "mode": args.mode, "order": [s["id"] for s in segs], "scenes": {s["id"]: s for s in segs}, "series": script.get("series", {})}
     (BUILD / "timing.js").write_text("window.TIMING = " + json.dumps(js) + ";\n")
     print(f"timing ({args.mode}): {len(segs)} segments, {total / 60:.1f} min")
 

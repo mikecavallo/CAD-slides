@@ -16,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
-from common import BUILD, ROOT, spoken
+from common import BUILD, ROOT, load_script, spoken
 
 SR = 48000
 OUT = ROOT / "out"
@@ -168,7 +168,7 @@ def main():
     for i, c in enumerate(chapters):
         c["end"] = chapters[i + 1]["start"] if i + 1 < len(chapters) else total
     meta = BUILD / "chapters.ffmeta"
-    meta.write_text(";FFMETADATA1\ntitle=Understanding Reactivity and Aggression, Part 1\nartist=Calling All Dogs\n" + "".join(
+    meta.write_text(f";FFMETADATA1\ntitle={load_script()['title']}\nartist=Calling All Dogs\n" + "".join(
         f"[CHAPTER]\nTIMEBASE=1/1000\nSTART={int(c['start'] * 1000)}\nEND={int(c['end'] * 1000)}\ntitle={c['title']}\n" for c in chapters))
 
     final = OUT / f"{args.name}.mp4"

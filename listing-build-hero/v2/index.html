@@ -1270,35 +1270,37 @@ function deck(x0, x1, z0, z1, top, t0, t1, rails, posts){
   }
   rails.forEach((r, i) => railRun(r[0], r[1], r[2], r[3], top, t0 + d*0.72 + i*d*0.06, t0 + d*0.72 + (i + 1)*d*0.06 + d*0.06));
 }
-/* front deck + stairs + lattice skirt */
+/* front deck + stairs + lattice skirt: a wide landing from in front of the left wing to just past the door,
+   with the stairs coming off its right side and running down along the house toward the bay */
+const FD = {x0: WING.x0 - 0.8, x1: -W/2 + 8.0, z0: D/2 + 0.1, z1: D/2 + 5.4, sz0: D/2 + 2.0, sz1: D/2 + 5.3};
 {
-  const top = F1 - 0.15, x0 = WING.x0 - 0.5, x1 = -W/2 + 7.7, z0 = D/2 + 0.1, z1 = D/2 + 4.0;
-  const sx0 = -W/2 + 4.0, sx1 = x1;
-  deck(x0, x1, z0, z1, top, 0.885, 0.935, [[x0, z0, x0, z1], [x0, z1, sx0, z1], [x1, z1, x1, z0]]);
-  add("lattice", (x0 + sx0)/2, (top - 0.4)/2, z1 - 0.1, sx0 - x0, top - 0.4, 0.05, COL.deck[0], 0.932, 0.01, "grow");
+  const top = F1 - 0.15, {x0, x1, z0, z1, sz0, sz1} = FD;
+  deck(x0, x1, z0, z1, top, 0.885, 0.935, [[x0, z0, x0, z1], [x0, z1, x1, z1], [x1, z1, x1, sz1], [x1, sz0, x1, z0]]);
+  add("lattice", (x0 + x1)/2, (top - 0.4)/2, z1 - 0.1, x1 - x0, top - 0.4, 0.05, COL.deck[0], 0.932, 0.01, "grow");
   add("lattice", x0 + 0.1, (top - 0.4)/2, (z0 + z1)/2, 0.05, top - 0.4, z1 - z0, COL.deck[0], 0.932, 0.01, "grow");
-  const risers = 5, r = top/risers, run = 0.85;
+  const risers = 5, r = top/risers, run = 0.9;
   for (let i = 1; i < risers; i++){
-    const y = top - r*i, za = z1 + (i - 1)*run;
-    box(sx0 + 0.1, sx1 - 0.1, y - 0.1, y, za, za + run, pick(COL.deck), 0.905 + i*0.003, 0.01, "drop", {dist:1.5});
+    const y = top - r*i, xa = x1 + (i - 1)*run;
+    box(xa, xa + run, y - 0.1, y, sz0 + 0.1, sz1 - 0.1, pick(COL.deck), 0.905 + i*0.003, 0.01, "drop", {dist:1.5});
+    box(xa, xa + 0.06, y - r, y - 0.1, sz0 + 0.15, sz1 - 0.15, COL.deckDark, 0.904 + i*0.003, 0.01, "drop", {dist:1.5});   /* riser board */
   }
-  const zEnd = z1 + (risers - 1)*run;
-  [sx0 + 0.08, sx1 - 0.08].forEach(x => {
-    boardYZ(x, z1, top - 0.4, zEnd + 0.4, 0.2, 0.15, 0.8, COL.deckDark, 0.9, 0.012, "drop", {dist:2});
-    boardYZ(x, z1, top + 3.05, zEnd, r + 2.9, 0.4, 0.13, COL.deck[0], 0.93, 0.012, "drop", {dist:1.5});
+  const xEnd = x1 + (risers - 1)*run;
+  [sz0 + 0.08, sz1 - 0.08].forEach(z => {
+    boardXY(z, x1, top - 0.4, xEnd + 0.4, 0.2, 0.8, 0.15, COL.deckDark, 0.9, 0.012, "drop", {dist:2});        /* stringer */
+    boardXY(z, x1, top + 3.05, xEnd, r + 2.9, 0.13, 0.4, COL.deck[0], 0.93, 0.012, "drop", {dist:1.5});      /* sloped handrail */
     for (let i = 0; i < (risers - 1)*2; i++){
-      const z = z1 + 0.25 + i*run/2, yb = top - r*Math.ceil((i + 1)/2);
-      const yt = top + 2.95 - (z - z1)*(top - r)/(zEnd - z1);
+      const x = x1 + 0.25 + i*run/2, yb = top - r*Math.ceil((i + 1)/2);
+      const yt = top + 2.95 - (x - x1)*(top - r)/(xEnd - x1);
       box(x - 0.06, x + 0.06, yb, yt, z - 0.06, z + 0.06, pick(COL.deck), 0.915 + i*0.002, 0.008, "drop", {dist:1.5});
     }
-    box(x - 0.15, x + 0.15, 0, r + 3.1, zEnd - 0.15, zEnd + 0.15, pick(COL.deck), 0.912, 0.01, "grow");
+    box(xEnd - 0.15, xEnd + 0.15, 0, r + 3.1, z - 0.15, z + 0.15, pick(COL.deck), 0.912, 0.01, "grow");     /* newel post */
   });
 }
 /* lattice skirting over the foundation along the front, under the bay, and along the right side up to the chimney */
 {
   const LH = STEM_TOP + 0.06, t = 0.94;
   const sk = (cx, cz, sx, sz, i) => add("lattice", cx, LH/2, cz, sx, LH, sz, COL.deck[0], t + i*0.002, 0.012, "grow");
-  sk((-W/2 + 7.8 + BAY.x0)/2, D/2 + 0.13, BAY.x0 - (-W/2 + 7.8), 0.05, 0);
+  sk((FD.x1 + BAY.x0)/2, D/2 + 0.13, BAY.x0 - FD.x1, 0.05, 0);
   sk((BAY.x0 + BAY.x1)/2, D/2 + BAY.d + 0.13, BAY.x1 - BAY.x0, 0.05, 1);
   sk(BAY.x0 - 0.05, D/2 + BAY.d/2 + 0.07, 0.05, BAY.d + 0.1, 2);
   sk(BAY.x1 + 0.05, D/2 + BAY.d/2 + 0.07, 0.05, BAY.d + 0.1, 3);
@@ -1326,13 +1328,13 @@ function deck(x0, x1, z0, z1, top, t0, t1, rails, posts){
 
 /* ---------- landscape: walks, beds, shrubs, shed ---------- */
 {
-  const zs = D/2 + 4.0 + 4*0.85;            /* foot of the front stairs */
+  const zs = FD.z1 + 1.0, xf = FD.x1 + 4*0.9;   /* walk runs along the front of the deck; xf is the foot of the stairs */
   /* concrete pad in front of the deck, then the walk along the front bed and down the right side */
-  box(WING.x0 - 1.0, -W/2 + 8.4, 0, 0.3, D/2 + 4.1, zs + 0.9, null, 0.95, 0.01, "pour", {mat:"walk", axis:0});
-  box(-W/2 + 8.4, W/2 + 4.9, 0, 0.09, zs - 0.9, zs + 0.9, null, 0.953, 0.012, "pour", {mat:"walk", axis:0});
+  box(xf - 0.2, xf + 2.6, 0, 0.12, FD.sz0 - 0.2, zs - 0.9, null, 0.95, 0.01, "pour", {mat:"walk", axis:2});   /* landing pad at the foot of the stairs */
+  box(FD.x0 - 0.6, W/2 + 4.9, 0, 0.09, zs - 0.9, zs + 0.9, null, 0.953, 0.012, "pour", {mat:"walk", axis:0});
   box(W/2 + 2.9, W/2 + 4.9, 0, 0.09, -D/2 - 0.3, zs - 0.9, null, 0.956, 0.012, "pour", {mat:"walk", axis:2});
   /* mulch bed from the stairs around the right corner to the chimney */
-  box(-W/2 + 7.8, W/2 + 2.85, 0, 0.06, D/2 + 0.05, zs - 0.92, COL.mulch, 0.955, 0.012, "grow");
+  box(xf + 2.6, W/2 + 2.85, 0, 0.06, D/2 + 0.05, zs - 0.92, COL.mulch, 0.955, 0.012, "grow");
   box(W/2 + 0.05, W/2 + 2.85, 0, 0.06, CHIM_Z + 2.7, D/2 + 0.05, COL.mulch, 0.956, 0.012, "grow");
 }
 plant("shrub", 5.5, D/2 + 3.0, 4.6, 3, 0.962);

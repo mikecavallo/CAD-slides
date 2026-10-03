@@ -119,11 +119,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   Russell, Sporting: Golden Retriever, Working and assistance: black Lab), each enlarges with a small vignette;
   silhouettes row is cut from real photos and the logo (`assets/img/sil_*.png`).
 - "Same behavior, different reasons" on the barking slide.
-- The iceberg is retired: the pot (ingredients + water + temperature) replaces it for "what is under the behavior".
-  Plan for later chapters: water = distant antecedents, burner = immediate antecedent (A), temperature = arousal, stress
-  and emotional state (Tori's definition; the trigger turns up the heat), boiling point = threshold (too aroused to think or learn; boiling is still
-  arousal, excitement boils too), boiling over = the reaction (B), steam = release, heat turned down = the consequence (C). After training the thermometer still
-  rises a little but stays below boiling ("a dog with a better plan"), never room temperature.
+- The iceberg is retired: the pot replaces it for "what is under the behavior". Keep the pot to four pieces: ingredients
+  (what shaped the dog), water level (baseline, distant antecedents), temperature (arousal, stress and emotional state;
+  the trigger turns up the heat), boiling over (the reaction; boiling point = threshold). It answers one question: why
+  this reaction, this big, right now. Do NOT map steam, lids, kettles or consequences onto it; the ABC panels and plain
+  language carry function, consequences and training. After training: temperature still rises a little but stays
+  below boiling ("a dog with a better plan").
 - On-screen text never uses em or en dashes.
 
 ## Working with Tori

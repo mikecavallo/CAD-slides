@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>48 Alder Hollow</title>
+<title>106 Steinmann Avenue</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
@@ -114,13 +114,26 @@ a{color:inherit}
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:48px;align-items:start}
 .prose{display:grid;gap:16px;font-family:var(--prose);font-size:19px;line-height:1.6;max-width:62ch}
 .prose p{margin:0}
-.feat-wrap{overflow-x:auto}
-.feat{width:100%;border-collapse:collapse;min-width:420px}
-.feat caption{text-align:left;margin-bottom:16px}
-.feat th,.feat td{text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid var(--line);font-size:15px;vertical-align:top}
-.feat thead th{font:500 11px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom-color:var(--ink)}
-.feat tbody th{font-weight:600}
-.feat td{color:var(--muted)}
+.was{margin:14px 0 0;color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums}
+.was b{color:var(--ink)}
+.acc{margin-top:24px;border-top:1px solid var(--ink)}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:18px 0}
+.acc summary::-webkit-details-marker{display:none}
+.acc .ttl{font-weight:700;font-size:20px;line-height:1.2}
+.acc .sum{grid-column:1;color:var(--muted);font-size:14px}
+.acc summary i{grid-column:2;grid-row:1 / span 2;width:30px;height:30px;border:1px solid var(--line);border-radius:50%;position:relative}
+.acc summary i::before,.acc summary i::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;background:var(--ink);transform:translate(-50%,-50%);transition:transform .2s}
+.acc summary i::after{transform:translate(-50%,-50%) rotate(90deg)}
+.acc details[open] summary i::after{transform:translate(-50%,-50%) rotate(0deg)}
+.acc summary:hover .ttl{color:var(--accent)}
+.acc-body{padding:0 0 24px;display:grid;gap:10px}
+.acc dl{margin:0;display:grid;grid-template-columns:minmax(120px,220px) minmax(0,1fr)}
+.acc dt,.acc dd{margin:0;padding:10px 0;border-top:1px solid var(--line)}
+.acc dt{font:500 11px/1.6 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-right:16px}
+.acc dd{font-size:15px;font-variant-numeric:tabular-nums}
+.acc .lvl{margin:10px 0 0;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.tel{user-select:all;color:var(--ink)}
 .showing{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:48px;align-items:start;background:var(--panel);border:1px solid var(--line);padding:clamp(20px,4vw,44px);border-radius:4px}
 .showing p.lead{font-family:var(--prose);font-size:18px;color:var(--muted);margin:14px 0 0;max-width:36ch}
 form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -137,6 +150,9 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
   .facts div:nth-child(n+4){border-top:1px solid var(--line)}
   .facts dd{font-size:22px}
   .about,.showing{grid-template-columns:minmax(0,1fr);gap:24px}
+  .acc dl{grid-template-columns:minmax(0,1fr)}
+  .acc dd{border-top:0;padding-top:0}
+  .acc dt{padding-bottom:4px}
   form{grid-template-columns:minmax(0,1fr)}
   .details{gap:56px;padding-block:56px 32px}
 }
@@ -159,21 +175,21 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
     </header>
 
     <div class="card">
-      <p class="eyebrow"><i></i>Just listed · Sample details</p>
-      <h1 class="address">48 Alder Hollow Road</h1>
-      <p class="town">Maple Ridge, CT</p>
+      <p class="eyebrow"><i></i>Active · Price reduced</p>
+      <h1 class="address">106 Steinmann Avenue</h1>
+      <p class="town">Middlebury, CT 06762</p>
       <div class="price-row">
-        <p class="price">$389,000</p>
+        <p class="price">$439,900</p>
         <ul class="specs">
-          <li><b>3</b> bd</li>
-          <li><b>1.5</b> ba</li>
-          <li><b>1,540</b> sq ft</li>
+          <li><b>4</b> bd</li>
+          <li><b>2</b> ba</li>
+          <li><b>1,630</b> sq ft</li>
         </ul>
       </div>
       <div class="phase" id="phase" aria-live="polite">
-        <p class="tag" id="ph-tag">01 / 06 · Poured concrete foundation</p>
+        <p class="tag" id="ph-tag">01 / 06 · Poured footings + block foundation</p>
         <h2 id="ph-title">It starts with concrete.</h2>
-        <p class="body" id="ph-body">A full basement with a walk-out door, tucked into a wooded hillside lot.</p>
+        <p class="body" id="ph-body">A full walk-out basement with its own one-car garage, on 0.39 lightly wooded acres.</p>
       </div>
     </div>
 
@@ -195,46 +211,132 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 
 <main class="details">
   <dl class="facts">
-    <div><dt>Bedrooms</dt><dd>3</dd></div>
-    <div><dt>Bathrooms</dt><dd>1.5</dd></div>
-    <div><dt>Living area</dt><dd>1,540<small>sq ft</small></dd></div>
-    <div><dt>Lot</dt><dd>0.46<small>ac</small></dd></div>
-    <div><dt>Built</dt><dd>1986</dd></div>
-    <div><dt>Basement</dt><dd>Full<small>walk-out</small></dd></div>
+    <div><dt>Bedrooms</dt><dd>4</dd></div>
+    <div><dt>Bathrooms</dt><dd>2<small>full</small></dd></div>
+    <div><dt>Living area</dt><dd>1,630<small>sq ft</small></dd></div>
+    <div><dt>Lot</dt><dd>0.39<small>ac</small></dd></div>
+    <div><dt>Built</dt><dd>1953</dd></div>
+    <div><dt>Garage</dt><dd>1<small>car</small></dd></div>
   </dl>
 
   <section class="about">
     <div>
       <p class="kicker">About the home</p>
-      <h2>A saltbox with a backyard built for summer.</h2>
+      <h2>A move-in ready Cape in Middlebury.</h2>
+      <p class="was">Listed at <b>$439,900</b> · reduced from $455,900 on Oct 2</p>
     </div>
     <div class="prose">
-      <p>A front deck leads to the entry, and a wide bay window fills the living room with light. Two full stories rise in back under a long saltbox roofline, with a masonry chimney on the side.</p>
-      <p>Out back, a big deck holds a covered gazebo and a hot tub, and an upstairs bedroom opens onto its own balcony. The lower level walks out at grade, and a detached shed handles the yard gear.</p>
+      <p>This nicely updated New England Cape has a comfortable, easy layout. The living room is built around a fireplace, and the dining area flows into a large kitchen with tile floors, plenty of cabinets and workspace, and a door straight out to the big back deck.</p>
+      <p>Two bedrooms and a recently renovated full bath finish the main level, all on hardwood floors. Upstairs is a remodeled full bath, a third bedroom, and a large primary bedroom with a vaulted ceiling, a big closet, and a slider to a balcony over the landscaped backyard.</p>
+      <p>The full basement walks out into a one-car garage, with lots of storage. There's a large shed and parking for six. It's close to Route 84 and the Middlebury walking trail, in the award-winning Region 15 school district.</p>
     </div>
   </section>
 
-  <div class="feat-wrap">
-    <table class="feat">
-      <caption><p class="kicker">Around the property</p><h2>Outside features</h2></caption>
-      <thead><tr><th scope="col">Feature</th><th scope="col">Where</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">Front deck entry</th><td>Front, with stairs to the walk</td></tr>
-        <tr><th scope="row">Bay window</th><td>Living room, facing the front lawn</td></tr>
-        <tr><th scope="row">Masonry chimney</th><td>Right side</td></tr>
-        <tr><th scope="row">Private balcony</th><td>Upstairs bedroom, rear</td></tr>
-        <tr><th scope="row">Deck, gazebo, hot tub</th><td>Back yard</td></tr>
-        <tr><th scope="row">Walk-out lower level</th><td>Left side, at grade</td></tr>
-        <tr><th scope="row">Detached shed</th><td>Side yard</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <section class="acc-wrap" aria-labelledby="acc-h">
+    <p class="kicker">Listing details</p>
+    <h2 id="acc-h">Everything on the MLS sheet</h2>
+    <div class="acc">
+      <details open>
+        <summary><span class="ttl">Rooms by level</span><span class="sum">Main, upper and lower levels</span><i aria-hidden="true"></i></summary>
+        <div class="acc-body">
+          <h3 class="lvl">Main level</h3>
+          <dl>
+            <dt>Living room</dt><dd>Fireplace, opens to the dining area</dd>
+            <dt>Dining area</dt><dd>Between the living room and kitchen</dd>
+            <dt>Kitchen</dt><dd>Large, tile floors, lots of cabinets and workspace, door to the deck</dd>
+            <dt>Bedrooms</dt><dd>2, hardwood floors</dd>
+            <dt>Full bath</dt><dd>Recently renovated</dd>
+            <dt>Laundry</dt><dd>Off the kitchen</dd>
+          </dl>
+          <h3 class="lvl">Upper level</h3>
+          <dl>
+            <dt>Primary bedroom</dt><dd>Vaulted ceiling, slider to a balcony, large closet, hardwood floors, fresh paint</dd>
+            <dt>Bedroom</dt><dd>1</dd>
+            <dt>Full bath</dt><dd>Remodeled</dd>
+          </dl>
+          <h3 class="lvl">Lower level</h3>
+          <dl>
+            <dt>Basement</dt><dd>Full, walk-out</dd>
+            <dt>Garage</dt><dd>One car, attached, entered from the basement</dd>
+            <dt>Storage</dt><dd>Ample</dd>
+          </dl>
+        </div>
+      </details>
+      <details>
+        <summary><span class="ttl">Interior</span><span class="sum">6 rooms · 1,630 sq ft · fireplace</span><i aria-hidden="true"></i></summary>
+        <div class="acc-body"><dl>
+          <dt>Total rooms</dt><dd>6</dd>
+          <dt>Bedrooms</dt><dd>4</dd>
+          <dt>Bathrooms</dt><dd>2 full</dd>
+          <dt>Living area</dt><dd>1,630 sq ft, heated, above grade</dd>
+          <dt>Fireplaces</dt><dd>1</dd>
+          <dt>Appliances</dt><dd>Oven/range, microwave, refrigerator, freezer, dishwasher</dd>
+          <dt>Not included</dt><dd>Washer and dryer</dd>
+          <dt>Laundry</dt><dd>Main level, off the kitchen</dd>
+          <dt>Attic</dt><dd>No</dd>
+        </dl></div>
+      </details>
+      <details>
+        <summary><span class="ttl">Exterior and lot</span><span class="sum">Cape Cod · 0.39 acres · 1-car garage</span><i aria-hidden="true"></i></summary>
+        <div class="acc-body"><dl>
+          <dt>Style</dt><dd>Cape Cod</dd>
+          <dt>Year built</dt><dd>1953 (public records)</dd>
+          <dt>Lot</dt><dd>0.39 acres, lightly wooded, professionally landscaped</dd>
+          <dt>Siding</dt><dd>Vinyl, beige</dd>
+          <dt>Roof</dt><dd>Gable</dd>
+          <dt>Foundation</dt><dd>Block</dd>
+          <dt>Garage</dt><dd>Attached, 1 car</dd>
+          <dt>Parking</dt><dd>Paved driveway, 6 spaces total</dd>
+          <dt>Outdoor</dt><dd>Large deck off the kitchen, balcony off the primary bedroom, large shed</dd>
+          <dt>Pool</dt><dd>No</dd>
+          <dt>Waterfront</dt><dd>No</dd>
+        </dl></div>
+      </details>
+      <details>
+        <summary><span class="ttl">Utilities and systems</span><span class="sum">Electric baseboard heat · public sewer</span><i aria-hidden="true"></i></summary>
+        <div class="acc-body"><dl>
+          <dt>Heat</dt><dd>Baseboard</dd>
+          <dt>Heat fuel</dt><dd>Electric</dd>
+          <dt>Cooling</dt><dd>Ceiling fans</dd>
+          <dt>Hot water</dt><dd>40-gallon tank</dd>
+          <dt>Water</dt><dd>Public water in street, private well</dd>
+          <dt>Sewer</dt><dd>Public sewer connected</dd>
+        </dl></div>
+      </details>
+      <details>
+        <summary><span class="ttl">Taxes and financial</span><span class="sum">$7,968/yr taxes · no HOA</span><i aria-hidden="true"></i></summary>
+        <div class="acc-body"><dl>
+          <dt>Price</dt><dd>$439,900</dd>
+          <dt>Previous price</dt><dd>$455,900, reduced Oct 2, 2026</dd>
+          <dt>Property tax</dt><dd>$7,968 (July 2026 to June 2027)</dd>
+          <dt>Assessed value</dt><dd>$301,140</dd>
+          <dt>Mil rate</dt><dd>32.52</dd>
+          <dt>HOA</dt><dd>None</dd>
+          <dt>Possession</dt><dd>Negotiable</dd>
+          <dt>Bank owned</dt><dd>No</dd>
+          <dt>Short sale</dt><dd>No</dd>
+          <dt>Home warranty</dt><dd>Not offered</dd>
+        </dl></div>
+      </details>
+      <details>
+        <summary><span class="ttl">Location and schools</span><span class="sum">Middlebury · Region 15 schools</span><i aria-hidden="true"></i></summary>
+        <div class="acc-body"><dl>
+          <dt>Town</dt><dd>Middlebury, New Haven County</dd>
+          <dt>Zoning</dt><dd>R40</dd>
+          <dt>Schools</dt><dd>Region 15 district; elementary and high school assigned by the Board of Ed</dd>
+          <dt>Nearby</dt><dd>Park, Middlebury walking trail, close to Route 84</dd>
+          <dt>Directions</dt><dd>Route 64 to Steinmann Avenue</dd>
+          <dt>Listing ID</dt><dd>24200006</dd>
+        </dl></div>
+      </details>
+    </div>
+  </section>
 
   <section class="showing" id="showing">
     <div>
-      <p class="kicker">Open house Saturday, 11 to 2</p>
+      <p class="kicker">Open house · Sunday, Oct 4, 12:00 to 2:30 pm</p>
       <h2>Book a private showing</h2>
-      <p class="lead">Pick a day and we'll confirm a time within one business day.</p>
+      <p class="lead">Pick a day and we'll confirm a time. Or call <b class="tel">(203) 788-1210</b>.</p>
     </div>
     <form id="showing-form" novalidate>
       <label for="f-name">Name<input id="f-name" name="name" autocomplete="name" required></label>
@@ -242,7 +344,7 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
       <label class="wide" for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
       <label class="wide" for="f-day">Preferred day
         <select id="f-day" name="day">
-          <option>Thursday</option><option>Friday</option><option selected>Saturday</option><option>Sunday</option><option>Monday</option>
+          <option selected>Sunday, Oct 4 (open house)</option><option>Monday, Oct 5</option><option>Tuesday, Oct 6</option><option>Wednesday, Oct 7</option><option>Thursday, Oct 8</option>
         </select>
       </label>
       <button class="btn" type="submit">Request showing</button>
@@ -251,8 +353,8 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
   </section>
 
   <footer class="foot">
-    <span>Address, price and figures are placeholders. The construction animation is illustrative and does not show this home's actual framing.</span>
-    <span>Your Brokerage</span>
+    <span>Listing data from SmartMLS, deemed reliable but not guaranteed. Listing ID 24200006. The construction animation is illustrative and does not show this home's actual framing.</span>
+    <span>Your Brokerage · Office (203) 775-5514</span>
   </footer>
 </main>
 
@@ -263,18 +365,18 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 
 /* ---------- UI: phases, rail, form ---------- */
 const PHASES = [
-  {at:0.00, tag:"Poured concrete foundation", title:"It starts with concrete.",
-   body:"A full basement with a walk-out door, tucked into a wooded hillside lot."},
+  {at:0.00, tag:"Poured footings + block foundation", title:"It starts with concrete.",
+   body:"A full walk-out basement with its own one-car garage, on 0.39 lightly wooded acres."},
   {at:0.18, tag:"2×10 joists @ 16″ o.c.", title:"Built on a solid floor.",
-   body:"A bright main level, with a bay window that pushes the living room out toward the lawn."},
-  {at:0.30, tag:"2×4 studs @ 16″ o.c.", title:"Classic saltbox lines.",
-   body:"Two full stories in back and a long sweeping roof in front. Bedrooms up, living space down."},
-  {at:0.64, tag:"Saltbox roof + masonry chimney", title:"Under roof.",
-   body:"A masonry chimney on the side, and a private balcony off an upstairs bedroom."},
-  {at:0.80, tag:"Siding, windows, decks", title:"Made for being outside.",
-   body:"A front deck entry, plus a big back deck with a covered gazebo and a hot tub."},
+   body:"Hardwood floors, and a living room built around a fireplace and a wide bay window."},
+  {at:0.30, tag:"2×4 studs @ 16″ o.c.", title:"Room for everyone.",
+   body:"Four bedrooms and two full baths: two bedrooms on the main level, two upstairs."},
+  {at:0.64, tag:"Gable roof + masonry chimney", title:"Under roof.",
+   body:"Upstairs, the primary bedroom gets a vaulted ceiling and a slider to its own balcony."},
+  {at:0.80, tag:"Vinyl siding, windows, decks", title:"Made for being outside.",
+   body:"A large deck right off the kitchen, and a professionally landscaped yard."},
   {at:0.955, tag:"Move-in ready", title:"Ready for you.",
-   body:"Open house Saturday, 11 to 2. Private showings all week."}
+   body:"Open house Sunday, Oct 4, noon to 2:30. Private showings all week."}
 ];
 const $ = id => document.getElementById(id);
 const phaseEl = $("phase"), railItems = [...document.querySelectorAll("#rail li")];
@@ -347,15 +449,14 @@ const pick = a => a[Math.floor(rnd() * a.length)];
 
 /* colors sampled from the listing photos where the house shows them */
 const COL = {
-  dirt: col("#7E6650"), pitDirt: col("#6E5844"), gravel: col("#8D8A84"), footing: col("#9A9C97"), concrete: col("#ABADA8"),
+  dirt: col("#7E6650"), pitDirt: col("#6E5844"), gravel: col("#8D8A84"), footing: col("#9A9C97"), cmu: ["#A3A49F","#9C9D98","#AAABA6","#979893"].map(col), concrete: col("#ABADA8"),
   stake: col("#C79A5E"), string: col("#EB6B26"), steel: col("#5E656B"),
   pt: col("#93A070"), lvl: col("#C99556"),
   lumber: ["#DDB67F","#D4AB71","#E3C18D","#CDA36A","#D8B078"].map(col),
   osb: ["#C59B5F","#BB9056","#CDA568","#C29760"].map(col), ply: col("#CFAA72"),
   siding: ["#8F7C77","#8C7974","#927F7A"].map(col), trim: col("#F4F3EF"), glass: col("#55697A"),
   roof: ["#6E7175","#6A6D71","#73767A"].map(col), stucco: ["#5E474B","#624B4F","#5A4448"].map(col), parge: col("#6C5155"),
-  deck: ["#5C3F32","#604236","#583C2F"].map(col), deckDark: col("#4A3228"), cedar: col("#A86A43"), tubCover: col("#6A4A36"),
-  gazebo: col("#3B414C"), metal: col("#8C9196"),
+  deck: ["#5C3F32","#604236","#583C2F"].map(col), deckDark: col("#4A3228"),
   paver: col("#BDB8AD"), mulch: col("#5A3D2C"),
   shrub: ["#56744A","#5E7E4D","#4D6A44"].map(col), maple: col("#5E1F26"), pink: col("#D9608F"),
   trunk: col("#5E4836"), pine: ["#3F5A3B","#466342","#3A5337"].map(col), leaf: ["#4D6B3F","#587A47","#4A653D"].map(col)
@@ -382,9 +483,8 @@ const KINDS = {
   octGlass:{geo:CYL8, mat:glassMat, list:[], shadow:false},
   lattice:{geo:BOX, mat:latticeMat, list:[], shadow:false},
   blob:{geo:new THREE.IcosahedronGeometry(1, 1), mat:flat, list:[], shadow:true},
-  cone:{geo:new THREE.ConeGeometry(1, 1, 9), mat:flat, list:[], shadow:true},
-  pyramid:{geo:new THREE.ConeGeometry(1, 1, 4), mat:flat, list:[], shadow:true}
-};
+  cone:{geo:new THREE.ConeGeometry(1, 1, 9), mat:flat, list:[], shadow:true}
+  };
 const eul = new THREE.Euler();
 function add(kind, x, y, z, sx, sy, sz, c, t0, dur, mode, o){
   o = o || {};
@@ -454,7 +554,19 @@ const WIN = 0.333, WT = 0.667;
 const stemH = STEM_TOP - FOOT_TOP, stemY = (STEM_TOP + FOOT_TOP)/2;
 [
   [0, D/2-WIN, W, WT], [W/2-WIN, 0, WT, D-2*WT], [0, -(D/2-WIN), W, WT], [-(W/2-WIN), 0, WT, D-2*WT]
-].forEach(([x,z,sx,sz], i) => add("box", x, stemY, z, sx, stemH, sz, COL.concrete, 0.07 + i*0.012, 0.03, "grow"));
+].forEach(([x,z,sx,sz], wi) => {
+  /* concrete block, laid course by course in running bond */
+  const along = sx > sz, len = along ? sx : sz, courses = 13, ch = stemH/courses;
+  for (let c = 0; c < courses; c++){
+    for (let a = -len/2 - (c % 2 ? 2 : 0); a < len/2; a += 4){
+      const p0 = Math.max(a, -len/2), p1 = Math.min(a + 4, len/2);
+      if (p1 - p0 < 0.2) continue;
+      const m = (p0 + p1)/2, l = p1 - p0 - 0.03;
+      add("box", along ? x + m : x, FOOT_TOP + ch*(c + 0.5), along ? z : z + m, along ? l : sx, ch - 0.03, along ? sz : l, pick(COL.cmu),
+        0.068 + (c/courses)*0.05 + wi*0.002 + ((m + len/2)/len)*0.006, 0.008, "drop", {dist:1.2});
+    }
+  }
+});
 box(-W/2 + WT, W/2 - WT, FOOT_TOP, FOOT_TOP + 0.33, -D/2 + WT, D/2 - WT, COL.concrete, 0.125, 0.02, "grow");
 /* backfill against the new walls */
 [[-PX, PX, D/2, PZ], [-PX, PX, -PZ, -D/2], [-PX, -W/2, -D/2, D/2], [W/2, PX, -D/2, D/2]].forEach((b, i) =>
@@ -534,7 +646,7 @@ const WALLS = {
   right2:{ox:W/2 - T/2, oz:-D/2 + T, dir:"z", len:D - T, nx:1, nz:0, base:F2, band:-BAND, ext:[-T, 0], gable:true,
           open:[[zu(-8.3)-0.8, zu(-8.3)+0.8, 7.2, 8.8, "oct"],[zu(-4.5), zu(-1.5), 1.6, 7.2, "w"]]}
 };
-/* wall height at u: flat for most walls, follows the roof line on the two saltbox gables */
+/* wall height at u: flat for most walls, follows the roof line on the two gable ends */
 const wallTop = (w, u) => w.gable ? under(w.oz + u) - w.base : w.h;
 function wallBox(kind, w, u0, u1, v0, v1, thick, off, c, t0, dur, mode, o){
   const u = (u0 + u1)/2, along = u1 - u0;
@@ -841,16 +953,10 @@ function deck(x0, x1, z0, z1, top, t0, t1, rails, posts){
     box(x - 0.15, x + 0.15, 0, r + 3.1, zEnd - 0.15, zEnd + 0.15, pick(COL.deck), 0.912, 0.01, "grow");
   });
 }
-/* rear deck, hot tub, gazebo */
+/* rear deck off the kitchen */
 {
   const top = F1 - 0.6, z0 = -D/2 - 12, z1 = -D/2 - 0.1;
   deck(-6, 17, z0, z1, top, 0.88, 0.94, [[-6, z0, 17, z0], [17, z0, 17, z1], [-6, z1 - 3, -6, z0]]);
-  box(-12.5, -5.5, 0, 1.0, -D/2 - 8, -D/2 - 1, COL.deck[2], 0.94, 0.01, "grow");
-  box(-12.2, -5.8, 1.0, 4.0, -D/2 - 7.7, -D/2 - 1.3, COL.cedar, 0.945, 0.012, "grow");
-  box(-12.3, -5.7, 4.0, 4.3, -D/2 - 7.8, -D/2 - 1.2, COL.tubCover, 0.95, 0.01, "drop", {dist:1.5});
-  const gx = 11.5, gz = -D/2 - 6.5, gh = 7.5, gr = 5;
-  [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([a,b], i) => box(gx + a*gr - 0.1, gx + a*gr + 0.1, top, top + gh, gz + b*gr - 0.1, gz + b*gr + 0.1, COL.metal, 0.95 + i*0.002, 0.01, "grow"));
-  add("pyramid", gx, top + gh + 1.2, gz, gr*1.62, 2.4, gr*1.62, COL.gazebo, 0.958, 0.014, "pop", {ry:Math.PI/4});
 }
 /* upstairs balcony off the rear slider */
 {

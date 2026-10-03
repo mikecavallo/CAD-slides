@@ -165,7 +165,7 @@
     // ---------- beat 0: definition card, then the time line
     const def = K.el('div', 'c2a-def');
     Object.assign(def.style, { left: '100px', top: '286px', width: '1720px' });
-    def.appendChild(K.el('div', 'eq', 'Baseline ='));
+    def.appendChild(K.el('div', 'eq', 'Baseline'));
     def.appendChild(K.el('div', 'tx', K.md('the dog’s overall *starting state* before *something new* happens')));
     stage.appendChild(def);
     A.in(tl, def, cue(0) + 0.2, 'fadeUp', { dur: 0.8 });
@@ -209,17 +209,22 @@
     A.in(tl, moodP, tM, 'pop', { dur: 0.55 });
     tl.to(bandR, { attr: { fill: '#c9dba0' }, duration: 0.4, yoyo: true, repeat: 1 }, tM + 0.2);
 
-    // ---------- beat 2: emotions wiggle up and down all day; the mood band drifts up slowly (over the day, and longer)
+    // ---------- beat 2: emotions keep changing (an irregular line, not a regular up and down); the mood band shifts over the
+    // day and over longer periods
     const t2 = cue(2);
     const EY = LV0 - 150, pts = [];
-    for (let x = AX, k = 0; x <= EV - 60; x += 18, k++) {
-      const amp = 34 + 26 * Math.sin(k * 0.7) * Math.sin(k * 0.23);
-      pts.push(`${x},${(EY - amp * Math.sin(k * 1.35)).toFixed(1)}`);
+    // an irregular path: changes of different size and length, sometimes holding, sometimes shifting
+    let seed = 11, y = EY;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let x = AX; x <= EV - 60;) {
+      pts.push(`${x},${y.toFixed(1)}`);
+      x += 24 + rnd() * 60;
+      y = Math.max(EY - 70, Math.min(EY + 50, y + (rnd() - 0.5) * (rnd() < 0.3 ? 30 : 110)));
     }
     const emo = K.svgEl('polyline', { points: pts.join(' '), fill: 'none', stroke: C2.AREAS[2].col, 'stroke-width': 5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, sv);
     const tEmo = clamp(at(2, 'constantly changing', 0.2, 0.3), t2, end(2) - 4);
     A.draw(tl, emo, tEmo, 2.6, { ease: 'none' });
-    const emoL = C2.put(stage, 'c2a-axis', '**Emotions:** up and down all day', { x: AX, y: EY - 96 });
+    const emoL = C2.put(stage, 'c2a-axis', '**Emotions:** constantly changing', { x: AX, y: EY - 96 });
     emoL.style.color = 'var(--ink)';
     A.in(tl, emoL, tEmo + 0.3, 'fadeUp', { dur: 0.5 });
     tl.to(moodP, { opacity: 0, duration: 0.3 }, tEmo);
@@ -228,7 +233,7 @@
     tl.to(band, { y: LVM, duration: 1.6, ease: 'sine.inOut' }, tMood);
     tl.to(dogB, { y: LVM - LV0, duration: 1.6, ease: 'sine.inOut' }, tMood);
     tl.to(bandL, { opacity: 0, duration: 0.3 }, tMood);
-    const moodL = K.svgText(band, AX + 30, 11, 'Mood: shifts slowly', { 'font-size': 30, 'font-weight': 700, fill: C2.C.greenDeep, opacity: 0 });
+    const moodL = K.svgText(band, AX + 30, 11, 'Mood: shifts over time', { 'font-size': 30, 'font-weight': 700, fill: C2.C.greenDeep, opacity: 0 });
     tl.to(moodL, { opacity: 1, duration: 0.4 }, tMood + 0.3);
     const tLong = clamp(at(2, 'longer periods', 0.85, 0.3), tMood + 1.8, end(2) - 0.3);
     tl.to(band, { y: LVM - 30, duration: 1.2, ease: 'sine.inOut' }, tLong);

@@ -296,7 +296,7 @@
     const EMO = '#4a4a4a', MOOD = C2.AREAS[2].col;
     const wig = (x0, x1, y, amp) => { let d = ''; for (let x = x0, k = 0; x <= x1; x += 16, k++) d += ` L ${x} ${(y - amp * Math.sin(k * 1.4)).toFixed(1)}`; return d; };
     // pieces of the emotions line, drawn as they are named
-    const E0 = K.path(g0, `M ${QX} 700` + wig(QX, 280, 700, 14), { stroke: EMO, 'stroke-width': 5, fill: 'none' });
+    const E0 = K.path(g0, `M ${QX} 700` + wig(QX, 264, 700, 14) + ' L 280 700', { stroke: EMO, 'stroke-width': 5, fill: 'none' });
     const E1 = K.path(g0, `M 280 700 C 300 640 320 470 340 470 C 360 470 380 650 420 690`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
     const E2 = K.path(g0, `M 420 690 C 480 640 530 500 560 500 C 590 500 620 660 670 690`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
     const E3 = K.path(g0, `M 670 690 C 720 630 750 460 780 460 C 810 460 830 640 860 680`, { stroke: EMO, 'stroke-width': 5, fill: 'none' });
@@ -317,7 +317,7 @@
     });
     const M0 = K.path(g0, `M ${QX} 760 C 400 758 600 745 800 728 C 900 720 1000 712 ${QR - 30} 706`, { stroke: MOOD, 'stroke-width': 14, fill: 'none', opacity: 0.9 });
     g0.insertBefore(M0, E0);
-    const lgM = C2.put(L0, 'c2d-gl', '**Mood:** builds slowly', { x: QX + 520, y: QT - 70 });
+    const lgM = C2.put(L0, 'c2d-gl', '**Mood:** builds over time', { x: QX + 520, y: QT - 70 });
     lgM.style.color = MOOD;
     const tMd = clamp(at(2, 'broader mood', 0.6, 0.6), cue(2) + 0.2, end(2) - 1.2);
     A.draw(tl, M0, tMd, 1.6, { ease: 'power1.inOut' });

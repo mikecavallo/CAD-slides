@@ -14,7 +14,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
   that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
   water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
-  warning signals) for later chapters; Chapter 3 will add heat and the thermometer to the pot. Sync the lesson
+  warning signals) for later chapters; Chapter 3 is the ABCs, and Chapter 4 adds heat and the thermometer to the pot. Sync the lesson
   file to the doc before every build; the doc wins.
 
 ## Current structure (Chapter 1 is finished, pending Tori's later edits)
@@ -92,6 +92,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   tag; s10 "several emotional experiences" and "together they can influence the dog's mood and raise the water level";
   s12 narration no longer says "distant antecedents" (the on-screen "The water = distant antecedents" label stays),
   one check, "Overall baseline / Including cumulative mood", one card "Arousal and stress in the moment?".
+- Round 9: s02 definition card says "Baseline" (no equal sign); emotions line is irregular, labelled "Emotions: constantly
+  changing" (Tori: emotions change continually, not necessarily up and down) and "Mood: shifts over time" (moods don't
+  necessarily shift slowly; s08 "Mood: builds over time"); s08 emotions line pieces join; s12 right frame is "Still to
+  come: ?" then "Chapter 4: Temperature" (no "Part 3").
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc
@@ -148,9 +152,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   Three ways to boil over: one big trigger (fast spike), trigger stacking (separate, labeled triggers; the thermometer
   starts to cool, then the next one hits before it is back down; the same triggers spaced out cool fully and never
   spill: the spacing is the problem), and the slow one (days or weeks raise the water, so an ordinary trigger spills).
-  Chapter 3 plan (doc has no Chapter 3 text yet): temperature, threshold zones, two pots same heat, stacking, long-term
+  Chapter order (Tori, round 9): Chapter 3 steps away from the pot for the ABCs of behavior; Chapter 4 is temperature.
+  Chapter 4 plan (doc has no text yet): temperature, threshold zones, two pots same heat, stacking, long-term
   stress. A drawn dog (C2.dog) stands beside the pot and its body language follows the zone: loose under, stiff at the
-  rim, reacting when it spills. The ABCs come after, in Chapter 4.
+  rim, reacting when it spills. The ABCs come first, in Chapter 3.
   Concept test clip: `script/lesson-concept.json` + `video/scenes/c3x.js` (boil kit: foam, spill, burner, dial,
   thermometer, dog body language). It is registered in video/index.html; back up build/timing.json and run the preview pipeline with
   LESSON=lesson-concept.json. It answers one question: why

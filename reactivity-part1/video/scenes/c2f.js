@@ -172,11 +172,11 @@
     stage.insertBefore(fl, LA);
     stage.insertBefore(fr, LA);
     // Part 1 is the ingredients (Chapter 1), Part 2 is the water (this chapter); together they are the distant antecedents.
-    // Part 3, the temperature, is still unknown
+    // what comes next is still unknown here; temperature is Chapter 4 (Chapter 3 steps away from the pot for the ABCs)
     const p1 = C2.pill(stage, 'book-open', 'Part 1: *Ingredients*', { x: 146, y: 284, size: 28, col: C1.ING[0].col });
     const p1b = C2.pill(stage, 'droplets', 'Part 2: *The water*', { x: 536, y: 284, size: 28, col: C.water });
-    const p2 = C2.pill(stage, 'circle-help', 'Part 3: ?', { x: 1046, y: 284, size: 28, col: C.muted });
-    const p2b = C2.pill(stage, 'thermometer', 'Part 3: *Temperature*', { x: 1046, y: 284, size: 28, col: C.red });
+    const p2 = C2.pill(stage, 'circle-help', 'Still to come: ?', { x: 1046, y: 284, size: 28, col: C.muted });
+    const p2b = C2.pill(stage, 'thermometer', 'Chapter 4: *Temperature*', { x: 1046, y: 284, size: 28, col: C.red });
     gsap.set(p2b, { opacity: 0 });
     A.in(tl, fl, t2 + 0.2, 'fade', { dur: 0.5 });
     const lead = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });

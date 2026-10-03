@@ -55,6 +55,21 @@ function blur1(f, W, H, t){
   }
   return f;
 }
+/* [1 2 1]/4 tent blur in place (wrapping); t = scratch */
+function tent(f, W, H, t){
+  for (let y = 0; y < H; y++){
+    const row = y * W;
+    for (let x = 0; x < W; x++){
+      const xl = x === 0 ? W - 1 : x - 1, xr = x === W - 1 ? 0 : x + 1;
+      t[row + x] = (f[row + xl] + 2 * f[row + x] + f[row + xr]) * 0.25;
+    }
+  }
+  for (let y = 0; y < H; y++){
+    const r0 = (y === 0 ? H - 1 : y - 1) * W, r1 = y * W, r2 = (y === H - 1 ? 0 : y + 1) * W;
+    for (let x = 0; x < W; x++) f[r1 + x] = (t[r0 + x] + 2 * t[r1 + x] + t[r2 + x]) * 0.25;
+  }
+  return f;
+}
 /* one octave of tileable value noise (gx x gy lattice, smoothstep weights) added into out, scaled by amp */
 function octave(out, W, H, lat, gx, gy, amp){
   const xi0 = new Int32Array(W), xi1 = new Int32Array(W), xw = new Float32Array(W), row = new Float32Array(gx);
@@ -169,14 +184,16 @@ function dataCanvas(C, W, H, hgt, ro, hlo, hhi){
 /* ================================================================ LAWN
    512px = 3 ft (0.07 in/px). Blades are drawn bottom layer first, darker with depth. */
 const LAWN_FT = 3;
+/* summer cool-season lawn (Kentucky blue / rye / fescue mix) as photographed in Connecticut: clearly yellow-green,
+   blue channel well under half of green */
 const LAWN_PAL = [
-  [122, 156, 52],   /* sunny yellow-green */
-  [106, 144, 50],
-  [92, 132, 48],    /* mid green */
-  [80, 120, 48],
-  [70, 112, 56],    /* deep blue-green */
-  [114, 148, 58],
-  [130, 154, 64]    /* pale */
+  [134, 160, 30],   /* sunny yellow-green */
+  [117, 148, 29],
+  [102, 136, 28],   /* mid green */
+  [89, 124, 28],
+  [80, 116, 33],    /* deep green */
+  [125, 152, 34],
+  [142, 158, 38]    /* pale */
 ];
 /* rasterise one leaning grass blade. Base (bx,by), unit direction (dx,dy), projected length L px, base width w px,
    curv = sideways bend, blunt = mower-cut tip. BL holds colours (base->tip) and the two V-fold half normals. */
@@ -212,13 +229,15 @@ function blade(B, W, H, bx, by, dx, dy, L, w, curv, blunt, z0, z1, ro){
       const e0 = u + 0.5, e1 = L - u + 0.5;
       if (e0 < 1) cov *= e0; if (e1 < 1) cov *= e1;
       const i = row + (x < 0 ? x + W : x >= W ? x - W : x);
-      const sd = vc >= 0 ? 1.07 : 0.93;
-      const k = av < 0.45 * hw ? sd * 1.04 : sd;      /* V-fold halves + faint lighter midrib */
+      /* V-fold halves + faint lighter midrib, both with a 1 px ramp so magnified blades have no sawtooth midline */
+      let tL = vc + 0.5; tL = tL < 0 ? 0 : tL > 1 ? 1 : tL;
+      let mr = 0.45 * hw - av + 0.5; mr = mr < 0 ? 0 : mr > 1 ? 1 : mr;
+      const k = (0.93 + 0.14 * tL) * (1 + 0.04 * mr);
       Rr[i] += ((c0r + dr * t) * k - Rr[i]) * cov;
       Rg[i] += ((c0g + dg * t) * k - Rg[i]) * cov;
       Rb[i] += ((c0b + db * t) * k - Rb[i]) * cov;
-      if (vc >= 0){ Nx[i] += (nLx - Nx[i]) * cov; Ny[i] += (nLy - Ny[i]) * cov; }
-      else { Nx[i] += (nRx - Nx[i]) * cov; Ny[i] += (nRy - Ny[i]) * cov; }
+      const bnx = nRx + (nLx - nRx) * tL, bny = nRy + (nLy - nRy) * tL;
+      Nx[i] += (bnx - Nx[i]) * cov; Ny[i] += (bny - Ny[i]) * cov;
       Hh[i] += (z0 + dz * t - Hh[i]) * cov;
       Ro[i] += (ro - Ro[i]) * cov;
     }
@@ -258,15 +277,59 @@ function thatchPass(B, n, f1, wn, lo, hi){
   }
 }
 const LAWN_O = { lean0: 0.32, lean1: 0.6, len0: 0.7, len1: 1.6, w0: 0.13, w1: 0.17, cut: 0.72, frayed: 0.3, dead: 0.012,
-                 sh0: 0.36, sh1: 0.64, fold: 0.38, ro0: 0.52, ro1: 0.18 };
+                 sh0: 0.42, sh1: 0.6, fold: 0.38, ro0: 0.52, ro1: 0.18 };
+
+/* separable box blur with wrap-around (running sums, cost independent of radius): src -> dst, t = scratch */
+function boxBlurWrap(src, dst, t, W, H, r){
+  const inv = 1 / (2 * r + 1);
+  for (let y = 0; y < H; y++){
+    const o = y * W;
+    let s = 0;
+    for (let k = -r; k <= r; k++) s += src[o + ((k % W) + W) % W];
+    for (let x = 0; x < W; x++){
+      t[o + x] = s * inv;
+      s += src[o + (x + r + 1) % W] - src[o + ((x - r) % W + W) % W];
+    }
+  }
+  for (let x = 0; x < W; x++){
+    let s = 0;
+    for (let k = -r; k <= r; k++) s += t[(((k % H) + H) % H) * W + x];
+    for (let y = 0; y < H; y++){
+      dst[y * W + x] = s * inv;
+      s += t[((y + r + 1) % H) * W + x] - t[(((y - r) % H + H) % H) * W + x];
+    }
+  }
+  return dst;
+}
+/* three box passes ~ gaussian of the given sigma (px) */
+function gaussWrap(src, dst, t, W, H, sigma){
+  const r = Math.max(1, Math.round(Math.sqrt(sigma * sigma * 4 / 3 + 0.25) - 0.5));   /* 3 passes of width 2r+1 */
+  boxBlurWrap(src, dst, t, W, H, r); boxBlurWrap(dst, dst, t, W, H, r); boxBlurWrap(dst, dst, t, W, H, r);
+  return dst;
+}
+/* Flatten everything coarser than ~sigma: colour by ratio to the local mean (keeps dark gaps dark), roughness by
+   difference. A tile then carries no blotches that could repeat as a lattice; the shader's macro layer adds the
+   large-scale variation instead. */
+function highPass(B, W, H, sigma){
+  const n = W * H, bl = tmp(n, 6), t = tmp(n, 7);
+  for (const ch of [B.r, B.g, B.b]){
+    let mean = 0; for (let i = 0; i < n; i++) mean += ch[i]; mean /= n;
+    gaussWrap(ch, bl, t, W, H, sigma);
+    for (let i = 0; i < n; i++){ let q = mean / Math.max(1, bl[i]); q = q < 0.6 ? 0.6 : q > 1.6 ? 1.6 : q; ch[i] *= q; }
+  }
+  const ro = B.ro; let mr = 0; for (let i = 0; i < n; i++) mr += ro[i]; mr /= n;
+  gaussWrap(ro, bl, t, W, H, sigma);
+  for (let i = 0; i < n; i++) ro[i] += mr - bl[i];
+}
 function makeLawn(C, N, seed){
   const W = N, H = N, n = W * H, px = LAWN_FT * 12 / N, B = buffers(n), rnd = C.rng(seed);
-  thatchPass(B, n, field(C, W, H, 64, 64, {octaves: 4, base: 4, seed: seed + 1}, tmp(n, 0)), blur1(white(n, seed + 7, tmp(n, 1)), W, H, tmp(n, 2)), [24, 30, 14], [52, 56, 28]);
+  thatchPass(B, n, field(C, W, H, 64, 64, {octaves: 4, base: 4, seed: seed + 1}, tmp(n, 0)), blur1(white(n, seed + 7, tmp(n, 1)), W, H, tmp(n, 2)), [26, 30, 10], [56, 56, 20]);
   const layers = 8, total = 14000;     /* per 3 ft tile */
   for (let k = 0; k < layers; k++){
     const cnt = Math.round(total / layers);
     for (let j = 0; j < cnt; j++) grassBlade(B, W, H, rnd, px, (k + rnd()) / layers, LAWN_PAL, LAWN_O);
   }
+  highPass(B, W, H, 0.4 * 12 / px);     /* sigma 0.4 ft */
   return { W, H, B };
 }
 
@@ -277,7 +340,7 @@ function makeCloverOnto(C, lawn, seed){
   const W = lawn.W, H = lawn.H, B = lawn.B, px = LAWN_FT * 12 / W, rnd = C.rng(seed);
   B.h.fill(0);
   const plants = 2800, lLayers = 6;    /* per 3 ft tile */
-  const leafPal = [[112, 150, 58], [102, 142, 56], [92, 134, 58], [118, 154, 64], [84, 126, 56]];
+  const leafPal = [[114, 144, 46], [104, 136, 44], [95, 128, 46], [120, 148, 50], [88, 120, 44]];
   for (let k = 0; k < lLayers; k++){
     for (let j = 0; j < plants / lLayers; j++){
       const z = 0.45 + 0.55 * (k + rnd()) / lLayers, rank = 0.03 + 0.97 * rnd();
@@ -318,25 +381,26 @@ function leaflet(B, W, H, cx, cy, dx, dy, a, b, cr, cg, cb, rank, tx, ty){
 }
 
 /* ================================================================ SOIL
-   1024px = 6 ft (0.07 in/px). Connecticut glacial till as dug: yellowish/greyish brown silt-sand with darker topsoil
-   streaks, flat-topped tilted clods, crumbs, rounded stones from grit to small cobbles, damp halos. */
+   1024px = 6 ft (0.07 in/px). Connecticut glacial till as dug: warm yellowish-brown silty sand (about 10YR 4/4 to
+   5/4) with faint darker organic mottles, crumbs, flat-topped tilted clods and sub-angular stones (grey schist and
+   gneiss, rusty weathered rock) that are mostly coated in soil and sit IN the soil (no halos, no fillets). */
 const SOIL_FT = 6;
 function soilBase(B, W, H, tone, hue, lumpH, mid, wn, wn2, lump, hr, hg, hb){
   const W2 = W >> 1, H2 = H >> 1, R = B.r, G = B.g, Bb = B.b, Hh = B.h, Ro = B.ro;
-  /* half-res base colour: yellowish / greyish till, softly darker organic streaks */
+  /* half-res base colour: warm brown, a slight yellow/grey drift, faint darker organic mottles */
   for (let i2 = 0; i2 < W2 * H2; i2++){
-    let hh = 0.5 + hue[i2] * 1.3; hh = hh < 0 ? 0 : hh > 1 ? 1 : hh;
-    const dk = 0.35 + 0.65 * sstep(-0.42, 0.1, tone[i2]);
-    const r = 120 - 12 * hh, g = 100 - 2 * hh, b = 77 + 8 * hh;
-    hr[i2] = 86 + (r - 86) * dk; hg[i2] = 69 + (g - 69) * dk; hb[i2] = 52 + (b - 52) * dk;
+    let hh = 0.5 + hue[i2] * 1.1; hh = hh < 0 ? 0 : hh > 1 ? 1 : hh;
+    const dk = 0.58 + 0.42 * sstep(-0.42, 0.12, tone[i2]);
+    const r = 131 - 7 * hh, g = 99 - 1 * hh, b = 65 + 6 * hh;
+    hr[i2] = 78 + (r - 78) * dk; hg[i2] = 60 + (g - 60) * dk; hb[i2] = 43 + (b - 43) * dk;
   }
   for (let y = 0; y < H; y++){
     const rowh = (y >> 1) * W2;
     for (let x = 0; x < W; x++){
       const i = y * W + x, i2 = rowh + (x >> 1);
-      const gr = 1 + wn[i] * 0.55 + wn2[i] * 0.1 + mid[i] * 0.14;
+      const gr = 1 + wn[i] * 0.45 + wn2[i] * 0.08 + mid[i] * 0.12;
       R[i] = hr[i2] * gr; G[i] = hg[i2] * gr; Bb[i] = hb[i2] * gr;
-      lump[i] = lumpH[i2] * 0.3 + mid[i] * 0.12;          /* base relief in inches (the bed) */
+      lump[i] = lumpH[i2] * 0.35 + mid[i] * 0.12;          /* base relief in inches (the bed) */
       Hh[i] = lump[i] + wn[i] * 0.07 + wn2[i] * 0.015;
       Ro[i] = 0.93 + wn[i] * 0.1;
     }
@@ -384,31 +448,60 @@ function clodPoly(B, W, H, lump, wn, nv, cap, bx0, bx1, by0, by1, lift){
     }
   }
 }
-/* rounded stone, partly buried and coated with soil, with a damp halo */
-function pebble(B, W, H, lump, mid, wn, cx, cy, r, ar, ca, sa, amp, coat, pr, pg, pb){
-  const R = Math.ceil(r * 1.5 + 1), Rr = B.r, Rg = B.g, Rb = B.b, Hh = B.h, Ro = B.ro, ir = 1 / r, ira = 1 / (r * ar);
-  for (let y = Math.floor(cy - R); y <= Math.ceil(cy + R); y++){
-    const py = y + 0.5 - cy, row = (y < 0 ? y + H : y >= H ? y - H : y) * W;
-    for (let x = Math.floor(cx - R); x <= Math.ceil(cx + R); x++){
-      const qx = x + 0.5 - cx, i = row + (x < 0 ? x + W : x >= W ? x - W : x);
-      const u = (qx * ca + py * sa) * ir, v = (-qx * sa + py * ca) * ira;
-      const ds = u * u + v * v + mid[i] * 0.9, d2 = ds + wn[i] * 0.45;   /* ds: smooth (height), d2: ragged (outline) */
-      if (d2 >= 2.0) continue;
-      if (d2 >= 1){   /* damp halo, and the soil ramps up to meet the stone (a fillet, no step) */
-        const e = 2 - d2, k = 1 - 0.06 * e; Rr[i] *= k; Rg[i] *= k; Rb[i] *= k;
-        const fl = lump[i] + 0.1 * e * e; if (fl > Hh[i]) Hh[i] = fl;
-        continue;
+/* sub-angular stone: convex polygon of planar facets (crisp, 1 px anti-aliased outline), partly buried, and coated in
+   soil over most of its area (coating is thinnest on the crest); matte */
+function soilStone(B, W, H, lump, mid, wn, nv, cap, bury, coat, sr, sg, sb, bx0, bx1, by0, by1){
+  const enx = ST.enx, eny = ST.eny, es = ST.es, ec = ST.ec, fsh = ST.fsh;
+  const Rr = B.r, Rg = B.g, Rb = B.b, Hh = B.h, Ro = B.ro;
+  for (let y = Math.floor(by0); y <= Math.ceil(by1); y++){
+    const py = y + 0.5, row = (y < 0 ? y + H : y >= H ? y - H : y) * W;
+    for (let x = Math.floor(bx0); x <= Math.ceil(bx1); x++){
+      const qx = x + 0.5;
+      let hmin = 1e9, fi = -1, dmin = 1e9;
+      for (let v = 0; v < nv; v++){
+        const d = qx * enx[v] + py * eny[v] + ec[v];
+        if (d < -0.5){ fi = -2; break; }
+        if (d < dmin) dmin = d;
+        const hh = d * es[v];
+        if (hh < hmin){ hmin = hh; fi = v; }
       }
-      const e1 = ds < 1 ? 1 - ds : 0, hgt = lump[i] + amp * e1 * (2 - e1) * 0.75 + 0.1;   /* rounded, gentle at the rim; rises out of the crumbs */
-      if (hgt > Hh[i] - 0.02){
-        if (hgt > Hh[i]) Hh[i] = hgt;
-        let m = coat + mid[i] * 1.6 + wn[i] * 0.9 - (1 - d2) * 0.3; m = m < 0 ? 0 : m > 1 ? 1 : m;
-        const q = 1 + wn[i] * 0.45 + mid[i] * 0.35, sr = pr * q, sg = pg * q, sb = pb * q;
-        Rr[i] = sr + (Rr[i] - sr) * m; Rg[i] = sg + (Rg[i] - sg) * m; Rb[i] = sb + (Rb[i] - sb) * m;
-        Ro[i] = 0.6 + 0.32 * m;
-      }
+      if (fi < 0) continue;
+      let cov = dmin + 0.5; if (cov > 1) cov = 1;
+      const i = row + (x < 0 ? x + W : x >= W ? x - W : x);
+      let fs = fsh[fi];
+      if (hmin < 0) hmin = 0;
+      if (hmin > cap){ hmin = cap; fs = fsh[nv]; }
+      const top = lump[i] + hmin - bury;
+      if (top <= Hh[i]) continue;          /* soil lies over the buried edge: ragged, natural outline */
+      let m = coat + mid[i] * 2.2 + wn[i] * 1.6 - 0.4 * hmin / cap; m = m < 0 ? 0 : m > 1 ? 1 : m;
+      const a = cov * (1 - m), q = fs * (1 + wn[i] * 0.35);
+      Rr[i] += (sr * q - Rr[i]) * a; Rg[i] += (sg * q - Rg[i]) * a; Rb[i] += (sb * q - Rb[i]) * a;
+      Hh[i] += (top - Hh[i]) * cov;
+      Ro[i] += (0.85 + 0.07 * m - Ro[i]) * cov;
     }
   }
+}
+/* random convex polygon into ST (vx, vy, edge planes rising to a crest of height pkh); false if degenerate */
+function polyST(rnd, cx, cy, r, nv, elong, jit, pkh, fsh0, fsh1){
+  const vx = ST.vx, vy = ST.vy, enx = ST.enx, eny = ST.eny, es = ST.es, ec = ST.ec, fsh = ST.fsh;
+  const a0 = rnd() * 6.283, ea = rnd() * 3.1416, eca = Math.cos(ea), esa = Math.sin(ea);
+  for (let v = 0; v < nv; v++){
+    const an = a0 + (v + (rnd() - 0.5) * jit) * 6.2832 / nv, rr = r * (0.7 + 0.45 * rnd());
+    const lx = Math.cos(an) * rr, ly = Math.sin(an) * rr * elong;
+    vx[v] = cx + lx * eca - ly * esa; vy[v] = cy + lx * esa + ly * eca;
+  }
+  const pkx = cx + (rnd() - 0.5) * r * 0.5, pky = cy + (rnd() - 0.5) * r * 0.5;
+  for (let v = 0; v < nv; v++){
+    const w2 = (v + 1) % nv, ex = vx[w2] - vx[v], ey = vy[w2] - vy[v], el = Math.sqrt(ex * ex + ey * ey) || 1;
+    let nx = -ey / el, ny = ex / el, dp = (pkx - vx[v]) * nx + (pky - vy[v]) * ny;
+    if (dp < 0){ nx = -nx; ny = -ny; dp = -dp; }
+    if (dp < 0.5) return false;
+    enx[v] = nx; eny[v] = ny; es[v] = pkh / dp; ec[v] = -(vx[v] * nx + vy[v] * ny); fsh[v] = fsh0 + fsh1 * rnd();
+  }
+  let bx0 = 1e9, bx1 = -1e9, by0 = 1e9, by1 = -1e9;
+  for (let v = 0; v < nv; v++){ if (vx[v] < bx0) bx0 = vx[v]; if (vx[v] > bx1) bx1 = vx[v]; if (vy[v] < by0) by0 = vy[v]; if (vy[v] > by1) by1 = vy[v]; }
+  ST.bb[0] = bx0 - 1; ST.bb[1] = bx1 + 1; ST.bb[2] = by0 - 1; ST.bb[3] = by1 + 1;
+  return true;
 }
 function makeSoil(C, N, seed){
   const W = N, H = N, n = W * H, pu = SOIL_FT * 12 / N, rnd = C.rng(seed);
@@ -425,52 +518,38 @@ function makeSoil(C, N, seed){
   const lump = tmp(n, 3);
   soilBase(B, W, H, tone, hue, lumpH, mid, wn, wn2, lump, tmp(n2, 3), tmp(n2, 4), tmp(n2, 5));
   /* crumbs and small peds (0.1-0.45 in) */
-  const ncr = 9000;
+  const ncr = 8000;
   for (let c = 0; c < ncr; c++){
     const rIn = 0.07 + 0.32 * Math.pow(rnd(), 1.8), r = rIn / pu;
-    crumb(B, W, H, lump, wn, rnd() * W, rnd() * H, r, rIn * (0.18 + 0.32 * rnd()), 0.02 + 0.07 * rnd());
+    crumb(B, W, H, lump, wn, rnd() * W, rnd() * H, r, rIn * (0.18 + 0.32 * rnd()), 0.02 + 0.06 * rnd());
   }
-  /* angular clods (0.4-2.4 in) */
-  const vx = ST.vx, vy = ST.vy, enx = ST.enx, eny = ST.eny, es = ST.es, ec = ST.ec, fsh = ST.fsh;
-  const ncl = 420;
+  /* angular clods (0.5-3.5 in): the lumps that give dug ground its shape at 10-20 ft */
+  const bb = ST.bb, ncl = 380;
   for (let c = 0; c < ncl; c++){
-    const rIn = 0.4 + 2.0 * Math.pow(rnd(), 2.2), r = rIn / pu, cx = rnd() * W, cy = rnd() * H;
-    const nv = 6 + ((rnd() * 4) | 0), a0 = rnd() * 6.283, elong = 0.6 + 0.4 * rnd(), ea = rnd() * 3.1416, eca = Math.cos(ea), esa = Math.sin(ea);
-    for (let v = 0; v < nv; v++){
-      const an = a0 + (v + (rnd() - 0.5) * 0.8) * 6.2832 / nv, rr = r * (0.65 + 0.5 * rnd());
-      const lx = Math.cos(an) * rr, ly = Math.sin(an) * rr * elong;
-      vx[v] = cx + lx * eca - ly * esa; vy[v] = cy + lx * esa + ly * eca;
-    }
-    const pkx = cx + (rnd() - 0.5) * r * 0.5, pky = cy + (rnd() - 0.5) * r * 0.5, pkh = rIn * (0.16 + 0.16 * rnd());   /* crest height, inches */
-    let ok = true;
-    for (let v = 0; v < nv; v++){
-      const w2 = (v + 1) % nv, ex = vx[w2] - vx[v], ey = vy[w2] - vy[v], el = Math.sqrt(ex * ex + ey * ey) || 1;
-      let nx = -ey / el, ny = ex / el, dp = (pkx - vx[v]) * nx + (pky - vy[v]) * ny;
-      if (dp < 0){ nx = -nx; ny = -ny; dp = -dp; }
-      if (dp < 0.5){ ok = false; break; }
-      enx[v] = nx; eny[v] = ny; es[v] = pkh / dp; ec[v] = -(vx[v] * nx + vy[v] * ny); fsh[v] = 0.93 + 0.12 * rnd();
-    }
-    if (!ok) continue;
-    fsh[nv] = 1.02 + 0.06 * rnd();
-    let bx0 = 1e9, bx1 = -1e9, by0 = 1e9, by1 = -1e9;
-    for (let v = 0; v < nv; v++){ if (vx[v] < bx0) bx0 = vx[v]; if (vx[v] > bx1) bx1 = vx[v]; if (vy[v] < by0) by0 = vy[v]; if (vy[v] > by1) by1 = vy[v]; }
-    clodPoly(B, W, H, lump, wn, nv, pkh * (0.55 + 0.3 * rnd()), bx0, bx1, by0, by1, 0.04 + 0.06 * rnd());
+    const rIn = 0.5 + 3.0 * Math.pow(rnd(), 2.4), r = rIn / pu, nv = 6 + ((rnd() * 4) | 0);
+    if (!polyST(rnd, rnd() * W, rnd() * H, r, nv, 0.6 + 0.4 * rnd(), 0.8, rIn * (0.16 + 0.16 * rnd()), 0.92, 0.12)) continue;
+    const pkh = rIn * 0.24;
+    ST.fsh[nv] = 1.02 + 0.06 * rnd();
+    clodPoly(B, W, H, lump, wn, nv, pkh * (0.55 + 0.3 * rnd()), bb[0], bb[1], bb[2], bb[3], 0.04 + 0.05 * rnd());
   }
-  /* stones: grit to small cobbles */
-  const stonePal = [[108, 104, 98], [94, 92, 88], [116, 108, 98], [128, 122, 114], [102, 92, 80], [84, 84, 84], [112, 110, 104]];
-  const nst = 760;
+  /* stones: grit to small cobbles, sub-angular, mostly soil-coated */
+  const stonePal = [[96, 93, 88], [80, 79, 77], [114, 90, 66], [132, 126, 118], [92, 94, 86], [104, 96, 86], [72, 68, 62], [120, 102, 82]];
+  const nst = 720;
   for (let s = 0; s < nst; s++){
     const big = rnd();
-    const rIn = big < 0.9 ? 0.05 + 0.16 * rnd() : big < 0.993 ? 0.26 + 0.55 * rnd() : 0.9 + 1.1 * rnd();
-    const r = rIn / pu, cx = rnd() * W, cy = rnd() * H, ar = 0.6 + 0.4 * rnd(), ang = rnd() * 3.1416;
-    const p = stonePal[(rnd() * stonePal.length) | 0], j = 0.88 + 0.24 * rnd();
-    pebble(B, W, H, lump, mid, wn, cx, cy, r, ar, Math.cos(ang), Math.sin(ang), rIn * (0.35 + 0.25 * rnd()), 0.38 + 0.4 * rnd(), p[0] * j, p[1] * j, p[2] * j);
+    const rIn = big < 0.88 ? 0.07 + 0.17 * rnd() : big < 0.985 ? 0.3 + 0.6 * rnd() : 1.0 + 1.3 * rnd();
+    const r = rIn / pu, nv = 5 + ((rnd() * 3) | 0), pkh = rIn * (0.4 + 0.3 * rnd());
+    if (!polyST(rnd, rnd() * W, rnd() * H, r, nv, 0.6 + 0.4 * rnd(), 0.7, pkh, 0.8, 0.32)) continue;
+    ST.fsh[nv] = 1.0 + 0.1 * rnd();
+    const p = stonePal[(rnd() * stonePal.length) | 0], j = 0.86 + 0.26 * rnd();
+    soilStone(B, W, H, lump, mid, wn, nv, pkh * (0.6 + 0.3 * rnd()), pkh * (0.15 + 0.35 * rnd()), 0.5 + 0.4 * rnd(),
+              p[0] * j, p[1] * j, p[2] * j, bb[0], bb[1], bb[2], bb[3]);
   }
-  /* specks */
-  const nsp = 16000, Rr = B.r, Rg = B.g, Rb = B.b, Hh = B.h;
+  /* sparse specks: mica / sand grains (light) and organic bits (dark) */
+  const nsp = 4000, Rr = B.r, Rg = B.g, Rb = B.b, Hh = B.h;
   for (let k2 = 0; k2 < nsp; k2++){
-    const x = (rnd() * W) | 0, y = (rnd() * H) | 0, i = y * W + x, k = rnd() < 0.55 ? 0.8 : 1.14;
-    Rr[i] *= k; Rg[i] *= k; Rb[i] *= k; Hh[i] += 0.02;
+    const x = (rnd() * W) | 0, y = (rnd() * H) | 0, i = y * W + x, k = rnd() < 0.5 ? 0.84 : 1.16;
+    Rr[i] *= k; Rg[i] *= k; Rb[i] *= k; Hh[i] += 0.015;
   }
   return { W, H, B, hf: B.h, pu };
 }
@@ -489,7 +568,7 @@ function gravelBase(B, n, f1, wn, Z){
   }
 }
 const ST = { vx: new Float32Array(10), vy: new Float32Array(10), enx: new Float32Array(10), eny: new Float32Array(10),
-             es: new Float32Array(10), ec: new Float32Array(10), fsh: new Float32Array(11) };
+             es: new Float32Array(10), ec: new Float32Array(10), fsh: new Float32Array(11), bb: new Float32Array(4) };
 function stone(B, Z, W, H, wn, nv, cap, tX, tY, cx, cy, base, sr, sg, sb, bx0, bx1, by0, by1){
   const enx = ST.enx, eny = ST.eny, es = ST.es, ec = ST.ec, fsh = ST.fsh;
   const zTop = base + cap + (Math.abs(tX) + Math.abs(tY)) * Math.max(bx1 - bx0, by1 - by0);
@@ -499,26 +578,31 @@ function stone(B, Z, W, H, wn, nv, cap, tX, tY, cx, cy, base, sr, sg, sb, bx0, b
     for (let x = Math.floor(bx0); x <= Math.ceil(bx1); x++){
       const qx = x + 0.5, i0 = row + (x < 0 ? x + W : x >= W ? x - W : x);
       if (zTop <= Z[i0]) continue;
-      let hmin = 1e9, fi = -1;
+      let hmin = 1e9, fi = -1, dmin = 1e9;
       for (let v = 0; v < nv; v++){
         const d = qx * enx[v] + py * eny[v] + ec[v];
-        if (d < 0){ fi = -2; break; }
+        if (d < -0.5){ fi = -2; break; }
+        if (d < dmin) dmin = d;
         const hh = d * es[v];
         if (hh < hmin){ hmin = hh; fi = v; }
       }
       if (fi < 0) continue;
+      if (hmin < 0) hmin = 0;
       let gx = 0, gy = 0, fs = fsh[nv];
       if (hmin > cap) hmin = cap; else { gx = es[fi] * enx[fi]; gy = es[fi] * eny[fi]; fs = fsh[fi]; }
       const zz = base + hmin + tX * (qx - cx) + tY * (py - cy);
       const i = row + (x < 0 ? x + W : x >= W ? x - W : x);
       if (zz <= Z[i]) continue;
-      Z[i] = zz;
+      /* 1 px coverage ramp at the outline: blend instead of a hard stair-stepped edge; only claim the depth when the
+         stone covers most of the pixel */
+      let cov = dmin + 0.5; if (cov > 1) cov = 1;
+      if (cov >= 0.5) Z[i] = zz;
       gx += tX; gy += tY;
       const g2 = gx * gx + gy * gy, steep = g2 > 1 ? 1 : Math.sqrt(g2);
       const kk = fs * (1 + 0.08 * (1 - steep)) * (1 + wn[i] * 0.12);    /* dust on flat tops */
-      Rr[i] = sr * kk; Rg[i] = sg * kk; Rb[i] = sb * kk;
+      Rr[i] += (sr * kk - Rr[i]) * cov; Rg[i] += (sg * kk - Rg[i]) * cov; Rb[i] += (sb * kk - Rb[i]) * cov;
       const il = 1 / Math.sqrt(1 + g2);
-      Nx[i] = -gx * il; Ny[i] = -gy * il; Ro[i] = 0.62 + 0.18 * steep;
+      Nx[i] += (-gx * il - Nx[i]) * cov; Ny[i] += (-gy * il - Ny[i]) * cov; Ro[i] += (0.72 + 0.14 * steep - Ro[i]) * cov;
     }
   }
 }
@@ -581,6 +665,7 @@ function makeGravel(C, N, seed){
   let zmax = -1e9;
   for (let i = 0; i < n; i++){ if (Z[i] < -100) Z[i] = -0.1 / pu; if (Z[i] > zmax) zmax = Z[i]; }
   gravelAO(B, Z, W, H, 3, 0.22, 0.5);
+  tent(B.nx, W, H, tmp(n, 2)); tent(B.ny, W, H, tmp(n, 2));     /* soften facet-edge normal steps (no outline lines) */
   return { W, H, B, zlo: -0.1 / pu, zhi: zmax };
 }
 
@@ -635,8 +720,8 @@ function makeMulch(C, N, seed){
   const B = buffers(n), hf = B.h;
   mulchBase(B, n, field(C, W, H, 64, 64, {octaves: 4, base: 6, seed: seed + 1}, tmp(n, 0)), white(n, seed + 2, tmp(n, 1)), hf);
   const fib = table(seed + 3), rag = table(seed + 4);
-  const pal = [[74, 52, 38], [84, 59, 43], [64, 45, 33], [90, 62, 44], [80, 58, 44], [100, 86, 74], [110, 96, 82], [54, 39, 30], [116, 90, 66]];
-  const pw = [0.19, 0.17, 0.16, 0.12, 0.12, 0.07, 0.04, 0.10, 0.03];
+  const pal = [[74, 52, 38], [84, 59, 43], [64, 45, 33], [90, 62, 44], [80, 58, 44], [85, 73, 63], [94, 82, 70], [54, 39, 30], [99, 77, 56]];
+  const pw = [0.22, 0.20, 0.16, 0.15, 0.12, 0.035, 0.02, 0.08, 0.015];      /* weathered grey and inner-wood chips are rare */
   const layers = 7, total = 9300;      /* per 3 ft tile (the hidden bottom layers are left out) */
   for (let k = 0; k < layers; k++){
     for (let s = 0; s < total / layers; s++){
@@ -660,6 +745,15 @@ function makeMulch(C, N, seed){
               z * 0.45 + 0.02, 0.01, 0, 0, fib, rnd() * 1024, 3.0, rag, rnd() * 1024, rnd() * 1024);
       }
     }
+  }
+  /* cavity darkening: wherever the surface lies below its surroundings (gaps between shreds, strip undersides) the
+     bark is shadowed; this carries the depth instead of a steep normal map */
+  const bl = gaussWrap(hf, tmp(n, 2), tmp(n, 3), W, H, 3.5), R = B.r, G = B.g, Bb = B.b;
+  for (let i = 0; i < n; i++){
+    const cav = bl[i] - hf[i];
+    if (cav <= 0) continue;
+    let k = cav * 3.2; k = 1 - (k > 0.5 ? 0.5 : k);
+    R[i] *= k; G[i] *= k; Bb[i] *= k;
   }
   return { W, H, B, hf, pu };
 }

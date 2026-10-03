@@ -589,7 +589,7 @@ const FALLBACK = {
   spf:"#D9B47E", pt:"#93A070", lvl:"#C99556", deck:"#5C3F32", deckDark:"#4A3228", lattice:"#5C3F32", osb:"#C29760", ply:"#CFAA72",
   concrete:"#A3A5A0", concreteWet:"#6E716F", cmu:"#A3A49F", stucco:"#6F555A", parge:"#6C5155", walk:"#BDB8AD",
   shingle:"#6E7175", siding:"#A9968F", trim:"#EDEBE6", frame:"#F2F1EE", glass:"#2A3138", door:"#F2F1EE", steel:"#5E656B",
-  soil:"#7E6650", gravel:"#8D8A84", mulch:"#4A3225", string:"#EB6B26"
+  soil:"#7E6650", gravel:"#8D8A84", mulch:"#4A3225", string:"#EB6B26", lamp:"#1E2023", fence:"#1C1F22"
 };
 const MATS = {};
 function material(key){
@@ -633,7 +633,7 @@ function add(k, x, y, z, sx, sy, sz, c, t0, dur, mode, o){
   else if (k === "oct"){ key = "trim"; geo = CYL8; }
   else if (k === "octGlass"){ key = "glass"; geo = CYL8; }
   const q = new THREE.Quaternion();
-  if (o.rx || o.ry || o.rz) q.setFromEuler(eul.set(o.rx || 0, o.ry || 0, o.rz || 0));
+  if (o.rx || o.ry || o.rz) q.setFromEuler(eul.set(o.rx || 0, o.ry || 0, o.rz || 0, o.order || "XYZ"));
   /* near-white per-piece variation so no two boards are identical */
   shadeRnd = (shadeRnd * 16807) % 2147483647;
   const v = 0.93 + (shadeRnd / 2147483647) * 0.1;
@@ -645,6 +645,11 @@ const box = (x0,x1,y0,y1,z0,z1,c,t0,dur,mode,o) => add("box",(x0+x1)/2,(y0+y1)/2
 function boardYZ(x, z0, y0, z1, y1, sx, depth, c, t0, dur, mode, o){
   const len = Math.hypot(z1 - z0, y1 - y0);
   add("box", x, (y0 + y1)/2, (z0 + z1)/2, sx, depth, len, c, t0, dur, mode, Object.assign({rx:-Math.atan2(y1 - y0, z1 - z0)}, o || {}));
+}
+/* a board between two points in the x/y plane (shed-roof rafters) */
+function boardXY(z, x0, y0, x1, y1, depth, sz, c, t0, dur, mode, o){
+  const len = Math.hypot(x1 - x0, y1 - y0);
+  add("box", (x0 + x1)/2, (y0 + y1)/2, z, len, depth, sz, c, t0, dur, mode, Object.assign({rz:Math.atan2(y1 - y0, x1 - x0)}, o || {}));
 }
 /* poured concrete: flows in along its length while wet and dark, then cures to its dry colour */
 function pour(x0, x1, y0, y1, z0, z1, t0, dur, cure){
@@ -671,7 +676,10 @@ const YR = F2 + H2 + (ZR + D/2)*Math.tan(TR); /* rafter underside at the ridge *
 const TF = Math.atan((YR - F2)/(D/2 - ZR));   /* long front slope lands on the 2nd-floor deck edge */
 const OHF = 1.0, OHR = 1.0, RAKE = 1.0, OC = 16*IN;
 const under = z => z <= ZR ? YR - (ZR - z)*Math.tan(TR) : YR - (z - ZR)*Math.tan(TF);
-const BAY = {x0:-W/2 + 13, x1:-W/2 + 24, d:1.5, top:8.0};
+/* the bay is a shallow box that runs from the lattice skirt up under the front soffit (no roof of its own) */
+const BAY = {x0:-W/2 + 11, x1:-W/2 + 26.5, d:0.85, top:(F2 - OHF*Math.tan(TF)) - F1 - 0.06};
+/* small one-story wing on the left front, shed roof sloping away from the house */
+const WING = {x0:-W/2 - 5, x1:-W/2, z0:D/2 - 8, z1:D/2, h:7.6, pitch:Math.atan(4/12)};
 const zu = z => z + D/2 - T;                  /* side-wall u from a world z */
 
 /* ---------- site: excavated pit, string lines, the wooded lot ---------- */
@@ -699,7 +707,8 @@ for (let gx = -PX - RING; gx < PX + RING - 0.01; gx += 5){
 });
 /* the wooded lot: tall white pines and hemlocks behind, hardwoods beyond (they were there first) */
 [[-24,-30,52],[-9,-38,58],[7,-34,50],[22,-31,46],[38,-22,44],[-52,-34,54],[50,-32,48],[-4,-56,60],[28,-52,52]].forEach(([x,z,h], i) => plant("pine", x, z, h, 11 + i, -1));
-[[-38,-12,34],[-36,8,30],[-46,20,26],[42,8,32],[-30,-24,30],[46,-6,28]].forEach(([x,z,h], i) => plant("hemlock", x, z, h, 31 + i, -1));
+/* the hemlock screen stands well off the left side; the side yard itself is open lawn (photos 1 and 3) */
+[[-54,-8,34],[-56,10,30],[-60,26,28],[42,8,32],[-44,-28,30],[46,-6,28]].forEach(([x,z,h], i) => plant("hemlock", x, z, h, 31 + i, -1));
 [[-18,-50,44],[16,-56,48],[34,-44,40],[-36,-46,42],[60,-14,38],[-60,-2,38],[0,-70,46]].forEach(([x,z,h], i) => plant("oak", x, z, h, 51 + i, -1));
 
 /* ---------- foundation: footings, basement walls, slab, backfill ---------- */
@@ -756,6 +765,19 @@ let sq = 0;
   }
 });
 
+/* wing: block stem walls on a footing at grade, sill, joists, subfloor */
+{
+  const {x0, x1, z0, z1} = WING;
+  [[x0, x1, z1 - WT, z1], [x0, x0 + WT, z0 + WT, z1 - WT], [x0, x1, z0, z0 + WT]].forEach((b, i) => {
+    box(b[0] - 0.3, b[1] + (b[1] === x1 ? 0 : 0.3), -0.4, 0.1, b[2] - 0.3, b[3] + 0.3, null, 0.1 + i*0.004, 0.02, "pour", {mat:"concrete", axis: (b[1] - b[0]) > (b[3] - b[2]) ? 0 : 2});
+    box(b[0], b[1], 0.1, STEM_TOP, b[2], b[3], COL.cmu[0], 0.13 + i*0.005, 0.02, "grow");
+  });
+  for (let z = z0 + SW/2, i = 0; z < z1; z += OC, i++)
+    box(x0, x1, SILL_TOP, SILL_TOP + JD, z - SW/2, z + SW/2, pick(COL.lumber), 0.27 + i*0.002, 0.01, "drop", {dist:3});
+  box(x0, x1, SILL_TOP + JD, SILL_TOP + JD + SUB, z0, (z0 + z1)/2 - 0.015, pick(COL.osb), 0.295, 0.01, "drop", {dist:2});
+  box(x0, x1, SILL_TOP + JD, SILL_TOP + JD + SUB, (z0 + z1)/2 + 0.015, z1, pick(COL.osb), 0.298, 0.01, "drop", {dist:2});
+}
+
 /* ---------- floor systems ---------- */
 function floorSystem(baseY, t0, t1, withBay){
   const y = baseY + JD/2, span = (t1 - t0)*0.55;
@@ -801,9 +823,9 @@ const WALLS = {
   left:  {ox:-(W/2 - T/2), oz:-D/2 + T, dir:"z", len:D - 2*T, nx:-1, nz:0, h:H1, base:F1, band:-(F1 - STEM_TOP), ext:[-T, T],
           open:[[zu(-7),zu(-4),3,7,"w"],[zu(1),zu(4),3,7,"w"]]},
   right: {ox:W/2 - T/2, oz:-D/2 + T, dir:"z", len:D - 2*T, nx:1, nz:0, h:H1, base:F1, band:-(F1 - STEM_TOP), ext:[-T, T],
-          open:[[zu(-4.5),zu(-1.5),3,7,"w"]]},
+          open:[[zu(-5.4),zu(-2.6),3,7,"w"]]},
   front: {ox:-W/2, oz:D/2 - T/2, dir:"x", len:W, nx:0, nz:1, h:H1, base:F1, band:-(F1 - STEM_TOP), top:(F2 - OHF*Math.tan(TF)) - F1,
-          open:[[5.5,8.5,0,6.9,"d"],[BAY.x0 + W/2, BAY.x1 + W/2, 0, 7.4, "bay"]]},
+          open:[[4.4,7.4,0,6.9,"d"],[BAY.x0 + W/2, BAY.x1 + W/2, 0, 7.4, "bay"]]},
   bayF:  {ox:BAY.x0, oz:D/2 + BAY.d - T/2, dir:"x", len:BAY.x1 - BAY.x0, nx:0, nz:1, h:BAY.top, base:F1, band:-BAND,
           open:[[0.45, BAY.x1 - BAY.x0 - 0.45, 2.2, 7.2, "tri"]]},
   bayL:  {ox:BAY.x0 + T/2, oz:D/2, dir:"z", len:BAY.d - T, nx:-1, nz:0, h:BAY.top, base:F1, band:-BAND, ext:[0, T], open:[]},
@@ -813,7 +835,11 @@ const WALLS = {
   left2: {ox:-(W/2 - T/2), oz:-D/2 + T, dir:"z", len:D - T, nx:-1, nz:0, base:F2, band:-BAND, ext:[-T, 0], gable:true,
           open:[[zu(-8.3)-0.8, zu(-8.3)+0.8, 7.2, 8.8, "oct"],[zu(-3.5), zu(-0.5), 2, 7.2, "w"]]},
   right2:{ox:W/2 - T/2, oz:-D/2 + T, dir:"z", len:D - T, nx:1, nz:0, base:F2, band:-BAND, ext:[-T, 0], gable:true,
-          open:[[zu(-8.3)-0.8, zu(-8.3)+0.8, 7.2, 8.8, "oct"],[zu(-4.5), zu(-1.5), 1.6, 7.2, "w"]]}
+          open:[[zu(-8.3)-0.8, zu(-8.3)+0.8, 7.2, 8.8, "oct"],[zu(-5.4), zu(-2.6), 1.6, 7.2, "w"]]},
+  wingF: {ox:WING.x0, oz:WING.z1 - T/2, dir:"x", len:WING.x1 - WING.x0, nx:0, nz:1, h:WING.h, base:F1, band:-(F1 - STEM_TOP), open:[]},
+  wingL: {ox:WING.x0 + T/2, oz:WING.z0 + T, dir:"z", len:WING.z1 - WING.z0 - 2*T, nx:-1, nz:0, h:WING.h, base:F1, band:-(F1 - STEM_TOP), ext:[-T, T],
+          open:[[2.6, 5.2, 3, 6.8, "w"]]},
+  wingB: {ox:WING.x0, oz:WING.z0 + T/2, dir:"x", len:WING.x1 - WING.x0, nx:0, nz:-1, h:WING.h, base:F1, band:-(F1 - STEM_TOP), open:[]}
 };
 /* wall height at u: flat for most walls, follows the roof line on the two gable ends */
 const wallTop = (w, u) => w.gable ? under(w.oz + u) - w.base : w.h;
@@ -875,6 +901,9 @@ frameWall(WALLS.front, 0.405, 0.43);
 frameWall(WALLS.bayF, 0.43, 0.44);
 frameWall(WALLS.bayL, 0.432, 0.44);
 frameWall(WALLS.bayR, 0.432, 0.44);
+frameWall(WALLS.wingB, 0.44, 0.447);
+frameWall(WALLS.wingL, 0.444, 0.452);
+frameWall(WALLS.wingF, 0.448, 0.455);
 frameWall(WALLS.back2, 0.52, 0.56);
 frameWall(WALLS.left2, 0.56, 0.60);
 frameWall(WALLS.right2, 0.60, 0.64);
@@ -930,8 +959,9 @@ const shLift = JD + SUB + 0.05;
 add("box", 0, YR + (JD + SUB)/Math.cos(TF) + 0.12, ZR, W + 2*RAKE + 0.4, 0.22, 1.2, COL.roof[0], 0.868, 0.01, "drop", {dist:2});
 
 /* ---------- chimney: stucco over masonry on the right gable ---------- */
+const CHIM_Z = 1.5;
 {
-  const x0 = W/2 + 0.2, zc = 3;
+  const x0 = W/2 + 0.2, zc = CHIM_Z;
   const segs = [
     [x0, x0 + 2.4, -0.3, F1 + 6, zc - 2.6, zc + 2.6],
     [x0, x0 + 2.0, F1 + 6, F1 + 7.4, zc - 2.1, zc + 2.1],
@@ -941,6 +971,52 @@ add("box", 0, YR + (JD + SUB)/Math.cos(TF) + 0.12, ZR, W + 2*RAKE + 0.4, 0.22, 1
   ];
   segs.forEach((s, i) => box(s[0], s[1], s[2], s[3], s[4], s[5], pick(COL.stucco), 0.76 + i*0.011, 0.012, "grow"));
   box(x0 - 0.1, x0 + 1.9, YR + 4, YR + 4.25, zc - 1.8, zc + 1.8, COL.concrete, 0.818, 0.01, "drop", {dist:2});
+}
+
+const sidingT0 = y => 0.84 + Math.min(1, Math.max(0, (y - STEM_TOP)/(YR - STEM_TOP)))*0.075;
+/* ---------- wing shed roof ---------- */
+const wingY = x => F1 + WING.h + (x - WING.x0)*Math.tan(WING.pitch);   /* rafter underside */
+{
+  const a = WING.pitch, nx = -Math.sin(a), ny = Math.cos(a), RD = 7.25*IN, oh = 0.8;
+  const xe = WING.x0 - oh, xh = WING.x1;
+  const za = WING.z0 - 0.6, zb = WING.z1 + 0.6;
+  const along = (lift, xa, xb) => [xa + nx*lift, wingY(xa) + ny*lift, xb + nx*lift, wingY(xb) + ny*lift];
+  /* ledger on the house wall, then rafters */
+  box(xh - 0.05, xh + 0.08, wingY(xh) - 0.1, wingY(xh) + RD, za, zb, COL.lvl, 0.655, 0.01, "drop", {dist:3});
+  for (let z = za + 0.06, i = 0; z < zb; z += OC, i++){
+    const [x0, y0, x1, y1] = along(RD/2, xe, xh - 0.06);
+    boardXY(z, x0, y0, x1, y1, RD, SW, pick(COL.lumber), 0.66 + i*0.003, 0.011, "drop", {dist:4});
+  }
+  const L = (xh - xe)/Math.cos(a), mid = (s, lift) => [xe + Math.cos(a)*s + nx*lift, wingY(xe) + Math.sin(a)*s + ny*lift];
+  /* sheathing in two strips */
+  for (let k = 0; k < 2; k++){
+    const z0 = za + k*(zb - za)/2, z1 = z0 + (zb - za)/2 - 0.02, [cx, cy] = mid(L/2, RD + SUB/2);
+    add("box", cx, cy, (z0 + z1)/2, L, SUB, z1 - z0, COL.osb[k], 0.73 + k*0.006, 0.01, "slide", {rz:a, dir:new THREE.Vector3(nx, ny, 0), dist:2.5});
+  }
+  /* shingle courses from the eave up, running along the wing */
+  let i = 0;
+  for (let s = 0; s < L - 0.1; s += 0.9, i++){
+    const [cx, cy] = mid(Math.min(L, s + 0.525), RD + SUB + 0.05);
+    add("box", cx, cy, (za + zb)/2, zb - za + 0.25, 0.07, 1.05, COL.roof[i % 3], 0.83 + i*0.004, 0.008, "slide",
+      {ry:-Math.PI/2, rz:a - 0.02, order:"ZYX", dir:new THREE.Vector3(nx, ny, 0), dist:1.8});
+  }
+  /* fascia + rake boards */
+  const [fx, fy] = mid(0, RD/2 + 0.1);
+  box(fx - 0.06, fx + 0.06, fy - 0.45, fy + 0.4, za - 0.05, zb + 0.05, COL.trim, 0.93, 0.012, "drop", {dist:1.5});
+  [za - 0.04, zb + 0.04].forEach(z => {
+    const [x0, y0, x1, y1] = along(RD/2 + 0.12, xe, xh);
+    boardXY(z, x0, y0, x1, y1, RD + 0.45, 0.12, COL.trim, 0.935, 0.012, "drop", {dist:1.5});
+  });
+  box(xe, xh, wingY(xe) - 0.06, wingY(xe), za, zb, COL.trim, 0.93, 0.012, "grow");
+  /* siding fills the sloped gables above the wing's front and back walls */
+  const off = T/2 + 0.04 + 0.06;
+  [[WING.z1 + off, 1], [WING.z0 - off, -1]].forEach(([z, nz]) => {
+    for (let y = F1 + WING.h; y < wingY(xh) - 0.1; y += 0.5){
+      const xl = WING.x0 + (y + 0.56 - (F1 + WING.h))/Math.tan(a);
+      if (xh - xl < 0.15) continue;
+      box(Math.max(xl, WING.x0), xh, y, y + 0.56, z - 0.03, z + 0.03, COL.siding[0], sidingT0(y), 0.012, "slide", {mat:"siding", dir:new THREE.Vector3(0, 0, nz), dist:1.6});
+    }
+  });
 }
 
 /* ---------- sheathing + siding ---------- */
@@ -1017,10 +1093,11 @@ wallList.forEach(w => {
       ins(u0 + 0.45, u1 - 0.45, 1.2, v1 - 0.45, 0.18, 0.01, COL.glass, "glass", t + 0.004);
     } else {
       ins(u0 + 0.06, u1 - 0.06, v0 + 0.06, v1 - 0.06, 0.05, 0, COL.glass, "glass");
-      const mids = type === "s" ? [(u0 + u1)/2] : type === "tri" ? [u0 + 2.4, u1 - 2.4] : [];
+      const nw = (u1 - u0)*0.245;
+      const mids = type === "s" ? [(u0 + u1)/2] : type === "tri" ? [u0 + nw, u1 - nw] : [];
       mids.forEach(m => ins(m - fw/2, m + fw/2, v0, v1, 0.22, offFrame - 0.05, COL.trim, "box", t + 0.003));
       /* meeting rails on double-hung sashes */
-      const rails = type === "w" ? [[u0, u1]] : type === "tri" ? [[u0, u0 + 2.4], [u1 - 2.4, u1]] : [];
+      const rails = type === "w" ? [[u0, u1]] : type === "tri" ? [[u0, u0 + nw], [u1 - nw, u1]] : [];
       rails.forEach(([a, b]) => ins(a, b, (v0 + v1)/2 - fw/2, (v0 + v1)/2 + fw/2, 0.22, offFrame - 0.05, COL.trim, "box", t + 0.003));
     }
     [[u0, u0 + fw, v0, v1], [u1 - fw, u1, v0, v1], [u0, u1, v1 - fw, v1], [u0, u1, v0, v0 + fw]].forEach((f, k) => {
@@ -1046,8 +1123,9 @@ wallList.forEach(w => {
   corner(W/2 + o - 0.2, -(D/2 + o - 0.2), F2 + H2 - OHR*Math.tan(TR), 3);
   /* bay corners + bay roof + bay underside */
   [BAY.x0, BAY.x1].forEach((x, i) => add("box", x + (i ? 0.08 : -0.08), F1 - BAND/2 + BAY.top/2, D/2 + BAY.d + 0.08, 0.5, BAY.top + BAND, 0.5, COL.trim, 0.928, 0.012, "grow"));
-  add("box", (BAY.x0 + BAY.x1)/2, F1 + BAY.top + 0.25, D/2 + BAY.d/2 + 0.15, BAY.x1 - BAY.x0 + 0.7, 0.14, BAY.d + 0.75, COL.roof[1], 0.87, 0.012, "drop", {dist:2, rx:0.32});
-  add("box", (BAY.x0 + BAY.x1)/2, F1 + BAY.top + 0.02, D/2 + BAY.d + 0.12, BAY.x1 - BAY.x0 + 0.6, 0.35, 0.1, COL.trim, 0.93, 0.012, "drop", {dist:1.5});
+  add("box", (BAY.x0 + BAY.x1)/2, F1 + BAY.top - 0.2, D/2 + BAY.d + 0.13, BAY.x1 - BAY.x0 + 0.6, 0.4, 0.08, COL.trim, 0.93, 0.012, "drop", {dist:1.5});
+  corner(WING.x0 - o + 0.2, WING.z1 + o - 0.2, F1 + WING.h, 4);
+  corner(WING.x0 - o + 0.2, WING.z0 - o + 0.2, F1 + WING.h, 5);
   add("box", (BAY.x0 + BAY.x1)/2, SILL_TOP - 0.03, D/2 + BAY.d/2 + 0.05, BAY.x1 - BAY.x0 + 0.1, 0.06, BAY.d + 0.15, COL.trim, 0.93, 0.012, "grow");
 }
 /* fascia, soffits, rake boards */
@@ -1062,10 +1140,12 @@ wallList.forEach(w => {
     slopeBox("box", -1, sx*(W/2 + RAKE + 0.05), ridgeS - 0.1, SLR + 0.08, JD/2 + 0.12, 0.12, JD + 0.45, COL.trim, 0.935, 0.012, "slide", {dist:1.5});
   });
   /* gutter downspouts */
-  [[W/2 + 0.25, D/2 + 0.25], [BAY.x1 + 0.3, D/2 + 0.2], [W/2 + 0.25, -D/2 - 0.25]].forEach(([x, z], i) =>
+  [[W/2 + 0.25, D/2 + 0.25], [W/2 + 0.25, -D/2 - 0.25]].forEach(([x, z], i) =>
     box(x - 0.12, x + 0.12, 0.1, (z > 0 ? yEF : yER) - 0.1, z - 0.12, z + 0.12, COL.trim, 0.938 + i*0.002, 0.01, "grow"));
 }
 /* exposed foundation gets the painted parge coat seen in the photos */
+[[WING.x0 - 0.03, WING.x1, WING.z1, WING.z1 + 0.03], [WING.x0 - 0.03, WING.x0, WING.z0, WING.z1], [WING.x0 - 0.03, WING.x1, WING.z0 - 0.03, WING.z0]].forEach((b, i) =>
+  box(b[0], b[1], 0, STEM_TOP, b[2], b[3], COL.parge, 0.905 + i*0.003, 0.012, "grow"));
 [[-W/2 - 0.03, W/2 + 0.03, D/2, D/2 + 0.03], [-W/2 - 0.03, W/2 + 0.03, -D/2 - 0.03, -D/2], [-W/2 - 0.03, -W/2, -D/2, D/2], [W/2, W/2 + 0.03, -D/2, D/2]].forEach((b, i) =>
   box(b[0], b[1], 0, STEM_TOP, b[2], b[3], COL.parge, 0.905 + i*0.003, 0.012, "grow"));
 
@@ -1100,12 +1180,12 @@ function deck(x0, x1, z0, z1, top, t0, t1, rails, posts){
 }
 /* front deck + stairs + lattice skirt */
 {
-  const top = F1 - 0.15, x0 = -W/2 + 0.5, x1 = -5, z0 = D/2 + 0.1, z1 = D/2 + 5.5;
-  const sx0 = -8.2, sx1 = -5.0;
+  const top = F1 - 0.15, x0 = WING.x0 - 0.5, x1 = -W/2 + 7.7, z0 = D/2 + 0.1, z1 = D/2 + 4.0;
+  const sx0 = -W/2 + 4.0, sx1 = x1;
   deck(x0, x1, z0, z1, top, 0.885, 0.935, [[x0, z0, x0, z1], [x0, z1, sx0, z1], [x1, z1, x1, z0]]);
   add("lattice", (x0 + sx0)/2, (top - 0.4)/2, z1 - 0.1, sx0 - x0, top - 0.4, 0.05, COL.deck[0], 0.932, 0.01, "grow");
   add("lattice", x0 + 0.1, (top - 0.4)/2, (z0 + z1)/2, 0.05, top - 0.4, z1 - z0, COL.deck[0], 0.932, 0.01, "grow");
-  const risers = 5, r = top/risers, run = 0.92;
+  const risers = 5, r = top/risers, run = 0.85;
   for (let i = 1; i < risers; i++){
     const y = top - r*i, za = z1 + (i - 1)*run;
     box(sx0 + 0.1, sx1 - 0.1, y - 0.1, y, za, za + run, pick(COL.deck), 0.905 + i*0.003, 0.01, "drop", {dist:1.5});
@@ -1122,10 +1202,29 @@ function deck(x0, x1, z0, z1, top, t0, t1, rails, posts){
     box(x - 0.15, x + 0.15, 0, r + 3.1, zEnd - 0.15, zEnd + 0.15, pick(COL.deck), 0.912, 0.01, "grow");
   });
 }
+/* lattice skirting over the foundation along the front, under the bay, and along the right side up to the chimney */
+{
+  const LH = STEM_TOP + 0.06, t = 0.94;
+  const sk = (cx, cz, sx, sz, i) => add("lattice", cx, LH/2, cz, sx, LH, sz, COL.deck[0], t + i*0.002, 0.012, "grow");
+  sk((-W/2 + 7.8 + BAY.x0)/2, D/2 + 0.13, BAY.x0 - (-W/2 + 7.8), 0.05, 0);
+  sk((BAY.x0 + BAY.x1)/2, D/2 + BAY.d + 0.13, BAY.x1 - BAY.x0, 0.05, 1);
+  sk(BAY.x0 - 0.05, D/2 + BAY.d/2 + 0.07, 0.05, BAY.d + 0.1, 2);
+  sk(BAY.x1 + 0.05, D/2 + BAY.d/2 + 0.07, 0.05, BAY.d + 0.1, 3);
+  sk((BAY.x1 + W/2)/2, D/2 + 0.13, W/2 - BAY.x1, 0.05, 4);
+  const zf = CHIM_Z + 2.7;
+  sk(W/2 + 0.13, (zf + D/2)/2, 0.05, D/2 - zf, 5);
+}
 /* rear deck off the kitchen */
 {
-  const top = F1 - 0.6, z0 = -D/2 - 12, z1 = -D/2 - 0.1;
-  deck(-6, 17, z0, z1, top, 0.88, 0.94, [[-6, z0, 17, z0], [17, z0, 17, z1], [-6, z1 - 3, -6, z0]]);
+  const top = F1 - 0.6, z0 = -D/2 - 12, z1 = -D/2 - 0.1, xr = W/2 + 2;
+  deck(-1, xr, z0, z1, top, 0.88, 0.94, [[-1, z0, xr, z0], [xr, z0, xr, z1 - 4.6], [-1, z1 - 3, -1, z0]]);
+  deck(-10.5, -1, z0, z1, top - 1.0, 0.875, 0.93, []);
+  /* three steps down off the right end, toward the side-yard walk */
+  for (let i = 1; i <= 3; i++){
+    const y = top - i*(top/4), xa = xr + (i - 1)*0.9;
+    box(xa, xa + 0.92, y - 0.12, y, z1 - 4.4, z1 - 0.4, pick(COL.deck), 0.935 + i*0.002, 0.01, "drop", {dist:1.5});
+    box(xa, xa + 0.92, 0, y - 0.12, z1 - 4.4, z1 - 4.25, COL.deckDark, 0.933, 0.01, "grow");
+  }
 }
 /* upstairs balcony off the rear slider */
 {
@@ -1134,22 +1233,46 @@ function deck(x0, x1, z0, z1, top, t0, t1, rails, posts){
 }
 
 /* ---------- landscape: walks, beds, shrubs, shed ---------- */
-box(-8.6, -4.6, 0, 0.09, D/2 + 9.1, D/2 + 11.2, null, 0.952, 0.008, "pour", {mat:"walk", axis:0});
-box(-4.6, W/2 + 3.5, 0, 0.09, D/2 + 9.4, D/2 + 11.2, null, 0.955, 0.012, "pour", {mat:"walk", axis:0});
-box(W/2 + 1.5, W/2 + 3.5, 0, 0.09, -D/2 + 2, D/2 + 9.4, null, 0.958, 0.012, "pour", {mat:"walk", axis:2});
-box(-4.8, W/2 + 1.3, 0, 0.06, D/2 + 0.2, D/2 + 9.3, COL.mulch, 0.956, 0.012, "grow");
-plant("shrub", -1.5, D/2 + 5.2, 5.0, 3, 0.962);
-plant("shrub", 5, D/2 + 3.8, 2.6, 4, 0.965);
-plant("shrub", W/2 - 1.2, D/2 + 4.4, 3.0, 5, 0.967);
-plant("maple", -W/2 - 3.5, D/2 + 7.5, 5.0, 6, 0.964);
-plant("rose", W/2 + 1.8, D/2 - 3, 8.0, 7, 0.968);
+{
+  const zs = D/2 + 4.0 + 4*0.85;            /* foot of the front stairs */
+  /* concrete pad in front of the deck, then the walk along the front bed and down the right side */
+  box(WING.x0 - 1.0, -W/2 + 8.4, 0, 0.3, D/2 + 4.1, zs + 0.9, null, 0.95, 0.01, "pour", {mat:"walk", axis:0});
+  box(-W/2 + 8.4, W/2 + 4.9, 0, 0.09, zs - 0.9, zs + 0.9, null, 0.953, 0.012, "pour", {mat:"walk", axis:0});
+  box(W/2 + 2.9, W/2 + 4.9, 0, 0.09, -D/2 - 0.3, zs - 0.9, null, 0.956, 0.012, "pour", {mat:"walk", axis:2});
+  /* mulch bed from the stairs around the right corner to the chimney */
+  box(-W/2 + 7.8, W/2 + 2.85, 0, 0.06, D/2 + 0.05, zs - 0.92, COL.mulch, 0.955, 0.012, "grow");
+  box(W/2 + 0.05, W/2 + 2.85, 0, 0.06, CHIM_Z + 2.7, D/2 + 0.05, COL.mulch, 0.956, 0.012, "grow");
+}
+plant("shrub", 5.5, D/2 + 3.0, 4.6, 3, 0.962);
+plant("maple", WING.x0 - 4.5, D/2 + 6.5, 4.6, 6, 0.964);
+plant("rose", W/2 + 2.0, CHIM_Z + 4.3, 8.5, 7, 0.968);
+plant("rose", -W/2 - 2.6, -D/2 - 3.4, 9.0, 12, 0.969);
 plant("hydrangea", -W/2 - 1.6, -4, 3.4, 8, 0.97);
-plant("hydrangea", -W/2 - 1.6, 3, 3.6, 9, 0.972);
-plant("hydrangea", W/2 + 1.8, -D/2 - 1.5, 3.2, 10, 0.973);
+plant("hydrangea", -W/2 - 1.6, 0.5, 3.2, 9, 0.972);
+plant("hydrangea", W/2 + 1.6, -D/2 + 1.6, 3.2, 10, 0.973);
+plant("hydrangea", 4, -D/2 - 13.2, 2.8, 13, 0.974);
+/* black metal fence from behind the chimney out across the side walk, then back along the yard */
+{
+  const fence = (xa, za, xb, zb, t0) => {
+    const len = Math.hypot(xb - xa, zb - za), n = Math.round(len/0.42), ax = Math.abs(xb - xa) > Math.abs(zb - za);
+    for (let i = 0; i <= n; i++){
+      const f = i/n, x = xa + (xb - xa)*f, z = za + (zb - za)*f, post = i % 14 === 0 || i === n;
+      const w = post ? 0.16 : 0.05;
+      box(x - w/2, x + w/2, 0, post ? 4.3 : 4.0, z - w/2, z + w/2, null, t0 + f*0.008, 0.008, "grow", {mat:"fence"});
+    }
+    [0.35, 3.85].forEach(y => add("box", (xa + xb)/2, y, (za + zb)/2, ax ? len : 0.06, 0.08, ax ? 0.06 : len, null, t0 + 0.009, 0.008, "grow", {mat:"fence"}));
+  };
+  const zf = CHIM_Z - 2.9;
+  fence(W/2 + 0.15, zf, W/2 + 15, zf, 0.976);
+  fence(W/2 + 15, zf, W/2 + 15, -D/2 - 18, 0.979);
+}
+/* porch lantern beside the front door */
+box(-W/2 + 7.95, -W/2 + 8.4, F1 + 5.7, F1 + 6.45, D/2 + 0.12, D/2 + 0.5, null, 0.95, 0.01, "drop", {mat:"lamp", dist:1});
+box(-W/2 + 8.02, -W/2 + 8.33, F1 + 5.82, F1 + 6.3, D/2 + 0.16, D/2 + 0.46, null, 0.951, 0.01, "drop", {mat:"glass", dist:1});
 /* detached shed */
-box(-W/2 - 16, -W/2 - 4, 0, 7.5, -D/2 - 6, -D/2 + 2, COL.siding[0], 0.966, 0.014, "grow", {mat:"siding"});
-box(-W/2 - 16.5, -W/2 - 3.5, 7.5, 7.9, -D/2 - 6.5, -D/2 + 2.5, COL.trim, 0.97, 0.01, "drop", {dist:2});
-box(-W/2 - 13, -W/2 - 7, 0.2, 6.6, -D/2 + 2, -D/2 + 2.12, COL.deckDark, 0.972, 0.01, "slide", {dir:new THREE.Vector3(0,0,1), dist:1.5});
+box(-W/2 - 20, -W/2 - 8, 0, 7.5, -D/2 - 8, -D/2, COL.siding[0], 0.966, 0.014, "grow", {mat:"siding"});
+box(-W/2 - 20.5, -W/2 - 7.5, 7.5, 7.9, -D/2 - 8.5, -D/2 + 0.5, COL.trim, 0.97, 0.01, "drop", {dist:2});
+box(-W/2 - 17, -W/2 - 11, 0.2, 6.6, -D/2, -D/2 + 0.12, COL.deckDark, 0.972, 0.01, "slide", {dir:new THREE.Vector3(0,0,1), dist:1.5});
 
 /* ---------- build instanced meshes ---------- */
 let totalPieces = 0;
@@ -1207,7 +1330,7 @@ seg([-hx,STEM_TOP,-hz],[hx,STEM_TOP,-hz]); seg([hx,STEM_TOP,-hz],[hx,STEM_TOP,hz
 });
 seg([-hx,F2+H2,-hz],[hx,F2+H2,-hz]); seg([-hx,YR,ZR],[hx,YR,ZR]); seg([-hx,F2,hz],[hx,F2,hz]);
 const ghostRect = (x0,x1,y0,y1,z) => { seg([x0,y0,z],[x1,y0,z]); seg([x1,y0,z],[x1,y1,z]); seg([x1,y1,z],[x0,y1,z]); seg([x0,y1,z],[x0,y0,z]); };
-ghostRect(-hx + 5.5, -hx + 8.5, F1, F1 + 6.9, hz + 0.02);
+ghostRect(-hx + 4.4, -hx + 7.4, F1, F1 + 6.9, hz + 0.02);
 ghostRect(BAY.x0, BAY.x1, F1 - BAND, F1 + BAY.top, hz + BAY.d);
 ghostRect(BAY.x0 + 0.45, BAY.x1 - 0.45, F1 + 2.2, F1 + 7.2, hz + BAY.d + 0.02);
 const ghostGeo = new THREE.BufferGeometry();
@@ -1255,7 +1378,7 @@ try {
 
 /* lit windows and a porch lantern for the evening (dark) theme */
 const porch = new THREE.PointLight(0xffb867, 0, 22, 2);
-porch.position.set(-W/2 + 4.6, F1 + 7.3, D/2 + 1.6);
+porch.position.set(-W/2 + 8.2, F1 + 6.0, D/2 + 0.9);
 scene.add(porch);
 
 let dirty = true;
@@ -1312,6 +1435,8 @@ function updatePieces(p){
 /* camera: starts high over the open excavation, settles square to the front of the house */
 let wide = true;
 function placeCamera(p){
+  const ov = window.__houseBuild && window.__houseBuild.cameraOverride;
+  if (ov){ camera.position.set(ov.pos[0], ov.pos[1], ov.pos[2]); camera.lookAt(ov.look[0], ov.look[1], ov.look[2]); return; }
   const e = smooth(0, 1, p);
   const az = -0.8 + 1.25*e, el = 0.64 - 0.56*e;
   const ty = 11*e;

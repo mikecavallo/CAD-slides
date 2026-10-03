@@ -5,7 +5,7 @@
    Textures are procedural (canvas 2D + REAL.core noise), deterministic (fixed seeds), authored in physical inches.
    UVs: this module carries its own world-UV shader patch (same scheme as REAL.core.worldUV: feet per repeat, per-instance
    hash) because several finishes need things worldUV cannot do:
-     - fragment-level UVs: every 40" shingle and every siding course picks its own offset / row / mirror out of the
+     - fragment-level UVs: every 40" shingle and every siding course picks its own offset / row / tone out of the
        texture, so a whole roof or a whole-wall siding panel never shows a repeat grid or a ladder of end laps.
        Those UVs jump at shingle and course joints, so the maps are sampled with explicit (continuous) gradients
        (textureGrad) and the jumps leave no mip seams.
@@ -73,12 +73,12 @@ function rgbCanvas(C, W, H, rgb){
   ctx.putImageData(img, 0, 0);
   return c;
 }
-/* data canvas: g = roughness, b = metalness (three reads roughnessMap.g and metalnessMap.b), values 0..1 */
-function dataCanvas(C, W, H, g, b){
+/* data canvas: g = roughness, b = metalness (three reads roughnessMap.g and metalnessMap.b), r = optional mask, values 0..1 */
+function dataCanvas(C, W, H, g, b, r){
   const c = C.canvas(W, H), ctx = c.getContext("2d"), img = ctx.createImageData(W, H), d = img.data;
   for (let i = 0, k = 0; i < W * H; i++, k += 4){
     const gv = g[i] * 255;
-    d[k] = gv; d[k+1] = gv; d[k+2] = b ? b[i] * 255 : gv; d[k+3] = 255;
+    d[k] = r ? r[i] * 255 : gv; d[k+1] = gv; d[k+2] = b ? b[i] * 255 : gv; d[k+3] = 255;
   }
   ctx.putImageData(img, 0, 0);
   return c;
@@ -140,7 +140,8 @@ vec3 finTrees(vec3 r, vec3 wp, float neutral){
 `;
 
 /* fragment UV code per finish: sets finUv (+ finFlip for mirrored pieces) and finMul (albedo multiplier).
-   vFinF.xy = position on the face in feet (y from the bottom / downhill edge), vFinF.zw = face size, vFinH = instance hash */
+   vFinF.xy = position on the face in feet (y from the bottom / downhill edge), vFinF.zw = face size,
+   finH = per-instance hash 0..1 (snapped from an integer-valued varying so chained hashes stay stable per pixel) */
 const UV_SHINGLE = `
   { vec2 P = vFinF.xy;
     float cr = floor(P.y / 0.45);                                   /* 5.4in course index up the piece */
@@ -149,9 +150,16 @@ const UV_SHINGLE = `
     float si = floor(sx);
     float hs = finHash(si * 0.6173 + cid * 1.7311 + 0.11);          /* one 40in shingle */
     float row = floor(finHash(hs * 31.7 + 2.3) * 4.0);
-    finFlip = finHash(hs * 17.1 + 5.1) < 0.5 ? -1.0 : 1.0;
-    finUv = vec2((sx - si) * finFlip + hs * 3.0, (P.y - cr * 0.45) / 1.8 + row * 0.25);
-    finMul = vec3(0.95 + 0.1 * finHash(hs * 7.7 + 9.1));
+    finUv = vec2(sx - si + hs * 3.0, (P.y - cr * 0.45) / 1.8 + row * 0.25);   /* no mirroring: the raked tab edges all lean one way */
+    finMul = vec3(0.97 + 0.06 * finHash(hs * 7.7 + 9.1));
+    if (vFinF.w < 0.12){
+      /* a strip's own butt / end face (box edge, ~0.84in): tab colour with a thin black asphalt edge at the bottom */
+      finUv.y = row * 0.25 + 0.115;
+      finMul *= 0.55 + 0.4 * smoothstep(0.0, 0.035, P.y);
+    } else if (vFinT < 0.12 && cr < 0.5){
+      /* bottom course of a thin strip: the real butt geometry already draws the shadow line, so soften the painted dash */
+      finMul *= 1.0 + 1.5 * FIN_TEX(roughnessMap).r;
+    }
   }`;
 const UV_SIDING = `
   { vec2 P = vFinF.xy;
@@ -201,14 +209,14 @@ const GLASS_FRAG = `
     float isX = (1.0 - isB) * step(tX, tY);
     float isC = (1.0 - isB) * (1.0 - isX) * step(0.0, R.y);
     float isF = (1.0 - isB) * (1.0 - isX) * (1.0 - isC);
-    float illum = 0.2 * mix(1.0, 0.28, pow(dep, 0.6));                    /* daylight falls off away from the window */
+    float illum = 0.56 * mix(1.0, 0.28, pow(dep, 0.6));                    /* daylight falls off away from the window */
     /* soft corner darkening */
     float eX = min(Hh.x + mL, S.x + mR - Hh.x), eY = min(Hh.y - vF, vC - Hh.y), eZ = Dp - Hh.z;
     float ao = 0.6 + 0.4 * smoothstep(0.0, 1.4, isB * min(eX, eY) + isX * min(eY, eZ) + (isC + isF) * min(eX, eZ));
     vec3 room = isB * aT * tint
               + isX * tint * 0.6 * (0.9 + 0.1 * sin(Hh.y * 2.0))
               + isC * vec3(0.66, 0.65, 0.62) * 0.8
-              + isF * vec3(0.24, 0.16, 0.1) * (0.8 + 0.2 * finVN(vec3(Hh.x * 0.5, Hh.z * 6.0, 1.0)));
+              + isF * vec3(0.24, 0.16, 0.1) * (0.75 + 0.3 * finHash(floor(Hh.x / 0.3) * 1.37 + hR * 50.0)) * (0.85 + 0.15 * finVN(vec3(Hh.x * 0.4, Hh.z * 3.0, 1.0)));
     room *= illum * ao;
     vec3 roomE = (isB * (eT * 1.6 + 0.05) + isX * 0.12 * (1.0 - 0.6 * dep) + isC * 0.16 * (1.0 - 0.7 * dep) + isF * 0.06) * ao;
     roomE *= mix(vec3(1.0), tint, 0.5) * (isB > 0.5 ? vec3(1.0) : warm) * lampOn + (1.0 - lampOn) * vec3(0.004, 0.005, 0.008);
@@ -246,13 +254,17 @@ const GLASS_FRAG = `
     float inBx = smoothstep(a0 + 0.01 - fw.x, a0 + 0.01 + fw.x, Pb.x) * (1.0 - smoothstep(a1 - 0.01 - fw.x, a1 - 0.01 + fw.x, Pb.x));
     float inB = hasB * inBx * smoothstep(yb - fw.y, yb + fw.y, Pb.y);
     float sc = (S.y + 0.3 - Pb.y) / pitch, sf = fract(sc);
-    float aa = smoothstep(0.22, 0.6, fw.y / pitch);
-    float closedV = (0.9 + 0.1 * cos((sf - 0.35) * 3.1416)) * (1.0 - 0.32 * (1.0 - smoothstep(0.0, 0.14, sf)));
-    closedV = mix(closedV, 0.88, aa);
-    float slat = 1.0 - smoothstep(0.55 - 0.05, 0.55 + 0.05, sf);
+    float fs = fw.y / pitch;                                              /* pixel footprint in slats: filters the slat pattern */
+    float aa = smoothstep(0.12, 0.45, fs);
+    float su = fract(sc + 0.5) - 0.54;                                    /* 0 just below each slat edge */
+    float cw = 0.07;
+    float crease = (1.0 - smoothstep(0.0, cw + fs, abs(su))) * cw / (cw + fs);
+    float closedV = (0.92 + 0.06 * cos((sf - 0.35) * 6.2832)) * (1.0 - 0.45 * crease);
+    closedV = mix(closedV, 0.89, aa);
+    float slat = 1.0 - smoothstep(0.5 - fs, 0.6 + fs, sf);
     slat = mix(slat, 0.55, aa);
     float bsel = finHash(hs * 31.0 + 0.9);
-    vec3 bc = bsel < 0.7 ? vec3(0.6, 0.59, 0.56) : bsel < 0.88 ? vec3(0.58, 0.54, 0.46) : vec3(0.5, 0.5, 0.49);
+    vec3 bc = bsel < 0.7 ? vec3(0.52, 0.51, 0.49) : bsel < 0.88 ? vec3(0.5, 0.47, 0.4) : vec3(0.44, 0.44, 0.43);
     float rail = 1.0 - smoothstep(yb + 0.09 - fw.y, yb + 0.09 + fw.y, Pb.y);
     float lx = min(abs(Pb.x - mix(a0, a1, 0.16)), abs(Pb.x - mix(a0, a1, 0.84)));
     float lad = (1.0 - smoothstep(0.0, 0.008 + fw.x, lx)) * 0.008 / (0.008 + fw.x);
@@ -260,7 +272,8 @@ const GLASS_FRAG = `
     vec3 bCol = mix(bOpen, bc * closedV, 1.0 - open);
     bCol = mix(bCol, bc * 0.82, rail) * (1.0 - 0.18 * lad);
     vec3 bEm = mix(mix(em * 0.8, vec3(0.42) * (0.55 + 0.45 * lampOn) * warm * lampOn, slat), vec3(0.5) * closedV * warm * lampOn, 1.0 - open);
-    col = mix(col, bCol * 0.92, inB);
+    col = mix(col, bCol, inB);
+    col *= 0.52;                                                          /* glass transmission + window recess: things behind the pane see less light than the facade */
     em = mix(em, bEm, inB);
     /* grilles between the glass in the flanking double-hungs of a picture window (as on the front of the house) */
     float gx = abs(P.x - 0.5 * (a0 + a1)), gy = min(abs(P.y - S.y * 0.25), abs(P.y - S.y * 0.75)), gw = 0.028;
@@ -284,6 +297,7 @@ function finPatch(THREE, m, o, seedAttr){
       vec2 rUv = uv;
       vFinH = 0.0;
       vFinF = vec4(uv, 1.0, 1.0);
+      ${o.downhill ? "vFinT = 1.0;" : ""}
       #ifdef USE_INSTANCING
       {
         vec3 fS = vec3(length(instanceMatrix[0].xyz), length(instanceMatrix[1].xyz), length(instanceMatrix[2].xyz));
@@ -297,6 +311,7 @@ function finPatch(THREE, m, o, seedAttr){
         vec3 fI = instanceMatrix[3].xyz;
         float fH = ${seedAttr ? `finSeed != 0.0 ? fract(finSeed * 0.7548777 + 0.1234) : ${hashCode}` : hashCode};
         vFinH = floor(fH * 8192.0) + 0.5;          /* integer-valued: survives interpolation exactly */
+        ${o.downhill ? "vFinT = fN.y > 0.5 ? fS.y : (fN.x > 0.5 ? fS.x : fS.z);" : ""}
         vFinF = vec4(fP, fD);
         vec2 fJ = vec2(fH, fract(fH * 7.13));
         ${vq}
@@ -356,7 +371,7 @@ function finPatch(THREE, m, o, seedAttr){
     ${o.frag || ""}`;
 
   m.onBeforeCompile = function(sh){
-    const vHead = "varying vec4 vFinF;\nvarying vec3 vFinW;\nvarying float vFinH;\n" + (o.glass ? "varying vec3 vFinV;\n" : "") + (seedAttr ? "attribute float finSeed;\n" : "");
+    const vHead = "varying vec4 vFinF;\nvarying vec3 vFinW;\nvarying float vFinH;\n" + (o.glass ? "varying vec3 vFinV;\n" : "") + (o.downhill ? "varying float vFinT;\n" : "") + (seedAttr ? "attribute float finSeed;\n" : "");
     sh.vertexShader = vHead + sub(sub(sh.vertexShader, "#include <uv_vertex>", uvCode), "#include <worldpos_vertex>", `#include <worldpos_vertex>
         { vec4 fW = vec4(transformed, 1.0);
           #ifdef USE_INSTANCING
@@ -373,7 +388,7 @@ function finPatch(THREE, m, o, seedAttr){
     fs = sub(fs, "#include <normal_fragment_maps>", normChunk);
     fs = sub(fs, "#include <emissivemap_fragment>", emChunk);
     fs = sub(fs, "#include <lights_fragment_maps>", "#include <lights_fragment_maps>\n" + refl);
-    sh.fragmentShader = "varying vec4 vFinF;\nvarying vec3 vFinW;\nvarying float vFinH;\n" + (o.glass ? "varying vec3 vFinV;\n" : "") + fs;
+    sh.fragmentShader = "varying vec4 vFinF;\nvarying vec3 vFinW;\nvarying float vFinH;\n" + (o.glass ? "varying vec3 vFinV;\n" : "") + (o.downhill ? "varying float vFinT;\n" : "") + fs;
   };
   m.customProgramCacheKey = function(){ return key; };
   m.needsUpdate = true;
@@ -383,9 +398,10 @@ function finPatch(THREE, m, o, seedAttr){
 /* ================================================================ SHINGLE
    Laminated architectural shingle, medium-grey blend. Tile = one 40" shingle x 21.6" = four different 5.4" courses.
    The shader cuts the roof into 40" shingles (random stagger per course) and gives each one its own course row,
-   horizontal offset, mirror and tone, so the texture never repeats as a grid. Canvas bottom (v=0) = downhill butt edge.
-   Per course: top-layer tabs in four tone classes with raked (dragon-tooth) cut edges; long near-black dashes along the
-   butt where the double-ply tabs' thick edges face down-slope; a few narrow, tall slots showing the dark backer. */
+   horizontal offset and tone, so the texture never repeats as a grid. Canvas bottom (v=0) = downhill butt edge.
+   Per course: top-layer tabs in four tone classes with raked (dragon-tooth) cut edges that mostly lean one way; short,
+   near-black raked dashes along the butt where the double-ply tabs' thick edges face down-slope; a few narrow wedge
+   slots along the raked edges showing the dark backer. */
 function shingleMaps(C){
   const W = 1024, H = 512, N = W * H, NC = 4, CH = H / NC;
   const pu = 40 / W, pv = 21.6 / H, E = 5.4;
@@ -394,73 +410,76 @@ function shingleMaps(C){
   const mott = up(field(C, 256, 128, {octaves: 2, base: 24, sx: 2, sy: 1, seed: 12}), W, H, "fb");
   /* granule clusters (~0.1-0.2in): survive mip-mapping, read as the sandy surface of real shingles */
   const clus = up({f: G.subarray(N, N + 256 * 128), w: 256, h: 128}, W, H, "fc");
-  const tone = buf("t1", N), tint = buf("t2", N), shade = buf("t3", N), hgt = buf("hgt", N), rough = buf("rough", N);
+  const tone = buf("t1", N), tint = buf("t2", N), shade = buf("t3", N), hgt = buf("hgt", N), rough = buf("rough", N), mask = buf("mask", N, true);
   const BASE = [121, 124, 128];
-  const CLASS = [-17, -7, 3, 13];
-  const MAXT = 64;
+  const CLASS = [-6, -2, 1, 5];
+  const MAXT = 80;
   const tT = new Float32Array(MAXT), tTi = new Float32Array(MAXT), tB = new Float32Array(MAXT), tBH = new Float32Array(MAXT), tBD = new Float32Array(MAXT);
+  const tBF = new Float32Array(MAXT), tBA = new Uint8Array(MAXT);
   const bX = new Float32Array(MAXT + 1), bS = new Float32Array(MAXT + 1), cx = new Float32Array(MAXT + 1);
-  const sW = new Float32Array(MAXT), sH = new Float32Array(MAXT), sT = new Float32Array(MAXT);
+  const sW = new Float32Array(MAXT), sH = new Float32Array(MAXT);
   for (let k = 0; k < NC; k++){
-    /* periodic sequence of tab boundaries across the 40" tile */
+    /* periodic sequence of tab boundaries across the 40" tile; the dragon-tooth cut edges are raked, nearly all the
+       same way (this is what draws the faint diagonal lattice seen on real architectural roofs) */
     const x0 = rnd() * W;
     let nT = 0, x = x0;
     for (;;){
-      bX[nT] = x; bS[nT] = (rnd() < 0.5 ? -1 : 1) * (0.1 + rnd() * 0.28) * pv / pu;   /* raked edge: px of shift per px row */
+      bX[nT] = x; bS[nT] = (rnd() < 0.88 ? 1 : -0.4) * (0.32 + rnd() * 0.38) * pv / pu;   /* px of shift per px row */
       nT++;
-      const w = (3.4 + Math.pow(rnd(), 0.9) * 5.6) / pu;
-      if (x + w > x0 + W - 3.4 / pu || nT >= MAXT) break;
+      const w = (3.2 + Math.pow(rnd(), 1.1) * 4.6) / pu;
+      if (x + w > x0 + W - 3.2 / pu || nT >= MAXT) break;
       x += w;
     }
     bX[nT] = x0 + W; bS[nT] = bS[0];
     for (let i = 0; i < nT; i++){
       const r = rnd();
       tT[i] = CLASS[r < 0.2 ? 0 : r < 0.5 ? 1 : r < 0.8 ? 2 : 3] + (rnd() - 0.5) * 5;
-      tTi[i] = (rnd() - 0.5) * 7;                                     /* warm / cool granule blend */
-      tB[i] = rnd() < 0.64 ? 1 : 0;                                   /* double-ply tab: dark butt dash */
-      tBH[i] = 0.3 + rnd() * 0.5;                                     /* dash height, in */
-      tBD[i] = 0.22 + rnd() * 0.1;                                    /* dash darkness */
-      const slot = rnd() < 0.32;                                      /* narrow tall slot at this tab's left edge */
-      sW[i] = slot ? (0.75 + rnd() * 1.25) / pu : 0;
-      sH[i] = 2.0 + rnd() * 2.0;
-      sT[i] = (rnd() - 0.5) * 0.5;                                    /* slot head rake, in per in */
+      tTi[i] = (rnd() - 0.5) * 2.5;                                   /* warm / cool granule blend */
+      tB[i] = rnd() < 0.8 ? 1 : 0;                                    /* double-ply tab: dark butt dash */
+      tBH[i] = 0.65 + rnd() * 0.6;                                     /* dash height, in */
+      tBD[i] = 0.19 + rnd() * 0.08;                                   /* dash darkness */
+      tBF[i] = 0.35 + rnd() * 0.65;                                   /* share of the tab's width the dash covers */
+      tBA[i] = rnd() < 0.5 ? 0 : 1;                                   /* dash anchored at the tab's left or right edge */
+      const slot = rnd() < 0.2;                                       /* narrow wedge slot along the raked edge (backer shows) */
+      sW[i] = slot ? (0.35 + rnd() * 0.45) / pu : 0;
+      sH[i] = 1.5 + rnd() * 1.6;
     }
     for (let t = 0; t < CH; t++){
       const y = H - 1 - (k * CH + t), row = y * W;
       const yin = (t + 0.5) * pv;
-      const head = 1 - 0.13 * sstep(E - 0.5, E, yin);                 /* contact shade under the next course's butt */
+      const head = 1 - 0.34 * Math.pow(sstep(E - 1.3, E, yin), 1.6);    /* contact shade under the next course's butt */
       const edge = yin < 0.1 ? 0.72 : 1;                              /* the butt's own edge */
       const slope = 0.03 * (1 - yin / E);
+      const thin = 0.55 + 0.45 * sstep(0.12, 0.5, yin);               /* single-ply butt: a thinner, lighter line */
       for (let i = 0; i <= nT; i++) cx[i] = bX[i] + bS[i] * t;
       cx[nT] = cx[0] + W;
+      for (let i = 1; i <= nT; i++) if (cx[i] < cx[i - 1] + 2) cx[i] = cx[i - 1] + 2;   /* raked edges never cross */
       for (let i = 0; i < nT; i++){
         const xa = cx[i], xb = cx[i + 1];
-        const band = tB[i] ? tBD[i] + (1 - tBD[i]) * sstep(tBH[i] - 0.22, tBH[i] + 0.05, yin) : 1;
-        const ts = head * edge * band, tv = tT[i], ti = tTi[i];
-        const hTab = 0.1 + slope - (tB[i] ? 0.04 * (1 - sstep(0, 0.12, yin)) : 0);
-        const ro = band < 0.8 ? 0.92 : 0.88;
+        const dash = tB[i] ? tBD[i] + (1 - tBD[i]) * Math.pow(sstep(tBH[i] - 0.7, tBH[i] + 0.06, yin), 0.8) : 1;
+        const xe = tBA[i] ? xb - tBF[i] * (xb - xa) : xa + tBF[i] * (xb - xa);
+        const tv = tT[i], ti = tTi[i], hd = head * edge;
         const p0 = Math.ceil(xa), p1 = Math.ceil(xb);
         for (let px = p0; px < p1; px++){
           const xx = px >= W ? px - W : px < 0 ? px + W : px, p = row + xx;
           const dl = px - xa, dr = xb - px;
+          const inD = tB[i] && (tBA[i] ? px >= xe : px < xe);
+          const band = inD ? dash : thin;
           tone[p] = tv; tint[p] = ti;
-          shade[p] = ts * (dl < 1.3 ? 0.86 : dr < 1.0 ? 1.04 : 1);   /* cut edge: thin shadow on one side, catch-light on the other */
-          hgt[p] = dl < 1.0 ? hTab - 0.03 : hTab; rough[p] = ro;
+          shade[p] = hd * band * (dl < 1.6 ? 0.8 : dr < 1.2 ? 1.05 : 1);   /* cut edge: thin shadow on one side, catch-light on the other */
+          hgt[p] = (dl < 1.0 ? 0.07 : 0.1) + slope - (inD ? 0.04 * (1 - sstep(0, 0.12, yin)) : 0);
+          rough[p] = band < 0.8 ? 0.92 : 0.88;
+          mask[p] = inD ? (1 - dash) / (1 - tBD[i]) : 0;              /* butt-dash mask (red channel of the roughness map) */
         }
-        /* slot centred on this tab's left edge, exposing the darker backer */
-        if (sW[i] > 0){
-          const top = sH[i];
-          if (yin < top + 0.6){
-            const half = sW[i] * 0.5, q0 = Math.floor(xa - half), q1 = Math.ceil(xa + half);
-            for (let px = q0; px < q1; px++){
-              const gTop = top + sT[i] * (px - xa) * pu;
-              if (yin >= gTop) continue;
-              const xx = ((px % W) + W) % W, p = row + xx;
-              const dE = Math.min(px + 0.5 - (xa - half), xa + half - px - 0.5) * pu, dT = gTop - yin;
-              const occ = 0.78 + 0.22 * sstep(0, 0.22, Math.min(dE, dT));
-              tone[p] = -6; tint[p] = 0; shade[p] = (0.44 + 0.08 * sstep(0, 1.2, yin)) * occ * head * edge;
-              hgt[p] = slope; rough[p] = 0.93;
-            }
+        /* wedge slot following this tab's raked left edge, exposing the darker backer */
+        if (sW[i] > 0 && yin < sH[i]){
+          const half = sW[i] * 0.5 * (1 - 0.6 * yin / sH[i]), q0 = Math.floor(xa - half), q1 = Math.ceil(xa + half);
+          for (let px = q0; px < q1; px++){
+            const xx = ((px % W) + W) % W, p = row + xx;
+            const dE = Math.min(px + 0.5 - (xa - half), xa + half - px - 0.5) * pu;
+            const occ = 0.8 + 0.2 * sstep(0, 0.15, Math.min(dE, sH[i] - yin));
+            tone[p] = -4; tint[p] = 0; shade[p] = (0.42 + 0.1 * sstep(0, 1.2, yin)) * occ * head * edge;
+            hgt[p] = slope; rough[p] = 0.93; mask[p] = 0;
           }
         }
       }
@@ -470,15 +489,19 @@ function shingleMaps(C){
   const rgb = buf("rgb", N * 3);
   for (let i = 0; i < N; i++){
     const g0 = G[i], g1 = G[i + 3571], g2 = G[i + 91711];
-    let v = tone[i] + blot[i] * 8 + mott[i] * 4 + g0 * 15 + clus[i] * 14;
+    let v = tone[i] + blot[i] * 3 + mott[i] * 4 + g0 * 17 + clus[i] * 16;
     if (g1 > 0.465) v += 22 + g2 * 14;
     else if (g1 < -0.45) v -= 20 + g2 * 8;
-    const s = shade[i], ti = tint[i];
+    const s = shade[i];
+    let ti = tint[i];
+    const g3 = G[i + 211111];
+    if (g3 > 0.482) ti += 9;                                          /* a few tan granules in the grey blend */
+    else if (g3 < -0.485) v -= 26;                                     /* and some jet-black ones */
     rgb[i * 3] = (BASE[0] + v + ti + g2 * 4) * s; rgb[i * 3 + 1] = (BASE[1] + v + ti * 0.3) * s; rgb[i * 3 + 2] = (BASE[2] + v - ti * 0.7 - g2 * 3) * s;
     hgt[i] += g0 * 0.012 + g1 * 0.006 + clus[i] * 0.012 + blot[i] * 0.02;
     rough[i] += mott[i] * 0.06 + g2 * 0.04;
   }
-  return {W, H, rgb, hgt, rough, pu, pv};
+  return {W, H, rgb, hgt, rough, mask, pu, pv};
 }
 
 /* ================================================================ SIDING
@@ -491,10 +514,9 @@ function sidingMaps(C){
   const W = 1024, H = 512, N = W * H, NB = 4, BH = H / NB;
   const pu = 72 / W, pv = 24 / H;
   const rnd = C.rng(4242), G = grit();
-  const streak = up(field(C, 128, 512, {octaves: 3, base: 7, sx: 1, sy: 18, seed: 31, persistence: 0.65}), W, H, "fa");
+  const streak = up(field(C, 64, 512, {octaves: 3, base: 7, sx: 1, sy: 18, seed: 31, persistence: 0.65}), W, H, "fa");
   const lines = up(field(C, 128, 512, {octaves: 2, base: 5, sx: 1, sy: 56, seed: 32, persistence: 0.6}), W, H, "fb");
   const coarse = up(field(C, 64, 256, {octaves: 3, base: 3, sx: 1, sy: 22, seed: 34, persistence: 0.6}), W, H, "fd");
-  const longS = up(field(C, 64, 512, {octaves: 2, base: 2, sx: 1, sy: 90, seed: 35, persistence: 0.5}), W, H, "fe");
   const mott = up(field(C, 64, 32, {octaves: 3, base: 3, sx: 2, sy: 1, seed: 33}), W, H, "fc");
   const rgb = buf("rgb", N * 3), hgt = buf("hgt", N), rough = buf("rough", N);
   const BASE = [137, 124, 121];
@@ -512,7 +534,7 @@ function sidingMaps(C){
       for (let x = 0; x < W; x++){
         const p = row + x;
         const s = streak[p], l = lines[p], c = coarse[p];
-        const dl = sstep(-0.16, -0.34, l) + 0.8 * sstep(-0.3, -0.42, longS[p]);   /* sparse dark grain lines, some long */
+        const dl = sstep(-0.16, -0.34, l) + 0.7 * sstep(-0.3, -0.42, c);       /* sparse dark grain lines + a few long coarse streaks */
         hgt[p] = h + s * 0.01 + c * 0.012 - dl * 0.01 + G[p] * 0.002;
         const v = bt + s * 6 + c * 9 - dl * 11 + mott[p] * 5 + G[p] * 4;
         rgb[p * 3] = (BASE[0] + v) * occ; rgb[p * 3 + 1] = (BASE[1] + v * 0.96) * occ; rgb[p * 3 + 2] = (BASE[2] + v * 0.93) * occ;
@@ -694,7 +716,7 @@ function doorMaps(C){
     if (de < BEAD + 0.15){ set(p, 48, 48, 49, 0.18, 0.6, 0); return; }
     /* entry door behind the glass: white, in shade (~sRGB 130), soft bevels lit from above */
     const ix = Math.abs(xin - 18), side = xin < 18 ? -1 : 1;
-    let v = 128 + room[p] * 10;
+    let v = 104 + room[p] * 10;
     let b = 0;
     const r2 = (xin - 18) * (xin - 18) + (yin - 60) * (yin - 60);
     if (yin > 60 && r2 < 81){                                         /* half-round lite: dark glass with a lit hall behind */
@@ -706,17 +728,19 @@ function doorMaps(C){
       if (ix > 2 && ix < 12 && yin > py0 && yin < py1){
         const dl = ix - 2, dr = 12 - ix, db = yin - py0, dt = py1 - yin, pe = Math.min(dl, dr, db, dt);
         if (pe < 1.3){
-          const f = pe === dt ? 1.1 : pe === db ? 0.84 : ((pe === dl) === (side > 0) ? 0.94 : 1.04);
+          const f = pe === dt ? 1.06 : pe === db ? 0.9 : ((pe === dl) === (side > 0) ? 0.96 : 1.03);
           v *= f * (pe < 0.15 ? 0.88 : 1);
         } else v *= 1.03;
       }
-      if (Math.hypot(xin - 31, yin - 38) < 1.1){ set(p, 150, 122, 70, 0, 0.05, 0); return; }   /* brass knob */
+      { const kr = Math.hypot(xin - 31, yin - 38); if (kr < 0.95){ const kv = 0.6 + 0.4 * Math.max(0, 1 - Math.hypot(xin - 30.75, yin - 38.3) / 0.8); set(p, 120 * kv, 98 * kv, 62 * kv, 0, 0.05, 0); return; } }   /* brass knob */
     }
     v *= 0.86 + 0.14 * sstep(13, 60, yin);
     /* faint diagonal sky sheen so the pane reads as glass even with nothing behind it */
-    const sheen = sstep(0.0, 1.0, ((DH - yin) * 0.6 + xin) / 60) * (1 - sstep(0.75, 1.3, ((DH - yin) * 0.6 + xin) / 60));
+    /* diagonal sky sheen (broad band + a thin bright streak) so the pane reads as glass even with nothing to reflect */
+    const dg = ((DH - yin) * 0.55 + xin) / 52;
+    const sheen = sstep(0.05, 0.6, dg) * (1 - sstep(0.62, 1.15, dg)) + 0.7 * Math.exp(-Math.pow((dg - 1.32) / 0.035, 2));
     const n = G[p] * 3;
-    set(p, v - 3 + n - sheen * 6, v + n + sheen * 2, v + 6 + b + n + sheen * 12, 0, 0.05, 0);
+    set(p, v - 2 + n + sheen * 12, v + n + sheen * 17, v + 3 + b + n + sheen * 24, 0, 0.05, 0);
   });
   rect(S, 0.55, DW - S, KICK, p => { hgt[p] = 0.45; });
   rect(S + 2, 2.5, DW - S - 2, KICK - 1.5, (p, xin, yin) => {
@@ -771,9 +795,9 @@ function steelMaps(C, painted){
         }
         const edge = sstep(0, 0.06, Math.sqrt(best2) - Math.sqrt(best));
         const ox = Math.max(0, patch[p] + 0.05);
-        const v = 122 + tone * 3 * (1 - ox) + streak[p] * 5 + G[p] * 4 - (1 - edge) * 0.8 + ox * 5;
+        const v = 122 + tone * 3 * (1 - ox) + streak[p] * 3 + G[p] * 4 - (1 - edge) * 0.8 + ox * 5;
         rgb[p * 3] = v - 1; rgb[p * 3 + 1] = v + 1; rgb[p * 3 + 2] = v + 3;
-        metal[p] = 0.62 - ox * 0.35;
+        metal[p] = 0.5 - ox * 0.3;
         rough[p] = 0.48 + tone * 0.06 + ox * 0.2 + G[p] * 0.04;
         hgt[p] = (1 - edge) * -0.001 + streak[p] * 0.004 + G[p] * 0.0012;
       }
@@ -804,13 +828,13 @@ REAL.finish = {
       m.map = C.texture(THREE, rgbCanvas(C, maps.W, maps.H, maps.rgb), {srgb: true});
       m.normalMap = C.texture(THREE, normalCanvas(C, maps.W, maps.H, maps.hgt, maps.pu, maps.pv, 1));
       m.normalScale = new THREE.Vector2(o.ns || 1, o.ns || 1);
-      const rm = C.texture(THREE, dataCanvas(C, maps.W, maps.H, maps.rough, maps.metal || null));
+      const rm = C.texture(THREE, dataCanvas(C, maps.W, maps.H, maps.rough, maps.metal || null, maps.mask || null));
       m.roughnessMap = rm; if (maps.metal) m.metalnessMap = rm;
       return finPatch(THREE, m, o.patch, seedAttr);
     }
 
     /* roof: 40" x 21.6" tile (4 courses); fragment UVs cut it into staggered shingles; macro weathering blotches ~9 ft */
-    const shingle = std(shingleMaps(C), {patch: {tile: [3.33333, 1.8], downhill: true, frag: UV_SHINGLE, macro: [0.05, 0.11]}});
+    const shingle = std(shingleMaps(C), {patch: {tile: [3.33333, 1.8], downhill: true, frag: UV_SHINGLE, macro: [0.07, 0.13]}});
     lap("shingle");
     /* walls: 6 ft x 2 ft tile (4 boards); per-course row / offset / end lap in the shader; faint sun-fade variation */
     const siding = std(sidingMaps(C), {patch: {tile: [6, 2], frag: UV_SIDING, macro: [0.03, 0.09]}});
@@ -835,14 +859,14 @@ REAL.finish = {
     glass.normalScale = new THREE.Vector2(1, 1);
     glass.emissive = new THREE.Color(1, 1, 1);
     glass.emissiveIntensity = 0;            /* integrator raises this at night (about 1.2 - 2.5) */
-    finPatch(THREE, glass, {tile: [3, 4], jit: [1, 1], glass: true, refl: {k: 5.5}}, seedAttr);
+    glass.shadowSide = THREE.BackSide;      /* thin pane: shadow-map its far face so the near face never self-shadows (acne) */
+    finPatch(THREE, glass, {tile: [3, 4], jit: [1, 1], glass: true, refl: {k: 9.0}}, seedAttr);
     lap("glass");
 
-    const door = std(doorMaps(C), {patch: {tile: [3, 6.8], refl: {k: 7.0, mask: true, neutral: 1}}});
+    const door = std(doorMaps(C), {patch: {tile: [3, 6.8], refl: {k: 13.0, mask: true, neutral: 1}}});
     lap("door");
     const painted = opts.steel === "painted";
     const steel = std(steelMaps(C, painted), {patch: {tile: [1, 2], grain: true, jit: [1, 1], edge: [0.03, 0.18]}});
-    if (!painted){ steel.roughness = 1; steel.metalness = 1; }
     lap("steel");
 
     POOL = {}; GRIT = null;                 /* release scratch memory */

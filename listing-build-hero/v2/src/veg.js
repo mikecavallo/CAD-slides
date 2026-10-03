@@ -942,7 +942,7 @@ function genPine(S, H, r){
       if (r() < 0.14 && t < 0.6) L *= 1.35;
       L = Math.max(L, 1.3);
       const el0 = lerp(-0.2, 0.5, t) + (r() - 0.5) * 0.5, p0 = trunkAt(y), ry = radAt(y), d0 = dirAE(az, el0);
-      const pts = withCollar(grow(mad(p0, d0, -ry * 0.5), d0, L + ry * 0.5, 6, (s, d) => add(d, add([0, s < 0.55 ? -0.07 * (1 - t) : 0.13, 0], mul(sph(r), 0.12)))));
+      const pts = withCollar(grow(mad(p0, d0, -ry * 0.5), d0, L + ry * 0.5, 6, (s, d) => add(d, add([0, s < 0.55 ? -0.07 * (1 - t) : 0.13, 0], mul(sph(r), 0.2)))));
       const rb = clamp(0.07 + L * 0.02, 0.07, ry * 0.55);
       W.tube(pts, limbRadii(pts, rb, rb * 0.3, true), 6, BARK.pine, aoWood, {kind: 1});
       limbPads(pts, L, t);
@@ -994,7 +994,7 @@ function genHemlock(S, H, r){
   sp[0] = [sp[0][0], -0.4, sp[0][2]];
   const fph = r() * TAU;
   W.tube(sp, rd, 9, BARK.hemlock, p => lerp(0.55, 0.8, p[1] / H), {kind: 0, flare: (i, a) => 1 + 0.22 * Math.cos(5 * a + fph) * Math.exp(-Math.max(0, sp[i][1]) / 1.0)});
-  const Lmax = H * (0.27 + r() * 0.05);
+  const Lmax = H * (0.23 + r() * 0.05);
   const env = t => Math.pow(1 - t, 0.95) * (0.82 + 0.18 * sstep(0, 0.12, t)) + 0.05;
   const vc = [0, H * 0.3, 0], vr = [Lmax * 1.1, H * 0.62, Lmax * 1.1];
   let y = 0.7 + r() * 0.6, az = r() * TAU;
@@ -1425,11 +1425,11 @@ REAL.veg = {
       types: Object.keys(GEN),
       samples: [
         {type: "pine", size: 54, seed: 3, label: "white pine 54'", footprint: 30},
-        {type: "hemlock", size: 33, seed: 2, label: "hemlock 33'", footprint: 26},
+        {type: "hemlock", size: 33, seed: 2, label: "hemlock 33'", footprint: 21},
         {type: "oak", size: 46, seed: 3, label: "oak / maple 46'", footprint: 42},
         {type: "shrub", size: 4, seed: 1, label: "azalea 4'", footprint: 6},
         {type: "maple", size: 5, seed: 1, label: "lace-leaf maple 5'", footprint: 12},
-        {type: "rose", size: 8.5, seed: 1, label: "rose of sharon 8.5'", footprint: 7},
+        {type: "rose", size: 8.5, seed: 1, label: "rose of sharon 8.5'", footprint: 7.5},
         {type: "hydrangea", size: 3.5, seed: 1, label: "hydrangea 3.5'", footprint: 5.5}
       ],
       make, batch, triangles, materials: base.mats, buildMs, timing,

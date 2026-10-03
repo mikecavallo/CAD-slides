@@ -128,6 +128,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   before it spills over.
   Triggers too close together (stacking) = temperature: heat comes back before the water cools, so a small trigger tips
   it over. Triggers too close over days or weeks = water level: the baseline itself rises, leaving less room. No new pot parts for either.
+  Three ways to boil over: one big trigger (fast spike), trigger stacking (separate, labeled triggers; the thermometer
+  starts to cool, then the next one hits before it is back down; the same triggers spaced out cool fully and never
+  spill: the spacing is the problem), and the slow one (days or weeks raise the water, so an ordinary trigger spills).
   Chapter 3 plan (doc has no Chapter 3 text yet): temperature, threshold zones, two pots same heat, stacking, long-term
   stress. A drawn dog (C2.dog) stands beside the pot and its body language follows the zone: loose under, stiff at the
   rim, reacting when it spills. The ABCs come after, in Chapter 4. It answers one question: why

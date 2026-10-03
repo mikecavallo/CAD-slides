@@ -13,9 +13,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (read it with the Google Drive connector; Claude cannot
   edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
   that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
-  water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
-  warning signals) for later chapters; Chapter 3 will add heat and the thermometer to the pot. Sync the lesson
-  file to the doc before every build; the doc wins.
+  water-in-a-pot chapter). Below that is **Chapter 3: The ABCs of Behavior** (CH03,S01 to S17). The doc moved the ABCs
+  ahead of temperature: Chapter 3 is the ABCs and ends "Now we can add temperature"; temperature is Chapter 4. Sync the
+  lesson file to the doc before every build; the doc wins.
 
 ## Current structure (Chapter 1 is finished, pending Tori's later edits)
 
@@ -85,6 +85,25 @@ pipeline). This file records the state, decisions and working agreements from ea
 - The lesson has `"tail": 5.0` (applies to its very last slide only) so the thermometer reveal holds before the logo close.
 - Online preview (temporary AI voice): https://claude.ai/artifact/Nzf2aTAYk5iAVNdqKmb1Js (`out/web/chapter2/`).
 
+## Chapter 3 video (built, preview voice only)
+
+- Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`). Order: `ch03intro` (shared title slide), `ch03card`
+  ("This is Chapter 3: The ABCs of Behavior."), `ch03plan`, `ch03s01` to `ch03s17`. About 10 minutes.
+- Lines Claude wrote (not in the doc yet, sent to Tori): intro, card and plan narration. Everything else is the doc verbatim.
+- Scene code: `video/scenes/c3a.js` to `c3e.js`, shared kit `c3_abc.js` (window.C3: photo ABC strip that fills panel by
+  panel, function tag with in/out arrows, A/B/C ring, the lawn with old and new paths and footprints, tiles, chips, rows).
+  `C3.potWithThermo` (in c3a.js) is Chapter 2's pot with the thermometer standing in it.
+- Colours: A olive, B green, C deep green; the emotional response is plum (`#8b5d8f`), so it reads as "inside the dog",
+  not good or bad; function is green with a target icon. Arousal and stress meters: green low, amber middle, red high.
+- Photo strips use the existing `abc_*` panels (greet, approach, guard for s04 to s07; before, during, after for s13).
+- s13 (ABC cycle): before / during / after strips with the emotion heart on the A to B arrow, an arousal and stress meter
+  under each panel and a loop arrow C back to A; then the lawn (new path wears in, old fades but stays, comes back with
+  practice, a management fence); then three cards, what the dog needs from C (a lot of space / some / less) and arousal.
+- s16 homework: a worksheet that fills in with the doc's example (another dog appears; same corner, dogs too close;
+  barked and lunged; the other dog moved away; more distance?). The B, C and function answers are Claude's example.
+- s17 ends on the pot with the thermometer, the rim marked "Threshold", "Next chapter: Temperature", then the logo close.
+- Online preview: (see the latest delivery note; `out/web/chapter3/`).
+
 ## Recordings (Tori's voice)
 
 - One file per slide, named by scene id: `Ch01s05.m4a` (case does not matter). A slide in pieces:
@@ -132,9 +151,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   Three ways to boil over: one big trigger (fast spike), trigger stacking (separate, labeled triggers; the thermometer
   starts to cool, then the next one hits before it is back down; the same triggers spaced out cool fully and never
   spill: the spacing is the problem), and the slow one (days or weeks raise the water, so an ordinary trigger spills).
-  Chapter 3 plan (doc has no Chapter 3 text yet): temperature, threshold zones, two pots same heat, stacking, long-term
+  Chapter 4 plan (temperature; the doc has no text for it yet): threshold zones, two pots same heat, stacking, long-term
   stress. A drawn dog (C2.dog) stands beside the pot and its body language follows the zone: loose under, stiff at the
-  rim, reacting when it spills. The ABCs come after, in Chapter 4.
+  rim, reacting when it spills. The ABCs are Chapter 3 (the doc put them before temperature).
   Concept test clip: `script/lesson-concept.json` + `video/scenes/c3x.js` (boil kit: foam, spill, burner, dial,
   thermometer, dog body language). It is registered in video/index.html; back up build/timing.json and run the preview pipeline with
   LESSON=lesson-concept.json. It answers one question: why

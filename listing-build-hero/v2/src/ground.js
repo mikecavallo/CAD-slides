@@ -772,20 +772,30 @@ function makeMacro(C, THREE){
 }
 
 /* ================================================================ the shader patch
-   o = { key,
-         rep: number | 0         plane mode: vUv = uv * rep (one large plane, plain UVs; textures stay shared)
-         s: [s0..s3] ft          macro scales;  a: [a0..a3] tone amplitudes;  hue: warm/cool shift amplitude
-         r: [r0, r1]             roughness amplitudes
-         blend: [scaleFt, rotRad, uvScale, bias]   second-sample anti-tiling
+   Detail maps are sampled with HEX-TILE STOCHASTIC SAMPLING: the surface is covered by a triangle grid (cell = o.hex[0]
+   feet); every grid vertex owns a random offset and rotation of the tile, each pixel reads the three surrounding
+   vertices' samples and keeps the one whose texel stands highest (blade, chip, stone or clod), weighted toward the
+   nearest vertex, with a narrow soft band. No lattice survives at any distance, and the switch between samples
+   follows real outlines, so it is invisible. Top faces map from WORLD XZ (lawnBox and the lawn plane line up exactly;
+   abutting soil pieces are seamless); side faces use the world-scaled vUv. Gradients come from the unrotated
+   coordinate, so mip selection is continuous across switches.
+   o = { key, tile ft, rep: number|0 (plane mode: vUv = uv*rep, only used on non-horizontal faces),
+         hex: [cellFt, heightWeight, soft],
+         s: [s0..s3] ft macro scales;  a: [a0..a3] tone amplitudes;  hue: warm/cool shift amplitude;  r: [r0, r1] roughness
          lawn: { side:[r,g,b] linear canopy colour seen at grazing, graze, stripe, band ft, clover:[lo,hi], dry, mow:[x,z] } | null
          damp: [lo, hi, darken, roughness] | null
-         scrape: [teethPerTile, bandsPerTile, unused, slope strength] | null   vertical faces only */
+         relief: [scale0 ft, amp0 ft, scale1 ft, amp1 ft, wallFactor] | null      large-scale lumps via the normal
+         scrape: [bandFt, minSpacingFt, maxSpacingFt, slope] | null                 bucket-tooth grooves on walls
+         topsoil: [gradeY, depthFt] | null                                          dark organic horizon at the top of cut walls */
 function groundPatch(THREE, m, T, o){
   const f = v => (+v).toFixed(5);
   const prev = m.onBeforeCompile, prevKey = m.customProgramCacheKey;
-  const key = "gnd:" + o.key + (o.rep ? ":p" : "");
-  const bl = o.blend, cb = Math.cos(bl[1]), sb = Math.sin(bl[1]);
-  const L = o.lawn;
+  const key = "gnd2:" + o.key + (o.rep ? ":p" : "") + (o.topsoil ? ":t" + o.topsoil.join(",") : "");
+  const hx = o.hex, L = o.lawn, rl = o.relief, sc = o.scrape, ts = o.topsoil;
+  m.extensions = { derivatives: true, shaderTextureLOD: true };    /* texture2DGradEXT on WebGL1 (WebGL2 maps it to textureGrad) */
+  /* three hex samples: code generated per sample (GLSL ES 1.0 has no token pasting) */
+  const S3 = fn => [1, 2, 3].map(fn).join("\n");
+  const G = (tex, i) => `texture2DGradEXT(${tex}, gU${i}, gR${i} * gDx, gR${i} * gDy)`;
   m.onBeforeCompile = function(shader, renderer){
     if (prev) prev.call(this, shader, renderer);
     shader.uniforms.gMacro = {value: T.macro};
@@ -809,23 +819,26 @@ function groundPatch(THREE, m, T, o){
           float gNV = clamp(dot(normalize(vGN), gV), 0.0, 1.0);
           float gGr = pow(1.0 - gNV, 2.0) * ${f(L.graze)};
           gCol = mix(gCol, vec3(${f(L.side[0])}, ${f(L.side[1])}, ${f(L.side[2])}) * (0.85 + 0.3 * gH), gGr * (1.0 - gH * 0.6));
-          /* clover / broadleaf patches: plants appear one by one (rank in cloverN.b) as patch density rises;
-             minified (far) it falls back to blending the mip colour by density */
+          /* clover / broadleaf patches, clustered in a few zones (gated by a very low-frequency field); plants appear one
+             by one at a patch fringe (rank in cloverN.b); minified (far) it falls back to blending by density */
           float gMC = texture2D(gMacro, mat2(0.96, -0.28, 0.28, 0.96) * gP * ${f(1 / 53.0)} + vec2(0.61, 0.17)).b;
           float gMC2 = texture2D(gMacro, mat2(0.6, 0.8, -0.8, 0.6) * gP * ${f(1 / 6.3)} + vec2(0.33, 0.77)).g;
-          float gMask = smoothstep(${f(L.clover[0])}, ${f(L.clover[1])}, gMC + (gMC2 - 0.5) * 0.35);
-          vec4 gCN = mix(texture2D(gCloN, vUv), texture2D(gCloN, gUvB), gBl);
-          vec3 gTC = mix(mapTexelToLinear(texture2D(gClo, vUv)).rgb, mapTexelToLinear(texture2D(gClo, gUvB)).rgb, gBl);
-          float gLod = log2(max(1.0, max(length(dFdx(vUv)), length(dFdy(vUv))) * ${f(T.lawnRes)}));
+          float gMG = texture2D(gMacro, mat2(0.88, 0.47, -0.47, 0.88) * gP * ${f(1 / 171.0)} + vec2(0.07, 0.52)).g;
+          float gMask = smoothstep(${f(L.clover[0])}, ${f(L.clover[1])}, gMC + (gMC2 - 0.5) * 0.35) * smoothstep(0.48, 0.6, gMG);
+          ${S3(i => `vec4 gK${i} = ${G("gCloN", i)}; vec2 gKn${i} = (gK${i}.xy * 2.0 - 1.0) * gR${i};`)}
+          float gRank = dot(gWt, vec3(gK1.b, gK2.b, gK3.b));
+          vec2 gKn = gWt.x * gKn1 + gWt.y * gKn2 + gWt.z * gKn3;
+          vec3 gTC = gWt.x * mapTexelToLinear(${G("gClo", 1)}).rgb + gWt.y * mapTexelToLinear(${G("gClo", 2)}).rgb + gWt.z * mapTexelToLinear(${G("gClo", 3)}).rgb;
+          float gLod = log2(max(1.0, max(length(gDx), length(gDy)) * ${f(T.lawnRes)}));
           float gFar = smoothstep(0.6, 2.2, gLod);
-          float gNear = smoothstep(-0.03, 0.03, gCN.b - (1.0 - gMask * 0.85)) * step(0.015, gCN.b);
-          gCl = mix(gNear, gMask * 0.6, gFar);
+          float gNear = smoothstep(-0.03, 0.03, gRank - (1.0 - gMask * 0.85)) * step(0.015, gRank);
+          gCl = mix(gNear, gMask * 0.4, gFar);
           gCol = mix(gCol, gTC, gCl);
           /* dry, yellower patches and lusher, darker patches */
           float gDry = smoothstep(0.56, 0.8, gM2 * 0.7 + gMC2 * 0.3);
-          gCol *= mix(vec3(1.0), vec3(1.32, 1.1, 0.78), gDry * ${f(L.dry)});
+          gCol *= mix(vec3(1.0), vec3(1.3, 1.12, 0.8), gDry * ${f(L.dry)});
           float gLush = smoothstep(0.55, 0.8, gM0);
-          gCol *= mix(vec3(1.0), vec3(0.9, 0.96, 0.94), gLush * 0.7);
+          gCol *= mix(vec3(1.0), vec3(0.9, 0.96, 0.92), gLush * 0.7);
           /* mowing stripes: passes along gMw; each pass lays the grass one way, so it reads light or dark by view */
           vec2 gMw = vec2(${f(L.mow[0])}, ${f(L.mow[1])});
           float gSc = dot(gP, vec2(-gMw.y, gMw.x)) / ${f(L.band)} + (gM1 - 0.5) * 1.6;
@@ -837,68 +850,130 @@ function groundPatch(THREE, m, T, o){
           /* cut sod edges (vertical faces of lawn pieces) are soil and roots, not canopy */
           float gSod = 1.0 - smoothstep(0.3, 0.6, gAN.y);
           gCol = mix(gCol, vec3(0.06, 0.045, 0.03) * (0.8 + 0.4 * gH) + gCol * 0.25, gSod * 0.85);` : "";
-    const sc = o.scrape;
+    const reliefMap = rl ? `
+          /* large-scale relief (lumps, ruts, bucket gouges) as a normal perturbation from two macro octaves, plus the
+             relief height itself so lows collect moisture */
+          {
+            float gRe = ${f(1 / 128)};
+            vec2 gQ0 = mat2(0.94, 0.34, -0.34, 0.94) * gP * ${f(1 / rl[0])} + vec2(0.31, 0.47);
+            vec2 gQ1 = mat2(0.42, -0.91, 0.91, 0.42) * gP * ${f(1 / rl[2])} + vec2(0.83, 0.19);
+            float gA0 = texture2D(gMacro, gQ0).g, gA1 = texture2D(gMacro, gQ1).b;
+            vec2 gG0 = vec2(texture2D(gMacro, gQ0 + vec2(gRe, 0.0)).g - gA0, texture2D(gMacro, gQ0 + vec2(0.0, gRe)).g - gA0) * ${f(rl[1] / (rl[0] / 128))};
+            vec2 gG1 = vec2(texture2D(gMacro, gQ1 + vec2(gRe, 0.0)).b - gA1, texture2D(gMacro, gQ1 + vec2(0.0, gRe)).b - gA1) * ${f(rl[3] / (rl[2] / 128))};
+            /* back from the rotated noise space to gP space (transpose of the rotation) */
+            vec2 gGr2 = gG0 * mat2(0.94, 0.34, -0.34, 0.94) + gG1 * mat2(0.42, -0.91, 0.91, 0.42);
+            gRelH = (gA0 - 0.5) * ${f(rl[1])} + (gA1 - 0.5) * ${f(rl[3])};
+            float gRk = gAN.y > 0.5 ? 1.0 : ${f(rl[4])};
+            gRel = -(gGr2.x * gAx + gGr2.y * gBx) * gRk;
+          }` : "";
     const scrapeMap = sc ? `
-          /* excavator bucket-tooth scrapes on cut walls: broad, shallow, near-vertical U-grooves in bands (one band per
-             bucket pass), each band offset at random, each groove its own depth, fading toward the band ends and out
-             where the wall is smeared */
-          float gWall = 1.0 - smoothstep(0.3, 0.6, gAN.y);
-          float gBv = vUv.y * ${f(sc[1])} + gM3 * 1.2;
-          float gBand = floor(gBv), gBf = gBv - gBand;
-          float gHb = fract(sin(gBand * 12.9898 + 4.1) * 43758.5453);
-          float gS = vUv.x * ${f(sc[0])} + gHb * 7.0 + (gM1 - 0.5) * 0.6 + gBf * (gHb - 0.5) * 0.5;
-          float gT = fract(gS) - 0.5;
-          float gHg = fract(sin(floor(gS) * 78.233 + gBand * 3.7) * 43758.5453);
-          float gC = 0.5 + 0.5 * cos(6.2832 * gT);
-          gGrv = gC * gC * gC;
-          gScr = gWall * smoothstep(0.3, 0.6, gM2 * 0.7 + gHb * 0.5) * smoothstep(0.0, 0.18, gBf) * smoothstep(1.0, 0.75, gBf) * (0.3 + 0.7 * gHg);
-          gGrs = -gC * gC * sin(6.2832 * gT) * gScr;
-          gCol *= 1.0 - 0.04 * gGrv * gScr;` : "";
+          /* excavator bucket-tooth scrapes on cut walls: shallow near-vertical U-grooves in horizontal bands (one band per
+             bucket pass). Every pass has its own tooth spacing, offset and slight curve; teeth drop out at random and
+             grooves break along their length, so the wall never reads as wood grain or sandstone. */
+          {
+            float gWall = 1.0 - smoothstep(0.3, 0.6, gAN.y);
+            float gBv = gP.y / ${f(sc[0])} + gM3 * 1.2;
+            float gBand = floor(gBv), gBf = gBv - gBand;
+            float gHb = fract(sin(gBand * 12.9898 + 4.1) * 43758.5453);
+            float gHb2 = fract(sin(gBand * 4.898 + 1.7) * 23421.631);
+            float gSp = mix(${f(sc[1])}, ${f(sc[2])}, gHb2);
+            float gS = (gP.x + gHb * 7.0 + (gM1 - 0.5) * 0.5 + gBf * gBf * (gHb - 0.5) * 0.7) / gSp;
+            float gTid = floor(gS), gT = fract(gS) - 0.5;
+            float gHg = fract(sin(gTid * 78.233 + gBand * 3.7) * 43758.5453);
+            float gC = 0.5 + 0.5 * cos(6.2832 * gT);
+            gGrv = gC * gC * gC;
+            float gBrk = smoothstep(0.38, 0.58, texture2D(gMacro, vec2(gTid * 0.1372 + gBand * 0.31, gP.y * 0.29)).r);
+            gScr = gWall * smoothstep(0.3, 0.6, gM2 * 0.7 + gHb * 0.5) * smoothstep(0.0, 0.2, gBf) * smoothstep(1.0, 0.72, gBf)
+                 * (0.25 + 0.75 * gHg) * step(0.28, gHg) * gBrk;
+            gRel += gAx * (gC * gC * sin(6.2832 * gT) * gScr * ${f(sc[3])} / gSp);
+            gCol *= 1.0 - 0.025 * gGrv * gScr;
+          }` : "";
+    const topsoilMap = ts ? `
+          /* dark organic topsoil horizon at the top of cut walls, with a wavy lower boundary */
+          {
+            float gWall2 = 1.0 - smoothstep(0.3, 0.6, gAN.y);
+            float gB0 = ${f(ts[0] - ts[1])} + (gM2 - 0.5) * 0.45 + (gM3 - 0.5) * 0.25;
+            float gTs = gWall2 * smoothstep(gB0 - 0.12, gB0 + 0.12, vGW.y) * (1.0 - smoothstep(${f(ts[0] + 0.05)}, ${f(ts[0] + 0.2)}, vGW.y));
+            gCol = mix(gCol, gCol * vec3(0.6, 0.58, 0.6), gTs);
+          }` : "";
     const dampMap = o.damp ? `
-          gDp = smoothstep(${f(o.damp[0])}, ${f(o.damp[1])}, gM0 * 0.55 + gM2 * 0.3 + gM3 * 0.15);
+          gDp = smoothstep(${f(o.damp[0])}, ${f(o.damp[1])}, gM0 * 0.5 + gM2 * 0.3 + gM3 * 0.2 - gRelH * 0.8);
           gCol *= 1.0 - ${f(o.damp[2])} * gDp;` : "";
-    shader.fragmentShader = "uniform sampler2D gMacro;\nvarying vec3 vGW;\nvarying vec3 vGN;\n" +
-      (L ? "uniform sampler2D gClo;\nuniform sampler2D gCloN;\n" : "") +
-      shader.fragmentShader
+    shader.fragmentShader = `uniform sampler2D gMacro;
+varying vec3 vGW;
+varying vec3 vGN;
+${L ? "uniform sampler2D gClo;\nuniform sampler2D gCloN;" : ""}
+vec4 gHash4(vec2 p){
+  vec4 p4 = fract(p.xyxy * vec4(0.1031, 0.1030, 0.0973, 0.1099));
+  p4 += dot(p4, p4.wzxy + 33.33);
+  return fract((p4.xxyz + p4.yzzw) * p4.zywx);
+}
+mat2 gRot(float a){ float c = cos(a), s = sin(a); return mat2(c, s, -s, c); }
+/* perturbNormal2Arb with an explicit uv (the detail coordinate is not vUv on top faces) */
+vec3 gPerturb(vec3 eye_pos, vec3 surf_norm, vec3 mapN, float fd, vec2 uv){
+  vec3 q0 = dFdx(eye_pos), q1 = dFdy(eye_pos);
+  vec2 st0 = dFdx(uv), st1 = dFdy(uv);
+  vec3 q1perp = cross(q1, surf_norm), q0perp = cross(surf_norm, q0);
+  vec3 T = q1perp * st0.x + q0perp * st1.x;
+  vec3 B = q1perp * st0.y + q0perp * st1.y;
+  float det = max(dot(T, T), dot(B, B));
+  float sc = (det == 0.0) ? 0.0 : fd * inversesqrt(det);
+  return normalize(T * (mapN.x * sc) + B * (mapN.y * sc) + surf_norm * mapN.z);
+}
+` + shader.fragmentShader
         .replace("#include <map_fragment>", `
           vec3 gAN = abs(vGN);
           vec2 gP = gAN.y > 0.5 ? vGW.xz : (gAN.x > 0.5 ? vec2(vGW.z, vGW.y) : vGW.xy);
+          vec3 gAx = gAN.y > 0.5 ? vec3(1.0, 0.0, 0.0) : (gAN.x > 0.5 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0));
+          vec3 gBx = gAN.y > 0.5 ? vec3(0.0, 0.0, 1.0) : vec3(0.0, 1.0, 0.0);
+          vec2 gU = gAN.y > 0.5 ? vGW.xz * ${f(1 / o.tile)} : vUv;
+          vec2 gDx = dFdx(gU), gDy = dFdy(gU);
           float gM0 = texture2D(gMacro, gP * ${f(1 / o.s[0])} + vec2(0.13, 0.71)).r;
           float gM1 = texture2D(gMacro, mat2(0.8, 0.6, -0.6, 0.8) * gP * ${f(1 / o.s[1])} + vec2(0.57, 0.29)).g;
           float gM2 = texture2D(gMacro, vec2(gP.y, -gP.x) * ${f(1 / o.s[2])} + vec2(0.41, 0.83)).b;
           float gM3 = texture2D(gMacro, mat2(0.6, -0.8, 0.8, 0.6) * gP * ${f(1 / o.s[3])} + vec2(0.23, 0.37)).r;
-          float gMB = texture2D(gMacro, mat2(0.28, 0.96, -0.96, 0.28) * gP * ${f(1 / bl[0])} + vec2(0.71, 0.05)).g;
-          /* second, rotated + rescaled sample; height decides which one shows */
-          vec2 gUvB = mat2(${f(cb)}, ${f(sb)}, ${f(-sb)}, ${f(cb)}) * vUv * ${f(bl[2])} + vec2(0.37, 0.61);
-          vec4 gRA = texture2D(roughnessMap, vUv), gRB = texture2D(roughnessMap, gUvB);
-          float gBl = smoothstep(-0.08, 0.08, gRB.r - gRA.r + (gMB - 0.5) * ${f(bl[3])});
-          vec4 gTA = mapTexelToLinear(texture2D(map, vUv));
-          vec4 gTB = mapTexelToLinear(texture2D(map, gUvB));
-          vec3 gCol = mix(gTA.rgb, gTB.rgb, gBl);
-          float gH = mix(gRA.r, gRB.r, gBl);
-          float gCl = 0.0, gStr = 0.0, gDp = 0.0, gGrv = 0.0, gScr = 0.0, gGrs = 0.0;
+          /* hex-tile stochastic sampling (triangle grid; edge = cell) */
+          vec2 gSt = gU * ${f(o.tile / hx[0])};
+          vec2 gSk = vec2(gSt.x - 0.57735027 * gSt.y, 1.15470054 * gSt.y);
+          vec2 gBs = floor(gSk), gFr = gSk - gBs;
+          float gZ = 1.0 - gFr.x - gFr.y;
+          vec3 gW; vec2 gC1, gC2, gC3;
+          if (gZ > 0.0){ gW = vec3(gZ, gFr.y, gFr.x); gC1 = gBs; gC2 = gBs + vec2(0.0, 1.0); gC3 = gBs + vec2(1.0, 0.0); }
+          else { gW = vec3(-gZ, 1.0 - gFr.y, 1.0 - gFr.x); gC1 = gBs + vec2(1.0); gC2 = gBs + vec2(1.0, 0.0); gC3 = gBs + vec2(0.0, 1.0); }
+          float gSd = gAN.y > 0.5 ? 0.0 : (gAN.x > 0.5 ? 157.0 : 311.0);
+          ${S3(i => `vec4 gH${i} = gHash4(gC${i} + gSd); mat2 gR${i} = gRot(gH${i}.z * 6.2831853); vec2 gU${i} = gR${i} * gU + gH${i}.xy;`)}
+          ${S3(i => `vec4 gD${i} = ${G("roughnessMap", i)};`)}
+          vec3 gHt = vec3(gD1.r, gD2.r, gD3.r);
+          vec3 gSs = gW + gHt * ${f(hx[1])} * min(gW * 3.0, 1.0);
+          float gMx = max(gSs.x, max(gSs.y, gSs.z));
+          vec3 gWt = max(gSs - gMx + ${f(hx[2])}, 0.0);
+          gWt /= (gWt.x + gWt.y + gWt.z);
+          vec3 gCol = gWt.x * mapTexelToLinear(${G("map", 1)}).rgb + gWt.y * mapTexelToLinear(${G("map", 2)}).rgb + gWt.z * mapTexelToLinear(${G("map", 3)}).rgb;
+          float gH = dot(gWt, gHt);
+          float gCl = 0.0, gStr = 0.0, gDp = 0.0, gGrv = 0.0, gScr = 0.0, gRelH = 0.0;
+          vec3 gRel = vec3(0.0);
           ${lawnMap}
+          ${reliefMap}
           ${scrapeMap}
+          ${topsoilMap}
           ${dampMap}
           gCol *= max(0.2, 1.0 + ${f(o.a[0])} * (gM0 - 0.5) * 2.0 + ${f(o.a[1])} * (gM1 - 0.5) * 2.0 + ${f(o.a[2])} * (gM2 - 0.5) * 2.0 + ${f(o.a[3])} * (gM3 - 0.5) * 2.0);
           gCol *= 1.0 + ${f(o.hue)} * (gM1 - 0.5) * 2.0 * vec3(1.0, 0.15, -0.9);
           diffuseColor.rgb *= gCol;`)
         .replace("#include <roughnessmap_fragment>", `
-          float roughnessFactor = roughness * mix(gRA.g, gRB.g, gBl);
+          float roughnessFactor = roughness * dot(gWt, vec3(gD1.g, gD2.g, gD3.g));
           roughnessFactor = clamp(roughnessFactor + ${f(o.r[0])} * (gM0 - 0.5) * 2.0 + ${f(o.r[1])} * (gM2 - 0.5) * 2.0, 0.04, 1.0);
           ${L ? "roughnessFactor = mix(roughnessFactor, 0.5, gCl * 0.5) * (1.0 - 0.06 * gStr);" : ""}
           ${o.damp ? `roughnessFactor = mix(roughnessFactor, ${f(o.damp[3])}, gDp);` : ""}
-          ${sc ? "roughnessFactor -= 0.08 * gGrv * gScr;" : ""}`)
+          ${sc ? "roughnessFactor -= 0.04 * gGrv * gScr;" : ""}`)
         .replace("#include <normal_fragment_maps>", `
-          vec3 gNA = texture2D(normalMap, vUv).xyz * 2.0 - 1.0;
-          vec3 gNB = texture2D(normalMap, gUvB).xyz * 2.0 - 1.0;
-          gNB.xy = mat2(${f(cb)}, ${f(-sb)}, ${f(sb)}, ${f(cb)}) * gNB.xy;
-          vec3 mapN = normalize(mix(gNA, gNB, gBl));
-          ${L ? "vec3 gNC = vec3(gCN.xy * 2.0 - 1.0, 0.0); gNC.z = sqrt(max(0.08, 1.0 - dot(gNC.xy, gNC.xy))); mapN = normalize(mix(mapN, gNC, gCl * (1.0 - gFar * 0.5)));" : ""}
-          ${o.damp ? "mapN = normalize(mix(mapN, vec3(0.0, 0.0, 1.0), gDp * 0.35));" : ""}
-          ${sc ? `mapN = normalize(mapN + vec3(gGrs * ${f(sc[3])}, 0.0, 0.0));` : ""}
+          ${S3(i => `vec3 gN${i} = ${G("normalMap", i)}.xyz * 2.0 - 1.0; gN${i}.xy = gN${i}.xy * gR${i};`)}
+          vec3 mapN = normalize(gWt.x * gN1 + gWt.y * gN2 + gWt.z * gN3);
+          ${L ? "vec3 gNC = vec3(gKn, 0.0); gNC.z = sqrt(max(0.08, 1.0 - dot(gNC.xy, gNC.xy))); mapN = normalize(mix(mapN, gNC, gCl * (1.0 - gFar * 0.5)));" : ""}
+          ${o.damp ? "mapN = normalize(mix(mapN, vec3(0.0, 0.0, 1.0), gDp * 0.3));" : ""}
           mapN.xy *= normalScale;
-          normal = perturbNormal2Arb(-vViewPosition, normal, mapN, faceDirection);`);
+          normal = gPerturb(-vViewPosition, normal, mapN, faceDirection, gU);
+          ${rl || sc ? "normal = normalize(normal + mat3(viewMatrix) * gRel);" : ""}`);
   };
   m.customProgramCacheKey = function(){ return (prevKey ? prevKey.call(this) : "") + key; };
   m.userData.ground = o;

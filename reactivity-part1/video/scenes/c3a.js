@@ -178,26 +178,10 @@
     const dC = C3.def(stage, 'C', COL.C, 'Consequence', 'What happens as a *direct result* of the behavior', RX, 500, RW);
     A.in(tl, dC, t6 + 0.4, 'fadeLeft', { dur: 0.6 });
 
-    // ---------- beat 7: an easy way to remember it: the ring lights up
-    const t7 = cue(7);
-    tl.to([dB, dC], { opacity: 0, x: 40, duration: 0.45, stagger: 0.05, ease: 'power2.in' }, t7);
-    tl.to(nodes, { opacity: 1, duration: 0.4 }, t7);
-    tl.to([...R.arcs, ...R.heads], { stroke: C.green, duration: 0.5, stagger: 0.12 }, t7 + 0.2);
-    const ez = C3.put(stage, 'c3-big', 'An easy way to <b>remember it</b>', { x: RX, y: 300 });
-    A.in(tl, ez, t7 + 0.4, 'fadeUp', { dur: 0.6 });
-
-    // ---------- beat 8: three summary rows, one per letter
-    const t8 = cue(8);
-    const SUM = [['A', COL.A, 'The thing and the *context*', 'A is the thing'], ['B', COL.B, 'What the dog *does*', 'B is what'], ['C', COL.C, 'What happens *as a result*', 'C is what']];
-    let lo = t8;
-    SUM.forEach(([L, col, txt, p], k) => {
-      const r = C3.row(stage, null, txt, RX, 450 + k * 130, { letter: L, col, size: 40 });
-      r.querySelector('.ic').style.cssText += 'width:86px;height:86px;font-size:48px;';
-      const tt = clamp(at(8, p, 0.05 + k * 0.33), lo, end(8) - 0.4);
-      A.in(tl, r, tt, 'fadeLeft', { dur: 0.5 });
-      A.pulse(tl, nodes[k], tt);
-      lo = tt + 0.5;
-    });
+    // the ring lights up once all three are defined
+    const tAll = Math.min(end(6) + 0.2, ctx.dur - 1.2);
+    tl.to(nodes, { opacity: 1, duration: 0.4 }, tAll);
+    tl.to([...R.arcs, ...R.heads], { stroke: C.green, duration: 0.5, stagger: 0.12 }, tAll);
   });
 
   // ================================================================== ch03s03 What did the behavior accomplish?

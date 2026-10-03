@@ -264,23 +264,6 @@
     tl.to(cE, { boxShadow: '0 0 0 10px rgba(139,93,143,0.35), 0 16px 40px rgba(40,60,20,0.18)', duration: 0.5 }, tIn);
     tl.to([aAE, aEB], { stroke: COL.emo, duration: 0.4 }, tIn);
 
-    // ---------- beat 4: we don't need the exact emotion
-    const t4 = cue(4);
-    tl.to([over, xb], { opacity: 0, duration: 0.4 }, t4);
-    tl.to(cE, { boxShadow: '0 10px 30px rgba(40,60,20,0.10)', duration: 0.4 }, t4);
-    const WORDS = ['Fear?', 'Excitement?', 'Frustration?'];
-    const wbox = K.el('div', null);
-    Object.assign(wbox.style, { position: 'absolute', left: EX + 'px', top: Y + BH + 60 + 'px', width: EW + 'px', height: '60px' });
-    stage.appendChild(wbox);
-    const ws = WORDS.map(w => { const n = K.el('div', null, w); Object.assign(n.style, { position: 'absolute', left: 0, right: 0, textAlign: 'center', font: `600 40px/1 var(--font-head)`, color: COL.emo, opacity: 0 }); wbox.appendChild(n); return n; });
-    const tW = t4 + 0.3, span = Math.max(3, (end(4) - tW) * 0.6), step = span / 3;
-    ws.forEach((n, k) => {
-      tl.fromTo(n, { opacity: 0, y: 14 }, { opacity: 0.85, y: 0, duration: 0.3, immediateRender: false }, tW + k * step);
-      tl.to(n, { opacity: 0, y: -14, duration: 0.3 }, tW + (k + 1) * step - 0.3);
-    });
-    const ok = C3.chip(stage, 'check', 'An emotional response *occurred*', 960, Y + BH + 56, { center: true, size: 36, col: C.green });
-    ok.style.borderColor = C.green;
-    A.in(tl, ok, tW + span, 'pop', { dur: 0.5 });
   });
 
   // ================================================================== ch03s11 Emotion and function are different

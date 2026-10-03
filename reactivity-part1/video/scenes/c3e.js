@@ -67,46 +67,36 @@
       });
     };
 
-    // beat 1: the thing
+    // beat 1: the thing (the doc's example writes in)
     focus(0, cue(1) + 0.1);
-    // beat 2: the context, with its four questions
+    write(0, cue(1) + 0.8);
+    // beat 2: the context, with its four questions; the example writes in
     focus(1, cue(2) + 0.1);
     const ctxQ = qChips([['map-pin', 'Where were you?'], ['ruler', 'How close was the thing?'], ['eye', 'What was happening around?'], ['repeat', 'Does this happen here often?']], 2,
       ['Where were you', 'How close', 'What was happening', 'similar things happen']);
-    // beat 3: the example fills in
-    const t3 = cue(3);
-    tl.to(ctxQ, { opacity: 0, x: 30, duration: 0.35, stagger: 0.05 }, t3);
-    focus(0, t3 + 0.1);
-    write(0, clamp(at(3, 'another dog appearing', 0.2), t3 + 0.3, end(3) - 3));
-    const tC = clamp(at(3, 'The context might be', 0.45), t3 + 1.5, end(3) - 1.2);
-    focus(1, tC);
-    write(1, tC + 0.3);
-    // beat 4: the place predicts
-    const t4 = cue(4);
-    const pr = C3.row(stage, 'map-pin', 'The place can <b>predict</b><br>the encounter', RX, 400, { col: COL.A, size: 36 });
-    A.in(tl, pr, t4 + 0.3, 'fadeLeft', { dur: 0.5 });
-    // beat 5: B
-    const t5 = cue(5);
-    tl.to(pr, { opacity: 0, duration: 0.3 }, t5);
+    write(1, cue(2) + 0.8);
+    // beat 3: B
+    const t5 = cue(3);
+    tl.to(ctxQ, { opacity: 0, x: 30, duration: 0.35, stagger: 0.05 }, t5);
     focus(2, t5 + 0.1);
     write(2, t5 + 0.6);
-    // beat 6: C, with its four questions
-    const t6 = cue(6);
+    // beat 4: C, with its four questions
+    const t6 = cue(4);
     focus(3, t6 + 0.1);
-    const cQ = qChips([['move-horizontal', 'Did someone move away?'], ['arrow-right', 'Did your dog get closer?'], ['shield', 'Did they keep something?'], ['eye', 'Did they get attention?']], 6,
+    const cQ = qChips([['move-horizontal', 'Did someone move away?'], ['arrow-right', 'Did your dog get closer?'], ['shield', 'Did they keep something?'], ['eye', 'Did they get attention?']], 4,
       ['move away', 'get closer', 'keep something', 'get attention']);
-    write(3, end(6) - 1.0);
-    // beat 7: function
-    const t7 = cue(7);
+    write(3, end(4) - 1.0);
+    // beat 5: function
+    const t7 = cue(5);
     tl.to(cQ, { opacity: 0, x: 30, duration: 0.35, stagger: 0.05 }, t7);
     focus(4, t7 + 0.1);
-    write(4, clamp(at(7, 'accomplish', 0.7), t7 + 0.5, end(7) - 0.6));
-    // beat 8: not perfect
-    const t8 = cue(8);
-    const np = C3.row(stage, 'check', 'It doesn’t have to be <b>perfect</b>', RX, 380, { col: C.green, size: 36 });
+    write(4, clamp(at(5, 'accomplish', 0.7), t7 + 0.5, end(5) - 0.6));
+    // beat 6: not perfect
+    const t8 = cue(6);
+    const np = C3.row(stage, 'check', 'It doesn\u2019t have to be <b>perfect</b>', RX, 380, { col: C.green, size: 36 });
     A.in(tl, np, t8 + 0.2, 'fadeLeft', { dur: 0.5 });
-    // beat 9: three goals
-    const t9 = cue(9);
+    // beat 7: three goals
+    const t9 = cue(7);
     tl.to(np, { opacity: 0, duration: 0.3 }, t9);
     tl.to(pencil, { opacity: 0, duration: 0.3 }, t9);
     tl.to(rows[4].hl, { opacity: 0, duration: 0.3 }, t9);
@@ -114,7 +104,7 @@
     let lo = t9 + 0.2;
     G.forEach(([ic, tx, p], k) => {
       const r = C3.row(stage, ic, tx, RX + 20, 340 + k * 130, { col: C.green, size: 42 });
-      const tt = clamp(at(9, p, 0.3 + 0.25 * k), lo, end(9) - 0.3);
+      const tt = clamp(at(7, p, 0.3 + 0.25 * k), lo, end(7) - 0.3);
       A.in(tl, r, tt, 'fadeLeft', { dur: 0.5 });
       lo = tt + 0.4;
     });
@@ -145,31 +135,29 @@
       r.insertBefore(ck, r.firstChild);
       return r;
     });
-    rows.forEach((r, k) => A.in(tl, r, cue(k + 1) + 0.15, 'fadeRight', { dur: 0.55 }));
-    const mp = C3.chip(stage, 'puzzle', 'We have *the missing piece*', 160, 290, { col: C.green, size: 34 });
-    A.in(tl, mp, cue(0) + 0.2, 'pop', { dur: 0.5 });
-    tl.to(mp, { opacity: 0, duration: 0.3 }, cue(1));
+    // a quick visual recap while "Now we have the missing piece" is said (the recap lines were cut from the narration)
+    rows.forEach((r, k) => A.in(tl, r, cue(0) + 0.15 + k * 0.3, 'fadeRight', { dur: 0.5 }));
 
-    // ---------- beat 5: back to the pot; the thermometer warms
-    const t5 = cue(5);
+    // ---------- beat 1: back to the pot; the thermometer warms
+    const t5 = Math.max(cue(1), cue(0) + 1.8);
     tl.to(rows, { scale: 0.66, transformOrigin: '0% 50%', x: -40, y: (k) => -50 - k * 38, opacity: 0.5, duration: 0.8, ease: 'power3.inOut' }, t5);
     const LP = C3.layer(stage);
     const { P, merc } = C3.potWithThermo(LP, 1380, 420, 0.85);
     tl.fromTo(P.wrap, { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out' }, t5 + 0.3);
     P.waves(tl, t5, dur);
-    const tP = clamp(at(5, 'add temperature', 0.7), t5 + 1.0, end(5) - 0.8);
+    const tP = clamp(at(1, 'add temperature', 0.7), t5 + 1.0, end(1) - 0.8);
     tl.fromTo(merc, { attr: { y: 240, height: 50 } }, { attr: { y: 120, height: 170 }, duration: 1.4, ease: 'power2.inOut', immediateRender: false }, tP);
     const tp = C2.pill(stage, 'thermometer', '*Temperature*', { x: 1380, y: 820, center: true, col: C.red, size: 34 });
     A.in(tl, tp, tP + 0.2, 'fadeUp', { dur: 0.5 });
 
-    // ---------- beat 6: what temperature will show
-    const t6 = cue(6);
+    // ---------- beat 2: what temperature will show
+    const t6 = cue(2);
     tl.to(rows, { opacity: 0, duration: 0.4 }, t6);
     const Q = [['trending-up', 'As a response *builds*', 'as a response builds'], ['brain', 'The dog’s *ability to think*', 'ability to think'], ['triangle-alert', 'Getting closer to *threshold*', 'closer to threshold']];
     let lo = t6 + 0.3;
     const qs = Q.map(([ic, tx, p], k) => {
       const r = C3.row(stage, ic, tx, 160, 330 + k * 140, { col: k === 2 ? C.amber : C.green, size: 42 });
-      const tt = clamp(at(6, p, 0.15 + 0.33 * k), lo, end(6) - 0.5);
+      const tt = clamp(at(2, p, 0.15 + 0.33 * k), lo, end(2) - 0.5);
       A.in(tl, r, tt, 'fadeRight', { dur: 0.5 });
       lo = tt + 0.5;
       if (k === 0) tl.to(merc, { attr: { y: 40, height: 250 }, duration: 1.2, ease: 'power2.inOut' }, tt + 0.2);
@@ -185,10 +173,10 @@
     A.in(tl, thr, qs[2].tt + 0.3, 'fadeLeft', { dur: 0.4 });
     const nx = C2.bookmark(stage, 'Next chapter: *Temperature*', 160, 780, 'thermometer');
     nx.querySelectorAll('b').forEach(b => { b.style.color = '#b8d99a'; });
-    A.in(tl, nx, Math.min(end(6) + 0.2, dur - 4.4), 'fadeUp', { dur: 0.6 });
+    A.in(tl, nx, Math.min(end(2) + 0.2, dur - 4.4), 'fadeUp', { dur: 0.6 });
 
     // ---------- logo close
-    const tL = Math.min(end(6) + 2.0, dur - 2.6);
+    const tL = Math.min(end(2) + 2.0, dur - 2.6);
     SKIT.logoClose(ctx, tL, [h.root, LP, tp, thr, nx, ...qs.map(q => q.r)]);
   });
 })();

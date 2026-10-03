@@ -88,23 +88,33 @@ pipeline). This file records the state, decisions and working agreements from ea
 ## Chapter 3 video (built, preview voice only)
 
 - Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`). Order: `ch03intro` (shared title slide), `ch03card`
-  ("This is Chapter 3: The ABCs of Behavior."), `ch03plan`, `ch03s01` to `ch03s13`, `ch03s16`, `ch03s17`. About 9.4 minutes.
-  S14 (Practice builds the path) and S15 (Why management matters) are CUT (Tori, round 1: they repeated S13); Tori was
-  asked to delete them from the doc. Recording ids keep the doc's numbers (Ch03s16, Ch03s17).
-- Lines Claude wrote (not in the doc yet, sent to Tori): intro, card and plan narration, and s13's "something else" line. Everything else is the doc verbatim.
+  ("This is Chapter 3: The ABCs of Behavior."), `ch03plan`, `ch03s01` to `ch03s14`, `ch03s16`, `ch03s17`. About 8.1 minutes.
+  Round 1: the doc's S14 (Practice builds the path) and S15 (Why management matters) are CUT (they repeated S13).
+  Round 2 ("the whole presentation is too repetitive"): lines that restate earlier slides were cut (s02 "easy way to
+  remember it" and the three-line summary; s05/s06 "What did the behavior accomplish?"; s07's three "For one dog..."
+  lines; s10's last line; s12's closer/attention and keep-access lines; s16's repeated thing/context example and
+  "location predicts" lines; s17's four "We know..." recap lines, shown on screen only). `ch03s14` is a NEW slide,
+  "This Is Why We Train": the bridge from the cycle to training plus Tori's before/during/after photo strips, with
+  management and the changing consequence. Tori was sent the cut list and paste-ready text; the doc still needs
+  updating to match. Recording ids: Ch03s14 = the new slide; Ch03s16, Ch03s17 keep the doc's numbers.
+- Lines Claude wrote (not in the doc yet, sent to Tori): intro, card and plan narration, and s14's bridge, before-training
+  and "something else" lines. Everything else is the doc verbatim.
 - Scene code: `video/scenes/c3a.js` to `c3e.js`, shared kit `c3_abc.js` (window.C3: photo ABC strip that fills panel by
   panel, function tag with in/out arrows, A/B/C ring, tiles, chips, rows). The s13 two-cycle builder is in c3d.js.
   `C3.potWithThermo` (in c3a.js) is Chapter 2's pot with the thermometer standing in it.
 - Colours: A olive, B green, C deep green; the emotional response is plum (`#8b5d8f`), so it reads as "inside the dog",
   not good or bad; function is green with a target icon. Arousal and stress meters: green low, amber middle, red high.
-- Photo strips use the existing `abc_*` panels (greet, approach, guard for s04 to s07).
+- Photo strips use the existing `abc_*` panels (greet, approach, guard for s04 to s07; before, during, after for s14).
 - s13 (ABC cycle) follows Tori's reference clip (abc-cycle-preview): two cycles side by side, Before training (red) and
   During training (green); A top, B lower right, C lower left with arrows; "Emotions" / "Changing emotions" on A to B,
   "Increased" / "Lowered arousal/stress" on B to C; a dot runs the loop when it repeats; path strength = arc thickness;
-  the old cycle fades, comes back, fades again with management; the green C box progresses: Space is given, Less space
-  needed, Building dog relationships ("That's a good thing"). No lawn, no photo strips here.
-  New narration line (Claude, from Tori's direction, not in the doc yet): "Your dog might even start wanting something
-  else, like the chance to build a relationship with another dog. And that's a good thing."
+  the old cycle fades and comes back; it ends on the arousal/stress line. Management and the changing consequence live in
+  s14 now, not in the cycle.
+- s14 "This Is Why We Train": stage pills Before / During / After; "Help the new path win"; the before strip (red note
+  "Getting more space can make this behavior more likely next time"), during (Management. / Teaching new behaviors.),
+  after (Less management as skills improve. / Readily uses the new behavior.); the after C caption progresses: Space is
+  given, Less space needed, Building dog relationships; "That's a good thing." Narration written by Claude from Tori's
+  direction and the doc's management/consequence lines.
 - s16 homework: a worksheet that fills in with the doc's example (another dog appears; same corner, dogs too close;
   barked and lunged; the other dog moved away; more distance?). The B, C and function answers are Claude's example.
 - s17 ends on the pot with the thermometer, the rim marked "Threshold", "Next chapter: Temperature", then the logo close.

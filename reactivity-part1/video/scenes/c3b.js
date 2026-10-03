@@ -24,11 +24,13 @@
     // the question: over the C panel
     const cx = S.colX(2) + S.colW - 30, cy = S.top + 140;
     const q = C3.qBadge(S.wrap, cx, cy, 104);
+    // (only the first example asks the question aloud; the others show the badge as the answer starts)
+    const fb = o.noQ ? b + 3 : b + 4;
     A.in(tl, q, cue(b + 3) + 0.05, 'pop', { dur: 0.55 });
     tl.to(S.cols[2].panel, { boxShadow: '0 0 0 8px rgba(217,145,43,0.55)', duration: 0.4 }, cue(b + 3) + 0.2);
     // the possible function
     const tag = C3.fnTag(S.wrap, o.icon, o.fn, 960, 838);
-    const tF = clamp(at(b + 4, o.pF, 0.3, 0.3), cue(b + 4) + 0.1, end(b + 4) - 1.0);
+    const tF = clamp(at(fb, o.pF, 0.3, 0.3), cue(fb) + (o.noQ ? 0.9 : 0.1), end(fb) - 1.0);
     tag.show(tl, tF);
     tl.to(S.cols[2].panel, { boxShadow: '0 0 0 0px rgba(217,145,43,0)', duration: 0.4 }, tF);
     tl.to(q, { backgroundColor: C.green, duration: 0.4 }, tF);
@@ -42,13 +44,13 @@
     icon: 'in', fn: 'Decrease distance / gain attention', pF: 'get closer',
   }));
   registerScene('ch03s05', ctx => example(ctx, {
-    title: 'A Person Approaches', beatA: 1, pA: 'a person heads',
+    title: 'A Person Approaches', beatA: 1, noQ: true, pA: 'a person heads',
     panels: ['abc_approach_a.jpg', 'abc_approach_b.jpg', 'abc_approach_c.jpg'],
     captions: ['A person approaches<br>on a walk', 'The dog stops<br>and barks', 'The person stops<br>or moves away'],
     icon: 'out', fn: 'Increase distance', pF: 'create more distance',
   }));
   registerScene('ch03s06', ctx => example(ctx, {
-    title: 'Guarding a Toy', beatA: 0, pA: 'another dog approaches',
+    title: 'Guarding a Toy', beatA: 0, noQ: true, pA: 'another dog approaches',
     panels: ['abc_guard_a.jpg', 'abc_guard_b.jpg', 'abc_guard_c.jpg'],
     captions: ['Another dog approaches<br>a dog with a toy', 'Stiffens, barks, growls,<br>and may snap', 'The other dog backs away;<br>the dog keeps the toy'],
     icon: 'shield', fn: 'Maintain access', pF: 'keep access',
@@ -95,9 +97,9 @@
     A.draw(tl, lines, cue(2) + 0.3, 0.5, { stagger: 0.12 });
     A.in(tl, slots, cue(2) + 0.6, 'fade', { dur: 0.5, stagger: 0.12 });
 
-    // ---------- beats 3, 4, 5: each slot fills with its C outcome and the job
-    const fills = [3, 4, 5].map((bt, k) => {
-      const t = cue(bt) + 0.1;
+    // ---------- still beat 2: each slot fills with its C outcome and the job, one after another
+    const fills = [0, 1, 2].map(k => {
+      const t = cue(2) + 1.0 + k * 0.75;
       const s = slots[k];
       const p = K.photo(s, CC[k], { x: 18, y: 18, w: 250, h: 186, radius: 16 });
       p.root.style.border = '4px solid ' + C.olive;
@@ -113,15 +115,15 @@
       s.appendChild(lab);
       tl.to(s, { borderColor: C.green, borderStyle: 'solid', backgroundColor: '#ffffff', duration: 0.4 }, t);
       tl.fromTo(p.root, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, t);
-      const tJ = clamp(at(bt, k === 0 ? 'coming closer' : k === 1 ? 'moving away' : 'kept the toy', 0.7), t + 0.6, end(bt) - 0.3);
+      const tJ = t + 0.4;
       A.in(tl, lab, tJ, 'fadeUp', { dur: 0.5 });
       if (ar) C3.nudge(tl, ar, tJ + 0.5, 2);
       tl.to(lines[k], { stroke: C.green, duration: 0.4 }, t);
       return s;
     });
 
-    // ---------- beat 6: same behavior, different outcome, different possible function
-    const t6 = cue(6);
+    // ---------- beat 3: same behavior, different outcome, different possible function
+    const t6 = Math.max(cue(3), cue(2) + 3.4);
     const all = [...ph.map(p => p.root), ...barks, ...fills, sv];
     tl.to(all, { opacity: 0.18, duration: 0.6 }, t6);
     const box = C3.put(stage, 'c3-card', null, { x: 460, y: 300, w: 1000, h: 470 });
@@ -137,13 +139,13 @@
       const n = K.el('div', null, tx);
       Object.assign(n.style, { font: '700 62px/1.05 var(--font-head)', color: col, whiteSpace: 'nowrap' });
       box.appendChild(n);
-      const tt = clamp(at(6, p, 0.1 + 0.33 * k), lo, end(6) - 0.3);
+      const tt = clamp(at(3, p, 0.1 + 0.33 * k), lo, end(3) - 0.3);
       A.in(tl, n, tt, 'fadeUp', { dur: 0.5 });
       lo = tt + 0.4;
     });
 
-    // ---------- beat 7: not by looking at the behavior alone
-    const t7 = cue(7);
+    // ---------- beat 4: not by looking at the behavior alone
+    const t7 = cue(4);
     tl.to(box, { opacity: 0, scale: 0.96, duration: 0.4 }, t7);
     tl.to(all, { opacity: 1, duration: 0.6 }, t7 + 0.1);
     tl.to(ph.map(p => p.root), { opacity: 0.35, duration: 0.6 }, t7 + 0.8);

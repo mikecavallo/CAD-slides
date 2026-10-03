@@ -102,7 +102,7 @@ pipeline). This file records the state, decisions and working agreements from ea
 - s16 homework: a worksheet that fills in with the doc's example (another dog appears; same corner, dogs too close;
   barked and lunged; the other dog moved away; more distance?). The B, C and function answers are Claude's example.
 - s17 ends on the pot with the thermometer, the rim marked "Threshold", "Next chapter: Temperature", then the logo close.
-- Online preview: (see the latest delivery note; `out/web/chapter3/`).
+- Online preview (temporary AI voice): https://claude.ai/artifact/LgEH4FvtiMGM1FG7V3iDuz (`out/web/chapter3/`; publish without the .vtt files, captions are inline).
 
 ## Recordings (Tori's voice)
 

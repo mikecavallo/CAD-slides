@@ -23,6 +23,8 @@ const REAL = window.REAL = window.REAL || {};
 function sstep(a, b, x){ let t = (x - a) / (b - a); t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
 function c255(v){ return v < 0 ? 0 : v > 255 ? 255 : v; }
 function cl(v, a, b){ return v < a ? a : v > b ? b : v; }
+/* index wrap for splats whose reach is always far smaller than the tile */
+function wrap(v, n){ return v < 0 ? v + n : v >= n ? v - n : v; }
 
 /* uniform white noise -0.5..0.5 (xorshift32) */
 function white(n, seed){
@@ -125,12 +127,12 @@ function normalCanvas(C, W, H, hf, pu, pv, k){
 function pit(hgt, cav, W, H, cx, cy, rx, ry, depth, dark){
   const x0 = Math.floor(cx - rx - 1), x1 = Math.ceil(cx + rx + 1), y0 = Math.floor(cy - ry - 1), y1 = Math.ceil(cy + ry + 1);
   for (let y = y0; y <= y1; y++){
-    const yy = ((y % H) + H) % H, dy = (y + 0.5 - cy) / ry, dy2 = dy * dy;
+    const yy = wrap(y, H), dy = (y + 0.5 - cy) / ry, dy2 = dy * dy;
     if (dy2 >= 1.3) continue;
     for (let x = x0; x <= x1; x++){
       const dx = (x + 0.5 - cx) / rx, d2 = dx * dx + dy2;
       if (d2 >= 1.3) continue;
-      const i = yy * W + (((x % W) + W) % W);
+      const i = yy * W + wrap(x, W);
       if (d2 < 1){ const t = Math.sqrt(1 - d2); hgt[i] -= depth * t; const o = dark * Math.min(1, t * 2.2); if (o > cav[i]) cav[i] = o; }
       else { hgt[i] += depth * 0.12 * (1.3 - d2) / 0.3; }   /* tiny raised lip */
     }
@@ -280,11 +282,11 @@ function concreteFields(C, R){
     const cx = rnd() * W, cy = rnd() * H, r = (0.15 + Math.pow(rnd(), 2) * 0.4) / p, asp = 0.6 + rnd() * 0.6;
     const tone = (rnd() - 0.6) * 0.35, x0 = Math.floor(cx - r), x1 = Math.ceil(cx + r), ry = r * asp, y0 = Math.floor(cy - ry), y1 = Math.ceil(cy + ry);
     for (let y = y0; y <= y1; y++){
-      const yy = ((y % H) + H) % H, dy = (y + 0.5 - cy) / ry;
+      const yy = wrap(y, H), dy = (y + 0.5 - cy) / ry;
       for (let x = x0; x <= x1; x++){
         const dx = (x + 0.5 - cx) / r, d2 = dx * dx + dy * dy;
         if (d2 >= 1) continue;
-        agg[yy * W + (((x % W) + W) % W)] += tone * sstep(1, 0.4, d2);
+        agg[yy * W + wrap(x, W)] += tone * sstep(1, 0.4, d2);
       }
     }
   }
@@ -411,7 +413,7 @@ function makeStucco(C, THREE, macro){
     const sp = (0.12 + rnd() * 0.08) / p, amp = 0.5 + rnd() * 0.5, Rm = R0 + band, Ri = Math.max(0, R0 - band), k2 = 6.2832 / sp;
     /* walk only the annulus: per row, the outer chord minus the inner chord */
     for (let y = Math.floor(cy - Rm); y <= Math.ceil(cy + Rm); y++){
-      const yy = ((y % H) + H) % H, dy = y + 0.5 - cy, dy2 = dy * dy;
+      const yy = wrap(y, H), dy = y + 0.5 - cy, dy2 = dy * dy;
       if (dy2 > Rm * Rm) continue;
       const xo = Math.sqrt(Rm * Rm - dy2), xi = dy2 < Ri * Ri ? Math.sqrt(Ri * Ri - dy2) : -1;
       for (let x = Math.floor(cx - xo); x <= Math.ceil(cx + xo); x++){
@@ -423,7 +425,7 @@ function makeStucco(C, THREE, macro){
         if (ca < ch) continue;
         const wr = 1 - Math.abs(r - R0) / band, wa = sstep(ch, ch2, ca);
         if (wr <= 0) continue;
-        swirl[yy * W + (((x % W) + W) % W)] += Math.sin(r * k2) * amp * wr * wr * wa;
+        swirl[yy * W + wrap(x, W)] += Math.sin(r * k2) * amp * wr * wr * wa;
       }
     }
   }
@@ -436,19 +438,21 @@ function makeStucco(C, THREE, macro){
     for (let x = 0; x < W; x++){
       const i = y * W + x, X = (x + 0.5) * p + (ci % 2) * unit / 2;
       const dxc = Math.abs((X % unit) - unit / 2), jx = sstep(unit / 2 - 0.3, unit / 2, dxc);
-      const joint = Math.max(jy, jx) * cl(0.4 + blob2[i] * 2, 0, 1);
+      const joint = Math.max(jy, jx) * cl(0.6 + blob2[i] * 2, 0, 1);
       /* light knock-down: small flattened pads (~1/2-1") with sandy crevices between them */
       const v = blob[i] + blob2[i] * 0.3 + sand[i] * 0.1;
       const isl = sstep(-0.02, 0.05, v);
       const sw = swirl[i] * (0.5 + isl * 0.5);
-      hgt[i] = isl * 0.016 + sand[i] * 0.013 + g0[i] * 0.006 + sw * 0.004 + mott[i] * 0.015 + blob2[i] * 0.02 - joint * 0.01;
-      const L = (1 + mott[i] * 0.035 + blob2[i] * 0.06 + sand[i] * 0.09 + g0[i] * 0.07 + sw * 0.012 + blob2[i] * 0.04) * (0.98 + isl * 0.02) * (1 - joint * 0.04);
+      /* darker troweled smears where the float pressed the paste (reference chimney), lighter dry sand on the pads */
+      const smear = sstep(0.05, 0.24, blob2[i] + mott[i] * 0.4 + blob[i] * 0.35 - sand[i] * 0.12);
+      hgt[i] = isl * 0.016 + sand[i] * 0.013 + g0[i] * 0.006 + sw * 0.004 + mott[i] * 0.015 + blob2[i] * 0.02 - joint * 0.016 - smear * 0.006;
+      const L = (1 + mott[i] * 0.05 + blob2[i] * 0.06 + sand[i] * 0.12 + g0[i] * 0.08 + sw * 0.015) * (0.97 + isl * 0.05) * (1 - smear * 0.08) * (1 - joint * 0.07);
       rgb[i*3] = B[0] * L; rgb[i*3+1] = B[1] * L * (1 - mott[i] * 0.02); rgb[i*3+2] = B[2] * L;
-      rough[i] = 0.9 + sand[i] * 0.05 - isl * 0.03 + g0[i] * 0.03;
+      rough[i] = 0.9 + sand[i] * 0.05 - isl * 0.03 + g0[i] * 0.03 - smear * 0.05;
     }
   }
   const mt = mat(C, THREE, W, H, rgb, rough, hgt, p, p, {tile: [3, 3], grain: "none", nk: 1});
-  return enhance(THREE, mt, macro, {key: "stucco", s: [9.3, 12.7, 4.1, 2.3], a: [0.09, 0.16, 0.06, 0.04], r: [0.02, 0.02], d: [0.7, 0.08, 0.03, 0.0009]});
+  return enhance(THREE, mt, macro, {key: "stucco", s: [9.3, 12.7, 4.1, 2.3], a: [0.10, 0.18, 0.07, 0.08], r: [0.02, 0.02], d: [0.7, 0.08, 0.03, 0.0009]});
 }
 
 /* ---------------------------------------------------------------- parge (painted foundation band) */
@@ -463,12 +467,12 @@ function makeParge(C, THREE, macro){
   const trow = new Float32Array(N), tw = new Float32Array(N);
   const rnd = C.rng(406);
   /* trowel passes: slightly tilted flat planes; a soft ridge where the blade edge lifted */
-  for (let k = 0; k < 48; k++){
+  for (let k = 0; k < 38; k++){
     const cx = rnd() * W, cy = rnd() * H, th = (rnd() - 0.5) * 1.4;
     const len = (8 + rnd() * 10), wid = (3.5 + rnd() * 2), ct = Math.cos(th), st = Math.sin(th), tilt = (rnd() - 0.5) * 0.016;
     const Ri = Math.hypot(len, wid) / 2 + 0.6, Ry = Ri / pv, hl = len / 2 + 0.6, hw = wid / 2 + 0.6;
     for (let y = Math.floor(cy - Ry); y <= Math.ceil(cy + Ry); y++){
-      const yy = ((y % H) + H) % H, dyi = (y + 0.5 - cy) * pv;
+      const yy = wrap(y, H), dyi = (y + 0.5 - cy) * pv;
       /* exact x-span of the rotated rectangle on this row: |dx ct + dy st| <= hl and |-dx st + dy ct| <= hw */
       let lo = -1e9, hi = 1e9;
       if (Math.abs(ct) > 1e-6){ const a0 = (-hl - dyi * st) / ct, a1 = (hl - dyi * st) / ct; lo = Math.max(lo, Math.min(a0, a1)); hi = Math.min(hi, Math.max(a0, a1)); }
@@ -480,7 +484,7 @@ function makeParge(C, THREE, macro){
         const dxi = (x + 0.5 - cx) * pu, a = dxi * ct + dyi * st, b = -dxi * st + dyi * ct;
         const ea = len / 2 - Math.abs(a), eb = wid / 2 - Math.abs(b);
         if (ea < -0.6 || eb < -0.6) continue;
-        const i = yy * W + (((x % W) + W) % W);
+        const i = yy * W + wrap(x, W);
         const inside = sstep(-0.1, 0.8, Math.min(ea, eb));
         const rb = (eb + 0.15) / 0.3, ridge = rb > -3 && rb < 3 ? Math.exp(-rb * rb) * sstep(-0.5, 1.5, ea) : 0;
         trow[i] = trow[i] * (1 - inside * 0.8) + inside * (b * tilt) + ridge * 0.008;
@@ -489,7 +493,7 @@ function makeParge(C, THREE, macro){
     }
   }
   const course = 7.5, unit = 16;
-  const B = [106, 86, 84];
+  const B = [105, 86, 82];
   for (let y = 0; y < H; y++){
     const Y = (y + 0.5) * pv, ci = Math.floor(Y / course), dyc = Math.abs(Y - (ci + 0.5) * course);
     const jy = 1 - sstep(0, 0.5, course / 2 - dyc);
@@ -502,13 +506,14 @@ function makeParge(C, THREE, macro){
       /* troweled areas are flatter and slightly smoother; lumps and sand show between passes */
       const flat = 1 - tw[i] * 0.6;
       hgt[i] = und[i] * 0.035 + trow[i] + (lp * 0.03 + lump[i] * 0.02) * flat + sand[i] * 0.014 * flat + g0[i] * 0.005 - joint * 0.012;
-      const L = (1 + mott[i] * 0.04 + sand[i] * 0.07 * flat + g0[i] * 0.05 + und[i] * 0.02 + lump[i] * 0.03) * (1 - joint * 0.03) * (1 + tw[i] * 0.01);
-      rgb[i*3] = B[0] * L; rgb[i*3+1] = B[1] * L; rgb[i*3+2] = B[2] * L * (1 + mott[i] * 0.02);
+      const L = (1 + mott[i] * 0.07 + sand[i] * 0.07 * flat + g0[i] * 0.05 + und[i] * 0.02 + lump[i] * 0.03) * (1 - joint * 0.03) * (1 + tw[i] * 0.01);
+      /* paint wear: some areas redder-brown, some greyer where the coat is thin */
+      rgb[i*3] = B[0] * L * (1 + und[i] * 0.06); rgb[i*3+1] = B[1] * L; rgb[i*3+2] = B[2] * L * (1 + mott[i] * 0.03 - und[i] * 0.03);
       rough[i] = 0.8 + sand[i] * 0.04 * flat + mott[i] * 0.06 + g0[i] * 0.03 - tw[i] * 0.06;
     }
   }
   const mt = mat(C, THREE, W, H, rgb, rough, hgt, pu, pv, {tile: [4, 2.5], grain: "none", nk: 1});
-  return enhance(THREE, mt, macro, {key: "parge", s: [11.1, 12.1, 3.7, 2.1], a: [0.09, 0.16, 0.06, 0.04], r: [0.03, 0.02], d: [0.8, 0.07, 0.04, 0.0006]});
+  return enhance(THREE, mt, macro, {key: "parge", s: [11.1, 12.1, 3.7, 2.1], a: [0.12, 0.2, 0.07, 0.06], r: [0.03, 0.02], d: [0.8, 0.07, 0.04, 0.0006]});
 }
 
 /* ---------------------------------------------------------------- broom-finished walk (weathered, fine aggregate showing)
@@ -535,11 +540,11 @@ function makeWalk(C, THREE, macro, R){
     const warmS = u < 0.45 ? (rnd() - 0.5) * 0.04 : u < 0.72 ? 0.0 : 0.06 + rnd() * 0.08;
     const x0 = Math.floor(cx - r - 1), x1 = Math.ceil(cx + r + 1), y0 = Math.floor(cy - ry - 1), y1 = Math.ceil(cy + ry + 1);
     for (let y = y0; y <= y1; y++){
-      const yy = ((y % H) + H) % H, dy = (y + 0.5 - cy) / ry;
+      const yy = wrap(y, H), dy = (y + 0.5 - cy) / ry;
       for (let x = x0; x <= x1; x++){
         const dx = (x + 0.5 - cx) / r, d2 = dx * dx + dy * dy;
         if (d2 >= 1) continue;
-        const i = yy * W + (((x % W) + W) % W), c = sstep(1, 0.45, d2);
+        const i = yy * W + wrap(x, W), c = sstep(1, 0.45, d2);
         agg[i] = agg[i] * (1 - c) + tone * c * (0.85 + 0.3 * (1 - d2)); aggW[i] = aggW[i] * (1 - c) + warmS * c;
         aggH[i] = Math.max(aggH[i], Math.sqrt(1 - d2) * 0.015);
       }

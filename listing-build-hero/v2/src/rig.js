@@ -25,7 +25,7 @@ REAL.rig = {
     sun.shadow.mapSize.set(o.shadowSize || 4096, o.shadowSize || 4096);
     const sc = sun.shadow.camera;
     sc.left = -46; sc.right = 46; sc.top = 46; sc.bottom = -46; sc.near = 20; sc.far = 260;
-    sun.shadow.bias = -0.00035; sun.shadow.normalBias = 0.035;
+    sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.06;
     scene.add(sun); scene.add(sun.target);
 
     const fill = new THREE.HemisphereLight(0xcfe0ff, 0x5b5140, 0.18);

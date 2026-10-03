@@ -17,7 +17,15 @@ const REAL = window.REAL = window.REAL || {};
 
 /* ---------------------------------------------------------------- small helpers */
 function sstep(a, b, x){ let t = (x - a) / (b - a); t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
-function c255(v){ return v < 0 ? 0 : v > 255 ? 255 : v; }
+
+/* scratch Float32 buffers reused across variants (textures are built one after another), released after create() */
+let POOL = {};
+function buf(name, n, zero){
+  let b = POOL[name];
+  if (!b || b.length < n) b = POOL[name] = new Float32Array(n);
+  else if (zero) b.fill(0, 0, n);
+  return b.length === n ? b : b.subarray(0, n);
+}
 
 /* shared per-pixel white noise (-0.5..0.5), xorshift32. Callers read G[i + offset] with offset < len - N. */
 let GRIT = null;
@@ -36,8 +44,8 @@ function field(C, w, h, o){
   return {f, w, h};
 }
 /* bilinear wrap upsample of a low-res periodic field to W x H */
-function up(F, W, H){
-  const out = new Float32Array(W * H), w = F.w, h = F.h, f = F.f;
+function up(F, W, H, name){
+  const out = name ? buf(name, W * H) : new Float32Array(W * H), w = F.w, h = F.h, f = F.f;
   if (w === W && h === H){ out.set(f); return out; }
   const xi0 = new Int32Array(W), xi1 = new Int32Array(W), xt = new Float32Array(W);
   for (let x = 0; x < W; x++){ let fx = (x + 0.5) / W * w - 0.5; if (fx < 0) fx += w; const a = fx | 0; xi0[x] = a; xi1[x] = a + 1 === w ? 0 : a + 1; xt[x] = fx - a; }
@@ -55,7 +63,7 @@ function up(F, W, H){
 /* canvases */
 function rgbCanvas(C, W, H, rgb){
   const c = C.canvas(W, H), ctx = c.getContext("2d"), img = ctx.createImageData(W, H), d = img.data;
-  for (let i = 0, j = 0, k = 0; i < W * H; i++, j += 3, k += 4){ d[k] = c255(rgb[j]); d[k+1] = c255(rgb[j+1]); d[k+2] = c255(rgb[j+2]); d[k+3] = 255; }
+  for (let i = 0, j = 0, k = 0; i < W * H; i++, j += 3, k += 4){ d[k] = rgb[j]; d[k+1] = rgb[j+1]; d[k+2] = rgb[j+2]; d[k+3] = 255; }   /* Uint8ClampedArray clamps + rounds */
   ctx.putImageData(img, 0, 0);
   return c;
 }
@@ -63,8 +71,8 @@ function rgbCanvas(C, W, H, rgb){
 function dataCanvas(C, W, H, g, b){
   const c = C.canvas(W, H), ctx = c.getContext("2d"), img = ctx.createImageData(W, H), d = img.data;
   for (let i = 0, k = 0; i < W * H; i++, k += 4){
-    const gv = c255(g[i] * 255);
-    d[k] = gv; d[k+1] = gv; d[k+2] = b ? c255(b[i] * 255) : gv; d[k+3] = 255;
+    const gv = g[i] * 255;
+    d[k] = gv; d[k+1] = gv; d[k+2] = b ? b[i] * 255 : gv; d[k+3] = 255;
   }
   ctx.putImageData(img, 0, 0);
   return c;
@@ -185,11 +193,11 @@ function shingleMaps(C){
   const W = 1024, H = 512, N = W * H, NC = 4, CH = H / NC;
   const pu = 40 / W, pv = 21.6 / H, E = 5.4;
   const rnd = C.rng(7103), G = grit(N * 2);
-  const blot = up(field(C, 128, 64, {octaves: 4, base: 5, sx: 2, sy: 1, seed: 11, persistence: 0.55}), W, H);
-  const mott = up(field(C, 256, 128, {octaves: 2, base: 24, sx: 2, sy: 1, seed: 12}), W, H);
+  const blot = up(field(C, 128, 64, {octaves: 4, base: 5, sx: 2, sy: 1, seed: 11, persistence: 0.55}), W, H, "fa");
+  const mott = up(field(C, 256, 128, {octaves: 2, base: 24, sx: 2, sy: 1, seed: 12}), W, H, "fb");
   /* granule clusters (~0.1-0.2in): survive mip-mapping, read as the sandy surface of real shingles */
-  const clus = up({f: G.subarray(N, N + 256 * 128), w: 256, h: 128}, W, H);
-  const tone = new Float32Array(N), tint = new Float32Array(N), shade = new Float32Array(N), hgt = new Float32Array(N), rough = new Float32Array(N);
+  const clus = up({f: G.subarray(N, N + 256 * 128), w: 256, h: 128}, W, H, "fc");
+  const tone = buf("t1", N), tint = buf("t2", N), shade = buf("t3", N), hgt = buf("hgt", N), rough = buf("rough", N);
   const BASE = [113, 117, 122];
   /* course layouts first: the butt of course k+1 shades the head of course k (more under double-ply tabs) */
   const L = [];
@@ -197,15 +205,15 @@ function shingleMaps(C){
     const seam = Math.floor(rnd() * W), segs = [];
     let x = 0, tooth = true;
     while (x < W){
-      let w = tooth ? (3.0 + rnd() * 4.6) / pu : (0.8 + Math.pow(rnd(), 1.4) * 3.4) / pu;
+      let w = tooth ? (2.8 + rnd() * 4.4) / pu : (1.2 + Math.pow(rnd(), 1.2) * 3.4) / pu;
       if (W - x < w + 2.8 / pu) w = W - x;
       const r = rnd(), slant = (rnd() - 0.5) * 0.8;
       segs.push({
         x0: x, x1: x + w, tooth,
-        tone: tooth ? (r < 0.3 ? 4 : r < 0.75 ? 0 : r < 0.95 ? -4 : -9) + (rnd() - 0.5) * 4 : -37 + (rnd() - 0.5) * 14,
+        tone: tooth ? (r < 0.3 ? 4 : r < 0.75 ? 0 : r < 0.95 ? -4 : -9) + (rnd() - 0.5) * 4 : -50 + (rnd() - 0.5) * 12,
         tint: (rnd() - 0.5) * 4,
-        top: (0.9 + Math.pow(rnd(), 1.3) * 1.5) / pv,          /* cut-out height above the butt, px */
-        tsl: (rnd() - 0.5) * 0.2,                              /* slanted cut-out head */
+        top: (0.55 + Math.pow(rnd(), 1.3) * 1.1) / pv,         /* cut-out height above the butt, px */
+        tsl: (rnd() < 0.5 ? -1 : 1) * (0.06 + rnd() * 0.22),     /* raked cut-out head: dark wedge dashes */
         sl: rnd() < 0.5 ? slant : 0, sr: rnd() < 0.5 ? 0 : -slant   /* dragon-tooth: one side raked */
       });
       x += w; tooth = !tooth;
@@ -234,7 +242,7 @@ function shingleMaps(C){
     }
     /* shadow strength along the head of this course, softened a little sideways */
     const str = new Float32Array(W);
-    for (let i = 0; i < W; i++){ let s = 0; for (let j = -3; j <= 3; j++) s += above[(i + j + W) % W]; str[i] = 0.56 - 0.3 * s / 7; }
+    for (let i = 0; i < W; i++){ let s = 0; for (let j = -3; j <= 3; j++) s += above[(i + j + W) % W]; str[i] = 0.62 - 0.32 * s / 7; }
     for (let t = 0; t < CH; t++){
       const y = H - 1 - (k * CH + t), row = y * W;
       const tin = (t + 0.5) * pv;
@@ -252,12 +260,12 @@ function shingleMaps(C){
         if (s.tooth) continue;
         const a = s.x0 + s.sl * t, b = s.x1 + s.sr * t;
         for (let i = Math.floor(a); i < Math.ceil(b); i++){
-          const gTop = s.top + s.tsl * (i - s.x0);
+          const gTop = s.top + s.tsl * (s.tsl > 0 ? i - s.x0 : i - s.x1);
           if (t >= gTop) continue;
           const xx = (i + seam) % W, p = row + xx;
           const dEdge = Math.min(i + 0.5 - a, b - i - 0.5) * pu, dTop = (gTop - t) * pv;
           const occ = 0.8 + 0.2 * sstep(0, 0.25, Math.min(dEdge, dTop));
-          tone[p] = s.tone * (1.12 - 0.3 * t / gTop); shade[p] *= occ; hgt[p] = slope; rough[p] = 0.93;
+          tone[p] = s.tone * (1.08 - 0.22 * t / gTop); shade[p] *= occ; hgt[p] = slope; rough[p] = 0.93;
         }
       }
       const p0 = row + seam, p1 = row + (seam + 1) % W;
@@ -265,10 +273,10 @@ function shingleMaps(C){
     }
   }
   /* granules: per-pixel speckle with light and black granules, blend patches */
-  const rgb = new Float32Array(N * 3);
+  const rgb = buf("rgb", N * 3);
   for (let i = 0; i < N; i++){
     const g0 = G[i], g1 = G[i + 3571], g2 = G[i + 91711];
-    let v = tone[i] + blot[i] * 6 + mott[i] * 4 + g0 * 14 + clus[i] * 11;
+    let v = tone[i] + blot[i] * 6 + mott[i] * 4 + g0 * 14 + clus[i] * 14;
     if (g1 > 0.47) v += 20 + g2 * 14;
     else if (g1 < -0.445) v -= 18 + g2 * 8;
     const s = shade[i], ti = tint[i];
@@ -287,10 +295,10 @@ function sidingMaps(C){
   const W = 1024, H = 512, N = W * H, NB = 4, BH = H / NB;
   const pu = 72 / W, pv = 24 / H;
   const rnd = C.rng(4242), G = grit(N * 2);
-  const streak = up(field(C, 256, 512, {octaves: 3, base: 7, sx: 1, sy: 18, seed: 31, persistence: 0.65}), W, H);
-  const lines = up(field(C, 128, 512, {octaves: 2, base: 5, sx: 1, sy: 56, seed: 32, persistence: 0.6}), W, H);
-  const mott = up(field(C, 64, 32, {octaves: 3, base: 3, sx: 2, sy: 1, seed: 33}), W, H);
-  const rgb = new Float32Array(N * 3), hgt = new Float32Array(N), rough = new Float32Array(N);
+  const streak = up(field(C, 128, 512, {octaves: 3, base: 7, sx: 1, sy: 18, seed: 31, persistence: 0.65}), W, H, "fa");
+  const lines = up(field(C, 128, 512, {octaves: 2, base: 5, sx: 1, sy: 56, seed: 32, persistence: 0.6}), W, H, "fb");
+  const mott = up(field(C, 64, 32, {octaves: 3, base: 3, sx: 2, sy: 1, seed: 33}), W, H, "fc");
+  const rgb = buf("rgb", N * 3), hgt = buf("hgt", N), rough = buf("rough", N);
   const BASE = [139, 121, 115];
   for (let k = 0; k < NB; k++){
     const bt = (rnd() - 0.5) * 3;
@@ -335,11 +343,11 @@ function sidingMaps(C){
 function whiteMaps(C, o){
   const W = o.W, H = o.H, N = W * H, pu = o.inU / W, pv = o.inV / H;
   const G = grit(N * 2);
-  const wave = up(field(C, 16, 32, {octaves: 2, base: 2, sx: 1, sy: 2, seed: o.seed}), W, H);
-  const dirt = up(field(C, 64, 64, {octaves: 4, base: 3, seed: o.seed + 1, persistence: 0.6}), W, H);
-  const lines = up(field(C, 128, 8, {octaves: 2, base: 24, sx: 2, sy: 0.125, seed: o.seed + 2}), W, H);
+  const wave = up(field(C, 16, 32, {octaves: 2, base: 2, sx: 1, sy: 2, seed: o.seed}), W, H, "fa");
+  const dirt = up(field(C, 64, 64, {octaves: 4, base: 3, seed: o.seed + 1, persistence: 0.6}), W, H, "fb");
+  const lines = up(field(C, 128, 8, {octaves: 2, base: 24, sx: 2, sy: 0.125, seed: o.seed + 2}), W, H, "fc");
   const B = o.base;
-  const rgb = new Float32Array(N * 3), hgt = new Float32Array(N), rough = new Float32Array(N);
+  const rgb = buf("rgb", N * 3), hgt = buf("hgt", N), rough = buf("rough", N);
   for (let i = 0; i < N; i++){
     const d = Math.max(0, dirt[i] + 0.1), g = G[i], g2 = G[i + 7919];
     const v = -d * d * o.dirt * 60 + lines[i] * o.lines * 6 + g * 2.2 + g2 * 1.2;
@@ -357,9 +365,9 @@ function whiteMaps(C, o){
 function glassMaps(C){
   const W = 512, H = 512, N = W * H, pu = 36 / W, pv = 48 / H;
   const G = grit(N * 2);
-  const room = up(field(C, 32, 32, {octaves: 3, base: 3, seed: 51}), W, H);
-  const fold = up(field(C, 64, 8, {octaves: 2, base: 9, sx: 1, sy: 0.25, seed: 52}), W, H);
-  const rgb = new Float32Array(N * 3), em = new Float32Array(N * 3);
+  const room = up(field(C, 32, 32, {octaves: 3, base: 3, seed: 51}), W, H, "fa");
+  const fold = up(field(C, 64, 8, {octaves: 2, base: 9, sx: 1, sy: 0.25, seed: 52}), W, H, "fb");
+  const rgb = buf("rgb", N * 3), em = buf("em", N * 3);
   const blindBot = 48 - 23;
   const lad = [5.5, 18, 30.5];
   const EC = [255, 194, 124];
@@ -385,7 +393,7 @@ function glassMaps(C){
         const sofa = sstep(0, 1.6, Math.min(xin - 3, 26 - xin)) * sstep(0, 1.2, 13.5 - yin);
         v += (19 + fold[p] * 8 - v) * sofa * 0.85; e *= 1 - 0.7 * sofa;
         const dl = (xin - 30) * (xin - 30) + (yin - 19.5) * (yin - 19.5);
-        if (dl < 140){ const lamp = Math.exp(-dl / 55); e += 0.75 * lamp; v += 26 * Math.exp(-dl / 8); warm = lamp; }
+        if (dl < 900){ const lamp = Math.exp(-dl / 40); e += 0.8 * lamp; v += 24 * Math.exp(-dl / 8); warm = lamp; }
         if (xin > 33.2){ const c = 0.5 + 0.5 * Math.sin(xin * 4.1 + fold[p] * 3); v = 30 + c * 18; e = 0.4 + c * 0.22; }
       }
       const n = G[p] * 3;
@@ -404,9 +412,9 @@ function glassMaps(C){
 function doorMaps(C){
   const W = 512, H = 1024, N = W * H, pu = 36 / W, pv = 81.6 / H;
   const G = grit(N * 2);
-  const dirt = up(field(C, 32, 64, {octaves: 4, base: 3, sx: 1, sy: 2, seed: 61, persistence: 0.6}), W, H);
-  const room = up(field(C, 32, 64, {octaves: 3, base: 3, sx: 1, sy: 2, seed: 62}), W, H);
-  const rgb = new Float32Array(N * 3), hgt = new Float32Array(N), rough = new Float32Array(N), metal = new Float32Array(N);
+  const dirt = up(field(C, 32, 64, {octaves: 4, base: 3, sx: 1, sy: 2, seed: 61, persistence: 0.6}), W, H, "fa");
+  const room = up(field(C, 32, 64, {octaves: 3, base: 3, sx: 1, sy: 2, seed: 62}), W, H, "fb");
+  const rgb = buf("rgb", N * 3), hgt = buf("hgt", N), rough = buf("rough", N), metal = buf("metal", N, true);
   const WH = [229, 227, 222];
   const S = 3.0, TOP = 3.0, KICK = 10.5, RAIL = 13.0, BEAD = 0.45, DW = 36, DH = 81.6;
   /* 1. white frame everywhere, with dirt film and splash-back grime toward the bottom */
@@ -472,13 +480,13 @@ function doorMaps(C){
 function steelMaps(C){
   const W = 256, H = 512, N = W * H, pu = 12 / W, pv = 24 / H;
   const rnd = C.rng(8181), G = grit(N * 2);
-  const patch = up(field(C, 32, 64, {octaves: 4, base: 2, sx: 1, sy: 2, seed: 71, persistence: 0.5}), W, H);
-  const streak = up(field(C, 64, 32, {octaves: 3, base: 10, sx: 1, sy: 0.25, seed: 72}), W, H);
+  const patch = up(field(C, 32, 64, {octaves: 4, base: 2, sx: 1, sy: 2, seed: 71, persistence: 0.5}), W, H, "fa");
+  const streak = up(field(C, 64, 32, {octaves: 3, base: 10, sx: 1, sy: 0.25, seed: 72}), W, H, "fb");
   /* zinc spangle: jittered-grid cells, ~0.9" across, each with its own sheen */
   const CS = 0.9, gx = Math.round(12 / CS), gy = Math.round(24 / CS);
   const px = new Float32Array(gx * gy), py = new Float32Array(gx * gy), pt = new Float32Array(gx * gy);
   for (let i = 0; i < gx * gy; i++){ px[i] = rnd(); py[i] = rnd(); pt[i] = rnd() - 0.5; }
-  const rgb = new Float32Array(N * 3), hgt = new Float32Array(N), rough = new Float32Array(N), metal = new Float32Array(N);
+  const rgb = buf("rgb", N * 3), hgt = buf("hgt", N), rough = buf("rough", N), metal = buf("metal", N, true);
   for (let y = 0; y < H; y++){
     const fy = (y + 0.5) / H * gy, cy = Math.floor(fy);
     for (let x = 0; x < W; x++){
@@ -521,13 +529,12 @@ REAL.finish = {
     const t0 = performance.now();
     const T = REAL.finish.timings = {}; let tl = t0;
     const lap = n => { const t = performance.now(); T[n] = +(t - tl).toFixed(1); tl = t; };
-    const clamp01 = a => { for (let i = 0; i < a.length; i++) a[i] = a[i] < 0 ? 0 : a[i] > 1 ? 1 : a[i]; return a; };
     function std(maps, o){
       const m = new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1, metalness: maps.metal ? 1 : 0});
       m.map = C.texture(THREE, rgbCanvas(C, maps.W, maps.H, maps.rgb), {srgb: true});
       m.normalMap = C.texture(THREE, normalCanvas(C, maps.W, maps.H, maps.hgt, maps.pu, maps.pv, 1));
       m.normalScale = new THREE.Vector2(o.ns || 1, o.ns || 1);
-      const rm = C.texture(THREE, dataCanvas(C, maps.W, maps.H, clamp01(maps.rough), maps.metal ? clamp01(maps.metal) : null));
+      const rm = C.texture(THREE, dataCanvas(C, maps.W, maps.H, maps.rough, maps.metal || null));
       m.roughnessMap = rm; if (maps.metal) m.metalnessMap = rm;
       return finPatch(m, o.patch);
     }
@@ -543,7 +550,7 @@ REAL.finish = {
                      {patch: {tile: [2, 2], grain: true, jit: [1, 1], macro: [0.025, 0.2], edge: [0.06, 0.2]}});
     lap("trim");
     /* frame: whiter, smoother, glossier vinyl */
-    const frame = std(whiteMaps(C, {W: 256, H: 256, inU: 18, inV: 18, seed: 91, base: [234, 233, 229], dirt: 0.25, lines: 1, wave: 0.006, rough: 0.28}),
+    const frame = std(whiteMaps(C, {W: 256, H: 256, inU: 18, inV: 18, seed: 91, base: [231, 230, 226], dirt: 0.25, lines: 1, wave: 0.006, rough: 0.28}),
                       {patch: {tile: [1.5, 1.5], grain: true, jit: [1, 1], edge: [0.035, 0.12]}});
     lap("frame");
 
@@ -564,6 +571,7 @@ REAL.finish = {
     const steel = std(steelMaps(C), {patch: {tile: [1, 2], grain: true, jit: [1, 1], edge: [0.03, 0.18]}});
     lap("steel");
 
+    POOL = {}; GRIT = null;                 /* release scratch memory */
     const ms = performance.now() - t0;
     REAL.finish.buildMs = ms;
     return {

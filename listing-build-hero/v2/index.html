@@ -517,7 +517,7 @@ try {
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(33, 1, 0.5, 1300);
+const camera = new THREE.PerspectiveCamera(33, 1, 2, 1300);
 const isDark = () => getComputedStyle(document.documentElement).getPropertyValue("--scene-dark").trim() === "1";
 const narrowScreen = Math.min(window.innerWidth, window.innerHeight) < 700;
 const rig = REAL.rig.create(THREE, renderer, scene, {dark: isDark(), shadowSize: narrowScreen ? 2048 : 4096});
@@ -531,6 +531,8 @@ if (!narrowScreen && THREE.EffectComposer && THREE.RenderPass && THREE.SAOPass &
     const half = gl2 && renderer.extensions.has("EXT_color_buffer_float");
     const opts = {type: half ? THREE.HalfFloatType : THREE.UnsignedByteType};
     const rt = gl2 && THREE.WebGLMultisampleRenderTarget ? new THREE.WebGLMultisampleRenderTarget(16, 16, opts) : new THREE.WebGLRenderTarget(16, 16, opts);
+    /* a 24-bit depth attachment; the default 16-bit one makes thin, nearly coplanar pieces fight */
+    rt.depthTexture = new THREE.DepthTexture(16, 16); rt.depthTexture.type = THREE.UnsignedIntType;
     composer = new THREE.EffectComposer(renderer, rt);
     composer.addPass(new THREE.RenderPass(scene, camera));
     saoPass = new THREE.SAOPass(scene, camera, false, true);
@@ -684,7 +686,7 @@ for (let gx = -PX - RING; gx < PX + RING - 0.01; gx += 5){
     if (gx >= -PX - 0.01 && x1 <= PX + 0.01 && gz >= -PZ - 0.01 && z1 <= PZ + 0.01) continue;
     const r = Math.hypot((gx + x1)/2, (gz + z1)/2);
     const tSod = 0.93 + Math.min(1, r/70)*0.025 + rnd()*0.004;
-    box(gx, x1, 0, 0.05, gz, z1, COL.dirt, -1, 1, "drop", {site:true, t1:tSod});
+    box(gx, x1, 0, 0.09, gz, z1, COL.dirt, -1, 1, "drop", {site:true, t1:tSod});
   }
 }
 [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([sx,sz]) => add("box", sx*(W/2+4.5), 1.2, sz*(D/2+4.5), 0.16, 2.4, 0.16, COL.stake, -1, 1, "drop", {t1:0.3, site:true}));
@@ -1207,9 +1209,11 @@ ghostRect(BAY.x0, BAY.x1, F1 - BAND, F1 + BAY.top, hz + BAY.d);
 ghostRect(BAY.x0 + 0.45, BAY.x1 - 0.45, F1 + 2.2, F1 + 7.2, hz + BAY.d + 0.02);
 const ghostGeo = new THREE.BufferGeometry();
 ghostGeo.setAttribute("position", new THREE.Float32BufferAttribute(gp, 3));
-const ghostMat = new THREE.LineBasicMaterial({color:0x2A5B8B, transparent:true, opacity:0.5, depthWrite:false});
+const ghostMat = new THREE.LineBasicMaterial({color:0x2A5B8B, transparent:true, opacity:0.5, depthWrite:false, depthTest:false});
 const ghost = new THREE.LineSegments(ghostGeo, ghostMat);
-scene.add(ghost);
+/* the plan outline is an overlay: kept out of the occlusion pass so it stays a clean blue line */
+const ghostScene = new THREE.Scene();
+ghostScene.add(ghost);
 
 /* ---------- ground: a real lawn, with the excavation cut out of it until final grading ---------- */
 const GR = 600;
@@ -1381,6 +1385,7 @@ function frame(){
     }
     updateUI(cur);
     if (composer && !window.__noAO) composer.render(); else renderer.render(scene, camera);
+    if (ghost.visible){ const ac = renderer.autoClear; renderer.autoClear = false; renderer.render(ghostScene, camera); renderer.autoClear = ac; }
     window.__ready = true;
   }
   requestAnimationFrame(frame);

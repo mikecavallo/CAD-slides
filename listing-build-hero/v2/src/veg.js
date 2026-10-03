@@ -509,8 +509,8 @@ function shrubPainter(){
    olive-tan sunlit leaves and a few bright red ones at the tips. Each lobe is a thread-like blade with 2-3 side
    segments, so the leaf reads as lace rather than a star. */
 function lacePainter(){
-  const dark = [58, 30, 30], light = [128, 84, 70], olive = [120, 108, 74], red = [196, 58, 52];
-  return {bg: [70, 42, 38], paint(cell, r){
+  const dark = [64, 38, 33], light = [116, 88, 72], olive = [116, 106, 72], red = [186, 56, 46];
+  return {bg: [66, 38, 33], paint(cell, r){
     const tw = walk(r, 0.5, 0.99, -Math.PI / 2 + (r() - 0.5) * 0.1, 0.88, 8, (r() - 0.5) * 0.04, 0.08), f = along2(tw);
     const leaves = [];
     let side = 1;
@@ -639,11 +639,15 @@ function noiseCanvas(core, seed){
 /* paint an atlas from [{p: painter, rect: [x, y, size]}]; measures each cell's painted bounds from the alpha canvas */
 function paintAtlas(core, specs, seed){
   const col = core.canvas(AT, AT), alp = core.canvas(AT, AT), nor = core.canvas(AT, AT);
-  const cc = col.getContext("2d"), ac = alp.getContext("2d"), nc = nor.getContext("2d");
+  /* CPU-rasterised contexts: thousands of small strokes draw faster in software than through the GPU canvas path
+     (no per-path shader warm-up), and the alpha read-back below needs no GPU sync */
+  const cx2 = c => c.getContext("2d", {willReadFrequently: true});
+  const cc = cx2(col), ac = cx2(alp), nc = cx2(nor);
   ac.fillStyle = "#000"; ac.fillRect(0, 0, AT, AT);
   nc.fillStyle = FLATN; nc.fillRect(0, 0, AT, AT);
-  const noise = noiseCanvas(core, seed);
+  const noise = noiseCanvas(core, seed), cellMs = [];
   specs.forEach((sp, k) => {
+    const tc = performance.now();
     const [ox, oy, cs] = sp.rect, pt = sp.p;
     cc.fillStyle = rgbs(pt.bg); cc.fillRect(ox, oy, cs, cs);
     const cell = new Cell([cc, ac, nc], ox, oy, cs);
@@ -651,6 +655,7 @@ function paintAtlas(core, specs, seed){
     cell.end();
     cc.save(); cc.globalCompositeOperation = "soft-light"; cc.globalAlpha = 0.55;
     cc.drawImage(noise, ox, oy, cs, cs); cc.restore();
+    cellMs.push(Math.round(performance.now() - tc));
   });
   /* painted bounds per cell (one read-back of the alpha canvas) */
   const d = ac.getImageData(0, 0, AT, AT).data;
@@ -671,7 +676,7 @@ function paintAtlas(core, specs, seed){
     return [{u0: ua, u1: ub, vb, vt, X0: fx0, X1: fx1, H0, H1, m: false}, {u0: ub, u1: ua, vb, vt, X0: 1 - fx1, X1: 1 - fx0, H0, H1, m: true}];
   });
   const fill = cells.map(c => +(((c.x1 - c.x0) * (c.y1 - c.y0)) / (c.cs * c.cs)).toFixed(2));
-  return {col, alp, nor, cells, frames, fill};
+  return {col, alp, nor, cells, frames, fill, cellMs};
 }
 const GRID4 = [[0, 0, 512], [512, 0, 512], [0, 512, 512], [512, 512, 512]];
 
@@ -690,7 +695,7 @@ function paintBark(core, kind){
     const hs = [];
     for (let j = 0; j < 3; j++) hs.push({k: 1 + j + ((r() * 2) | 0), a: sp * (kind ? 0.16 : 0.34) * (0.5 + r()) / (j + 1), ph: r() * TAU});
     const ws = [{k: 1 + ((r() * 2) | 0), a: 0.35, ph: r() * TAU}, {k: 3 + ((r() * 4) | 0), a: 0.25, ph: r() * TAU}];
-    fur.push({x0: (i + 0.5 + (r() - 0.5) * 0.4) * sp, hs, ws, w0: sp * (kind ? 0.11 : 0.15) * (0.8 + 0.4 * r())});
+    fur.push({x0: (i + 0.5 + (r() - 0.5) * 0.4) * sp, hs, ws, w0: sp * (kind ? 0.11 : 0.2) * (0.8 + 0.4 * r())});
   }
   const FX = new Float32Array(NF * BH), FW = new Float32Array(NF * BH);
   for (let i = 0; i < NF; i++){
@@ -741,18 +746,34 @@ function paintBark(core, kind){
       tone[i] = (((rid * 7 + seg * 13) % 11) / 11 - 0.5) * (kind ? 0.16 : 0.1);
     }
   }
-  const furrowC = kind ? [42, 30, 26] : [26, 22, 19], ridgeC = kind ? [136, 129, 122] : [128, 122, 113];
+  const furrowC = kind ? [46, 36, 31] : [28, 23, 20], ridgeC = kind ? [128, 126, 121] : [116, 110, 102];
   const lichenC = [138, 142, 124];
-  const col = core.paint(H, BW, BH, (h, x, y) => {
-    const i = y * BW + x, lo = nlow[i];
-    const t = clamp(h, 0, 1), k = (0.86 + 0.28 * lo + tone[i]) * (0.9 + 0.2 * nfine[i]);
-    let c = mixc(furrowC, [ridgeC[0] * k, ridgeC[1] * k, ridgeC[2] * k], Math.pow(t, kind ? 1.1 : 1.3));
-    if (!kind){ const li = sstep(0.8, 0.88, lo) * sstep(0.55, 0.85, t); if (li > 0) c = mixc(c, lichenC, 0.4 * li); }
-    else { const pl = sstep(0.35, 0.7, t) * (1 - sstep(0.85, 1, t)); c = mixc(c, [c[0] * 1.05, c[1] * 0.97, c[2] * 0.95], pl * 0.5); }
-    return [clamp(c[0], 0, 255), clamp(c[1], 0, 255), clamp(c[2], 0, 255)];
-  });
-  const nm = core.normalFromHeight(H, BW, BH, kind ? 4.5 : 5.5);
-  return {col, nm};
+  /* colour and normal written straight into ImageData (no per-pixel allocations: this runs over 2 x 131k pixels) */
+  const col = core.canvas(BW, BH), nmc = core.canvas(BW, BH);
+  const cctx = col.getContext("2d"), nctx = nmc.getContext("2d");
+  const ci = cctx.createImageData(BW, BH), ni = nctx.createImageData(BW, BH), cd = ci.data, nd = ni.data;
+  const gam = kind ? 1.1 : 1.3, ns = (kind ? 4.5 : 5.5) * 0.5;
+  for (let y = 0; y < BH; y++){
+    const yu = (y - 1 + BH) % BH, yd = (y + 1) % BH;
+    for (let x = 0; x < BW; x++){
+      const i = y * BW + x, o = i * 4, lo = nlow[i], h = H[i];
+      const t = clamp(h, 0, 1), k = (0.86 + 0.28 * lo + tone[i]) * (0.9 + 0.2 * nfine[i]), m = Math.pow(t, gam);
+      let r0 = furrowC[0] + (ridgeC[0] * k - furrowC[0]) * m, g0 = furrowC[1] + (ridgeC[1] * k - furrowC[1]) * m, b0 = furrowC[2] + (ridgeC[2] * k - furrowC[2]) * m;
+      if (!kind){
+        const li = sstep(0.8, 0.88, lo) * sstep(0.55, 0.85, t) * 0.4;
+        if (li > 0){ r0 += (lichenC[0] - r0) * li; g0 += (lichenC[1] - g0) * li; b0 += (lichenC[2] - b0) * li; }
+      } else {
+        const pl = sstep(0.35, 0.7, t) * (1 - sstep(0.85, 1, t)) * 0.5;
+        r0 *= 1 + 0.03 * pl; g0 *= 1 - 0.01 * pl; b0 *= 1 - 0.03 * pl;
+      }
+      cd[o] = r0; cd[o + 1] = g0; cd[o + 2] = b0; cd[o + 3] = 255;
+      const dx = (H[y * BW + (x + 1) % BW] - H[y * BW + (x - 1 + BW) % BW]) * ns, dy = (H[yu * BW + x] - H[yd * BW + x]) * ns * 2;
+      const il = 1 / Math.sqrt(dx * dx + dy * dy + 1);
+      nd[o] = (-dx * il * 0.5 + 0.5) * 255; nd[o + 1] = (-dy * il * 0.5 + 0.5) * 255; nd[o + 2] = (il * 0.5 + 0.5) * 255; nd[o + 3] = 255;
+    }
+  }
+  cctx.putImageData(ci, 0, 0); nctx.putImageData(ni, 0, 0);
+  return {col, nm: nmc};
 }
 
 /* ------------------------------------------------------------------ shaders */
@@ -1023,10 +1044,12 @@ function genOak(S, H, r){
   cr.r[2] = cr.r[0] * (0.8 + r() * 0.35);
   const aoAt = p => { const e = ellDist(p, cr.c, cr.r); return lerp(0.55, 1.0, sstep(0.35, 1.0, e)) * lerp(0.82, 1.05, sstep(cr.c[1] - cr.r[1], cr.c[1] + cr.r[1], p[1])); };
   const trunk = grow([0, -0.4, 0], [lean[0] / H * 0.8 + (r() - 0.5) * 0.06, 1, lean[1] / H * 0.8 + (r() - 0.5) * 0.06], hb + 0.4 + 1.5, 6, (s, d) => add(d, mul(sph(r), 0.04)));
-  const tPts = [trunk[0], vlerp(trunk[0], trunk[1], 0.5)].concat(trunk.slice(1)).concat([mad(trunk[6], nrm(sub(trunk[6], trunk[5])), R0 * 0.6)]);
-  const fph = r() * TAU, tl = tPts.length;
-  W.tube(tPts, tPts.map((p, i) => i === tl - 1 ? R0 * 0.3 : R0 * (1 - 0.3 * Math.pow(Math.max(0, p[1]) / (hb + 1.5), 1.5)) + R0 * 0.55 * Math.exp(-Math.max(0, p[1]) / 0.8)), 12, BARK.oak, p => lerp(0.85, 0.6, sstep(0, hb + 2, p[1])),
-    {kind: 0, flare: (i, a) => 1 + 0.25 * Math.cos(5 * a + fph) * Math.exp(-Math.max(0, tPts[i][1]) / 1.1)});
+  /* the trunk stops just above the fork and hands over to the central leader (same radius, same direction), so no
+     cut-off stump shows between the scaffold limbs */
+  const tPts = [trunk[0], vlerp(trunk[0], trunk[1], 0.5)].concat(trunk.slice(1, 6));
+  const fph = r() * TAU, tl = tPts.length, leadR = R0 * 0.6;
+  W.tube(tPts, tPts.map((p, i) => i === tl - 1 ? leadR : R0 * (1 - 0.3 * Math.pow(Math.max(0, p[1]) / (hb + 1.5), 1.5)) + R0 * 0.55 * Math.exp(-Math.max(0, p[1]) / 0.8)), 12, BARK.oak, p => lerp(0.85, 0.6, sstep(0, hb + 2, p[1])),
+    {kind: 0, cap: true, flare: (i, a) => 1 + 0.25 * Math.cos(5 * a + fph) * Math.exp(-Math.max(0, tPts[i][1]) / 1.1)});
   const fork = trunk[4];
   const nodes = [], tips = [];
   const MAXD = 3, KIDS = [[0.3, 0.5, 0.7, 1, 1], [0.5, 1, 1], [1, 1]];
@@ -1060,7 +1083,7 @@ function genOak(S, H, r){
     const d = dirAE(az, el), L = (H - hb) * (0.3 + r() * 0.08);
     limb(fork, d, Math.min(L, roomTo(fork, d, cr.c, cr.r) * 0.5), R0 * 0.5, 0, R0 * 0.8);
   }
-  limb(trunk[5], nrm([(r() - 0.5) * 0.3, 1, (r() - 0.5) * 0.3]), (H - hb) * 0.38, R0 * 0.5, 1, R0 * 0.7);
+  limb(trunk[5], nrm(add(sub(trunk[5], trunk[4]), [(r() - 0.5) * 0.15, 0, (r() - 0.5) * 0.15])), (H - hb) * 0.38, leadR, 1, leadR * 0.5);
 
   const tintBase = leafCell === 0 ? [1, 1, 1] : [1.02, 1.03, 0.98];
   function clump(c, cd, R){
@@ -1144,7 +1167,7 @@ function genMaple(S, H, r){
   for (let k = 0; k < nB; k++){
     const az = az0 + k * TAU / nB + (r() - 0.5) * 0.5, dir = [Math.cos(az), 0, Math.sin(az)];
     const ex = Wd * Math.abs(dir[0]) + Wz * Math.abs(dir[2]);
-    const pk = H * (0.6 + r() * 0.25), ed = ex * (0.7 + r() * 0.2), eh = H * (0.1 + r() * 0.25);
+    const pk = H * (0.55 + r() * 0.2), ed = ex * (0.55 + r() * 0.2), eh = H * (0.22 + r() * 0.2);
     const P = [top0, [dir[0] * ed * 0.1, pk, dir[2] * ed * 0.1], [dir[0] * ed * 0.6, pk * 1.05, dir[2] * ed * 0.6], [dir[0] * ed, eh, dir[2] * ed]];
     const pts = []; for (let i = 0; i <= 8; i++) pts.push(bez(P[0], P[1], P[2], P[3], i / 8));
     W.tube(pts, pts.map((_, i) => lerp(0.1, 0.02, i / 8)), 4, BARK.maple, aoAt, {kind: 0});
@@ -1154,32 +1177,38 @@ function genMaple(S, H, r){
   for (let i = 1; i <= NM; i++){
     const a = (i - 1) / NM, b = i / NM;
     const ds = Math.hypot((b - a) * (Wd + Wz) * 0.5, (prof(b) - prof(a)) * H);
-    cdf.push(cdf[i - 1] + ds * (a + b) * 0.5);
+    cdf.push(cdf[i - 1] + ds * (a + b) * 0.5 * (Wd + Wz) * 0.5);
   }
   const tot = cdf[NM];
+  const lobes = []; for (let k = 0; k < 7; k++){ const d = sph(r); lobes.push({d: nrm([d[0], Math.abs(d[1]) * 0.7, d[2]]), a: 0.08 + r() * 0.14}); }
   const sample = u => { const L = u * tot; let i = 1; while (i < NM && cdf[i] < L) i++; return (i - 1 + (L - cdf[i - 1]) / ((cdf[i] - cdf[i - 1]) || 1)) / NM; };
   const area = TAU * tot;
-  const n = Math.round(area * 12 * D);
+  const nSk = Math.round(area * 1.6 * D), n = Math.round(area * 11 * D) + nSk;     /* nSk extra cards close the skirt */
   for (let i = 0; i < n; i++){
-    const tau = sample(r()), phi = r() * TAU, cphi = Math.cos(phi), sphi = Math.sin(phi);
-    const u = r(), k = u < 0.25 ? 0.74 : u < 0.58 ? 0.88 : 1.0;
+    const tau = i < nSk ? 0.8 + 0.2 * r() : sample(r()), phi = r() * TAU, cphi = Math.cos(phi), sphi = Math.sin(phi);
+    const u = r(), k = u < 0.14 ? 0.62 : u < 0.38 ? 0.78 : u < 0.66 ? 0.9 : 1.0;
     const kj = k * (0.97 + r() * 0.06);
     const x = cphi * tau * Wd, z = sphi * tau * Wz, yv = prof(tau) * H;
-    const p = [x * kj, 0.1 + (yv - 0.1) * kj, z * kj];
+    /* layered, lumpy outline: a few broad lobes push the surface out */
+    const sd = nrm([cphi * tau, prof(tau) * 0.8, sphi * tau]);
+    let lm = 0.95; for (const lb of lobes) lm += lb.a * Math.pow(Math.max(0, dot(sd, lb.d)), 4);
+    const p = [x * kj * lm, 0.1 + (yv - 0.1) * kj * lm, z * kj * lm];
     if (p[1] < 0.15) p[1] = 0.15 + r() * 0.2;
     /* surface frame: T down the meridian (outward), N outward normal */
     const e = 0.01, t2 = Math.min(1, tau + e), t1 = Math.max(0, t2 - e);
     const T = nrm([cphi * (t2 - t1) * Wd, (prof(t2) - prof(t1)) * H, sphi * (t2 - t1) * Wz]);
     const A = [-sphi, 0, cphi], N = nrm(cross(A, T));
-    const face = nrm(add(N, mul(sph(r), 0.45)));
-    let up, sz = 0.8 + r() * 0.35;
+    /* sprays lie along the mound surface like shingles (card plane ~ tangent), pointing down-slope with a random
+       twist; a few new shoots arch up/out on top and a few short pendants hang at the rim */
+    const face = nrm(add(N, mul(sph(r), 0.6)));
+    let up = rotate(T, N, (r() - 0.5) * 2.4), sz = 0.85 + r() * 0.35;
     const v = r();
-    if (tau < 0.6 && v < 0.2) up = nrm(add(add(T, [0, 0.55, 0]), mul(sph(r), 0.3)));           /* new growth arching up/out */
-    else if (tau > 0.86 && v < 0.12){ up = nrm(add(add([0, -1, 0], mul(T, 0.4)), mul(sph(r), 0.25))); sz *= 0.7; } /* short pendant at the rim */
-    else up = nrm(add(add(T, [0, -0.25, 0]), mul(sph(r), 0.35)));                                 /* shingled down the mound */
+    if (tau < 0.55 && v < 0.05) up = nrm(add(add(T, [0, 0.7, 0]), mul(sph(r), 0.3)));
+    else if (tau > 0.86 && v < 0.08){ up = nrm(add(add([0, -1, 0], mul(T, 0.5)), mul(sph(r), 0.25))); sz *= 0.7; }
+    else up = nrm(add(up, [0, -0.15, 0]));
     const hy = p[1] / H, kk = (0.86 + r() * 0.22) * lerp(0.92, 1.06, hy);
     const tint = [kk * (1 + 0.04 * hy), kk * (0.97 + 0.05 * hy), kk * 0.96];
-    const ao = aoAt(p) * lerp(0.7, 1.0, (k - 0.74) / 0.26);
+    const ao = aoAt(p) * lerp(0.62, 1.0, (k - 0.62) / 0.38);
     F.card(p, up, face, sz, sz * 1.05, 0.12, S.fr(3, r), tint, ao, vc, vr, 0.68, null);
   }
 }

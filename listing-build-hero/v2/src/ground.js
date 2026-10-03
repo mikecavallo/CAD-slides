@@ -187,13 +187,13 @@ const LAWN_FT = 3;
 /* summer cool-season lawn (Kentucky blue / rye / fescue mix) as photographed in Connecticut: clearly yellow-green,
    blue channel well under half of green */
 const LAWN_PAL = [
-  [134, 160, 30],   /* sunny yellow-green */
-  [117, 148, 29],
-  [102, 136, 28],   /* mid green */
-  [89, 124, 28],
-  [80, 116, 33],    /* deep green */
-  [125, 152, 34],
-  [142, 158, 38]    /* pale */
+  [138, 162, 24],   /* sunny yellow-green */
+  [120, 150, 23],
+  [105, 138, 22],   /* mid green */
+  [92, 126, 22],
+  [83, 118, 27],    /* deep green */
+  [129, 154, 27],
+  [146, 160, 31]    /* pale */
 ];
 /* rasterise one leaning grass blade. Base (bx,by), unit direction (dx,dy), projected length L px, base width w px,
    curv = sideways bend, blunt = mower-cut tip. BL holds colours (base->tip) and the two V-fold half normals. */
@@ -277,7 +277,7 @@ function thatchPass(B, n, f1, wn, lo, hi){
   }
 }
 const LAWN_O = { lean0: 0.32, lean1: 0.6, len0: 0.7, len1: 1.6, w0: 0.13, w1: 0.17, cut: 0.72, frayed: 0.3, dead: 0.012,
-                 sh0: 0.42, sh1: 0.6, fold: 0.38, ro0: 0.52, ro1: 0.18 };
+                 sh0: 0.46, sh1: 0.6, fold: 0.38, ro0: 0.52, ro1: 0.18 };
 
 /* separable box blur with wrap-around (running sums, cost independent of radius): src -> dst, t = scratch */
 function boxBlurWrap(src, dst, t, W, H, r){
@@ -340,7 +340,7 @@ function makeCloverOnto(C, lawn, seed){
   const W = lawn.W, H = lawn.H, B = lawn.B, px = LAWN_FT * 12 / W, rnd = C.rng(seed);
   B.h.fill(0);
   const plants = 2800, lLayers = 6;    /* per 3 ft tile */
-  const leafPal = [[114, 144, 46], [104, 136, 44], [95, 128, 46], [120, 148, 50], [88, 120, 44]];
+  const leafPal = [[112, 138, 34], [103, 131, 33], [95, 124, 36], [118, 141, 38], [88, 116, 34]];
   for (let k = 0; k < lLayers; k++){
     for (let j = 0; j < plants / lLayers; j++){
       const z = 0.45 + 0.55 * (k + rnd()) / lLayers, rank = 0.03 + 0.97 * rnd();
@@ -391,8 +391,8 @@ function soilBase(B, W, H, tone, hue, lumpH, mid, wn, wn2, lump, hr, hg, hb){
   for (let i2 = 0; i2 < W2 * H2; i2++){
     let hh = 0.5 + hue[i2] * 1.1; hh = hh < 0 ? 0 : hh > 1 ? 1 : hh;
     const dk = 0.58 + 0.42 * sstep(-0.42, 0.12, tone[i2]);
-    const r = 131 - 7 * hh, g = 99 - 1 * hh, b = 65 + 6 * hh;
-    hr[i2] = 78 + (r - 78) * dk; hg[i2] = 60 + (g - 60) * dk; hb[i2] = 43 + (b - 43) * dk;
+    const r = 121 - 6 * hh, g = 95 - 1 * hh, b = 69 + 5 * hh;
+    hr[i2] = 70 + (r - 70) * dk; hg[i2] = 55 + (g - 55) * dk; hb[i2] = 41 + (b - 41) * dk;
   }
   for (let y = 0; y < H; y++){
     const rowh = (y >> 1) * W2;
@@ -518,17 +518,17 @@ function makeSoil(C, N, seed){
   const lump = tmp(n, 3);
   soilBase(B, W, H, tone, hue, lumpH, mid, wn, wn2, lump, tmp(n2, 3), tmp(n2, 4), tmp(n2, 5));
   /* crumbs and small peds (0.1-0.45 in) */
-  const ncr = 8000;
+  const ncr = 6000;
   for (let c = 0; c < ncr; c++){
-    const rIn = 0.07 + 0.32 * Math.pow(rnd(), 1.8), r = rIn / pu;
-    crumb(B, W, H, lump, wn, rnd() * W, rnd() * H, r, rIn * (0.18 + 0.32 * rnd()), 0.02 + 0.06 * rnd());
+    const rIn = 0.06 + 0.34 * Math.pow(rnd(), 2.2), r = rIn / pu;
+    crumb(B, W, H, lump, wn, rnd() * W, rnd() * H, r * (0.8 + 0.4 * rnd()), rIn * (0.08 + 0.22 * rnd()), 0.01 + 0.04 * rnd());
   }
   /* angular clods (0.5-3.5 in): the lumps that give dug ground its shape at 10-20 ft */
   const bb = ST.bb, ncl = 380;
   for (let c = 0; c < ncl; c++){
-    const rIn = 0.5 + 3.0 * Math.pow(rnd(), 2.4), r = rIn / pu, nv = 6 + ((rnd() * 4) | 0);
-    if (!polyST(rnd, rnd() * W, rnd() * H, r, nv, 0.6 + 0.4 * rnd(), 0.8, rIn * (0.16 + 0.16 * rnd()), 0.92, 0.12)) continue;
-    const pkh = rIn * 0.24;
+    const rIn = 0.5 + 3.0 * Math.pow(rnd(), 2.4), r = rIn / pu, nv = 7 + ((rnd() * 4) | 0);
+    if (!polyST(rnd, rnd() * W, rnd() * H, r, nv, 0.6 + 0.4 * rnd(), 0.8, rIn * (0.1 + 0.1 * rnd()), 0.95, 0.07)) continue;
+    const pkh = rIn * 0.15;
     ST.fsh[nv] = 1.02 + 0.06 * rnd();
     clodPoly(B, W, H, lump, wn, nv, pkh * (0.55 + 0.3 * rnd()), bb[0], bb[1], bb[2], bb[3], 0.04 + 0.05 * rnd());
   }
@@ -786,11 +786,13 @@ function makeMacro(C, THREE){
          damp: [lo, hi, darken, roughness] | null
          relief: [scale0 ft, amp0 ft, scale1 ft, amp1 ft, wallFactor] | null      large-scale lumps via the normal
          scrape: [bandFt, minSpacingFt, maxSpacingFt, slope] | null                 bucket-tooth grooves on walls
-         topsoil: [gradeY, depthFt] | null                                          dark organic horizon at the top of cut walls */
+         topsoil: [gradeY, depthFt] | null                                          dark organic horizon at the top of cut walls
+         bounce: [topGain, wallGain, warmMix, r, g, b] | null    stand-in for light bounced off sunlit soil inside a pit:
+                 scales the image-based diffuse light (more on walls) and pulls its sky-blue toward a warm earth tint */
 function groundPatch(THREE, m, T, o){
   const f = v => (+v).toFixed(5);
   const prev = m.onBeforeCompile, prevKey = m.customProgramCacheKey;
-  const key = "gnd2:" + o.key + (o.rep ? ":p" : "") + (o.topsoil ? ":t" + o.topsoil.join(",") : "");
+  const key = "gnd2:" + o.key + (o.rep ? ":p" : "") + (o.topsoil ? ":t" + o.topsoil.join(",") : "") + (o.bounce ? ":b" + o.bounce.join(",") : "");
   const hx = o.hex, L = o.lawn, rl = o.relief, sc = o.scrape, ts = o.topsoil;
   m.extensions = { derivatives: true, shaderTextureLOD: true };    /* texture2DGradEXT on WebGL1 (WebGL2 maps it to textureGrad) */
   /* three hex samples: code generated per sample (GLSL ES 1.0 has no token pasting) */
@@ -960,6 +962,15 @@ vec3 gPerturb(vec3 eye_pos, vec3 surf_norm, vec3 mapN, float fd, vec2 uv){
           gCol *= max(0.2, 1.0 + ${f(o.a[0])} * (gM0 - 0.5) * 2.0 + ${f(o.a[1])} * (gM1 - 0.5) * 2.0 + ${f(o.a[2])} * (gM2 - 0.5) * 2.0 + ${f(o.a[3])} * (gM3 - 0.5) * 2.0);
           gCol *= 1.0 + ${f(o.hue)} * (gM1 - 0.5) * 2.0 * vec3(1.0, 0.15, -0.9);
           diffuseColor.rgb *= gCol;`)
+        .replace("#include <lights_fragment_maps>", `#include <lights_fragment_maps>
+          ${o.bounce ? `#if defined( USE_ENVMAP ) && defined( STANDARD ) && defined( ENVMAP_TYPE_CUBE_UV )
+          {
+            float gWb = 1.0 - smoothstep(0.3, 0.6, gAN.y);
+            float gLu = dot(iblIrradiance, vec3(0.2126, 0.7152, 0.0722));
+            iblIrradiance = mix(iblIrradiance, gLu * vec3(${f(o.bounce[3])}, ${f(o.bounce[4])}, ${f(o.bounce[5])}), ${f(o.bounce[2])})
+                          * mix(${f(o.bounce[0])}, ${f(o.bounce[1])}, gWb);
+          }
+          #endif` : ""}`)
         .replace("#include <roughnessmap_fragment>", `
           float roughnessFactor = roughness * dot(gWt, vec3(gD1.g, gD2.g, gD3.g));
           roughnessFactor = clamp(roughnessFactor + ${f(o.r[0])} * (gM0 - 0.5) * 2.0 + ${f(o.r[1])} * (gM2 - 0.5) * 2.0, 0.04, 1.0);
@@ -992,7 +1003,9 @@ function tuftTexture(C, seed){
     const w = S * (0.008 + 0.012 * rnd()), x1 = x0 + lean, y1 = S - hgt;
     const p = LAWN_PAL[(rnd() * LAWN_PAL.length) | 0], j = 0.8 + 0.3 * rnd();
     const g = cc.createLinearGradient(0, S, 0, y1);
-    g.addColorStop(0, `rgb(${p[0] * 0.62 * j | 0},${p[1] * 0.68 * j | 0},${p[2] * 0.62 * j | 0})`);
+    /* bottom 30% darkened like the lawn texture's canopy shading, so tufts sit IN the lawn */
+    g.addColorStop(0, `rgb(${p[0] * 0.5 * j | 0},${p[1] * 0.56 * j | 0},${p[2] * 0.5 * j | 0})`);
+    g.addColorStop(0.3, `rgb(${p[0] * 0.66 * j | 0},${p[1] * 0.72 * j | 0},${p[2] * 0.66 * j | 0})`);
     g.addColorStop(1, `rgb(${p[0] * j | 0},${p[1] * j | 0},${p[2] * j | 0})`);
     const path = new Path2D();
     path.moveTo(x0 - w, S);
@@ -1028,13 +1041,13 @@ REAL.ground = {
     T.clover = C.texture(THREE, rgbCanvas(C, lawn.W, lawn.H, lawn.B), {srgb: true});
     T.cloverN = C.texture(THREE, nrmCanvas(C, lawn.W, lawn.H, lawn.B, lawn.B.h));
     lap("cloverCanvas");
-    const lawnSide = [0.09, 0.16, 0.045];
+    const lawnSide = [0.10, 0.16, 0.025];
     /* mowing direction in world XZ (opts.mowDeg, degrees from +X toward +Z); stripes run along it */
     const mowA = (opts.mowDeg == null ? 37 : opts.mowDeg) * Math.PI / 180, mowDir = [Math.cos(mowA), Math.sin(mowA)];      /* blade-side colour (linear) seen at grazing angles */
     const lawnPatch = (key, rep) => ({
-      key, rep, s: [97, 41, 13.3, 5.7], a: [0.09, 0.05, 0.045, 0.025], hue: 0.04, r: [0.05, 0.04],
-      blend: [17.0, 0.6, 0.731, 5.0],
-      lawn: { side: lawnSide, graze: 0.75, stripe: 0.045, band: 1.75, clover: [0.66, 0.88], dry: 0.4, mow: mowDir }
+      key, rep, tile: LAWN_FT, s: [97, 41, 13.3, 5.7], a: [0.09, 0.05, 0.045, 0.025], hue: 0.04, r: [0.05, 0.04],
+      hex: [2.1, 0.55, 0.12],
+      lawn: { side: lawnSide, graze: 0.75, stripe: 0.045, band: 1.75, clover: [0.74, 0.92], dry: 0.4, mow: mowDir }
     });
     function lawnMat(){
       const m = new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1.0, metalness: 0});
@@ -1054,9 +1067,13 @@ REAL.ground = {
       roughnessMap: dataCanvas(C, so.W, so.H, so.hf, so.B.ro, -0.3, 0.8), normalScale: 1.0, roughness: 1.0,
       tile: [SOIL_FT, SOIL_FT], grain: "none", jitter: 1
     });
-    groundPatch(THREE, soil, T, { key: "soil", s: [23, 11.3, 4.1, 1.9], a: [0.10, 0.05, 0.06, 0.04], hue: 0.06, r: [0.03, 0.02],
-      blend: [9.0, 2.1, 0.77, 5.0], lawn: null, damp: [0.52, 0.72, 0.32, 0.62],
-      scrape: [SOIL_FT / 0.6, SOIL_FT / 2.3, 0, 0.75] });   /* teeth every 0.6 ft, passes 2.3 ft tall, (unused), groove slope */
+    groundPatch(THREE, soil, T, { key: "soil", tile: SOIL_FT, s: [23, 11.3, 4.1, 1.9], a: [0.10, 0.05, 0.06, 0.04], hue: 0.06, r: [0.03, 0.02],
+      hex: [4.0, 0.7, 0.1], lawn: null, damp: [0.52, 0.72, 0.28, 0.78],
+      relief: [11.0, 0.35, 3.1, 0.07, 0.35],          /* lumps and ruts on disturbed ground; a third as strong on walls */
+      scrape: [2.3, 0.4, 0.9, 0.7],                   /* bucket passes 2.3 ft tall, teeth 0.4-0.9 ft apart */
+      topsoil: [opts.gradeY == null ? 0 : opts.gradeY, 0.8],
+      bounce: [1.1, 1.9, 0.45, 1.12, 1.0, 0.82] });     /* shaded pit walls get the warm light the sunlit soil throws back */
+    soil.envMapIntensity = 1.3;
     lap("soilCanvas");
 
     /* gravel */
@@ -1066,20 +1083,21 @@ REAL.ground = {
       roughnessMap: dataCanvas(C, gr.W, gr.H, gr.B.h, gr.B.ro, gr.zlo, gr.zhi), normalScale: 0.95, roughness: 1.0,
       tile: [GRAVEL_FT, GRAVEL_FT], grain: "none", jitter: 1
     });
-    groundPatch(THREE, gravel, T, { key: "gravel", s: [19, 8.7, 3.3, 1.3], a: [0.08, 0.04, 0.05, 0.03], hue: 0.03, r: [0.03, 0.02],
-      blend: [5.3, 1.3, 0.81, 4.0], lawn: null, damp: null });
+    groundPatch(THREE, gravel, T, { key: "gravel", tile: GRAVEL_FT, s: [19, 8.7, 3.3, 1.3], a: [0.08, 0.04, 0.05, 0.03], hue: 0.03, r: [0.03, 0.02],
+      hex: [2.0, 0.8, 0.08], lawn: null, damp: null, bounce: [1.25, 1.6, 0.6, 1.08, 1.0, 0.86] });
+    gravel.envMapIntensity = 1.2;
     lap("gravelCanvas");
 
     /* mulch */
     const mu = makeMulch(C, 512, 7101); lap("mulchRaster");
     let hmax = 0; for (let i = 0; i < mu.hf.length; i++) if (mu.hf[i] > hmax) hmax = mu.hf[i];
     const mulch = C.material(THREE, {
-      map: rgbCanvas(C, mu.W, mu.H, mu.B), normalMap: heightNrmCanvas(C, mu.W, mu.H, mu.hf, mu.pu, 0.8),
+      map: rgbCanvas(C, mu.W, mu.H, mu.B), normalMap: heightNrmCanvas(C, mu.W, mu.H, mu.hf, mu.pu, 0.55),
       roughnessMap: dataCanvas(C, mu.W, mu.H, mu.hf, mu.B.ro, 0, hmax), normalScale: 1.0, roughness: 1.0,
       tile: [MULCH_FT, MULCH_FT], grain: "none", jitter: 1
     });
-    groundPatch(THREE, mulch, T, { key: "mulch", s: [17, 7.9, 3.1, 1.4], a: [0.10, 0.05, 0.06, 0.04], hue: 0.05, r: [0.03, 0.02],
-      blend: [4.7, 0.9, 0.79, 4.0], lawn: null, damp: null });
+    groundPatch(THREE, mulch, T, { key: "mulch", tile: MULCH_FT, s: [17, 7.9, 3.1, 1.4], a: [0.10, 0.05, 0.06, 0.04], hue: 0.05, r: [0.03, 0.02],
+      hex: [2.0, 0.8, 0.08], lawn: null, damp: null });
     lap("mulchCanvas");
 
     /* let the raster buffers go (the canvases hold the results) */
@@ -1132,6 +1150,12 @@ REAL.ground = {
     mat.map = C.texture(THREE, tx.col, {srgb: true});
     mat.alphaMap = C.texture(THREE, tx.alp);
     mat.alphaTest = 0.5;
+    /* DoubleSide flips the normal on back faces (normal *= faceDirection), which would point the up-normals down and
+       leave half the blades black: undo the flip so both sides shade like the lawn they grow from */
+    mat.onBeforeCompile = function(sh){
+      sh.fragmentShader = sh.fragmentShader.replace("#include <normal_fragment_begin>", "#include <normal_fragment_begin>\n  normal *= faceDirection;");
+    };
+    mat.customProgramCacheKey = function(){ return "gndTuftUp"; };
     const mesh = new THREE.InstancedMesh(geo, mat, count);
     const m4 = new THREE.Matrix4(), qq = new THREE.Quaternion(), e = new THREE.Euler(), p = new THREE.Vector3(), s = new THREE.Vector3(), c = new THREE.Color();
     let i = 0;

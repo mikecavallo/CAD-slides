@@ -204,7 +204,9 @@
     const ingG = K.group(clip);
     // front of the glass: sheen, outline, rim
     const front = K.group(svg);
-    K.path(front, BODY, { fill: `url(#${id}g)`, stroke: C.rim, 'stroke-width': 8 });
+    // the outline is drawn open at the top, so no line runs across the mouth of the pot (the rim ellipse closes it)
+    K.path(front, BODY, { fill: `url(#${id}g)`, stroke: 'none' });
+    K.path(front, BODY.replace(/ Z$/, ''), { stroke: C.rim, 'stroke-width': 8, fill: 'none' });
     K.path(front, `M ${-R + 34} 70 L ${-R + 34} ${H - 40}`, { stroke: '#ffffff', 'stroke-width': 14, opacity: 0.55 });
     K.path(front, `M ${-R + 62} 90 L ${-R + 62} ${H * 0.5}`, { stroke: '#ffffff', 'stroke-width': 6, opacity: 0.4 });
     K.svgEl('ellipse', { cx: 0, cy: 0, rx: R, ry: RY, fill: 'none', stroke: C.rim, 'stroke-width': 16 }, front);

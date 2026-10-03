@@ -204,48 +204,16 @@
     tl.to(ev, { rotation: 12, duration: 0.12, yoyo: true, repeat: 5, ease: 'sine.inOut' }, tEv + 0.6);
 
     // ---------- beat 1: part of that baseline is the dog's mood
-    const tM = clamp(at(1, 'mood', 0.7, 0.3), cue(1) + 0.2, end(1));
+    const tM = clamp(at(1, 'Part of that baseline', 0.05, 0.2), cue(1) + 0.1, end(1) - 1);
     const moodP = C2.pill(stage, 'brain', 'Part of the baseline: *mood*', { x: 180, y: 470, size: 34, col: C2.AREAS[2].col });
     A.in(tl, moodP, tM, 'pop', { dur: 0.55 });
     tl.to(bandR, { attr: { fill: '#c9dba0' }, duration: 0.4, yoyo: true, repeat: 1 }, tM + 0.2);
 
-    // ---------- beat 2: emotions keep changing (an irregular line, not a regular up and down); the mood band shifts over the
-    // day and over longer periods
-    const t2 = cue(2);
-    const EY = LV0 - 150, pts = [];
-    // an irregular path: changes of different size and length, sometimes holding, sometimes shifting
-    let seed = 11, y = EY;
-    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    for (let x = AX; x <= EV - 60;) {
-      pts.push(`${x},${y.toFixed(1)}`);
-      x += 24 + rnd() * 60;
-      y = Math.max(EY - 70, Math.min(EY + 50, y + (rnd() - 0.5) * (rnd() < 0.3 ? 30 : 110)));
-    }
-    const emo = K.svgEl('polyline', { points: pts.join(' '), fill: 'none', stroke: C2.AREAS[2].col, 'stroke-width': 5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, sv);
-    const tEmo = clamp(at(2, 'constantly changing', 0.2, 0.3), t2, end(2) - 4);
-    A.draw(tl, emo, tEmo, 2.6, { ease: 'none' });
-    const emoL = C2.put(stage, 'c2a-axis', '**Emotions:** constantly changing', { x: AX, y: EY - 96 });
-    emoL.style.color = 'var(--ink)';
-    A.in(tl, emoL, tEmo + 0.3, 'fadeUp', { dur: 0.5 });
-    tl.to(moodP, { opacity: 0, duration: 0.3 }, tEmo);
-    const tMood = clamp(at(2, 'broader mood', 0.5, 0.3), tEmo + 1.2, end(2) - 1.5);
-    const LVM = 760;
-    tl.to(band, { y: LVM, duration: 1.6, ease: 'sine.inOut' }, tMood);
-    tl.to(dogB, { y: LVM - LV0, duration: 1.6, ease: 'sine.inOut' }, tMood);
-    tl.to(bandL, { opacity: 0, duration: 0.3 }, tMood);
-    const moodL = K.svgText(band, AX + 30, 11, 'Mood: shifts over time', { 'font-size': 30, 'font-weight': 700, fill: C2.C.greenDeep, opacity: 0 });
-    tl.to(moodL, { opacity: 1, duration: 0.4 }, tMood + 0.3);
-    const tLong = clamp(at(2, 'longer periods', 0.85, 0.3), tMood + 1.8, end(2) - 0.3);
-    tl.to(band, { y: LVM - 30, duration: 1.2, ease: 'sine.inOut' }, tLong);
-    tl.to(dogB, { y: LVM - 30 - LV0, duration: 1.2, ease: 'sine.inOut' }, tLong);
-
-    // ---------- beat 3: the band rises and falls between levels; "Not fixed. It can change."
-    const t1 = cue(3);
-    tl.to([emo, emoL], { opacity: 0.25, duration: 0.4 }, t1);
-    tl.to(moodL, { opacity: 0, duration: 0.3 }, t1);
-    tl.to(bandL, { opacity: 1, duration: 0.3 }, t1 + 0.2);
+    // ---------- beat 2: the band rises and falls between levels; "Not fixed. It can change."
+    // (Tori, round 10: the emotions and mood explanation lives on s08 only, so s02 just names mood as part of the baseline)
+    const t1 = cue(2);
     const LVS = [660, 820, 700, 780];
-    let prev = LV0, t = clamp(at(3, "isn't fixed", 0.3, 0.2), t1, end(3) - 1);
+    let prev = LV0, t = clamp(at(2, "isn't fixed", 0.3, 0.2), t1, end(2) - 1);
     LVS.forEach((lv, k) => {
       tl.to(band, { y: lv, duration: 0.7, ease: 'power2.inOut' }, t + k * 0.75);
       tl.to(dogB, { y: lv - LV0, duration: 0.7, ease: 'power2.inOut' }, t + k * 0.75);
@@ -258,7 +226,8 @@
     tl.to(ud, { y: prev - LV0, duration: 0.7, ease: 'power2.inOut' }, t + 3 * 0.75);
     const chip = C2.pill(stage, 'refresh-cw', 'Not fixed. *It can change.*', { x: 540, y: 470, variant: '', size: 36 });
     chip.style.top = '470px';
-    const tCh = clamp(at(3, 'It can change', 0.65, 0.2), t + 0.6, end(3));
-    A.in(tl, chip, Math.max(tCh, cue(3) + 0.4), 'pop', { dur: 0.55 });
+    const tCh = clamp(at(2, 'It can change', 0.65, 0.2), t + 0.6, end(2));
+    tl.to(moodP, { opacity: 0, duration: 0.3 }, Math.max(tCh, cue(2) + 0.4) - 0.3);
+    A.in(tl, chip, Math.max(tCh, cue(2) + 0.4), 'pop', { dur: 0.55 });
   });
 })();

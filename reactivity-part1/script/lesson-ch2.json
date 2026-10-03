@@ -138,11 +138,6 @@
        "onscreen": "Part of the baseline: mood"
       },
       {
-       "say": "Emotions are constantly changing throughout the day, and those emotional experiences can influence the dog's broader mood, both over the course of a day and over longer periods of time.",
-       "show": "A thin emotions line wiggles up and down above the band; the band (mood) drifts up slowly: 'Emotions: up and down all day' / 'Mood: shifts slowly'.",
-       "onscreen": "Emotions change all day. Mood shifts slowly."
-      },
-      {
        "say": "And that baseline isn't fixed. It can change.",
        "show": "The green band rises and falls between low and high, with arrows; a chip lands: 'Not fixed. It can change.'",
        "onscreen": "Not fixed. It can change."

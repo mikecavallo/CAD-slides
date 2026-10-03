@@ -96,6 +96,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   changing" (Tori: emotions change continually, not necessarily up and down) and "Mood: shifts over time" (moods don't
   necessarily shift slowly; s08 "Mood: builds over time"); s08 emotions line pieces join; s12 right frame is "Still to
   come: ?" then "Chapter 4: Temperature" (no "Part 3").
+- Round 10: the pot outline is open at the top (no line across the mouth; c2_pot.js); s02 cut the sentence "Emotions are
+  constantly changing throughout the day ... longer periods of time." (repeated s08) and keeps only "Part of that baseline
+  is the dog's mood."; the full emotions and mood explanation lives on s08.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

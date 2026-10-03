@@ -4,6 +4,7 @@
 usage: python3 build.py <out.html> [--artifact] [--neutral]
   --artifact  drop the <!doctype>/<html>/<head>/<body> wrapper (the artifact host adds its own)
   --neutral   replace the brokerage name with a placeholder
+  --end MODE  render | photo: which ending to bake in
 """
 import re, sys, pathlib
 
@@ -12,6 +13,7 @@ src = (here / "index.html").read_text()
 out_path = pathlib.Path(sys.argv[1])
 artifact = "--artifact" in sys.argv
 neutral = "--neutral" in sys.argv
+end = sys.argv[sys.argv.index("--end") + 1] if "--end" in sys.argv else None
 
 def inline(match):
     block = match.group(0)
@@ -30,6 +32,10 @@ if neutral:
                 .replace("<span>Independent Realty Group · Office", "<span>Your Brokerage · Office")
                 .replace('id="sign-l1">INDEPENDENT<', 'id="sign-l1">YOUR<')
                 .replace('id="sign-l2">REALTY GROUP<', 'id="sign-l2">BROKERAGE<'))
+
+if end:
+    assert end in ("render", "photo")
+    html = re.sub(r'const END_MODE = "[a-z]+";', f'const END_MODE = "{end}";', html, count=1)
 
 if artifact:
     html = re.sub(r"^<!doctype html>\s*<html[^>]*>\s*<head>\s*<meta charset=\"utf-8\">\s*<meta name=\"viewport\"[^>]*>\s*", "", html, flags=re.I)

@@ -440,6 +440,8 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 
 /* ---------- settings ---------- */
 const SHOW_BLUEPRINT = true;   /* faint blue outline of the finished house while it's being built; set false to hide it */
+const END_MODE = "render";     /* "render": end on the finished 3D house from the front, with a 3D yard sign planted in the lawn
+                                  "photo":  end by wiping from the finished house into the real listing photo, sign stakes into the photo */
 
 /* ---------- UI: phases, rail, form ---------- */
 const PHASES = [
@@ -1433,13 +1435,14 @@ function updatePieces(p){
 
 /* camera: starts high over the open excavation, settles square to the front of the house */
 let wide = true;
-function placeCamera(p){
+function placeCamera(p, fp){
   const ov = window.__houseBuild && window.__houseBuild.cameraOverride;
   if (ov){ camera.position.set(ov.pos[0], ov.pos[1], ov.pos[2]); camera.lookAt(ov.look[0], ov.look[1], ov.look[2]); return; }
-  const e = smooth(0, 1, p);
-  const az = -0.8 + 1.25*e, el = 0.64 - 0.56*e;
-  const ty = 11*e;
-  let dist = 95 - 22*e;
+  const e = smooth(0, 1, p), f = fp || 0;
+  /* f swings the finished view round to face the front of the house, at standing height, with the yard sign in frame */
+  const az = (-0.8 + 1.25*e)*(1 - f) + 0.1*f, el = (0.64 - 0.56*e)*(1 - f) + 0.075*f;
+  const ty = 11*e*(1 - f) + 9.5*f;
+  let dist = (95 - 22*e)*(1 - f) + 74*f;
   const hf = 2*Math.atan(Math.tan(camera.fov*Math.PI/360)*camera.aspect);
   const needW = wide ? 46 : 50;
   dist = Math.max(dist, (needW/2)/Math.tan(hf/2));
@@ -1465,7 +1468,62 @@ let target = scrollProgress(), cur = target, lastTally = -1;
 window.addEventListener("scroll", () => { target = scrollProgress(); }, {passive:true});
 window.addEventListener("resize", () => { resize(); target = scrollProgress(); if (signIn) placeSign(); });
 
-const BUILD_END = 0.88;
+const BUILD_END = END_MODE === "render" ? 0.92 : 0.88;
+
+/* ---------- 3D yard sign (render ending): white vinyl post, arm, hanging panel with the brokerage artwork ---------- */
+const sign3d = new THREE.Group(), signPanel = new THREE.Group(), dust = [];
+const SIGN3D = {x: 11.5, z: D/2 + 17};
+if (END_MODE === "render"){
+  const white = material("trim");
+  const art = new THREE.TextureLoader().load("sign.jpg", () => { dirty = true; });
+  art.encoding = THREE.sRGBEncoding; art.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const face = new THREE.MeshStandardMaterial({map: art, roughness: 0.45, metalness: 0});
+  const back = new THREE.MeshStandardMaterial({color: 0xf2f2ee, roughness: 0.6});
+  const part = (sx, sy, sz, x, y, z, m, g) => { const o = new THREE.Mesh(BOX, m || white); o.scale.set(sx, sy, sz); o.position.set(x, y, z); (g || sign3d).add(o); return o; };
+  part(0.33, 6.6, 0.33, 0, 2.7, 0);                 /* post, 0.6 ft in the ground */
+  part(0.45, 0.2, 0.45, 0, 6.08, 0);                /* cap */
+  part(3.7, 0.3, 0.3, 1.75, 5.55, 0);               /* arm */
+  const brace = part(1.5, 0.16, 0.16, 0.55, 5.0, 0); brace.rotation.z = Math.PI/4;
+  signPanel.position.set(2.15, 5.38, 0);
+  sign3d.add(signPanel);
+  const metal = new THREE.MeshStandardMaterial({color: 0x55585c, roughness: 0.4, metalness: 0.8});
+  [-0.9, 0.9].forEach(x => part(0.04, 0.38, 0.04, x, -0.2, 0, metal, signPanel));
+  const panel = new THREE.Mesh(BOX, [back, back, back, back, face, back]);
+  panel.scale.set(2.2, 2.2, 0.06); panel.position.set(0, -1.48, 0);
+  signPanel.add(panel);
+  sign3d.position.set(SIGN3D.x, 0, SIGN3D.z);
+  sign3d.traverse(o => { if (o.isMesh){ o.castShadow = true; o.receiveShadow = true; } });
+  sign3d.visible = false;
+  scene.add(sign3d);
+  const soil = new THREE.MeshStandardMaterial({color: col("#6e5640"), roughness: 1, transparent: true});
+  for (let i = 0; i < 9; i++){
+    const m = new THREE.Mesh(new THREE.IcosahedronGeometry(0.12 + (i % 3)*0.05, 0), soil);
+    m.userData.dir = new THREE.Vector3(Math.cos(i*2.4), 0.8 + (i % 4)*0.25, Math.sin(i*2.4));
+    m.visible = false; scene.add(m); dust.push(m);
+  }
+}
+let signStart = -1;
+function animateSign(now){
+  if (signStart < 0){ sign3d.visible = false; dust.forEach(d => d.visible = false); return false; }
+  sign3d.visible = true;
+  const t = reduce.matches ? 9 : (now - signStart)/1000;
+  /* falls in, drives into the lawn with a small bounce, panel swings on its hooks and settles */
+  let y = 0;
+  if (t < 0.55) y = 9*(1 - Math.pow(t/0.55, 2));
+  else if (t < 0.8) y = -0.22*Math.sin(Math.PI*(t - 0.55)/0.25);
+  sign3d.position.y = y;
+  const ts = Math.max(0, t - 0.55);
+  signPanel.rotation.x = t > 0.55 ? 0.32*Math.exp(-ts*2.0)*Math.sin(ts*8.5) : 0;
+  dust.forEach((d, i) => {
+    const k = (t - 0.55)/0.7;
+    d.visible = k > 0 && k < 1;
+    if (!d.visible) return;
+    const r = 0.3 + k*1.6;
+    d.position.set(SIGN3D.x + d.userData.dir.x*r, 0.1 + d.userData.dir.y*Math.sin(k*Math.PI)*0.9, SIGN3D.z + d.userData.dir.z*r);
+    d.material.opacity = 1 - k;
+  });
+  return t < 3.2;
+}
 const photo = $("photo"), photoImg = $("photo-img"), sign = $("sign");
 /* where the sign stands in the photo (photo pixels, 2000×1333) */
 const SIGN_AT = { wide:{x:1560, y:1130}, narrow:{x:1420, y:1140}, h:0.29 };
@@ -1490,7 +1548,8 @@ function frame(){
     const bp = Math.min(1, cur/BUILD_END);
     const placed = updatePieces(bp);
     if (placed !== lastTally){ $("tally-n").textContent = placed.toLocaleString("en-US"); lastTally = placed; }
-    placeCamera(bp);
+    const fp = END_MODE === "render" ? smooth(0.9, 0.975, cur) : 0;
+    placeCamera(bp, fp);
     groundPit.visible = bp < 0.955; groundFull.visible = !groundPit.visible;
     const glow = isDark() ? smooth(0.86, 0.99, bp) : 0;
     const gm = MATS.glass;
@@ -1498,13 +1557,19 @@ function frame(){
     porch.intensity = glow*2.2;
     ghostMat.opacity = 0.55*(1 - smooth(0.6, 0.86, bp));
     ghost.visible = SHOW_BLUEPRINT && ghostMat.opacity > 0.01;
-    const rv = smooth(0.885, 0.955, cur);
+    const rv = END_MODE === "photo" ? smooth(0.885, 0.955, cur) : 0;
     photo.hidden = rv <= 0;
     photo.style.setProperty("--rv", rv.toFixed(4));
-    canvas.style.opacity = (1 - smooth(0.9, 0.975, cur)).toFixed(3);
-    $("scrim-b").style.opacity = rv.toFixed(3);
-    $("tally").style.opacity = (1 - rv).toFixed(3);
-    const wantSign = cur >= 0.962;
+    canvas.style.opacity = END_MODE === "photo" ? (1 - smooth(0.9, 0.975, cur)).toFixed(3) : "1";
+    $("scrim-b").style.opacity = (END_MODE === "photo" ? rv : fp*0.35).toFixed(3);
+    $("tally").style.opacity = (1 - Math.max(rv, fp)).toFixed(3);
+    if (END_MODE === "render"){
+      const want3d = cur >= 0.962;
+      if (want3d && signStart < 0) signStart = performance.now();
+      if (!want3d) signStart = -1;
+    }
+    if (END_MODE === "render" && animateSign(performance.now())) dirty = true;
+    const wantSign = END_MODE === "photo" && cur >= 0.962;
     if (wantSign !== signIn){
       signIn = wantSign;
       if (signIn){ placeSign(); sign.hidden = false; void sign.offsetWidth; sign.classList.add("in"); }

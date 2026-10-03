@@ -120,8 +120,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   silhouettes row is cut from real photos and the logo (`assets/img/sil_*.png`).
 - "Same behavior, different reasons" on the barking slide.
 - The iceberg is retired: the pot replaces it for "what is under the behavior". Keep the pot to four pieces: ingredients
-  (what shaped the dog), water level (baseline, distant antecedents), temperature (arousal, stress and emotional state;
-  the trigger turns up the heat), boiling over (the reaction). The rim is
+  (what shaped the dog), water level (baseline, distant antecedents), temperature (arousal, stress and emotional state in
+  the moment, seen as the water going still, simmering, boiling; the thermometer reads it; the trigger is the heat), boiling over (the reaction). The rim is
   the threshold. Zones: under = water warm, bubbles stay low (can think, eat, learn); at = bubbling up near the rim
   (stiff, staring, slow to respond); over = spilling over the rim (reacting, can't eat or listen). Learning happens under
   threshold. Never say a fuller pot boils with less heat (physically wrong, Tori caught it): a fuller pot has less room

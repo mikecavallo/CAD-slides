@@ -144,6 +144,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   below boiling ("a dog with a better plan").
 - On-screen text never uses em or en dashes.
 
+## Building new chapters
+
+- Use the project skill `.claude/skills/build-chapter-video/` (Tori sends copy plus directions; Claude asks once
+  about real gaps, then builds and delivers). Tori-facing template: its `references/intake-template.md`.
+
 ## Working with Tori
 
 - Direct and short. No filler, no em dashes, no step-by-step narration of what you are doing. Give a

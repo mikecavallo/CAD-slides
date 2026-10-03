@@ -256,9 +256,9 @@ function makeEngine(ctx, dest){
 const STAGES = {
   site:      {beds:{ambient:1, breeze:0.35, mixer:0}, birds:0.6, events:{}},
   concrete:  {beds:{ambient:1, breeze:0.15, mixer:1}, birds:0.15, events:{shovel:[2.2, 5], pour:[6, 10]}},
-  framing:   {beds:{ambient:1, breeze:0.1, mixer:0}, birds:0.1, events:{hammerDrive:[0.9, 2.4], saw:[6, 12], nailBurst:[2.5, 5.5]}},
-  roofing:   {beds:{ambient:1, breeze:0.15, mixer:0}, birds:0.1, events:{roofRun:[1.4, 3.2], hammerDrive:[3, 7], saw:[11, 18]}},
-  exterior:  {beds:{ambient:1, breeze:0.2, mixer:0}, birds:0.15, events:{nailBurst:[1.8, 4], saw:[7, 13], hammerDrive:[3.5, 8]}},
+  framing:   {beds:{ambient:1, breeze:0.1, mixer:0}, birds:0.1, events:{hammerDrive:[0.9, 2.4], nailBurst:[2.5, 5.5]}},
+  roofing:   {beds:{ambient:1, breeze:0.15, mixer:0}, birds:0.1, events:{roofRun:[1.4, 3.2], hammerDrive:[3, 7]}},
+  exterior:  {beds:{ambient:1, breeze:0.2, mixer:0}, birds:0.15, events:{nailBurst:[1.8, 4], hammerDrive:[3.5, 8]}},
   landscape: {beds:{ambient:1, breeze:0.45, mixer:0}, birds:0.4, events:{shovel:[1.8, 4]}},
   finished:  {beds:{ambient:0.55, breeze:1, mixer:0}, birds:1, events:{}}
 };

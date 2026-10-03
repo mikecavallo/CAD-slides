@@ -121,7 +121,9 @@ pipeline). This file records the state, decisions and working agreements from ea
 - "Same behavior, different reasons" on the barking slide.
 - The iceberg is retired: the pot replaces it for "what is under the behavior". Keep the pot to four pieces: ingredients
   (what shaped the dog), water level (baseline, distant antecedents), temperature (arousal, stress and emotional state;
-  the trigger turns up the heat), boiling over (the reaction; boiling point = threshold). It answers one question: why
+  the trigger turns up the heat), boiling over (the reaction). Threshold
+  zones: under = warm water (can think, eat, learn), at = simmering (stiff, staring, slow to respond), over = boiling over
+  (reacting, can't eat or listen). Learning happens under threshold; a fuller pot reaches threshold with less heat. It answers one question: why
   this reaction, this big, right now. Do NOT map steam, lids, kettles or consequences onto it; the ABC panels and plain
   language carry function, consequences and training. After training: temperature still rises a little but stays
   below boiling ("a dog with a better plan").

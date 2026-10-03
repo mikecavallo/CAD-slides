@@ -146,6 +146,10 @@ pipeline). This file records the state, decisions and working agreements from ea
 
 ## Building new chapters
 
+- Brand and shared slides live in `reactivity-part1/video/series.js` (`BRAND`; `SKIT` title slide, chapter card, plan
+  slide, logo close); each lesson file has a `"series"` block (course title and title-slide line breaks). Chapter 2
+  uses the kit (verified pixel-identical); Chapter 1's c0.js still has its own copy, left alone until Tori's re-records.
+  A new course under the same brand = new lesson files with their own series block, nothing else.
 - Use the project skill `.claude/skills/build-chapter-video/` (Tori sends copy plus directions; Claude asks once
   about real gaps, then builds and delivers). Tori-facing template: its `references/intake-template.md`.
 

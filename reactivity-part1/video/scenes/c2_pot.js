@@ -388,25 +388,8 @@
     tl.fromTo(D.tail, { rotation: -6, svgOrigin: '108 134' }, { rotation: 10, svgOrigin: '108 134', duration: per / 2, ease: 'sine.inOut', yoyo: true, repeat: 2 * n - 1 }, t0);
   }
 
-  /** The closing logo: the corner logo steps aside, the Calling All Dogs logo and url settle at centre. */
-  function logoClose(ctx, tL, hide) {
-    const { stage, tl, chrome } = ctx;
-    tl.to(hide, { opacity: 0, duration: 0.5, ease: 'power2.in' }, tL - 0.1);
-    tl.to(chrome.logo, { opacity: 0, duration: 0.4 }, tL);
-    const halo = K.el('div', 'c2-halo');
-    Object.assign(halo.style, { left: '360px', top: '190px', width: '1200px', height: '560px' });
-    stage.appendChild(halo);
-    A.in(tl, halo, tL + 0.1, 'fade', { dur: 1.0 });
-    const logo = K.el('img', null, null, { position: 'absolute', left: '610px', top: '268px', width: '700px' });
-    logo.src = '../assets/img/logo.png';
-    stage.appendChild(logo);
-    tl.fromTo(logo, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }, tL + 0.15);
-    const url = put(stage, 'c2-close', 'callingalldogsny.com', { x: 0, y: 610 });
-    A.in(tl, url, tL + 0.45, 'fadeUp', { dur: 0.6 });
-    const nm = put(stage, 'c2-close', '<b>Tori Ganino</b>, BS, CDBC, CPDT-KA', { x: 0, y: 700 });
-    Object.assign(nm.style, { color: 'var(--ink)', fontSize: '40px' });
-    A.in(tl, nm, tL + 0.7, 'fadeUp', { dur: 0.6 });
-  }
+  /** The closing logo (shared, see video/series.js). */
+  const logoClose = (ctx, tL, hide) => SKIT.logoClose(ctx, tL, hide);
 
   window.C2 = { C, AREAS, R, H, CSS, style, layer, put, pill, badge, bookmark, svgIcon, areaHead, makePot, surfY, dog, wag, logoClose };
 })();

@@ -24,7 +24,7 @@ const SCALE = Number(arg('--scale', 1));
 const OUT = path.join(ROOT, SCALE > 1 ? `build/segments@${SCALE}x` : 'build/segments');
 fs.mkdirSync(OUT, { recursive: true });
 
-let shared = ['video/lib.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
+let shared = ['video/lib.js', 'video/series.js', 'video/base.css', 'video/index.html'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
 // which scene file registers each scene id (files are not always named after their chapter);
 // helper files that register no scenes (e.g. the shared bowl c1_bowl.js) belong to their chapter prefix (c1): editing one
 // re-renders the scenes in files starting with that prefix. c0.js also uses the chapter 1 helpers, so c1 helpers count for c0.

@@ -68,6 +68,31 @@ picks" or answer only the ones they care about. No preamble. Example:
 
 If nothing is open, skip the questions entirely and start building. Never ask "should I proceed?".
 
+## New course (first chapter of a new series)
+
+The brand stays Calling All Dogs, so a new course needs very little: everything shared lives in
+`reactivity-part1/video/series.js` (`BRAND`: presenter, credentials, logo, headshot, photo, url; `SKIT`: the title
+slide, narrated chapter card, plan slide and logo close) and in the page frame (`lib.js` chrome: corner logo, footer
+url, chapter tab). Scenes never hard-code any of that.
+
+What a new course does need, and the only things to ask Tori about if the copy doesn't say:
+- **Course title**, plus where the title slide should break the line (e.g. "Understanding" / "Dog Behavior").
+- **File prefix** for its lessons, short and lowercase (e.g. `leash` gives `lesson-leash-ch1.json`). Decide it yourself.
+
+Every lesson file of the course carries the same block, which the title slide and plan read through `build/timing.js`:
+
+```json
+"series": { "title": "Leash Skills", "titleLines": ["Leash", "Skills"] }
+```
+
+Then build chapter 1 like any other: `SKIT.titleSlide(ctx)` for the intro, `SKIT.chapterCard(ctx, 1, 'Title')`,
+`SKIT.planSlide(ctx, [...], cues)` with the `SKIT.PLAN.why / gain / how` presets, and `SKIT.logoClose` at the end.
+The course's metaphors and decisions get their own section in CLAUDE.md as they are made; the Understanding Dog
+Behavior pot and bowl belong to that course only, unless Tori brings them over.
+
+A brand change (new logo, credentials, url) is one edit in `series.js` and re-renders everything, because the file
+is hashed into every segment.
+
 ## 3. Build
 
 Follow `references/pipeline.md` for files and commands, and `reactivity-part1/video/SCENE_GUIDE.md` for scene
@@ -78,7 +103,7 @@ code (its hard rules and "check your work" section are required reading before w
    picture should change (roughly one idea per beat). Put lines you wrote yourself (intro, plan, card, any bridge
    line) in the lesson and keep a list of them for the delivery note, because Tori has to paste them into the doc.
 2. **Scenes.** One scene per slide, in new files `video/scenes/cN*.js`, registered in `video/index.html`. Reuse
-   what exists before drawing anything new: `C1` (bowl, ingredients, labels), `C2` (pot, water level, drips,
+   what exists before drawing anything new: `SKIT` (title, card, plan, close), `C1` (bowl, ingredients, labels), `C2` (pot, water level, drips,
    dog, pills, logo close), and the concept kit in `c3x.js` (foam and spill, burner, dial, thermometer, dog body
    language). Fire each animation on the word it illustrates with `C1.sayAt(ctx, beat, 'phrase')`, so the picture
    follows Tori's voice. Keep on-screen text short and free of em or en dashes.

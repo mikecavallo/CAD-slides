@@ -1,5 +1,12 @@
 {
  "title": "Understanding Dog Behavior. Chapter 2: Your Dog's Baseline",
+ "series": {
+  "title": "Understanding Dog Behavior",
+  "titleLines": [
+   "Understanding",
+   "Dog Behavior"
+  ]
+ },
  "notes": "Chapter 2 video. Narration for ch02s01 to ch02s12 is the trainer's doc (Script v4, the 'Chapter 2: Understanding Your Dog's Baseline' section, up to 'END CHAPTER 2 MATERIAL'). The welcome (ch02intro) and plan (ch02plan) narration were drafted for this video and sent to the trainer. Build with LESSON=lesson-ch2.json.",
  "tail": 5.0,
  "chapters": [

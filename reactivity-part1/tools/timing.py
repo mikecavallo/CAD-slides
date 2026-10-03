@@ -123,7 +123,7 @@ def main():
     data = {"fps": FPS, "mode": args.mode, "total": round(total, 3), "segments": segs}
     BUILD.mkdir(exist_ok=True)
     (BUILD / "timing.json").write_text(json.dumps(data, indent=1))
-    js = {"fps": FPS, "mode": args.mode, "order": [s["id"] for s in segs], "scenes": {s["id"]: s for s in segs}}
+    js = {"fps": FPS, "mode": args.mode, "order": [s["id"] for s in segs], "scenes": {s["id"]: s for s in segs}, "series": script.get("series", {})}
     (BUILD / "timing.js").write_text("window.TIMING = " + json.dumps(js) + ";\n")
     print(f"timing ({args.mode}): {len(segs)} segments, {total / 60:.1f} min")
 

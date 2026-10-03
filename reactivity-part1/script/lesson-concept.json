@@ -1,5 +1,12 @@
 {
  "title": "Understanding Dog Behavior. Chapter 3 concept test",
+ "series": {
+  "title": "Understanding Dog Behavior",
+  "titleLines": [
+   "Understanding",
+   "Dog Behavior"
+  ]
+ },
  "notes": "Concept clip to check the pot analogy before Chapter 3 is written. Build with LESSON=lesson-concept.json.",
  "tail": 1.6,
  "chapters": [

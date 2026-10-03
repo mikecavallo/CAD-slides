@@ -1,5 +1,12 @@
 {
   "title": "Understanding Dog Behavior",
+  "series": {
+    "title": "Understanding Dog Behavior",
+    "titleLines": [
+      "Understanding",
+      "Dog Behavior"
+    ]
+  },
   "notes": "v8: a welcome slide (ch00), then Chapter 1 'Starting with the Basics': the plan slide (ch00s02, id kept so its recording still matches) and the material from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. The trainer records the narration.",
   "chapters": [
     {

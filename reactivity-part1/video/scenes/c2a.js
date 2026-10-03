@@ -1,16 +1,13 @@
 // Chapter 2 (the baseline): welcome, plan, recap and definition. Pot and helpers come from window.C2 (c2_pot.js).
-//   ch02intro  Welcome              series title and the chapter line at left; Tori's headshot in a green ring, training photo card
-//   ch02plan   Where we're headed   three cards, one per beat: Why it matters, What you'll gain, How we'll get there (three steps)
+//   ch02intro  Welcome              the shared title slide (video/series.js)
+//   ch02card   Chapter card         the shared narrated chapter card
+//   ch02plan   Where we're headed   the shared plan slide: Why it matters, What you'll gain, How we'll get there
 //   ch02s01    Understanding ...    chapter 1's bowl; four returning ingredients glow and lift out; Changed / Managed / Improved;
 //                                    the bowl steps aside and "Your dog's baseline" lands on a level line
 //   ch02s02    What is a baseline?  definition card; a time line with the dog on a green starting-state band before
 //                                    "something new happens"; the band rises and falls: not fixed
 (() => {
   const CSS = `
-  .c2a-col { position: absolute; display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
-  .c2a-kick { font: 700 28px/1 var(--font-body); letter-spacing: 6px; text-transform: uppercase; color: var(--green); white-space: nowrap; }
-  .c2a-title { font: 700 88px/1.06 var(--font-head); color: var(--ink); }
-  .c2a-bar { width: 140px; height: 10px; border-radius: 6px; background: var(--green-light); }
   .c2a-chap { display: flex; flex-direction: column; gap: 10px; }
   .c2a-chap .n { font: 700 30px/1 var(--font-body); letter-spacing: 5px; text-transform: uppercase; color: var(--green-dark); white-space: nowrap; }
   .c2a-chap .t { font: 600 52px/1.12 var(--font-head); color: var(--green); white-space: nowrap; }
@@ -38,27 +35,7 @@
   .c2a-pairs .hd.now span { color: var(--ink); padding: 0 4px; border-radius: 6px; }
   .c2a-pairs .ar { color: var(--muted); display: grid; place-items: center; width: 52px; }
   .c2a-pairs .ar svg { width: 36px; height: 36px; stroke-width: 2.4; }
-  .c2a-who { display: flex; flex-direction: column; gap: 12px; padding-left: 26px; border-left: 8px solid var(--green); margin-top: 26px; }
-  .c2a-who .nm { font: 700 46px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
-  .c2a-who .cr { font: 700 30px/1 var(--font-body); color: var(--green-dark); letter-spacing: 1px; white-space: nowrap; }
-  .c2a-who .og { font: 500 28px/1 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
-  .c2a-ring { position: absolute; border-radius: 50%; border: 14px solid #fff; box-shadow: 0 0 0 6px var(--green), 0 24px 60px rgba(40,60,20,0.22); overflow: hidden; background: #ddd; }
-  .c2a-ring img, .c2a-snap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .c2a-snap { position: absolute; border: 12px solid #fff; border-radius: 22px; box-shadow: 0 22px 50px rgba(40,60,20,0.26); overflow: hidden; background: #ddd; }
 
-  .c2a-card { position: absolute; width: 560px; height: 620px; box-sizing: border-box; padding: 40px 36px; background: #fff; border-radius: 28px;
-    border: 1px solid #e6e9e1; display: flex; flex-direction: column; align-items: flex-start; }
-  .c2a-card .bd { width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; }
-  .c2a-card .bd svg { width: 46px; height: 46px; stroke-width: 2.2; }
-  .c2a-card .lab { margin-top: 24px; font: 700 48px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
-  .c2a-card .rule { margin: 28px 0 26px; width: 100%; height: 2px; background: #eef1ea; }
-  .c2a-card .rows { display: flex; flex-direction: column; gap: 22px; width: 100%; }
-  .c2a-stmt { font: 600 38px/1.3 var(--font-head); color: var(--ink); }
-  .c2a-stmt b { color: var(--green); font-weight: 700; }
-  .c2a-row { display: flex; align-items: center; gap: 18px; font: 600 30px/1.2 var(--font-body); color: var(--ink); }
-  .c2a-row .ic { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; }
-  .c2a-row .ic svg { width: 28px; height: 28px; stroke-width: 2.4; }
-  .c2a-row .ic.num { font: 700 28px/1 var(--font-head); }
 
   .c2a-def { position: absolute; display: flex; align-items: center; gap: 30px; padding: 30px 44px 30px 30px; background: #fff; border-radius: 28px;
     border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); }
@@ -69,136 +46,25 @@
   .c2a-bl { position: absolute; text-align: center; font: 700 88px/1.05 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2a-bl b { color: var(--green); font-weight: 700; }
   `;
-  const SH0 = '0 10px 30px rgba(40,60,20,0.10), 0 0 0 0px rgba(97,149,55,0)';
-  const SHH = '0 18px 44px rgba(40,60,20,0.16), 0 0 0 4px rgba(97,149,55,1)';
   const css = stage => stage.appendChild(K.el('style', null, CSS));
   const { sayAt, clamp } = C1;
 
-  // ================================================================== ch02intro Welcome
-  registerScene('ch02intro', ctx => {
-    const { stage, tl, end, dur } = ctx;
-    css(stage);
-    // the presentation's own title, exactly as in Chapter 1; the chapter number sits in the footer tab, the chapter title on the next card
-    const col = K.el('div', 'c2a-col');
-    Object.assign(col.style, { left: '100px', top: '232px', width: '1000px' });
-    const kick = K.el('div', 'c2a-kick', 'Calling All Dogs');
-    const title = K.el('div', 'c2a-title', 'Understanding<br>Dog Behavior');
-    const bar = K.el('div', 'c2a-bar');
-    const who = K.el('div', 'c2a-who');
-    [['nm', 'Tori Ganino'], ['cr', 'BS, CDBC, CPDT-KA'], ['og', 'Calling All Dogs · Training for all breeds']].forEach(([c, t]) => who.appendChild(K.el('div', c, t)));
-    [kick, title, bar, who].forEach(n => col.appendChild(n));
-    stage.appendChild(col);
-
-    const RR = 270, CX = 1450, CY = 532;
-    const ring = K.el('div', 'c2a-ring');
-    Object.assign(ring.style, { left: CX - RR + 'px', top: CY - RR + 'px', width: 2 * RR + 'px', height: 2 * RR + 'px' });
-    const head = K.el('img');
-    head.src = '../assets/img/trainer_headshot.jpg';
-    ring.appendChild(head);
-    stage.appendChild(ring);
-    const snap = K.el('div', 'c2a-snap');
-    Object.assign(snap.style, { left: '1060px', top: '664px', width: '392px', height: '294px' });
-    const pic = K.el('img');
-    pic.src = '../assets/img/trainer_with_dog.jpg';
-    snap.appendChild(pic);
-    stage.appendChild(snap);
-
-    A.in(tl, kick, 0.1, 'fadeUp', { dur: 0.6 });
-    A.in(tl, title, 0.25, 'fadeUp', { dur: 0.8 });
-    A.in(tl, bar, 0.55, 'grow', { dur: 0.6 });
-    tl.fromTo(ring, { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 1.0, ease: 'power3.out' }, 0.45);
-    tl.fromTo(head, { scale: 1.08 }, { scale: 1.0, duration: Math.max(1, dur - 0.5), ease: 'none' }, 0.45);
-    const tName = clamp(sayAt(ctx, 0, 'Tori Ganino', 0.1), 1.1, end(0) - 6);
-    A.in(tl, who, tName, 'fadeRight', { dur: 0.7 });
-    const tSnap = clamp(sayAt(ctx, 0, 'Calling All Dogs', 0.2), tName + 0.6, end(0) - 5);
-    tl.fromTo(snap, { opacity: 0, y: 40, rotation: 3 }, { opacity: 1, y: 0, rotation: -5, duration: 0.9, ease: 'power3.out' }, tSnap);
-    const tTitle = clamp(sayAt(ctx, 0, 'Understanding Dog Behavior', 0.6), tSnap + 0.6, end(0) - 3);
-    tl.to(bar, { width: 260, duration: 0.8, ease: 'power2.inOut' }, tTitle);
-  });
+  // ================================================================== ch02intro Welcome (shared title slide, video/series.js)
+  registerScene('ch02intro', ctx => SKIT.titleSlide(ctx));
 
   // ================================================================== ch02card the chapter card, narrated
-  // the same look as the automatic chapter cards (base.css .bumper-*), as a scene so Tori's "This is Chapter 2" plays over it
-  registerScene('ch02card', ctx => {
-    const { stage, tl } = ctx;
-    const num = K.el('div', 'bumper-num', '02');
-    const bar = K.el('div', 'bumper-bar');
-    const kick = K.el('div', 'bumper-kicker', 'Chapter 2');
-    const title = K.el('div', 'bumper-title', 'Your Dog\u2019s Baseline');
-    [num, bar, kick, title].forEach(x => stage.appendChild(x));
-    A.in(tl, num, 0.05, 'fadeRight', { dur: 0.9 });
-    A.in(tl, bar, 0.25, 'grow', { dur: 0.6 });
-    A.in(tl, kick, 0.35, 'fadeUp', { dur: 0.6 });
-    A.in(tl, title, 0.5, 'fadeUp', { dur: 0.8 });
-  });
-
-  /** One plan card: icon badge, label, then rows (or a statement). */
-  function card(stage, x, o) {
-    const c = K.el('div', 'c2a-card');
-    Object.assign(c.style, { left: x + 'px', top: '290px', boxShadow: SH0 });
-    const bd = K.el('div', 'bd');
-    Object.assign(bd.style, { background: o.bg, color: o.fg });
-    bd.appendChild(K.icon(o.icon));
-    c.appendChild(bd);
-    c.appendChild(K.el('div', 'lab', o.lab));
-    c.appendChild(K.el('div', 'rule'));
-    if (o.text) {
-      const st = K.el('div', 'c2a-stmt', K.md(o.text));
-      c.appendChild(st);
-      stage.appendChild(c);
-      return { c, bd, rs: [st] };
-    }
-    const rows = K.el('div', 'rows');
-    const rs = o.rows.map((t, i) => {
-      const r = K.el('div', 'c2a-row');
-      const ic = K.el('div', 'ic' + (o.num ? ' num' : ''));
-      Object.assign(ic.style, { background: o.rowBg, color: o.rowFg });
-      if (o.num) ic.textContent = String(i + 1);
-      else ic.appendChild(K.icon(o.rowIcons[i]));
-      r.appendChild(ic);
-      r.appendChild(K.el('span', null, t));
-      rows.appendChild(r);
-      return r;
-    });
-    c.appendChild(rows);
-    stage.appendChild(c);
-    return { c, bd, rs };
-  }
+  registerScene('ch02card', ctx => SKIT.chapterCard(ctx, 2, 'Your Dog\u2019s Baseline'));
 
   // ================================================================== ch02plan Where we're headed
-  registerScene('ch02plan', ctx => {
-    const { stage, tl, cue, end } = ctx;
-    css(stage);
-    const h = K.heading(stage, 'Where we’re headed', { x: 100, y: 110, size: 72, barGap: 20 });
-    A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
-    const cards = [
-      card(stage, 100, { icon: 'circle-alert', bg: 'var(--amber-pale)', fg: 'var(--amber)', lab: 'Why it matters',
-        rows: ['Fine one day', 'Over the edge the next', 'There’s a reason'], rowIcons: ['smile', 'zap', 'search'],
-        rowBg: 'var(--amber-pale)', rowFg: 'var(--amber)' }),
-      card(stage, 680, { icon: 'target', bg: 'var(--green-pale)', fg: 'var(--green-dark)', lab: 'What you’ll gain',
-        text: 'Know what *raises or lowers* your dog’s baseline, and *what you can do* about it' }),
-      card(stage, 1260, { icon: 'route', bg: 'var(--green)', fg: '#fff', lab: 'How we’ll get there',
-        rows: ['What a baseline is', 'Four areas that affect it', 'How it adds up, and comes down'], num: true, rowBg: 'var(--green)', rowFg: '#fff' }),
-    ];
-    const CUES = [
-      [['just fine one day', 0.3], ['the next day', 0.55], ['usually a reason', 0.85]],
-      [['raise or lower', 0.5]],
-      [['First', 0.2], ['Second', 0.45], ['third', 0.72]],
-    ];
-    cards.forEach((k, b) => {
-      const t = cue(b) + 0.05;
-      if (b > 0) tl.to(cards[b - 1].c, { boxShadow: SH0, duration: 0.5, ease: 'power2.out' }, t);
-      tl.fromTo(k.c, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, t);
-      tl.to(k.c, { boxShadow: SHH, duration: 0.6, ease: 'power2.out' }, t + 0.3);
-      A.in(tl, k.bd, t + 0.25, 'pop', { dur: 0.55 });
-      let lo = t + 0.7;
-      k.rs.forEach((r, i) => {
-        const [p, fb] = CUES[b][i];
-        const tr = clamp(sayAt(ctx, b, p, fb, 0.25), lo, end(b) - 0.4);
-        A.in(tl, r, tr, 'fadeRight', { dur: 0.55 });
-        lo = tr + 0.35;
-      });
-    });
-  });
+  registerScene('ch02plan', ctx => SKIT.planSlide(ctx, [
+    { ...SKIT.PLAN.why, rows: ['Fine one day', 'Over the edge the next', 'There’s a reason'], rowIcons: ['smile', 'zap', 'search'] },
+    { ...SKIT.PLAN.gain, text: 'Know what *raises or lowers* your dog’s baseline, and *what you can do* about it' },
+    { ...SKIT.PLAN.how, rows: ['What a baseline is', 'Four areas that affect it', 'How it adds up, and comes down'] },
+  ], [
+    [['just fine one day', 0.3], ['the next day', 0.55], ['usually a reason', 0.85]],
+    [['raise or lower', 0.5]],
+    [['First', 0.2], ['Second', 0.45], ['third', 0.72]],
+  ]));
 
   // ================================================================== ch02s01 Your Dog's Baseline
   registerScene('ch02s01', ctx => {

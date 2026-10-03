@@ -393,7 +393,7 @@ function glassMaps(C){
         const sofa = sstep(0, 1.6, Math.min(xin - 3, 26 - xin)) * sstep(0, 1.2, 13.5 - yin);
         v += (19 + fold[p] * 8 - v) * sofa * 0.85; e *= 1 - 0.7 * sofa;
         const dl = (xin - 30) * (xin - 30) + (yin - 19.5) * (yin - 19.5);
-        if (dl < 900){ const lamp = Math.exp(-dl / 40); e += 0.8 * lamp; v += 24 * Math.exp(-dl / 8); warm = lamp; }
+        if (dl < 900){ const lamp = Math.exp(-dl / 40); e += 0.8 * lamp; v += 13 * Math.exp(-dl / 8); warm = lamp; }
         if (xin > 33.2){ const c = 0.5 + 0.5 * Math.sin(xin * 4.1 + fold[p] * 3); v = 30 + c * 18; e = 0.4 + c * 0.22; }
       }
       const n = G[p] * 3;

@@ -446,6 +446,9 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 (function(){
 "use strict";
 
+/* ---------- settings ---------- */
+const SHOW_BLUEPRINT = true;   /* faint blue outline of the finished house while it's being built; set false to hide it */
+
 /* ---------- UI: phases, rail, form ---------- */
 const PHASES = [
   {at:0.00, tag:"Poured footings + block foundation", title:"It starts with concrete.",
@@ -1370,7 +1373,7 @@ function frame(){
     if (gm && "emissiveIntensity" in gm){ if (gm.emissive && gm.emissive.getHex() === 0 && !gm.emissiveMap) gm.emissive.set(0xffb060); gm.emissiveIntensity = glow*1.6; }
     porch.intensity = glow*2.2;
     ghostMat.opacity = 0.55*(1 - smooth(0.6, 0.86, bp));
-    ghost.visible = ghostMat.opacity > 0.01;
+    ghost.visible = SHOW_BLUEPRINT && ghostMat.opacity > 0.01;
     const rv = smooth(0.885, 0.955, cur);
     photo.hidden = rv <= 0;
     photo.style.setProperty("--rv", rv.toFixed(4));

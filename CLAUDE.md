@@ -123,7 +123,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   (what shaped the dog), water level (baseline, distant antecedents), temperature (arousal, stress and emotional state;
   the trigger turns up the heat), boiling over (the reaction). Threshold
   zones: under = warm water (can think, eat, learn), at = simmering (stiff, staring, slow to respond), over = boiling over
-  (reacting, can't eat or listen). Learning happens under threshold; a fuller pot reaches threshold with less heat. It answers one question: why
+  (reacting, can't eat or listen). Learning happens under threshold; a fuller pot reaches threshold with less heat.
+  Triggers too close together (stacking) = temperature: heat comes back before the water cools, so a small trigger tips
+  it over. Triggers too close over days or weeks = water level: the baseline itself rises. No new pot parts for either. It answers one question: why
   this reaction, this big, right now. Do NOT map steam, lids, kettles or consequences onto it; the ABC panels and plain
   language carry function, consequences and training. After training: temperature still rises a little but stays
   below boiling ("a dog with a better plan").

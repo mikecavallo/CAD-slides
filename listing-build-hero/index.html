@@ -13,6 +13,8 @@
   --bg:#E7ECEE; --sky-top:#C6D6E1; --sky-low:#EDF0EE; --ink:#15202A; --muted:#55636E;
   --line:#C2CBD1; --panel:#F5F7F7; --accent:#2A5B8B; --accent-ink:#FFFFFF;
   --ground:#A6B788; --scrim:rgba(231,236,238,.94); --scene-dark:0;
+  --paper:#F3F6F7; --pen:#22466D; --grid:rgba(42,91,139,.08); --ink-tint:.17;
+  --sign-main:#1D3557; --sign-rider:#A8322D;
   --display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --prose:"Newsreader",Georgia,"Times New Roman",serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
@@ -23,12 +25,14 @@
     --bg:#0F161D; --sky-top:#0C141E; --sky-low:#262C36; --ink:#E5EBEF; --muted:#98A6B1;
     --line:#2B3742; --panel:#151F29; --accent:#8CB6E2; --accent-ink:#0C141E;
     --ground:#22301F; --scrim:rgba(15,22,29,.92); --scene-dark:1; color-scheme:dark;
+    --paper:#122130; --pen:#9CC3EA; --grid:rgba(140,182,226,.08); --ink-tint:.06;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0F161D; --sky-top:#0C141E; --sky-low:#262C36; --ink:#E5EBEF; --muted:#98A6B1;
   --line:#2B3742; --panel:#151F29; --accent:#8CB6E2; --accent-ink:#0C141E;
   --ground:#22301F; --scrim:rgba(15,22,29,.92); --scene-dark:1; color-scheme:dark;
+    --paper:#122130; --pen:#9CC3EA; --grid:rgba(140,182,226,.08); --ink-tint:.06;
 }
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0}
@@ -37,10 +41,40 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 /* ---------- Build stage ---------- */
-.build{position:relative;height:540vh}
+.build{position:relative;height:640vh}
 .stage{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;overflow:hidden;
-  background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-low) 62%,var(--bg) 100%)}
+  background-color:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px}
 #scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* the real photo wipes in over the finished drawing */
+.photo{position:absolute;top:0;bottom:0;left:14vw;right:0;--rv:0;pointer-events:none;
+  -webkit-mask-image:linear-gradient(100deg,#000 calc(var(--rv)*130% - 30%),transparent calc(var(--rv)*130%));
+          mask-image:linear-gradient(100deg,#000 calc(var(--rv)*130% - 30%),transparent calc(var(--rv)*130%))}
+.scrim-b{position:absolute;left:0;right:0;bottom:0;height:150px;pointer-events:none;opacity:0;background:linear-gradient(0deg,var(--scrim),transparent)}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:70% 50%;display:block}
+.photo::before{content:"";position:absolute;inset:0 auto 0 0;width:160px;background:linear-gradient(90deg,var(--bg),transparent);z-index:1}
+
+/* yard sign: a New England post sign that drops in and stakes into the lawn */
+.sign{position:absolute;aspect-ratio:220/320;transform:translate(-9%,-100%);pointer-events:none;
+  clip-path:inset(-300% -60% 0 -60%)}
+.sign svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 6px 10px rgba(0,0,0,.28))}
+.sign .swing{transform-box:view-box;transform-origin:134px 50px}
+.sign-shadow{position:absolute;left:-12%;bottom:-3%;width:70%;height:7%;border-radius:50%;background:radial-gradient(rgba(0,0,0,.35),transparent 70%);transform:scaleX(0)}
+.dust{position:absolute;left:9%;bottom:0;width:7%;aspect-ratio:1;border-radius:50%;background:#7a5d3f;opacity:0}
+.sign.in svg{animation:plant .75s cubic-bezier(.5,0,.75,.25) both}
+.sign.in .swing{animation:swing 1.8s .62s ease-out both}
+.sign.in .sign-shadow{animation:shadow .75s ease-in both}
+.sign.in .dust{animation:dust .7s .6s ease-out both}
+.sign.in .dust:nth-of-type(2){--dx:-180%;--dy:-160%}
+.sign.in .dust:nth-of-type(3){--dx:160%;--dy:-210%;animation-delay:.62s}
+.sign.in .dust:nth-of-type(4){--dx:-90%;--dy:-260%;animation-delay:.64s}
+.sign.in .dust:nth-of-type(5){--dx:240%;--dy:-110%;animation-delay:.61s}
+@keyframes plant{0%{transform:translateY(-150%)}72%{transform:translateY(5%)}84%{transform:translateY(1.5%)}100%{transform:translateY(2.5%)}}
+@keyframes swing{0%{transform:rotate(0)}12%{transform:rotate(7deg)}32%{transform:rotate(-5deg)}52%{transform:rotate(3deg)}72%{transform:rotate(-1.4deg)}100%{transform:rotate(0)}}
+@keyframes shadow{0%{transform:scaleX(.2);opacity:0}100%{transform:scaleX(1);opacity:1}}
+@keyframes dust{0%{transform:translate(0,0) scale(.4);opacity:.85}100%{transform:translate(var(--dx,120%),var(--dy,-200%)) scale(1.3);opacity:0}}
 .scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,var(--scrim) 0%,var(--scrim) 22%,transparent 50%)}
 
 .topbar{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px var(--gutter)}
@@ -84,6 +118,10 @@ a{color:inherit}
 .no-webgl #scene{display:none}
 
 @media (max-width:899px){
+  .photo{left:0;right:0;top:0;bottom:auto;height:48%}
+  .photo img{object-position:58% 50%}
+  .photo::before{inset:auto 0 0 0;width:auto;height:35%;background:linear-gradient(0deg,var(--bg),transparent)}
+  .photo::after{content:"";position:absolute;inset:0 0 auto 0;height:90px;background:linear-gradient(180deg,var(--scrim),transparent);z-index:1}
   .scrim{background:linear-gradient(0deg,var(--scrim) 0%,var(--scrim) 40%,transparent 66%)}
   .card{top:auto;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:none;left:16px;right:16px;width:auto;gap:10px}
   .address{font-size:clamp(28px,8vw,40px)}
@@ -159,6 +197,8 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 @media (prefers-reduced-motion: reduce){
   .phase.swap>*{animation:none}
   .hint::after{animation:none}
+  .sign.in svg,.sign.in .swing,.sign.in .sign-shadow,.sign.in .dust{animation:none}
+  .sign.in .sign-shadow{transform:none}
 }
 </style>
 </head>
@@ -167,10 +207,36 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 <section class="build" id="build" aria-label="Scroll to watch the home being built">
   <div class="stage">
     <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="photo" id="photo" hidden><img id="photo-img" src="front.jpg" alt="Front of 106 Steinmann Avenue" decoding="async"></div>
+    <div class="sign" id="sign" hidden aria-hidden="true">
+      <span class="sign-shadow"></span>
+      <svg viewBox="0 0 220 320" xmlns="http://www.w3.org/2000/svg">
+        <rect x="12" y="18" width="16" height="302" fill="#FBFBF8" stroke="#D5D5CF" stroke-width="1.5"/>
+        <rect x="7" y="9" width="26" height="12" rx="2" fill="#FBFBF8" stroke="#D5D5CF" stroke-width="1.5"/>
+        <circle cx="20" cy="5" r="5" fill="#FBFBF8" stroke="#D5D5CF" stroke-width="1.5"/>
+        <rect x="12" y="36" width="200" height="14" fill="#FBFBF8" stroke="#D5D5CF" stroke-width="1.5"/>
+        <path d="M28 82 L62 50" stroke="#FBFBF8" stroke-width="7"/>
+        <g class="swing">
+          <path d="M76 50 V66 M192 50 V66" stroke="#55585C" stroke-width="2.2" fill="none"/>
+          <rect x="62" y="64" width="144" height="108" rx="3" fill="#FFFFFF" stroke="var(--sign-main)" stroke-width="3.5"/>
+          <rect x="62" y="64" width="144" height="31" rx="2" fill="var(--sign-main)"/>
+          <text x="134" y="86" text-anchor="middle" fill="#FFFFFF" font-family="Archivo, Arial, sans-serif" font-weight="800" font-size="18" letter-spacing="2.5">FOR SALE</text>
+          <text x="134" y="116" text-anchor="middle" fill="var(--sign-main)" font-family="Archivo, Arial, sans-serif" font-weight="800" font-size="13.5" letter-spacing="1" id="sign-l1">INDEPENDENT</text>
+          <text x="134" y="133" text-anchor="middle" fill="var(--sign-main)" font-family="Archivo, Arial, sans-serif" font-weight="800" font-size="13.5" letter-spacing="1" id="sign-l2">REALTY GROUP</text>
+          <path d="M84 143 H184" stroke="var(--sign-main)" stroke-width="1.2" opacity=".5"/>
+          <text x="134" y="161" text-anchor="middle" fill="#2B2E33" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12.5" letter-spacing=".5">(203) 775-5514</text>
+          <path d="M88 172 V180 M180 172 V180" stroke="#55585C" stroke-width="2"/>
+          <rect x="74" y="179" width="120" height="25" rx="2" fill="var(--sign-rider)"/>
+          <text x="134" y="196" text-anchor="middle" fill="#FFFFFF" font-family="Archivo, Arial, sans-serif" font-weight="800" font-size="11" letter-spacing="1.2">OPEN SUN 12–2:30</text>
+        </g>
+      </svg>
+      <i class="dust"></i><i class="dust"></i><i class="dust"></i><i class="dust"></i><i class="dust"></i>
+    </div>
     <div class="scrim"></div>
+    <div class="scrim-b" id="scrim-b"></div>
 
     <header class="topbar">
-      <span class="brand">Your Brokerage</span>
+      <span class="brand">Independent Realty Group</span>
       <a class="btn" href="#showing">Book a showing</a>
     </header>
 
@@ -233,8 +299,7 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
   </section>
 
   <section class="acc-wrap" aria-labelledby="acc-h">
-    <p class="kicker">Listing details</p>
-    <h2 id="acc-h">Everything on the MLS sheet</h2>
+    <h2 id="acc-h">Listing Details</h2>
     <div class="acc">
       <details open>
         <summary><span class="ttl">Rooms by level</span><span class="sum">Main, upper and lower levels</span><i aria-hidden="true"></i></summary>
@@ -354,7 +419,7 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 
   <footer class="foot">
     <span>Listing data from SmartMLS, deemed reliable but not guaranteed. Listing ID 24200006. The construction animation is illustrative and does not show this home's actual framing.</span>
-    <span>Your Brokerage · Office (203) 775-5514</span>
+    <span>Independent Realty Group · Office (203) 775-5514</span>
   </footer>
 </main>
 
@@ -367,15 +432,15 @@ form .btn{justify-self:start;padding:13px 20px;font-size:15px}
 const PHASES = [
   {at:0.00, tag:"Poured footings + block foundation", title:"It starts with concrete.",
    body:"A full walk-out basement with its own one-car garage, on 0.39 lightly wooded acres."},
-  {at:0.18, tag:"2×10 joists @ 16″ o.c.", title:"Built on a solid floor.",
+  {at:0.158, tag:"2×10 joists @ 16″ o.c.", title:"Built on a solid floor.",
    body:"Hardwood floors, and a living room built around a fireplace and a wide bay window."},
-  {at:0.30, tag:"2×4 studs @ 16″ o.c.", title:"Room for everyone.",
+  {at:0.264, tag:"2×4 studs @ 16″ o.c.", title:"Room for everyone.",
    body:"Four bedrooms and two full baths: two bedrooms on the main level, two upstairs."},
-  {at:0.64, tag:"Gable roof + masonry chimney", title:"Under roof.",
+  {at:0.563, tag:"Gable roof + masonry chimney", title:"Under roof.",
    body:"Upstairs, the primary bedroom gets a vaulted ceiling and a slider to its own balcony."},
-  {at:0.80, tag:"Vinyl siding, windows, decks", title:"Made for being outside.",
+  {at:0.704, tag:"Vinyl siding, windows, decks", title:"Made for being outside.",
    body:"A large deck right off the kitchen, and a professionally landscaped yard."},
-  {at:0.955, tag:"Move-in ready", title:"Ready for you.",
+  {at:0.9, tag:"Move-in ready", title:"Ready for you.",
    body:"Open house Sunday, Oct 4, noon to 2:30. Private showings all week."}
 ];
 const $ = id => document.getElementById(id);
@@ -433,10 +498,7 @@ try {
 }
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 renderer.outputEncoding = THREE.sRGBEncoding;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.0;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.NoToneMapping;
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(34, 1, 1, 900);
@@ -465,25 +527,64 @@ const COL = {
 /* ---------- instanced piece system ---------- */
 const BOX = new THREE.BoxGeometry(1,1,1);
 const CYL8 = new THREE.CylinderGeometry(1,1,1,8);
-const matte = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.86, metalness:0});
-const glassMat = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.14, metalness:0.4, emissive:new THREE.Color(0xffb05a), emissiveIntensity:0});
-const flat = new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.95, metalness:0, flatShading:true});
-/* lattice skirt texture */
-const lc = document.createElement("canvas"); lc.width = lc.height = 128;
-const lx = lc.getContext("2d");
-lx.strokeStyle = "#fff"; lx.lineWidth = 16;
-for (let i = -128; i <= 256; i += 64){ lx.beginPath(); lx.moveTo(i,0); lx.lineTo(i+128,128); lx.stroke(); lx.beginPath(); lx.moveTo(i+128,0); lx.lineTo(i,128); lx.stroke(); }
-const latTex = new THREE.CanvasTexture(lc); latTex.wrapS = latTex.wrapT = THREE.RepeatWrapping; latTex.repeat.set(7, 2.2);
-const latticeMat = new THREE.MeshStandardMaterial({color:0xffffff, map:latTex, alphaTest:0.5, roughness:0.9, side:THREE.DoubleSide});
-
+/* every piece is drawn as ink on paper: box edges become lines, round things get a silhouette outline */
+const INK = { paper:{value:new THREE.Color()}, pen:{value:new THREE.Color()}, tint:{value:0.17} };
+function inkMat(silhouette){
+  const m = new THREE.ShaderMaterial({
+    uniforms:{ paper:INK.paper, pen:INK.pen, tint:INK.tint, sil:{value:silhouette ? 1 : 0}, lineW:{value:1.15}, lineA:{value:silhouette ? 0.7 : 0.92} },
+    vertexShader:`
+      varying vec2 vUv; varying vec3 vN; varying vec3 vV; varying vec3 vC;
+      void main(){
+        vUv = uv;
+        vec4 p = vec4(position, 1.0);
+        vec3 n = normal;
+        #ifdef USE_INSTANCING
+          p = instanceMatrix * p;
+          n = mat3(instanceMatrix) * n;
+        #endif
+        vC = vec3(1.0);
+        #ifdef USE_INSTANCING_COLOR
+          vC = instanceColor;
+        #endif
+        vec4 wp = modelMatrix * p;
+        vN = mat3(modelMatrix) * n;
+        vV = cameraPosition - wp.xyz;
+        gl_Position = projectionMatrix * viewMatrix * wp;
+      }`,
+    fragmentShader:`
+      uniform vec3 paper; uniform vec3 pen; uniform float tint; uniform float sil; uniform float lineW; uniform float lineA;
+      varying vec2 vUv; varying vec3 vN; varying vec3 vV; varying vec3 vC;
+      void main(){
+        vec3 n = normalize(vN), v = normalize(vV);
+        float lit = clamp(dot(n, normalize(vec3(0.45, 0.85, 0.55))), 0.0, 1.0);
+        vec3 fill = mix(mix(paper, vC, tint), pen, (1.0 - lit) * 0.10);
+        float line;
+        if (sil < 0.5){
+          vec2 d = min(vUv, 1.0 - vUv);
+          vec2 fw = max(fwidth(vUv), vec2(1e-5));
+          vec2 e = 1.0 - smoothstep(fw * (lineW - 0.6), fw * (lineW + 0.6), d);
+          line = max(e.x, e.y);
+        } else {
+          line = 1.0 - smoothstep(0.05, 0.16, abs(dot(n, v)));
+        }
+        gl_FragColor = linearToOutputTexel(vec4(mix(fill, pen, line * lineA), 1.0));
+      }`
+  });
+  m.extensions.derivatives = true;
+  return m;
+}
+const boxInk = inkMat(false), roundInk = inkMat(true);
+const blobGeo = new THREE.IcosahedronGeometry(1, 2);
+{ const pa = blobGeo.attributes.position, na = blobGeo.attributes.normal, v = new THREE.Vector3();
+  for (let i = 0; i < pa.count; i++){ v.fromBufferAttribute(pa, i).normalize(); na.setXYZ(i, v.x, v.y, v.z); } }
 const KINDS = {
-  box:{geo:BOX, mat:matte, list:[], shadow:true},
-  glass:{geo:BOX, mat:glassMat, list:[], shadow:false},
-  oct:{geo:CYL8, mat:matte, list:[], shadow:true},
-  octGlass:{geo:CYL8, mat:glassMat, list:[], shadow:false},
-  lattice:{geo:BOX, mat:latticeMat, list:[], shadow:false},
-  blob:{geo:new THREE.IcosahedronGeometry(1, 1), mat:flat, list:[], shadow:true},
-  cone:{geo:new THREE.ConeGeometry(1, 1, 9), mat:flat, list:[], shadow:true}
+  box:{geo:BOX, mat:boxInk, list:[]},
+  glass:{geo:BOX, mat:boxInk, list:[]},
+  oct:{geo:CYL8, mat:roundInk, list:[]},
+  octGlass:{geo:CYL8, mat:roundInk, list:[]},
+  lattice:{geo:BOX, mat:boxInk, list:[]},
+  blob:{geo:blobGeo, mat:roundInk, list:[]},
+  cone:{geo:new THREE.ConeGeometry(1, 1, 12), mat:roundInk, list:[]}
   };
 const eul = new THREE.Euler();
 function add(kind, x, y, z, sx, sy, sz, c, t0, dur, mode, o){
@@ -987,7 +1088,6 @@ Object.values(KINDS).forEach(k => {
   if (!k.list.length) return;
   const m = new THREE.InstancedMesh(k.geo, k.mat, k.list.length);
   m.frustumCulled = false;
-  m.castShadow = k.shadow; m.receiveShadow = true;
   k.list.forEach((it, i) => { m.setColorAt(i, it.c); if (!it.site) totalPieces++; });
   m.instanceColor.needsUpdate = true;
   scene.add(m); k.mesh = m;
@@ -1020,7 +1120,7 @@ const grad = g2.createRadialGradient(128,128,10,128,128,128);
 grad.addColorStop(0,"#fff"); grad.addColorStop(0.5,"#fff"); grad.addColorStop(1,"#000");
 g2.fillStyle = grad; g2.fillRect(0,0,256,256);
 const GR = 150;
-const groundMat = new THREE.MeshStandardMaterial({color:0xffffff, roughness:1, metalness:0, transparent:true, alphaMap:new THREE.CanvasTexture(gc), depthWrite:false});
+const groundMat = new THREE.MeshBasicMaterial({color:0xffffff, transparent:true, alphaMap:new THREE.CanvasTexture(gc), depthWrite:false});
 function groundMesh(withHole){
   const sh = new THREE.Shape();
   sh.absarc(0, 0, GR, 0, Math.PI*2, false);
@@ -1034,37 +1134,21 @@ function groundMesh(withHole){
   for (let i = 0; i < pos.count; i++) uv.setXY(i, pos.getX(i)/(2*GR) + 0.5, pos.getY(i)/(2*GR) + 0.5);
   uv.needsUpdate = true;
   const m = new THREE.Mesh(g, groundMat);
-  m.rotation.x = -Math.PI/2; m.receiveShadow = true;
+  m.rotation.x = -Math.PI/2;
   scene.add(m);
   return m;
 }
 const groundPit = groundMesh(true), groundFull = groundMesh(false);
 
-const hemi = new THREE.HemisphereLight(0xdfe9f2, 0x8a8270, 0.9);
-scene.add(hemi);
-const sun = new THREE.DirectionalLight(0xfff1dc, 1.7);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, {left:-48, right:48, top:48, bottom:-48, near:10, far:220});
-sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.02;
-scene.add(sun); scene.add(sun.target);
-const porch = new THREE.PointLight(0xffb867, 0, 18, 2);
-porch.position.set(-W/2 + 4.5, F1 + 7.4, D/2 + 1.6);
-scene.add(porch);
-
-let dark = false, dirty = true;
+let dirty = true;
 function applyTheme(){
   const cs = getComputedStyle(document.documentElement);
-  dark = cs.getPropertyValue("--scene-dark").trim() === "1";
-  groundMat.color = col(cs.getPropertyValue("--ground").trim() || "#A6B788");
-  ghostMat.color = col(cs.getPropertyValue("--accent").trim() || "#2A5B8B");
-  if (dark){
-    hemi.color.set(0x7184a3); hemi.groundColor.set(0x1b1f24); hemi.intensity = 0.55;
-    sun.color.set(0xb9c8e6); sun.intensity = 0.55; sun.position.set(-30, 55, 45);
-  } else {
-    hemi.color.set(0xdfe9f2); hemi.groundColor.set(0x8a8270); hemi.intensity = 0.95;
-    sun.color.set(0xfff1dc); sun.intensity = 1.75; sun.position.set(34, 62, 46);
-  }
+  const tok = (n, f) => cs.getPropertyValue(n).trim() || f;
+  INK.paper.value.copy(col(tok("--paper", "#F3F6F7")));
+  INK.pen.value.copy(col(tok("--pen", "#22466D")));
+  INK.tint.value = parseFloat(tok("--ink-tint", "0.17")) || 0.17;
+  groundMat.color = col(tok("--paper", "#F3F6F7"));
+  ghostMat.color = col(tok("--accent", "#2A5B8B"));
   dirty = true;
 }
 const mq = window.matchMedia("(prefers-color-scheme: dark)");
@@ -1103,9 +1187,9 @@ function updatePieces(p){
 let wide = true;
 function placeCamera(p){
   const e = smooth(0, 1, p);
-  const az = -0.8 + 0.92*e, el = 0.64 - 0.55*e;
-  const ty = 12.5*e;
-  let dist = 95 - 15*e;
+  const az = -0.8 + 1.25*e, el = 0.64 - 0.56*e;
+  const ty = 11*e;
+  let dist = 95 - 22*e;
   const hf = 2*Math.atan(Math.tan(camera.fov*Math.PI/360)*camera.aspect);
   const needW = wide ? 46 : 50;
   dist = Math.max(dist, (needW/2)/Math.tan(hf/2));
@@ -1128,23 +1212,49 @@ function resize(){
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 let target = scrollProgress(), cur = target, lastTally = -1;
 window.addEventListener("scroll", () => { target = scrollProgress(); }, {passive:true});
-window.addEventListener("resize", () => { resize(); target = scrollProgress(); });
+window.addEventListener("resize", () => { resize(); target = scrollProgress(); if (signIn) placeSign(); });
 
+const BUILD_END = 0.88;
+const photo = $("photo"), photoImg = $("photo-img"), sign = $("sign");
+/* where the sign stands in the photo (photo pixels, 2000×1333) */
+const SIGN_AT = { wide:{x:1560, y:1130}, narrow:{x:1420, y:1140}, h:0.29 };
+function placeSign(){
+  const st = photo.parentElement.getBoundingClientRect(), r = photo.getBoundingClientRect();
+  if (!r.width) return;
+  const s = Math.max(r.width/2000, r.height/1333);
+  const pos = getComputedStyle(photoImg).objectPosition.split(" ").map(v => parseFloat(v)/100);
+  const ox = (r.width - 2000*s)*(isNaN(pos[0]) ? 0.5 : pos[0]), oy = (r.height - 1333*s)*(isNaN(pos[1]) ? 0.5 : pos[1]);
+  const at = wide ? SIGN_AT.wide : SIGN_AT.narrow;
+  sign.style.left = (r.left - st.left + ox + at.x*s) + "px";
+  sign.style.top = (r.top - st.top + oy + at.y*s) + "px";
+  sign.style.height = (1333*s*SIGN_AT.h) + "px";
+}
+let signIn = false;
 function frame(){
   const d = target - cur;
   if (Math.abs(d) > 0.00005){ cur = reduce.matches ? target : cur + d*0.14; dirty = true; }
   else if (cur !== target){ cur = target; dirty = true; }
   if (dirty){
     dirty = false;
-    const placed = updatePieces(cur);
+    const bp = Math.min(1, cur/BUILD_END);
+    const placed = updatePieces(bp);
     if (placed !== lastTally){ $("tally-n").textContent = placed.toLocaleString("en-US"); lastTally = placed; }
-    placeCamera(cur);
-    groundPit.visible = cur < 0.955; groundFull.visible = !groundPit.visible;
-    ghostMat.opacity = 0.55*(1 - smooth(0.6, 0.86, cur));
+    placeCamera(bp);
+    groundPit.visible = bp < 0.955; groundFull.visible = !groundPit.visible;
+    ghostMat.opacity = 0.55*(1 - smooth(0.6, 0.86, bp));
     ghost.visible = ghostMat.opacity > 0.01;
-    const glow = dark ? smooth(0.9, 1, cur) : 0;
-    glassMat.emissiveIntensity = glow*1.5;
-    porch.intensity = glow*1.4;
+    const rv = smooth(0.885, 0.955, cur);
+    photo.hidden = rv <= 0;
+    photo.style.setProperty("--rv", rv.toFixed(4));
+    canvas.style.opacity = (1 - smooth(0.9, 0.975, cur)).toFixed(3);
+    $("scrim-b").style.opacity = rv.toFixed(3);
+    $("tally").style.opacity = (1 - rv).toFixed(3);
+    const wantSign = cur >= 0.962;
+    if (wantSign !== signIn){
+      signIn = wantSign;
+      if (signIn){ placeSign(); sign.hidden = false; void sign.offsetWidth; sign.classList.add("in"); }
+      else { sign.classList.remove("in"); sign.hidden = true; }
+    }
     updateUI(cur);
     renderer.render(scene, camera);
   }

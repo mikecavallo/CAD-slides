@@ -134,7 +134,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   spill: the spacing is the problem), and the slow one (days or weeks raise the water, so an ordinary trigger spills).
   Chapter 3 plan (doc has no Chapter 3 text yet): temperature, threshold zones, two pots same heat, stacking, long-term
   stress. A drawn dog (C2.dog) stands beside the pot and its body language follows the zone: loose under, stiff at the
-  rim, reacting when it spills. The ABCs come after, in Chapter 4. It answers one question: why
+  rim, reacting when it spills. The ABCs come after, in Chapter 4.
+  Concept test clip: `script/lesson-concept.json` + `video/scenes/c3x.js` (boil kit: foam, spill, burner, dial,
+  thermometer, dog body language). To build it, add `<script src="scenes/c3x.js"></script>` to video/index.html (left out
+  so Chapter 2's render cache stays valid), back up build/timing.json, and run the preview pipeline with
+  LESSON=lesson-concept.json. It answers one question: why
   this reaction, this big, right now. Do NOT map steam, lids, kettles or consequences onto it; the ABC panels and plain
   language carry function, consequences and training. After training: temperature still rises a little but stays
   below boiling ("a dog with a better plan").

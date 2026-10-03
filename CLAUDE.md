@@ -12,7 +12,7 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Script source of truth: Tori's Google Doc "Reactivity & Aggression Part 1: Script v4 (one chapter)",
   id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (read it with the Google Drive connector; Claude cannot
   edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
-  that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Understanding Your Dog's Baseline** (CH02,S01 to S12, the
+  that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
   water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
   warning signals) for later chapters; Chapter 3 will add heat and the thermometer to the pot. Sync the lesson
   file to the doc before every build; the doc wins.
@@ -37,8 +37,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   card, `ch02plan` (Why it matters / What you'll gain / How we'll get there, three steps), then `ch02s01` to `ch02s12`.
   The intro and plan narration were written by Claude (not in the doc yet); Tori was sent paste-ready text.
 - Scene code: `video/scenes/c2a.js` to `c2f.js`, shared pot module `c2_pot.js` (glass pot, water level tweens,
-  drips, floating chips, the "room left" bracket, the drawn dog, logo close). Area colours: physical red,
-  activity amber, emotions olive, environment deep green.
+  drips, floating chips, the "room left" bracket, the drawn dog, logo close). Area colours: physical teal,
+  activity blue, emotions olive, environment deep green (no red or orange for areas; red/amber only for bad things).
 - Tori's round 1 feedback (applied): the title slide keeps the presentation title unchanged, chapter is a tag with
   Chapter 1's amber fuel chip; s01 pours the bowl's ingredients into the pot and the fuel chip melts in as water;
   the eight ingredients float in every pot and ride the water level; factors that raise the water are red/amber
@@ -65,6 +65,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   four returning ingredients plus a dashed "More factors in this chapter" pill; s01 ends with the ingredients in an
   EMPTY pot ("First: your dog's baseline"), the water first pours in on s03; puppies icon is a paw print; s06 stoic chart
   has only pain and time on its axes, "Looks fine on the outside" and the limp as notes on the line.
+- Round 5 feedback (applied): chapter title "Your Dog's Baseline" (card, s01 heading, narration "This is Chapter 2: Your
+  Dog's Baseline."); s01 beat 2 shows only the header words lighting up; physical health teal; drawn dog's collar runs
+  across the whole neck under the ear; s07 line "less activity doesn't always mean a calmer dog" (on screen "Less doesn't
+  always mean calmer").
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

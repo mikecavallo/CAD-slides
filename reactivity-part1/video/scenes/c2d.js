@@ -115,7 +115,7 @@
     A.in(tl, sR, tMore + 0.6, 'fadeUp', { dur: 0.6 });
     const tLess = clamp(at(0, 'less', 0.6, 0.2), tMore + 1.4, end(0) - 0.5);
     tl.to(knob, { x: TX0 + 40, duration: 1.1, ease: 'power2.inOut' }, tLess);
-    const sL = C2.put(LA, 'c2d-say', 'Less isn’t always *calmer*', { x: TX0, y: TY + 120 });
+    const sL = C2.put(LA, 'c2d-say', 'Less doesn’t always mean *calmer*', { x: TX0, y: TY + 120 });
     A.in(tl, sL, tLess + 0.7, 'fadeUp', { dur: 0.6 });
     tl.to(knob, { x: MID, duration: 0.9, ease: 'power2.inOut' }, Math.min(tLess + 1.8, cue(1) + 0.2));
 

@@ -25,7 +25,7 @@
   }
 
   const AREAS = [
-    { name: 'Physical Health', short: 'Physical health', icon: 'heart-pulse', col: '#b8452d' },
+    { name: 'Physical Health', short: 'Physical health', icon: 'heart-pulse', col: '#2a8a86' },
     { name: 'Activity, Stimulation & Natural Needs', short: 'Activity and needs', icon: 'paws', col: '#4a6fa5' },
     { name: 'Emotions & Recovery', short: 'Emotions and recovery', icon: 'brain', col: '#7a8f2e' },
     { name: 'Environment, Predictability & Choice', short: 'Environment and choice', icon: 'house', col: '#3f6b22' },
@@ -374,9 +374,11 @@
     K.circle(head, 322, 74, 38, { fill: DOG });
     K.path(head, 'M 330 56 C 354 56 378 64 390 74 C 398 82 396 100 382 104 L 330 108 Z', { fill: DOG, stroke: 'none' });
     K.circle(head, 390, 80, 9, { fill: '#142309' });
+    // collar: a band right across the neck, under the ear, with a small tag
+    K.path(head, 'M 273 116 C 290 129 318 131 338 117', { stroke: C.greenLight, 'stroke-width': 12, fill: 'none', 'stroke-linecap': 'butt' });
+    K.circle(head, 306, 136, 7, { fill: C.greenLight });
     K.path(head, 'M 306 48 C 290 54 282 84 288 112 C 294 120 306 116 308 106 C 314 86 316 66 316 52 Z', { fill: DOG_EAR, stroke: 'none' });
     K.circle(head, 340, 66, 5, { fill: '#fff' });
-    K.path(head, 'M 290 102 C 302 114 318 122 334 124', { stroke: C.greenLight, 'stroke-width': 10, fill: 'none' });
     const fx = K.group(g);
     return { outer, g, fig, head, tail, fx, x, y, s, pt: (lx, ly) => [x + lx * s, y + ly * s] };
   }

@@ -1,5 +1,5 @@
 {
- "title": "Understanding Dog Behavior. Chapter 2: Understanding Your Dog's Baseline",
+ "title": "Understanding Dog Behavior. Chapter 2: Your Dog's Baseline",
  "notes": "Chapter 2 video. Narration for ch02s01 to ch02s12 is the trainer's doc (Script v4, the 'Chapter 2: Understanding Your Dog's Baseline' section, up to 'END CHAPTER 2 MATERIAL'). The welcome (ch02intro) and plan (ch02plan) narration were drafted for this video and sent to the trainer. Build with LESSON=lesson-ch2.json.",
  "tail": 5.0,
  "chapters": [
@@ -30,19 +30,19 @@
   },
   {
    "id": "ch02",
-   "title": "Understanding Your Dog's Baseline",
+   "title": "Your Dog's Baseline",
    "slide_refs": [],
    "scenes": [
     {
      "id": "ch02card",
-     "heading": "Chapter 2: Understanding Your Dog's Baseline",
+     "heading": "Chapter 2: Your Dog's Baseline",
      "visual_concept": "The chapter card (same look as the automatic chapter cards: big light-green 02, 'Chapter 2', the chapter title), now narrated.",
      "assets": [],
      "beats": [
       {
-       "say": "This is Chapter 2: Understanding Your Dog's Baseline.",
-       "show": "Big '02', the green bar, 'Chapter 2' and the title 'Understanding Your Dog's Baseline' slide in.",
-       "onscreen": "Chapter 2: Understanding Your Dog's Baseline"
+       "say": "This is Chapter 2: Your Dog's Baseline.",
+       "show": "Big '02', the green bar, 'Chapter 2' and the title 'Your Dog's Baseline' slide in.",
+       "onscreen": "Chapter 2: Your Dog's Baseline"
       }
      ]
     },
@@ -71,8 +71,8 @@
     },
     {
      "id": "ch02s01",
-     "heading": "Understanding Your Dog's Baseline",
-     "visual_concept": "Recap with Chapter 1's bowl and its eight ingredients. The four returning ingredients glow under one header, 'Can be changed, managed, or improved'; the rest dim ('The rest can't be changed'). On beat 2 the header lights up word by word and a dashed 'More factors in this chapter' pill joins. The ingredients pour into an empty glass pot (no water yet). 'First: your dog's baseline'.",
+     "heading": "Your Dog's Baseline",
+     "visual_concept": "Recap with Chapter 1's bowl and its eight ingredients. The four returning ingredients glow under one header, 'Can be changed, managed, or improved'; the rest dim ('The rest can't be changed'). On beat 2 the header lights up word by word. The ingredients pour into an empty glass pot (no water yet). 'First: your dog's baseline'.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:mixing-bowl",
@@ -85,7 +85,7 @@
       {
        "say": "In the last chapter, we looked at the ingredients that can help shape a dog's behavior.",
        "show": "Chapter 1's bowl with its eight ingredients; pill 'Chapter 1: the ingredients'.",
-       "onscreen": "Understanding Your Dog's Baseline"
+       "onscreen": "Your Dog's Baseline"
       },
       {
        "say": "You'll notice that some of those factors appear again here. That's intentional.",
@@ -94,7 +94,7 @@
       },
       {
        "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently.",
-       "show": "The header words light up as they are said; a dashed 'More factors in this chapter' pill joins; 'Affecting your dog right now'.",
+       "show": "The header words light up as they are said (no extra pills).",
        "onscreen": "Changed, managed, or improved"
       },
       {
@@ -311,9 +311,9 @@
      ],
      "beats": [
       {
-       "say": "More activity isn't always better, and less isn't always calmer.",
-       "show": "A slider draws from 'Too little' to 'Too much' with a green middle zone; the knob runs right ('More isn't always better'), then left ('Less isn't always calmer').",
-       "onscreen": "More isn't always better. Less isn't always calmer."
+       "say": "More activity isn't always better, and less activity doesn't always mean a calmer dog.",
+       "show": "A slider draws from 'Too little' to 'Too much' with a green middle zone; the knob runs right ('More isn't always better'), then left ('Less doesn't always mean calmer').",
+       "onscreen": "More isn't always better. Less doesn't always mean calmer."
       },
       {
        "say": "Think about the difference between being bored all day and being completely exhausted after an overly busy day.",

@@ -113,7 +113,7 @@
     const num = K.el('div', 'bumper-num', '02');
     const bar = K.el('div', 'bumper-bar');
     const kick = K.el('div', 'bumper-kicker', 'Chapter 2');
-    const title = K.el('div', 'bumper-title', 'Understanding Your Dog\u2019s Baseline');
+    const title = K.el('div', 'bumper-title', 'Your Dog\u2019s Baseline');
     [num, bar, kick, title].forEach(x => stage.appendChild(x));
     A.in(tl, num, 0.05, 'fadeRight', { dur: 0.9 });
     A.in(tl, bar, 0.25, 'grow', { dur: 0.6 });
@@ -190,14 +190,14 @@
     });
   });
 
-  // ================================================================== ch02s01 Understanding Your Dog's Baseline
+  // ================================================================== ch02s01 Your Dog's Baseline
   registerScene('ch02s01', ctx => {
     const { stage, tl, cue, end, dur } = ctx;
     C1.style(stage);
     C2.style(stage);
     css(stage);
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
-    const h = K.heading(stage, 'Understanding Your Dog’s Baseline', { x: 100, y: 120, w: 1450, size: 76 });
+    const h = K.heading(stage, 'Your Dog’s Baseline', { x: 100, y: 120, w: 1450, size: 76 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
     // ---------- beat 0: chapter 1's bowl and its eight ingredients
@@ -242,16 +242,10 @@
       tl.to(words[j], { color: '#ffffff', backgroundColor: C2.C.green, duration: 0.3 }, tt);
       lo = tt + 0.3;
     });
-    const more = C2.pill(LB, 'plus', 'More factors in this chapter', { x: 1080, y: 740, size: 30, col: C2.C.green });
-    Object.assign(more.style, { border: '3px dashed var(--green)', background: 'var(--green-mist)' });
-    A.in(tl, more, lo + 0.2, 'fadeRight', { dur: 0.55 });
-    const now = C2.pill(LB, 'clock', 'Affecting your dog *right now*', { x: 1080, y: 846, variant: 'amber', size: 32 });
-    const tNow = clamp(at(2, 'right now', 0.6, 0.3), lo + 0.6, end(2) - 0.8);
-    A.in(tl, now, tNow, 'fadeUp', { dur: 0.6 });
 
     // ---------- beat 3: "we're going to add those ingredients to a pot": the bowl tips and the ingredients drop into an empty pot
     const tDiff = cue(3);
-    tl.to([...pills, hdr, more, now, cant], { opacity: 0, duration: 0.4, stagger: 0.03, ease: 'power2.in' }, tDiff - 0.3);
+    tl.to([...pills, hdr, cant], { opacity: 0, duration: 0.4, stagger: 0.03, ease: 'power2.in' }, tDiff - 0.3);
     tl.to(B.tokens.map(t => t.outer), { opacity: 1, duration: 0.3 }, tDiff - 0.3);
     const cap = C2.pill(LB, 'arrow-down', 'Adding the ingredients *to the pot*', { x: 960, y: 880, center: true, variant: 'pale', size: 32 });
     A.in(tl, cap, tDiff + 0.3, 'fadeUp', { dur: 0.6 });

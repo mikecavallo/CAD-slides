@@ -126,6 +126,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   `Ch01s07_part_1`, `Ch01s07_part_2`. Files go in `reactivity-part1/narration/`.
 - `narration/` is gitignored (the repo is public), so **recordings are not in GitHub**. In a new session, ask
   Tori to re-upload the takes for any slide being rebuilt with voice.
+- Chapter 1 takes still needed (Oct 4): `Ch00s01` (new title) and `Ch01s12` (pain gone, water ending). Until then
+  the Chapter 1 build uses the stand-in voice for those two slides (narration/ch00s01.wav, ch01s12.wav, made from the
+  scratch clips; delete them when Tori's takes arrive).
 - Build with voice: `python3 tools/align.py && python3 tools/timing.py --mode narration && node tools/render.mjs
   --workers 3 && python3 tools/assemble.py --name Getting-Started-with-Dog-Behavior`.
   align.py levels each take, trims lead-in/tail noise and slates (voiced-sound based), and cuts slides exactly

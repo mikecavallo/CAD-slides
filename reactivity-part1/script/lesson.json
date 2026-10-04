@@ -145,7 +145,7 @@
         {
           "id": "ch01s03",
           "heading": "Why?",
-          "visual_concept": "Photo card and the heading 'Why?', then the bowl with eight blank ingredient chips hovering, then the chips start moving toward the bowl. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Photo card and the heading 'Why?', then the bowl with eight blank ingredient chips hovering, then the chips start moving toward the bowl. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "photo_why.jpg",
@@ -172,7 +172,7 @@
         {
           "id": "ch01s04",
           "heading": "Genetics and temperament",
-          "visual_concept": "Bowl scene. The Genetics and temperament chip drops in, then a tiny smoke alarm blinks for the sensitive dog. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Bowl scene. The Genetics and temperament chip drops in, then a tiny smoke alarm blinks for the sensitive dog. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
@@ -195,7 +195,7 @@
         {
           "id": "ch01s05",
           "heading": "Before birth",
-          "visual_concept": "Bowl scene. The Prenatal environment chip drops in beside the DNA chip, with three icons around it. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Bowl scene. The Prenatal environment chip drops in beside the DNA chip, with three icons around it. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
@@ -214,7 +214,7 @@
         {
           "id": "ch01s06",
           "heading": "Breed history and purpose",
-          "visual_concept": "Six breed-job cards (Herding, Guarding, Hunting and pursuit, Terrier work, Sporting work, Working and assistance) around a small mixing bowl, each with a photo of an example breed. Each card enlarges in turn with a small animated vignette for its job. Dog silhouettes of different shapes show individual variation. Ends with the cards flying into the bowl as the 'Breed history and purpose' chip. Bowl chips: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Six breed-job cards (Herding, Guarding, Hunting and pursuit, Terrier work, Sporting work, Working and assistance) around a small mixing bowl, each with a photo of an example breed. Each card enlarges in turn with a small animated vignette for its job. Dog silhouettes of different shapes show individual variation. Ends with the cards flying into the bowl as the 'Breed history and purpose' chip. Bowl chips: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
@@ -276,7 +276,7 @@
         {
           "id": "ch01s07",
           "heading": "Early life and socialization",
-          "visual_concept": "Bowl scene. Socialization chip and the early-window timeline with gaps and example tags; a puppy observing a person, a dog and a new place from different distances with approach, move away and pause arrows; pass the puppy with a choice meter; the puppy surrounded by reaching hands with a pause icon and exit arrow just out of reach; the party row with a tightening leash; the chip settles. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Bowl scene. Socialization chip and the early-window timeline with gaps and example tags; a puppy observing a person, a dog and a new place from different distances with approach, move away and pause arrows; pass the puppy with a choice meter; the puppy surrounded by reaching hands with a pause icon and exit arrow just out of reach; the party row with a tightening leash; the chip settles. Bowl chips, in order: Genetics and temperament, Prenatal environment, Breed history and purpose, Socialization, Age, Past experiences, Training tools and methods (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
@@ -328,7 +328,7 @@
         {
           "id": "ch01s08",
           "heading": "Age",
-          "visual_concept": "Bowl scene. Age chip, life-stage ruler with adolescence and social maturity bands, Teen and Adult party cards, the dog park card, then the senior dog with icons, everyday interactions and a lowering tolerance meter. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Bowl scene. Age chip, life-stage ruler with adolescence and social maturity bands, Teen and Adult party cards, the dog park card, then the senior dog with icons, everyday interactions and a lowering tolerance meter. The bowl's seven ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
@@ -372,7 +372,7 @@
         {
           "id": "ch01s09",
           "heading": "Past experiences",
-          "visual_concept": "Bowl scene. Past experiences chip and a lightning strike on a one-event timeline; a person, dog and toy sequence that repeats with the dog's response growing; a repeating encounter strip where the response comes sooner each time; then the lawn path with a new path forming. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Bowl scene. Past experiences chip and a lightning strike on a one-event timeline; a person, dog and toy sequence that repeats with the dog's response growing; a repeating encounter strip where the response comes sooner each time; then the lawn path with a new path forming. The bowl's seven ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",
@@ -407,7 +407,7 @@
         {
           "id": "ch01s10",
           "heading": "Training tools and methods",
-          "visual_concept": "Bowl scene. Training tools chip with red-outlined tool tags; a dog surrounded by daily-life icons each linked to 'Human decides'; a 'Boss?' crown appears and fades; 'Suppress' over a dog replaced by 'Understand' and 'Help'; then a green heart pulses over the bowl. The bowl's eight ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods, Pain and discomfort (shared module video/scenes/c1_bowl.js).",
+          "visual_concept": "Bowl scene. Training tools chip with red-outlined tool tags; a dog surrounded by daily-life icons each linked to 'Human decides'; a 'Boss?' crown appears and fades; 'Suppress' over a dog replaced by 'Understand' and 'Help'; then a green heart pulses over the bowl. The bowl's seven ingredient chips, in order: Genetics and temperament, Prenatal environment, Breed traits, Socialization, Age, Past experiences, Training tools and methods (shared module video/scenes/c1_bowl.js).",
           "assets": [
             "bg_swirl.jpg",
             "diagram:mixing-bowl",

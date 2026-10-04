@@ -152,5 +152,18 @@
     const pl = C3.chip(stage, 'search', 'Look at the *whole ABC*, not just the behavior', 960, 400, { center: true, size: 40, col: C.green });
     pl.style.borderColor = C.green;
     A.in(tl, pl, t7 + 1.0, 'pop', { dur: 0.6 });
+
+    // ---------- beat 5: in all three the barking worked, so it's more likely to be repeated
+    const t8 = cue(5);
+    tl.to(pl, { opacity: 0, duration: 0.3 }, t8);
+    fills.forEach((f, k) => {
+      const ck = C2.badge(stage, 'check', xs[k] + W - 18, SY + 4, 64, C.green, '#fff');
+      ck.style.border = '5px solid #fff';
+      A.in(tl, ck, t8 + 0.3 + k * 0.3, 'pop', { dur: 0.45 });
+      tl.to(f, { boxShadow: '0 0 0 6px rgba(97,149,55,0.45), 0 10px 30px rgba(40,60,20,0.10)', duration: 0.4 }, t8 + 0.3 + k * 0.3);
+    });
+    const ml = C3.chip(stage, 'repeat', 'It worked, so it\u2019s *more likely to be repeated*', 960, 400, { center: true, size: 40, col: C.green });
+    ml.style.borderColor = C.green;
+    A.in(tl, ml, clamp(at(5, 'more likely to be repeated', 0.6), t8 + 1.4, end(5) - 0.4), 'pop', { dur: 0.6 });
   });
 })();

@@ -1,8 +1,7 @@
-// Chapter 3: four directions, movement, the emotional response, emotion vs function.
+// Chapter 3: four directions, movement, the emotional response between A and B.
 //   ch03s08  Four broad directions          a dog at centre, four direction cards; then not rigid boxes: linked, shifting
 //   ch03s09  Movement isn't function        a drawn dog lunges toward another dog, the other dog moves away: more space
 //   ch03s10  What happens between A and B?  A and B slide apart and the emotional response opens between them
-//   ch03s11  Emotion and function are different   two cards: inside the dog / what the behavior accomplished
 (() => {
   const { sayAt, clamp } = C1;
   const { COL } = C3;
@@ -264,72 +263,5 @@
     tl.to(cE, { boxShadow: '0 0 0 10px rgba(139,93,143,0.35), 0 16px 40px rgba(40,60,20,0.18)', duration: 0.5 }, tIn);
     tl.to([aAE, aEB], { stroke: COL.emo, duration: 0.4 }, tIn);
 
-  });
-
-  // ================================================================== ch03s11 Emotion and function are different
-  registerScene('ch03s11', ctx => {
-    const { stage, tl, cue, end } = ctx;
-    C2.style(stage);
-    C3.css(stage);
-    const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
-    C3.head(ctx, 'Emotion and Function Are Different', { size: 72 });
-
-    const Y = 270, W = 760, H = 600;
-    const card = (x, col, pale) => {
-      const c = C3.put(stage, 'c3-card', null, { x, y: Y, w: W, h: H });
-      c.style.border = `5px solid ${col}`;
-      return c;
-    };
-    const cE = card(120, COL.emo);
-    const cF = card(1040, C.green);
-    const ne = K.el('div', 'c3-node', '≠');
-    Object.assign(ne.style, { left: '910px', top: Y + H / 2 - 50 + 'px', width: '100px', height: '100px', background: C.inkSoft, fontSize: '64px' });
-    stage.appendChild(ne);
-
-    // ---------- beat 0: two cards and the not-equal sign
-    A.in(tl, cE, cue(0) + 0.1, 'fadeRight', { dur: 0.6 });
-    A.in(tl, cF, cue(0) + 0.3, 'fadeLeft', { dur: 0.6 });
-    A.in(tl, ne, cue(0) + 0.8, 'pop', { dur: 0.5 });
-    const title = (c, text, col) => { const n = C3.put(c, 'c3-big', text, { x: 0, y: 36, w: W, align: 'center' }); n.style.color = col; n.style.fontSize = '60px'; return n; };
-    const tE = title(cE, 'Emotion', COL.emo);
-    const tF = title(cF, 'Function', C.greenDark);
-    A.in(tl, [tE, tF], cue(0) + 0.6, 'fadeUp', { dur: 0.5, stagger: 0.2 });
-
-    // ---------- beat 1: inside the dog
-    const t1 = cue(1);
-    const esv = K.svg(cE, { x: 0, y: 0, w: W, h: H });
-    const D = C2.dog(esv, W / 2, 290, 0.95);
-    D.outer.setAttribute('opacity', '0.9');
-    const hg = K.group(esv);
-    const hc = K.circle(hg, W / 2 + 30, 268, 56, { fill: COL.emo, opacity: 0.35 });
-    const hh = C2.svgIcon(hg, 'heart', W / 2 + 30, 268, 64, { stroke: '#fff', fill: COL.emo, 'stroke-width': 2 });
-    tl.fromTo(D.outer, { opacity: 0 }, { opacity: 0.9, duration: 0.6 }, t1 + 0.1);
-    tl.fromTo(hg, { opacity: 0, scale: 0.4, svgOrigin: `${W / 2 + 30} 268` }, { opacity: 1, scale: 1, svgOrigin: `${W / 2 + 30} 268`, duration: 0.6, ease: 'back.out(2)' }, clamp(at(1, 'inside the dog', 0.7), t1 + 0.5, end(1) - 0.4));
-    tl.fromTo(hc, { attr: { r: 56 } }, { attr: { r: 80 }, opacity: 0, duration: 1.2, repeat: 2, ease: 'power1.out', immediateRender: false }, clamp(at(1, 'inside the dog', 0.7), t1 + 0.5, end(1) - 0.4) + 0.5);
-    const qE = C3.put(cE, 'c3-mid', 'What is happening <b>inside</b> the dog?', { x: 40, y: 480, w: W - 80, align: 'center' });
-    qE.querySelector('b').style.color = COL.emo;
-    A.in(tl, qE, t1 + 0.8, 'fadeUp', { dur: 0.5 });
-
-    // ---------- beat 2: what the behavior accomplished
-    const t2 = cue(2);
-    const TS = 110, G = 60, X0 = (W - 3 * TS - 2 * G) / 2, TY = 210;
-    const tiles = ['A', 'B', 'C'].map((L, k) => C3.tile(cF, L, X0 + k * (TS + G), TY, TS, [COL.A, COL.B, COL.C][k]));
-    tiles.forEach((n, k) => A.in(tl, n, t2 + 0.1 + k * 0.15, 'pop', { dur: 0.45 }));
-    const tgt = C2.badge(cF, 'target', X0 + 2 * (TS + G) + TS / 2, TY + TS + 90, 100, C.green, '#fff');
-    A.in(tl, tgt, t2 + 0.8, 'pop', { dur: 0.5 });
-    tl.to(tiles[2], { boxShadow: '0 0 0 10px rgba(97,149,55,0.45), 0 16px 34px rgba(40,60,20,0.22)', duration: 0.5 }, t2 + 0.8);
-    const qF = C3.put(cF, 'c3-mid', 'What did the behavior <b>accomplish</b>?', { x: 40, y: 480, w: W - 80, align: 'center' });
-    A.in(tl, qF, t2 + 0.5, 'fadeUp', { dur: 0.5 });
-
-    // ---------- beat 3: the emotion can stay a question; the function question still works
-    const t3 = cue(3);
-    const qq = C3.qBadge(cE, W - 120, 130, 96);
-    A.in(tl, qq, t3 + 0.2, 'pop', { dur: 0.5 });
-    tl.to(cE, { opacity: 0.6, duration: 0.5 }, clamp(at(3, 'look at the ABC', 0.5), t3 + 0.8, end(3) - 1.2));
-    const ck = C2.badge(cF, 'check', W - 120, 130, 96, C.green, '#fff');
-    ck.style.border = '6px solid #fff';
-    const tC = clamp(at(3, 'what changed', 0.8), t3 + 1.2, end(3) - 0.5);
-    A.in(tl, ck, tC, 'pop', { dur: 0.5 });
-    tl.to(cF, { boxShadow: '0 0 0 8px rgba(97,149,55,0.35), 0 16px 40px rgba(40,60,20,0.18)', duration: 0.5 }, tC);
   });
 })();

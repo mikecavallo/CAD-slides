@@ -26,35 +26,29 @@ We need a way to look at what is happening around the behavior.
 That's where the ABCs come in.
 
 CH03,S02: The ABCs
-On-screen text: A = Antecedent / The thing + the context / Another dog appears / Same place, too close, again and again / The place starts to predict it / B = Behavior / C = Consequence
+On-screen text: A = Antecedent / The thing + the context / Emotional response / B = Behavior / C = Consequence / An Excited Greeting
 Narration:
 A is the antecedent, the thing that happens and the context around it.
 The immediate thing matters, but so does where it happens and what that context has come to predict for the dog.
-For example, the thing might be another dog appearing.
-The context might be a particular location where your dog repeatedly encounters other dogs too close.
-Over time, that location itself can start to predict that those difficult encounters are likely to happen.
-B is the behavior, what your dog does.
+Between A and B, the dog has an emotional response. We don't always know exactly what the dog is feeling, but something is happening inside the dog before we see the behavior.
+B is the behavior, what your dog does, for example barking or lunging.
 C is the consequence, what happens as a direct result of the behavior.
+Let's put an example into it. Here's an excited greeting.
+A person appears outside the window.
+The dog has an emotional response, jumps at the window, and barks.
+Then the person comes inside and gives the dog attention.
 
 CH03,S03: What Did the Behavior Accomplish?
-On-screen text: What did the behavior accomplish? / Function = what the behavior accomplished in that situation / Not what it looks like. What it does.
+On-screen text: What did the behavior accomplish? / Function = what the behavior accomplished in that situation / Not what it looks like. What it does. / Possible function: decrease distance / gain attention
 Narration:
 Once we have the ABC, we can ask an important question:
 What did the behavior accomplish?
 That's what we mean by function.
 Function isn't what the behavior looks like. It's what the behavior does in that particular situation.
-Let's look at a few examples.
+In the excited greeting, the barking may be helping the dog get closer to the person or gain attention.
+Let's look at two more examples.
 
-CH03,S04: An Excited Greeting
-On-screen text: An Excited Greeting / What did the behavior accomplish? / Possible function: decrease distance / gain attention
-Narration:
-A person appears outside the window.
-The dog jumps at the window and barks.
-Then the person comes inside and gives the dog attention.
-What did the behavior accomplish?
-In this situation, the barking may be helping the dog get closer to the person or gain attention.
-
-CH03,S05: A Person Approaches
+CH03,S04: A Person Approaches
 On-screen text: A Person Approaches / Possible function: increase distance
 Narration:
 Now let's change the situation.
@@ -63,7 +57,7 @@ Your dog stops and barks.
 The person stops or moves away.
 This time, the barking may have helped create more distance.
 
-CH03,S06: Guarding a Toy
+CH03,S05: Guarding a Toy
 On-screen text: Guarding a Toy / Possible function: maintain access
 Narration:
 Now imagine a dog has a toy and another dog approaches.
@@ -71,7 +65,7 @@ The dog stiffens, barks, growls, and may snap.
 The other dog backs away, and the dog keeps the toy.
 Here, the behavior may be helping the dog keep access to something valuable.
 
-CH03,S07: Same Behavior. Different Job.
+CH03,S06: Same Behavior. Different Job.
 On-screen text: Same Behavior. Different Job. / Bark. Bark. Bark. / Same behavior. Different outcome. Different possible function. / Look at the whole ABC, not just the behavior / It worked, so it's more likely to be repeated.
 Narration:
 Now notice something important.
@@ -81,18 +75,7 @@ Same behavior. Different outcome. Different possible function.
 That's why we can't determine function just by looking at the behavior itself.
 In all three, the barking worked. And when behavior works, it's more likely to be repeated.
 
-CH03,S08: Four Broad Directions
-On-screen text: Four Broad Directions / Increase distance / Decrease distance / Gain or keep access / Change or release an intense internal state / Not rigid boxes / More than one thing. Depends on the situation.
-Narration:
-There are a few broad directions we can think about when we ask what a behavior accomplished.
-The behavior may help create more distance.
-It may help the dog get closer.
-It may help the dog gain or keep access to something.
-Or sometimes the behavior itself may help change or release an intense internal state.
-These aren't rigid boxes.
-A behavior can accomplish more than one thing, and what it accomplishes can change depending on the situation.
-
-CH03,S09: Movement Isn't Function
+CH03,S07: Movement Isn't Function
 On-screen text: Movement Isn't Function / Direction is not function / Moved toward / Result: more distance / Moved toward. Accomplished more space. / Look at the whole ABC and the outcome
 Narration:
 There's an important catch.
@@ -102,51 +85,45 @@ But if the other dog moves away, the result is more distance.
 The dog moved toward, but the behavior accomplished more space.
 That's why we look at the whole ABC and the outcome, not just the direction the dog moved.
 
-CH03,S10: What Happens Between A and B?
-On-screen text: What Happens Between A and B? / Emotional response / Not straight from A to B
+CH03,S08: Why the Pattern Repeats
+On-screen text: Why the Pattern Repeats / Before training / Emotions / More likely next time
 Narration:
-There's also something important happening between A and B.
-The thing happens within a particular context, and the dog has an emotional response to it.
-Then we see the behavior.
-So A doesn't simply lead straight to B. There is an emotional response happening in between.
-
-CH03,S11: Why the Pattern Repeats
-On-screen text: Before training / Emotions / More likely next time
-Narration:
+Let's look at another example.
 Another dog appears. That's the A.
 The dog has an emotional response, and we see the B: barking and lunging.
 Then space is given. That's the C.
 The behavior worked, so that pattern gets practiced and is more likely to happen again.
 
-CH03,S12: What Training Includes
+CH03,S09: What Training Includes
 On-screen text: What Training Includes / Management / Changing emotions / New behaviors
 Narration:
 So how do we change this pattern? That's what training is for, and training includes three things.
 First, management. Management keeps the dog out of the situations that bring up those big emotions, so the old pattern isn't practiced while we work.
 Second, changing the dog's emotional response.
-And third, teaching new behaviors, so the dog has something else they can do instead.
+And third, teaching new behaviors, so the dog has something else they can do instead, for example looking back at you or checking in with you.
 
-CH03,S13: Building a New Path
-On-screen text: The old path / The new path gets stronger / Management lets the grass grow back / Still there / It can come back
+CH03,S10: Building a New Path
+On-screen text: The old path / The new path gets stronger / Management lets the grass grow back / Still there / It can grow back
 Narration:
 Remember the path across the lawn from the first chapter? The old path is worn in because the dog has used it so many times.
 Training builds a new path. With practice, the new path becomes stronger.
 At the same time, the old path begins to fade. That's not only because the old behavior is practiced less. Management keeps the dog out of the situations that bring up those old emotions, so the grass has a chance to grow back.
 But that old path hasn't vanished.
-If the dog starts practicing the old behavior again and it continues to work, that old path can become stronger again.
+Even practicing the old behavior once in a while, when it still works, can make that path grow back. And the dog may automatically fall back on the old path instead of the new one.
 
-CH03,S14: Training in Action
-On-screen text: During training / Changing emotions / The consequence still needs to work / New pattern practiced / After training / That's a good thing. / Coming up: temperature
+CH03,S11: Training in Action
+On-screen text: Management, e.g. more distance / Changing emotions / The consequence still needs to work / Same consequence. A better behavior. / After training / The consequence can change / That's a good thing. / Coming up: temperature
 Narration:
-Here's what that looks like. During training, another dog may still appear.
+Here's what that looks like. During training, another dog may still appear. Management might mean, for example, getting more distance from that dog.
 But now we're working on changing the dog's emotional response and teaching a new behavior, such as looking back at you.
 The consequence still needs to work for the dog. The dog still needs to get what it needs out of the situation, so if they need space, we still give them space.
-Now the new behavior leads to the outcome the dog needs, so that new pattern gets practiced instead.
-And as the dog's emotional response changes through training, what they need from the consequence can change too.
+Now the new behavior leads to the outcome the dog needs, so that new pattern gets practiced instead. The consequence is the same, but the old behavior you wanted to change is gone, and a better behavior has taken its place.
+After training, there's less management, because the dog's skills have improved, the emotions have changed, and the new behavior is in place.
+And as the dog's emotional response changes, what they need from the consequence can change too.
 Your dog might even start wanting something else, like the chance to build a relationship with another dog. And that's a good thing.
 You'll also notice changes in arousal and stress shown in this visual. We're going to unpack that more when we add temperature to our pot.
 
-CH03,S15: Your Homework
+CH03,S12: Your Homework
 On-screen text: Your Homework / What was the thing? / What was the context? / What did your dog do? / What happened as a result? / WTF: What's The Function? / It doesn't have to be perfect / Find the thing. Notice the context. See the pattern.
 Narration:
 Before we move on, I want you to start looking for your dog's ABCs.
@@ -158,7 +135,7 @@ Finally, ask: WTF? What's the function? What did the behavior accomplish?
 You don't have to get the function perfectly right.
 The goal is to start finding the thing, noticing the context, and seeing the pattern.
 
-CH03,S16: Now We Can Add Temperature
+CH03,S13: Now We Can Add Temperature
 On-screen text: Now we can add temperature. / Back to the pot / Next: temperature
 Narration:
 Now we have the missing piece.

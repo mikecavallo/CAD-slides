@@ -87,29 +87,31 @@ pipeline). This file records the state, decisions and working agreements from ea
 
 ## Chapter 3 video (built, preview voice only)
 
-- Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`). Scenes renumbered in round 4 to match the new script:
-  `ch03intro`, `ch03card`, `ch03plan`, `ch03s01` to `ch03s16`. About 8.1 minutes.
-- The full current script is `script/Chapter-3-Script.txt`, also uploaded to Tori's Drive as a new Google Doc
-  "Chapter 3 script (updated, to paste into Script v4)" (id 16nHUVhto1J-QYaLfEN4nMfMaWTR1LhyMNAtVc6F35PY); Tori pastes it
-  into Script v4. There is no Google Docs editor connector, so Claude cannot edit Script v4 in place. From now on the
-  lesson file and this script are the source until Tori's doc catches up.
-- Slides: s01 ABCs intro (pot with the thermometer through the middle; label just "Temperature"), s02 the ABCs (A, B, C in a
-  ROW, no cycles anywhere), s03 function, s04 to s06 the three photo examples, s07 same behavior different job (+ "it worked,
-  so it's more likely to be repeated"), s08 four directions, s09 movement isn't function, s10 emotion between A and B,
-  s11 Why the Pattern Repeats (before strip, heart between A and B), s12 What Training Includes (Management, Changing
-  emotions, New behaviors), s13 Building a New Path (Chapter 1's lawn from ch01s09, same paths and look, plus a management gate:
-  the new dotted trail wears in, the gate closes the old path and grass grows back, a faint trace, it can come back), s14 Training in Action (during strip: the CONSEQUENCE still needs to work for
-  the dog; after strip: C changes to "Less space needed", then Tori's painting `abc_after_c2.jpg` of the golden and the
-  border collie playing, "Building a relationship"; arousal line), s15 Your Homework (WTF tiles land with the function
-  question), s16 temperature hand-off and logo close.
-- Feedback history: round 1 cut the doc's S14/S15 (repeated the cycle); round 2 cut lines that restated earlier slides;
-  round 3 cut "Emotion and Function Are Different" and "When Behavior Works", no cycles, linear strips with emotions
-  between A and B, WTF; round 4: no straight line across the pot's top (fixed in c2_pot.js `BODY_OPEN`, so Chapter 2's pots
-  change on its next render too), thermometer through the middle of the rim, don't define temperature yet, the consequence
-  (not the behavior) still has to work for the dog, training = management + changing emotions + new behaviors, the lawn
-  paths are back on their own slide, heading "Your Homework".
-- Scene code: `c3a.js` (intro, card, plan, s01 to s03; `C3.potWithThermo`), `c3b.js` (s04 to s07), `c3c.js` (s08 to s10),
-  `c3d.js` (s11 to s14), `c3e.js` (s15, s16); kit `c3_abc.js` (photo ABC strip, function tag, lawn, tiles, chips, rows).
+- Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`): `ch03intro`, `ch03card`, `ch03plan`, `ch03s01` to `ch03s13`.
+  About 7.7 minutes. Renumbered again in round 5; recording ids follow these numbers.
+- The current script is `script/Chapter-3-Script.txt` (regenerate it from the lesson after every change). It is also in
+  Tori's Drive as "Chapter 3 script v2 (paste into Script v4)" (id 14Mrf88lQQMxOM2PX6ZAddF6v9LgbIYRGNUmAfNf8FsQ; v1 was
+  16nHUVhto1J-QYaLfEN4nMfMaWTR1LhyMNAtVc6F35PY). Drive can only create new files: no Google Docs editor connector, so
+  Claude can't edit Script v4 in place. The lesson file is the source until Tori's doc catches up.
+- Slides: s01 ABCs intro (pot with the thermometer through the middle, label just "Temperature"); s02 The ABCs: the
+  excited-greeting strip is the explainer (definitions inside the A, B, C frames, B says "e.g. barking, lunging", a plum
+  heart "Emotional response" pops between A and B, then each definition fades into the greeting photo); s03 function, then
+  the greeting's possible function and "two more examples"; s04 approach; s05 guard; s06 same behavior different job ("it
+  worked, so it's more likely to be repeated"); s07 movement isn't function; s08 Why the Pattern Repeats ("Let's look at
+  another example", before strip); s09 What Training Includes (management, changing emotions, new behaviors); s10 Building a
+  New Path (Chapter 1's lawn from ch01s09 + a management gate; labels "Old path: e.g. barking, lunging", "New path: e.g. looks
+  back at you, checks in"; even occasional practice grows the old path back); s11 Training in Action (during: "Management,
+  e.g. more distance", the consequence still needs to work, "Same consequence. A better behavior in its place."; after:
+  less management because skills improved, emotions changed and the new behavior is in place; C: less space needed, then
+  Tori's painting `abc_after_c2.jpg`, "Building a relationship"; arousal line); s12 Your Homework (WTF with the function
+  question); s13 temperature and logo close.
+- Rules from Tori's rounds: no cycles anywhere (linear ABC only); any behavior named on screen gets "e.g." examples so the
+  course is not only about barking and lunging; cut anything that repeats (Four Broad Directions, the separate
+  emotional-response slide, Emotion vs Function, When Behavior Works, the doc's old S14/S15 were all cut); the
+  consequence, not the behavior, still has to work for the dog; training = management + changing emotions + new
+  behaviors; no straight line across the pot top (c2_pot.js `BODY_OPEN`; Chapter 2 picks it up on its next render).
+- Scene code: `c3a.js` (intro, card, plan, s01 to s03; `C3.potWithThermo`), `c3b.js` (s04 to s06), `c3c.js` (s07),
+  `c3d.js` (s08 to s11), `c3e.js` (s12, s13); kit `c3_abc.js` (photo ABC strip, function tag, tiles, chips, rows).
 - Colours: A olive, B green, C deep green; the emotional response is plum (`#8b5d8f`); function green with a target icon.
 - Online preview (temporary AI voice): https://claude.ai/artifact/LgEH4FvtiMGM1FG7V3iDuz (`out/web/chapter3/`; publish
   without the .vtt files, captions are inline).

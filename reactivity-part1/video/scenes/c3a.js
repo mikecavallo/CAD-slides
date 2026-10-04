@@ -3,8 +3,10 @@
 //   ch03card   Chapter card         shared narrated chapter card
 //   ch03plan   Where we're headed   shared plan slide
 //   ch03s01    The ABCs of Behavior chapter 2's pot and thermometer wait ("Coming up"); a dog in a dashed circle; A, B, C tiles land
-//   ch03s02    The ABCs             A, B, C in a row; definitions and the A example (the thing, the context, the place predicts)
-//   ch03s03    What did it accomplish?  A, B, C row, the question, function defined, looks like vs does, three examples
+//   ch03s02    The ABCs             the greeting strip as the explainer: definitions in the frames, the heart for the emotional
+//                                   response between A and B, then the definitions fade into the greeting photos
+//   ch03s03    What did it accomplish?  A, B, C row, the question, function defined, looks like vs does, the greeting's
+//                                       possible function, two more examples
 (() => {
   const { sayAt, clamp } = C1;
   const { COL } = C3;
@@ -91,111 +93,83 @@
     tl.to([bef, aft], { opacity: 0.4, duration: 0.5 }, t3);
   });
 
-  // ================================================================== ch03s02 The ABCs
+  // ================================================================== ch03s02 The ABCs (explained on the excited greeting)
+  // The ABC strip with the greeting panels: first each frame holds its definition and a heart for the emotional response pops
+  // between A and B; then each definition fades into the greeting photo with its caption.
   registerScene('ch03s02', ctx => {
-    const { stage, tl, cue, end, dur } = ctx;
+    const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
-    C3.head(ctx, 'The ABCs', { size: 76 });
+    stage.appendChild(K.el('style', null, `
+      .c3d-def { position: absolute; inset: 0; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 12px; padding: 18px 22px; text-align: center; box-sizing: border-box; }
+      .c3d-def .w { font: 700 42px/1 var(--font-head); }
+      .c3d-def .d { font: 600 34px/1.25 var(--font-body); color: var(--ink); }
+      .c3d-def .d b { color: var(--green-dark); }
+      .c3d-def .d i { font-style: normal; color: var(--ink-soft); font-weight: 500; }
+      .c3d-emo { position: absolute; text-align: center; font: 700 26px/1.1 var(--font-body); color: ${COL.emo}; }`));
+    const h1 = C3.head(ctx, 'The ABCs', { size: 72 });
+    const h2 = K.heading(stage, 'An Excited Greeting', { x: 100, y: 110, w: 1440, size: 72, barGap: 18 });
+    gsap.set(h2.all, { opacity: 0 });
 
-    // A, B, C in a straight line (Tori: no cycles), arrows between them
-    const R = (() => {
-      const D = 150, XS = [190, 470, 750], Y = 560;
-      const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-      const arcs = [], heads = [];
-      [0, 1].forEach(k => {
-        const x0 = XS[k] + D / 2 + 14, x1 = XS[k + 1] - D / 2 - 14;
-        arcs.push(K.path(svg, `M ${x0} ${Y} L ${x1 - 6} ${Y}`, { stroke: C.greenLight, 'stroke-width': 12 }));
-        heads.push(K.path(svg, `M ${x1 - 22} ${Y - 20} L ${x1} ${Y} L ${x1 - 22} ${Y + 20}`, { stroke: C.greenLight, 'stroke-width': 12 }));
-      });
-      const nodes = ['A', 'B', 'C'].map((L, k) => ({ el: C3.node(stage, L, XS[k], Y, D, [COL.A, COL.B, COL.C][k]), x: XS[k], y: Y }));
-      return { svg, arcs, heads, nodes };
-    })();
-    const nodes = R.nodes.map(n => n.el);
-    tl.fromTo(nodes, { opacity: 0, scale: 0.6 }, { opacity: 0.3, scale: 1, duration: 0.6, stagger: 0.1, ease: 'back.out(1.6)' }, 0.2);
-    A.draw(tl, R.arcs, 0.4, 0.8, { stagger: 0.1 });
-    tl.fromTo(R.heads, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.2);
-    const light = (k, t) => {
-      tl.to(nodes[k], { opacity: 1, scale: 1.12, duration: 0.4, ease: 'back.out(2)' }, t);
-      tl.to(nodes[k], { scale: 1, duration: 0.4 }, t + 0.45);
-    };
-    const RX = 930, RW = 890;
-
-    // ---------- beat 0: A = Antecedent
-    light(0, cue(0) + 0.05);
-    const dA = C3.def(stage, 'A', COL.A, 'Antecedent', 'The thing that happens and the *context* around it', RX, 250, RW);
-    A.in(tl, dA, cue(0) + 0.3, 'fadeLeft', { dur: 0.6 });
-
-    // ---------- beat 1: the thing + the context (two cards to fill)
-    const mkCard = (x, icon, title) => {
-      const c = C3.put(stage, 'c3-card', null, { x, y: 450, w: 430, h: 300 });
-      const hd = C3.chip(c, icon, title, 24, 22, { col: COL.A });
-      hd.style.boxShadow = 'none';
-      return c;
-    };
-    const cThing = mkCard(RX, 'zap', '*The thing*');
-    const cCtx = mkCard(RX + 460, 'map-pin', '*The context*');
-    A.in(tl, cThing, clamp(at(1, 'immediate thing', 0.15), cue(1), end(1) - 1.5), 'fadeUp', { dur: 0.6 });
-    A.in(tl, cCtx, clamp(at(1, 'where it happens', 0.5), cue(1) + 0.6, end(1) - 0.6), 'fadeUp', { dur: 0.6 });
-
-    // ---------- beat 2: the thing: another dog appearing
-    const big = (parent, icon, col, x, y) => { const b = C2.badge(parent, icon, x, y, 100, col, '#fff'); return b; };
-    const b1 = big(cThing, 'dog', C.amber, 90, 150);
-    const t1 = C3.put(cThing, 'c3-lab', '<b>Another dog</b><br><b>appears</b>', { x: 160, y: 112 });
-    t1.style.fontSize = '32px';
-    const tThing = clamp(at(2, 'another dog appearing', 0.5), cue(2) + 0.2, end(2) - 0.4);
-    A.in(tl, b1, tThing, 'pop', { dur: 0.5 });
-    A.in(tl, t1, tThing + 0.2, 'fadeRight', { dur: 0.5 });
-
-    // ---------- beat 3: the context: a particular place, dogs too close, again and again
-    const b2 = big(cCtx, 'map-pin', COL.A, 90, 150);
-    const t2 = C3.put(cCtx, 'c3-lab', '<b>Same place,</b><br><b>dogs too close</b>', { x: 160, y: 112 });
-    t2.style.fontSize = '32px';
-    const tCtx = clamp(at(3, 'particular location', 0.3), cue(3) + 0.2, end(3) - 1.6);
-    A.in(tl, b2, tCtx, 'pop', { dur: 0.5 });
-    A.in(tl, t2, tCtx + 0.2, 'fadeRight', { dur: 0.5 });
-    const reps = [0, 1, 2].map(k => {
-      const r = C3.chip(cCtx, 'repeat', 'Again', 40 + k * 0, 220, { col: C.amber, size: 26 });
-      return r;
+    const S = C3.strip(stage, { x: 140, y: 236, w: 1640, gap: 190, panels: ['abc_greet_a.jpg', 'abc_greet_b.jpg', 'abc_greet_c.jpg'],
+      captions: ['A person appears<br>outside the window', 'The dog jumps at the<br>window and barks', 'The person comes inside<br>and gives attention'] });
+    S.frames(tl, 0.2);
+    const DEF = [
+      ['Antecedent', COL.A, 'The thing that happens + <b>the context</b> around it'],
+      ['Behavior', COL.B, 'What the dog does<br><i>e.g. barking, lunging</i>'],
+      ['Consequence', COL.C, 'What happens <b>as a result</b>'],
+    ];
+    const defs = DEF.map(([w, col, d], k) => {
+      const n = K.el('div', 'c3d-def');
+      n.appendChild(K.el('div', 'd', d));
+      S.cols[k].panel.appendChild(n);
+      gsap.set(n, { opacity: 0 });
+      return n;
     });
-    reps.forEach((r, k) => { r.style.left = 30 + k * 128 + 'px'; r.innerHTML = ''; const ic = K.el('div', 'ic'); ic.style.background = C.amber; ic.appendChild(K.icon('dog')); r.appendChild(ic); r.style.padding = '6px'; });
-    const tRep = clamp(at(3, 'repeatedly', 0.6), tCtx + 0.6, end(3) - 0.5);
-    reps.forEach((r, k) => A.in(tl, r, tRep + k * 0.3, 'pop', { dur: 0.4 }));
+    const head = (k, t) => tl.fromTo(S.cols[k].head, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', immediateRender: false }, t);
+    const showDef = (k, t) => {
+      head(k, t);
+      tl.fromTo(defs[k], { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out', immediateRender: false }, t + 0.1);
+      if (k > 0) tl.fromTo(S.arrows[k - 1], { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t);
+    };
+    // the photo replaces the definition
+    const toPhoto = (k, t) => {
+      tl.fromTo(S.cols[k].img, { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 1.0, ease: 'power2.out', immediateRender: false }, t);
+      tl.to(defs[k], { opacity: 0, duration: 0.6 }, t + 0.1);
+      tl.fromTo(S.cols[k].cap, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, immediateRender: false }, t + 0.4);
+    };
+    // the emotional response: a heart between A and B
+    const [hx, hy] = S.arrowPt(0);
+    const heart = C2.badge(S.wrap, 'heart', hx, hy - 66, 80, COL.emo, '#fff');
+    heart.style.border = '5px solid #fff';
+    heart.style.boxShadow = '0 8px 20px rgba(80,40,90,0.3)';
+    const emo = C2.put(S.wrap, 'c3d-emo', 'Emotional<br>response', { x: hx - 90, y: hy + 34, w: 180 });
+    gsap.set([heart, emo], { opacity: 0 });
 
-    // ---------- beat 4: the place itself starts to predict trouble
-    const t4 = cue(4);
-    const pr = K.el('div', 'c3-row');
-    const pin = K.el('div', 'ic'); pin.style.background = COL.A; pin.appendChild(K.icon('map-pin')); pr.appendChild(pin);
-    pr.appendChild(K.el('span', null, K.md('The place itself *starts to predict* trouble')));
-    const warn = K.el('div', 'ic'); warn.style.background = C.amber; warn.appendChild(K.icon('triangle-alert'));
-    Object.assign(pr.style, { left: RX + 'px', top: '790px' });
-    stage.appendChild(pr);
-    const arw = K.el('div', 'ic'); arw.style.background = 'transparent'; arw.style.color = C.muted; arw.appendChild(K.icon('arrow-right'));
-    pr.insertBefore(arw, pr.children[1]);
-    pr.insertBefore(warn, pr.children[2]);
-    A.in(tl, pr, clamp(at(4, 'start to predict', 0.5), t4 + 0.3, end(4) - 0.6), 'fadeUp', { dur: 0.6 });
-    tl.to(b2, { scale: 1.15, duration: 0.3, yoyo: true, repeat: 1 }, t4 + 0.3);
-
-    // ---------- beat 5: B = Behavior (the A details clear)
+    // ---------- beats 0, 1: A and the context
+    showDef(0, cue(0) + 0.1);
+    const tCx = clamp(at(1, 'where it happens', 0.3), cue(1) + 0.2, end(1) - 0.8);
+    tl.to(defs[0].querySelector('b'), { backgroundColor: 'rgba(184,217,154,0.8)', duration: 0.3 }, tCx);
+    tl.to(defs[0], { scale: 1.05, duration: 0.3, yoyo: true, repeat: 1 }, tCx);
+    // ---------- beat 2: the emotional response between A and B
+    const tE = clamp(at(2, 'emotional response', 0.3), cue(2) + 0.1, end(2) - 1);
+    tl.fromTo(heart, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)', immediateRender: false }, tE);
+    tl.fromTo(emo, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, immediateRender: false }, tE + 0.2);
+    for (let k = 0; k < 4; k++) tl.to(heart, { scale: 1.15, duration: 0.14, yoyo: true, repeat: 1 }, tE + 0.8 + k * 0.9);
+    // ---------- beats 3, 4: B and C
+    showDef(1, cue(3) + 0.1);
+    showDef(2, cue(4) + 0.1);
+    // ---------- beat 5: the example: the heading becomes An Excited Greeting
     const t5 = cue(5);
-    tl.to([dA, cThing, cCtx, pr], { opacity: 0, y: -20, duration: 0.45, stagger: 0.05, ease: 'power2.in' }, t5 - 0.1);
-    tl.to(nodes[0], { opacity: 0.55, duration: 0.4 }, t5);
-    light(1, t5 + 0.1);
-    const dB = C3.def(stage, 'B', COL.B, 'Behavior', 'What the dog *does*', RX, 300, RW);
-    A.in(tl, dB, t5 + 0.4, 'fadeLeft', { dur: 0.6 });
-
-    // ---------- beat 6: C = Consequence
-    const t6 = cue(6);
-    tl.to(nodes[1], { opacity: 0.55, duration: 0.4 }, t6);
-    light(2, t6 + 0.1);
-    const dC = C3.def(stage, 'C', COL.C, 'Consequence', 'What happens as a *direct result* of the behavior', RX, 500, RW);
-    A.in(tl, dC, t6 + 0.4, 'fadeLeft', { dur: 0.6 });
-
-    // the ring lights up once all three are defined
-    const tAll = Math.min(end(6) + 0.2, ctx.dur - 1.2);
-    tl.to(nodes, { opacity: 1, duration: 0.4 }, tAll);
-    tl.to([...R.arcs, ...R.heads], { stroke: C.green, duration: 0.5, stagger: 0.12 }, tAll);
+    tl.to(h1.all, { opacity: 0, duration: 0.4 }, t5);
+    tl.fromTo(h2.all, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, immediateRender: false }, t5 + 0.3);
+    // ---------- beats 6, 7, 8: each definition becomes the photo
+    toPhoto(0, cue(6) + 0.1);
+    tl.to(heart, { scale: 1.25, duration: 0.2, yoyo: true, repeat: 3 }, clamp(at(7, 'emotional response', 0.2), cue(7), end(7) - 1));
+    toPhoto(1, clamp(at(7, 'jumps', 0.5), cue(7) + 0.6, end(7) - 0.6));
+    toPhoto(2, cue(8) + 0.1);
   });
 
   // ================================================================== ch03s03 What did the behavior accomplish?
@@ -257,18 +231,31 @@
     A.in(tl, cd, tD + 0.1, 'fadeUp', { dur: 0.6 });
     tl.to(cd, { boxShadow: '0 18px 44px rgba(40,60,20,0.16), 0 0 0 5px rgba(97,149,55,1)', duration: 0.5 }, tD + 0.6);
 
-    // ---------- beat 4: three examples slide in
+    // ---------- beat 4: the greeting's answer: its B and C photos and the possible function
     const t4 = cue(4);
     tl.to([cl, cd], { opacity: 0, y: 30, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t4 - 0.1);
-    const TH = ['abc_greet_b.jpg', 'abc_approach_b.jpg', 'abc_guard_b.jpg'];
-    TH.forEach((src, k) => {
-      const p = K.photo(stage, src, { x: 150 + k * 560, y: 470, w: 500, h: 290, radius: 24 });
+    const GR = [['abc_greet_b.jpg', 'B'], ['abc_greet_c.jpg', 'C']].map(([src, L], k) => {
+      const p = K.photo(stage, src, { x: 330 + k * 660, y: 450, w: 600, h: 320, radius: 24 });
       p.root.style.border = '6px solid ' + C.olive;
-      const num = K.el('div', 'c3-node', String(k + 1));
-      Object.assign(num.style, { left: 150 + k * 560 - 26 + 'px', top: '444px', width: '76px', height: '76px', background: C.olive, fontSize: '40px' });
+      const num = K.el('div', 'c3-node', L);
+      Object.assign(num.style, { left: 330 + k * 660 - 26 + 'px', top: '424px', width: '76px', height: '76px', background: k ? COL.C : COL.B, fontSize: '40px' });
       stage.appendChild(num);
-      tl.fromTo(p.root, { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, t4 + 0.2 + k * 0.2);
-      A.in(tl, num, t4 + 0.6 + k * 0.2, 'pop', { dur: 0.4 });
+      tl.fromTo(p.root, { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, t4 + 0.2 + k * 0.25);
+      A.in(tl, num, t4 + 0.6 + k * 0.25, 'pop', { dur: 0.4 });
+      return [p.root, num];
+    }).flat();
+    const tag = C3.fnTag(stage, 'in', 'Decrease distance / gain attention', 960, 820);
+    tag.show(tl, clamp(at(4, 'get closer', 0.5), t4 + 1.0, end(4) - 0.8));
+
+    // ---------- beat 5: two more examples
+    const t5 = cue(5);
+    tl.to([...GR, tag.t], { opacity: 0, duration: 0.4 }, t5 - 0.1);
+    [['abc_approach_b.jpg', 'A Person Approaches'], ['abc_guard_b.jpg', 'Guarding a Toy']].forEach(([src, lab], k) => {
+      const p = K.photo(stage, src, { x: 330 + k * 660, y: 470, w: 600, h: 320, radius: 24 });
+      p.root.style.border = '6px solid ' + C.olive;
+      const l = C2.put(stage, 'c3-mid', `<b>${lab}</b>`, { x: 330 + k * 660, y: 810, w: 600, align: 'center' });
+      tl.fromTo(p.root, { opacity: 0, x: 100 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, t5 + 0.2 + k * 0.25);
+      A.in(tl, l, t5 + 0.6 + k * 0.25, 'fadeUp', { dur: 0.5 });
     });
   });
 })();

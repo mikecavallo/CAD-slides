@@ -1,10 +1,10 @@
 // Chapter 3: why the pattern repeats, what training includes, the paths, and training in action. Linear ABC photo strips
 // (Tori's panels) with the emotional response shown between A and B; no cycles (Tori, round 3).
-//   ch03s11  Why the pattern repeats   before training: A, the emotional response, B, C; getting space makes it more likely
-//   ch03s12  What training includes   three cards: management, changing emotions, new behaviors
-//   ch03s13  Building a new path      chapter 1's lawn: the new path wears in; a management gate closes the old path and
+//   ch03s08  Why the pattern repeats   before training: A, the emotional response, B, C; getting space makes it more likely
+//   ch03s09  What training includes   three cards: management, changing emotions, new behaviors
+//   ch03s10  Building a new path      chapter 1's lawn: the new path wears in; a management gate closes the old path and
 //                                     the grass grows back; a faint trace stays; practice wears it in again
-//   ch03s14  Training in action       during training (management, changing emotions, a new behavior, the consequence still
+//   ch03s11  Training in action       during training (management, changing emotions, a new behavior, the consequence still
 //                                     works); after training (calmer; C changes: less space needed, then building a
 //                                     relationship); the three emotional states side by side for the arousal line
 (() => {
@@ -44,8 +44,8 @@
     return S;
   }
 
-  // ================================================================== ch03s11 Why the pattern repeats
-  registerScene('ch03s11', ctx => {
+  // ================================================================== ch03s08 Why the pattern repeats
+  registerScene('ch03s08', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -54,18 +54,19 @@
     C3.head(ctx, 'Why the Pattern Repeats', { size: 72 });
     const S = strip(stage, { label: 'Before training', v: 'red', emo: 'Emotions', hs: 84,
       imgs: ['abc_before_a.jpg', 'abc_before_b.jpg', 'abc_before_c.jpg'],
-      caps: ['Another dog appears<br>too close.', 'Barking, lunging,<br>growling', 'Space is given.<br>The situation ends.'] });
-    S.frames(tl, 0.2);
-    S.show(tl, 0, clamp(at(0, 'Another dog', 0.05), cue(0) + 0.1, end(0) - 0.6));
-    const tE = clamp(at(1, 'emotional response', 0.3), cue(1) + 0.1, end(1) - 2);
+      caps: ['Another dog appears<br>too close.', 'e.g. barking, lunging,<br>growling', 'Space is given.<br>The situation ends.'] });
+    // beat 0: "Let's look at another example": the frames
+    S.frames(tl, cue(0) + 0.2);
+    S.show(tl, 0, clamp(at(1, 'Another dog', 0.05), cue(1) + 0.1, end(1) - 0.6));
+    const tE = clamp(at(2, 'emotional response', 0.3), cue(2) + 0.1, end(2) - 2);
     S.emo(tl, tE);
     S.beat(tl, tE + 0.6, ctx.dur - 0.6, 0.5, 1.2);
-    S.show(tl, 1, clamp(at(1, 'we see the B', 0.6), tE + 0.8, end(1) - 0.4));
-    S.show(tl, 2, cue(2) + 0.1);
-    const note = C2.put(stage, 'c3-mid', 'Getting more space can make this behavior <b>more likely next time</b>.', { x: 0, y: 862, w: 1920, align: 'center' });
+    S.show(tl, 1, clamp(at(2, 'we see the B', 0.6), tE + 0.8, end(2) - 0.4));
+    S.show(tl, 2, cue(3) + 0.1);
+    const note = C2.put(stage, 'c3-mid', 'It worked: getting more space can make this behavior <b>more likely next time</b>.', { x: 0, y: 862, w: 1920, align: 'center' });
     note.style.color = C.red;
     note.querySelector('b').style.color = C.red;
-    A.in(tl, note, clamp(at(3, 'more likely', 0.7), cue(3) + 0.5, end(3) - 0.4), 'fadeUp', { dur: 0.5 });
+    A.in(tl, note, clamp(at(4, 'more likely', 0.7), cue(4) + 0.5, end(4) - 0.4), 'fadeUp', { dur: 0.5 });
   });
 
   // ------------------------------------------------------------------ the relationship picture for the After C panel:
@@ -79,8 +80,8 @@
     return img;
   }
 
-  // ================================================================== ch03s12 What training includes
-  registerScene('ch03s12', ctx => {
+  // ================================================================== ch03s09 What training includes
+  registerScene('ch03s09', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -90,7 +91,7 @@
     const CARDS = [
       { icon: 'shield-check', col: C.greenDeep, t: 'Management', s: 'Keeps the dog out of the situations that bring up those big emotions' },
       { icon: 'heart', col: COL.emo, t: 'Changing emotions', s: 'How the dog feels about the thing' },
-      { icon: 'route', col: C.green, t: 'New behaviors', s: 'Something else the dog can do instead' },
+      { icon: 'route', col: C.green, t: 'New behaviors', s: 'Something else the dog can do instead, e.g. checking in with you' },
     ];
     const W = 540, G = 50, X0 = (1920 - 3 * W - 2 * G) / 2, Y = 290, H = 560;
     const cards = CARDS.map((c, k) => {
@@ -121,11 +122,11 @@
     });
   });
 
-  // ================================================================== ch03s13 Building a new path
+  // ================================================================== ch03s10 Building a new path
   // Chapter 1's lawn (ch01s09: the worn diagonal path with footprint dots, the new dotted trail), drawn at the same
   // proportions, plus a management gate across the old path. The old path wears in; the new path is revealed and wears in;
   // the gate closes the old path and grass grows back over it; a faint trace stays; practice wears it in again.
-  registerScene('ch03s13', ctx => {
+  registerScene('ch03s10', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -201,8 +202,8 @@
       stage.appendChild(n);
       return n;
     };
-    const oldP = pill('volume-2', 'Old path: barking and lunging', C.red, 560, 110);
-    const newP = pill('sprout', 'New path: looks back at you', C.greenDark, 560, 405);
+    const oldP = pill('volume-2', 'Old path: e.g. barking, lunging', C.red, 590, 110);
+    const newP = pill('sprout', 'New path: e.g. looks back at you, checks in', C.greenDark, 400, 405);
     const gateP = pill('shield-check', 'Management', C.greenDeep, 40, 220);
 
     // ---------- beat 0: the old path wears in
@@ -247,7 +248,7 @@
 
     // ---------- beat 4: practiced again and it works: the old path wears back in
     const t4 = cue(4);
-    const tA = clamp(at(4, 'practicing the old behavior', 0.3), t4 + 0.1, end(4) - 3);
+    const tA = clamp(at(4, 'once in a while', 0.2), t4 + 0.1, end(4) - 3);
     tl.to(gIn, { opacity: 0.3, duration: 0.4 }, tA);
     tl.to(trace, { opacity: 0, duration: 0.3 }, tA);
     tufts.forEach((tf, j) => tl.to(tf, { scale: 0, svgOrigin: '0 0', duration: 0.3 }, tA + 0.3 + j * 0.05));
@@ -255,14 +256,14 @@
     tl.to(worn, { attr: { 'stroke-width': 78 }, opacity: 1, duration: 1.8, ease: 'power2.out' }, tA + 0.6);
     tl.to(wornIn, { attr: { 'stroke-width': 34 }, duration: 1.6 }, tA + 0.9);
     tl.to(oldP, { opacity: 1, duration: 0.4 }, tA + 0.6);
-    const cb = C3.chip(stage, 'triangle-alert', 'It can come back', 0, 0, { col: C.amber, size: 30 });
+    const cb = C3.chip(stage, 'triangle-alert', 'Back to the old path', 0, 0, { col: C.amber, size: 30 });
     const [cx, cy] = st(40, 30);
     Object.assign(cb.style, { left: cx + 'px', top: cy + 'px' });
-    A.in(tl, cb, clamp(at(4, 'stronger again', 0.85), tA + 1.4, end(4) - 0.3), 'pop', { dur: 0.45 });
+    A.in(tl, cb, clamp(at(4, 'fall back', 0.6), tA + 1.4, end(4) - 0.3), 'pop', { dur: 0.45 });
   });
 
-  // ================================================================== ch03s14 Training in action
-  registerScene('ch03s14', ctx => {
+  // ================================================================== ch03s11 Training in action
+  registerScene('ch03s11', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -273,7 +274,7 @@
     // ---------- beats 0 to 3: during training
     const D = strip(stage, { label: 'During training', v: '', emo: 'Changing<br>emotions',
       imgs: ['abc_during_a.jpg', 'abc_during_b.jpg', 'abc_during_c.jpg'],
-      caps: ['Management.', 'Looks back<br>at you.', 'Space is given.'] });
+      caps: ['Management, e.g.<br>more distance.', 'e.g. looks back<br>at you.', 'Space is given.'] });
     D.frames(tl, cue(0) + 0.05);
     D.show(tl, 0, clamp(at(0, 'another dog may still appear', 0.5), cue(0) + 0.4, end(0) - 0.6));
     const tCh = clamp(at(1, 'changing', 0.2), cue(1) + 0.1, end(1) - 2.5);
@@ -290,9 +291,9 @@
     // beat 3: the new pattern gets practiced
     const t3 = cue(3);
     tl.to(cw, { opacity: 0, duration: 0.3 }, t3);
-    const np = C3.chip(stage, 'repeat', 'The *new pattern* gets practiced', 960, 866, { center: true, size: 34, col: C.green });
+    const np = C3.chip(stage, 'repeat', 'Same consequence. *A better behavior* in its place.', 960, 866, { center: true, size: 34, col: C.green });
     np.style.borderColor = C.green;
-    A.in(tl, np, clamp(at(3, 'gets practiced', 0.7), t3 + 0.5, end(3) - 0.4), 'pop', { dur: 0.5 });
+    A.in(tl, np, clamp(at(3, 'The consequence is the same', 0.6), t3 + 0.5, end(3) - 0.4), 'pop', { dur: 0.5 });
 
     // ---------- beats 4 to 6: after training
     const t9 = cue(4);
@@ -302,10 +303,13 @@
       caps: ['Less management<br>as skills improve.', 'Readily uses the<br>new behavior.',
         '<span class="c3s">Space is given.</span><span class="c3s">Less space<br>needed.</span><span class="c3s">Building a<br>relationship.</span>'] });
     Af.frames(tl, t9 + 0.1);
-    Af.show(tl, 0, t9 + 0.4);
-    Af.emo(tl, t9 + 0.9);
-    Af.show(tl, 1, t9 + 1.3);
-    Af.show(tl, 2, t9 + 1.9);
+    const tLm = clamp(at(4, 'less management', 0.2), t9 + 0.4, end(4) - 3);
+    Af.show(tl, 0, tLm);
+    const tEm = clamp(at(4, 'emotions have changed', 0.6), tLm + 0.8, end(4) - 2);
+    Af.emo(tl, tEm);
+    const tNb = clamp(at(4, 'new behavior is in place', 0.85), tEm + 0.7, end(4) - 1);
+    Af.show(tl, 1, tNb);
+    Af.show(tl, 2, tNb + 0.7);
     const cs = [...Af.cols[2].cap.querySelectorAll('.c3s')];
     gsap.set(cs.slice(1), { opacity: 0 });
     const swapCap = (a, b, t) => {
@@ -313,21 +317,21 @@
       tl.fromTo(cs[b], { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4, immediateRender: false }, t + 0.25);
       tl.to(Af.cols[2].cap, { backgroundColor: C.pale, borderColor: C.green, duration: 0.4 }, t);
     };
-    swapCap(0, 1, clamp(at(4, 'can change too', 0.8), t9 + 2.6, end(4) - 0.5));
+    swapCap(0, 1, clamp(at(5, 'can change too', 0.8), cue(5) + 0.4, end(5) - 0.5));
     // beat 5: something new: the C picture becomes the two dogs playing; that's a good thing
-    const t10 = cue(5);
-    const tR = clamp(at(5, 'build a relationship', 0.5), t10 + 0.2, end(5) - 1.8);
+    const t10 = cue(6);
+    const tR = clamp(at(6, 'build a relationship', 0.5), t10 + 0.2, end(6) - 1.8);
     relationship(Af.cols[2].panel, tl, tR - 0.2);
     swapCap(1, 2, tR);
     tl.to(Af.cols[2].panel, { borderColor: C.green, boxShadow: '0 0 0 8px rgba(97,149,55,0.35)', duration: 0.5 }, tR);
     const good = C3.chip(stage, 'check', 'The dog may want something new. *That’s a good thing.*', 960, 868, { center: true, size: 36, col: C.green });
     good.style.borderColor = C.green;
-    A.in(tl, good, clamp(at(5, "that's a good thing", 0.85), tR + 0.8, end(5) - 0.3), 'pop', { dur: 0.55 });
+    A.in(tl, good, clamp(at(6, "that's a good thing", 0.85), tR + 0.8, end(6) - 0.3), 'pop', { dur: 0.55 });
     // beat 6: arousal and stress across the three stages
-    const t11 = cue(6);
+    const t11 = cue(7);
     tl.to(good, { opacity: 0, duration: 0.3 }, t11);
     const SUM = [['Before:', 'arousal and stress up', C.red, 64], ['During:', 'changing', C.amber, 54], ['After:', 'calmer', C.green, 44]];
-    const tS = clamp(at(6, 'arousal and stress', 0.3), t11 + 0.2, end(6) - 3);
+    const tS = clamp(at(7, 'arousal and stress', 0.3), t11 + 0.2, end(7) - 3);
     SUM.forEach(([a, b, col, hs], k) => {
       const n = K.el('div', 'lin-sum');
       Object.assign(n.style, { left: [190, 820, 1300][k] + 'px', top: '866px' });
@@ -341,6 +345,6 @@
     });
     const up = C2.bookmark(stage, 'Coming up: *temperature*', 1150, 136, 'thermometer');
     up.querySelectorAll('b').forEach(b => { b.style.color = '#b8d99a'; });
-    A.in(tl, up, clamp(at(6, 'add temperature', 0.8), tS + 1.6, end(6) - 0.5), 'fadeLeft', { dur: 0.5 });
+    A.in(tl, up, clamp(at(7, 'add temperature', 0.8), tS + 1.6, end(7) - 0.5), 'fadeLeft', { dur: 0.5 });
   });
 })();

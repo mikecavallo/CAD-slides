@@ -1,5 +1,5 @@
 // Chapter 3: homework and the hand-off to temperature.
-//   ch03s16  Your homework              a worksheet fills row by row (the thing, the context, B, C, function) with question chips;
+//   ch03s13  Your homework              a worksheet fills row by row (the thing, the context, B, C, function) with question chips;
 //                                       WTF (What's The Function?) lands with the function question
 //   ch03s17  Now we can add temperature four checks recap the chapter; the pot and thermometer return; three things temperature
 //                                       will show; logo close
@@ -8,8 +8,8 @@
   const { COL } = C3;
   const C = C1.C;
 
-  // ================================================================== ch03s15 Your homework: find the thing
-  registerScene('ch03s15', ctx => {
+  // ================================================================== ch03s12 Your homework: find the thing
+  registerScene('ch03s12', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -124,8 +124,8 @@
     });
   });
 
-  // ================================================================== ch03s16 Now we can add temperature
-  registerScene('ch03s16', ctx => {
+  // ================================================================== ch03s13 Now we can add temperature
+  registerScene('ch03s13', ctx => {
     const { stage, tl, cue, end, dur } = ctx;
     C2.style(stage);
     C3.css(stage);

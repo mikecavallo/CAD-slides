@@ -1,8 +1,7 @@
-// Chapter 3: the three worked examples and "same behavior, different job".
-//   ch03s04  An excited greeting   photo ABC strip; question badge; possible function: decrease distance / gain attention
-//   ch03s05  A person approaches   same, increase distance
-//   ch03s06  Guarding a toy        same, maintain access
-//   ch03s07  Same behavior. Different job.   three B photos with the same Bark chip; each gets its C outcome and job
+// Chapter 3: two more worked examples (the excited greeting is the explainer in ch03s02) and "same behavior, different job".
+//   ch03s04  A person approaches   same, increase distance
+//   ch03s05  Guarding a toy        same, maintain access
+//   ch03s06  Same behavior. Different job.   three B photos with the same Bark chip; each gets its C outcome and job
 (() => {
   const { sayAt, clamp } = C1;
   const { COL } = C3;
@@ -38,34 +37,28 @@
   }
 
   registerScene('ch03s04', ctx => example(ctx, {
-    title: 'An Excited Greeting', beatA: 0, pA: 'A person appears',
-    panels: ['abc_greet_a.jpg', 'abc_greet_b.jpg', 'abc_greet_c.jpg'],
-    captions: ['A person appears<br>outside the window', 'The dog jumps at the<br>window and barks', 'The person comes inside<br>and gives attention'],
-    icon: 'in', fn: 'Decrease distance / gain attention', pF: 'get closer',
-  }));
-  registerScene('ch03s05', ctx => example(ctx, {
     title: 'A Person Approaches', beatA: 1, noQ: true, pA: 'a person heads',
     panels: ['abc_approach_a.jpg', 'abc_approach_b.jpg', 'abc_approach_c.jpg'],
     captions: ['A person approaches<br>on a walk', 'The dog stops<br>and barks', 'The person stops<br>or moves away'],
     icon: 'out', fn: 'Increase distance', pF: 'create more distance',
   }));
-  registerScene('ch03s06', ctx => example(ctx, {
+  registerScene('ch03s05', ctx => example(ctx, {
     title: 'Guarding a Toy', beatA: 0, noQ: true, pA: 'another dog approaches',
     panels: ['abc_guard_a.jpg', 'abc_guard_b.jpg', 'abc_guard_c.jpg'],
     captions: ['Another dog approaches<br>a dog with a toy', 'Stiffens, barks, growls,<br>and may snap', 'The other dog backs away;<br>the dog keeps the toy'],
     icon: 'shield', fn: 'Maintain access', pF: 'keep access',
   }));
 
-  // ================================================================== ch03s07 Same behavior. Different job.
-  registerScene('ch03s07', ctx => {
+  // ================================================================== ch03s06 Same behavior. Different job.
+  registerScene('ch03s06', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
     C3.head(ctx, 'Same Behavior. Different Job.', { size: 72 });
 
-    const W = 500, H = 280, GAP = 70, X0 = (1920 - 3 * W - 2 * GAP) / 2, Y = 250;
-    const xs = [0, 1, 2].map(k => X0 + k * (W + GAP));
+    const W = 500, H = 280, GAP = 70, ch03s0 = (1920 - 3 * W - 2 * GAP) / 2, Y = 250;
+    const xs = [0, 1, 2].map(k => ch03s0 + k * (W + GAP));
     const B = ['abc_greet_b.jpg', 'abc_approach_b.jpg', 'abc_guard_b.jpg'];
     const CC = ['abc_greet_c.jpg', 'abc_approach_c.jpg', 'abc_guard_c.jpg'];
     const JOB = [['in', 'Get closer'], ['out', 'Create distance'], ['shield', 'Keep access']];

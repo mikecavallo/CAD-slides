@@ -188,16 +188,6 @@
        "onscreen": "What did the behavior accomplish?"
       },
       {
-       "say": "Function is what the behavior accomplished in that situation.",
-       "show": "Definition card: Function = what the behavior accomplished in that situation.",
-       "onscreen": "Function = what the behavior accomplished in that situation"
-      },
-      {
-       "say": "Function isn't what the behavior looks like. It's what the behavior does in that particular situation.",
-       "show": "Two cards: 'What it looks like' (eye) greys out with a cross; 'What it does' (target) lights green.",
-       "onscreen": "Not what it looks like. What it does."
-      },
-      {
        "say": "In the excited greeting, the barking may be helping the dog get closer to the person or gain attention.",
        "show": "The greeting B and C photos with 'Possible function: decrease distance / gain attention'.",
        "onscreen": "Possible function: decrease distance / gain attention"
@@ -267,8 +257,8 @@
        "onscreen": ""
       },
       {
-       "say": "The other dog backs away, and the dog keeps the toy.",
-       "show": "Panel C: 'The other dog backs away; the dog keeps the toy'.",
+       "say": "The other dog goes away, and the dog keeps the toy.",
+       "show": "Panel C: 'The other dog goes away; the dog keeps the toy'.",
        "onscreen": ""
       },
       {
@@ -307,9 +297,9 @@
        "onscreen": "Same behavior. Different outcome. Different possible function."
       },
       {
-       "say": "That's why we can't determine function just by looking at the behavior itself.",
+       "say": "That's why we need to look at the whole picture with the ABCs, not just the behavior.",
        "show": "The B photos dim; 'Look at the whole ABC' lands.",
-       "onscreen": "Look at the whole ABC, not just the behavior"
+       "onscreen": "Look at the whole picture with the ABCs, not just the behavior"
       },
       {
        "say": "In all three, the barking worked. And when behavior works, it's more likely to be repeated.",
@@ -599,9 +589,9 @@
        "onscreen": "Back to the pot"
       },
       {
-       "say": "That will help us look at what happens with arousal and stress as a response builds, what happens to the dog's ability to think, and what happens as they get closer to threshold.",
+       "say": "That will help us look at what happens with arousal and stress as a response builds, what happens to the dog's ability to think, and what happens as the water gets closer to the rim of the pot.",
        "show": "Three chips land one per phrase: As a response builds; Ability to think; Close to threshold (the rim highlights). 'Next chapter: Temperature'; then the logo close.",
-       "onscreen": "Next: temperature"
+       "onscreen": "As a response builds / The dog's ability to think / Getting closer to the rim"
       }
      ]
     }

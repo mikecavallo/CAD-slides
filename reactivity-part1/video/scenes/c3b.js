@@ -45,7 +45,7 @@
   registerScene('ch03s05', ctx => example(ctx, {
     title: 'Guarding a Toy', beatA: 0, noQ: true, pA: 'another dog approaches',
     panels: ['abc_guard_a.jpg', 'abc_guard_b.jpg', 'abc_guard_c.jpg'],
-    captions: ['Another dog approaches<br>a dog with a toy', 'Stiffens, barks, growls,<br>and may snap', 'The other dog backs away;<br>the dog keeps the toy'],
+    captions: ['Another dog approaches<br>a dog with a toy', 'Stiffens, barks, growls,<br>and may snap', 'The other dog goes away;<br>the dog keeps the toy'],
     icon: 'shield', fn: 'Maintain access', pF: 'keep access',
   }));
 
@@ -142,7 +142,7 @@
     tl.to(box, { opacity: 0, scale: 0.96, duration: 0.4 }, t7);
     tl.to(all, { opacity: 1, duration: 0.6 }, t7 + 0.1);
     tl.to(ph.map(p => p.root), { opacity: 0.35, duration: 0.6 }, t7 + 0.8);
-    const pl = C3.chip(stage, 'search', 'Look at the *whole ABC*, not just the behavior', 960, 400, { center: true, size: 40, col: C.green });
+    const pl = C3.chip(stage, 'search', 'Look at the *whole picture* with the ABCs, not just the behavior', 960, 400, { center: true, size: 40, col: C.green });
     pl.style.borderColor = C.green;
     A.in(tl, pl, t7 + 1.0, 'pop', { dur: 0.6 });
 

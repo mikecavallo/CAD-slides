@@ -39,12 +39,10 @@ The dog has an emotional response, jumps at the window, and barks.
 Then the person comes inside and gives the dog attention.
 
 CH03,S03: WTF? What's the Function?
-On-screen text: WTF? What's the Function? / What did the behavior accomplish? / Function = what the behavior accomplished in that situation / Not what it looks like. What it does. / Possible function: decrease distance / gain attention
+On-screen text: WTF? What's the Function? / What did the behavior accomplish? / Possible function: decrease distance / gain attention
 Narration:
 Once we have the ABC, we can ask an important question: WTF? What's the function?
 In other words, what did the behavior accomplish?
-Function is what the behavior accomplished in that situation.
-Function isn't what the behavior looks like. It's what the behavior does in that particular situation.
 In the excited greeting, the barking may be helping the dog get closer to the person or gain attention.
 Let's look at two more examples.
 
@@ -62,17 +60,17 @@ On-screen text: Guarding a Toy / Possible function: maintain access
 Narration:
 Now imagine a dog has a toy and another dog approaches.
 The dog stiffens, barks, growls, and may snap.
-The other dog backs away, and the dog keeps the toy.
+The other dog goes away, and the dog keeps the toy.
 Here, the behavior may be helping the dog keep access to something valuable.
 
 CH03,S06: Same Behavior. Different Job.
-On-screen text: Same Behavior. Different Job. / Bark. Bark. Bark. / Same behavior. Different outcome. Different possible function. / Look at the whole ABC, not just the behavior / It worked, so it's more likely to be repeated.
+On-screen text: Same Behavior. Different Job. / Bark. Bark. Bark. / Same behavior. Different outcome. Different possible function. / Look at the whole picture with the ABCs, not just the behavior / It worked, so it's more likely to be repeated.
 Narration:
 Now notice something important.
 All three dogs barked.
 But the barking didn't accomplish the same thing.
 Same behavior. Different outcome. Different possible function.
-That's why we can't determine function just by looking at the behavior itself.
+That's why we need to look at the whole picture with the ABCs, not just the behavior.
 In all three, the barking worked. And when behavior works, it's more likely to be repeated.
 
 CH03,S07: Movement Isn't Function
@@ -141,8 +139,8 @@ You don't have to get your dog's ABCs exactly right. I'll help you with that.
 The goal is to start finding the thing, noticing the context, and seeing the pattern.
 
 CH03,S14: Now We Can Add Temperature
-On-screen text: Now we can add temperature. / Back to the pot / Next: temperature
+On-screen text: Now we can add temperature. / Back to the pot / As a response builds / The dog's ability to think / Getting closer to the rim
 Narration:
 Now we have the missing piece.
 Now we can go back to our pot and add temperature.
-That will help us look at what happens with arousal and stress as a response builds, what happens to the dog's ability to think, and what happens as they get closer to threshold.
+That will help us look at what happens with arousal and stress as a response builds, what happens to the dog's ability to think, and what happens as the water gets closer to the rim of the pot.

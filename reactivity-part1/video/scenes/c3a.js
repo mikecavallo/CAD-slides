@@ -197,44 +197,9 @@
     const qq = C3.ask(stage, 'What did the behavior accomplish?', 960, 560);
     A.in(tl, qq, cue(1) + 0.05, 'fadeUp', { dur: 0.6 });
 
-    // ---------- beat 2: function defined
-    const fd = C3.def(stage, '', COL.fn, 'Function', '= what the behavior *accomplished* in that situation', 330, 720, 1260);
-    fd.querySelector('.lt').appendChild(K.icon('target', { size: 62, stroke: 2.3 }));
-    A.in(tl, fd, clamp(at(2, 'Function is', 0.1), cue(2) + 0.1, end(2) - 0.3), 'fadeUp', { dur: 0.6 });
-
-    // ---------- beat 3: not what it looks like, what it does
-    const t3 = cue(3);
-    tl.to([...wtf, words, qq], { opacity: 0, duration: 0.4 }, t3);
-    tl.to(fd, { y: -460, duration: 0.8, ease: 'power3.inOut' }, t3 + 0.1);
-    const mk = (x, icon, title, sub, good) => {
-      const c = C3.put(stage, 'c3-card', null, { x, y: 470, w: 620, h: 330 });
-      c.style.display = 'flex';
-      c.style.flexDirection = 'column';
-      c.style.alignItems = 'center';
-      c.style.justifyContent = 'center';
-      c.style.gap = '20px';
-      const b = K.el('div', null);
-      Object.assign(b.style, { width: '120px', height: '120px', borderRadius: '50%', display: 'grid', placeItems: 'center', background: good ? C.green : '#c9cdc3', color: '#fff' });
-      b.appendChild(K.icon(icon, { size: 66, stroke: 2.2 }));
-      c.appendChild(b);
-      c.appendChild(K.el('div', null, `<span style="font:700 46px/1 var(--font-head);color:${good ? C.greenDark : C.muted}">${title}</span>`));
-      c.appendChild(K.el('div', null, `<span style="font:600 30px/1 var(--font-body);color:${C.inkSoft}">${sub}</span>`));
-      return c;
-    };
-    const cl = mk(300, 'eye', 'What it looks like', 'Barking, lunging, growling', false);
-    const cd = mk(1000, 'target', 'What it does', 'In that situation', true);
-    const tL = clamp(at(3, 'looks like', 0.3), t3 + 0.5, end(3) - 2);
-    A.in(tl, cl, tL, 'fadeUp', { dur: 0.6 });
-    const xMark = C2.badge(cl, 'x', 560, 40, 80, C.red, '#fff');
-    const tD = clamp(at(3, 'what the behavior does', 0.6), tL + 1.0, end(3) - 0.6);
-    tl.to(cl, { opacity: 0.55, duration: 0.5 }, tD);
-    A.in(tl, xMark, tD, 'pop', { dur: 0.45 });
-    A.in(tl, cd, tD + 0.1, 'fadeUp', { dur: 0.6 });
-    tl.to(cd, { boxShadow: '0 18px 44px rgba(40,60,20,0.16), 0 0 0 5px rgba(97,149,55,1)', duration: 0.5 }, tD + 0.6);
-
-    // ---------- beat 4: the greeting's answer: its B and C photos and the possible function
-    const t4 = cue(4);
-    tl.to([cl, cd], { opacity: 0, y: 30, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t4 - 0.1);
+    // ---------- beat 2: the greeting's answer: its B and C photos and the possible function
+    const t4 = cue(2);
+    tl.to([...wtf, words, qq], { opacity: 0, duration: 0.4 }, t4 - 0.1);
     const GR = [['abc_greet_b.jpg', 'B'], ['abc_greet_c.jpg', 'C']].map(([src, L], k) => {
       const p = K.photo(stage, src, { x: 330 + k * 660, y: 450, w: 600, h: 320, radius: 24 });
       p.root.style.border = '6px solid ' + C.olive;
@@ -246,10 +211,10 @@
       return [p.root, num];
     }).flat();
     const tag = C3.fnTag(stage, 'in', 'Decrease distance / gain attention', 960, 820);
-    tag.show(tl, clamp(at(4, 'get closer', 0.5), t4 + 1.0, end(4) - 0.8));
+    tag.show(tl, clamp(at(2, 'get closer', 0.5), t4 + 1.0, end(2) - 0.8));
 
-    // ---------- beat 5: two more examples
-    const t5 = cue(5);
+    // ---------- beat 3: two more examples
+    const t5 = cue(3);
     tl.to([...GR, tag.t], { opacity: 0, duration: 0.4 }, t5 - 0.1);
     [['abc_approach_b.jpg', 'A Person Approaches'], ['abc_guard_b.jpg', 'Guarding a Toy']].forEach(([src, lab], k) => {
       const p = K.photo(stage, src, { x: 330 + k * 660, y: 470, w: 600, h: 320, radius: 24 });

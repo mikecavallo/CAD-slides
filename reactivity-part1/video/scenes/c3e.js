@@ -167,7 +167,7 @@
     // ---------- beat 2: what temperature will show
     const t6 = cue(2);
     tl.to(rows, { opacity: 0, duration: 0.4 }, t6);
-    const Q = [['trending-up', 'As a response *builds*', 'as a response builds'], ['brain', 'The dog’s *ability to think*', 'ability to think'], ['triangle-alert', 'Getting closer to *threshold*', 'closer to threshold']];
+    const Q = [['trending-up', 'As a response *builds*', 'as a response builds'], ['brain', 'The dog’s *ability to think*', 'ability to think'], ['triangle-alert', 'Getting closer to the *rim*', 'closer to the rim']];
     let lo = t6 + 0.3;
     const qs = Q.map(([ic, tx, p], k) => {
       const r = C3.row(stage, ic, tx, 160, 330 + k * 140, { col: k === 2 ? C.amber : C.green, size: 42 });
@@ -177,8 +177,8 @@
       if (k === 0) tl.to(merc, { attr: { y: 40, height: 250 }, duration: 1.2, ease: 'power2.inOut' }, tt + 0.2);
       return { r, tt };
     });
-    // the rim is the threshold (label only; Tori asked for no line on the rim)
-    const thr = C3.chip(stage, null, 'Threshold', 1380 + C2.R * 0.85 + 30, 420 - 30, { size: 28 });
+    // the rim (label only; Tori asked for no line on the rim)
+    const thr = C3.chip(stage, null, 'The rim', 1380 + C2.R * 0.85 + 30, 420 - 30, { size: 28 });
     thr.style.borderColor = C.amber;
     thr.style.color = C.amberText;
     A.in(tl, thr, qs[2].tt + 0.3, 'fadeLeft', { dur: 0.4 });

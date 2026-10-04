@@ -96,9 +96,9 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Slides: s01 ABCs intro (pot with the thermometer through the middle, label just "Temperature"); s02 The ABCs: the
   excited-greeting strip is the explainer (definitions inside the frames in order A, B, then the plum heart "Emotional
   response" between A and B, then C; each definition fades into the greeting photo); s03 "WTF? What's the Function?" (A, B,
-  C tiles become W, T, F, then the question, the function definition, looks like vs does, the greeting's possible function,
-  "two more examples"); s04 approach and s05 guard (frames open with the definitions, kit `defs` option); s06 same behavior
-  different job ("it worked, so it's more likely to be repeated"); s07 movement isn't function ("May look like: wants to get
+  C tiles become W, T, F, then the question "What did the behavior accomplish?", the greeting's possible function, "two more
+  examples"; round 7 cut the function definition card and the looks like vs does cards as repeats); s04 approach and s05 guard (the other dog "goes away", it turns and walks off; frames open with the definitions, kit `defs` option); s06 same behavior
+  different job ("look at the whole picture with the ABCs, not just the behavior"; "it worked, so it's more likely to be repeated"); s07 movement isn't function ("May look like: wants to get
   closer" / "In reality: wants the other dog to go away"; "Look at the entire picture: the ABCs"); s08 Why the Pattern
   Repeats (its own slide: A, B, C tiles, it worked, got what it wanted or needed, next time B more likely); s09 Before
   Training (strip with definitions first); s10 What Training Includes (management, changing emotions, new behaviors); s11
@@ -107,7 +107,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   e.g. more distance", the consequence still needs to work, "Same consequence. A better behavior in its place."; after:
   "Emotions changed" (no "calmer"), less management; C: less space needed, then Tori's painting `abc_after_c2.jpg`,
   "Building a relationship"; no "that's a good thing", no arousal columns); s13 Your Homework (examples prefixed "e.g.";
-  WTF with the function question; "It doesn't have to be perfect. I'll help you with that."); s14 temperature and logo close.
+  WTF with the function question; "It doesn't have to be perfect. I'll help you with that."); s14 temperature and logo close (says "closer to the rim of the pot", not threshold).
 - Rules from Tori's rounds: no cycles anywhere (linear ABC only); any behavior named on screen gets "e.g." examples so the
   course is not only about barking and lunging; cut anything that repeats (Four Broad Directions, the separate
   emotional-response slide, Emotion vs Function, When Behavior Works, the doc's old S14/S15 were all cut); the

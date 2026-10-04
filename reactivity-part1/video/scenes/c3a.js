@@ -3,7 +3,7 @@
 //   ch03card   Chapter card         shared narrated chapter card
 //   ch03plan   Where we're headed   shared plan slide
 //   ch03s01    The ABCs of Behavior chapter 2's pot and thermometer wait ("Coming up"); a dog in a dashed circle; A, B, C tiles land
-//   ch03s02    The ABCs             A, B, C on a ring; definitions and the A example (the thing, the context, the place predicts)
+//   ch03s02    The ABCs             A, B, C in a row; definitions and the A example (the thing, the context, the place predicts)
 //   ch03s03    What did it accomplish?  A, B, C row, the question, function defined, looks like vs does, three examples
 (() => {
   const { sayAt, clamp } = C1;
@@ -22,17 +22,19 @@
     [['First', 0.2], ['Second', 0.45], ['third', 0.72]],
   ]));
 
-  /** Chapter 2's pot with the thermometer standing in it (pot svg coordinates). Returns {P, th, merc}. */
+  /** Chapter 2's pot with the thermometer standing up through the middle of the opening (pot svg coordinates): the
+   *  thermometer is drawn over the glass, then the front half of the rim is drawn again over the thermometer, so the tube
+   *  comes up out of the water through the centre of the rim. Returns {P, th, merc}. */
   function potWithThermo(parent, cx, y, s, level = 0.5) {
     const P = C2.makePot(parent, { cx, y, s, level });
-    const TX = 120;
+    const TX = 0;
     const th = K.group(P.svg);
-    P.svg.insertBefore(th, P.front);
-    K.rect(th, TX - 28, -140, 56, 420, { rx: 28, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
-    K.circle(th, TX, 286, 48, { fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
-    K.circle(th, TX, 286, 34, { fill: C.red });
+    K.rect(th, TX - 28, -150, 56, 420, { rx: 28, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
+    K.circle(th, TX, 276, 48, { fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
+    K.circle(th, TX, 276, 34, { fill: C.red });
     const merc = K.rect(th, TX - 12, 240, 24, 50, { rx: 12, fill: C.red });
-    [-90, -30, 30, 90, 150].forEach(yy => K.line(th, TX + 6, yy, TX + 22, yy, { stroke: C.greenDeep, 'stroke-width': 4 }));
+    [-100, -40, 20, 80, 140].forEach(yy => K.line(th, TX + 6, yy, TX + 22, yy, { stroke: C.greenDeep, 'stroke-width': 4 }));
+    K.path(P.svg, `M ${-C2.R} 0 A ${C2.R} 42 0 0 0 ${C2.R} 0`, { stroke: C.greenDark, 'stroke-width': 16, fill: 'none' });
     return { P, th, merc };
   }
   window.C3.potWithThermo = potWithThermo;
@@ -52,9 +54,9 @@
     P.waves(tl, 0, dur);
     const tT = clamp(at(0, 'add temperature', 0.35), cue(0) + 0.8, end(0) - 2.5);
     tl.fromTo(merc, { attr: { y: 240, height: 50 } }, { attr: { y: 40, height: 250 }, duration: 1.6, ease: 'power2.inOut', immediateRender: false }, tT);
-    const lab = C3.def(stage, '', C.red, 'Temperature', '= *arousal and stress* in the moment', 1060, 420, 700);
+    const lab = C3.def(stage, '', C.red, 'Temperature', '', 1060, 440, 420);
     lab.querySelector('.lt').appendChild(K.icon('thermometer', { size: 60, stroke: 2.4 }));
-    A.in(tl, lab, clamp(at(0, 'arousal and stress', 0.7), tT + 0.4, end(0) - 0.5), 'fadeLeft', { dur: 0.7 });
+    A.in(tl, lab, clamp(at(0, 'temperature', 0.6), tT + 0.4, end(0) - 0.5), 'fadeLeft', { dur: 0.7 });
 
     // ---------- beat 1: the pot steps aside and waits: "Coming up"
     const t1 = cue(1);
@@ -97,7 +99,19 @@
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
     C3.head(ctx, 'The ABCs', { size: 76 });
 
-    const R = C3.cycle(stage, 500, 610, 240, { d: 150 });
+    // A, B, C in a straight line (Tori: no cycles), arrows between them
+    const R = (() => {
+      const D = 150, XS = [190, 470, 750], Y = 560;
+      const svg = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
+      const arcs = [], heads = [];
+      [0, 1].forEach(k => {
+        const x0 = XS[k] + D / 2 + 14, x1 = XS[k + 1] - D / 2 - 14;
+        arcs.push(K.path(svg, `M ${x0} ${Y} L ${x1 - 6} ${Y}`, { stroke: C.greenLight, 'stroke-width': 12 }));
+        heads.push(K.path(svg, `M ${x1 - 22} ${Y - 20} L ${x1} ${Y} L ${x1 - 22} ${Y + 20}`, { stroke: C.greenLight, 'stroke-width': 12 }));
+      });
+      const nodes = ['A', 'B', 'C'].map((L, k) => ({ el: C3.node(stage, L, XS[k], Y, D, [COL.A, COL.B, COL.C][k]), x: XS[k], y: Y }));
+      return { svg, arcs, heads, nodes };
+    })();
     const nodes = R.nodes.map(n => n.el);
     tl.fromTo(nodes, { opacity: 0, scale: 0.6 }, { opacity: 0.3, scale: 1, duration: 0.6, stagger: 0.1, ease: 'back.out(1.6)' }, 0.2);
     A.draw(tl, R.arcs, 0.4, 0.8, { stagger: 0.1 });

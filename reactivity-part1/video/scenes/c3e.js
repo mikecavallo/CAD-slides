@@ -1,6 +1,6 @@
 // Chapter 3: homework and the hand-off to temperature.
 //   ch03s16  Your homework              a worksheet fills row by row (the thing, the context, B, C, function) with question chips;
-//                                       ends on WTF: What's The Function?
+//                                       WTF (What's The Function?) lands with the function question
 //   ch03s17  Now we can add temperature four checks recap the chapter; the pot and thermometer return; three things temperature
 //                                       will show; logo close
 (() => {
@@ -8,13 +8,13 @@
   const { COL } = C3;
   const C = C1.C;
 
-  // ================================================================== ch03s16 Your homework: find the thing
-  registerScene('ch03s16', ctx => {
+  // ================================================================== ch03s15 Your homework: find the thing
+  registerScene('ch03s15', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
-    C3.head(ctx, 'Your Homework: Find the Thing', { size: 72 });
+    C3.head(ctx, 'Your Homework', { size: 72 });
 
     const WX = 110, WY = 240, WW = 1020, RH = 128;
     const sheet = C3.put(stage, 'c3-card', null, { x: WX, y: WY, w: WW, h: 5 * RH + 40 });
@@ -91,9 +91,21 @@
     const t7 = cue(5);
     tl.to(cQ, { opacity: 0, x: 30, duration: 0.35, stagger: 0.05 }, t7);
     focus(4, t7 + 0.1);
-    write(4, clamp(at(5, 'accomplish', 0.7), t7 + 0.5, end(5) - 0.6));
+    // WTF = What's The Function? (big W, T, F tiles and the words, as the question is asked)
+    const tW = clamp(at(5, 'WTF', 0.25), t7 + 0.3, end(5) - 3);
+    const TS = 150, TX0 = 1210;
+    const tiles = ['W', 'T', 'F'].map((L, k) => C3.tile(stage, L, TX0 + k * (TS + 40), 300, TS, k === 2 ? C.green : COL.A));
+    tiles.forEach((n, k) => tl.fromTo(n, { opacity: 0, y: -80, rotation: [-8, 4, -4][k] }, { opacity: 1, y: 0, rotation: 0, duration: 0.6, ease: 'bounce.out' }, tW + k * 0.15));
+    const q = C3.tile(stage, '?', TX0 + 3 * (TS + 40) - 20, 330, 90, C.amber);
+    A.in(tl, q, tW + 0.6, 'pop', { dur: 0.4 });
+    const words = C2.put(stage, 'c3-big', '<b>W</b>hat\u2019s <b>T</b>he <b>F</b>unction?', { x: 1180, y: 510, w: 640, align: 'center' });
+    words.style.fontSize = '56px';
+    A.in(tl, words, clamp(at(5, "What's the function", 0.5), tW + 0.8, end(5) - 1.5), 'fadeUp', { dur: 0.6 });
+    write(4, clamp(at(5, 'accomplish', 0.8), tW + 1.5, end(5) - 0.6));
+    const wtf = [...tiles, q, words];
     // beat 6: not perfect
     const t8 = cue(6);
+    tl.to(wtf, { opacity: 0, duration: 0.4 }, t8);
     const np = C3.row(stage, 'check', 'It doesn\u2019t have to be <b>perfect</b>', RX, 380, { col: C.green, size: 36 });
     A.in(tl, np, t8 + 0.2, 'fadeLeft', { dur: 0.5 });
     // beat 7: three goals
@@ -110,26 +122,10 @@
       lo = tt + 0.4;
       return r;
     });
-
-    // beat 8: WTF = What's The Function? (big W, T, F tiles, then the words; the function row lights up)
-    const t10 = cue(8);
-    tl.to(goals, { opacity: 0, x: 30, duration: 0.35, stagger: 0.05 }, t10);
-    const tW = clamp(at(8, 'WTF', 0.6), t10 + 0.4, end(8) - 2.2);
-    const TS = 150, TX0 = 1210;
-    const tiles = ['W', 'T', 'F'].map((L, k) => C3.tile(stage, L, TX0 + k * (TS + 40), 300, TS, k === 2 ? C.green : COL.A));
-    tiles.forEach((n, k) => tl.fromTo(n, { opacity: 0, y: -80, rotation: [-8, 4, -4][k] }, { opacity: 1, y: 0, rotation: 0, duration: 0.6, ease: 'bounce.out' }, tW + k * 0.15));
-    const q = C3.tile(stage, '?', TX0 + 3 * (TS + 40) - 20, 330, 90, C.amber);
-    A.in(tl, q, tW + 0.6, 'pop', { dur: 0.4 });
-    const words = C2.put(stage, 'c3-big', '<b>W</b>hat\u2019s <b>T</b>he <b>F</b>unction?', { x: 1180, y: 510, w: 640, align: 'center' });
-    words.style.fontSize = '56px';
-    const tWd = clamp(at(8, "What's the function", 0.85), tW + 0.9, end(8) - 0.4);
-    A.in(tl, words, tWd, 'fadeUp', { dur: 0.6 });
-    tl.to(rows[4].hl, { opacity: 1, duration: 0.4 }, tWd);
-    tl.to(rows[4].lt, { scale: 1.15, duration: 0.3, yoyo: true, repeat: 1 }, tWd + 0.2);
   });
 
-  // ================================================================== ch03s17 Now we can add temperature
-  registerScene('ch03s17', ctx => {
+  // ================================================================== ch03s16 Now we can add temperature
+  registerScene('ch03s16', ctx => {
     const { stage, tl, cue, end, dur } = ctx;
     C2.style(stage);
     C3.css(stage);

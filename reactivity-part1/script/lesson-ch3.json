@@ -91,8 +91,8 @@
      ],
      "beats": [
       {
-       "say": "At the end of the last chapter, we said we were going to add temperature to our pot to represent what happens with arousal and stress in the moment.",
-       "show": "The pot from Chapter 2 with the thermometer; its line rises; label 'Temperature = arousal and stress in the moment'.",
+       "say": "At the end of the last chapter, we said we were going to add temperature to our pot.",
+       "show": "The pot from Chapter 2 with the thermometer standing up through the middle; label 'Temperature' (no definition yet).",
        "onscreen": "The ABCs of Behavior"
       },
       {
@@ -454,7 +454,7 @@
      ]
     },
     {
-     "id": "ch03s13",
+     "id": "ch03s11",
      "heading": "Why the Pattern Repeats",
      "visual_concept": "The Before training photo strip, linear: A, then the emotional response between A and B (plum heart, 'Emotions', arousal and stress up), B, C. Red note: getting more space can make this behavior more likely next time.",
      "assets": [
@@ -486,9 +486,74 @@
      ]
     },
     {
+     "id": "ch03s12",
+     "heading": "What Training Includes",
+     "visual_concept": "Bridge to training, then three cards land one per beat: Management (keeps the dog out of the situations that bring up those emotions), Changing emotions, New behaviors.",
+     "assets": [
+      "bg_swirl.jpg"
+     ],
+     "beats": [
+      {
+       "say": "So how do we change this pattern? That's what training is for, and training includes three things.",
+       "show": "Heading; three empty card outlines.",
+       "onscreen": "What Training Includes"
+      },
+      {
+       "say": "First, management. Management keeps the dog out of the situations that bring up those big emotions, so the old pattern isn't practiced while we work.",
+       "show": "Card 1: Management.",
+       "onscreen": "Management"
+      },
+      {
+       "say": "Second, changing the dog's emotional response.",
+       "show": "Card 2: Changing emotions.",
+       "onscreen": "Changing emotions"
+      },
+      {
+       "say": "And third, teaching new behaviors, so the dog has something else they can do instead.",
+       "show": "Card 3: New behaviors.",
+       "onscreen": "New behaviors"
+      }
+     ]
+    },
+    {
+     "id": "ch03s13",
+     "heading": "Building a New Path",
+     "visual_concept": "The lawn: a worn old path and a new one. The new path wears in with footprints; a management fence closes the old path and grass grows back over it; a faint outline stays; footprints wear it in again.",
+     "assets": [
+      "bg_swirl.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Remember the path across the lawn from the first chapter? The old path is worn in because the dog has used it so many times.",
+       "show": "The lawn: the old path deep and brown, footprints walking it.",
+       "onscreen": "The old path"
+      },
+      {
+       "say": "Training builds a new path. With practice, the new path becomes stronger.",
+       "show": "A new path wears in with footprints.",
+       "onscreen": "The new path gets stronger"
+      },
+      {
+       "say": "At the same time, the old path begins to fade. That's not only because the old behavior is practiced less. Management keeps the dog out of the situations that bring up those old emotions, so the grass has a chance to grow back.",
+       "show": "A management fence closes the old path; grass grows back over it.",
+       "onscreen": "Management lets the grass grow back"
+      },
+      {
+       "say": "But that old path hasn't vanished.",
+       "show": "A faint outline of the old path stays: Still there.",
+       "onscreen": "Still there"
+      },
+      {
+       "say": "If the dog starts practicing the old behavior again and it continues to work, that old path can become stronger again.",
+       "show": "Footprints wear the old path in again; the grass disappears.",
+       "onscreen": "It can come back"
+      }
+     ]
+    },
+    {
      "id": "ch03s14",
-     "heading": "This Is Why We Train",
-     "visual_concept": "Linear photo strips with the emotional response between A and B. During training (Management / Changing emotions / Looks back at you / Space is given) and After training (Less management / Calmer / Readily uses the new behavior / C becomes 'Building a relationship', drawn placeholder until Tori's image). Path strength bars at the bottom: old path (red) and new path (green). Ends with three emotion markers side by side: arousal and stress up, changing, calmer.",
+     "heading": "Training in Action",
+     "visual_concept": "Linear photo strips with the emotional response between A and B: During training (Management. / Changing emotions / Looks back at you. / Space is given.) and After training (Less management / Calmer / Readily uses the new behavior; C changes: Less space needed, then Building a relationship with Tori's picture of the two dogs playing). Ends with the three emotional states side by side.",
      "assets": [
       "abc_during_a.jpg",
       "abc_during_b.jpg",
@@ -499,49 +564,24 @@
      ],
      "beats": [
       {
-       "say": "So how do we help a new path win? This is why we do training.",
-       "show": "Heading; 'Help the new path win'; Old path bar full, New path bar empty.",
-       "onscreen": "This Is Why We Train"
-      },
-      {
-       "say": "During training, another dog may still appear. That's also why management matters. Management helps us reduce unnecessary practice of the old pattern while we create successful opportunities to practice the new one.",
+       "say": "Here's what that looks like. During training, another dog may still appear.",
        "show": "During training strip; panel A 'Management.'",
-       "onscreen": "Management"
+       "onscreen": "During training"
       },
       {
        "say": "But now we're working on changing the dog's emotional response and teaching a new behavior, such as looking back at you.",
-       "show": "Heart between A and B: 'Changing emotions'; panel B 'Looks back at you.'",
+       "show": "Heart between A and B: Changing emotions; panel B.",
        "onscreen": "Changing emotions"
       },
       {
-       "say": "The new behavior still needs to work for the dog. If the dog needs space, we still give them space.",
-       "show": "Panel C 'Space is given.'",
-       "onscreen": "Space is given"
+       "say": "The consequence still needs to work for the dog. The dog still needs to get what it needs out of the situation, so if they need space, we still give them space.",
+       "show": "Panel C 'Space is given.'; C glows: The consequence still works.",
+       "onscreen": "The consequence still needs to work"
       },
       {
        "say": "Now the new behavior leads to the outcome the dog needs, so that new pattern gets practiced instead.",
-       "show": "New path bar grows.",
+       "show": "A green check on the strip: New pattern practiced.",
        "onscreen": "New pattern practiced"
-      },
-      {
-       "say": "With practice, the new path becomes stronger.",
-       "show": "New path bar fills.",
-       "onscreen": "New path gets stronger"
-      },
-      {
-       "say": "At the same time, when the old behavior is being practiced less, the old path begins to fade.",
-       "show": "Old path bar drops.",
-       "onscreen": "Old path fades"
-      },
-      {
-       "say": "But that old path hasn't vanished.",
-       "show": "Old path bar stays at a sliver with 'Still there'.",
-       "onscreen": "Still there"
-      },
-      {
-       "say": "If the dog starts practicing the old behavior again and it continues to work, that old path can become stronger again.",
-       "show": "Old path bar climbs again, then settles.",
-       "onscreen": "It can come back"
       },
       {
        "say": "And as the dog's emotional response changes through training, what they need from the consequence can change too.",
@@ -561,8 +601,8 @@
      ]
     },
     {
-     "id": "ch03s16",
-     "heading": "Your Homework: Find the Thing",
+     "id": "ch03s15",
+     "heading": "Your Homework",
      "visual_concept": "A worksheet card fills in row by row: A (the thing, the context, with four context questions), B (what did your dog do?), C (what happened as a result? with four outcome chips), Function (what did the behavior accomplish?). A pencil moves to each line. Ends with 'Find the thing. Notice the context. See the pattern.'",
      "assets": [
       "bg_swirl.jpg"
@@ -571,7 +611,7 @@
       {
        "say": "Before we move on, I want you to start looking for your dog's ABCs.",
        "show": "A worksheet card slides in; heading 'Your Homework: Find the Thing'.",
-       "onscreen": "Your Homework: Find the Thing"
+       "onscreen": "Your Homework"
       },
       {
        "say": "Start by finding the thing. What happened before the behavior?",
@@ -594,9 +634,9 @@
        "onscreen": "What happened as a result?"
       },
       {
-       "say": "Finally, ask: What did the behavior accomplish?",
-       "show": "Function row highlighted green.",
-       "onscreen": "What did the behavior accomplish?"
+       "say": "Finally, ask: WTF? What's the function? What did the behavior accomplish?",
+       "show": "Big W T F tiles and What's The Function? appear at right; the function row lights up.",
+       "onscreen": "WTF: What's The Function?"
       },
       {
        "say": "You don't have to get the function perfectly right.",
@@ -607,16 +647,11 @@
        "say": "The goal is to start finding the thing, noticing the context, and seeing the pattern.",
        "show": "Three goals land: Find the thing. Notice the context. See the pattern.",
        "onscreen": "Find the thing. Notice the context. See the pattern."
-      },
-      {
-       "say": "Here's an easy way to remember that last question: WTF. What's the function?",
-       "show": "Big W T F letters pop, then spell out What's The Function?",
-       "onscreen": "WTF: What's The Function?"
       }
      ]
     },
     {
-     "id": "ch03s17",
+     "id": "ch03s16",
      "heading": "Now We Can Add Temperature",
      "visual_concept": "Four check rows recap the chapter (the thing and context; the emotional response; behavior, outcome and function; patterns get stronger with practice). Then Chapter 2's pot returns with its thermometer; the rim shows a dashed threshold line; the thermometer rises a little; three next-chapter chips. 'Next: temperature'. Logo close.",
      "assets": [

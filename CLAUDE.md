@@ -87,37 +87,30 @@ pipeline). This file records the state, decisions and working agreements from ea
 
 ## Chapter 3 video (built, preview voice only)
 
-- Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`). Order: `ch03intro`, `ch03card`, `ch03plan`, `ch03s01` to
-  `ch03s10`, `ch03s13`, `ch03s14`, `ch03s16`, `ch03s17`. About 7.6 minutes. The doc still needs updating to match; Tori
-  was sent cut lists and paste-ready text each round.
-- Feedback history:
-  - Round 1: the doc's S14 (Practice builds the path) and S15 (Why management matters) CUT (repeated S13).
-  - Round 2 ("too repetitive"): cut lines that restate earlier slides (s02 "easy way to remember it" + summary; s05/s06
-    "What did the behavior accomplish?"; s07's three "For one dog..." lines; s10's last line; s16's repeated
-    thing/context example and "location predicts" lines; s17's four "We know..." lines, on screen only).
-  - Round 3: S11 (Emotion and Function Are Different) and S12 (When Behavior Works) CUT. s07 gets a new last line:
-    "In all three, the barking worked. And when behavior works, it's more likely to be repeated." NO ABC CYCLES (Tori:
-    cycles next to linear strips were confusing); everything is linear photo strips with the emotional response shown
-    between A and B. WTF = "What's The Function?" closes s16 (new line: "Here's an easy way to remember that last
-    question: WTF. What's the function?"). No dashed line on the pot rim in s17 (the "Threshold" label stays).
-- s13 "Why the Pattern Repeats": the Before training strip (abc_before_*), plum heart "Emotions" between A and B, red note
-  "Getting more space can make this behavior more likely next time." (doc's S13 before-training lines).
-- s14 "This Is Why We Train": bridge ("So how do we help a new path win? This is why we do training."), the During strip
-  (Management. / Changing emotions / Looks back at you. / Space is given.) with the doc's management line, Old path / New
-  path strength bars for the doc's path lines, the After strip (Less management / Calmer / Readily uses the new behavior;
-  C caption: Space is given, Less space needed, Building a relationship) and three emotion markers for the arousal line.
-  The After C picture is a DRAWN placeholder (two drawn dogs nose to nose, heart above; `relationship()` in c3d.js); Tori
-  was asked for a painted image in the panels' style (`abc_after_c` replacement); when it arrives, drop it in the C panel
-  instead of the drawing and re-render with `--only ch03s14 --force`.
-- Lines Claude wrote (not in the doc yet): intro, card, plan narration; s07's "it worked" line; s14's bridge,
-  before-training and "something else" lines; s16's WTF line.
-- Scene code: `c3a.js` (intro, card, plan, s01 to s03), `c3b.js` (s04 to s07), `c3c.js` (s08 to s10), `c3d.js` (s13, s14),
-  `c3e.js` (s16, s17); shared kit `c3_abc.js` (window.C3: photo ABC strip, function tag, A/B/C ring used by s02, tiles,
-  chips, rows). `C3.potWithThermo` (in c3a.js) is Chapter 2's pot with the thermometer.
+- Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`). Scenes renumbered in round 4 to match the new script:
+  `ch03intro`, `ch03card`, `ch03plan`, `ch03s01` to `ch03s16`. About 8.1 minutes.
+- The full current script is `script/Chapter-3-Script.txt`, also uploaded to Tori's Drive as a new Google Doc
+  "Chapter 3 script (updated, to paste into Script v4)" (id 16nHUVhto1J-QYaLfEN4nMfMaWTR1LhyMNAtVc6F35PY); Tori pastes it
+  into Script v4. There is no Google Docs editor connector, so Claude cannot edit Script v4 in place. From now on the
+  lesson file and this script are the source until Tori's doc catches up.
+- Slides: s01 ABCs intro (pot with the thermometer through the middle; label just "Temperature"), s02 the ABCs (A, B, C in a
+  ROW, no cycles anywhere), s03 function, s04 to s06 the three photo examples, s07 same behavior different job (+ "it worked,
+  so it's more likely to be repeated"), s08 four directions, s09 movement isn't function, s10 emotion between A and B,
+  s11 Why the Pattern Repeats (before strip, heart between A and B), s12 What Training Includes (Management, Changing
+  emotions, New behaviors), s13 Building a New Path (the lawn: new path wears in, management fence, grass grows back over
+  the old path, faint trace, it can come back), s14 Training in Action (during strip: the CONSEQUENCE still needs to work for
+  the dog; after strip: C changes to "Less space needed", then Tori's painting `abc_after_c2.jpg` of the golden and the
+  border collie playing, "Building a relationship"; arousal line), s15 Your Homework (WTF tiles land with the function
+  question), s16 temperature hand-off and logo close.
+- Feedback history: round 1 cut the doc's S14/S15 (repeated the cycle); round 2 cut lines that restated earlier slides;
+  round 3 cut "Emotion and Function Are Different" and "When Behavior Works", no cycles, linear strips with emotions
+  between A and B, WTF; round 4: no straight line across the pot's top (fixed in c2_pot.js `BODY_OPEN`, so Chapter 2's pots
+  change on its next render too), thermometer through the middle of the rim, don't define temperature yet, the consequence
+  (not the behavior) still has to work for the dog, training = management + changing emotions + new behaviors, the lawn
+  paths are back on their own slide, heading "Your Homework".
+- Scene code: `c3a.js` (intro, card, plan, s01 to s03; `C3.potWithThermo`), `c3b.js` (s04 to s07), `c3c.js` (s08 to s10),
+  `c3d.js` (s11 to s14), `c3e.js` (s15, s16); kit `c3_abc.js` (photo ABC strip, function tag, lawn, tiles, chips, rows).
 - Colours: A olive, B green, C deep green; the emotional response is plum (`#8b5d8f`); function green with a target icon.
-- s16 homework worksheet example: another dog appears; same corner, dogs too close; barked and lunged; the other dog
-  moved away; more distance? (B, C and function answers are Claude's example).
-- s17 ends on the pot with the thermometer, "Threshold" label, "Next chapter: Temperature", then the logo close.
 - Online preview (temporary AI voice): https://claude.ai/artifact/LgEH4FvtiMGM1FG7V3iDuz (`out/web/chapter3/`; publish
   without the .vtt files, captions are inline).
 

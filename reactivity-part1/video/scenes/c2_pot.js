@@ -158,6 +158,7 @@
   // pot-local coordinates: origin at the centre of the rim; y grows downward; the inside bottom is at y = H
   const surfY = L => H - L * H; // waterline for level L (0..1)
   const BODY = `M ${-R} 0 L ${-R} ${H - 30} C ${-R} ${H + 20} ${-R + 60} ${H + RY} 0 ${H + RY} C ${R - 60} ${H + RY} ${R} ${H + 20} ${R} ${H - 30} L ${R} 0 Z`;
+  const BODY_OPEN = `M ${-R} 0 L ${-R} ${H - 30} C ${-R} ${H + 20} ${-R + 60} ${H + RY} 0 ${H + RY} C ${R - 60} ${H + RY} ${R} ${H + 20} ${R} ${H - 30} L ${R} 0`;
   const INNER = `M ${-RI} -2000 L ${-RI} ${H - 32} C ${-RI} ${H + 10} ${-RI + 56} ${H + RY - 12} 0 ${H + RY - 12} C ${RI - 56} ${H + RY - 12} ${RI} ${H + 10} ${RI} ${H - 32} L ${RI} -2000 Z`;
 
   /**
@@ -204,7 +205,9 @@
     const ingG = K.group(clip);
     // front of the glass: sheen, outline, rim
     const front = K.group(svg);
-    K.path(front, BODY, { fill: `url(#${id}g)`, stroke: C.rim, 'stroke-width': 8 });
+    // the outline is an open path: the closed BODY would also stroke a straight line across the middle of the rim
+    K.path(front, BODY, { fill: `url(#${id}g)`, stroke: 'none' });
+    K.path(front, BODY_OPEN, { stroke: C.rim, 'stroke-width': 8, fill: 'none' });
     K.path(front, `M ${-R + 34} 70 L ${-R + 34} ${H - 40}`, { stroke: '#ffffff', 'stroke-width': 14, opacity: 0.55 });
     K.path(front, `M ${-R + 62} 90 L ${-R + 62} ${H * 0.5}`, { stroke: '#ffffff', 'stroke-width': 6, opacity: 0.4 });
     K.svgEl('ellipse', { cx: 0, cy: 0, rx: R, ry: RY, fill: 'none', stroke: C.rim, 'stroke-width': 16 }, front);

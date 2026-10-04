@@ -19,10 +19,13 @@ def frames(sec):
 
 
 def bumper(ch, start):
-    return {
+    b = {
         "id": f"bumper_{ch['id']}", "kind": "bumper", "chapter": ch["id"], "chapterNum": ch.get("num", chapter_num(ch["id"])),
         "chapterTitle": ch["title"], "start": start, "dur": frames(BUMPER), "beats": [], "audio": [],
     }
+    if ch.get("kicker"):  # the card's small label word, e.g. "Part" (default "Chapter")
+        b["kicker"] = ch["kicker"]
+    return b
 
 
 CLIP_END = 0.6  # a video slide holds this long after the trainer's clip ends (the scene fades out over its last 0.5 s)

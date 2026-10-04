@@ -120,32 +120,29 @@ pipeline). This file records the state, decisions and working agreements from ea
 - The lesson has `"tail": 5.0` (applies to its very last slide only) so the thermometer reveal holds before the logo close.
 - Online preview (temporary AI voice): https://claude.ai/artifact/Nzf2aTAYk5iAVNdqKmb1Js (`out/web/chapter2/`).
 
-## Your Training Mechanics (Core Skills course video, built Oct 4, preview voice only)
+## Markers and Mechanics (Core Skills course video; was "Your Training Mechanics"; preview voice only)
 
-- Source: Tori's deck "6- Your Training Mechanics - editable.pptx" (uploaded in chat, not in the repo; no script existed,
-  so Claude wrote every narration line from the slide text; Tori was sent them to approve or re-word).
-- Lesson `script/lesson-mechanics.json` (`LESSON=lesson-mechanics.json`), series title "Your Training Mechanics".
-  Ids are prefixed `tm` so they never clash with the reactivity course in `build/segments`. Chapters: `tm00` Welcome
-  (num 0, no footer number; title, plan, big idea), `tm01` "The Marker" (Part 1 card, s01 to s07), `tm02` "Where the
-  Treats Go" (Part 2 card, s01 to s07, logo close). Part cards use the chapter-card look with "Part N" (`TM.partCard`).
-- Scene code: `video/scenes/tm_kit.js` (helpers, `window.TM`), `tma.js` to `tme.js`. Treat = a drawn kibble (`TM.treat`).
-- Video slides (Tori's own clips, she narrates over them): tm01s04 marker in action, tm01s05 charging Yip, tm01s06
-  charging a clicker, tm02s01 LSM, tm02s03 toss, tm02s04 scatter. Each has a `"clip"` block in the lesson (frame box in
-  stage px, poster = the YouTube thumbnail from the deck, label, youtube link, `at` start time, optional `from` / `to`
-  trim and `volume` to keep some of the clip's own sound; default muted). Tori's file goes in `clips/<scene id>.mp4`
-  (gitignored; any of mp4/mov/m4v/webm/mkv; YouTube is blocked here, so Tori must upload the files). timing.py makes
-  the slide at least as long as the clip; assemble.py plays the clip inside the frame (fades in/out, holds its last
-  frame if Tori talks longer). Without a clip the poster shows with a play badge.
-- Tori's change (applied): the LSM slide no longer defines "location-specific marker"; it is "Tell your dog where to
-  look": when training or playing a game, each word tells the dog where the treat will show up ("Treat" = to his mouth,
-  "Get it" = on the ground), "We call these LSMs".
-- Claude's calls (tell Tori, undo on request): slide 8's placeholder marker "x" became "yip"; "Get it" listed only under
-  Scattered (the deck had it under Tossed too, which breaks one word, one place); "Sniffing actively lowers arousal"
-  softened to "helps bring their arousal down"; agenda item 5 is "Toss and scatter" (the clicker is a marker, covered in
-  step 2); the "drop a photo here" placeholders use trainer_with_dog.jpg.
-- Script doc (Google Doc, Tori owns it; the doc wins over the lesson file once Tori edits it): "Your Training Mechanics: Narration Script", id `1_KZQVrH49fPoTVFp-EzrqNILy9VyYOZVu5xb4SV4v_k`.
+- Script source of truth: Tori's Google Doc "Your Training Mechanics: Narration Script", id
+  `1_KZQVrH49fPoTVFp-EzrqNILy9VyYOZVu5xb4SV4v_k` (Claude created it from the first draft; Tori rewrote it on Oct 4 and
+  the video was rebuilt from it: "start over with the script"). Sync `script/lesson-mechanics.json` to it before every
+  build; the doc wins. The original deck (6- Your Training Mechanics.pptx) is superseded.
+- Lesson `script/lesson-mechanics.json` (`LESSON=lesson-mechanics.json`), series title "Markers and Mechanics" (Tori's
+  welcome line). Ids prefixed `tm`. Chapters = the doc's sections, each with the automatic silent card labelled "Part N"
+  (chapter `"kicker": "Part"`, read by timing.py and lib.js): `tm00` Welcome (title, plan with four cards), `tm01`
+  Understanding Markers and Food Games (s01 to s06), `tm02` Choosing Your Markers (s01), `tm03` Practicing Your
+  Mechanics (s01, s02), `tm04` Teaching Your Dog (s01 to s06), `tm05` Using Your Markers During Training (s01, s02 with
+  the logo close). Food games: to the mouth, toss (chase), scatter; each game has its own marker word.
+- Scene code: `video/scenes/tm_kit.js` (`window.TM`: heads, video frame and video slide, rows, treat, bubble, word chips,
+  order strip), `tma.js` to `tme.js`.
+- Video slides (Tori's own clips, narrated over): tm01s06 position changes, tm03s02 practicing without a dog (no
+  thumbnail; green placeholder), tm04s02 introducing Yip, tm04s03 treat tosses, tm04s04 scatters, tm04s06 a dog responding
+  to the clicker (assumed the Quill clicker video). `"clip"` block per scene; Tori's file goes in
+  `clips/<scene id>.mp4` (gitignored; YouTube is blocked here). timing.py stretches the slide to the clip; assemble.py
+  overlays it in the frame, muted by default.
+- Open with Tori: the doc's position-changes line still says his marker is "x" (placeholder; on screen shows no word);
+  typos fixed in the lesson only ("Hre we are working in him" -> "Here we are working on him").
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
-- Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, ... named by scene id, as for the other course.
+- Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)
 

@@ -494,7 +494,7 @@
     const n = String(info.chapterNum).padStart(2, '0');
     const num = el('div', 'bumper-num', n);
     const bar = el('div', 'bumper-bar');
-    const kick = el('div', 'bumper-kicker', 'Chapter ' + info.chapterNum);
+    const kick = el('div', 'bumper-kicker', (info.kicker || 'Chapter') + ' ' + info.chapterNum);
     const title = el('div', 'bumper-title', md(info.chapterTitle || ''));
     [num, bar, kick, title].forEach(x => stage.appendChild(x));
     A.in(tl, num, 0.05, 'fadeRight', { dur: 0.9 });

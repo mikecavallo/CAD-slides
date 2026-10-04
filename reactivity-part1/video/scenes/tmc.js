@@ -1,131 +1,176 @@
-// Your Training Mechanics, Part 1: video slides and the understanding check.
-//   tm01s04  a marker in action (Tori's clip plays in the frame)
-//   tm01s05  charging your marker: Yip (clip; rep counter to 15)
-//   tm01s06  charging a clicker (clip)
-//   tm01s07  does your dog understand the marker? the drawn dog turns to you, or a question mark sends you back to pairing reps
+// Markers and Mechanics, Parts 2 and 3.
+//   tm02s01  give each game its own word: three columns of options; one picked per game; a clicker for the mouth; avoid good / yes
+//   tm03s01  your mechanics matter: Word and Hand lanes; the right order (word, pause, hand) and the wrong one (hand during the word)
+//   tm03s02  practice without your dog first (Tori's clip); Word, Pause, Move strip
 (() => {
   const { at, put, clamp } = TM;
+  const CSS = `
+  .tmc-col { position: absolute; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); box-sizing: border-box; padding: 26px 28px; }
+  .tmc-col .stage { position: relative; height: 130px; border-radius: 18px; background: var(--green-mist); overflow: hidden; }
+  .tmc-col .tt { margin-top: 20px; font: 700 38px/1 var(--font-head); color: var(--ink); }
+  .tmc-col .chips { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .tmc-col .chips .tm-word { position: relative; font-size: 30px; padding: 12px 24px; }
+  .tmc-lane { position: absolute; height: 6px; border-radius: 3px; background: #e3e7dd; }
+  .tmc-ll { position: absolute; font: 700 32px/1 var(--font-head); color: var(--ink-soft); }
+  .tmc-blk { position: absolute; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
+    font: 700 30px/1 var(--font-body); color: #fff; box-sizing: border-box; }
+  .tmc-blk svg { width: 30px; height: 30px; stroke-width: 2.4; }
+  .tmc-blk.word { background: var(--green-dark); }
+  .tmc-blk.hand { background: var(--green); }
+  .tmc-blk.bad { background: var(--red); }
+  .tmc-gap { position: absolute; font: 600 28px/1 var(--font-body); color: var(--muted); text-align: center; }
+  .tmc-ph { position: absolute; width: 4px; border-radius: 2px; background: var(--amber); }
+  `;
+  const css = stage => { TM.style(stage); if (!stage.querySelector('style[data-tmc]')) { const s = K.el('style', null, CSS); s.dataset.tmc = '1'; stage.appendChild(s); } };
+  const flow = n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; return n; };
 
-  const nextPill = (ctx, text, t, y = 840) => {
-    const b = put(ctx.stage, K.el('div', 'tm-banner'), 100, y, { fontSize: '32px', padding: '18px 32px' });
-    b.appendChild(K.icon('arrow-right'));
-    b.appendChild(K.el('span', null, K.md(text)));
-    A.in(ctx.tl, b, t, 'fadeUp', { dur: 0.6 });
-    return b;
-  };
-
-  registerScene('tm01s04', ctx => {
-    TM.videoSlide(ctx, {
-      kicker: 'See it at work', heading: 'A marker in action',
-      rows: [
-        { icon: 'repeat', html: 'Position changes: *sit* and *stand*', beat: 0, phrase: 'position changes', fb: 0.6 },
-        { icon: 'volume-2', html: 'Each one nailed: *Yip*, then a treat', beat: 1, phrase: 'yip', fb: 0.5 },
-        { icon: 'target', html: 'One sound, *no guessing*', beat: 2, phrase: 'one sound', fb: 0.05 },
-      ],
-    });
-    nextPill(ctx, 'Next: *charge your marker*', at(ctx, 3, 'next', 0.6));
-  });
-
-  registerScene('tm01s05', ctx => {
+  // ---------------------------------------------------------------- give each game its own word
+  registerScene('tm02s01', ctx => {
     const { stage, tl, cue, end } = ctx;
-    const v = TM.videoSlide(ctx, {
-      kicker: 'Watch it, then try it', heading: 'Charging your marker: “Yip”', gap: 28,
-      rows: [
-        { num: 1, html: 'Pea-sized treats, *within reach*', beat: 1, phrase: 'pea-sized', fb: 0.1 },
-        { num: 2, html: '*Yip*, pause, treat', beat: 2, phrase: 'say your marker', fb: 0.05 },
-        { num: 3, html: 'Say it, *then* move', beat: 3, phrase: 'separate', fb: 0.5 },
-        { num: 4, html: 'Test: head snaps to you = *charged*', beat: 4, phrase: 'test it', fb: 0.05 },
-      ],
+    css(stage);
+    TM.head(ctx, 'Choosing your markers', 'Give each game its own word');
+    const COLS = [
+      ['To the mouth', ['Yip', 'Yep', 'Mark', 'Nice', 'Treat'], ['yip', 'yep', 'mark', 'nice', 'treat'], 1],
+      ['A tossed treat', ['Chase', 'Toss', 'Get it'], ['chase', 'toss', 'get it'], 2],
+      ['Scattered', ['Scatter', 'Find it', 'Search'], ['scatter', 'find it', 'search'], 3],
+    ];
+    const cols = COLS.map(([t, ws, ps, beat], i) => {
+      const c = put(stage, K.el('div', 'tmc-col'), 100 + i * 590, 280, { width: '540px', height: '500px' });
+      const st = K.el('div', 'stage');
+      c.appendChild(st);
+      c.appendChild(K.el('div', 'tt', t));
+      const chips = K.el('div', 'chips');
+      c.appendChild(chips);
+      tl.fromTo(c, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, cue(0) + 0.2 + i * 0.12);
+      const ns = ws.map((w, k) => {
+        const n = flow(TM.word(chips, w, { variant: 'pale' }));
+        A.in(tl, n, at(ctx, beat, ps[k], 0.25 + 0.13 * k), 'pop', { dur: 0.4 });
+        return n;
+      });
+      return { c, st, chips, ns };
     });
-    const sub = K.text(stage, 'A sound becomes <b style="color:var(--green)">a promise</b>', { x: 100, y: 300, cls: 'lead', size: 34 });
-    v.col.style.top = '380px';
-    A.in(tl, sub, at(ctx, 0, 'promise', 0.8), 'fadeUp', { dur: 0.6 });
-    // the rep counter while "ten to fifteen reps" is said
-    const cnt = put(stage, K.el('div', 'tm-word pale'), 100, 850, { fontSize: '32px' });
-    cnt.innerHTML = 'Reps: <b class="n" style="color:var(--green);margin-left:8px">0</b> / 15';
-    const tC = at(ctx, 2, 'ten to fifteen', 0.7);
-    A.in(tl, cnt, tC, 'pop', { dur: 0.45 });
-    A.count(tl, cnt.querySelector('.n'), tC + 0.3, 0, 15, Math.max(1.2, end(2) - tC + 0.6), v => String(Math.round(v)));
-    const tick = put(stage, K.el('div', 'tm-word green'), 420, 850, { fontSize: '32px' });
-    tick.innerHTML = 'Charged';
-    tick.prepend(K.icon('zap'));
-    A.in(tl, tick, at(ctx, 4, 'charged', 0.9), 'pop', { dur: 0.45 });
+    // header animations, each on its beat
+    {
+      const st = cols[0].st, t0 = cue(1) + 0.2;
+      const h = K.iconBadge(st, 'hand', { x: 60, y: 25, size: 80, variant: 'amber' });
+      const m = K.iconBadge(st, 'smile', { x: 340, y: 25, size: 80, variant: 'solid' });
+      const tr = TM.treat(st, 140, 65, 1.2);
+      A.in(tl, [h, m], t0, 'pop', { dur: 0.4, stagger: 0.1 });
+      tl.fromTo(tr, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t0 + 0.4);
+      tl.to(tr, { x: 190, duration: 0.8, ease: 'power2.inOut' }, t0 + 0.6);
+    }
+    {
+      const st = cols[1].st, t0 = cue(2) + 0.2;
+      const sv = K.svg(st, { x: 0, y: 0, w: 484, h: 130 });
+      const arc = K.path(sv, 'M 60 105 C 160 0, 320 0, 420 105', { stroke: '#d9912b', 'stroke-width': 5, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
+      const tr = TM.treat(st, 60, 102, 1.2);
+      A.draw(tl, arc, t0, 0.8);
+      tl.fromTo(tr, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t0);
+      tl.to(tr, { motionPath: { path: 'M 0 0 C 100 -105, 260 -105, 360 3' }, duration: 0.9, ease: 'power1.inOut' }, t0);
+    }
+    {
+      const st = cols[2].st, t0 = cue(3) + 0.2;
+      [[90, 0], [170, 0.1], [240, 0.05], [310, 0.18], [390, 0.12]].forEach(([x, d], k) => {
+        const tr = TM.treat(st, x, 98 - (k % 2) * 8, 1.0);
+        tl.fromTo(tr, { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.5, ease: 'bounce.out' }, t0 + d * 3);
+      });
+    }
+    // pick one per game; a clicker can be the mouth marker
+    const tP = at(ctx, 4, 'one word for each', 0.1);
+    cols.forEach((k, i) => tl.to(k.ns[0], { backgroundColor: '#619537', color: '#fff', borderColor: '#619537', scale: 1.08, duration: 0.4 }, tP + 0.25 * i));
+    cols.forEach((k, i) => tl.to(k.ns.slice(1), { opacity: 0.45, duration: 0.4 }, tP + 0.25 * i));
+    const ck = flow(TM.word(cols[0].chips, 'Clicker', { variant: 'pale', icon: 'mouse-pointer-click' }));
+    A.in(tl, ck, at(ctx, 4, 'clicker', 0.7), 'pop', { dur: 0.45 });
+    tl.to(ck, { backgroundColor: '#619537', color: '#fff', borderColor: '#619537', duration: 0.4 }, at(ctx, 4, 'clicker', 0.7) + 0.5);
+    // avoid good and yes
+    const row = put(stage, K.el('div'), 0, 820, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
+    const al = flow(put(row, K.el('div', 'tm-lab', 'Avoid:'), 0, 0, { fontSize: '34px', color: 'var(--red)' }));
+    const bad = [['“Good”', 'good'], ['“Yes”', 'yes']].map(([w, p]) => {
+      const n = flow(TM.word(row, w, { variant: 'red', cross: true, size: 32 }));
+      const t = at(ctx, 5, p, 0.2);
+      A.in(tl, n, t, 'pop', { dur: 0.4 });
+      TM.strike(tl, n, t + 0.35);
+      return n;
+    });
+    const why = flow(put(row, K.el('div', 'tm-lab', 'Everyday words, often no food'), 0, 0, { fontSize: '30px', color: 'var(--ink-soft)' }));
+    A.in(tl, al, at(ctx, 5, 'avoiding', 0.15) - 0.2, 'fadeUp', { dur: 0.4 });
+    A.in(tl, why, at(ctx, 5, 'everyday', 0.5), 'fadeUp', { dur: 0.5 });
+    const tR = at(ctx, 6, 'reserve', 0.4);
+    tl.to(row, { opacity: 0, duration: 0.35 }, cue(6));
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 815);
+    bn.appendChild(K.icon('lock'));
+    bn.appendChild(K.el('span', null, 'Reserve your words <b>for these games</b>'));
+    TM.centerX(bn, 960);
+    A.in(tl, bn, tR, 'fadeUp', { dur: 0.6 });
   });
 
-  registerScene('tm01s06', ctx => {
+  // ---------------------------------------------------------------- your mechanics matter
+  registerScene('tm03s01', ctx => {
+    const { stage, tl, cue, end } = ctx;
+    css(stage);
+    TM.head(ctx, 'Practicing your mechanics', 'Your mechanics matter');
+    const lead = K.text(stage, 'Two separate actions. <b style="color:var(--green)">Never at the same time.</b>', { x: 100, y: 270, cls: 'lead', size: 38 });
+    A.in(tl, lead, at(ctx, 0, 'two separate actions', 0.4), 'fadeUp', { dur: 0.6 });
+    const X0 = 380, X1 = 1500;
+    const lanes = (y, label, cls) => {
+      const tag = put(stage, K.el('div', 'tm-lab', label), 100, y - 6, { fontSize: '34px', color: cls === 'bad' ? 'var(--red)' : 'var(--green-dark)' });
+      const lw = put(stage, K.el('div', 'tmc-ll', 'Word'), 240, y + 28);
+      const lh = put(stage, K.el('div', 'tmc-ll', 'Hand'), 240, y + 108);
+      const a = put(stage, K.el('div', 'tmc-lane'), X0, y + 42, { width: X1 - X0 + 'px' });
+      const b = put(stage, K.el('div', 'tmc-lane'), X0, y + 122, { width: X1 - X0 + 'px' });
+      return { tag, all: [lw, lh, a, b] };
+    };
+    const blk = (x, y, w, cls, icon, txt) => {
+      const n = put(stage, K.el('div', 'tmc-blk ' + cls), x, y, { width: w + 'px' });
+      if (icon) n.appendChild(K.icon(icon));
+      n.appendChild(K.el('span', null, txt));
+      return n;
+    };
+    // the right way
+    const R = lanes(370, 'Right', 'good');
+    A.in(tl, [R.tag, ...R.all], cue(0) + 0.6, 'fade', { dur: 0.5, stagger: 0.05 });
+    const w1 = blk(X0, 380, 220, 'word', 'volume-2', 'Yip');
+    const gp = put(stage, K.el('div', 'tmc-gap', 'pause'), X0 + 240, 400, { width: '200px' });
+    const h1 = blk(X0 + 460, 460, 320, 'hand', 'hand', 'Treat');
+    const ph = put(stage, K.el('div', 'tmc-ph'), X0, 360, { height: '180px' });
+    const tR = at(ctx, 1, 'say the word', 0.05);
+    A.in(tl, w1, tR, 'grow', { dur: 0.5 });
+    A.in(tl, gp, at(ctx, 1, 'pause', 0.4), 'fade', { dur: 0.4 });
+    A.in(tl, h1, at(ctx, 1, 'reach for', 0.7), 'grow', { dur: 0.5 });
+    tl.fromTo(ph, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tR);
+    tl.to(ph, { x: 800, duration: Math.max(1.5, end(1) - tR), ease: 'none' }, tR);
+    tl.to(ph, { opacity: 0, duration: 0.3 }, end(1));
+    // the wrong way: the hand moves during the word
+    const W = lanes(600, 'Wrong', 'bad');
+    const tW = at(ctx, 2, 'before or during', 0.2);
+    A.in(tl, [W.tag, ...W.all], tW - 0.4, 'fade', { dur: 0.4, stagger: 0.05 });
+    const w2 = blk(X0, 610, 220, 'word', 'volume-2', 'Yip');
+    const h2 = blk(X0 + 60, 690, 320, 'bad', 'hand', 'Treat');
+    A.in(tl, w2, tW, 'grow', { dur: 0.4 });
+    A.in(tl, h2, tW + 0.2, 'grow', { dur: 0.4 });
+    const eye = K.iconBadge(stage, 'eye', { x: 980, y: 640, size: 90, variant: 'red' });
+    const el = put(stage, K.el('div', 'tm-lab', 'Your dog watches your hand,<br>not the word'), 1090, 648, { fontSize: '30px', color: 'var(--red)' });
+    A.in(tl, [eye, el], at(ctx, 2, 'movement predicts', 0.5), 'fadeUp', { dur: 0.5, stagger: 0.1 });
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 850);
+    bn.appendChild(K.icon('volume-2'));
+    bn.appendChild(K.el('span', null, 'Kept separate, the word becomes <b>a clear, reliable signal</b>'));
+    TM.centerX(bn, 960);
+    A.in(tl, bn, at(ctx, 3, 'keeping', 0.1), 'fadeUp', { dur: 0.6 });
+  });
+
+  // ---------------------------------------------------------------- practice without your dog first (clip)
+  registerScene('tm03s02', ctx => {
     const { stage, tl } = ctx;
-    const v = TM.videoSlide(ctx, {
-      kicker: 'Same recipe, different sound', heading: 'Charging a clicker',
+    TM.videoSlide(ctx, {
+      kicker: 'Practicing your mechanics', heading: 'Practice without your dog first', gap: 28,
       rows: [
-        { icon: 'mouse-pointer-click', html: 'Click, treat. *10 to 15 reps*', beat: 1, phrase: 'click once', fb: 0.05 },
-        { icon: 'audio-waveform', html: 'The same sound, *every time*', beat: 2, phrase: 'the same', fb: 0.15 },
-        { icon: 'zap', html: 'Test it: a quick *head snap*', beat: 3, phrase: 'test it', fb: 0.05 },
+        { icon: 'hand', html: 'Treats in your hand', beat: 1, phrase: 'hold treats', fb: 0.05 },
+        { icon: 'volume-2', html: 'Word, pause, *then into a bowl*', beat: 1, phrase: 'pause briefly', fb: 0.3 },
+        { icon: 'pause', html: 'Hand still *until the word ends*', beat: 1, phrase: 'keep your hand still', fb: 0.7 },
+        { icon: 'repeat', html: 'Until it’s *consistent*', beat: 2, phrase: 'practice until', fb: 0.05 },
       ],
     });
-    v.col.style.top = '400px';
-    const sub = K.text(stage, 'Just another marker. <b style="color:var(--green)">Charge it the same way.</b>', { x: 100, y: 300, w: 760, cls: 'lead', size: 34 });
-    A.in(tl, sub, at(ctx, 0, 'just another marker', 0.1), 'fadeUp', { dur: 0.6 });
-  });
-
-  registerScene('tm01s07', ctx => {
-    const { stage, tl, cue, end, dur } = ctx;
-    TM.style(stage);
-    C2.style(stage);
-    TM.head(ctx, 'Check for understanding', 'Does your dog understand the marker?', { size: 62 });
-
-    // the vignette: you are off to the left, the dog faces away
-    const PX = 100, PY = 300, PW = 820, PH = 470;
-    const panel = put(stage, K.el('div', 'tm-panel'), PX, PY, { width: PW + 'px', height: PH + 'px' });
-    A.in(tl, panel, cue(0) + 0.3, 'fadeUp', { dur: 0.7 });
-    const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const DX = 560, DY = 590;
-    const D = C2.dog(sv, DX, DY, 0.9);
-    A.in(tl, D.outer, cue(0) + 0.6, 'fade', { dur: 0.6 });
-    const you = put(stage, K.el('div', 'tm-lab', 'You'), PX + 30, PY + PH - 60, { fontSize: '30px', color: 'var(--ink-soft)' });
-    const arrowYou = K.iconBadge(stage, 'arrow-left', { x: PX + 100, y: PY + PH - 72, size: 56, variant: 'solid' });
-    A.in(tl, [you, arrowYou], cue(0) + 0.8, 'fadeUp', { dur: 0.5 });
-    // step 1: out of the blue
-    const yip = TM.bubble(stage, 'Yip!', { x: PX + 40, y: PY + 40, size: 44 });
-    const tY = at(ctx, 1, 'mark once', 0.6);
-    A.in(tl, yip, tY, 'pop', { dur: 0.45 });
-    const noFood = TM.word(stage, 'No food yet', { x: PX + 40, y: PY + 150, variant: 'amber', size: 28, icon: 'hand' });
-    A.in(tl, noFood, at(ctx, 1, 'food yet', 0.85), 'fadeUp', { dur: 0.45 });
-    // step 2: the head snaps round to you
-    const tTurn = at(ctx, 2, 'head snaps', 0.5);
-    tl.to(D.outer, { scaleX: -1, svgOrigin: `${DX} ${DY}`, duration: 0.25, ease: 'power3.out' }, tTurn);
-    const spark = K.group(sv);
-    [[400, 430, 380, 405], [440, 418, 440, 386], [480, 428, 498, 404]].forEach(([a, b, c, d]) => K.line(spark, a, b, c, d, { stroke: '#619537', 'stroke-width': 7, 'stroke-linecap': 'round' }));
-    tl.to(noFood, { opacity: 0, duration: 0.3 }, tTurn - 0.2);
-    A.in(tl, spark, tTurn + 0.15, 'pop', { dur: 0.35 });
-    const got = TM.word(stage, 'Got it', { x: PX + 560, y: PY + 40, variant: 'green', size: 30, icon: 'circle-check' });
-    A.in(tl, got, tTurn + 0.3, 'pop', { dur: 0.4 });
-    // step 3: a blank look sends you back to pairing reps
-    const t3 = at(ctx, 3, 'blank look', 0.1);
-    tl.to([spark, got, yip, noFood], { opacity: 0, duration: 0.35 }, t3 - 0.1);
-    tl.to(D.outer, { scaleX: 1, svgOrigin: `${DX} ${DY}`, duration: 0.4, ease: 'power2.inOut' }, t3);
-    const q = put(stage, K.el('div', 'tm-lab', '?'), DX + 120, PY + 20, { fontSize: '110px', color: 'var(--amber)', fontFamily: 'var(--font-head)' });
-    A.in(tl, q, t3 + 0.3, 'pop', { dur: 0.45 });
-    const back = TM.word(stage, 'Back to pairing reps', { x: PX + 40, y: PY + 40, variant: 'amber', size: 30, icon: 'rotate-ccw' });
-    A.in(tl, back, at(ctx, 3, 'pairing reps', 0.7), 'fadeUp', { dur: 0.5 });
-
-    // the three steps at right
-    const col = put(stage, K.el('div', 'tm-col'), 980, 320, { width: '840px', gap: '40px' });
-    const steps = [['Give it out of the blue', 1, 'calm moment'], ['Watch for the answer', 2, 'responds'], ['Blank look? Back up', 3, 'blank look']].map(([t, b, p], i) => {
-      const r = TM.row(col, null, t, { num: i + 1, size: 36 });
-      A.in(tl, r, at(ctx, b, p, 0.05), 'fadeRight', { dur: 0.6 });
-      return r;
-    });
-    tl.to(steps[0], { opacity: 0.45, duration: 0.4 }, cue(2));
-    tl.to(steps[1], { opacity: 0.45, duration: 0.4 }, cue(3));
-    tl.to(steps[2], { opacity: 0.45, duration: 0.4 }, cue(4));
-    // proof it
-    tl.to([q, back], { opacity: 0, duration: 0.4 }, cue(4));
-    const pl = put(stage, K.el('div', 'tm-lab', 'Then proof it:'), 980, 640, { fontSize: '36px', color: 'var(--green-dark)' });
-    A.in(tl, pl, at(ctx, 4, 'proof it', 0.1), 'fadeUp', { dur: 0.5 });
-    [['New rooms', 'house', 'new rooms', 980, 710], ['The yard', 'trees', 'yard', 1290, 710], ['Mild distractions', 'squirrel', 'distractions', 980, 800]].forEach(([w, ic, p, x, y]) => {
-      const n = TM.word(stage, w, { x, y, variant: 'pale', icon: ic, size: 32 });
-      A.in(tl, n, at(ctx, 4, p, 0.4), 'pop', { dur: 0.45 });
-    });
-    tl.to(D.outer, { scaleX: -1, svgOrigin: `${DX} ${DY}`, duration: 0.3, ease: 'power3.out' }, at(ctx, 4, 'trust', 0.85));
+    const o = TM.order(stage, ['Word', 'Pause', 'Move'], { x: 100, y: 720, size: 32, icons: ['volume-2', 'pause', 'hand'] });
+    A.in(tl, o.items, at(ctx, 3, 'word', 0.3), 'fadeRight', { dur: 0.4, stagger: 0.15 });
   });
 })();

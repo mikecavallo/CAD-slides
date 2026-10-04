@@ -116,7 +116,15 @@
     const scr = put(fr, K.el('div', 'scr'), B, B, { width: w + 'px', height: h + 'px' });
     const img = K.el('img');
     if (c.poster) img.src = '../assets/img/' + c.poster;
-    scr.appendChild(img);
+    else {
+      // no thumbnail yet: a calm placeholder until the trainer's clip is added
+      scr.style.background = 'linear-gradient(160deg, #3f6b22, #2c4a17)';
+      img.style.display = 'none';
+      const ph = K.el('div', 'ph', 'Your video plays here');
+      Object.assign(ph.style, { position: 'absolute', left: 0, right: 0, bottom: '120px', textAlign: 'center', font: '600 32px/1 var(--font-body)', color: '#e8f1dc' });
+      scr.appendChild(ph);
+    }
+    if (c.poster) scr.appendChild(img);
     scr.appendChild(K.el('div', 'shade'));
     const play = K.el('div', 'play', PLAY);
     scr.appendChild(play);
@@ -185,5 +193,19 @@
   /** Centre a positioned element on x after layout (call before animating). */
   function centerX(n, cx) { n.style.left = cx - n.offsetWidth / 2 + 'px'; return n; }
 
-  window.TM = { style, clamp, say, at, put, partCard, head, videoFrame, videoSlide, row, treat, bubble, word, strike, centerX, PLAY };
+  /** A left-to-right order strip: chips with arrows between (Word → Pause → Move). Returns { row, items }. */
+  function order(parent, words, o = {}) {
+    const row = put(parent, K.el('div'), o.x ?? 100, o.y ?? 840, { position: 'absolute', display: 'flex', alignItems: 'center', gap: '18px' });
+    if (o.center) Object.assign(row.style, { left: '0px', width: '1920px', justifyContent: 'center' });
+    const items = [];
+    words.forEach((w, i) => {
+      if (i) { const a = K.iconBadge(row, 'arrow-right', { size: 52 }); a.style.position = 'relative'; a.style.left = a.style.top = ''; items.push(a); }
+      const n = word(row, w, { variant: o.variant || (i === words.length - 1 ? 'green' : 'pale'), size: o.size ?? 32, icon: (o.icons || [])[i] });
+      n.style.position = 'relative'; n.style.left = n.style.top = '';
+      items.push(n);
+    });
+    return { row, items };
+  }
+
+  window.TM = { order, style, clamp, say, at, put, partCard, head, videoFrame, videoSlide, row, treat, bubble, word, strike, centerX, PLAY };
 })();

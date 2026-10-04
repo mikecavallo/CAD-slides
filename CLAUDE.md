@@ -136,6 +136,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   Added stress or arousal is shown as the water rising (an arrow), not as drops, so it still fits heat in Chapter 4.
   s06 "other animals" (not other dogs, paw icon). s08 "can affect the dog's overall mood and add to the water level in
   the pot"; s10 "together they can weigh on the dog's mood and raise the water level".
+- Round 16: Tori now edits the Chapter 2 script in the Drive doc "Chapter 2 script (round 15, paste into Script v4)"
+  (id 1SbwVdgb1781rBJC9iftjBWaeeFXiyTx2xBwK7P7_XQA); read it before each build, it wins over the lesson. s03 is Tori's
+  rewrite in six beats: starting water level = baseline incl. cumulative mood; not stress or arousal in the moment ("In a
+  later chapter"); "Rim = what your dog can manage" / "Overflow = an intense response" (spills); lower level = more room
+  (long arrow stays under) and higher level = less room (short arrow spills) in one beat; "Goal: a lower baseline" + "More
+  room to handle stress or arousal"; flame bookmark "We'll add heat in a later chapter". The "lower/higher water level"
+  line and "Why does that matter?" are gone. s08 pill is "An unpleasant or stressful experience" (no "even one").
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

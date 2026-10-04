@@ -149,54 +149,34 @@
      ],
      "beats": [
       {
-       "say": "We're going to represent the dog's baseline with water in a pot.",
-       "show": "The pot draws on and water pours in to a middle level; label: 'Water level = the dog's current baseline'.",
-       "onscreen": "Water level = the dog's current baseline"
+       "say": "Picture your dog's baseline as the starting water level in a pot. It represents their overall starting state, including their cumulative mood.",
+       "show": "The pot draws on and water pours in to a middle level; the label at the waterline: 'Water level = your dog's baseline', then 'including their cumulative mood'.",
+       "onscreen": "Water level = your dog's baseline"
       },
       {
-       "say": "The water level reflects the dog's overall starting state, including their cumulative mood.",
-       "show": "The 'Water level = the dog's current baseline' label at the waterline gains a line: 'including their cumulative mood'.",
-       "onscreen": "Water level = overall starting state, including cumulative mood"
+       "say": "The starting water level doesn't represent stress or arousal in the moment. We'll add that part in a later chapter.",
+       "show": "A muted pill beside the pot: 'Not shown: stress or arousal in the moment', with an 'In a later chapter' bookmark.",
+       "onscreen": "Not shown: stress or arousal in the moment"
       },
       {
-       "say": "A lower water level represents a lower baseline, and a higher water level represents a higher baseline.",
-       "show": "The water drops and a 'Lower baseline' tag points at it; then it rises and a 'Higher baseline' tag points at it.",
-       "onscreen": "Lower baseline / Higher baseline"
+       "say": "The rim represents the limit of what your dog can manage in that situation. Overflow represents an intense response.",
+       "show": "The rim glows: 'Rim = what your dog can manage'; the water rises past it and spills down the glass: 'Overflow = an intense response'.",
+       "onscreen": "Rim = what your dog can manage / Overflow = an intense response"
       },
       {
-       "say": "The water level doesn't tell us how aroused or stressed the dog is in that particular moment. We'll add that part later.",
-       "show": "A muted pill beside the pot: 'Not shown: arousal or stress in the moment', with a small 'Later' bookmark.",
-       "onscreen": "Not shown: arousal or stress in the moment"
+       "say": "A lower starting level leaves more room, so your dog may be able to handle more added stress or arousal before an intense response occurs. A higher level leaves less room, so a smaller amount may trigger that response.",
+       "show": "Low water, the bracket: 'Lower baseline = more room'; a long amber arrow 'Added stress or arousal' raises it and it stays under the rim ('Still under the rim'). Then high water: 'Higher baseline = less room'; a short arrow 'A smaller amount' tips it over.",
+       "onscreen": "Lower baseline = more room / Higher baseline = less room"
       },
       {
-       "say": "Why does that matter?",
-       "show": "A big amber question mark pops beside the pot.",
-       "onscreen": "Why does that matter?"
-      },
-      {
-       "say": "The rim represents the limit of what your dog can manage in that situation. If the water rises beyond it, the pot overflows, representing an intense response.",
-       "show": "The rim glows: 'The rim = the limit of what your dog can manage'; the water rises past it and spills down the glass: 'Overflow = an intense response'.",
-       "onscreen": "The rim = the limit of what your dog can manage / Overflow = an intense response"
-      },
-      {
-       "say": "When the starting water level is low, there's more room before the pot overflows. Similarly, when your dog's baseline is low, they may be able to handle more added stress or arousal before an intense response occurs.",
-       "show": "The water drops low; the bracket reads 'More room'. A long amber arrow 'Added stress or arousal' raises the water a lot, and it stays under the rim: 'Still under the rim'.",
-       "onscreen": "More room / Added stress or arousal / Still under the rim"
-      },
-      {
-       "say": "When the starting water level is high, there's less room before the pot overflows. Similarly, when your dog's baseline is high, a smaller amount of added stress or arousal may trigger an intense response.",
-       "show": "The water rises high; the bracket reads 'Less room'. A short amber arrow 'A smaller amount' tips it over the rim: 'Overflow = an intense response'.",
-       "onscreen": "Less room / A smaller amount / Overflow = an intense response"
-      },
-      {
-       "say": "That's the goal: the lower the baseline a dog starts out with, the better.",
-       "show": "The water drops back low ('More room'); a pale green pill under the pot: 'The goal: a lower baseline'.",
-       "onscreen": "The goal: a lower baseline"
+       "say": "Our goal is to help your dog start with a lower baseline, giving them more room to handle added stress or arousal before an intense response occurs.",
+       "show": "The water drops low; 'Goal: a lower baseline' under the pot; the bracket: 'More room to handle stress or arousal'.",
+       "onscreen": "Goal: a lower baseline / More room to handle stress or arousal"
       },
       {
        "say": "We'll come back to why that becomes important when we start adding heat to the pot.",
-       "show": "A small 'We'll come back to this' bookmark tag pins to the bracket.",
-       "onscreen": "We'll come back to this"
+       "show": "A flame bookmark under the bracket: 'We'll add heat in a later chapter'.",
+       "onscreen": "We'll add heat in a later chapter"
       }
      ]
     },
@@ -439,8 +419,8 @@
       },
       {
        "say": "An unpleasant or stressful emotional experience, even a single one, can affect the dog's overall mood and add to the water level in the pot, especially when those experiences happen repeatedly or there isn't enough opportunity to recover between them.",
-       "show": "'An unpleasant or stressful experience, even one' drips into the pot; 'Mood affects whether the water goes up or down'; 'Repeated, or not enough time to recover' adds another drop.",
-       "onscreen": "An unpleasant or stressful experience, even one · Repeated, or not enough time to recover"
+       "show": "'An unpleasant or stressful experience' drips into the pot; 'Mood affects whether the water goes up or down'; 'Repeated, or not enough time to recover' adds another drop.",
+       "onscreen": "An unpleasant or stressful experience · Repeated, or not enough time to recover"
       },
       {
        "say": "An experience doesn't have to produce a big, obvious response to have an effect.",

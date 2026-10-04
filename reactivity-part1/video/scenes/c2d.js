@@ -419,7 +419,7 @@
     tl.fromTo(legT2, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t4 + 0.4);
     tl.to(leg, { scale: 1.05, transformOrigin: '0% 50%', duration: 0.3, yoyo: true, repeat: 1 }, t4 + 0.5);
 
-    // ---------- beat 7: an unpleasant or stressful experience, even one, can shift the mood in a negative direction and add
+    // ---------- beat 7: an unpleasant or stressful experience, even one, can affect the mood and add
     // to the water; repetition and too little recovery add more
     const t5 = cue(7);
     tl.to(LA, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t5 - 0.2);
@@ -429,7 +429,7 @@
     const e1 = mk7('zap', 'An unpleasant or stressful experience, *even one*', 300, C.amber);
     const t7a = clamp(at(7, 'Unpleasant or stressful', 0.05, 0.3), t5 + 0.2, end(7) - 6);
     A.in(tl, e1.c, t7a, 'fadeRight', { dur: 0.5 });
-    const tCum = clamp(at(7, 'negative direction', 0.35, 0.4), t7a + 1.0, end(7) - 4);
+    const tCum = clamp(at(7, 'overall mood', 0.35, 0.4), t7a + 1.0, end(7) - 4);
     const land1 = P.drip(tl, e1.x + 37, e1.y + 37, tCum, e1.col, 0.95);
     L += 0.12;
     P.setLevel(tl, L, land1 - 0.05, 0.7);

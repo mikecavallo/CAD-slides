@@ -174,13 +174,23 @@
        "onscreen": "Why does that matter?"
       },
       {
-       "say": "A higher baseline means there's less room for additional stress before they react. A lower water level leaves more room.",
-       "show": "A bracket from the waterline to the rim: 'Less room' while the water is high; the water lowers and the bracket stretches: 'More room for what happens next'.",
-       "onscreen": "Less room before a reaction / More room for additional stress before they react"
+       "say": "The rim represents the limit of what your dog can manage in that situation. If the water rises beyond it, the pot overflows, representing an intense response.",
+       "show": "The rim glows: 'The rim = the limit of what your dog can manage'; the water rises past it and spills down the glass: 'Overflow = an intense response'.",
+       "onscreen": "The rim = the limit of what your dog can manage / Overflow = an intense response"
+      },
+      {
+       "say": "When the starting water level is low, there's more room before the pot overflows. Similarly, when your dog's baseline is low, they may be able to handle more added stress or arousal before an intense response occurs.",
+       "show": "The water drops low; the bracket reads 'More room'. A long amber arrow 'Added stress or arousal' raises the water a lot, and it stays under the rim: 'Still under the rim'.",
+       "onscreen": "More room / Added stress or arousal / Still under the rim"
+      },
+      {
+       "say": "When the starting water level is high, there's less room before the pot overflows. Similarly, when your dog's baseline is high, a smaller amount of added stress or arousal may trigger an intense response.",
+       "show": "The water rises high; the bracket reads 'Less room'. A short amber arrow 'A smaller amount' tips it over the rim: 'Overflow = an intense response'.",
+       "onscreen": "Less room / A smaller amount / Overflow = an intense response"
       },
       {
        "say": "That's the goal: the lower the baseline a dog starts out with, the better.",
-       "show": "A green pill under the pot: 'The goal: a lower baseline'.",
+       "show": "The water drops back low ('More room'); a pale green pill under the pot: 'The goal: a lower baseline'.",
        "onscreen": "The goal: a lower baseline"
       },
       {
@@ -304,9 +314,9 @@
        "onscreen": "Dogs can be very stoic"
       },
       {
-       "say": "Pain can change how a dog responds to touch, movement, handling, people, other dogs, noise, activity, and everyday events in their environment.",
-       "show": "The dog at centre; eight example badges pop around it one per word: Touch, Movement, Handling, People, Other dogs, Noise, Activity, Everyday events.",
-       "onscreen": "Touch · Movement · Handling · People · Other dogs · Noise · Activity"
+       "say": "Pain can change how a dog responds to touch, movement, handling, people, other animals, noise, activity, and everyday events in their environment.",
+       "show": "The dog at centre; eight example badges pop around it one per word: Touch, Movement, Handling, People, Other animals, Noise, Activity, Everyday events.",
+       "onscreen": "Touch · Movement · Handling · People · Other animals · Noise · Activity"
       },
       {
        "say": "So when behavior changes, especially if the change is sudden or unusual for that dog, pain and other medical concerns should be considered.",
@@ -428,7 +438,7 @@
        "onscreen": "Dogs too"
       },
       {
-       "say": "An unpleasant or stressful emotional experience, even a single one, can shift the dog's overall mood in a negative direction and affect the water level in the pot, especially when those experiences happen repeatedly or there isn't enough opportunity to recover between them.",
+       "say": "An unpleasant or stressful emotional experience, even a single one, can affect the dog's overall mood and add to the water level in the pot, especially when those experiences happen repeatedly or there isn't enough opportunity to recover between them.",
        "show": "'An unpleasant or stressful experience, even one' drips into the pot; 'Mood affects whether the water goes up or down'; 'Repeated, or not enough time to recover' adds another drop.",
        "onscreen": "An unpleasant or stressful experience, even one · Repeated, or not enough time to recover"
       },
@@ -519,7 +529,7 @@
        "onscreen": "Poor sleep · Pain · Too much or too little stimulation · Change at home · Unpleasant experiences"
       },
       {
-       "say": "Each factor can affect the dog's overall state, and together they can shift the dog's mood in a negative direction and raise the water level.",
+       "say": "Each factor can affect the dog's overall state, and together they can weigh on the dog's mood and raise the water level.",
        "show": "Plus signs link the chips; the water reaches just under the rim; the bracket shows 'Little room left'.",
        "onscreen": "Together, they raise the water"
       },

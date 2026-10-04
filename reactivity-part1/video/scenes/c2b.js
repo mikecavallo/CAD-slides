@@ -97,39 +97,121 @@
     tl.fromTo(q, { opacity: 0, scale: 0.4, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: 'back.out(2)' }, cue(4) + 0.05);
     tl.to(q, { rotation: 8, duration: 0.25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, cue(4) + 0.7);
 
-    // ---------- beat 5: the room bracket. High water: less room. Lower water: more room
-    const t3 = cue(5);
-    A.out(tl, q, t3 - 0.1, 'shrink', { dur: 0.4 });
-    A.dim(tl, [lowT, highT], t3, 0.0);
-    tl.fromTo(P.br, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, t3 + 0.2);
+    // ---------- beat 5: the rim is the limit of what the dog can manage; past it the pot overflows (an intense response)
+    const t5 = cue(5);
+    A.out(tl, q, t5 - 0.1, 'shrink', { dur: 0.4 });
+    A.dim(tl, [lowT, highT], t5, 0.0);
+    const rimG = K.svgEl('ellipse', { cx: 0, cy: 0, rx: C2.R, ry: 42, fill: 'none', stroke: C.waterDeep, 'stroke-width': 14, opacity: 0 }, P.svg);
+    const tRim = clamp(at(5, 'rim represents', 0.1, 0.3), t5 + 0.2, end(5) - 4);
+    tl.fromTo(rimG, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, tRim);
+    tl.to(rimG, { attr: { 'stroke-width': 24 }, duration: 0.3, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tRim + 0.4);
+    const rimP = C2.pill(stage, 'arrow-up-to-line', 'The rim = *the limit*<br>of what your dog can manage', { x: 1150, y: 360, size: 30, col: C.waterDeep });
+    rimP.style.whiteSpace = 'normal';
+    rimP.style.lineHeight = '1.2';
+    A.in(tl, rimP, tRim + 0.3, 'fadeLeft', { dur: 0.5 });
+    const SP = spill(P);
+    const tOver = clamp(at(5, 'rises beyond it', 0.55, 0.2), tRim + 1.6, end(5) - 2.6);
+    P.setLevel(tl, 1.0, tOver, 1.0, 'power2.in');
+    SP.on(tl, tOver + 0.85);
+    const overP = C2.pill(stage, 'waves', 'Overflow = *an intense response*', { x: 1150, y: 560, variant: 'red' });
+    A.in(tl, overP, clamp(at(5, 'intense response', 0.85, 0.3), tOver + 1.0, end(5) - 0.4), 'fadeLeft', { dur: 0.5 });
+    tl.to([rimP, overP, rimG], { opacity: 0, duration: 0.4, ease: 'power2.in' }, cue(6) - 0.2);
+
+    // ---------- beat 6: low water, more room: a big amount of added stress or arousal still stays under the rim
+    const t6 = cue(6);
+    SP.off(tl, t6);
+    const tLow6 = clamp(at(6, 'water level is low', 0.1, 0.3), t6 + 0.2, end(6) - 5);
+    P.setLevel(tl, 0.3, tLow6, 1.2);
+    tl.fromTo(P.br, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, tLow6 + 0.8);
     tl.set(P.br, { opacity: 0 }, 0);
     const bx = P.bracketX();
-    const less = C2.pill(stage, 'minimize-2', 'Less room before a reaction', { x: bx, y: 0, variant: 'amber' });
+    const more = C2.pill(stage, 'maximize-2', 'More room', { x: bx, y: 0, variant: 'green' });
+    P.follow(more, 'mid', -37);
+    A.in(tl, more, tLow6 + 1.0, 'fadeRight', { dur: 0.6 });
+    const tAdd6 = clamp(at(6, 'more added stress', 0.6, 0.3), tLow6 + 2.2, end(6) - 2.8);
+    A.out(tl, more, tAdd6, 'fade', { dur: 0.3 });
+    const add6 = added(0.3, 0.75, 'Added stress<br>or arousal', tAdd6);
+    P.setLevel(tl, 0.75, tAdd6 + 0.3, 1.6);
+    const ok = C2.pill(stage, 'check', 'Still under the rim', { x: bx, y: 0, variant: 'green' });
+    P.follow(ok, 'mid', -37);
+    A.in(tl, ok, clamp(at(6, 'intense response occurs', 0.8, 0.3), tAdd6 + 2.0, end(6) - 0.4), 'fadeRight', { dur: 0.5 });
+    tl.to([ok, add6], { opacity: 0, duration: 0.4, ease: 'power2.in' }, cue(7) - 0.2);
+
+    // ---------- beat 7: high water, less room: a smaller amount tips it over
+    const t7 = cue(7);
+    const tHigh7 = clamp(at(7, 'water level is high', 0.1, 0.3), t7 + 0.2, end(7) - 5);
+    P.setLevel(tl, 0.87, tHigh7, 1.0);
+    const less = C2.pill(stage, 'minimize-2', 'Less room', { x: bx, y: 0, variant: 'amber' });
     P.follow(less, 'mid', -37);
-    A.in(tl, less, t3 + 0.4, 'fadeRight', { dur: 0.6 });
-    const tMore = clamp(at(5, 'A lower water level', 0.7, 0.2), t3 + 2.4, end(5) - 1.6);
-    A.out(tl, less, tMore, 'fade', { dur: 0.35 });
-    P.setLevel(tl, 0.3, tMore, 1.4);
-    const more = K.el('div');
-    Object.assign(more.style, { position: 'absolute', left: bx + 'px', display: 'flex', flexDirection: 'column', gap: '18px', alignItems: 'flex-start' });
-    const moreP = C2.pill(more, 'maximize-2', 'More room', { variant: 'green' });
-    moreP.style.position = 'relative';
-    const room = C2.put(more, 'c2-lab', '**for additional stress<br>before they react**', {});
-    Object.assign(room.style, { position: 'relative', left: '', top: '', fontSize: '36px', lineHeight: '1.25', color: 'var(--ink)' });
-    stage.appendChild(more);
-    P.follow(more, 'mid', -70);
-    A.in(tl, more, tMore + 0.6, 'fadeRight', { dur: 0.7 });
+    A.in(tl, less, tHigh7 + 0.8, 'fadeRight', { dur: 0.6 });
+    const tAdd7 = clamp(at(7, 'smaller amount', 0.6, 0.3), tHigh7 + 2.2, end(7) - 2.6);
+    const add7 = added(0.87, 1.0, 'A smaller<br>amount', tAdd7);
+    A.out(tl, less, tAdd7 + 0.2, 'fade', { dur: 0.3 });
+    tl.to(P.br, { opacity: 0, duration: 0.3 }, tAdd7 + 0.6);
+    P.setLevel(tl, 1.0, tAdd7 + 0.3, 0.8, 'power2.in');
+    SP.on(tl, tAdd7 + 1.0);
+    const over2 = C2.pill(stage, 'waves', 'Overflow = *an intense response*', { x: 1150, y: 560, variant: 'red' });
+    A.in(tl, over2, clamp(at(7, 'intense response', 0.85, 0.3), tAdd7 + 1.2, end(7) - 0.4), 'fadeLeft', { dur: 0.5 });
+    tl.to([over2, add7], { opacity: 0, duration: 0.4, ease: 'power2.in' }, cue(8) - 0.2);
 
-    // ---------- beat 6: the goal: the lower the baseline, the better
+    // ---------- beat 8: the goal: the lower the baseline, the better
+    const t8 = cue(8);
+    SP.off(tl, t8);
+    P.setLevel(tl, 0.3, t8 + 0.1, 1.4);
+    tl.to(P.br, { opacity: 1, duration: 0.5 }, t8 + 0.9);
+    const more2 = C2.pill(stage, 'maximize-2', 'More room', { x: bx, y: 0, variant: 'green' });
+    P.follow(more2, 'mid', -37);
+    A.in(tl, more2, t8 + 1.1, 'fadeRight', { dur: 0.6 });
     const goal = C2.pill(stage, 'arrow-down', 'The goal: *a lower baseline*', { x: PX, y: 900, center: true, size: 34, variant: 'pale' });
-    A.in(tl, goal, clamp(at(6, 'lower the baseline', 0.5, 0.3), cue(6) + 0.2, end(6) - 0.6), 'pop', { dur: 0.5 });
-    tl.to(goal, { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1 }, clamp(at(6, 'the better', 0.9, 0.2), cue(6) + 1, end(6)));
+    A.in(tl, goal, clamp(at(8, 'lower the baseline', 0.5, 0.3), t8 + 0.2, end(8) - 0.6), 'pop', { dur: 0.5 });
+    tl.to(goal, { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1 }, clamp(at(8, 'the better', 0.9, 0.2), t8 + 1, end(8)));
 
-    // ---------- beat 7: we'll come back to this
+    // ---------- beat 9: we'll come back to this
     const mk = C2.bookmark(stage, 'We’ll come back to this', bx, 0);
-    P.follow(mk, 'mid', 132);
-    A.in(tl, mk, cue(7) + 0.3, 'fadeUp', { dur: 0.6 });
+    P.follow(mk, 'mid', 62);
+    A.in(tl, mk, cue(9) + 0.3, 'fadeUp', { dur: 0.6 });
+
+    /** An amber arrow left of the pot from level L0 up to L1, with a label; it grows at t. Returns the group (svg + label). */
+    function added(L0, L1, text, t) {
+      const ax = -C2.R - 120, y0 = C2.surfY(L0), y1 = C2.surfY(L1) - 6;
+      const g = K.group(P.svg, { opacity: 0 });
+      K.line(g, ax, y0, ax, y1 + 22, { stroke: C.amber, 'stroke-width': 14, 'stroke-linecap': 'round' });
+      K.path(g, `M ${ax - 26} ${y1 + 26} L ${ax} ${y1 - 6} L ${ax + 26} ${y1 + 26} Z`, { fill: C.amber, stroke: C.amber, 'stroke-width': 6, 'stroke-linejoin': 'round' });
+      K.line(g, ax + 24, y0, -C2.R + 6, y0, { stroke: C.amber, 'stroke-width': 4, 'stroke-dasharray': '8 8' });
+      const lab = C2.pill(stage, 'plus', text, { variant: 'amber', size: 30 });
+      Object.assign(lab.style, { right: 1920 - (PX + ax - 40) + 'px', top: PY + (y0 + y1) / 2 - 50 + 'px', lineHeight: '1.15', whiteSpace: 'normal', textAlign: 'right' });
+      tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, t);
+      tl.fromTo(g, { scaleY: 0, svgOrigin: `${ax} ${y0}` }, { scaleY: 1, svgOrigin: `${ax} ${y0}`, duration: 1.2, ease: 'power2.out', immediateRender: false }, t);
+      A.in(tl, lab, t + 0.2, 'fadeRight', { dur: 0.5 });
+      return [g, lab];
+    }
   });
+
+  /** Water spilling over the rim and running down the outside of the glass. on(tl, t) pours, off(tl, t) dries up. */
+  function spill(P) {
+    const R = C2.R, sp = K.group(P.svg, { opacity: 0 });
+    const streams = [-1, 1].map(k => {
+      const d = `M ${k * (R - 50)} -14 C ${k * (R + 4)} -40 ${k * (R + 34)} -6 ${k * (R + 30)} 40 L ${k * (R + 26)} 300`;
+      return [K.path(sp, d, { stroke: C.water, 'stroke-width': 28, fill: 'none', 'stroke-linecap': 'round' }),
+        K.path(sp, d, { stroke: '#dff1f9', 'stroke-width': 9, fill: 'none', 'stroke-linecap': 'round' })];
+    });
+    const lip = K.svgEl('ellipse', { cx: 0, cy: -8, rx: R - 6, ry: 36, fill: C.waterTop, stroke: '#ffffff', 'stroke-width': 5 }, sp);
+    sp.insertBefore(lip, sp.firstChild);
+    const pool = K.svgEl('ellipse', { cx: 0, cy: C2.H + 60, rx: R + 60, ry: 26, fill: C.water, opacity: 0 }, P.svg);
+    P.svg.insertBefore(pool, P.svg.firstChild.nextSibling);
+    const all = streams.flat();
+    return {
+      on(tl, t) {
+        tl.fromTo(sp, { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, t);
+        tl.fromTo(all, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.9, ease: 'power1.in', immediateRender: false }, t);
+        tl.fromTo(pool, { opacity: 0, attr: { rx: R } }, { opacity: 0.35, attr: { rx: R + 90 }, duration: 1.2, immediateRender: false }, t + 0.7);
+      },
+      off(tl, t) {
+        tl.to(sp, { opacity: 0, duration: 0.5 }, t);
+        tl.to(pool, { opacity: 0, duration: 0.8 }, t + 0.2);
+      },
+    };
+  }
 
   // ================================================================== ch02s04 What can affect the water level?
   registerScene('ch02s04', ctx => {

@@ -111,6 +111,14 @@ pipeline). This file records the state, decisions and working agreements from ea
   again here. That's intentional." and the then/now pairs; its line is now "In this chapter, we're focusing on factors
   that can be changed, managed, or improved." with Changed / Managed / Improved lighting word by word. s12's thermometer
   goes in through the middle of the pot's opening (front rim redrawn over it).
+- Round 13: the goal is a lower baseline, said early: s03 adds "That's the goal: the lower the baseline a dog starts out
+  with, the better." (Claude's wording, Tori asked) with a "The goal: a lower baseline" pill. Emotional experiences that
+  raise the water are the unpleasant or stressful ones (good experiences don't): s08 "When unpleasant or stressful
+  emotional experiences happen repeatedly ... they can shift the dog's overall mood in a negative direction and affect
+  the water level in the pot." (pill "Repeated stressful or unpleasant experiences"); s10 "several unpleasant or
+  stressful experiences" and "together they can shift the dog's mood in a negative direction and raise the water level"
+  (pill "Unpleasant experiences"). Never say a dog is "in a bad mood" (too anthropomorphic); say "shift the mood in a
+  negative direction". s12 thermometer is shorter so it stays clear of the Part labels.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

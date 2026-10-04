@@ -423,7 +423,7 @@
     const t5 = cue(7);
     tl.to(LA, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t5 - 0.2);
     const LB = C2.layer(stage, tl, t5);
-    const EM = [['repeat', 'Repeated emotional experiences', 'happen repeatedly', 0.12, C.amber], ['hourglass', 'Not enough time to recover', 'opportunity to recover', 0.4, C.red]];
+    const EM = [['repeat', 'Repeated stressful or unpleasant experiences', 'happen repeatedly', 0.12, C.amber], ['hourglass', 'Not enough time to recover', 'opportunity to recover', 0.4, C.red]];
     let lo = t5 + 0.2, L = 0.4;
     const ems = EM.map(([ic, t, p, fb, col], k) => {
       const x = 120, y = 300 + k * 110;

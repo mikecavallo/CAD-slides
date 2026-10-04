@@ -179,6 +179,11 @@
        "onscreen": "Room for what happens next"
       },
       {
+       "say": "That's the goal: the lower the baseline a dog starts out with, the better.",
+       "show": "A green pill under the pot: 'The goal: a lower baseline'.",
+       "onscreen": "The goal: a lower baseline"
+      },
+      {
        "say": "We'll come back to why that becomes important when we start adding heat to the pot.",
        "show": "A small 'We'll come back to this' bookmark tag pins to the bracket.",
        "onscreen": "We'll come back to this"
@@ -423,9 +428,9 @@
        "onscreen": "Dogs too"
       },
       {
-       "say": "When emotional experiences happen repeatedly, or there isn't enough opportunity to recover between them, they can contribute to the dog's cumulative mood and affect the water level in the pot.",
+       "say": "When unpleasant or stressful emotional experiences happen repeatedly, or there isn't enough opportunity to recover between them, they can shift the dog's overall mood in a negative direction and affect the water level in the pot.",
        "show": "'Repeated emotional experiences' and 'Not enough time to recover' drip into the pot and the water rises; 'Mood affects whether the water goes up or down' and the water moves up and down.",
-       "onscreen": "Repeated experiences · Not enough recovery · Cumulative mood"
+       "onscreen": "Repeated stressful or unpleasant experiences · Not enough time to recover"
       },
       {
        "say": "An experience doesn't have to produce a big, obvious response to have an effect.",
@@ -509,12 +514,12 @@
        "onscreen": "Normally manageable. That day: harder to handle."
       },
       {
-       "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, and several emotional experiences.",
+       "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, and several unpleasant or stressful experiences.",
        "show": "Five red and amber factor pills appear one per phrase; each drips into the pot and the water rises a step (the ingredients ride up with it).",
-       "onscreen": "Poor sleep · Pain · Too much or too little stimulation · Change at home · Emotional experiences"
+       "onscreen": "Poor sleep · Pain · Too much or too little stimulation · Change at home · Unpleasant experiences"
       },
       {
-       "say": "Each factor can affect the dog's overall state, and together they can influence the dog's mood and raise the water level.",
+       "say": "Each factor can affect the dog's overall state, and together they can shift the dog's mood in a negative direction and raise the water level.",
        "show": "Plus signs link the chips; the water reaches just under the rim; the bracket shows 'Little room left'.",
        "onscreen": "Together, they raise the water"
       },

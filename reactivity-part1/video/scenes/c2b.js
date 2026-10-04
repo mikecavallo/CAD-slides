@@ -120,10 +120,15 @@
     P.follow(more, 'mid', -70);
     A.in(tl, more, tMore + 0.6, 'fadeRight', { dur: 0.7 });
 
-    // ---------- beat 6: we'll come back to this
+    // ---------- beat 6: the goal: the lower the baseline, the better
+    const goal = C2.pill(stage, 'arrow-down', 'The goal: *a lower baseline*', { x: PX, y: 900, center: true, size: 34, variant: 'pale' });
+    A.in(tl, goal, clamp(at(6, 'lower the baseline', 0.5, 0.3), cue(6) + 0.2, end(6) - 0.6), 'pop', { dur: 0.5 });
+    tl.to(goal, { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1 }, clamp(at(6, 'the better', 0.9, 0.2), cue(6) + 1, end(6)));
+
+    // ---------- beat 7: we'll come back to this
     const mk = C2.bookmark(stage, 'We’ll come back to this', bx, 0);
     P.follow(mk, 'mid', 132);
-    A.in(tl, mk, cue(6) + 0.3, 'fadeUp', { dur: 0.6 });
+    A.in(tl, mk, cue(7) + 0.3, 'fadeUp', { dur: 0.6 });
   });
 
   // ================================================================== ch02s04 What can affect the water level?

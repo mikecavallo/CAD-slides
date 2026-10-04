@@ -1,0 +1,655 @@
+{
+ "title": "Your Training Mechanics",
+ "series": {
+  "title": "Your Training Mechanics",
+  "titleLines": [
+   "Your Training",
+   "Mechanics"
+  ]
+ },
+ "notes": "Core Skills course video built from Tori's deck '6- Your Training Mechanics' (no script existed; all narration drafted by Claude from the slide text). Video slides carry a 'clip' block: Tori's own video plays inside the frame (file clips/<scene id>.mp4) and Tori narrates over it. Build with LESSON=lesson-mechanics.json.",
+ "tail": 4.0,
+ "chapters": [
+  {
+   "id": "tm00",
+   "num": 0,
+   "title": "Welcome",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "tm00intro",
+     "heading": "Your Training Mechanics",
+     "visual_concept": "The shared title slide: 'Your Training Mechanics', Tori's headshot ring, training photo, name and credentials.",
+     "assets": [
+      "trainer_headshot.jpg",
+      "trainer_with_dog.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Hi, I'm Tori Ganino with Calling All Dogs. Welcome to Your Training Mechanics.",
+       "show": "Title, headshot, name block, training photo.",
+       "onscreen": "Your Training Mechanics"
+      }
+     ]
+    },
+    {
+     "id": "tm00plan",
+     "heading": "Where we're headed",
+     "visual_concept": "Plan slide, three cards: Why it matters, What you'll gain, How we'll get there (five numbered steps, the deck's agenda).",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Every lesson you teach your dog runs on the same few hand skills. When they're sloppy, your dog has to guess. When they're clean, learning gets easier for both of you.",
+       "show": "Why it matters card: Every lesson uses them / Sloppy means guessing / Clean means easier.",
+       "onscreen": "Why it matters"
+      },
+      {
+       "say": "By the end, you'll have a clear marker, clean timing, and you'll know exactly where each treat should go.",
+       "show": "What you'll gain card: a clear marker, clean timing, knowing where the treat goes.",
+       "onscreen": "What you'll gain"
+      },
+      {
+       "say": "We'll cover what a marker is, how to charge it, how to mark with clean timing, how to tell your dog where to look for their treat, and how to use toss and scatter.",
+       "show": "How we'll get there card: five numbered steps land as they are said.",
+       "onscreen": "How we'll get there"
+      }
+     ]
+    },
+    {
+     "id": "tm00idea",
+     "heading": "The big idea",
+     "visual_concept": "A treat in the middle; a clock (when) and a map pin (where) each draw a line to it; the deck's big idea statement; 'Learn once, use in everything'.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Here's the big idea.",
+       "show": "Kicker THE BIG IDEA and a treat in the middle.",
+       "onscreen": "The big idea"
+      },
+      {
+       "say": "When and where the food lands teaches your dog just as much as what the food is.",
+       "show": "A clock badge (When) and a pin badge (Where) light up as they're said; the statement builds.",
+       "onscreen": "When and where the food lands teaches as much as what the food is."
+      },
+      {
+       "say": "Learn these skills once, and you'll use them in everything you teach.",
+       "show": "Pill: Learn them once. Use them in everything.",
+       "onscreen": "Learn them once. Use them in everything."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "tm01",
+   "num": 1,
+   "title": "The Marker",
+   "bumper": false,
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "tm01card",
+     "heading": "Part 1: The marker",
+     "visual_concept": "Part card (chapter card look, 'Part 1'), then a sound-burst 'Yip' badge and the subtitle.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Part one: the marker.",
+       "show": "Big 01, Part 1, 'The marker'.",
+       "onscreen": "Part 1: The marker"
+      },
+      {
+       "say": "A marker is the most precise tool you have. It's one sound that tells your dog the exact instant they got it right, and that a treat is on its way.",
+       "show": "A 'Yip' sound badge pulses out rings; subtitle: One sound. The exact instant. A treat is coming.",
+       "onscreen": "One sound. The exact instant. A treat is coming."
+      }
+     ]
+    },
+    {
+     "id": "tm01s01",
+     "heading": "What a marker is",
+     "visual_concept": "A filmstrip of a sit rolls by and a camera flash freezes the frame where the bottom touches down; a 2 second timer fills while a treat travels; word chips (good picks green, everyday words crossed in red); the rule pill.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Think of your marker as a snapshot. You mark the exact moment your dog gets it right, and that sound tells them: that moment earned a treat.",
+       "show": "Filmstrip of a sit; flash on the frame where the bottom touches; that frame lifts out: 'That moment earned a treat'.",
+       "onscreen": "A snapshot of the right instant"
+      },
+      {
+       "say": "It also buys you time. The moment is captured, so you have a second or two to get the food there without losing the lesson.",
+       "show": "A 0 to 2 s bar fills; a treat slides along it to the frozen frame. 'It buys you time'.",
+       "onscreen": "It buys you time"
+      },
+      {
+       "say": "Pick a distinct word, like yip or mark, or use a clicker. Skip everyday words like yes or good. Your dog hears those all day.",
+       "show": "Green chips Yip, Mark, Clicker; red crossed chips Yes, Good.",
+       "onscreen": "Pick a distinct word"
+      },
+      {
+       "say": "And there's one rule. The marker is always followed by food. No exceptions, or the promise stops working.",
+       "show": "Rule card: Marker, then food. Every time.",
+       "onscreen": "Always followed by food"
+      }
+     ]
+    },
+    {
+     "id": "tm01s02",
+     "heading": "What a marker is not",
+     "visual_concept": "Three cards with red crosses, each with a small vignette: a Yip bubble at a dog looking away goes grey (attention-getter); a stop hand (correction); a treat dangled first, order crossed (bribe). Green banner: one sound, one meaning.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Just as important is what a marker is not. It has exactly one job: to mark the instant your dog got it right. Use it for anything else, and it stops meaning a treat is coming.",
+       "show": "Heading and the one-job line.",
+       "onscreen": "One job: mark the instant your dog got it right"
+      },
+      {
+       "say": "It's not an attention-getter. If you say it just to get your dog to look at you, with no behavior to pay, the word goes hollow.",
+       "show": "Card 1: Not an attention-getter; the Yip bubble goes grey; red cross.",
+       "onscreen": "Not an attention-getter"
+      },
+      {
+       "say": "It's not a correction. A marker never means no, or stop that. It only points at something you liked.",
+       "show": "Card 2: Not a correction; hand stop sign; red cross.",
+       "onscreen": "Not a correction"
+      },
+      {
+       "say": "And it's not a bribe. You don't wave food first to get the behavior. The treat comes after the mark, never before.",
+       "show": "Card 3: Not a bribe; treat dangled first, crossed; red cross.",
+       "onscreen": "Not a bribe"
+      },
+      {
+       "say": "Keep it clean: one sound, one meaning.",
+       "show": "Green banner: One sound. One meaning.",
+       "onscreen": "One sound. One meaning."
+      }
+     ]
+    },
+    {
+     "id": "tm01s03",
+     "heading": "Mark the moment, then feed fast",
+     "visual_concept": "The rep loop: four nodes in a ring (The moment, Mark it, Feed fast, Reset) lit in turn with a dot travelling round; then a timeline: Sit, Yip on the same tick, treat inside the green 1 to 2 sec window; a late treat lands after the dog stands up: pays the wrong moment.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Whatever you're teaching, every rep has the same shape. The moment changes, a sit, a glance at you, a response to their name, but your job doesn't. Catch it, mark it, pay it.",
+       "show": "The four-node loop draws; example chips flick through: a sit, a glance, their name.",
+       "onscreen": "Catch it. Mark it. Pay it."
+      },
+      {
+       "say": "First, the moment. Your dog does the thing you want.",
+       "show": "Node 1 lights: The moment.",
+       "onscreen": "The moment"
+      },
+      {
+       "say": "Then mark it, the instant it happens, not a beat later.",
+       "show": "Node 2 lights: Mark it.",
+       "onscreen": "Mark it"
+      },
+      {
+       "say": "Feed fast. The treat arrives within a second or two, and where it lands is your next choice.",
+       "show": "Node 3 lights: Feed fast.",
+       "onscreen": "Feed fast"
+      },
+      {
+       "say": "Then reset, and set up the next rep. Clean reps, stacked up, are how the habit forms.",
+       "show": "Node 4 lights; the dot keeps circling: reps stack up.",
+       "onscreen": "Reset"
+      },
+      {
+       "say": "Say you're teaching a sit. Watch for the instant their bottom touches the ground, mark it right then, and let the treat follow.",
+       "show": "Loop shrinks left; timeline: Sit tick, Yip on the same tick, treat lands inside the window.",
+       "onscreen": "Teaching a sit"
+      },
+      {
+       "say": "That's your window: one to two seconds. Late food pays the wrong moment, so watch your dog, and mark what you actually want.",
+       "show": "The green 1 to 2 sec window; a late treat lands after the dog stands up, in red: pays the wrong moment.",
+       "onscreen": "1 to 2 sec"
+      }
+     ]
+    },
+    {
+     "id": "tm01s04",
+     "heading": "A marker in action",
+     "visual_concept": "Video slide: Tori's clip plays in the frame at right (poster until the clip is in clips/); bullets land at left.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let's see it at work. Here, I'm using the marker during position changes: sit, and stand.",
+       "show": "Video frame; bullet: Position changes: sit and stand.",
+       "onscreen": "Position changes: sit and stand"
+      },
+      {
+       "say": "Each time he nails the position, I say yip, and follow with a treat.",
+       "show": "Bullet: Yip, then a treat.",
+       "onscreen": "Yip, then a treat"
+      },
+      {
+       "say": "One sound tells him exactly which moment paid. No guessing, no nagging.",
+       "show": "Bullet: One sound, no guessing.",
+       "onscreen": "No guessing, no nagging"
+      },
+      {
+       "say": "That's the whole idea in motion. Next, let's charge your own marker.",
+       "show": "Pill: Next: charge your marker.",
+       "onscreen": "Next: charge your marker"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       290,
+       920,
+       518
+      ],
+      "poster": "tm_clip_action.jpg",
+      "label": "A marker in action",
+      "youtube": "https://www.youtube.com/watch?v=Q6cp9zz7U0o",
+      "at": 1.2,
+      "volume": 0
+     }
+    },
+    {
+     "id": "tm01s05",
+     "heading": "Charging your marker: Yip",
+     "visual_concept": "Video slide (Introduction to Yip). Steps at left; the Yip, pause, treat sequence with a rep counter to 15.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Before your marker means anything, you have to charge it. A few minutes of pairing turns a sound into a promise.",
+       "show": "Heading; video frame.",
+       "onscreen": "Charging your marker"
+      },
+      {
+       "say": "Load up pea-sized treats where you can reach them fast.",
+       "show": "Step 1: Pea-sized treats, within reach.",
+       "onscreen": "Pea-sized treats, within reach"
+      },
+      {
+       "say": "Say your marker, pause, then deliver a treat. Do ten to fifteen reps.",
+       "show": "Step 2: Yip, pause, treat; rep counter counts to 15.",
+       "onscreen": "Yip, pause, treat. 10 to 15 reps"
+      },
+      {
+       "say": "Saying the marker and moving your hand are two separate actions. Say it first, then move.",
+       "show": "Step 3: Say it, then move.",
+       "onscreen": "Say it, then move"
+      },
+      {
+       "say": "Then test it. Say the marker when your dog isn't expecting it. If their head snaps to you for the treat, it's charged.",
+       "show": "Step 4: Test it: head snaps to you = charged.",
+       "onscreen": "Head snaps to you = charged"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       290,
+       920,
+       518
+      ],
+      "poster": "tm_clip_yip.jpg",
+      "label": "Introduction to Yip",
+      "youtube": "https://www.youtube.com/watch?v=P54Wuz8WTMk",
+      "at": 1.2,
+      "volume": 0
+     }
+    },
+    {
+     "id": "tm01s06",
+     "heading": "Charging a clicker",
+     "visual_concept": "Video slide (Quill: Introduction to the Clicker). Same recipe, different sound.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "A clicker is just another marker. Charge it exactly the same way.",
+       "show": "Kicker SAME RECIPE, DIFFERENT SOUND; heading; video frame.",
+       "onscreen": "Same recipe, different sound"
+      },
+      {
+       "say": "Click once, then feed. Click, treat, click, treat, ten to fifteen reps.",
+       "show": "Bullet: Click, treat. 10 to 15 reps.",
+       "onscreen": "Click, treat. 10 to 15 reps"
+      },
+      {
+       "say": "The click sounds the same every single time, and that consistency is its whole advantage.",
+       "show": "Bullet: The same sound every time.",
+       "onscreen": "The same sound every time"
+      },
+      {
+       "say": "Test it the same way. Click when your dog isn't expecting it. A quick head snap to you means it's charged.",
+       "show": "Bullet: Test it.",
+       "onscreen": "Test it"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       290,
+       920,
+       518
+      ],
+      "poster": "tm_clip_clicker.jpg",
+      "label": "Quill: Introduction to the Clicker",
+      "youtube": "https://www.youtube.com/watch?v=UiUIU5rHcrA",
+      "at": 1.2,
+      "volume": 0
+     }
+    },
+    {
+     "id": "tm01s07",
+     "heading": "Does your dog understand the marker?",
+     "visual_concept": "A drawn dog looks away; 'Yip' bubble; the dog turns to you with a spark (got it); or a question mark and an arrow back to pairing reps; three numbered steps at right; proof row: new rooms, the yard, mild distractions.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Before you lean on your marker, make sure your dog actually understands it. The test is simple: give it when they're not expecting it, and watch what they do before any food appears.",
+       "show": "Heading; drawn dog facing away in a soft panel.",
+       "onscreen": "Check for understanding"
+      },
+      {
+       "say": "Pick a calm moment, when your dog isn't already staring at you. Mark once, and don't reach for food yet.",
+       "show": "Step 1; a Yip bubble pops beside the dog.",
+       "onscreen": "Give it out of the blue"
+      },
+      {
+       "say": "A dog who knows it responds right away. Their head snaps to you, before the treat shows.",
+       "show": "Step 2; the dog turns to face you, spark lines.",
+       "onscreen": "Watch for the answer"
+      },
+      {
+       "say": "A blank look? No worries. It just isn't fluent yet. Go back to easy pairing reps, and test again later.",
+       "show": "Step 3; a question mark, then a loop arrow: back to pairing reps.",
+       "onscreen": "Blank look? Back up"
+      },
+      {
+       "say": "Then proof it. Test in new rooms, out in the yard, and with mild distractions. A word your dog knows everywhere is a word you can trust when it counts.",
+       "show": "Proof chips: New rooms, The yard, Mild distractions.",
+       "onscreen": "Then proof it"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "tm02",
+   "num": 2,
+   "title": "Where the Treats Go",
+   "bumper": false,
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "tm02card",
+     "heading": "Part 2: Where the treats go",
+     "visual_concept": "Part card ('Part 2'), then four chips for what placement can do: Reset, Calm, Move, Keep them with you.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Part two: where the treats go.",
+       "show": "Big 02, Part 2, 'Where the treats go'.",
+       "onscreen": "Part 2: Where the treats go"
+      },
+      {
+       "say": "Delivery isn't an afterthought. Where the treat lands shapes what your dog does next. It can reset them, calm them, move them, or keep them right with you. So pick the placement on purpose.",
+       "show": "Chips land as said: Reset, Calm, Move, Keep them with you.",
+       "onscreen": "Pick the placement on purpose"
+      }
+     ]
+    },
+    {
+     "id": "tm02s01",
+     "heading": "Tell your dog where to look",
+     "visual_concept": "Video slide (LSM: Jeer). Left: a dog with a question mark looks around (where's my treat?); each word gets its own spot: 'Treat' with an arrow to the mouth, 'Get it' with an arrow to the ground.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "When we're training or playing a game, your dog is always wondering: where's my treat coming from?",
+       "show": "Kicker; heading; dog badge with a question mark looking left and right.",
+       "onscreen": "Where's my treat coming from?"
+      },
+      {
+       "say": "So we give each spot its own word. The word tells your dog where they'll get their treat, so they know exactly where to look. We call these LSMs.",
+       "show": "Line: The word tells your dog where to look. Tag: LSM.",
+       "onscreen": "The word tells your dog where to look"
+      },
+      {
+       "say": "When I say treat, the food comes right to his mouth.",
+       "show": "Row: 'Treat' chip, arrow, To his mouth.",
+       "onscreen": "“Treat”: to his mouth"
+      },
+      {
+       "say": "When I say get it, the food is on the ground by his feet.",
+       "show": "Row: 'Get it' chip, arrow, On the ground.",
+       "onscreen": "“Get it”: on the ground"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       290,
+       920,
+       518
+      ],
+      "poster": "tm_clip_lsm.jpg",
+      "label": "LSM: Jeer",
+      "youtube": "https://www.youtube.com/watch?v=P5MIq93ooDk",
+      "at": 1.2,
+      "volume": 0
+     }
+    },
+    {
+     "id": "tm02s02",
+     "heading": "Why we use LSMs",
+     "visual_concept": "Guessing vignette: a dog with question marks darting to a hand, the floor, a pocket while a frustration meter climbs amber; the word arrives and an arrow goes straight to the spot, the meter drops green. Then three cards: Clarity, Less frustration, Each does a job; closing banner.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Why bother? A dog who has to guess where the treat went gets frustrated, and frustration gets in the way of learning.",
+       "show": "Guessing dog, question marks hop between hand, floor and pocket; frustration meter climbs.",
+       "onscreen": "Guessing builds frustration"
+      },
+      {
+       "say": "LSMs take the guesswork out. The word tells your dog where to go, so they can stay relaxed and keep thinking.",
+       "show": "A word chip; arrow straight to the spot; meter drops to green.",
+       "onscreen": "The word takes the guesswork out"
+      },
+      {
+       "say": "That's clarity: one word, one place. No searching your hands or scanning the floor.",
+       "show": "Card 1: Clarity.",
+       "onscreen": "Clarity"
+      },
+      {
+       "say": "Less frustration: no guessing means no build-up of stress, so a calm dog keeps working with you.",
+       "show": "Card 2: Less frustration.",
+       "onscreen": "Less frustration"
+      },
+      {
+       "say": "And each placement does a job. Treats to your hand keep your dog with you. Treats on the ground help them calm down. A treat tossed away resets them.",
+       "show": "Card 3: Each does a job (Hand: with you / Ground: calms / Toss: resets).",
+       "onscreen": "Each does a job"
+      },
+      {
+       "say": "And in a hard moment, one familiar word can send your dog straight to the food. No struggle, no confusion.",
+       "show": "Banner: In a hard moment, one word sends them straight to the food.",
+       "onscreen": "One familiar word"
+      }
+     ]
+    },
+    {
+     "id": "tm02s03",
+     "heading": "Toss the treat away",
+     "visual_concept": "Video slide (Treat toss). Left: bullets; a treat arcs out and the path loops back to you.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Tossing resets and re-engages. Toss a piece a few feet away so your dog moves to get it, then comes back to you.",
+       "show": "Kicker RESETS AND RE-ENGAGES; heading; out and back arc.",
+       "onscreen": "Out and back"
+      },
+      {
+       "say": "The trip out and back resets their position and posture for a fresh rep.",
+       "show": "Bullet: Resets position and posture.",
+       "onscreen": "Resets position and posture"
+      },
+      {
+       "say": "That bit of movement also adds a little space, and a beat to reset between reps.",
+       "show": "Bullet: Adds space and a beat.",
+       "onscreen": "Adds space and a beat"
+      },
+      {
+       "say": "It's great for getting back to a start position, or buying a little distance from something exciting.",
+       "show": "Bullet: Back to start, or a little distance.",
+       "onscreen": "Back to start, or a little distance"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       290,
+       920,
+       518
+      ],
+      "poster": "tm_clip_toss.jpg",
+      "label": "Treat toss",
+      "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk",
+      "at": 1.2,
+      "volume": 0
+     }
+    },
+    {
+     "id": "tm02s04",
+     "heading": "Scatter on the ground",
+     "visual_concept": "Video slide (scatter). Left: treats sprinkle onto the ground; a calm meter settles; bullets.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Scattering calms and decompresses. Sprinkle a few treats on the ground in front of your dog.",
+       "show": "Kicker CALMS AND DECOMPRESSES; heading; treats sprinkle onto a ground line.",
+       "onscreen": "Sprinkle a few treats"
+      },
+      {
+       "say": "Sniffing is naturally calming. It helps bring their arousal down while they search.",
+       "show": "Bullet: Sniffing helps them settle.",
+       "onscreen": "Sniffing helps them settle"
+      },
+      {
+       "say": "It also brings your dog's head down.",
+       "show": "Bullet: Head goes down.",
+       "onscreen": "Head goes down"
+      },
+      {
+       "say": "Use it as a distraction, or to help your dog calm down when things start to ramp up.",
+       "show": "Bullet: A distraction, or a calm-down.",
+       "onscreen": "A distraction, or a calm-down"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       290,
+       920,
+       518
+      ],
+      "poster": "tm_clip_scatter.jpg",
+      "label": "Scatter",
+      "youtube": "https://www.youtube.com/watch?v=8PEainzd9mo",
+      "at": 1.2,
+      "volume": 0
+     }
+    },
+    {
+     "id": "tm02s05",
+     "heading": "Pick your words",
+     "visual_concept": "Three columns, each with a small animated header: a treat moves to a mouth (To the mouth), treats scatter on the ground (Scattered), a treat arcs away (Tossed); the example words drop in as chips; closing pill: one spot, one word.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Now pick your words. Here are some examples.",
+       "show": "Heading and three empty columns.",
+       "onscreen": "Pick your words"
+      },
+      {
+       "say": "For food that goes to the mouth: a clicker, yip, yep, mark, nice, or treat.",
+       "show": "To the mouth column: header animation, chips.",
+       "onscreen": "To the mouth"
+      },
+      {
+       "say": "For treats scattered on the ground: scatter, get it, find it, search, or ground.",
+       "show": "Scattered column.",
+       "onscreen": "Scattered"
+      },
+      {
+       "say": "For a tossed treat: toss, go, chase, or free.",
+       "show": "Tossed column.",
+       "onscreen": "Tossed"
+      },
+      {
+       "say": "Whatever you pick, give each spot its own word, and use it every time.",
+       "show": "Pill: One spot, one word. Every time.",
+       "onscreen": "One spot, one word"
+      }
+     ]
+    },
+    {
+     "id": "tm02s06",
+     "heading": "Your key takeaways",
+     "visual_concept": "Training photo at left, four numbered takeaways at right landing one per beat.",
+     "assets": [
+      "trainer_with_dog.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Let's pull it together.",
+       "show": "Photo; heading.",
+       "onscreen": "Your key takeaways"
+      },
+      {
+       "say": "A marker is a promise. It pinpoints the exact moment and is always followed by food. Pick one, and keep it everywhere.",
+       "show": "1: A marker is a promise.",
+       "onscreen": "A marker is a promise"
+      },
+      {
+       "say": "Mark the instant it happens, then feed within a second or two. Late food pays the wrong moment.",
+       "show": "2: Mark the instant, feed fast.",
+       "onscreen": "Mark the instant, feed fast"
+      },
+      {
+       "say": "Where the treat lands is a tool. Toss it away to reset, scatter it to calm, and hand-feed to keep your dog with you.",
+       "show": "3: Placement is a tool.",
+       "onscreen": "Placement is a tool"
+      },
+      {
+       "say": "And LSMs take the guesswork out. One word tells your dog where to look for their treat.",
+       "show": "4: One word, they know where to look.",
+       "onscreen": "One word tells them where to look"
+      }
+     ]
+    },
+    {
+     "id": "tm02s07",
+     "heading": "Remember",
+     "visual_concept": "Quote: These skills never change. Only the target does. A bullseye whose label changes (A sit, A look, A calm choice) while Mark / Feed / Place stay fixed; logo close.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Remember: these skills never change. Only the target does.",
+       "show": "Kicker REMEMBER; the quote.",
+       "onscreen": "These skills never change. Only the target does."
+      },
+      {
+       "say": "A sit, a look, a calm choice. You'll mark it, feed it, and place it the same way every time.",
+       "show": "Target label changes; Mark, Feed, Place chips stay.",
+       "onscreen": "Mark. Feed. Place."
+      },
+      {
+       "say": "Thanks for training with me.",
+       "show": "Logo close with Tori's name and credentials.",
+       "onscreen": ""
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

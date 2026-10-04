@@ -100,6 +100,37 @@ def captions(timing):
     return cues
 
 
+def overlay_clips(video, segs, scale=1):
+    """Video slides: play the trainer's own clips inside each slide's frame (box in 1920 x 1080 stage px).
+    A clip starts at the slide's clip time, fades in and out, and holds its last frame if the slide outlasts it."""
+    items = [s for s in segs if (s.get("clip") or {}).get("file")]
+    if not items:
+        return video
+    inputs, chains, last = [], [], "[0:v]"
+    for k, s in enumerate(items):
+        c = s["clip"]
+        x, y, w, h = (round(v * scale) for v in c["box"])
+        w, h = w - w % 2, h - h % 2
+        t0 = s["start"] + c["at"]
+        t1 = s["start"] + s["dur"] - 0.5  # the slide itself fades out over its last 0.5 s
+        d = max(0.2, t1 - t0)
+        inputs += ["-i", str(ROOT / c["file"])]
+        chains.append(
+            f"[{k + 1}:v]trim=start={c['from']:.3f}:duration={c['len']:.3f},setpts=PTS-STARTPTS,fps=30,"
+            f"scale={w}:{h}:force_original_aspect_ratio=decrease,pad={w}:{h}:(ow-iw)/2:(oh-ih)/2:color=0x111111,setsar=1,"
+            f"tpad=stop_mode=clone:stop_duration={d:.3f},trim=duration={d:.3f},format=yuva420p,"
+            f"fade=t=in:st=0:d=0.35:alpha=1,fade=t=out:st={max(0, d - 0.42):.3f}:d=0.42:alpha=1,setpts=PTS+{t0:.3f}/TB[c{k}]")
+        chains.append(f"{last}[c{k}]overlay={x}:{y}:eof_action=pass:enable='between(t,{t0:.3f},{t1:.3f})'[v{k}]")
+        last = f"[v{k}]"
+    out = BUILD / "video_clips.mp4"
+    run("ffmpeg", "-v", "error", "-y", "-i", str(video), *inputs, "-filter_complex", ";".join(chains), "-map", last,
+        "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-tune", "animation", "-pix_fmt", "yuv420p", "-r", "30",
+        "-force_key_frames", ",".join(f"{s['start']:.3f}" for s in segs),  # keep exact cuts for the chapter files
+        "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-color_range", "tv", str(out))
+    print(f"  video slides: {len(items)} clip(s) played in their frames")
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", default="Reactivity-and-Aggression-Part-1")
@@ -120,6 +151,7 @@ def main():
     lst.write_text("".join(f"file '{(BUILD / args.segments / (s['id'] + '.mp4')).resolve()}'\n" for s in segs))
     video = BUILD / "video_only.mp4"
     run("ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", str(video))
+    video = overlay_clips(video, segs, scale=2 if "@2x" in args.segments else 1)
 
     # 2) audio: place narration clips on one timeline, chimes on chapter cards
     total = timing["total"]
@@ -136,11 +168,21 @@ def main():
                 cache[f] = decode(f)
             clip = cache[f]
             if "from" in item:  # a slice of a longer recording
-                s = int(round(SR * item["from"]))
-                clip = clip[s:s + int(round(SR * item["dur"]))]
+                k0 = int(round(SR * item["from"]))
+                clip = clip[k0:k0 + int(round(SR * item["dur"]))]
             a = int(round(SR * item["at"]))
             n = min(len(clip), len(mix) - a)
             mix[a:a + n] += clip[:n]
+        c = s.get("clip") or {}
+        if c.get("file") and c.get("volume") and not args.silent:  # a video slide that keeps some of the clip's own sound
+            try:
+                snd = decode(ROOT / c["file"])
+            except subprocess.CalledProcessError:
+                snd = np.zeros(0, np.float32)  # the clip has no sound track
+            snd = snd[int(SR * c["from"]):int(SR * (c["from"] + c["len"]))] * float(c["volume"])
+            a = int(round(SR * (s["start"] + c["at"])))
+            n = max(0, min(len(snd), len(mix) - a))
+            mix[a:a + n] += snd[:n]
     mix = mix[: int(SR * total)]
     raw = BUILD / "mix.f32"
     mix.tofile(raw)

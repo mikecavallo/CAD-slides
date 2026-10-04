@@ -138,7 +138,7 @@
        "onscreen": "B = Behavior"
       },
       {
-       "say": "Between A and B, the dog has an emotional response. We don't always know exactly what the dog is feeling, but something is happening inside the dog before we see the behavior.",
+       "say": "Between A and B, the dog has an emotional response.",
        "show": "A heart pops between A and B: Emotional response.",
        "onscreen": "Emotional response"
       },

@@ -31,7 +31,7 @@ Narration:
 A is the antecedent, the thing that happens and the context around it.
 The immediate thing matters, but so does where it happens and what that context has come to predict for the dog.
 B is the behavior, what your dog does, for example barking or lunging.
-Between A and B, the dog has an emotional response. We don't always know exactly what the dog is feeling, but something is happening inside the dog before we see the behavior.
+Between A and B, the dog has an emotional response.
 C is the consequence, what happens as a direct result of the behavior.
 Let's put an example into it. Here's an excited greeting.
 A person appears outside the window.

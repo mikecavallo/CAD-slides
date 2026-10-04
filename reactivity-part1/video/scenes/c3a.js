@@ -2,7 +2,7 @@
 //   ch03intro  Welcome              shared title slide
 //   ch03card   Chapter card         shared narrated chapter card
 //   ch03plan   Where we're headed   shared plan slide
-//   ch03s01    The ABCs of Behavior chapter 2's pot and thermometer wait ("Coming up"); a dog in a dashed circle; A, B, C tiles land
+//   ch03s01    The ABCs of Behavior chapter 2's pot and thermometer wait ("Coming up"); a dog in a dashed circle; A, B, C sit around it, then drop into a row
 //   ch03s02    The ABCs             the greeting strip as the explainer: definitions in the frames (A, then B), the heart for
 //                                   the emotional response between A and B, then C, then the definitions fade into the greeting photos
 //   ch03s03    WTF? What's the Function?  A, B, C become W, T, F; the question, function defined, looks like vs does, the
@@ -56,7 +56,7 @@
     P.waves(tl, 0, dur);
     const tT = clamp(at(0, 'add temperature', 0.35), cue(0) + 0.8, end(0) - 2.5);
     tl.fromTo(merc, { attr: { y: 240, height: 50 } }, { attr: { y: 40, height: 250 }, duration: 1.6, ease: 'power2.inOut', immediateRender: false }, tT);
-    const lab = C3.def(stage, '', C.red, 'Temperature', '', 1060, 440, 420);
+    const lab = C3.def(stage, '', C.red, 'Temperature', '', 1000, 440, 560);
     lab.querySelector('.lt').appendChild(K.icon('thermometer', { size: 60, stroke: 2.4 }));
     A.in(tl, lab, clamp(at(0, 'temperature', 0.6), tT + 0.4, end(0) - 0.5), 'fadeLeft', { dur: 0.7 });
 
@@ -78,19 +78,21 @@
     const tRing = clamp(at(2, 'around the behavior', 0.6), t2 + 0.5, end(2) - 0.6);
     tl.fromTo(ring, { drawSVG: '0%', opacity: 0 }, { drawSVG: '100%', opacity: 1, duration: 1.0, ease: 'power2.inOut' }, tRing);
     tl.fromTo(ring, { rotation: 0, svgOrigin: `${DX} ${DY}` }, { rotation: 40, svgOrigin: `${DX} ${DY}`, duration: Math.max(1, dur - tRing), ease: 'none', immediateRender: false }, tRing);
-    const bef = C3.chip(stage, 'arrow-left', 'Before', DX - RR - 250, DY - 30, { col: C.olive });
-    const aft = C3.chip(stage, 'arrow-right', 'After', DX + RR + 40, DY - 30, { col: C.greenDeep });
-    A.in(tl, bef, tRing + 0.5, 'fadeRight', { dur: 0.5 });
-    A.in(tl, aft, tRing + 0.8, 'fadeLeft', { dur: 0.5 });
     const q = C3.put(stage, 'c3-mid', 'What is happening <b>around</b> the behavior?', { x: DX - 420, y: 228, w: 840, align: 'center' });
     A.in(tl, q, t2 + 0.3, 'fadeUp', { dur: 0.6 });
 
-    // ---------- beat 3: A, B, C land
-    const t3 = cue(3);
+    // A, B, C around the circled dog (A before it, B the dog's behavior, C after it), then they drop into a row (beat 3)
     const TS = 130, TG = 70, TX0 = DX - (3 * TS + 2 * TG) / 2, TY = 752;
     const tiles = ['A', 'B', 'C'].map((L, k) => C3.tile(stage, L, TX0 + k * (TS + TG), TY, TS, [COL.A, COL.B, COL.C][k]));
-    tiles.forEach((n, k) => tl.fromTo(n, { opacity: 0, y: -90, rotation: k === 1 ? 0 : (k ? 8 : -8) }, { opacity: 1, y: 0, rotation: 0, duration: 0.7, ease: 'bounce.out' }, t3 + 0.15 + k * 0.18));
-    tl.to([bef, aft], { opacity: 0.4, duration: 0.5 }, t3);
+    const near = [[DX - RR - 190, DY - TS / 2], [DX - TS / 2, DY + RR - TS / 2 - 20], [DX + RR + 60, DY - TS / 2]];
+    tiles.forEach((n, k) => {
+      gsap.set(n, { x: near[k][0] - (TX0 + k * (TS + TG)), y: near[k][1] - TY, opacity: 0, scale: 0.85 });
+      tl.to(n, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tRing + 0.5 + k * 0.3);
+    });
+
+    // ---------- beat 3: A, B, C drop into a row
+    const t3 = cue(3);
+    tiles.forEach((n, k) => tl.to(n, { x: 0, y: 0, duration: 0.8, ease: 'bounce.out' }, t3 + 0.15 + k * 0.18));
   });
 
   // ================================================================== ch03s02 The ABCs (explained on the excited greeting)

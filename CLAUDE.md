@@ -93,7 +93,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   Tori's Drive as "Chapter 3 script v3 (paste into Script v4)" (id 1DSB9NQNFvhxaEv_mapkFZQ1Wl-Z9gOeHEY8DiNOv2tk; v2 was
   14Mrf88lQQMxOM2PX6ZAddF6v9LgbIYRGNUmAfNf8FsQ). Drive can only create new files: no Google Docs editor connector, so
   Claude can't edit Script v4 in place. The lesson file is the source until Tori's doc catches up.
-- Slides: s01 ABCs intro (pot with the thermometer through the middle, label just "Temperature"); s02 The ABCs: the
+- Slides: s01 ABCs intro (pot with the thermometer through the middle, label just "Temperature"; A, B, C tiles sit around the circled dog, never "Before"/"After" chips, then drop into a row); s02 The ABCs: the
   excited-greeting strip is the explainer (definitions inside the frames in order A, B, then the plum heart "Emotional
   response" between A and B, then C; each definition fades into the greeting photo); s03 "WTF? What's the Function?" (A, B,
   C tiles become W, T, F, then the question "What did the behavior accomplish?", the greeting's possible function, "two more

@@ -2,8 +2,8 @@
 // (Tori's panels) with the emotional response shown between A and B; no cycles (Tori, round 3).
 //   ch03s11  Why the pattern repeats   before training: A, the emotional response, B, C; getting space makes it more likely
 //   ch03s12  What training includes   three cards: management, changing emotions, new behaviors
-//   ch03s13  Building a new path      the lawn: the new path wears in; management fences off the old path and the grass
-//                                     grows back; a faint trace stays; practice wears it in again
+//   ch03s13  Building a new path      chapter 1's lawn: the new path wears in; a management gate closes the old path and
+//                                     the grass grows back; a faint trace stays; practice wears it in again
 //   ch03s14  Training in action       during training (management, changing emotions, a new behavior, the consequence still
 //                                     works); after training (calmer; C changes: less space needed, then building a
 //                                     relationship); the three emotional states side by side for the arousal line
@@ -122,81 +122,142 @@
   });
 
   // ================================================================== ch03s13 Building a new path
-  // The lawn: the new path wears in; management fences the old path off and grass grows back over it; a faint trace stays;
-  // practice wears it in again.
+  // Chapter 1's lawn (ch01s09: the worn diagonal path with footprint dots, the new dotted trail), drawn at the same
+  // proportions, plus a management gate across the old path. The old path wears in; the new path is revealed and wears in;
+  // the gate closes the old path and grass grows back over it; a faint trace stays; practice wears it in again.
   registerScene('ch03s13', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
     css(stage);
+    stage.appendChild(K.el('style', null, `.c3p-pill { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 14px 28px 14px 20px; border-radius: 999px; background: #fff;
+      font: 700 32px/1 var(--font-body); white-space: nowrap; box-shadow: 0 10px 24px rgba(40,60,20,0.18); }
+      .c3p-pill svg { width: 36px; height: 36px; stroke-width: 2.4; }`));
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
     C3.head(ctx, 'Building a New Path', { size: 72 });
-    const LV = C3.layer(stage);
-    const LW = C3.lawn(LV, { x: 160, y: 250, w: 1600, h: 560, old: 0.95, neu: 0, bow: 175 });
-    tl.fromTo(LV, { opacity: 0 }, { opacity: 1, duration: 0.6, immediateRender: true }, 0.1);
-    const [ox, oy] = LW.toStage(...LW.at('old', 0.62)), [nx, ny] = LW.toStage(...LW.at('neu', 0.5));
-    const endB = C2.badge(LV, 'move-horizontal', LW.x + LW.ex, LW.y + LW.ey, 110, C.greenDeep, '#fff');
-    endB.style.border = '6px solid #fff';
-    const oL = C3.chip(LV, 'volume-2', 'Old path: *barking and lunging*', ox, oy + 42, { center: true, col: C.red, size: 30 });
-    oL.querySelector('b').style.color = C.red;
-    const nL = C3.chip(LV, 'eye', 'New path: *looks back at you*', nx, ny - 104, { center: true, col: C.green, size: 30 });
-    gsap.set(nL, { opacity: 0 });
 
-    // beat 0: the old path is worn in
-    LW.walk(tl, 'old', cue(0) + 0.8, 2.4, 10, '#5a4524');
-    A.in(tl, oL, clamp(at(0, 'old path', 0.4), cue(0) + 0.6, end(0) - 0.5), 'fadeUp', { dur: 0.5 });
-    // beat 1: the new path wears in
-    const t1 = cue(1);
-    A.in(tl, nL, clamp(at(1, 'new path', 0.2), t1 + 0.1, end(1) - 1.5), 'fadeUp', { dur: 0.5 });
-    LW.walk(tl, 'neu', t1 + 0.5, 2.2, 10);
-    LW.set(tl, 'neu', 0.45, t1 + 0.4, 1.0);
-    LW.set(tl, 'neu', 0.95, clamp(at(1, 'stronger', 0.7), t1 + 1.8, end(1) - 1.2), 1.2);
-
-    // beat 2: management fences the old path; the grass grows back over it
-    const t2 = cue(2);
-    const [fx, fy] = LW.at('old', 0.17);
-    const fence = K.group(LW.svg);
-    for (let k = -2; k <= 2; k++) K.rect(fence, fx - 8 + k * 30, fy - 70, 16, 140, { rx: 6, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 4 });
-    K.rect(fence, fx - 80, fy - 40, 160, 16, { rx: 6, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 4 });
-    K.rect(fence, fx - 80, fy + 20, 160, 16, { rx: 6, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 4 });
-    const tM = clamp(at(2, 'Management keeps', 0.5), t2 + 1.0, end(2) - 3);
-    tl.fromTo(fence, { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.6, ease: 'bounce.out' }, tM);
-    const mg = C3.chip(LV, 'shield-check', '*Management*', LW.x + fx - 110, LW.y + fy - 150, { col: C.greenDeep, size: 30 });
-    A.in(tl, mg, tM + 0.4, 'fadeUp', { dur: 0.5 });
-    LW.set(tl, 'old', 0.55, t2 + 0.3, 1.4);
-    // grass tufts grow back along the old path
-    const TUFT = (g, x, y, sc) => {
-      const t = K.group(g, { transform: `translate(${x} ${y})` });
-      const inner = K.group(t);
-      K.path(inner, `M -14 8 L -8 -16 M -4 8 L -1 -22 M 6 8 L 8 -18 M 14 8 L 16 -10`, { stroke: '#7fb054', 'stroke-width': 5 });
-      gsap.set(inner, { scale: 0, svgOrigin: '0 8' });
-      return inner;
-    };
-    const tufts = [];
-    for (let j = 0; j < 26; j++) {
-      const f = 0.24 + 0.68 * (j / 25);
-      const [px, py] = LW.at('old', f);
-      tufts.push(TUFT(LW.svg, px + ((j * 37) % 40) - 20, py + ((j * 53) % 34) - 17));
+    // the lawn, in chapter 1's coordinates (980 x 530), scaled up
+    const VW = 980, VH = 530, S = 1.32, LW = VW * S, LH = VH * S, LX = (1920 - LW) / 2, LY = 248;
+    const lawn = K.svg(stage, { x: LX, y: LY, w: LW, h: LH, viewBox: `0 0 ${VW} ${VH}` });
+    const defs = K.svgEl('defs', {}, lawn);
+    const g = K.svgEl('linearGradient', { id: 'c3p-lawn', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    K.svgEl('stop', { offset: '0', 'stop-color': '#d6e9bf' }, g);
+    K.svgEl('stop', { offset: '1', 'stop-color': '#a7cb80' }, g);
+    const clip = K.svgEl('clipPath', { id: 'c3p-lawnclip' }, defs);
+    K.rect(clip, 0, 0, VW, VH, { rx: 26 });
+    const reveal = K.svgEl('clipPath', { id: 'c3p-newclip', clipPathUnits: 'userSpaceOnUse' }, defs);
+    const revealR = K.rect(reveal, -40, 0, 0, VH, { fill: '#fff' });
+    const body = K.group(lawn, { 'clip-path': 'url(#c3p-lawnclip)' });
+    K.rect(body, 0, 0, VW, VH, { fill: 'url(#c3p-lawn)' });
+    let seed = 7;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    for (let i = 0; i < 52; i++) {
+      const x = 30 + rnd() * (VW - 60), y = 40 + rnd() * (VH - 60), s = 0.8 + rnd() * 0.6;
+      K.path(body, `M ${x} ${y} l ${-7 * s} ${-20 * s} M ${x} ${y} l 0 ${-26 * s} M ${x} ${y} l ${7 * s} ${-20 * s}`,
+        { stroke: rnd() > 0.5 ? '#86b556' : '#79a94b', 'stroke-width': 4, opacity: 0.55 + rnd() * 0.35 });
     }
-    const tG = clamp(at(2, 'grass', 0.85), tM + 1.0, end(2) - 1.4);
-    tufts.forEach((tf, j) => tl.to(tf, { scale: 1, svgOrigin: '0 8', duration: 0.5, ease: 'back.out(2)' }, tG + j * 0.04));
-    LW.set(tl, 'old', 0.18, tG, 1.4);
+    const pathD = 'M -30 380 C 190 385, 305 275, 500 242 S 815 132, 1010 56';
+    const newD = 'M -30 482 C 220 482, 362 405, 552 377 S 858 316, 1010 288';
+    const worn = K.path(body, pathD, { stroke: '#cdb285', 'stroke-width': 0 });
+    const wornIn = K.path(body, pathD, { stroke: '#b8966a', 'stroke-width': 0, opacity: 0.75 });
+    const trace = K.path(body, pathD, { stroke: '#8d7a55', 'stroke-width': 4, 'stroke-dasharray': '14 12', opacity: 0 });
+    const dotted = K.path(body, pathD, { stroke: '#6f6446', 'stroke-width': 7, 'stroke-dasharray': '0.1 24', opacity: 0.6 });
+    const newWorn = K.path(body, newD, { stroke: '#cdb285', 'stroke-width': 0 });
+    const freshG = K.group(body, { 'clip-path': 'url(#c3p-newclip)' });
+    K.path(freshG, newD, { stroke: '#ffffff', 'stroke-width': 20, 'stroke-dasharray': '0.1 26', opacity: 0.75 });
+    K.path(freshG, newD, { stroke: C.greenDark, 'stroke-width': 12, 'stroke-dasharray': '0.1 26' });
+    // grass that grows back over the old path
+    const grassG = K.group(body);
+    const tufts = [];
+    const len = worn.getTotalLength();
+    for (let j = 0; j < 30; j++) {
+      const p = worn.getPointAtLength(len * (0.2 + 0.78 * j / 29));
+      const x = p.x + ((j * 37) % 34) - 17, y = p.y + ((j * 53) % 30) - 15, s = 0.9 + (j % 3) * 0.2;
+      const tf = K.group(grassG, { transform: `translate(${x} ${y})` });
+      const inner = K.group(tf);
+      K.path(inner, `M 0 0 l ${-7 * s} ${-20 * s} M 0 0 l 0 ${-26 * s} M 0 0 l ${7 * s} ${-20 * s}`, { stroke: j % 2 ? '#86b556' : '#79a94b', 'stroke-width': 4.5 });
+      gsap.set(inner, { scale: 0, svgOrigin: '0 0' });
+      tufts.push(inner);
+    }
+    // the management gate across the old path
+    const gp = worn.getPointAtLength(len * 0.14);
+    const gate = K.group(body, { transform: `translate(${gp.x} ${gp.y})` });
+    const gIn = K.group(gate);
+    for (let k = -2; k <= 2; k++) K.rect(gIn, -8 + k * 24, -62, 13, 124, { rx: 5, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 3.5 });
+    K.rect(gIn, -66, -36, 132, 13, { rx: 5, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 3.5 });
+    K.rect(gIn, -66, 22, 132, 13, { rx: 5, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 3.5 });
+    gsap.set(gIn, { opacity: 0 });
+    K.rect(lawn, 2, 2, VW - 4, VH - 4, { rx: 25, fill: 'none', stroke: '#ffffff', 'stroke-width': 4, opacity: 0.7 });
+    lawn.style.filter = 'drop-shadow(0 18px 40px rgba(40,60,20,0.16))';
+    const st = (x, y) => [LX + x * S, LY + y * S];
 
-    // beat 3: it hasn't vanished: a faint dashed trace
+    const pill = (icon, text, col, x, y) => {
+      const n = K.el('div', 'c3p-pill');
+      n.style.color = col;
+      n.appendChild(K.icon(icon));
+      n.appendChild(K.el('span', null, text));
+      const [sx, sy] = st(x, y);
+      Object.assign(n.style, { left: sx + 'px', top: sy + 'px' });
+      stage.appendChild(n);
+      return n;
+    };
+    const oldP = pill('volume-2', 'Old path: barking and lunging', C.red, 560, 110);
+    const newP = pill('sprout', 'New path: looks back at you', C.greenDark, 560, 405);
+    const gateP = pill('shield-check', 'Management', C.greenDeep, 40, 220);
+
+    // ---------- beat 0: the old path wears in
+    tl.fromTo(lawn, { opacity: 0, scale: 0.96, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }, cue(0) + 0.1);
+    const w1 = clamp(at(0, 'old path', 0.35), cue(0) + 0.9, end(0) - 2.4);
+    tl.set(worn, { attr: { 'stroke-width': 12 } }, w1);
+    A.draw(tl, worn, w1, 0.9, { ease: 'power1.inOut' });
+    tl.to(worn, { attr: { 'stroke-width': 40 }, duration: 0.7, ease: 'power2.out' }, w1 + 1.0);
+    const w3 = clamp(at(0, 'so many times', 0.8), w1 + 1.8, end(0) - 0.6);
+    tl.to(worn, { attr: { 'stroke-width': 78 }, duration: 0.8, ease: 'power2.out' }, w3);
+    tl.to(wornIn, { attr: { 'stroke-width': 34 }, duration: 0.8, ease: 'power2.out' }, w3 + 0.1);
+    tl.to(dotted, { opacity: 0.25, duration: 0.6 }, w3);
+    A.in(tl, oldP, w1 + 0.5, 'fadeUp', { dur: 0.5 });
+
+    // ---------- beat 1: the new path appears, then wears in with practice
+    const t1 = cue(1);
+    tl.fromTo(revealR, { attr: { width: 0 } }, { attr: { width: VW + 80 }, duration: 1.6, ease: 'power1.inOut' }, t1 + 0.2);
+    A.in(tl, newP, t1 + 1.1, 'pop', { dur: 0.55 });
+    const tS = clamp(at(1, 'stronger', 0.8), t1 + 2.0, end(1) - 0.9);
+    tl.set(newWorn, { attr: { 'stroke-width': 10 } }, tS - 0.6);
+    A.draw(tl, newWorn, tS - 0.6, 0.6);
+    tl.to(newWorn, { attr: { 'stroke-width': 60 }, duration: 1.0, ease: 'power2.out' }, tS);
+
+    // ---------- beat 2: the old path fades; management gates it off and the grass grows back
+    const t2 = cue(2);
+    tl.to(worn, { attr: { 'stroke-width': 50 }, duration: 1.2, ease: 'power2.inOut' }, t2 + 0.3);
+    tl.to(wornIn, { attr: { 'stroke-width': 18 }, duration: 1.2 }, t2 + 0.3);
+    const tG = clamp(at(2, 'Management keeps', 0.5), t2 + 1.0, end(2) - 3);
+    tl.fromTo(gIn, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.6, ease: 'bounce.out' }, tG);
+    A.in(tl, gateP, tG + 0.4, 'fadeUp', { dur: 0.5 });
+    const tGr = clamp(at(2, 'grass', 0.85), tG + 1.0, end(2) - 1.5);
+    tufts.forEach((tf, j) => tl.to(tf, { scale: 1, svgOrigin: '0 0', duration: 0.5, ease: 'back.out(2)' }, tGr + j * 0.04));
+    tl.to(worn, { attr: { 'stroke-width': 16 }, opacity: 0.45, duration: 1.4, ease: 'power2.inOut' }, tGr);
+    tl.to(wornIn, { attr: { 'stroke-width': 0 }, duration: 1.2 }, tGr);
+    tl.to(dotted, { opacity: 0, duration: 0.8 }, tGr);
+    tl.to(oldP, { opacity: 0.5, duration: 0.6 }, tGr);
+
+    // ---------- beat 3: it hasn't vanished: a faint trace
     const t3 = cue(3);
-    tl.to(LW.P.old.edge, { opacity: 0.9, attr: { 'stroke-width': 5 }, duration: 0.5 }, t3 + 0.2);
-    const st = C3.chip(LV, 'eye', 'Still there', ox + 260, oy - 34, { col: C.muted, size: 28 });
-    A.in(tl, st, t3 + 0.4, 'pop', { dur: 0.45 });
+    tl.to(trace, { opacity: 0.85, duration: 0.5 }, t3 + 0.2);
+    tl.to(trace, { opacity: 0.4, duration: 0.4, yoyo: true, repeat: 3 }, t3 + 0.8);
 
-    // beat 4: practiced again, it wears back in
+    // ---------- beat 4: practiced again and it works: the old path wears back in
     const t4 = cue(4);
     const tA = clamp(at(4, 'practicing the old behavior', 0.3), t4 + 0.1, end(4) - 3);
-    tl.to([st, LW.P.old.edge], { opacity: 0, duration: 0.3 }, tA);
-    tl.to(fence, { opacity: 0.35, duration: 0.4 }, tA);
-    LW.walk(tl, 'old', tA + 0.2, 2.4, 10, '#7a2a1a');
-    tufts.forEach((tf, j) => tl.to(tf, { scale: 0, svgOrigin: '0 8', duration: 0.3 }, tA + 0.4 + j * 0.06));
-    LW.set(tl, 'old', 0.85, tA + 0.8, 1.8);
-    const cb = C3.chip(LV, 'triangle-alert', 'It can come back', ox + 260, oy - 34, { col: C.amber, size: 28 });
+    tl.to(gIn, { opacity: 0.3, duration: 0.4 }, tA);
+    tl.to(trace, { opacity: 0, duration: 0.3 }, tA);
+    tufts.forEach((tf, j) => tl.to(tf, { scale: 0, svgOrigin: '0 0', duration: 0.3 }, tA + 0.3 + j * 0.05));
+    tl.to(dotted, { opacity: 0.6, duration: 0.5 }, tA + 0.3);
+    tl.to(worn, { attr: { 'stroke-width': 78 }, opacity: 1, duration: 1.8, ease: 'power2.out' }, tA + 0.6);
+    tl.to(wornIn, { attr: { 'stroke-width': 34 }, duration: 1.6 }, tA + 0.9);
+    tl.to(oldP, { opacity: 1, duration: 0.4 }, tA + 0.6);
+    const cb = C3.chip(stage, 'triangle-alert', 'It can come back', 0, 0, { col: C.amber, size: 30 });
+    const [cx, cy] = st(40, 30);
+    Object.assign(cb.style, { left: cx + 'px', top: cy + 'px' });
     A.in(tl, cb, clamp(at(4, 'stronger again', 0.85), tA + 1.4, end(4) - 0.3), 'pop', { dur: 0.45 });
   });
 

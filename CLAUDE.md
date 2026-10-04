@@ -97,8 +97,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   ROW, no cycles anywhere), s03 function, s04 to s06 the three photo examples, s07 same behavior different job (+ "it worked,
   so it's more likely to be repeated"), s08 four directions, s09 movement isn't function, s10 emotion between A and B,
   s11 Why the Pattern Repeats (before strip, heart between A and B), s12 What Training Includes (Management, Changing
-  emotions, New behaviors), s13 Building a New Path (the lawn: new path wears in, management fence, grass grows back over
-  the old path, faint trace, it can come back), s14 Training in Action (during strip: the CONSEQUENCE still needs to work for
+  emotions, New behaviors), s13 Building a New Path (Chapter 1's lawn from ch01s09, same paths and look, plus a management gate:
+  the new dotted trail wears in, the gate closes the old path and grass grows back, a faint trace, it can come back), s14 Training in Action (during strip: the CONSEQUENCE still needs to work for
   the dog; after strip: C changes to "Less space needed", then Tori's painting `abc_after_c2.jpg` of the golden and the
   border collie playing, "Building a relationship"; arousal line), s15 Your Homework (WTF tiles land with the function
   question), s16 temperature hand-off and logo close.

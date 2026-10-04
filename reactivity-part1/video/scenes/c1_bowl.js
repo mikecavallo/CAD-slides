@@ -1,7 +1,7 @@
 // Shared parts for chapter 1 (v5): the recipe bowl and small builders used by every bowl scene.
 // Scene files use them through window.C1. CSS classes are prefixed .c1- and injected with C1.style(stage).
 //
-//   C1.ING                       the seven ingredients {name, icon, col}, in chapter order
+//   C1.ING                       the eight ingredients {name, icon, col}, in chapter order
 //   C1.makeBowl(stage, {cx, y, s, filled})  bowl with the first `filled` ingredients already inside
 //   C1.dropIn(tl, B, k, t)       ingredient k lights up in its "?" chip, hops into the bowl, splashes; returns landing time
 //   C1.bob(tl, B, t0, t1)        the remaining "?" chips hover gently
@@ -16,7 +16,7 @@
     red: '#b8452d', redPale: '#f8e3dd', amber: '#d9912b', amberPale: '#fbefd9', amberText: '#a8650f',
   };
 
-  // the recipe: seven ingredients, in the order the chapter adds them (pain moved to Chapter 2, where it is part of the water)
+  // the recipe: seven ingredients, in the order the chapter adds them (Pain and discomfort moved to Chapter 2's water)
   const ING = [
     { name: 'Genetics and temperament', icon: 'dna', col: '#619537' },
     { name: 'Prenatal environment', icon: 'sprout', col: '#8aae4a' },
@@ -27,7 +27,7 @@
     { name: 'Training tools and methods', icon: 'link', col: '#b8452d' },
   ];
   // bowl-local coordinates: origin at the centre of the rim ellipse (rx 260, ry 50)
-  // seven "?" chips hover on an arc above the bowl
+  // one "?" chip per ingredient hovers on an arc above the bowl
   const SLOT = [-156, -134, -112, -90, -68, -46, -24].map(d => {
     const r = (d * Math.PI) / 180;
     return [Math.round(420 * Math.cos(r)), Math.round(60 + 420 * Math.sin(r))];

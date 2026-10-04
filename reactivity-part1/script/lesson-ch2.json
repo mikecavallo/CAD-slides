@@ -79,7 +79,7 @@
     {
      "id": "ch02s01",
      "heading": "Your Dog's Baseline",
-     "visual_concept": "Recap with Chapter 1's bowl and its eight ingredients. The four that return are paired with what they mean for the water: Breed history to Breed needs met today, Past experiences to Recent stress, Training methods to How the dog is handled now, Pain to Pain right now, under 'Chapter 1: what shaped the dog' and 'Now: can be changed, managed, or improved' (lit on beat 2). The ingredients pour into an empty glass pot (no water yet). 'First: your dog's baseline'.",
+     "visual_concept": "Recap with Chapter 1's bowl and its seven ingredients; 'This chapter: what can be Changed / Managed / Improved' lights word by word; the ingredients pour into an empty glass pot (no water yet); 'First: your dog's baseline'.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:mixing-bowl",
@@ -91,18 +91,13 @@
      "beats": [
       {
        "say": "In the last chapter, we looked at the ingredients that can help shape a dog's behavior.",
-       "show": "Chapter 1's bowl with its seven ingredients; pill 'Chapter 1: the ingredients'.",
+       "show": "Chapter 1's bowl with its eight ingredients; pill 'Chapter 1: the ingredients'.",
        "onscreen": "Your Dog's Baseline"
       },
       {
-       "say": "You'll notice that some of those factors appear again here. That's intentional.",
-       "show": "Left column 'Chapter 1: what shaped the dog' with the three returning ingredients (each pulses in the bowl); on 'That's intentional' a right column 'Now: can be changed, managed, or improved' pairs each with a water-drop pill: Breed needs met today, Recent stress, How the dog is handled now.",
-       "onscreen": "Chapter 1: what shaped the dog. Now: can be changed, managed, or improved."
-      },
-      {
-       "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently.",
-       "show": "'Can be changed, managed, or improved' lights up; the three 'now' pills glow on 'right now'.",
-       "onscreen": "Changed, managed, or improved"
+       "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved.",
+       "show": "'This chapter: what can be Changed / Managed / Improved', each word turning green as it is said.",
+       "onscreen": "This chapter: what can be changed, managed, or improved"
       },
       {
        "say": "So we're going to add those ingredients to a pot.",
@@ -119,7 +114,7 @@
     {
      "id": "ch02s02",
      "heading": "What Is a Baseline?",
-     "visual_concept": "A definition card, then a time line: a calm dog badge sits on a green 'starting state' band before an amber 'Something new happens' marker. Then the band rises and falls between levels with up and down arrows: 'Not fixed. It can change.'",
+     "visual_concept": "A definition card, then a time line: a calm dog badge sits on a green 'starting state' band before an amber 'Something new happens' marker. Then the band rises and falls between levels with up and down arrows: 'Not fixed. It can change.' Round 8: mood is part of the baseline; a fast emotions line over a slowly shifting mood band.",
      "assets": [
       "bg_swirl.jpg",
       "icon:dog",
@@ -131,6 +126,11 @@
        "say": "When I say baseline, I mean the dog's overall starting state before something new happens.",
        "show": "Definition card: 'Baseline = the dog's overall starting state before something new happens.' A time line draws; the dog sits on a green band labeled 'Starting state'; an amber bell marker 'Something new happens' drops onto the line to the right.",
        "onscreen": "Baseline = the dog's overall starting state before something new happens."
+      },
+      {
+       "say": "Part of that baseline is the dog's mood.",
+       "show": "A 'Part of the baseline: mood' pill appears on the starting-state band.",
+       "onscreen": "Part of the baseline: mood"
       },
       {
        "say": "And that baseline isn't fixed. It can change.",
@@ -154,9 +154,19 @@
        "onscreen": "Water level = the dog's current baseline"
       },
       {
+       "say": "The water level reflects the dog's overall starting state, including their cumulative mood.",
+       "show": "The 'Water level = the dog's current baseline' label at the waterline gains a line: 'including their cumulative mood'.",
+       "onscreen": "Water level = overall starting state, including cumulative mood"
+      },
+      {
        "say": "A lower water level represents a lower baseline, and a higher water level represents a higher baseline.",
        "show": "The water drops and a 'Lower baseline' tag points at it; then it rises and a 'Higher baseline' tag points at it.",
        "onscreen": "Lower baseline / Higher baseline"
+      },
+      {
+       "say": "The water level doesn't tell us how aroused or stressed the dog is in that particular moment. We'll add that part later.",
+       "show": "A muted pill beside the pot: 'Not shown: arousal or stress in the moment', with a small 'Later' bookmark.",
+       "onscreen": "Not shown: arousal or stress in the moment"
       },
       {
        "say": "Why does that matter?",
@@ -338,9 +348,14 @@
        "onscreen": "Physical activity · Mental activity · Natural behaviors · Rest"
       },
       {
-       "say": "A dog who doesn't have enough appropriate outlets may become frustrated or restless. But constantly exercising, entertaining, or stimulating a dog can also leave them overtired or highly activated.",
+       "say": "A dog who doesn't have enough appropriate outlets may become frustrated or restless. But constantly exercising, entertaining, or stimulating a dog can also interfere with rest and recovery.",
        "show": "The beam tips to 'Too little' with 'Frustrated, restless' and the too-little examples; then tips to 'Too much' with 'Overtired, highly activated' and the too-much examples.",
-       "onscreen": "Too little: frustrated, restless. Too much: overtired, highly activated."
+       "onscreen": "Too little: frustrated, restless. Too much: gets in the way of rest and recovery."
+      },
+      {
+       "say": "Over time, either extreme can influence the dog's overall baseline.",
+       "show": "Both columns light up; 'Over time, either extreme affects the baseline'.",
+       "onscreen": "Either extreme affects the baseline"
       },
       {
        "say": "Think of it like Goldilocks: not too little, not too much, but just right.",
@@ -361,8 +376,8 @@
     },
     {
      "id": "ch02s08",
-     "heading": "Emotions & Recovery",
-     "visual_concept": "Emotions & Recovery. A clean mood graph: a legend ('How upset you feel'), a shaded 'Difficult conversation' stretch with its label under the time axis, the line rising and staying up after the 'Conversation ends' marker ('Still upset'), then a 'Someone else approaches' marker under the axis and a spike with 'Snappier'. The legend switches to the dog. Then the pot: Fear, Anxiety, Frustration, Stressful experiences (red and amber) drip in; a quiet event still nudges the water up; limited recovery, next chapter. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
+     "heading": "Emotions, Mood & Recovery",
+     "visual_concept": "Emotions, Mood & Recovery. A fast emotions line (fear, frustration, excitement, settling) over a slow mood line; the coworker graph (difficult conversation, the feeling stays, something else happens, a different response); the legend switches to the dog; repeated experiences and too little recovery drip into the pot and the water rises; a quiet event still adds a drop.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -373,44 +388,49 @@
      ],
      "beats": [
       {
-       "say": "The dog's emotional experiences also affect the baseline.",
-       "show": "Heading with the area badge; the pot sits at right.",
-       "onscreen": "Emotions & Recovery"
+       "say": "Emotions are constantly changing.",
+       "show": "The pot at right; at left a dog in a soft panel: 'Emotions: constantly changing'.",
+       "onscreen": "Emotions are constantly changing"
+      },
+      {
+       "say": "A dog may experience fear in one moment, frustration in another, excitement later, and then begin to settle again.",
+       "show": "A bubble pops up over the dog for each feeling (Fear, Frustration, Excitement, Settling) and fades; the panel's tone shifts a little each time and stays shifted.",
+       "onscreen": "Fear · Frustration · Excitement · Settling"
+      },
+      {
+       "say": "Those individual emotional experiences can influence the dog's broader mood.",
+       "show": "'Mood: the overall tone, shaped by all of these' with a swatch of the panel's colour.",
+       "onscreen": "Emotions shape mood"
       },
       {
        "say": "Think about having a difficult conversation with a coworker that leaves you upset or frustrated.",
-       "show": "A graph draws at left; a 'Difficult conversation' block appears on the time axis; the mood line climbs during it.",
+       "show": "The coworker graph: a shaded 'Difficult conversation' stretch and the upset line rising.",
        "onscreen": "Difficult conversation"
       },
       {
-       "say": "The conversation ends, but your emotions don't necessarily disappear with it.",
-       "show": "The block ends; the mood line keeps going, staying high: 'Still upset'.",
+       "say": "The conversation ends, but the way you feel doesn't necessarily disappear with it.",
+       "show": "The conversation ends; the line stays high: 'Still upset'.",
        "onscreen": "The feeling stays"
       },
       {
-       "say": "If someone else approaches you shortly afterward, you may be shorter or snappier with them than you normally would be.",
-       "show": "A second person arrives while the line is still high; a sharp red speech burst: 'Snappier'.",
-       "onscreen": "Shorter, snappier"
+       "say": "If something else happens shortly afterward, you may respond differently than you normally would.",
+       "show": "'Something else happens' under the axis; the line spikes: 'Different response'.",
+       "onscreen": "A different response"
       },
       {
-       "say": "Dogs can be affected by emotional experiences in a similar way.",
-       "show": "The person icon swaps to a dog.",
+       "say": "Dogs can experience something similar.",
+       "show": "The legend switches from you to your dog.",
        "onscreen": "Dogs too"
       },
       {
-       "say": "Fear, anxiety, frustration, and repeated stressful experiences can all affect the baseline.",
-       "show": "Four chips (Fear, Anxiety, Frustration, Stressful experiences) each drip into the pot; the water rises in steps.",
-       "onscreen": "Fear · Anxiety · Frustration · Stressful experiences"
+       "say": "When emotional experiences happen repeatedly, or there isn't enough opportunity to recover between them, they can contribute to the dog's cumulative mood and affect the water level in the pot.",
+       "show": "'Repeated emotional experiences' and 'Not enough time to recover' drip into the pot and the water rises; 'Mood affects whether the water goes up or down' and the water moves up and down.",
+       "onscreen": "Repeated experiences · Not enough recovery · Cumulative mood"
       },
       {
-       "say": "And an experience doesn't have to produce a big, obvious response to have an effect.",
-       "show": "A calm dog badge with a quiet event; no visible reaction, but the water still edges up: 'No big reaction, still an effect'.",
+       "say": "An experience doesn't have to produce a big, obvious response to have an effect.",
+       "show": "A calm dog, a small bell: 'No big reaction... still an effect'; one more drop.",
        "onscreen": "No big reaction, still an effect"
-      },
-      {
-       "say": "We'll look much more closely at what happens when experiences occur close together, or when there isn't enough time to recover, in the next chapter.",
-       "show": "A 'Limited opportunity for recovery' chip with an hourglass, and a 'Next chapter' tag.",
-       "onscreen": "Limited opportunity for recovery"
       }
      ]
     },
@@ -485,18 +505,18 @@
       },
       {
        "say": "That problem might normally be manageable, but on that particular day, your response may be very different.",
-       "show": "A small 'Normal day' stack with just the problem: 'Manageable'; the tall stack wobbles: 'That day: very different'.",
-       "onscreen": "Normally manageable. That day: very different."
+       "show": "A small 'Normal day' stack with just the problem: 'Manageable'; the tall stack wobbles: 'That day: harder to handle'.",
+       "onscreen": "Normally manageable. That day: harder to handle."
       },
       {
-       "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, and several stressful experiences.",
+       "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, and several emotional experiences.",
        "show": "Five red and amber factor pills appear one per phrase; each drips into the pot and the water rises a step (the ingredients ride up with it).",
-       "onscreen": "Poor sleep · Pain · Too much or too little stimulation · Change at home · Stressful experiences"
+       "onscreen": "Poor sleep · Pain · Too much or too little stimulation · Change at home · Emotional experiences"
       },
       {
-       "say": "Each one can affect the baseline, and together their effects can add up.",
+       "say": "Each factor can affect the dog's overall state, and together they can influence the dog's mood and raise the water level.",
        "show": "Plus signs link the chips; the water reaches just under the rim; the bracket shows 'Little room left'.",
-       "onscreen": "Together, they add up"
+       "onscreen": "Together, they raise the water"
       },
       {
        "say": "Same dog. Different baseline.",
@@ -508,7 +528,7 @@
     {
      "id": "ch02s11",
      "heading": "The Baseline Can Change",
-     "visual_concept": "The Baseline Can Change. The full pot (ingredients floating) beside six red and amber factor pills; a magnifier scans them; green checks; one change per phrase turns a factor into its fix and a drop lifts out of the pot, so the water drops a step. Ends low with a down arrow and 'More room'. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "The Baseline Can Change. The full pot (ingredients floating) beside six red and amber factor pills; a magnifier scans them; green checks; one change after another (Tori cut the list sentence) turns a factor into its fix and a drop lifts out of the pot, so the water drops a step. Ends low with a down arrow and 'More room'. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -528,13 +548,8 @@
       },
       {
        "say": "Many of them are things we can do something about.",
-       "show": "A green check pops beside each factor.",
+       "show": "A green check pops beside each factor; then, one after another, each factor turns green, a drop lifts out of the pot and the water drops a step (no list read aloud).",
        "onscreen": "We can do something"
-      },
-      {
-       "say": "We may be able to address pain or illness, improve sleep or nutrition, adjust physical or mental activity, better meet natural needs, create more predictability and choice, or provide more opportunity for recovery.",
-       "show": "One per phrase: the factor pill flips to its green fix, a drop lifts out of the pot to it, and the water drops a step.",
-       "onscreen": "Address · Improve · Adjust · Meet needs · Predictability and choice · Recovery"
       },
       {
        "say": "As we improve these factors, we can lower the water level.",
@@ -546,7 +561,7 @@
     {
      "id": "ch02s12",
      "heading": "The Water Level Is Only Part of the Picture",
-     "visual_concept": "The pot (ingredients floating) with three checks; 'Distant antecedents' outlines the water only; a Part 1 (ingredients) and Part 2 (water) frame beside an empty dashed Part 3 frame with three questions; a dashed slot, then a thermometer drops in: Part 3 is temperature. Logo close. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js.",
+     "visual_concept": "The pot (ingredients floating) with three checks; 'Distant antecedents' outlines the water only; a Part 1 (ingredients) and Part 2 (water) frame beside an empty dashed Part 3 frame with three questions; a dashed slot, then a thermometer drops in: Part 3 is temperature. Logo close. Chapter 1's eight ingredients float in the water in every pot and ride the waterline. Shared pot module video/scenes/c2_pot.js. Round 8: the distant antecedents line is no longer narrated; the label stays on screen under Part 2.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:pot",
@@ -558,24 +573,19 @@
      ],
      "beats": [
       {
-       "say": "Now we know what the water level represents, why it matters, and some of the things that can change it.",
-       "show": "The pot at left; three check rows land one per phrase: What it represents, Why it matters, What changes it.",
-       "onscreen": "We know how much water is in the pot."
+       "say": "Now we know what the water level represents.",
+       "show": "The pot and one check: 'What the water level represents'.",
+       "onscreen": "We know what the water level represents."
       },
       {
-       "say": "The water in the pot represents what we call distant antecedents.",
-       "show": "The checks clear; a dashed outline traces the water only (not the ingredients) and a label lands: 'Distant antecedents: the water in the pot'.",
-       "onscreen": "Distant antecedents"
+       "say": "It reflects the dog's overall baseline, including their cumulative mood.",
+       "show": "A dashed outline hugs the water: 'Overall baseline, including cumulative mood'.",
+       "onscreen": "Overall baseline, including cumulative mood"
       },
       {
-       "say": "But knowing how much water is in the pot is only part of the picture.",
-       "show": "The pot sits in a frame with two labels, each with a dashed line to its part: 'Part 1: Ingredients' (Chapter 1's chips) and 'Part 2: The water'; under it 'The water = distant antecedents'. A dashed empty frame beside it is labeled 'Part 3: ?'.",
-       "onscreen": "Only part of the picture"
-      },
-      {
-       "say": "What happens when something occurs around the dog? How does the dog feel about it? And what happens to their arousal and stress?",
-       "show": "Three question cards appear in the empty half one per question: What triggered the reaction?; How does the dog feel?; Arousal and stress.",
-       "onscreen": "What happens? How does the dog feel? Arousal and stress?"
+       "say": "But the water level doesn't tell us how aroused or stressed the dog is in a particular moment.",
+       "show": "Part 1 (ingredients) and Part 2 (the water) frame the pot; the empty right half asks 'Arousal and stress in the moment?'.",
+       "onscreen": "Arousal and stress in the moment?"
       },
       {
        "say": "For that, we need to add another part to our pot.",
@@ -586,6 +596,11 @@
        "say": "Temperature.",
        "show": "A thermometer drops into the pot and its line rises; the second frame becomes 'Part 3: Temperature' with 'Now, how hot is it?'; then the logo close.",
        "onscreen": "Now, how hot is it?"
+      },
+      {
+       "say": "We'll get to temperature later. First, in the next chapter, we'll step away from the pot and look at the ABCs of behavior.",
+       "show": "The 'Now, how hot is it?' line clears; 'Next chapter: The ABCs of Behavior' with A, B, C badges; then the logo close.",
+       "onscreen": "Next chapter: The ABCs of Behavior"
       }
      ]
     }

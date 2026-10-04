@@ -27,7 +27,7 @@
   const AREAS = [
     { name: 'Physical Health', short: 'Physical health', icon: 'heart-pulse', col: '#2a8a86' },
     { name: 'Activity, Stimulation & Natural Needs', short: 'Activity and needs', icon: 'paws', col: '#4a6fa5' },
-    { name: 'Emotions & Recovery', short: 'Emotions and recovery', icon: 'brain', col: '#7a8f2e' },
+    { name: 'Emotions, Mood & Recovery', short: 'Emotions, mood and recovery', icon: 'brain', col: '#7a8f2e' },
     { name: 'Environment, Predictability & Choice', short: 'Environment and choice', icon: 'house', col: '#3f6b22' },
   ];
 
@@ -204,7 +204,9 @@
     const ingG = K.group(clip);
     // front of the glass: sheen, outline, rim
     const front = K.group(svg);
-    K.path(front, BODY, { fill: `url(#${id}g)`, stroke: C.rim, 'stroke-width': 8 });
+    // the outline is drawn open at the top, so no line runs across the mouth of the pot (the rim ellipse closes it)
+    K.path(front, BODY, { fill: `url(#${id}g)`, stroke: 'none' });
+    K.path(front, BODY.replace(/ Z$/, ''), { stroke: C.rim, 'stroke-width': 8, fill: 'none' });
     K.path(front, `M ${-R + 34} 70 L ${-R + 34} ${H - 40}`, { stroke: '#ffffff', 'stroke-width': 14, opacity: 0.55 });
     K.path(front, `M ${-R + 62} 90 L ${-R + 62} ${H * 0.5}`, { stroke: '#ffffff', 'stroke-width': 6, opacity: 0.4 });
     K.svgEl('ellipse', { cx: 0, cy: 0, rx: R, ry: RY, fill: 'none', stroke: C.rim, 'stroke-width': 16 }, front);
@@ -217,10 +219,10 @@
     const brDash = K.path(br, '', { stroke: C.greenDark, 'stroke-width': 3, fill: 'none', 'stroke-dasharray': '10 10', opacity: 0.6 });
 
     const P = { wrap, svg, body, water, wBody, wTop, wave, tokG, rip, front, br, s, cx: o.cx, y: o.y, R, H, L: o.level ?? 0.5, followers: [], tokens: [], ing: [] };
-    // Chapter 1's eight ingredients are already in the pot: they float just under the surface and ride the waterline
+    // Chapter 1's seven ingredients are already in the pot: they float just under the surface and ride the waterline
     // up and down; when the water is low they rest on the bottom
     if (o.ingredients !== false && window.C1) {
-      const SPOT = [[-150, 40, 286], [-50, 30, 292], [50, 42, 288], [150, 32, 284], [-100, 92, 322], [0, 100, 326], [100, 90, 322], [-178, 96, 312]];
+      const SPOT = [[-150, 40, 286], [-50, 30, 292], [50, 42, 288], [150, 32, 284], [-100, 92, 322], [0, 100, 326], [100, 90, 322]];
       C1.ING.forEach((g, k) => {
         const outer = K.group(ingG);
         const mid = K.group(outer);

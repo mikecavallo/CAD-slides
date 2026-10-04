@@ -14,7 +14,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
   that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
   water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
-  warning signals) for later chapters; Chapter 3 will add heat and the thermometer to the pot. Sync the lesson
+  warning signals) for later chapters; Chapter 3 is the ABCs, and Chapter 4 adds heat and the thermometer to the pot. Sync the lesson
   file to the doc before every build; the doc wins.
 
 ## Current structure (Chapter 1 is finished, pending Tori's later edits)
@@ -23,9 +23,8 @@ pipeline). This file records the state, decisions and working agreements from ea
 - `ch01` "Starting with the Basics": the chapter card plays first, then `ch00s02` the plan slide (id kept so
   its recording still matches; cards: Why you're here / What you'll gain / How we'll get there; steps:
   "The difference between reactivity and aggression", "The ingredients that shape behavior"), then
-  `ch01s01` to `ch01s12` (definitions, look beyond the label, why, the seven bowl ingredients, putting it
-  together). Pain was removed from Chapter 1 (Tori, Oct 4): no ch01s11 slide, no pain chip, not in the s12 list; pain
-  lives in Chapter 2 (ch02s06) as part of the water. Chapter 2 s01 pairs only three returning ingredients now. Last slide (ch01s12) now matches Chapter 2: after the seven chips drop in, the bowl steps aside, a glass
+  `ch01s01` to `ch01s12` without `ch01s11` (definitions, look beyond the label, why, the seven bowl ingredients, putting
+  it together; the Pain slide ch01s11 was removed in Chapter 2 round 12, its code is still in c1d.js but unused). Last slide (ch01s12) now matches Chapter 2: after the eight chips drop in, the bowl steps aside, a glass
   pot of water slides in ("Next: the water they go into"), then "Next chapter: Your Dog's Baseline"; new closing line
   "Next, we'll look at that water: your dog's baseline." (needs Tori's re-record, with the rest of ch01s12).
 - Scene code: `video/scenes/c0.js` (ch00s01, ch00s02), `c1a.js` to `c1e.js` (chapter 1), shared bowl module
@@ -44,7 +43,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   activity blue, emotions olive, environment deep green (no red or orange for areas; red/amber only for bad things).
 - Tori's round 1 feedback (applied): the title slide keeps the presentation title unchanged, chapter is a tag with
   Chapter 1's amber fuel chip; s01 pours the bowl's ingredients into the pot and the fuel chip melts in as water;
-  the seven ingredients float in every pot and ride the water level; factors that raise the water are red/amber
+  the eight ingredients float in every pot and ride the water level; factors that raise the water are red/amber
   pills that drip in (never chip tokens); fixes lift drops out; s07 "different for each dog" sentence and slides
   removed, "more on this later" sits on the beam slide; s08 is a three-step strip, not a graph; s12 has a new line
   naming the water (only the water, NOT the ingredients) "distant antecedents". Last slide frames: Part 1 = the ingredients
@@ -77,8 +76,43 @@ pipeline). This file records the state, decisions and working agreements from ea
   the water: Breed history -> Breed needs met today, Past experiences -> Recent stress, Training methods -> How the dog
   is handled now, Pain -> Pain right now ("Chapter 1: what shaped the dog" / "Now: can be changed, managed, or improved").
   Rule: an ingredient is what shaped the dog before; the water is what is happening now.
+- Round 7 feedback (applied): s06 magnifier is blue (#2f7fae) so it doesn't blend into the green dog; s07 slider
+  phrases sit on two lines each; s10 "That day: harder to handle" (red emphasis, it is a bad thing); s11 no longer reads
+  the list of fixes aloud (Tori cut "We may be able to address pain or illness ... more opportunity for recovery." from the
+  narration; it must go from the doc too): the six factors still turn green one after another with drops lifting out
+  and the water dropping, during "do something about" and "lower the water level".
+- Round 8 (Tori's new copy, mood): mood is part of the baseline. s02 adds "Part of that baseline is the dog's mood" and
+  the emotions/broader mood line (fast emotions line over a slowly shifting mood band); s03 adds "The water level reflects
+  the dog's overall starting state, including their cumulative mood" and "The water level doesn't tell us how aroused or
+  stressed the dog is in that particular moment. We'll add that part later."; s07 "can also interfere with rest and
+  recovery" + "Over time, either extreme can influence the dog's overall baseline" (Too much column: "Gets in the way of
+  rest and recovery"); s08 is "Emotions, Mood & Recovery" (also the area name everywhere): fast emotions line with Fear /
+  Frustration / Excitement / Settling chips over a slow mood line, the coworker graph ("Something else happens",
+  "Different response"), repeated experiences and too little recovery drip into the pot, quiet event; no next-chapter
+  tag; s10 "several emotional experiences" and "together they can influence the dog's mood and raise the water level";
+  s12 narration no longer says "distant antecedents" (the on-screen "The water = distant antecedents" label stays),
+  one check, "Overall baseline / Including cumulative mood", one card "Arousal and stress in the moment?".
+- Round 9: s02 definition card says "Baseline" (no equal sign); emotions line is irregular, labelled "Emotions: constantly
+  changing" (Tori: emotions change continually, not necessarily up and down) and "Mood: shifts over time" (moods don't
+  necessarily shift slowly; s08 "Mood: builds over time"); s08 emotions line pieces join; s12 right frame is "Still to
+  come: ?" then "Chapter 4: Temperature" (no "Part 3").
+- Round 10: the pot outline is open at the top (no line across the mouth; c2_pot.js); s02 cut the sentence "Emotions are
+  constantly changing throughout the day ... longer periods of time." (repeated s08) and keeps only "Part of that baseline
+  is the dog's mood."; the full emotions and mood explanation lives on s08.
+- Round 11: s01 "Now: can be changed, managed, or improved" lights one word at a time as it is said; s08 opening is no
+  longer a line graph: a dog in a soft panel, a bubble pops up and fades for each feeling (emotions in the moment) and
+  the panel's colour shifts a little each time and stays shifted ("Mood: the overall tone, shaped by all of these");
+  s08 beat 7 pill "Mood affects whether the water goes up or down" (mood does not raise the water by itself), the water
+  moves up and down; s12 ends with a Claude-written bridge (Tori asked for it): "We'll get to temperature later. First,
+  in the next chapter, we'll step away from the pot and look at the ABCs of behavior." with a Next chapter / The ABCs of
+  Behavior / A B C card before the logo close.
+- Round 12 (Tori decided): Pain and discomfort is no longer a Chapter 1 ingredient; it lives only in Chapter 2 (s06). The
+  bowl and every pot hold seven ingredients (C1.ING). Chapter 2 s01 lost "You'll notice that some of those factors appear
+  again here. That's intentional." and the then/now pairs; its line is now "In this chapter, we're focusing on factors
+  that can be changed, managed, or improved." with Changed / Managed / Improved lighting word by word. s12's thermometer
+  goes in through the middle of the pot's opening (front rim redrawn over it).
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
-  s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools return); s07 shows the
+  s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc
   yet: the intro/plan narration, s01's "add those ingredients to a pot of water" line, s06's stoic line and s12's
   distant antecedents line.
@@ -117,7 +151,7 @@ pipeline). This file records the state, decisions and working agreements from ea
 
 ## Decisions already made (do not undo without asking)
 
-- Ingredient bowl metaphor and the seven chips (C1.ING; pain removed); photo portraits for genetics (barking Sheltie = more
+- Ingredient bowl metaphor and the seven chips (Pain moved to Chapter 2 in round 12); photo portraits for genetics (barking Sheltie = more
   sensitive, scruffy white dog = more easygoing); "Before birth" uses a sprout icon.
 - Breed slide: six job cards (Herding: Aussie, Guarding: Great Pyrenees, Hunting: Beagle, Terrier: Jack
   Russell, Sporting: Golden Retriever, Working and assistance: black Lab), each enlarges with a small vignette;
@@ -136,9 +170,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   Three ways to boil over: one big trigger (fast spike), trigger stacking (separate, labeled triggers; the thermometer
   starts to cool, then the next one hits before it is back down; the same triggers spaced out cool fully and never
   spill: the spacing is the problem), and the slow one (days or weeks raise the water, so an ordinary trigger spills).
-  Chapter 3 plan (doc has no Chapter 3 text yet): temperature, threshold zones, two pots same heat, stacking, long-term
+  Chapter order (Tori, round 9): Chapter 3 steps away from the pot for the ABCs of behavior; Chapter 4 is temperature.
+  Chapter 4 plan (doc has no text yet): temperature, threshold zones, two pots same heat, stacking, long-term
   stress. A drawn dog (C2.dog) stands beside the pot and its body language follows the zone: loose under, stiff at the
-  rim, reacting when it spills. The ABCs come after, in Chapter 4.
+  rim, reacting when it spills. The ABCs come first, in Chapter 3.
   Concept test clip: `script/lesson-concept.json` + `video/scenes/c3x.js` (boil kit: foam, spill, burner, dial,
   thermometer, dog body language). It is registered in video/index.html; back up build/timing.json and run the preview pipeline with
   LESSON=lesson-concept.json. It answers one question: why

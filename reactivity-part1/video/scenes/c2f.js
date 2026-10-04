@@ -24,6 +24,9 @@
   .c2f-da { position: absolute; }
   .c2f-hot { position: absolute; font: 700 84px/1.1 var(--font-head); color: var(--ink); white-space: nowrap; }
   .c2f-hot b { color: var(--red); font-weight: 700; }
+  .c2f-nk { font: 700 28px/1 var(--font-body); letter-spacing: 6px; text-transform: uppercase; color: var(--muted); }
+  .c2f-nt { font: 700 64px/1.05 var(--font-head); color: var(--green); white-space: nowrap; }
+  .c2f-abc { width: 96px; height: 96px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font: 700 52px/1 var(--font-head); }
   `;
   const css = stage => stage.appendChild(K.el('style', null, CSS));
   const { sayAt, clamp } = C1;
@@ -77,12 +80,12 @@
       return b;
     });
 
-    // ---------- beat 2: one change per phrase: the factor turns green (no new text to read), a drop leaves the pot, the water
-    // drops a step
-    const t2 = cue(2);
-    let lo = t2 + 0.2, L = 0.88;
+    // ---------- beats 1 and 2: no list read aloud (Tori cut it); one after another each factor turns green, a drop leaves the
+    // pot and the water drops a step, running from "do something about" into "lower the water level"
+    let lo = Math.max(t1 + 1.5, cue(1) + 1.5), L = 0.88;
+    const step = clamp((end(2) - 1.4 - lo) / ACT.length, 0.45, 0.8);
     ACT.forEach(([ic, t, p], k) => {
-      const tt = clamp(at(2, p, 0.08 + k * 0.15, 0.3), lo, end(2) - 1);
+      const tt = lo + k * step;
       const f = facs[k];
       tl.to(f, { background: C.pale, borderColor: C.greenLight, duration: 0.4 }, tt);
       tl.to(f.querySelector('.ic'), { background: C.green, duration: 0.4 }, tt);
@@ -91,11 +94,11 @@
       P.lift(tl, 160 + 30, YS[k] + 37, tt + 0.2, C.water, 0.8);
       L -= 0.095;
       P.setLevel(tl, L, tt + 0.3, 0.8);
-      lo = tt + 0.6;
     });
+    const tLast = lo + (ACT.length - 1) * step;
 
-    // ---------- beat 3: the water settles low; more room
-    const t3 = cue(3);
+    // ---------- the water settles low; more room
+    const t3 = Math.max(tLast + 1.0, clamp(sayAt(ctx, 2, 'lower the water level', 0.6, 0.3), cue(2), end(2)));
     P.setLevel(tl, 0.26, t3 + 0.1, 1.0);
     const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     const ax = PX - (C2.R + 70) * S - 40;
@@ -124,7 +127,7 @@
     const P = C2.makePot(LA, { cx: PX, y: PY, s: S, level: 0.5 });
     A.in(tl, P.wrap, 0.1, 'fadeUp', { dur: 0.7 });
     P.waves(tl, 0, dur);
-    const CK = [['What the water level represents', 'represents', 0.35], ['Why it matters', 'why it matters', 0.55], ['What can change it', 'change it', 0.9]];
+    const CK = [['What the water level represents', 'represents', 0.6]];
     let lo = cue(0) + 0.6;
     const cks = CK.map(([t, p, fb], k) => {
       const n = K.el('div', 'c2f-ck');
@@ -140,25 +143,27 @@
       return n;
     });
 
-    // ---------- beat 1: the water (not the ingredients) is the distant antecedents
+    // ---------- beat 1: the water (not the ingredients) is the overall baseline, including cumulative mood
     const t1 = cue(1);
     tl.to(cks, { opacity: 0, x: 40, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t1 - 0.1);
     // a dashed outline hugs the water only, from the waterline down to the bottom of the pot
     const sy = C2.surfY(0.5), OX = C2.R + 30, OB = C2.H + 78;
     const ring = K.path(P.svg, `M ${-OX} ${sy - 34} L ${-OX} ${OB - 70} Q ${-OX} ${OB} 0 ${OB} Q ${OX} ${OB} ${OX} ${OB - 70} L ${OX} ${sy - 34} Z`,
       { stroke: '#2f7fae', 'stroke-width': 7, 'stroke-dasharray': '18 12', fill: 'rgba(95,168,207,0.10)' });
-    const tDA = clamp(at(1, 'distant antecedents', 0.7, 0.6), t1 + 0.3, end(1) - 0.8);
+    const tDA = clamp(at(1, 'overall baseline', 0.4, 0.4), t1 + 0.3, end(1) - 0.8);
     tl.fromTo(ring, { opacity: 0 }, { opacity: 1, duration: 0.6, immediateRender: true }, t1 + 0.3);
     tl.to(P.wTop, { attr: { fill: '#cfeaf7' }, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, t1 + 0.8);
     // the ingredients step back while the water is named, then return
     tl.to(P.ing.map(g => g.mid), { opacity: 0.25, duration: 0.4 }, t1 + 0.3);
     tl.to(P.ing.map(g => g.mid), { opacity: 1, duration: 0.4 }, cue(2));
     const da = K.el('div', 'c2f-da');
-    da.appendChild(K.el('div', 'a', 'Distant antecedents'));
-    da.appendChild(K.el('div', 'b', 'The water in the pot'));
+    da.appendChild(K.el('div', 'a', 'Overall baseline'));
+    const daB = K.el('div', 'b', 'Including cumulative mood');
+    da.appendChild(daB);
     Object.assign(da.style, { left: '1000px', top: '470px' });
     stage.appendChild(da);
     A.in(tl, da, tDA, 'fadeLeft', { dur: 0.7 });
+    tl.fromTo(daB, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, clamp(at(1, 'cumulative mood', 0.8, 0.3), tDA + 0.6, end(1) - 0.2));
 
     // ---------- beat 2: that's only part of the picture: Part 1 frame, empty Part 2 frame
     const t2 = cue(2);
@@ -170,11 +175,11 @@
     stage.insertBefore(fl, LA);
     stage.insertBefore(fr, LA);
     // Part 1 is the ingredients (Chapter 1), Part 2 is the water (this chapter); together they are the distant antecedents.
-    // Part 3, the temperature, is still unknown
+    // what comes next is still unknown here; temperature is Chapter 4 (Chapter 3 steps away from the pot for the ABCs)
     const p1 = C2.pill(stage, 'book-open', 'Part 1: *Ingredients*', { x: 146, y: 284, size: 28, col: C1.ING[0].col });
     const p1b = C2.pill(stage, 'droplets', 'Part 2: *The water*', { x: 536, y: 284, size: 28, col: C.water });
-    const p2 = C2.pill(stage, 'circle-help', 'Part 3: ?', { x: 1046, y: 284, size: 28, col: C.muted });
-    const p2b = C2.pill(stage, 'thermometer', 'Part 3: *Temperature*', { x: 1046, y: 284, size: 28, col: C.red });
+    const p2 = C2.pill(stage, 'circle-help', 'Still to come: ?', { x: 1046, y: 284, size: 28, col: C.muted });
+    const p2b = C2.pill(stage, 'thermometer', 'Chapter 4: *Temperature*', { x: 1046, y: 284, size: 28, col: C.red });
     gsap.set(p2b, { opacity: 0 });
     A.in(tl, fl, t2 + 0.2, 'fade', { dur: 0.5 });
     const lead = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
@@ -184,7 +189,7 @@
     const l2 = K.path(lead, `M 680 350 L ${wx} ${wy}`, { stroke: '#2f7fae', 'stroke-width': 4, 'stroke-dasharray': '10 8', fill: 'none' });
     const d1 = K.circle(lead, ix, iy - 34, 7, { fill: C1.ING[0].col, opacity: 0 });
     const d2 = K.circle(lead, wx, wy, 7, { fill: '#2f7fae', opacity: 0 });
-    const tP1 = clamp(at(2, 'knowing how much water', 0.1, 0.3), t2 + 0.3, end(2) - 2.4);
+    const tP1 = clamp(at(2, 'the water level', 0.1, 0.3), t2 + 0.3, end(2) - 2.4);
     A.in(tl, p1, tP1, 'fadeRight', { dur: 0.5 });
     A.draw(tl, l1, tP1 + 0.4, 0.5);
     A.in(tl, d1, tP1 + 0.85, 'pop', { dur: 0.3 });
@@ -195,16 +200,16 @@
     know.style.fontSize = '38px';
     know.querySelector('b').style.color = 'var(--green)';
     A.in(tl, know, tP1 + 1.6, 'fadeUp', { dur: 0.6 });
-    const tPart = clamp(at(2, 'only part of the picture', 0.7, 0.3), t2 + 0.8, end(2) - 0.6);
+    const tPart = clamp(at(2, "doesn't tell us", 0.3, 0.3), tP1 + 1.8, end(2) - 2);
     A.in(tl, fr, tPart, 'fade', { dur: 0.5 });
     A.in(tl, p2, tPart + 0.2, 'fadeRight', { dur: 0.5 });
     const qbig = C2.put(stage, 'c2-q', '?', { x: 1350, y: 545 });
     A.in(tl, qbig, tPart + 0.3, 'pop', { dur: 0.5 });
 
-    // ---------- beat 3: three questions in the empty half
-    const t3 = cue(3);
+    // ---------- still beat 2: what the water can't tell us, in the empty half
+    const t3 = clamp(at(2, 'aroused or stressed', 0.6, 0.4), tPart + 0.8, end(2) - 0.6);
     A.out(tl, qbig, t3, 'shrink', { dur: 0.35 });
-    const QS = [['zap', 'What triggered<br>the reaction?', 'What happens', 0.05], ['heart', 'How does the dog feel?', 'How does the dog feel', 0.4], ['activity', 'Arousal and stress?', 'arousal and stress', 0.8]];
+    const QS = [['activity', 'Arousal and stress<br>in the moment?', 'aroused or stressed', 0.6]];
     lo = t3 + 0.2;
     const qcs = QS.map(([ic, t, p, fb], k) => {
       const c = K.el('div', 'c2f-qc');
@@ -214,35 +219,37 @@
       c.appendChild(K.el('div', null, t));
       Object.assign(c.style, { left: '1060px', top: 400 + k * 170 + 'px' });
       stage.appendChild(c);
-      const tt = clamp(at(3, p, fb, 0.3), lo, end(3) - 0.5);
+      const tt = clamp(at(2, p, fb, 0.3), lo, end(2) - 0.3);
       A.in(tl, c, tt, 'fadeLeft', { dur: 0.6 });
       lo = tt + 0.5;
       return c;
     });
 
-    // ---------- beat 4: a dashed slot on the pot for another part
-    const t4 = cue(4);
-    const TX = 120; // thermometer x in pot coordinates
+    // ---------- beat 3: a dashed slot on the pot for another part
+    const t4 = cue(3);
+    const TX = 0; // thermometer x in pot coordinates: it goes in through the middle of the opening
     const slot = K.path(P.svg, `M ${TX - 30} 250 L ${TX - 30} -110 A 30 30 0 0 1 ${TX + 30} -110 L ${TX + 30} 250`, { stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10', fill: 'rgba(255,255,255,0.4)' });
-    P.svg.insertBefore(slot, P.front);
+
     const slotC = K.circle(P.svg, TX, 286, 50, { fill: 'rgba(255,255,255,0.4)', stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10' });
-    P.svg.insertBefore(slotC, P.front);
-    const tSlot = clamp(at(4, 'another part', 0.6, 0.3), t4 + 0.2, end(4) - 0.4);
+
+    const tSlot = clamp(at(3, 'another part', 0.6, 0.3), t4 + 0.2, end(3) - 0.4);
     A.in(tl, [slot, slotC], tSlot, 'fade', { dur: 0.5 });
     tl.to([slot, slotC], { opacity: 0.35, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tSlot + 0.5);
     A.dim(tl, qcs, t4 + 0.2, 0.45);
     tl.to(lead, { opacity: 0, duration: 0.4 }, t4 + 0.1);
 
-    // ---------- beat 5: temperature: the thermometer drops in, its line rises; Part 2 is temperature
-    const t5 = cue(5);
+    // ---------- beat 4: temperature: the thermometer drops in, its line rises; Part 2 is temperature
+    const t5 = cue(4);
     const th = K.group(P.svg);
-    P.svg.insertBefore(th, P.front);
     K.rect(th, TX - 28, -140, 56, 420, { rx: 28, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
     K.circle(th, TX, 286, 48, { fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
     K.circle(th, TX, 286, 34, { fill: C.red });
     const merc = K.rect(th, TX - 12, 240, 24, 50, { rx: 12, fill: C.red });
     [-90, -30, 30, 90, 150].forEach(y => K.line(th, TX + 6, y, TX + 22, y, { stroke: C.greenDeep, 'stroke-width': 4 }));
-    gsap.set(th, { y: -170, opacity: 0 });
+    // the front half of the rim, drawn again over the thermometer, so the stem reads as standing inside the pot
+    K.path(P.svg, `M ${-C2.R} 0 A ${C2.R} 42 0 0 0 ${C2.R} 0`, { stroke: C.rim, 'stroke-width': 16, fill: 'none' });
+    K.path(P.svg, `M ${-C2.R + 20} 8 A ${C2.R - 20} 34 0 0 0 ${C2.R - 20} 8`, { stroke: '#8fbf62', 'stroke-width': 5, fill: 'none', opacity: 0.8 });
+        gsap.set(th, { y: -170, opacity: 0 });
     tl.to([slot, slotC], { opacity: 0, duration: 0.3 }, t5);
     tl.fromTo(th, { y: -170 }, { y: 0, duration: 0.6, ease: 'power2.in', immediateRender: false }, t5 + 0.1);
     tl.fromTo(th, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t5 + 0.1);
@@ -258,7 +265,22 @@
     A.in(tl, th2, t5 + 0.7, 'pop', { dur: 0.5 });
 
     // ---------- close: the Calling All Dogs logo
-    const tL = Math.max(t5 + 3.2, Math.min(end(5) + 2.4, dur - 2.4));
-    C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2, p1, p1b, p2b, lead]);
+    // ---------- beat 5: the bridge: temperature later; the next chapter steps away from the pot for the ABCs
+    const t6 = cue(5);
+    tl.to([hot, th2], { opacity: 0, duration: 0.4 }, t6);
+    const nx = K.el('div');
+    Object.assign(nx.style, { position: 'absolute', left: '1060px', top: '560px', width: '700px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '22px' });
+    nx.appendChild(K.el('div', 'c2f-nk', 'Next chapter'));
+    nx.appendChild(K.el('div', 'c2f-nt', 'The ABCs of Behavior'));
+    const abc = K.el('div');
+    Object.assign(abc.style, { display: 'flex', gap: '22px' });
+    const lets = ['A', 'B', 'C'].map(l => { const d = K.el('div', 'c2f-abc', l); abc.appendChild(d); return d; });
+    nx.appendChild(abc);
+    stage.appendChild(nx);
+    const tNx = clamp(sayAt(ctx, 5, 'next chapter', 0.45, 0.3), t6 + 0.3, end(5) - 1.5);
+    A.in(tl, nx, tNx, 'fadeUp', { dur: 0.6 });
+    A.in(tl, lets, clamp(sayAt(ctx, 5, 'ABCs', 0.85, 0.3), tNx + 0.4, end(5)), 'pop', { dur: 0.45, stagger: 0.15 });
+    const tL = Math.max(end(5) + 0.6, Math.min(end(5) + 1.6, dur - 2.4));
+    C2.logoClose(ctx, tL, [h.root, LA, fl, fr, know, hot, th2, p1, p1b, p2b, lead, nx]);
   });
 })();

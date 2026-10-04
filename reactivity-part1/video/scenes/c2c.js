@@ -249,10 +249,10 @@
     defs.innerHTML = '<radialGradient id="c2cpain"><stop offset="0" stop-color="#e0553a" stop-opacity="0.95"/><stop offset="0.55" stop-color="#e0553a" stop-opacity="0.45"/><stop offset="1" stop-color="#e0553a" stop-opacity="0"/></radialGradient>';
     const pain = K.circle(sv, hx, hy, 70, { fill: 'url(#c2cpain)', opacity: 0 });
     const lens = K.el('div');
-    Object.assign(lens.style, { position: 'absolute', left: '0px', top: '0px', width: '190px', height: '190px', borderRadius: '50%', border: '12px solid var(--green-dark)',
+    Object.assign(lens.style, { position: 'absolute', left: '0px', top: '0px', width: '190px', height: '190px', borderRadius: '50%', border: '12px solid #2f7fae',
       background: 'rgba(255,255,255,0.25)', boxShadow: '0 14px 30px rgba(40,60,20,0.25)' });
     const handle = K.el('div');
-    Object.assign(handle.style, { position: 'absolute', left: '150px', top: '150px', width: '22px', height: '110px', borderRadius: '11px', background: 'var(--green-dark)', transform: 'rotate(-45deg)', transformOrigin: '50% 0%' });
+    Object.assign(handle.style, { position: 'absolute', left: '150px', top: '150px', width: '22px', height: '110px', borderRadius: '11px', background: '#2f7fae', transform: 'rotate(-45deg)', transformOrigin: '50% 0%' });
     lens.appendChild(handle);
     LA.appendChild(lens);
     const tLens = clamp(at(0, 'easy to miss', 0.7, 0.8), cue(0) + 1.0, end(0) - 1.6);

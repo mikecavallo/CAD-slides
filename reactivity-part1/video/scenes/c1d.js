@@ -474,7 +474,7 @@
     const h = K.heading(stage, 'Putting it together', { x: 100, y: 120, w: 1400, size: 80 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
-    // ---------- beat 0: the bowl at centre with eight blank chips; each ingredient drops in as it is named
+    // ---------- beat 0: the bowl at centre with seven blank chips; each ingredient drops in as it is named
     const BC = { cx: 960, y: 590, s: 0.84 };
     const B = C1.makeBowl(stage, { cx: BC.cx, y: BC.y, s: BC.s, filled: 0 });
     tl.fromTo(B.wrap, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }, 0);
@@ -483,7 +483,7 @@
     // spoken order: [ingredient k, the words that name it, fallback fraction of the beat]
     const SPOKEN = [[0, 'Genetics', 0.27], [1, 'prenatal', 0.36], [2, 'breed history', 0.43], [3, 'socialization', 0.52],
       [4, 'age,', 0.57], [5, 'past experiences', 0.66], [6, 'the methods', 0.74]];
-    // legend: left column holds the first four named, right column the last four, each in the order spoken
+    // legend: left column holds the first four named, right column the last three, each in the order spoken
     const legs = [];
     SPOKEN.forEach(([k], j) => {
       const g = C1.ING[k];

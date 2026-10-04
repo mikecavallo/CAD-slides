@@ -13,9 +13,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (read it with the Google Drive connector; Claude cannot
   edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
   that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
-  water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
-  warning signals) for later chapters; Chapter 3 will add heat and the thermometer to the pot. Sync the lesson
-  file to the doc before every build; the doc wins.
+  water-in-a-pot chapter). Below that is **Chapter 3: The ABCs of Behavior** (CH03,S01 to S17). The doc moved the ABCs
+  ahead of temperature: Chapter 3 is the ABCs and ends "Now we can add temperature"; temperature is Chapter 4. Sync the
+  lesson file to the doc before every build; the doc wins.
 
 ## Current structure (Chapter 1 is finished, pending Tori's later edits)
 
@@ -85,6 +85,42 @@ pipeline). This file records the state, decisions and working agreements from ea
 - The lesson has `"tail": 5.0` (applies to its very last slide only) so the thermometer reveal holds before the logo close.
 - Online preview (temporary AI voice): https://claude.ai/artifact/Nzf2aTAYk5iAVNdqKmb1Js (`out/web/chapter2/`).
 
+## Chapter 3 video (built, preview voice only)
+
+- Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`). Order: `ch03intro`, `ch03card`, `ch03plan`, `ch03s01` to
+  `ch03s10`, `ch03s13`, `ch03s14`, `ch03s16`, `ch03s17`. About 7.6 minutes. The doc still needs updating to match; Tori
+  was sent cut lists and paste-ready text each round.
+- Feedback history:
+  - Round 1: the doc's S14 (Practice builds the path) and S15 (Why management matters) CUT (repeated S13).
+  - Round 2 ("too repetitive"): cut lines that restate earlier slides (s02 "easy way to remember it" + summary; s05/s06
+    "What did the behavior accomplish?"; s07's three "For one dog..." lines; s10's last line; s16's repeated
+    thing/context example and "location predicts" lines; s17's four "We know..." lines, on screen only).
+  - Round 3: S11 (Emotion and Function Are Different) and S12 (When Behavior Works) CUT. s07 gets a new last line:
+    "In all three, the barking worked. And when behavior works, it's more likely to be repeated." NO ABC CYCLES (Tori:
+    cycles next to linear strips were confusing); everything is linear photo strips with the emotional response shown
+    between A and B. WTF = "What's The Function?" closes s16 (new line: "Here's an easy way to remember that last
+    question: WTF. What's the function?"). No dashed line on the pot rim in s17 (the "Threshold" label stays).
+- s13 "Why the Pattern Repeats": the Before training strip (abc_before_*), plum heart "Emotions" between A and B, red note
+  "Getting more space can make this behavior more likely next time." (doc's S13 before-training lines).
+- s14 "This Is Why We Train": bridge ("So how do we help a new path win? This is why we do training."), the During strip
+  (Management. / Changing emotions / Looks back at you. / Space is given.) with the doc's management line, Old path / New
+  path strength bars for the doc's path lines, the After strip (Less management / Calmer / Readily uses the new behavior;
+  C caption: Space is given, Less space needed, Building a relationship) and three emotion markers for the arousal line.
+  The After C picture is a DRAWN placeholder (two drawn dogs nose to nose, heart above; `relationship()` in c3d.js); Tori
+  was asked for a painted image in the panels' style (`abc_after_c` replacement); when it arrives, drop it in the C panel
+  instead of the drawing and re-render with `--only ch03s14 --force`.
+- Lines Claude wrote (not in the doc yet): intro, card, plan narration; s07's "it worked" line; s14's bridge,
+  before-training and "something else" lines; s16's WTF line.
+- Scene code: `c3a.js` (intro, card, plan, s01 to s03), `c3b.js` (s04 to s07), `c3c.js` (s08 to s10), `c3d.js` (s13, s14),
+  `c3e.js` (s16, s17); shared kit `c3_abc.js` (window.C3: photo ABC strip, function tag, A/B/C ring used by s02, tiles,
+  chips, rows). `C3.potWithThermo` (in c3a.js) is Chapter 2's pot with the thermometer.
+- Colours: A olive, B green, C deep green; the emotional response is plum (`#8b5d8f`); function green with a target icon.
+- s16 homework worksheet example: another dog appears; same corner, dogs too close; barked and lunged; the other dog
+  moved away; more distance? (B, C and function answers are Claude's example).
+- s17 ends on the pot with the thermometer, "Threshold" label, "Next chapter: Temperature", then the logo close.
+- Online preview (temporary AI voice): https://claude.ai/artifact/LgEH4FvtiMGM1FG7V3iDuz (`out/web/chapter3/`; publish
+  without the .vtt files, captions are inline).
+
 ## Recordings (Tori's voice)
 
 - One file per slide, named by scene id: `Ch01s05.m4a` (case does not matter). A slide in pieces:
@@ -132,9 +168,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   Three ways to boil over: one big trigger (fast spike), trigger stacking (separate, labeled triggers; the thermometer
   starts to cool, then the next one hits before it is back down; the same triggers spaced out cool fully and never
   spill: the spacing is the problem), and the slow one (days or weeks raise the water, so an ordinary trigger spills).
-  Chapter 3 plan (doc has no Chapter 3 text yet): temperature, threshold zones, two pots same heat, stacking, long-term
+  Chapter 4 plan (temperature; the doc has no text for it yet): threshold zones, two pots same heat, stacking, long-term
   stress. A drawn dog (C2.dog) stands beside the pot and its body language follows the zone: loose under, stiff at the
-  rim, reacting when it spills. The ABCs come after, in Chapter 4.
+  rim, reacting when it spills. The ABCs are Chapter 3 (the doc put them before temperature).
   Concept test clip: `script/lesson-concept.json` + `video/scenes/c3x.js` (boil kit: foam, spill, burner, dial,
   thermometer, dog body language). It is registered in video/index.html; back up build/timing.json and run the preview pipeline with
   LESSON=lesson-concept.json. It answers one question: why

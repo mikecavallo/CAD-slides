@@ -419,29 +419,30 @@
     tl.fromTo(legT2, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t4 + 0.4);
     tl.to(leg, { scale: 1.05, transformOrigin: '0% 50%', duration: 0.3, yoyo: true, repeat: 1 }, t4 + 0.5);
 
-    // ---------- beat 7: repeated emotional experiences and too little recovery add to the cumulative mood: drops fall in
+    // ---------- beat 7: an unpleasant or stressful experience, even one, can shift the mood in a negative direction and add
+    // to the water; repetition and too little recovery add more
     const t5 = cue(7);
     tl.to(LA, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t5 - 0.2);
     const LB = C2.layer(stage, tl, t5);
-    const EM = [['repeat', 'Repeated stressful or unpleasant experiences', 'happen repeatedly', 0.12, C.amber], ['hourglass', 'Not enough time to recover', 'opportunity to recover', 0.4, C.red]];
-    let lo = t5 + 0.2, L = 0.4;
-    const ems = EM.map(([ic, t, p, fb, col], k) => {
-      const x = 120, y = 300 + k * 110;
-      const c = C2.pill(LB, ic, t, { x, y, size: 34, col });
-      const tt = clamp(at(7, p, fb, 0.3), lo, end(7) - 3);
-      A.in(tl, c, tt, 'fadeRight', { dur: 0.5 });
-      lo = tt + 0.8;
-      return { c, x, y, col };
-    });
-    const tCum = clamp(at(7, 'cumulative mood', 0.7, 0.4), lo, end(7) - 1.4);
-    ems.forEach(({ x, y, col }, k) => {
-      const land = P.drip(tl, x + 37, y + 37, tCum + k * 0.35, col, 0.95);
-      L += 0.12;
-      P.setLevel(tl, L, land - 0.05, 0.7);
-    });
+    let L = 0.4;
+    const mk7 = (ic, t, y, col) => { const c = C2.pill(LB, ic, t, { x: 120, y, size: 34, col }); return { c, x: 120, y, col }; };
+    const e1 = mk7('zap', 'An unpleasant or stressful experience, *even one*', 300, C.amber);
+    const t7a = clamp(at(7, 'Unpleasant or stressful', 0.05, 0.3), t5 + 0.2, end(7) - 6);
+    A.in(tl, e1.c, t7a, 'fadeRight', { dur: 0.5 });
+    const tCum = clamp(at(7, 'negative direction', 0.35, 0.4), t7a + 1.0, end(7) - 4);
+    const land1 = P.drip(tl, e1.x + 37, e1.y + 37, tCum, e1.col, 0.95);
+    L += 0.12;
+    P.setLevel(tl, L, land1 - 0.05, 0.7);
+    const e2 = mk7('repeat', 'Repeated, or not enough time to recover', 410, C.red);
+    const t7b = clamp(at(7, 'happen repeatedly', 0.75, 0.3), tCum + 1.2, end(7) - 0.8);
+    A.in(tl, e2.c, t7b, 'fadeRight', { dur: 0.5 });
+    const land2 = P.drip(tl, e2.x + 37, e2.y + 37, t7b + 0.4, e2.col, 0.95);
+    L += 0.1;
+    P.setLevel(tl, L, land2 - 0.05, 0.7);
+    const ems = [e1, e2];
     // the mood doesn't raise the water by itself: it affects whether the water goes up or down
     const cum = C2.pill(LB, 'arrow-up-down', 'Mood affects whether the water *goes up or down*', { x: 120, y: 510, size: 32, col: C2.AREAS[2].col, variant: 'pale' });
-    const tUD = clamp(at(7, 'water level', 0.9, 0.3), tCum + 0.8, end(7) - 0.2);
+    const tUD = clamp(at(7, 'water level', 0.55, 0.3), land1 + 0.6, t7b - 0.6);
     A.in(tl, cum, tUD, 'fadeUp', { dur: 0.5 });
     P.setLevel(tl, L + 0.05, tUD + 0.4, 0.6, 'sine.inOut');
     P.setLevel(tl, L - 0.04, tUD + 1.0, 0.8, 'sine.inOut');

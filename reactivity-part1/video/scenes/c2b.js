@@ -104,7 +104,7 @@
     tl.fromTo(P.br, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, t3 + 0.2);
     tl.set(P.br, { opacity: 0 }, 0);
     const bx = P.bracketX();
-    const less = C2.pill(stage, 'minimize-2', 'Less room', { x: bx, y: 0, variant: 'amber' });
+    const less = C2.pill(stage, 'minimize-2', 'Less room before a reaction', { x: bx, y: 0, variant: 'amber' });
     P.follow(less, 'mid', -37);
     A.in(tl, less, t3 + 0.4, 'fadeRight', { dur: 0.6 });
     const tMore = clamp(at(5, 'A lower water level', 0.7, 0.2), t3 + 2.4, end(5) - 1.6);
@@ -114,7 +114,7 @@
     Object.assign(more.style, { position: 'absolute', left: bx + 'px', display: 'flex', flexDirection: 'column', gap: '18px', alignItems: 'flex-start' });
     const moreP = C2.pill(more, 'maximize-2', 'More room', { variant: 'green' });
     moreP.style.position = 'relative';
-    const room = C2.put(more, 'c2-lab', '**for whatever<br>happens next**', {});
+    const room = C2.put(more, 'c2-lab', '**for additional stress<br>before they react**', {});
     Object.assign(room.style, { position: 'relative', left: '', top: '', fontSize: '36px', lineHeight: '1.25', color: 'var(--ink)' });
     stage.appendChild(more);
     P.follow(more, 'mid', -70);

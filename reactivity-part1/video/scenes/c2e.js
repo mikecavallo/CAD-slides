@@ -209,7 +209,7 @@
     A.in(tl, fd, t3 + 0.2, 'fadeRight', { dur: 0.5 });
     const FAC = [['moon', 'Poor sleep', 'poor sleep', 0.15, C.red], ['stethoscope', 'Pain', 'pain', 0.25, C.red],
       ['volleyball', 'Too much or too little stimulation', 'too much or too little', 0.42, C.amber], ['house', 'Change at home', 'changes at home', 0.68, C.amber],
-      ['zap', 'Unpleasant experiences', 'unpleasant', 0.92, C.red]];
+      ['zap', 'Even one unpleasant experience', 'unpleasant', 0.92, C.red]];
     lo = t3 + 0.5;
     let L = 0.22;
     const pills = FAC.map(([ic, t, p, fb, col], k) => {

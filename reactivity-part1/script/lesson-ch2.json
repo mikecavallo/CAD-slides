@@ -123,9 +123,9 @@
      ],
      "beats": [
       {
-       "say": "When I say baseline, I mean the dog's overall starting state before something new happens.",
+       "say": "When I say baseline, I mean the dog's overall starting state: their starting level of stress and arousal before a trigger appears.",
        "show": "Definition card: 'Baseline = the dog's overall starting state before something new happens.' A time line draws; the dog sits on a green band labeled 'Starting state'; an amber bell marker 'Something new happens' drops onto the line to the right.",
-       "onscreen": "Baseline = the dog's overall starting state before something new happens."
+       "onscreen": "Baseline: the dog's starting level of stress and arousal before a trigger appears."
       },
       {
        "say": "Part of that baseline is the dog's mood.",
@@ -174,9 +174,9 @@
        "onscreen": "Why does that matter?"
       },
       {
-       "say": "The higher the water level, the less room there is in the pot for whatever happens next. A lower water level leaves more room.",
+       "say": "A higher baseline means there's less room for additional stress before they react. A lower water level leaves more room.",
        "show": "A bracket from the waterline to the rim: 'Less room' while the water is high; the water lowers and the bracket stretches: 'More room for what happens next'.",
-       "onscreen": "Room for what happens next"
+       "onscreen": "Less room before a reaction / More room for additional stress before they react"
       },
       {
        "say": "That's the goal: the lower the baseline a dog starts out with, the better.",
@@ -428,9 +428,9 @@
        "onscreen": "Dogs too"
       },
       {
-       "say": "When unpleasant or stressful emotional experiences happen repeatedly, or there isn't enough opportunity to recover between them, they can shift the dog's overall mood in a negative direction and affect the water level in the pot.",
-       "show": "'Repeated emotional experiences' and 'Not enough time to recover' drip into the pot and the water rises; 'Mood affects whether the water goes up or down' and the water moves up and down.",
-       "onscreen": "Repeated stressful or unpleasant experiences · Not enough time to recover"
+       "say": "An unpleasant or stressful emotional experience, even a single one, can shift the dog's overall mood in a negative direction and affect the water level in the pot, especially when those experiences happen repeatedly or there isn't enough opportunity to recover between them.",
+       "show": "'An unpleasant or stressful experience, even one' drips into the pot; 'Mood affects whether the water goes up or down'; 'Repeated, or not enough time to recover' adds another drop.",
+       "onscreen": "An unpleasant or stressful experience, even one · Repeated, or not enough time to recover"
       },
       {
        "say": "An experience doesn't have to produce a big, obvious response to have an effect.",
@@ -514,7 +514,7 @@
        "onscreen": "Normally manageable. That day: harder to handle."
       },
       {
-       "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, and several unpleasant or stressful experiences.",
+       "say": "For a dog, it might be poor sleep, pain, too much or too little stimulation, changes at home, or even a single unpleasant or stressful experience.",
        "show": "Five red and amber factor pills appear one per phrase; each drips into the pot and the water rises a step (the ingredients ride up with it).",
        "onscreen": "Poor sleep · Pain · Too much or too little stimulation · Change at home · Unpleasant experiences"
       },

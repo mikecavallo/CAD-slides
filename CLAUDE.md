@@ -119,6 +119,14 @@ pipeline). This file records the state, decisions and working agreements from ea
   stressful experiences" and "together they can shift the dog's mood in a negative direction and raise the water level"
   (pill "Unpleasant experiences"). Never say a dog is "in a bad mood" (too anthropomorphic); say "shift the mood in a
   negative direction". s12 thermometer is shorter so it stays clear of the Part labels.
+- Round 14: s02 defines baseline as "the dog's overall starting state: their starting level of stress and arousal before
+  a trigger appears" (card and "A trigger appears" event); s03 "A higher baseline means there's less room for additional
+  stress before they react. A lower water level leaves more room." ("Less room before a reaction" / "for additional
+  stress before they react"); one unpleasant or stressful experience is enough to matter, never imply it takes several:
+  s08 "An unpleasant or stressful emotional experience, even a single one, can shift the dog's overall mood in a negative
+  direction and affect the water level in the pot, especially when those experiences happen repeatedly or there isn't
+  enough opportunity to recover between them."; s10 "or even a single unpleasant or stressful experience" (pill "Even
+  one unpleasant experience").
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

@@ -1,7 +1,7 @@
 // Shared parts for chapter 1 (v5): the recipe bowl and small builders used by every bowl scene.
 // Scene files use them through window.C1. CSS classes are prefixed .c1- and injected with C1.style(stage).
 //
-//   C1.ING                       the eight ingredients {name, icon, col}, in chapter order
+//   C1.ING                       the seven ingredients {name, icon, col}, in chapter order
 //   C1.makeBowl(stage, {cx, y, s, filled})  bowl with the first `filled` ingredients already inside
 //   C1.dropIn(tl, B, k, t)       ingredient k lights up in its "?" chip, hops into the bowl, splashes; returns landing time
 //   C1.bob(tl, B, t0, t1)        the remaining "?" chips hover gently
@@ -16,7 +16,7 @@
     red: '#b8452d', redPale: '#f8e3dd', amber: '#d9912b', amberPale: '#fbefd9', amberText: '#a8650f',
   };
 
-  // the recipe: eight ingredients, in the order the chapter adds them
+  // the recipe: seven ingredients, in the order the chapter adds them (pain moved to Chapter 2, where it is part of the water)
   const ING = [
     { name: 'Genetics and temperament', icon: 'dna', col: '#619537' },
     { name: 'Prenatal environment', icon: 'sprout', col: '#8aae4a' },
@@ -25,16 +25,15 @@
     { name: 'Age', icon: 'hourglass', col: '#7a8f2e' },
     { name: 'Past experiences', icon: 'zap', col: '#d9912b' },
     { name: 'Training tools and methods', icon: 'link', col: '#b8452d' },
-    { name: 'Pain and discomfort', icon: 'stethoscope', col: '#2c4a17' },
   ];
   // bowl-local coordinates: origin at the centre of the rim ellipse (rx 260, ry 50)
-  // eight "?" chips hover on an arc above the bowl
-  const SLOT = [-156, -137, -118, -99, -81, -62, -43, -24].map(d => {
+  // seven "?" chips hover on an arc above the bowl
+  const SLOT = [-156, -134, -112, -90, -68, -46, -24].map(d => {
     const r = (d * Math.PI) / 180;
     return [Math.round(420 * Math.cos(r)), Math.round(60 + 420 * Math.sin(r))];
   });
-  // where each ingredient rests in the bowl: a back row of four, a front row of four
-  const SPOT = [[-176, -64], [-60, -76], [60, -76], [176, -64], [-172, 4], [-60, -2], [60, -2], [172, 4]];
+  // where each ingredient rests in the bowl: a back row of four, a front row of three
+  const SPOT = [[-176, -64], [-60, -76], [60, -76], [176, -64], [-116, 2], [0, -2], [116, 2]];
   const BODY = 'M -260 0 C -260 150 -150 232 0 232 C 150 232 260 150 260 0 A 260 50 0 0 1 -260 0 Z';
   const STD = { cx: 1480, y: 600, s: 0.78 }; // bowl placement in the ingredient scenes
   const CAP_Y = 830;

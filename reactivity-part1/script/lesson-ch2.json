@@ -91,17 +91,17 @@
      "beats": [
       {
        "say": "In the last chapter, we looked at the ingredients that can help shape a dog's behavior.",
-       "show": "Chapter 1's bowl with its eight ingredients; pill 'Chapter 1: the ingredients'.",
+       "show": "Chapter 1's bowl with its seven ingredients; pill 'Chapter 1: the ingredients'.",
        "onscreen": "Your Dog's Baseline"
       },
       {
        "say": "You'll notice that some of those factors appear again here. That's intentional.",
-       "show": "Left column 'Chapter 1: what shaped the dog' with the four returning ingredients (each pulses in the bowl); on 'That's intentional' a right column 'Now: can be changed, managed, or improved' pairs each with a water-drop pill: Breed needs met today, Recent stress, How the dog is handled now, Pain right now.",
+       "show": "Left column 'Chapter 1: what shaped the dog' with the three returning ingredients (each pulses in the bowl); on 'That's intentional' a right column 'Now: can be changed, managed, or improved' pairs each with a water-drop pill: Breed needs met today, Recent stress, How the dog is handled now.",
        "onscreen": "Chapter 1: what shaped the dog. Now: can be changed, managed, or improved."
       },
       {
        "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently.",
-       "show": "'Can be changed, managed, or improved' lights up; the four 'now' pills glow on 'right now'.",
+       "show": "'Can be changed, managed, or improved' lights up; the three 'now' pills glow on 'right now'.",
        "onscreen": "Changed, managed, or improved"
       },
       {

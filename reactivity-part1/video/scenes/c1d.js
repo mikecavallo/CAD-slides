@@ -482,7 +482,7 @@
     const LA = C1.layer(stage);
     // spoken order: [ingredient k, the words that name it, fallback fraction of the beat]
     const SPOKEN = [[0, 'Genetics', 0.27], [1, 'prenatal', 0.36], [2, 'breed history', 0.43], [3, 'socialization', 0.52],
-      [4, 'age,', 0.57], [7, 'pain and discomfort', 0.59], [5, 'past experiences', 0.66], [6, 'the methods', 0.74]];
+      [4, 'age,', 0.57], [5, 'past experiences', 0.66], [6, 'the methods', 0.74]];
     // legend: left column holds the first four named, right column the last four, each in the order spoken
     const legs = [];
     SPOKEN.forEach(([k], j) => {

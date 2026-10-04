@@ -91,7 +91,7 @@
     const t1 = at(1, 'some of those factors', 0.2, 0.2);
     A.out(tl, ingP, t1, 'fade', { dur: 0.4 });
     const PAIRS = [[2, 'Breed history', 'Breed needs met today'], [5, 'Past experiences', 'Recent stress'],
-      [6, 'Training methods', 'How the dog is handled now'], [7, 'Pain', 'Pain right now']];
+      [6, 'Training methods', 'How the dog is handled now']];
     const grid = K.el('div', 'c2a-pairs');
     Object.assign(grid.style, { left: '830px', top: '258px' });
     const hThen = K.el('div', 'hd', 'Chapter 1: <b>what shaped the dog</b>');

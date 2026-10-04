@@ -23,8 +23,9 @@ pipeline). This file records the state, decisions and working agreements from ea
 - `ch01` "Starting with the Basics": the chapter card plays first, then `ch00s02` the plan slide (id kept so
   its recording still matches; cards: Why you're here / What you'll gain / How we'll get there; steps:
   "The difference between reactivity and aggression", "The ingredients that shape behavior"), then
-  `ch01s01` to `ch01s12` (definitions, look beyond the label, why, the eight bowl ingredients, putting it
-  together). Last slide (ch01s12) now matches Chapter 2: after the eight chips drop in, the bowl steps aside, a glass
+  `ch01s01` to `ch01s12` (definitions, look beyond the label, why, the seven bowl ingredients, putting it
+  together). Pain was removed from Chapter 1 (Tori, Oct 4): no ch01s11 slide, no pain chip, not in the s12 list; pain
+  lives in Chapter 2 (ch02s06) as part of the water. Chapter 2 s01 pairs only three returning ingredients now. Last slide (ch01s12) now matches Chapter 2: after the seven chips drop in, the bowl steps aside, a glass
   pot of water slides in ("Next: the water they go into"), then "Next chapter: Your Dog's Baseline"; new closing line
   "Next, we'll look at that water: your dog's baseline." (needs Tori's re-record, with the rest of ch01s12).
 - Scene code: `video/scenes/c0.js` (ch00s01, ch00s02), `c1a.js` to `c1e.js` (chapter 1), shared bowl module
@@ -43,7 +44,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   activity blue, emotions olive, environment deep green (no red or orange for areas; red/amber only for bad things).
 - Tori's round 1 feedback (applied): the title slide keeps the presentation title unchanged, chapter is a tag with
   Chapter 1's amber fuel chip; s01 pours the bowl's ingredients into the pot and the fuel chip melts in as water;
-  the eight ingredients float in every pot and ride the water level; factors that raise the water are red/amber
+  the seven ingredients float in every pot and ride the water level; factors that raise the water are red/amber
   pills that drip in (never chip tokens); fixes lift drops out; s07 "different for each dog" sentence and slides
   removed, "more on this later" sits on the beam slide; s08 is a three-step strip, not a graph; s12 has a new line
   naming the water (only the water, NOT the ingredients) "distant antecedents". Last slide frames: Part 1 = the ingredients
@@ -77,7 +78,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   is handled now, Pain -> Pain right now ("Chapter 1: what shaped the dog" / "Now: can be changed, managed, or improved").
   Rule: an ingredient is what shaped the dog before; the water is what is happening now.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
-  s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
+  s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc
   yet: the intro/plan narration, s01's "add those ingredients to a pot of water" line, s06's stoic line and s12's
   distant antecedents line.
@@ -91,6 +92,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   `Ch01s07_part_1`, `Ch01s07_part_2`. Files go in `reactivity-part1/narration/`.
 - `narration/` is gitignored (the repo is public), so **recordings are not in GitHub**. In a new session, ask
   Tori to re-upload the takes for any slide being rebuilt with voice.
+- Chapter 1 takes still needed (Oct 4): `Ch00s01` (new title) and `Ch01s12` (pain gone, water ending). Until then
+  the Chapter 1 build uses the stand-in voice for those two slides (narration/ch00s01.wav, ch01s12.wav, made from the
+  scratch clips; delete them when Tori's takes arrive).
 - Build with voice: `python3 tools/align.py && python3 tools/timing.py --mode narration && node tools/render.mjs
   --workers 3 && python3 tools/assemble.py --name Getting-Started-with-Dog-Behavior`.
   align.py levels each take, trims lead-in/tail noise and slates (voiced-sound based), and cuts slides exactly
@@ -113,7 +117,7 @@ pipeline). This file records the state, decisions and working agreements from ea
 
 ## Decisions already made (do not undo without asking)
 
-- Ingredient bowl metaphor and the eight chips; photo portraits for genetics (barking Sheltie = more
+- Ingredient bowl metaphor and the seven chips (C1.ING; pain removed); photo portraits for genetics (barking Sheltie = more
   sensitive, scruffy white dog = more easygoing); "Before birth" uses a sprout icon.
 - Breed slide: six job cards (Herding: Aussie, Guarding: Great Pyrenees, Hunting: Beagle, Terrier: Jack
   Russell, Sporting: Golden Retriever, Working and assistance: black Lab), each enlarges with a small vignette;

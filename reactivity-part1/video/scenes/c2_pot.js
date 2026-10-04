@@ -219,10 +219,10 @@
     const brDash = K.path(br, '', { stroke: C.greenDark, 'stroke-width': 3, fill: 'none', 'stroke-dasharray': '10 10', opacity: 0.6 });
 
     const P = { wrap, svg, body, water, wBody, wTop, wave, tokG, rip, front, br, s, cx: o.cx, y: o.y, R, H, L: o.level ?? 0.5, followers: [], tokens: [], ing: [] };
-    // Chapter 1's eight ingredients are already in the pot: they float just under the surface and ride the waterline
+    // Chapter 1's seven ingredients are already in the pot: they float just under the surface and ride the waterline
     // up and down; when the water is low they rest on the bottom
     if (o.ingredients !== false && window.C1) {
-      const SPOT = [[-150, 40, 286], [-50, 30, 292], [50, 42, 288], [150, 32, 284], [-100, 92, 322], [0, 100, 326], [100, 90, 322], [-178, 96, 312]];
+      const SPOT = [[-150, 40, 286], [-50, 30, 292], [50, 42, 288], [150, 32, 284], [-100, 92, 322], [0, 100, 326], [100, 90, 322]];
       C1.ING.forEach((g, k) => {
         const outer = K.group(ingG);
         const mid = K.group(outer);

@@ -23,8 +23,8 @@ pipeline). This file records the state, decisions and working agreements from ea
 - `ch01` "Starting with the Basics": the chapter card plays first, then `ch00s02` the plan slide (id kept so
   its recording still matches; cards: Why you're here / What you'll gain / How we'll get there; steps:
   "The difference between reactivity and aggression", "The ingredients that shape behavior"), then
-  `ch01s01` to `ch01s12` (definitions, look beyond the label, why, the eight bowl ingredients, putting it
-  together). Last slide (ch01s12) now matches Chapter 2: after the eight chips drop in, the bowl steps aside, a glass
+  `ch01s01` to `ch01s12` without `ch01s11` (definitions, look beyond the label, why, the seven bowl ingredients, putting
+  it together; the Pain slide ch01s11 was removed in Chapter 2 round 12, its code is still in c1d.js but unused). Last slide (ch01s12) now matches Chapter 2: after the eight chips drop in, the bowl steps aside, a glass
   pot of water slides in ("Next: the water they go into"), then "Next chapter: Your Dog's Baseline"; new closing line
   "Next, we'll look at that water: your dog's baseline." (needs Tori's re-record, with the rest of ch01s12).
 - Scene code: `video/scenes/c0.js` (ch00s01, ch00s02), `c1a.js` to `c1e.js` (chapter 1), shared bowl module
@@ -106,6 +106,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   moves up and down; s12 ends with a Claude-written bridge (Tori asked for it): "We'll get to temperature later. First,
   in the next chapter, we'll step away from the pot and look at the ABCs of behavior." with a Next chapter / The ABCs of
   Behavior / A B C card before the logo close.
+- Round 12 (Tori decided): Pain and discomfort is no longer a Chapter 1 ingredient; it lives only in Chapter 2 (s06). The
+  bowl and every pot hold seven ingredients (C1.ING). Chapter 2 s01 lost "You'll notice that some of those factors appear
+  again here. That's intentional." and the then/now pairs; its line is now "In this chapter, we're focusing on factors
+  that can be changed, managed, or improved." with Changed / Managed / Improved lighting word by word. s12's thermometer
+  goes in through the middle of the pot's opening (front rim redrawn over it).
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc
@@ -143,7 +148,7 @@ pipeline). This file records the state, decisions and working agreements from ea
 
 ## Decisions already made (do not undo without asking)
 
-- Ingredient bowl metaphor and the eight chips; photo portraits for genetics (barking Sheltie = more
+- Ingredient bowl metaphor and the seven chips (Pain moved to Chapter 2 in round 12); photo portraits for genetics (barking Sheltie = more
   sensitive, scruffy white dog = more easygoing); "Before birth" uses a sprout icon.
 - Breed slide: six job cards (Herding: Aussie, Guarding: Great Pyrenees, Hunting: Beagle, Terrier: Jack
   Russell, Sporting: Golden Retriever, Working and assistance: black Lab), each enlarges with a small vignette;

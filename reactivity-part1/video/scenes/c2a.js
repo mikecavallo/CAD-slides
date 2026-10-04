@@ -77,66 +77,36 @@
     const h = K.heading(stage, 'Your Dog’s Baseline', { x: 100, y: 120, w: 1450, size: 76 });
     A.in(tl, h.all, 0.05, 'fadeUp', { dur: 0.7, stagger: 0.1 });
 
-    // ---------- beat 0: chapter 1's bowl and its eight ingredients
+    // ---------- beat 0: chapter 1's bowl and its seven ingredients
     const LB = C2.layer(stage);
     const BX = 450, BY = 600;
-    const B = C1.makeBowl(LB, { cx: BX, y: BY, s: 1.0, filled: 8 });
+    const B = C1.makeBowl(LB, { cx: BX, y: BY, s: 1.0, filled: C1.ING.length });
     B.slots.forEach(sl => gsap.set(sl.g, { opacity: 0 }));
     tl.fromTo(B.wrap, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }, cue(0) + 0.1);
     tl.fromTo(B.glow, { opacity: 0 }, { opacity: 0.8, duration: 1.0 }, cue(0) + 0.4);
     const ingP = C2.pill(LB, 'book-open', 'Chapter 1: *the ingredients*', { x: BX, y: 860, center: true, variant: 'pale' });
     A.in(tl, ingP, cue(0) + 0.6, 'fadeUp', { dur: 0.6 });
 
-    // ---------- beat 1: the four ingredients that come back, each paired with what it means for the water: the ingredient is
-    // what shaped the dog before, the water is what is happening now
-    const t1 = at(1, 'some of those factors', 0.2, 0.2);
+    // ---------- beat 1: this chapter is about what can be changed, managed, or improved; each word lights as it is said
+    // (Tori, round 12: the "some of those factors appear again" lines and the then/now pairs are gone)
+    const t1 = cue(1);
     A.out(tl, ingP, t1, 'fade', { dur: 0.4 });
-    const PAIRS = [[2, 'Breed history', 'Breed needs met today'], [5, 'Past experiences', 'Recent stress'],
-      [6, 'Training methods', 'How the dog is handled now'], [7, 'Pain', 'Pain right now']];
-    const grid = K.el('div', 'c2a-pairs');
-    Object.assign(grid.style, { left: '830px', top: '258px' });
-    const hThen = K.el('div', 'hd', 'Chapter 1: <b>what shaped the dog</b>');
-    const hNow = K.el('div', 'hd now', '<b style="color:#2f7fae">Now:</b> can be <span>changed</span>, <span>managed</span>, or <span>improved</span>');
-    grid.appendChild(hThen);
-    grid.appendChild(K.el('div'));
-    grid.appendChild(hNow);
-    const rows = PAIRS.map(([k, a, b]) => {
-      const g = C1.ING[k];
-      const ca = C2.pill(grid, g.icon, a, { col: g.col, size: 28 });
-      const ar = K.el('div', 'ar');
-      ar.appendChild(K.icon('arrow-right'));
-      const cb = C2.pill(grid, 'droplet', b, { col: C2.C.water, size: 28 });
-      [ca, cb].forEach(n => { n.style.position = 'relative'; });
-      grid.insertBefore(ar, cb);
-      return { k, ca, ar, cb };
-    });
+    const grid = K.el('div', 'c2a-focus');
+    Object.assign(grid.style, { left: '900px', top: '330px' });
+    grid.appendChild(K.el('div', 'k', 'This chapter: what can be'));
+    const words = ['Changed', 'Managed', 'Improved'].map(w => { const d = K.el('div', 'w', w); d.style.color = '#c9d2bf'; grid.appendChild(d); return d; });
     LB.appendChild(grid);
-    A.in(tl, hThen, t1 + 0.1, 'fadeUp', { dur: 0.5 });
-    rows.forEach((r, j) => {
-      const t = t1 + 0.4 + j * 0.45;
-      A.in(tl, r.ca, t, 'fadeRight', { dur: 0.5 });
-      tl.to(B.tokens[r.k].inner, { scale: 1.3, transformOrigin: '50% 50%', duration: 0.3, yoyo: true, repeat: 1, ease: 'power2.out' }, t);
-    });
-    const tInt = clamp(at(1, "That's intentional", 0.8, 0.2), t1 + 2.0, end(1) - 0.3);
-    A.in(tl, hNow, tInt, 'fadeUp', { dur: 0.5 });
-    rows.forEach((r, j) => {
-      A.in(tl, r.ar, tInt + 0.2 + j * 0.25, 'fade', { dur: 0.3 });
-      A.in(tl, r.cb, tInt + 0.3 + j * 0.25, 'fadeRight', { dur: 0.5 });
-    });
-
-    // ---------- beat 2: the "now" column's header lights up as "changed, managed, or improved" is said
-    const t2 = cue(2);
-    let loW = t2;
-    [['changed', 0.2], ['managed', 0.27], ['improved', 0.34]].forEach(([w, fb], k) => {
-      const tw = clamp(at(2, w, fb, 0.15), loW, end(2) - 2.5 + k * 0.5);
-      tl.to(hNow.querySelectorAll('span')[k], { color: '#ffffff', backgroundColor: C2.C.green, duration: 0.3 }, tw);
+    A.in(tl, grid, t1 + 0.2, 'fadeUp', { dur: 0.6 });
+    let loW = t1 + 0.4;
+    [['changed', 0.45], ['managed', 0.6], ['improved', 0.75]].forEach(([w, fb], k) => {
+      const tw = clamp(at(1, w, fb, 0.15), loW, end(1) - 0.9 + k * 0.3);
+      tl.to(words[k], { color: C2.C.green, duration: 0.3 }, tw);
+      tl.to(words[k], { scale: 1.06, transformOrigin: '0% 50%', duration: 0.18, yoyo: true, repeat: 1 }, tw);
       loW = tw + 0.3;
     });
-    tl.to(rows.map(r => r.cb), { boxShadow: '0 0 0 4px rgba(95,168,207,0.6)', duration: 0.4, stagger: 0.12 }, clamp(at(2, 'right now', 0.6, 0.3), t2 + 1, end(2) - 1));
-    const hdr = grid, cant = grid;
 
-    // ---------- beat 3: "we're going to add those ingredients to a pot": the bowl tips and the ingredients drop into an empty pot
-    const tDiff = cue(3);
+    // ---------- beat 2: "we're going to add those ingredients to a pot": the bowl tips and the ingredients drop into an empty pot
+    const tDiff = cue(2);
     tl.to([grid], { opacity: 0, duration: 0.4, stagger: 0.03, ease: 'power2.in' }, tDiff - 0.3);
     const cap = C2.pill(LB, 'arrow-down', 'Adding the ingredients *to the pot*', { x: 960, y: 880, center: true, variant: 'pale', size: 32 });
     A.in(tl, cap, tDiff + 0.3, 'fadeUp', { dur: 0.6 });
@@ -150,7 +120,7 @@
     P.waves(tl, tIn, dur);
 
     // ---------- beat 4: no water yet (it comes when the baseline is explained): "First: your dog's baseline"
-    const t4 = Math.max(cue(4), tIn + 0.2);
+    const t4 = Math.max(cue(3), tIn + 0.2);
     A.out(tl, cap, t4 - 0.2, 'fade', { dur: 0.4 });
     const bl = K.el('div', 'c2a-blt');
     bl.appendChild(K.el('div', 'tx', K.md('First: your dog’s *baseline*')));

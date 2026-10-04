@@ -79,7 +79,7 @@
     {
      "id": "ch02s01",
      "heading": "Your Dog's Baseline",
-     "visual_concept": "Recap with Chapter 1's bowl and its eight ingredients. The four that return are paired with what they mean for the water: Breed history to Breed needs met today, Past experiences to Recent stress, Training methods to How the dog is handled now, Pain to Pain right now, under 'Chapter 1: what shaped the dog' and 'Now: can be changed, managed, or improved' (lit on beat 2). The ingredients pour into an empty glass pot (no water yet). 'First: your dog's baseline'.",
+     "visual_concept": "Recap with Chapter 1's bowl and its seven ingredients; 'This chapter: what can be Changed / Managed / Improved' lights word by word; the ingredients pour into an empty glass pot (no water yet); 'First: your dog's baseline'.",
      "assets": [
       "bg_swirl.jpg",
       "diagram:mixing-bowl",
@@ -95,14 +95,9 @@
        "onscreen": "Your Dog's Baseline"
       },
       {
-       "say": "You'll notice that some of those factors appear again here. That's intentional.",
-       "show": "Left column 'Chapter 1: what shaped the dog' with the four returning ingredients (each pulses in the bowl); on 'That's intentional' a right column 'Now: can be changed, managed, or improved' pairs each with a water-drop pill: Breed needs met today, Recent stress, How the dog is handled now, Pain right now.",
-       "onscreen": "Chapter 1: what shaped the dog. Now: can be changed, managed, or improved."
-      },
-      {
-       "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved. Because they can have such a significant effect on the dog right now, we're going to look at them a little differently.",
-       "show": "'Can be changed, managed, or improved' lights up; the four 'now' pills glow on 'right now'.",
-       "onscreen": "Changed, managed, or improved"
+       "say": "In this chapter, we're focusing on factors that can be changed, managed, or improved.",
+       "show": "'This chapter: what can be Changed / Managed / Improved', each word turning green as it is said.",
+       "onscreen": "This chapter: what can be changed, managed, or improved"
       },
       {
        "say": "So we're going to add those ingredients to a pot.",

@@ -227,11 +227,11 @@
 
     // ---------- beat 3: a dashed slot on the pot for another part
     const t4 = cue(3);
-    const TX = 120; // thermometer x in pot coordinates
+    const TX = 0; // thermometer x in pot coordinates: it goes in through the middle of the opening
     const slot = K.path(P.svg, `M ${TX - 30} 250 L ${TX - 30} -110 A 30 30 0 0 1 ${TX + 30} -110 L ${TX + 30} 250`, { stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10', fill: 'rgba(255,255,255,0.4)' });
-    P.svg.insertBefore(slot, P.front);
+
     const slotC = K.circle(P.svg, TX, 286, 50, { fill: 'rgba(255,255,255,0.4)', stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10' });
-    P.svg.insertBefore(slotC, P.front);
+
     const tSlot = clamp(at(3, 'another part', 0.6, 0.3), t4 + 0.2, end(3) - 0.4);
     A.in(tl, [slot, slotC], tSlot, 'fade', { dur: 0.5 });
     tl.to([slot, slotC], { opacity: 0.35, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tSlot + 0.5);
@@ -241,13 +241,15 @@
     // ---------- beat 4: temperature: the thermometer drops in, its line rises; Part 2 is temperature
     const t5 = cue(4);
     const th = K.group(P.svg);
-    P.svg.insertBefore(th, P.front);
     K.rect(th, TX - 28, -140, 56, 420, { rx: 28, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
     K.circle(th, TX, 286, 48, { fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
     K.circle(th, TX, 286, 34, { fill: C.red });
     const merc = K.rect(th, TX - 12, 240, 24, 50, { rx: 12, fill: C.red });
     [-90, -30, 30, 90, 150].forEach(y => K.line(th, TX + 6, y, TX + 22, y, { stroke: C.greenDeep, 'stroke-width': 4 }));
-    gsap.set(th, { y: -170, opacity: 0 });
+    // the front half of the rim, drawn again over the thermometer, so the stem reads as standing inside the pot
+    K.path(P.svg, `M ${-C2.R} 0 A ${C2.R} 42 0 0 0 ${C2.R} 0`, { stroke: C.rim, 'stroke-width': 16, fill: 'none' });
+    K.path(P.svg, `M ${-C2.R + 20} 8 A ${C2.R - 20} 34 0 0 0 ${C2.R - 20} 8`, { stroke: '#8fbf62', 'stroke-width': 5, fill: 'none', opacity: 0.8 });
+        gsap.set(th, { y: -170, opacity: 0 });
     tl.to([slot, slotC], { opacity: 0, duration: 0.3 }, t5);
     tl.fromTo(th, { y: -170 }, { y: 0, duration: 0.6, ease: 'power2.in', immediateRender: false }, t5 + 0.1);
     tl.fromTo(th, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t5 + 0.1);

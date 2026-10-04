@@ -14,7 +14,7 @@
     C3.css(stage);
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
     C3.head(ctx, o.title, { size: 72 });
-    const S = C3.strip(stage, { y: 236, panels: o.panels, captions: o.captions });
+    const S = C3.strip(stage, { y: 236, panels: o.panels, captions: o.captions, defs: true });
     const b = o.beatA;
     S.frames(tl, b === 0 ? 0.2 : cue(0) + 0.2);
     S.show(tl, 0, Math.max(cue(b) + 0.1, at(b, o.pA, 0.1, 0.3)));

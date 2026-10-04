@@ -1,12 +1,13 @@
 // Chapter 3: why the pattern repeats, what training includes, the paths, and training in action. Linear ABC photo strips
 // (Tori's panels) with the emotional response shown between A and B; no cycles (Tori, round 3).
-//   ch03s08  Why the pattern repeats   before training: A, the emotional response, B, C; getting space makes it more likely
-//   ch03s09  What training includes   three cards: management, changing emotions, new behaviors
-//   ch03s10  Building a new path      chapter 1's lawn: the new path wears in; a management gate closes the old path and
-//                                     the grass grows back; a faint trace stays; practice wears it in again
-//   ch03s11  Training in action       during training (management, changing emotions, a new behavior, the consequence still
-//                                     works); after training (calmer; C changes: less space needed, then building a
-//                                     relationship); the three emotional states side by side for the arousal line
+//   ch03s08  Why the pattern repeats   A, B, C in a row; the C works (got what it wanted or needed); next time, B is more likely
+//   ch03s09  Before training           A, the emotional response, B, C; the frames open with the definitions
+//   ch03s10  What training includes    three cards: management, changing emotions, new behaviors
+//   ch03s11  Building a new path       chapter 1's lawn: the new path wears in; a management gate closes the old path and
+//                                      the grass grows back; a faint trace stays; practice wears it in again
+//   ch03s12  Training in action        during training (management, changing emotions, a new behavior, the consequence still
+//                                      works); after training (emotions changed; C changes: less space needed, then building a
+//                                      relationship)
 (() => {
   const { sayAt, clamp } = C1;
   const { COL } = C3;
@@ -25,7 +26,7 @@
 
   /** A linear strip with room between the panels for the emotional response. */
   function strip(stage, o) {
-    const S = C3.strip(stage, { x: 140, y: 236, w: 1640, gap: 190, panels: o.imgs, captions: o.caps, label: o.label, labelVariant: o.v });
+    const S = C3.strip(stage, { x: 140, y: 236, w: 1640, gap: 190, panels: o.imgs, captions: o.caps, label: o.label, labelVariant: o.v, defs: o.defs });
     const [hx, hy] = S.arrowPt(0);
     const heart = C2.badge(S.wrap, 'heart', hx, hy - 66, o.hs || 76, COL.emo, '#fff');
     heart.style.border = '5px solid #fff';
@@ -52,21 +53,70 @@
     css(stage);
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
     C3.head(ctx, 'Why the Pattern Repeats', { size: 72 });
-    const S = strip(stage, { label: 'Before training', v: 'red', emo: 'Emotions', hs: 84,
+    const TS = 150, G = 150, X0 = (1920 - 3 * TS - 2 * G) / 2;
+    const xs = [0, 1, 2].map(k => X0 + k * (TS + G));
+    const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
+    const row = (y, t, dim) => {
+      const tiles = ['A', 'B', 'C'].map((L, k) => C3.tile(stage, L, xs[k], y, TS, [COL.A, COL.B, COL.C][k]));
+      const arr = [0, 1].map(k => {
+        const x0 = xs[k] + TS + 26, x1 = xs[k + 1] - 26, yy = y + TS / 2;
+        return K.path(sv, `M ${x0} ${yy} L ${x1} ${yy} M ${x1 - 22} ${yy - 20} L ${x1} ${yy} L ${x1 - 22} ${yy + 20}`, { stroke: C.muted, 'stroke-width': 8 });
+      });
+      tiles.forEach((n, k) => A.in(tl, n, t + k * 0.35, 'pop', { dur: 0.45 }));
+      A.draw(tl, arr, t + 0.25, 0.35, { stagger: 0.35 });
+      return { tiles, arr };
+    };
+    // beat 0: A, B, C in a row; it worked
+    const Y1 = 270;
+    const r1 = row(Y1, cue(0) + 0.2);
+    const tW = clamp(at(0, 'Because it worked', 0.3), cue(0) + 1.2, end(0) - 0.4);
+    const ck = C2.badge(stage, 'check', xs[2] + TS - 6, Y1 + 6, 70, C.green, '#fff');
+    ck.style.border = '5px solid #fff';
+    A.in(tl, ck, tW, 'pop', { dur: 0.45 });
+    tl.to(r1.tiles[2], { boxShadow: '0 0 0 10px rgba(97,149,55,0.45), 0 16px 34px rgba(40,60,20,0.22)', scale: 1.08, duration: 0.5 }, tW);
+    const w1 = C3.chip(stage, 'check', '*It worked*', xs[2] + TS + 50, Y1 + TS / 2 - 34, { col: C.green, size: 36 });
+    w1.style.borderColor = C.green;
+    A.in(tl, w1, tW + 0.2, 'fadeLeft', { dur: 0.5 });
+    // beat 1: the dog got what it wanted or needed
+    const t1 = cue(1);
+    const g1 = C2.put(stage, 'c3-mid', 'The dog got what it <b>wanted or needed</b> out of the situation.', { x: 0, y: Y1 + TS + 50, w: 1920, align: 'center' });
+    A.in(tl, g1, clamp(at(1, 'wanted or needed', 0.4), t1 + 0.2, end(1) - 0.5), 'fadeUp', { dur: 0.5 });
+    // beat 2: next time, a similar situation: the same B is more likely
+    const t2 = cue(2);
+    const Y2 = 660;
+    const nx = C3.chip(stage, 'repeat', 'Next time', X0 - 60, Y2 - 92, { col: C.inkSoft, size: 32 });
+    A.in(tl, nx, t2 + 0.1, 'fadeUp', { dur: 0.4 });
+    const r2 = row(Y2, t2 + 0.3);
+    const tM = clamp(at(2, 'more likely', 0.6), t2 + 1.4, end(2) - 0.4);
+    tl.to(r2.tiles[1], { boxShadow: '0 0 0 10px rgba(97,149,55,0.45), 0 16px 34px rgba(40,60,20,0.22)', scale: 1.12, duration: 0.5 }, tM);
+    const ml = C3.chip(stage, 'trending-up', '*More likely* to happen again', xs[1] + TS / 2, Y2 + TS + 40, { center: true, col: C.green, size: 34 });
+    ml.style.borderColor = C.green;
+    A.in(tl, ml, tM + 0.15, 'fadeUp', { dur: 0.5 });
+  });
+
+  // ================================================================== ch03s09 Before training
+  registerScene('ch03s09', ctx => {
+    const { stage, tl, cue, end } = ctx;
+    C2.style(stage);
+    C3.css(stage);
+    css(stage);
+    const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
+    C3.head(ctx, 'Before Training', { size: 72 });
+    const S = strip(stage, { emo: 'Emotions', hs: 84, defs: true,
       imgs: ['abc_before_a.jpg', 'abc_before_b.jpg', 'abc_before_c.jpg'],
       caps: ['Another dog appears<br>too close.', 'e.g. barking, lunging,<br>growling', 'Space is given.<br>The situation ends.'] });
-    // beat 0: "Let's look at another example": the frames
+    // beat 0: "an example": the frames with the definitions
     S.frames(tl, cue(0) + 0.2);
     S.show(tl, 0, clamp(at(1, 'Another dog', 0.05), cue(1) + 0.1, end(1) - 0.6));
     const tE = clamp(at(2, 'emotional response', 0.3), cue(2) + 0.1, end(2) - 2);
     S.emo(tl, tE);
     S.beat(tl, tE + 0.6, ctx.dur - 0.6, 0.5, 1.2);
     S.show(tl, 1, clamp(at(2, 'we see the B', 0.6), tE + 0.8, end(2) - 0.4));
-    S.show(tl, 2, cue(3) + 0.1);
-    const note = C2.put(stage, 'c3-mid', 'It worked: getting more space can make this behavior <b>more likely next time</b>.', { x: 0, y: 862, w: 1920, align: 'center' });
+    S.show(tl, 2, clamp(at(3, 'space is given', 0.1), cue(3) + 0.1, end(3) - 2));
+    const note = C2.put(stage, 'c3-mid', 'It worked: the dog got the space it needed, so this is <b>more likely next time</b>.', { x: 0, y: 862, w: 1920, align: 'center' });
     note.style.color = C.red;
     note.querySelector('b').style.color = C.red;
-    A.in(tl, note, clamp(at(4, 'more likely', 0.7), cue(4) + 0.5, end(4) - 0.4), 'fadeUp', { dur: 0.5 });
+    A.in(tl, note, clamp(at(3, 'more likely', 0.7), cue(3) + 1.5, end(3) - 0.4), 'fadeUp', { dur: 0.5 });
   });
 
   // ------------------------------------------------------------------ the relationship picture for the After C panel:
@@ -80,8 +130,8 @@
     return img;
   }
 
-  // ================================================================== ch03s09 What training includes
-  registerScene('ch03s09', ctx => {
+  // ================================================================== ch03s10 What training includes
+  registerScene('ch03s10', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -122,11 +172,11 @@
     });
   });
 
-  // ================================================================== ch03s10 Building a new path
+  // ================================================================== ch03s11 Building a new path
   // Chapter 1's lawn (ch01s09: the worn diagonal path with footprint dots, the new dotted trail), drawn at the same
   // proportions, plus a management gate across the old path. The old path wears in; the new path is revealed and wears in;
   // the gate closes the old path and grass grows back over it; a faint trace stays; practice wears it in again.
-  registerScene('ch03s10', ctx => {
+  registerScene('ch03s11', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -262,8 +312,8 @@
     A.in(tl, cb, clamp(at(4, 'fall back', 0.6), tA + 1.4, end(4) - 0.3), 'pop', { dur: 0.45 });
   });
 
-  // ================================================================== ch03s11 Training in action
-  registerScene('ch03s11', ctx => {
+  // ================================================================== ch03s12 Training in action
+  registerScene('ch03s12', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -298,7 +348,7 @@
     // ---------- beats 4 to 6: after training
     const t9 = cue(4);
     tl.to([D.wrap, np], { opacity: 0, duration: 0.45 }, t9 - 0.1);
-    const Af = strip(stage, { label: 'After training', v: 'green', emo: 'Calmer', hs: 60,
+    const Af = strip(stage, { label: 'After training', v: 'green', emo: 'Emotions<br>changed', hs: 60,
       imgs: ['abc_after_a.jpg', 'abc_after_b.jpg', 'abc_after_c.jpg'],
       caps: ['Less management<br>as skills improve.', 'Readily uses the<br>new behavior.',
         '<span class="c3s">Space is given.</span><span class="c3s">Less space<br>needed.</span><span class="c3s">Building a<br>relationship.</span>'] });
@@ -318,33 +368,11 @@
       tl.to(Af.cols[2].cap, { backgroundColor: C.pale, borderColor: C.green, duration: 0.4 }, t);
     };
     swapCap(0, 1, clamp(at(5, 'can change too', 0.8), cue(5) + 0.4, end(5) - 0.5));
-    // beat 5: something new: the C picture becomes the two dogs playing; that's a good thing
+    // beat 6: something new: the C picture becomes the two dogs playing
     const t10 = cue(6);
     const tR = clamp(at(6, 'build a relationship', 0.5), t10 + 0.2, end(6) - 1.8);
     relationship(Af.cols[2].panel, tl, tR - 0.2);
     swapCap(1, 2, tR);
     tl.to(Af.cols[2].panel, { borderColor: C.green, boxShadow: '0 0 0 8px rgba(97,149,55,0.35)', duration: 0.5 }, tR);
-    const good = C3.chip(stage, 'check', 'The dog may want something new. *That’s a good thing.*', 960, 868, { center: true, size: 36, col: C.green });
-    good.style.borderColor = C.green;
-    A.in(tl, good, clamp(at(6, "that's a good thing", 0.85), tR + 0.8, end(6) - 0.3), 'pop', { dur: 0.55 });
-    // beat 6: arousal and stress across the three stages
-    const t11 = cue(7);
-    tl.to(good, { opacity: 0, duration: 0.3 }, t11);
-    const SUM = [['Before:', 'arousal and stress up', C.red, 64], ['During:', 'changing', C.amber, 54], ['After:', 'calmer', C.green, 44]];
-    const tS = clamp(at(7, 'arousal and stress', 0.3), t11 + 0.2, end(7) - 3);
-    SUM.forEach(([a, b, col, hs], k) => {
-      const n = K.el('div', 'lin-sum');
-      Object.assign(n.style, { left: [190, 820, 1300][k] + 'px', top: '866px' });
-      const hb = K.el('div', null);
-      Object.assign(hb.style, { width: hs + 'px', height: hs + 'px', borderRadius: '50%', background: COL.emo, display: 'grid', placeItems: 'center', flex: '0 0 auto' });
-      hb.appendChild(K.icon('heart', { size: hs * 0.55, stroke: 2.3, color: '#fff' }));
-      n.appendChild(hb);
-      n.appendChild(K.el('span', null, `${a} <b style="color:${col}">${b}</b>`));
-      stage.appendChild(n);
-      A.in(tl, n, tS + k * 0.35, 'fadeUp', { dur: 0.5 });
-    });
-    const up = C2.bookmark(stage, 'Coming up: *temperature*', 1150, 136, 'thermometer');
-    up.querySelectorAll('b').forEach(b => { b.style.color = '#b8d99a'; });
-    A.in(tl, up, clamp(at(7, 'add temperature', 0.8), tS + 1.6, end(7) - 0.5), 'fadeLeft', { dur: 0.5 });
   });
 })();

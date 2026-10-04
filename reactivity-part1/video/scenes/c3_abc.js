@@ -59,6 +59,10 @@
   .c3-chip .ic { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; flex: 0 0 auto; }
   .c3-chip .ic svg { width: 26px; height: 26px; stroke-width: 2.5; }
   .c3-chip.noic { padding: 12px 26px; }
+  .c3-abcdef { position: absolute; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; padding: 16px 20px;
+    text-align: center; box-sizing: border-box; font: 600 32px/1.25 var(--font-body); color: var(--ink); }
+  .c3-abcdef b { color: var(--green-dark); }
+  .c3-abcdef i { font-style: normal; color: var(--ink-soft); font-weight: 500; }
   `;
   const css = stage => { if (!stage.querySelector('style[data-c3]')) { const s = K.el('style', null, CSS); s.dataset.c3 = '1'; stage.appendChild(s); } };
 
@@ -140,20 +144,28 @@
     S.cols.forEach(c => { gsap.set([c.head, c.img], { opacity: 0 }); if (c.cap) gsap.set(c.cap, { opacity: 0 }); });
     gsap.set(S.arrows, { opacity: 0 });
     if (S.label) gsap.set(S.label, { opacity: 0 });
+    // o.defs: the frames open with the ABC definitions in white, and each photo replaces its definition (Tori, round 6)
+    const DEFS = ['The thing that happens + <b>the context</b> around it', 'What the dog does<br><i>e.g. barking, lunging</i>', 'What happens <b>as a result</b>'];
+    S.defs = o.defs ? S.cols.map((c, k) => { const n = K.el('div', 'c3-abcdef', `<div>${DEFS[k]}</div>`); c.panel.appendChild(n); return n; }) : null;
     S.frames = (tl, t) => {
       if (S.label) tl.fromTo(S.label, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', immediateRender: false }, t);
       tl.fromTo(S.cols.map(c => c.panel), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power3.out' }, t + 0.1);
+      if (S.defs) {
+        tl.fromTo(S.cols.map(c => c.head), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, immediateRender: false }, t + 0.2);
+        tl.fromTo(S.arrows, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t + 0.5);
+      }
     };
     S.show = (tl, i, t) => {
       const c = S.cols[i];
-      tl.fromTo(c.head, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', immediateRender: false }, t);
+      if (S.defs) tl.to(S.defs[i], { opacity: 0, duration: 0.6 }, t + 0.1);
+      else tl.fromTo(c.head, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', immediateRender: false }, t);
       tl.fromTo(c.img, { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 1.0, ease: 'power2.out', immediateRender: false }, t);
       if (c.cap) {
         const inner = c.cap;
         tl.fromTo(inner, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, t + 0.3);
         tl.fromTo(inner, { y: 14 }, { y: 0, duration: 0.5, ease: 'power3.out', immediateRender: false }, t + 0.3);
       }
-      if (i > 0) tl.fromTo(S.arrows[i - 1], { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power3.out', immediateRender: false }, t - 0.2);
+      if (i > 0 && !S.defs) tl.fromTo(S.arrows[i - 1], { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power3.out', immediateRender: false }, t - 0.2);
     };
     // the arrow centre between panel i and i+1 on the stage
     S.arrowPt = i => { const a = S.arrows[i]; return [parseFloat(a.style.left) + 23, parseFloat(a.style.top) + 23]; };

@@ -3,10 +3,10 @@
 //   ch03card   Chapter card         shared narrated chapter card
 //   ch03plan   Where we're headed   shared plan slide
 //   ch03s01    The ABCs of Behavior chapter 2's pot and thermometer wait ("Coming up"); a dog in a dashed circle; A, B, C tiles land
-//   ch03s02    The ABCs             the greeting strip as the explainer: definitions in the frames, the heart for the emotional
-//                                   response between A and B, then the definitions fade into the greeting photos
-//   ch03s03    What did it accomplish?  A, B, C row, the question, function defined, looks like vs does, the greeting's
-//                                       possible function, two more examples
+//   ch03s02    The ABCs             the greeting strip as the explainer: definitions in the frames (A, then B), the heart for
+//                                   the emotional response between A and B, then C, then the definitions fade into the greeting photos
+//   ch03s03    WTF? What's the Function?  A, B, C become W, T, F; the question, function defined, looks like vs does, the
+//                                         greeting's possible function, two more examples
 (() => {
   const { sayAt, clamp } = C1;
   const { COL } = C3;
@@ -153,13 +153,14 @@
     const tCx = clamp(at(1, 'where it happens', 0.3), cue(1) + 0.2, end(1) - 0.8);
     tl.to(defs[0].querySelector('b'), { backgroundColor: 'rgba(184,217,154,0.8)', duration: 0.3 }, tCx);
     tl.to(defs[0], { scale: 1.05, duration: 0.3, yoyo: true, repeat: 1 }, tCx);
-    // ---------- beat 2: the emotional response between A and B
-    const tE = clamp(at(2, 'emotional response', 0.3), cue(2) + 0.1, end(2) - 1);
+    // ---------- beat 2: B
+    showDef(1, cue(2) + 0.1);
+    // ---------- beat 3: the emotional response between A and B
+    const tE = clamp(at(3, 'emotional response', 0.3), cue(3) + 0.1, end(3) - 1);
     tl.fromTo(heart, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)', immediateRender: false }, tE);
     tl.fromTo(emo, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, immediateRender: false }, tE + 0.2);
     for (let k = 0; k < 4; k++) tl.to(heart, { scale: 1.15, duration: 0.14, yoyo: true, repeat: 1 }, tE + 0.8 + k * 0.9);
-    // ---------- beats 3, 4: B and C
-    showDef(1, cue(3) + 0.1);
+    // ---------- beat 4: C
     showDef(2, cue(4) + 0.1);
     // ---------- beat 5: the example: the heading becomes An Excited Greeting
     const t5 = cue(5);
@@ -172,39 +173,39 @@
     toPhoto(2, cue(8) + 0.1);
   });
 
-  // ================================================================== ch03s03 What did the behavior accomplish?
+  // ================================================================== ch03s03 WTF? What's the Function?
   registerScene('ch03s03', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
-    C3.head(ctx, 'What Did the Behavior Accomplish?', { size: 72 });
+    C3.head(ctx, 'WTF? What\u2019s the Function?', { size: 72 });
 
-    // ---------- beat 0: a small A, B, C row
-    const TS = 120, TG = 120, X0 = 960 - (3 * TS + 2 * TG) / 2, TY = 290;
+    // ---------- beat 0: a small A, B, C row; then W, T, F take its place
+    const TS = 130, TG = 70, X0 = 960 - (3 * TS + 2 * TG) / 2, TY = 260;
     const tiles = ['A', 'B', 'C'].map((L, k) => C3.tile(stage, L, X0 + k * (TS + TG), TY, TS, [COL.A, COL.B, COL.C][k]));
-    const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const ars = [0, 1].map(k => {
-      const x0 = X0 + (k + 1) * TS + k * TG + 18, x1 = x0 + TG - 36, y = TY + TS / 2;
-      return K.path(sv, `M ${x0} ${y} L ${x1} ${y} M ${x1 - 16} ${y - 16} L ${x1} ${y} L ${x1 - 16} ${y + 16}`, { stroke: C.olive, 'stroke-width': 8 });
-    });
-    tiles.forEach((n, k) => A.in(tl, n, cue(0) + 0.2 + k * 0.35, 'pop', { dur: 0.5 }));
-    A.draw(tl, ars, cue(0) + 0.5, 0.5, { stagger: 0.35 });
+    tiles.forEach((n, k) => A.in(tl, n, cue(0) + 0.2 + k * 0.3, 'pop', { dur: 0.5 }));
+    const tW = clamp(at(0, 'WTF', 0.25), cue(0) + 1.4, end(0) - 1.6);
+    tiles.forEach((n, k) => tl.to(n, { opacity: 0, y: 40, scale: 0.8, duration: 0.35, ease: 'power2.in' }, tW - 0.3 + k * 0.08));
+    const wtf = ['W', 'T', 'F'].map((L, k) => C3.tile(stage, L, X0 + k * (TS + TG), TY, TS, k === 2 ? C.green : COL.A));
+    wtf.forEach((n, k) => tl.fromTo(n, { opacity: 0, y: -80, rotation: [-8, 4, -4][k] }, { opacity: 1, y: 0, rotation: 0, duration: 0.6, ease: 'bounce.out' }, tW + k * 0.15));
+    const words = C2.put(stage, 'c3-big', '<b>W</b>hat\u2019s <b>T</b>he <b>F</b>unction?', { x: 0, y: TY + TS + 30, w: 1920, align: 'center' });
+    words.style.fontSize = '58px';
+    A.in(tl, words, clamp(at(0, "What's the function", 0.4), tW + 0.7, end(0) - 0.3), 'fadeUp', { dur: 0.6 });
 
-    // ---------- beat 1: the question
-    const qq = C3.ask(stage, 'What did the behavior accomplish?', 960, 470);
+    // ---------- beat 1: in other words, what did the behavior accomplish?
+    const qq = C3.ask(stage, 'What did the behavior accomplish?', 960, 560);
     A.in(tl, qq, cue(1) + 0.05, 'fadeUp', { dur: 0.6 });
-    tl.to(tiles[2], { scale: 1.12, duration: 0.35, yoyo: true, repeat: 1 }, cue(1) + 0.4);
 
     // ---------- beat 2: function defined
-    const fd = C3.def(stage, '', COL.fn, 'Function', '= what the behavior *accomplished* in that situation', 330, 620, 1260);
+    const fd = C3.def(stage, '', COL.fn, 'Function', '= what the behavior *accomplished* in that situation', 330, 720, 1260);
     fd.querySelector('.lt').appendChild(K.icon('target', { size: 62, stroke: 2.3 }));
-    A.in(tl, fd, clamp(at(2, 'function', 0.6), cue(2) + 0.1, end(2) - 0.3), 'fadeUp', { dur: 0.6 });
+    A.in(tl, fd, clamp(at(2, 'Function is', 0.1), cue(2) + 0.1, end(2) - 0.3), 'fadeUp', { dur: 0.6 });
 
     // ---------- beat 3: not what it looks like, what it does
     const t3 = cue(3);
-    tl.to([...tiles, sv, qq], { opacity: 0, duration: 0.4 }, t3);
-    tl.to(fd, { y: -360, duration: 0.8, ease: 'power3.inOut' }, t3 + 0.1);
+    tl.to([...wtf, words, qq], { opacity: 0, duration: 0.4 }, t3);
+    tl.to(fd, { y: -460, duration: 0.8, ease: 'power3.inOut' }, t3 + 0.1);
     const mk = (x, icon, title, sub, good) => {
       const c = C3.put(stage, 'c3-card', null, { x, y: 470, w: 620, h: 330 });
       c.style.display = 'flex';

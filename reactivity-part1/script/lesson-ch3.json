@@ -7,7 +7,7 @@
    "Dog Behavior"
   ]
  },
- "notes": "Chapter 3 video. Narration for ch03s01 to ch03s17 is the trainer's doc (Script v4, 'Chapter 3: The ABCs of Behavior', after 'END CHAPTER 2 MATERIAL'). The welcome, card and plan narration were drafted for this video. Build with LESSON=lesson-ch3.json.",
+ "notes": "Chapter 3 video. Narration for ch03s01 to ch03s14 is based on the trainer's doc (Script v4, 'Chapter 3: The ABCs of Behavior', after 'END CHAPTER 2 MATERIAL'). The welcome, card and plan narration were drafted for this video. Build with LESSON=lesson-ch3.json.",
  "tail": 5.0,
  "chapters": [
   {
@@ -133,14 +133,14 @@
        "onscreen": "The thing + the context"
       },
       {
-       "say": "Between A and B, the dog has an emotional response. We don't always know exactly what the dog is feeling, but something is happening inside the dog before we see the behavior.",
-       "show": "A heart pops between A and B: Emotional response.",
-       "onscreen": "Emotional response"
-      },
-      {
        "say": "B is the behavior, what your dog does, for example barking or lunging.",
        "show": "Frame B: Behavior: what the dog does, e.g. barking, lunging.",
        "onscreen": "B = Behavior"
+      },
+      {
+       "say": "Between A and B, the dog has an emotional response. We don't always know exactly what the dog is feeling, but something is happening inside the dog before we see the behavior.",
+       "show": "A heart pops between A and B: Emotional response.",
+       "onscreen": "Emotional response"
       },
       {
        "say": "C is the consequence, what happens as a direct result of the behavior.",
@@ -171,25 +171,25 @@
     },
     {
      "id": "ch03s03",
-     "heading": "What Did the Behavior Accomplish?",
+     "heading": "WTF? What's the Function?",
      "visual_concept": "A mini A, B, C strip; a question lands on the C side; 'Function = what the behavior accomplished in that situation'. Looks like vs does: an eye card fades, a target card lights up. Three example photos slide in.",
      "assets": [
       "bg_swirl.jpg"
      ],
      "beats": [
       {
-       "say": "Once we have the ABC, we can ask an important question:",
-       "show": "A small A, B, C row draws across.",
-       "onscreen": ""
+       "say": "Once we have the ABC, we can ask an important question: WTF? What's the function?",
+       "show": "W, T, F tiles land; What's The Function?",
+       "onscreen": "WTF? What's the Function?"
       },
       {
-       "say": "What did the behavior accomplish?",
-       "show": "A question card lands under the row, pointing at B to C.",
+       "say": "In other words, what did the behavior accomplish?",
+       "show": "The question pill: What did the behavior accomplish?",
        "onscreen": "What did the behavior accomplish?"
       },
       {
-       "say": "That's what we mean by function.",
-       "show": "Definition card: 'Function = what the behavior accomplished in that situation'.",
+       "say": "Function is what the behavior accomplished in that situation.",
+       "show": "Definition card: Function = what the behavior accomplished in that situation.",
        "onscreen": "Function = what the behavior accomplished in that situation"
       },
       {
@@ -339,12 +339,12 @@
       {
        "say": "A dog may lunge toward another dog, which can make it look like they want to get closer.",
        "show": "The first dog lunges forward with bark marks; amber arrow 'Moved toward'; thought label 'Wants to get closer?'.",
-       "onscreen": "Moved toward"
+       "onscreen": "Moved toward / May look like: wants to get closer"
       },
       {
-       "say": "But if the other dog moves away, the result is more distance.",
+       "say": "But in reality, the dog wants the other dog to go away. And when the other dog moves away, the result is more distance.",
        "show": "The second dog moves away; a green distance bracket stretches: 'Result: more distance'.",
-       "onscreen": "Result: more distance"
+       "onscreen": "In reality: wants the other dog to go away / Result: more distance"
       },
       {
        "say": "The dog moved toward, but the behavior accomplished more space.",
@@ -352,16 +352,41 @@
        "onscreen": "Moved toward. Accomplished more space."
       },
       {
-       "say": "That's why we look at the whole ABC and the outcome, not just the direction the dog moved.",
+       "say": "That's why we look at the entire picture with the ABCs.",
        "show": "A, B, C row lands under the dogs, C glows.",
-       "onscreen": "Look at the whole ABC and the outcome"
+       "onscreen": "Look at the entire picture: the ABCs"
       }
      ]
     },
     {
      "id": "ch03s08",
      "heading": "Why the Pattern Repeats",
-     "visual_concept": "The Before training photo strip, linear: A, then the emotional response between A and B (plum heart, 'Emotions', arousal and stress up), B, C. Red note: getting more space can make this behavior more likely next time.",
+     "visual_concept": "A linear A to B to C row; C glows: the dog got what it wanted or needed; a down arrow: next time; a second A to B to C row with B highlighted: more likely to do it again. No cycles.",
+     "assets": [
+      "bg_swirl.jpg"
+     ],
+     "beats": [
+      {
+       "say": "So why does a pattern repeat? Because it worked.",
+       "show": "A, B, C row; C glows with a check: It worked.",
+       "onscreen": "Why the Pattern Repeats / It worked"
+      },
+      {
+       "say": "The dog got what it wanted or needed out of the situation.",
+       "show": "Under C: Got what it wanted or needed.",
+       "onscreen": "The dog got what it wanted or needed out of the situation."
+      },
+      {
+       "say": "So the next time a similar situation happens, the dog is more likely to do it again.",
+       "show": "A down arrow 'Next time'; a second A, B, C row with B highlighted: More likely.",
+       "onscreen": "Next time: more likely to happen again"
+      }
+     ]
+    },
+    {
+     "id": "ch03s09",
+     "heading": "Before Training",
+     "visual_concept": "Example: the Before training strip opens with the ABC definitions in the white frames, then the photos replace them; heart 'Emotions' between A and B.",
      "assets": [
       "abc_before_a.jpg",
       "abc_before_b.jpg",
@@ -369,34 +394,29 @@
      ],
      "beats": [
       {
-       "say": "Let's look at another example.",
-       "show": "Heading and the Before training strip frames.",
-       "onscreen": "Why the Pattern Repeats"
+       "say": "Let's look at an example of what this can look like before training.",
+       "show": "Before training strip frames with the ABC definitions.",
+       "onscreen": "Before Training"
       },
       {
        "say": "Another dog appears. That's the A.",
        "show": "Before training strip; panel A.",
-       "onscreen": "Before training"
+       "onscreen": "Another dog appears too close."
       },
       {
        "say": "The dog has an emotional response, and we see the B: barking and lunging.",
        "show": "Plum heart 'Emotions' with 'Arousal and stress up' between A and B; panel B.",
-       "onscreen": "Emotions"
+       "onscreen": "Emotions / e.g. barking, lunging, growling"
       },
       {
-       "say": "Then space is given. That's the C.",
-       "show": "Panel C.",
-       "onscreen": ""
-      },
-      {
-       "say": "The behavior worked, so that pattern gets practiced and is more likely to happen again.",
-       "show": "Red note: Getting more space can make this behavior more likely next time. An 'Old path' bar fills.",
-       "onscreen": "More likely next time"
+       "say": "Then space is given. That's the C. The dog got the space it needed, so barking and lunging is more likely to happen again.",
+       "show": "Panel C; red note: Getting more space can make this behavior more likely next time.",
+       "onscreen": "Space is given. It worked: the dog got the space it needed, so this is more likely next time."
       }
      ]
     },
     {
-     "id": "ch03s09",
+     "id": "ch03s10",
      "heading": "What Training Includes",
      "visual_concept": "Bridge to training, then three cards land one per beat: Management (keeps the dog out of the situations that bring up those emotions), Changing emotions, New behaviors.",
      "assets": [
@@ -426,7 +446,7 @@
      ]
     },
     {
-     "id": "ch03s10",
+     "id": "ch03s11",
      "heading": "Building a New Path",
      "visual_concept": "The lawn: a worn old path and a new one. The new path wears in with footprints; a management fence closes the old path and grass grows back over it; a faint outline stays; footprints wear it in again.",
      "assets": [
@@ -436,34 +456,34 @@
       {
        "say": "Remember the path across the lawn from the first chapter? The old path is worn in because the dog has used it so many times.",
        "show": "The lawn: the old path deep and brown, footprints walking it.",
-       "onscreen": "The old path"
+       "onscreen": "Old path: e.g. barking, lunging"
       },
       {
        "say": "Training builds a new path. With practice, the new path becomes stronger.",
        "show": "A new path wears in with footprints.",
-       "onscreen": "The new path gets stronger"
+       "onscreen": "New path: e.g. looks back at you, checks in"
       },
       {
        "say": "At the same time, the old path begins to fade. That's not only because the old behavior is practiced less. Management keeps the dog out of the situations that bring up those old emotions, so the grass has a chance to grow back.",
        "show": "A management fence closes the old path; grass grows back over it.",
-       "onscreen": "Management lets the grass grow back"
+       "onscreen": "Management"
       },
       {
        "say": "But that old path hasn't vanished.",
        "show": "A faint outline of the old path stays: Still there.",
-       "onscreen": "Still there"
+       "onscreen": ""
       },
       {
        "say": "Even practicing the old behavior once in a while, when it still works, can make that path grow back. And the dog may automatically fall back on the old path instead of the new one.",
        "show": "The old path wears back in; the grass disappears.",
-       "onscreen": "It can grow back"
+       "onscreen": "Back to the old path"
       }
      ]
     },
     {
-     "id": "ch03s11",
+     "id": "ch03s12",
      "heading": "Training in Action",
-     "visual_concept": "Linear photo strips with the emotional response between A and B: During training (Management. / Changing emotions / Looks back at you. / Space is given.) and After training (Less management / Calmer / Readily uses the new behavior; C changes: Less space needed, then Building a relationship with Tori's picture of the two dogs playing). Ends with the three emotional states side by side.",
+     "visual_concept": "Linear photo strips with the emotional response between A and B: During training (Management. / Changing emotions / Looks back at you. / Space is given.) and After training (Less management / Calmer / Readily uses the new behavior; C changes: Less space needed, then Building a relationship with Tori's picture of the two dogs playing).",
      "assets": [
       "abc_during_a.jpg",
       "abc_during_b.jpg",
@@ -496,7 +516,7 @@
       {
        "say": "After training, there's less management, because the dog's skills have improved, the emotions have changed, and the new behavior is in place.",
        "show": "After training strip: Less management / Calmer / Readily uses the new behavior.",
-       "onscreen": "After training"
+       "onscreen": "After training / Emotions changed"
       },
       {
        "say": "And as the dog's emotional response changes, what they need from the consequence can change too.",
@@ -504,19 +524,14 @@
        "onscreen": "The consequence can change"
       },
       {
-       "say": "Your dog might even start wanting something else, like the chance to build a relationship with another dog. And that's a good thing.",
+       "say": "Your dog might even start wanting something else, like the chance to build a relationship with another dog.",
        "show": "C panel becomes the relationship picture; 'Building a relationship.'; 'That's a good thing.'",
-       "onscreen": "That's a good thing."
-      },
-      {
-       "say": "You'll also notice changes in arousal and stress shown in this visual. We're going to unpack that more when we add temperature to our pot.",
-       "show": "Three emotion markers side by side: Before (arousal and stress up), During (changing), After (calmer); 'Coming up: temperature'.",
-       "onscreen": "Coming up: temperature"
+       "onscreen": "Building a relationship"
       }
      ]
     },
     {
-     "id": "ch03s12",
+     "id": "ch03s13",
      "heading": "Your Homework",
      "visual_concept": "A worksheet card fills in row by row: A (the thing, the context, with four context questions), B (what did your dog do?), C (what happened as a result? with four outcome chips), Function (what did the behavior accomplish?). A pencil moves to each line. Ends with 'Find the thing. Notice the context. See the pattern.'",
      "assets": [
@@ -531,32 +546,32 @@
       {
        "say": "Start by finding the thing. What happened before the behavior?",
        "show": "Row A: 'The thing' highlighted; pencil writes.",
-       "onscreen": "What was the thing?"
+       "onscreen": "What was the thing? e.g. Another dog appears"
       },
       {
        "say": "Then look at the context. Where were you? How close was the thing? What was happening around your dog? Is this a place where similar things happen often?",
        "show": "Row 'The context'; four question chips land one per question beside the worksheet: Where? How close? What was around? Happens here often?",
-       "onscreen": "What was the context?"
+       "onscreen": "What was the context? e.g. Same corner, dogs too close"
       },
       {
        "say": "Then write down what your dog did.",
        "show": "Row B highlighted; pencil writes.",
-       "onscreen": "What did your dog do?"
+       "onscreen": "What did your dog do? e.g. Barked and lunged"
       },
       {
        "say": "Next, look at what happened as a result. Did someone move away? Did your dog get closer? Did they keep something? Did they get attention?",
        "show": "Row C highlighted; four outcome chips land one per question.",
-       "onscreen": "What happened as a result?"
+       "onscreen": "What happened as a result? e.g. The other dog moved away"
       },
       {
        "say": "Finally, ask: WTF? What's the function? What did the behavior accomplish?",
        "show": "Big W T F tiles and What's The Function? appear at right; the function row lights up.",
-       "onscreen": "WTF: What's The Function?"
+       "onscreen": "WTF: What's The Function? e.g. More distance?"
       },
       {
-       "say": "You don't have to get the function perfectly right.",
+       "say": "You don't have to get your dog's ABCs exactly right. I'll help you with that.",
        "show": "A 'Not perfect' note with a soft check.",
-       "onscreen": "It doesn't have to be perfect"
+       "onscreen": "It doesn't have to be perfect. I'll help you with that."
       },
       {
        "say": "The goal is to start finding the thing, noticing the context, and seeing the pattern.",
@@ -566,7 +581,7 @@
      ]
     },
     {
-     "id": "ch03s13",
+     "id": "ch03s14",
      "heading": "Now We Can Add Temperature",
      "visual_concept": "Four check rows recap the chapter (the thing and context; the emotional response; behavior, outcome and function; patterns get stronger with practice). Then Chapter 2's pot returns with its thermometer; the rim shows a dashed threshold line; the thermometer rises a little; three next-chapter chips. 'Next: temperature'. Logo close.",
      "assets": [

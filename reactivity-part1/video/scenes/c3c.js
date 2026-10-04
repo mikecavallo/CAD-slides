@@ -1,5 +1,6 @@
 // Chapter 3: movement isn't function.
-//   ch03s07  Movement isn't function        a drawn dog lunges toward another dog, the other dog moves away: more space
+//   ch03s07  Movement isn't function        a drawn dog lunges toward another dog (looks like it wants to get closer; it wants
+//                                           the other dog to go away), the other dog moves away: more space
 (() => {
   const { sayAt, clamp } = C1;
   const { COL } = C3;
@@ -50,10 +51,10 @@
     tl.fromTo(a.D.fig, { rotation: 0, svgOrigin: '220 297' }, { rotation: 6, svgOrigin: '220 297', duration: 0.3, immediateRender: false }, tL);
     tl.fromTo(a.D.tail, { rotation: 0, svgOrigin: '108 134' }, { rotation: 30, svgOrigin: '108 134', duration: 0.3, immediateRender: false }, tL);
     barks.forEach((bk, i) => tl.fromTo(bk, { opacity: 0 }, { opacity: 1, duration: 0.15, yoyo: true, repeat: 5, repeatDelay: 0.12, immediateRender: false }, tL + 0.2 + i * 0.08));
-    const mv = C3.chip(stage, 'arrow-right', 'Moved *toward*', X1 - 60, 238, { col: C.amber, size: 32 });
+    const mv = C3.chip(stage, 'arrow-right', 'Moved *toward*', X1 + 300, 296, { col: C.amber, size: 32 });
     A.in(tl, mv, tL + 0.3, 'fadeUp', { dur: 0.5 });
     tl.to(dq, { opacity: 0, duration: 0.3 }, tL);
-    const lk = C3.chip(stage, 'circle-help', 'Wants to get closer?', 960, 760, { center: true, size: 34, col: C.muted });
+    const lk = C3.chip(stage, 'eye', 'May look like: *wants to get closer*', 960, 760, { center: true, size: 34, col: C.muted });
     A.in(tl, lk, clamp(at(2, 'look like', 0.6), tL + 0.8, end(2) - 0.4), 'fadeUp', { dur: 0.5 });
 
     // ---------- beat 3: the other dog moves away: more distance
@@ -69,7 +70,12 @@
     tl.to(br, { opacity: 1, duration: 0.3 }, tA + 0.25);
     tl.to(brR, { attr: { d: `M ${bx1} ${BY - 22} L ${bx1} ${BY + 22}` }, duration: 1.2, ease: 'power2.inOut' }, tA + 0.25);
     tl.to(brM, { attr: { d: `M ${bx0} ${BY} L ${bx1} ${BY}` }, duration: 1.2, ease: 'power2.inOut' }, tA + 0.25);
-    tl.to(lk, { opacity: 0, duration: 0.3 }, tA);
+    const tRe = clamp(at(3, 'in reality', 0.2), t3 + 0.1, tA - 0.6);
+    tl.to(lk, { opacity: 0, duration: 0.3 }, tRe);
+    const re = C3.chip(stage, 'target', 'In reality: *wants the other dog to go away*', 960, 760, { center: true, size: 34, col: C.green });
+    re.style.borderColor = C.green;
+    A.in(tl, re, tRe + 0.2, 'fadeUp', { dur: 0.5 });
+    tl.to(re, { opacity: 0, duration: 0.3 }, tA + 0.7);
     const res = C3.chip(stage, 'move-horizontal', 'Result: *more distance*', (bx0 + bx1) / 2, 760, { center: true, size: 36, col: C.green });
     res.style.borderColor = C.green;
     A.in(tl, res, tA + 1.0, 'fadeUp', { dur: 0.5 });
@@ -84,16 +90,16 @@
     A.in(tl, m1, t4 + 0.1, 'fadeRight', { dur: 0.5 });
     A.in(tl, m2, clamp(at(4, 'accomplished', 0.5), t4 + 0.6, end(4) - 0.4), 'fadeRight', { dur: 0.5 });
 
-    // ---------- beat 5: look at the whole ABC and the outcome
+    // ---------- beat 5: look at the entire picture: the ABCs
     const t5 = cue(5);
     tl.to([m1, m2], { opacity: 0, y: 20, duration: 0.35 }, t5);
     const TS = 92, X0 = 470, TY = 735;
     const tiles = ['A', 'B', 'C'].map((L, k) => C3.tile(stage, L, X0 + k * (TS + 30), TY, TS, [COL.A, COL.B, COL.C][k]));
     tiles.forEach((n, k) => A.in(tl, n, t5 + 0.2 + k * 0.15, 'pop', { dur: 0.45 }));
-    const wt = C3.put(stage, 'c3-big', 'Look at the <b>whole ABC</b> and the <b>outcome</b>', { x: X0 + 3 * TS + 2 * 30 + 50, y: TY + 14 });
+    const wt = C3.put(stage, 'c3-big', 'Look at the <b>entire picture</b>: the ABCs', { x: X0 + 3 * TS + 2 * 30 + 50, y: TY + 14 });
     wt.style.fontSize = '46px';
     A.in(tl, wt, t5 + 0.5, 'fadeLeft', { dur: 0.6 });
-    tl.to(tiles[2], { boxShadow: '0 0 0 10px rgba(97,149,55,0.45), 0 16px 34px rgba(40,60,20,0.22)', scale: 1.08, duration: 0.5 }, clamp(at(5, 'the outcome', 0.5), t5 + 0.8, end(5) - 0.3));
+    tl.to(tiles, { scale: 1.1, duration: 0.25, yoyo: true, repeat: 1, stagger: 0.15 }, clamp(at(5, 'ABCs', 0.4), t5 + 1.0, end(5) - 0.6));
   });
 
 })();

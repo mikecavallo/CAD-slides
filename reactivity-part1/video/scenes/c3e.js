@@ -1,15 +1,15 @@
 // Chapter 3: homework and the hand-off to temperature.
 //   ch03s13  Your homework              a worksheet fills row by row (the thing, the context, B, C, function) with question chips;
 //                                       WTF (What's The Function?) lands with the function question
-//   ch03s17  Now we can add temperature four checks recap the chapter; the pot and thermometer return; three things temperature
+//   ch03s14  Now we can add temperature four checks recap the chapter; the pot and thermometer return; three things temperature
 //                                       will show; logo close
 (() => {
   const { sayAt, clamp } = C1;
   const { COL } = C3;
   const C = C1.C;
 
-  // ================================================================== ch03s12 Your homework: find the thing
-  registerScene('ch03s12', ctx => {
+  // ================================================================== ch03s13 Your homework
+  registerScene('ch03s13', ctx => {
     const { stage, tl, cue, end } = ctx;
     C2.style(stage);
     C3.css(stage);
@@ -20,11 +20,11 @@
     const sheet = C3.put(stage, 'c3-card', null, { x: WX, y: WY, w: WW, h: 5 * RH + 40 });
     A.in(tl, sheet, cue(0) + 0.2, 'fadeUp', { dur: 0.7 });
     const ROWS = [
-      { L: 'A', col: COL.A, q: 'What was <b>the thing</b>?', ex: 'Another dog appears' },
-      { L: 'A', col: COL.A, q: 'What was <b>the context</b>?', ex: 'Same corner, dogs too close' },
-      { L: 'B', col: COL.B, q: 'What did your dog <b>do</b>?', ex: 'Barked and lunged' },
-      { L: 'C', col: COL.C, q: 'What happened <b>as a result</b>?', ex: 'The other dog moved away' },
-      { L: 'fn', col: C.green, q: 'What did the behavior <b>accomplish</b>?', ex: 'More distance?' },
+      { L: 'A', col: COL.A, q: 'What was <b>the thing</b>?', ex: 'e.g. Another dog appears' },
+      { L: 'A', col: COL.A, q: 'What was <b>the context</b>?', ex: 'e.g. Same corner, dogs too close' },
+      { L: 'B', col: COL.B, q: 'What did your dog <b>do</b>?', ex: 'e.g. Barked and lunged' },
+      { L: 'C', col: COL.C, q: 'What happened <b>as a result</b>?', ex: 'e.g. The other dog moved away' },
+      { L: 'fn', col: C.green, q: 'What did the behavior <b>accomplish</b>?', ex: 'e.g. More distance?' },
     ];
     const rows = ROWS.map((r, k) => {
       const y = 20 + k * RH;
@@ -103,10 +103,10 @@
     A.in(tl, words, clamp(at(5, "What's the function", 0.5), tW + 0.8, end(5) - 1.5), 'fadeUp', { dur: 0.6 });
     write(4, clamp(at(5, 'accomplish', 0.8), tW + 1.5, end(5) - 0.6));
     const wtf = [...tiles, q, words];
-    // beat 6: not perfect
+    // beat 6: it doesn't have to be perfect; Tori will help
     const t8 = cue(6);
     tl.to(wtf, { opacity: 0, duration: 0.4 }, t8);
-    const np = C3.row(stage, 'check', 'It doesn\u2019t have to be <b>perfect</b>', RX, 380, { col: C.green, size: 36 });
+    const np = C3.row(stage, 'check', 'It doesn\u2019t have to be <b>perfect</b>.<br>I\u2019ll help you with that.', RX, 380, { col: C.green, size: 36 });
     A.in(tl, np, t8 + 0.2, 'fadeLeft', { dur: 0.5 });
     // beat 7: three goals
     const t9 = cue(7);
@@ -124,8 +124,8 @@
     });
   });
 
-  // ================================================================== ch03s13 Now we can add temperature
-  registerScene('ch03s13', ctx => {
+  // ================================================================== ch03s14 Now we can add temperature
+  registerScene('ch03s14', ctx => {
     const { stage, tl, cue, end, dur } = ctx;
     C2.style(stage);
     C3.css(stage);

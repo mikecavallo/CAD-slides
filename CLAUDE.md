@@ -143,6 +143,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   Scattered (the deck had it under Tossed too, which breaks one word, one place); "Sniffing actively lowers arousal"
   softened to "helps bring their arousal down"; agenda item 5 is "Toss and scatter" (the clicker is a marker, covered in
   step 2); the "drop a photo here" placeholders use trainer_with_dog.jpg.
+- Script doc (Google Doc, Tori owns it; the doc wins over the lesson file once Tori edits it): "Your Training Mechanics: Narration Script", id `1_KZQVrH49fPoTVFp-EzrqNILy9VyYOZVu5xb4SV4v_k`.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, ... named by scene id, as for the other course.
 

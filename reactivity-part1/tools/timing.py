@@ -31,14 +31,16 @@ def bumper(ch, start):
 CLIP_END = 0.6  # a video slide holds this long after the trainer's clip ends (the scene fades out over its last 0.5 s)
 
 
-def clip_info(sc):
+def clip_info(sc, beats=()):
     """A video slide ("clip" in the lesson): where the frame sits, when the clip starts, and the trainer's file if it is in clips/.
     The clip plays muted by default (the trainer narrates over it); "from" / "to" trim it, "volume" mixes in its own sound."""
     c = sc.get("clip")
     if not c:
         return None
-    info = {k: c[k] for k in ("box", "poster", "label") if k in c}
+    info = {k: c[k] for k in ("box", "poster", "label", "fit") if k in c}
     info["at"] = c.get("at", 1.2)
+    if "atBeat" in c and c["atBeat"] < len(beats):  # start the clip when that beat starts (a picture shows in the frame until then)
+        info["at"] = round(beats[c["atBeat"]]["t"], 3)
     f = find_clip(sc["id"])
     if f:
         a = c.get("from", 0.0)
@@ -53,7 +55,7 @@ def scene_seg(ch, sc, start, dur, beats, audio):
         "chapterTitle": ch["title"], "heading": sc.get("heading", ""), "start": start, "dur": frames(dur),
         "beats": beats, "audio": audio,
     }
-    clip = clip_info(sc)
+    clip = clip_info(sc, beats)
     if clip:
         seg["clip"] = clip
         if "len" in clip:  # the slide lasts at least as long as the trainer's clip

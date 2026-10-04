@@ -39,23 +39,25 @@
     A.in(tl, D.outer, cue(0) + 0.6, 'fade', { dur: 0.6 });
     const ground = K.path(sv, 'M 140 666 L 1780 666', { stroke: '#cfe3b8', 'stroke-width': 6, 'stroke-linecap': 'round', fill: 'none' });
     A.draw(tl, ground, cue(0) + 0.5, 0.8);
-    // a scatter up close: harder
-    const tSc = at(ctx, 0, 'scatter', 0.7);
-    const close = [[420, 0], [480, 0.08], [540, 0.04], [600, 0.12]].map(([x, d]) => {
-      const t = TM.treat(stage, x, 652, 1.0);
-      tl.fromTo(t, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.45, ease: 'bounce.out' }, tSc + d * 3);
-      return t;
-    });
-    const hard = TM.word(stage, 'Scatter up close: harder', { x: 330, y: 316, variant: 'red', size: 30, icon: 'x' });
+    // food to the mouth up close: harder for this dog
+    const tSc = at(ctx, 0, 'standing still', 0.6);
+    const hand = K.iconBadge(stage, 'hand', { x: 330, y: 470, size: 76, variant: 'amber' });
+    const tr0 = TM.treat(stage, 420, 520, 1.1);
+    A.in(tl, hand, tSc, 'pop', { dur: 0.4 });
+    tl.fromTo(tr0, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }, tSc + 0.3);
+    const close = [hand, tr0];
+    const hard = TM.word(stage, 'Standing still for a treat up close: harder', { x: 330, y: 316, variant: 'red', size: 30, icon: 'x' });
     A.in(tl, hard, at(ctx, 0, 'harder', 0.85), 'pop', { dur: 0.45 });
-    // chase while moving away, then a scatter with enough space
+    // chase while moving away (low, along the ground), then a scatter with enough space
     const t1 = at(ctx, 1, 'treat chases', 0.15);
-    tl.to([hard, ...close], { opacity: 0.25, duration: 0.4 }, t1 - 0.2);
+    tl.to([hard, ...close], { opacity: 0, duration: 0.4 }, t1 - 0.2);
     tl.to(D.outer, { scaleX: 1, svgOrigin: `${DX} ${DY}`, duration: 0.3 }, t1);
-    const arcs = [[640, 940], [940, 1240]].map(([a, b], i) => {
-      const p = K.path(sv, `M ${a} 640 C ${a + 80} 520, ${b - 80} 520, ${b} 640`, { stroke: '#d9912b', 'stroke-width': 5, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
+    [[680, 960], [980, 1260]].forEach(([a, b], i) => {
+      const p = K.path(sv, `M ${a} 652 C ${a + 90} 662, ${b - 90} 662, ${b} 652`, { stroke: '#d9912b', 'stroke-width': 4, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
       A.draw(tl, p, t1 + 0.3 + i * 1.1, 0.7);
-      return p;
+      const t = TM.treat(stage, a, 650, 1.0);
+      TM.lowToss(tl, t, b - a, t1 + 0.3 + i * 1.1, 0.7);
+      tl.to(t, { opacity: 0, duration: 0.3 }, t1 + 1.2 + i * 1.1);
     });
     tl.to(D.outer, { x: 760, duration: 2.2, ease: 'power1.inOut' }, t1 + 0.5);
     const away = TM.word(stage, 'Chase, moving away', { x: 900, y: 316, variant: 'amber', size: 30, icon: 'move-right' });
@@ -65,10 +67,10 @@
       const t = TM.treat(stage, x, 652, 1.0);
       tl.fromTo(t, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.45, ease: 'bounce.out' }, tSp + d * 3);
     });
-    const ok = TM.word(stage, 'Enough space: scatter', { x: 1300, y: 316, variant: 'green', size: 30, icon: 'check' });
+    const ok = TM.word(stage, 'Enough space: scatter', { x: 1360, y: 316, variant: 'green', size: 30, icon: 'check' });
     A.in(tl, ok, tSp, 'pop', { dur: 0.45 });
-    // another dog: food to the mouth
-    const m = TM.word(stage, 'Another dog: food to the mouth, easier to follow', { x: 100, y: 735, variant: 'pale', size: 30, icon: 'smile' });
+    // every dog is different
+    const m = TM.word(stage, 'Every dog is different', { x: 100, y: 735, variant: 'pale', size: 30, icon: 'dog' });
     A.in(tl, m, at(ctx, 2, 'another dog', 0.1), 'fadeUp', { dur: 0.5 });
     const w = TM.word(stage, 'Watch how your dog responds', { x: 100, y: 820, variant: 'green', size: 30, icon: 'eye' });
     A.in(tl, w, at(ctx, 2, 'watch how', 0.6), 'fadeUp', { dur: 0.5 });
@@ -90,45 +92,32 @@
       A.in(tl, n, t, 'pop', { dur: 0.4 });
       TM.strike(tl, n, t + 0.35);
     });
-    const lead = K.text(stage, 'Mark behavior you want <b style="color:var(--green)">repeated</b>.', { x: 100, y: 375, cls: 'lead', size: 38 });
-    A.in(tl, lead, at(ctx, 1, 'mark behavior', 0.3), 'fadeUp', { dur: 0.6 });
-
-    const panel = (x, cls, title, icons, word, resIcon, res) => {
-      const p = put(stage, K.el('div', 'tmb-vg ' + cls), x, 460, { width: '840px', height: '330px' });
-      p.appendChild(K.el('div', 't', title));
-      const seq = K.el('div', 'seq');
-      p.appendChild(seq);
-      const ics = icons.map(([ic, v]) => badge(seq, ic, v));
-      const ar = badge(seq, 'arrow-right', '', 54);
-      const yb = flow(TM.word(seq, word, { variant: cls === 'good' ? 'green' : 'red', size: 34 }));
-      const ar2 = badge(seq, 'arrow-right', '', 54);
-      const rb = badge(seq, resIcon, cls === 'good' ? 'solid' : 'red', 84);
-      const rs = K.el('div', 'res', K.md(res));
-      p.appendChild(rs);
-      return { p, ics, ar, yb, ar2, rb, rs };
-    };
-    const G = panel(100, 'good', 'Check-ins on walks', [['dog', ''], ['eye', 'solid']], 'Yip!', 'check', 'Looks at you, mark it: *more check-ins*');
-    const B = panel(980, 'bad', 'Marking to get attention', [['dog', ''], ['squirrel', 'amber']], 'Yip?', 'x', 'Pulling and staring, marked: !!more pulling and staring!!');
+    const pic = K.photo(stage, 'tm_img_checkin.jpg', { x: 100, y: 370, w: 960, h: 576, radius: 22 });
+    pic.img.style.objectFit = 'contain';
+    pic.root.style.background = '#fff';
     const tG = at(ctx, 2, 'check in', 0.1);
-    tl.fromTo(G.p, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, tG);
-    A.in(tl, [G.ar, G.yb, G.ar2, G.rb], at(ctx, 2, 'mark the moment', 0.7), 'fadeRight', { dur: 0.4, stagger: 0.15 });
-    A.in(tl, G.rs, at(ctx, 2, 'look at you', 0.9), 'fadeUp', { dur: 0.5 });
-    const tB = at(ctx, 3, 'get their attention', 0.15);
-    tl.fromTo(B.p, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, tB);
-    A.in(tl, [B.ar, B.yb, B.ar2, B.rb], at(ctx, 3, 'squirrel', 0.4), 'fadeRight', { dur: 0.4, stagger: 0.15 });
-    A.in(tl, B.rs, at(ctx, 3, 'accidentally reinforce', 0.55), 'fadeUp', { dur: 0.5 });
-
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 840);
+    tl.fromTo(pic.root, { opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' }, { opacity: 1, clipPath: 'inset(0% 50% 0% 0%)', duration: 0.9, ease: 'power2.out' }, tG);
+    tl.to(pic.root, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: 'power2.out' }, at(ctx, 3, 'get their attention', 0.15));
+    const col = put(stage, K.el('div', 'tm-col'), 1120, 380, { width: '700px', gap: '40px' });
+    const lead = K.el('div', null, 'Mark behavior you want <b style="color:var(--green)">repeated</b>.');
+    Object.assign(lead.style, { font: '500 40px/1.3 var(--font-body)', color: 'var(--ink)' });
+    col.appendChild(lead);
+    A.in(tl, lead, at(ctx, 1, 'mark behavior', 0.3), 'fadeUp', { dur: 0.6 });
+    const r1 = TM.row(col, 'circle-check', 'Check-in: *mark the look*', { size: 34 });
+    A.in(tl, r1, at(ctx, 2, 'mark the moment', 0.7), 'fadeRight', { dur: 0.5 });
+    const r2 = TM.row(col, 'x', 'Pulling: <b style="color:var(--red)">don’t mark it</b>', { size: 34 });
+    r2.querySelector('.ic').style.background = 'var(--red-pale)';
+    r2.querySelector('.ic').style.color = 'var(--red)';
+    A.in(tl, r2, at(ctx, 3, 'accidentally reinforce', 0.55), 'fadeRight', { dur: 0.5 });
+    const bn = put(stage, K.el('div', 'tm-banner'), 1120, 760, { width: '700px', boxSizing: 'border-box' });
     bn.appendChild(K.icon('circle-check'));
     bn.appendChild(K.el('span', null, 'Say it once. <b>Always follow through with the food.</b>'));
-    TM.centerX(bn, 960);
     A.in(tl, bn, at(ctx, 4, 'say the marker once', 0.1), 'fadeUp', { dur: 0.6 });
     const tN = at(ctx, 5, 'marker in action', 0.7);
     tl.to(bn, { opacity: 0, duration: 0.35 }, tN - 0.35);
-    const nx = put(stage, K.el('div', 'tm-banner'), 0, 840);
+    const nx = put(stage, K.el('div', 'tm-banner'), 1120, 760, { width: '700px', boxSizing: 'border-box' });
     nx.appendChild(K.icon('circle-play'));
     nx.appendChild(K.el('span', null, 'Next: <b>a marker in action</b>'));
-    TM.centerX(nx, 960);
     A.in(tl, nx, tN, 'fadeUp', { dur: 0.6 });
   });
 
@@ -139,7 +128,7 @@
       rows: [
         { icon: 'repeat', html: 'Sit and stand, *front feet still*', beat: 0, phrase: 'sitting and standing', fb: 0.5 },
         { icon: 'volume-2', html: 'Mark the *correct position*', beat: 1, phrase: 'correct position', fb: 0.5 },
-        { icon: 'smile', html: 'Then the treat, *to his mouth*', beat: 2, phrase: 'his mouth', fb: 0.3 },
+        { icon: 'dog', html: 'Then the treat, *to his mouth*', beat: 2, phrase: 'his mouth', fb: 0.3 },
       ],
     });
     const { stage, tl } = ctx;

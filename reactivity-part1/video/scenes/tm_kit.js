@@ -100,7 +100,7 @@
     style(stage);
     const x = o.x ?? 100;
     let k = null;
-    if (kicker) { k = K.kicker(stage, kicker, { x, y: o.ky ?? 112 }); A.in(tl, k, 0.05, 'fadeUp', { dur: 0.6 }); }
+    if (kicker) { k = K.kicker(stage, (window.SERIES && SERIES.title) || kicker, { x, y: o.ky ?? 112 }); A.in(tl, k, 0.05, 'fadeUp', { dur: 0.6 }); }
     const h = K.heading(stage, title, { x, y: o.y ?? (kicker ? 150 : 110), w: o.w ?? 1440, size: o.size ?? 66, barGap: 16 });
     A.in(tl, h.all, 0.12, 'fadeUp', { dur: 0.7, stagger: 0.1 });
     return { k, h, all: [k, h.root].filter(Boolean) };
@@ -125,14 +125,16 @@
       scr.appendChild(ph);
     }
     if (c.poster) scr.appendChild(img);
-    scr.appendChild(K.el('div', 'shade'));
+    const pic = c.fit === 'contain';  // the trainer's picture: shown whole on white, no play badge, until the clip starts
+    if (pic) { img.style.objectFit = 'contain'; scr.style.background = '#fff'; }
+    else scr.appendChild(K.el('div', 'shade'));
     const play = K.el('div', 'play', PLAY);
-    scr.appendChild(play);
+    if (!pic) scr.appendChild(play);
     const cap = put(stage, K.el('div', 'tm-cap', `<span class="dot">${PLAY}</span><span>${K.md(c.label || '')}</span>`), x, y + h + B + 26);
     tl.fromTo(fr, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, t0);
     A.in(tl, cap, t0 + 0.4, 'fadeUp', { dur: 0.6 });
     // the poster: a slow drift; the play badge eases off when the clip would start (the real clip covers the screen from then on)
-    tl.fromTo(img, { scale: 1.02 }, { scale: 1.1, duration: Math.max(1, dur - t0), ease: 'none' }, t0);
+    if (!pic) tl.fromTo(img, { scale: 1.02 }, { scale: 1.1, duration: Math.max(1, dur - t0), ease: 'none' }, t0);
     tl.to(play, { opacity: 0.0, scale: 0.8, duration: 0.5, ease: 'power2.in' }, c.at ?? 1.2);
     return { fr, scr, img, play, cap, box: c.box };
   }
@@ -207,5 +209,51 @@
     return { row, items };
   }
 
-  window.TM = { order, style, clamp, say, at, put, partCard, head, videoFrame, videoSlide, row, treat, bubble, word, strike, centerX, PLAY };
+  /**
+   * The drawn green dog (C2.dog) sitting down: returns { stand, sit, sitAt(tl, t) }. Same look and local box as C2.dog
+   * (facing right, paws on y 297), centred on (cx, cy) at scale s. sitAt crossfades to the sitting pose as the hind end drops.
+   */
+  function sitDog(svg, cx, cy, s) {
+    const stand = C2.dog(svg, cx, cy, s);
+    const x = cx - 222 * s, y = cy - 168 * s;
+    const DOG = '#3f6b22', FAR = '#2c4a17';
+    const sit = K.group(svg);
+    const g = K.group(sit, { transform: `translate(${x} ${y}) scale(${s})` });
+    K.svgEl('ellipse', { cx: 220, cy: 298, rx: 140, ry: 9, fill: DOG, opacity: 0.13 }, g);
+    K.path(g, 'M 130 280 C 100 290 78 294 58 292', { stroke: DOG, 'stroke-width': 15, fill: 'none', 'stroke-linecap': 'round' });
+    K.path(g, 'M 262 186 L 284 188 L 282 288 L 296 291 C 300 293 300 297 294 297 L 266 297 C 262 297 262 292 264 288 Z', { fill: FAR, stroke: 'none' });
+    K.svgEl('ellipse', { cx: 182, cy: 248, rx: 64, ry: 50, fill: DOG }, g);
+    K.path(g, 'M 140 236 C 168 190 226 140 268 116 C 300 100 332 126 328 160 C 322 204 282 240 240 262 C 200 280 146 270 140 236 Z', { fill: DOG, stroke: 'none' });
+    K.path(g, 'M 150 288 C 160 280 200 280 236 286 C 244 290 244 297 236 297 L 156 297 C 146 297 144 292 150 288 Z', { fill: DOG, stroke: 'none' });
+    K.path(g, 'M 290 176 L 316 180 L 312 286 L 330 290 C 334 292 334 297 328 297 L 294 297 C 290 297 290 292 292 288 Z', { fill: DOG, stroke: 'none' });
+    const head = K.group(g, { transform: 'translate(-4 -10)' });
+    K.path(head, 'M 262 126 C 270 100 290 78 310 66 L 342 92 C 338 120 330 150 322 176 Z', { fill: DOG, stroke: 'none' });
+    K.circle(head, 322, 74, 38, { fill: DOG });
+    K.path(head, 'M 330 56 C 354 56 378 64 390 74 C 398 82 396 100 382 104 L 330 108 Z', { fill: DOG, stroke: 'none' });
+    K.circle(head, 390, 80, 9, { fill: '#142309' });
+    K.path(head, 'M 273 116 C 290 129 318 131 338 117', { stroke: '#b8d99a', 'stroke-width': 12, fill: 'none' });
+    K.circle(head, 306, 136, 7, { fill: '#b8d99a' });
+    K.path(head, 'M 306 48 C 290 54 282 84 288 112 C 294 120 306 116 308 106 C 314 86 316 66 316 52 Z', { fill: FAR, stroke: 'none' });
+    K.circle(head, 340, 66, 5, { fill: '#fff' });
+    return {
+      stand, sit, head,
+      mouth: [x + 392 * s, y + 92 * s],
+      sitAt(tl, t) {
+        tl.set(sit, { opacity: 0 }, 0);
+        tl.to(stand.outer, { opacity: 0, y: 6, duration: 0.3, ease: 'power2.in' }, t);
+        tl.fromTo(sit, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, t + 0.05);
+      },
+    };
+  }
+
+  /** A low toss: the treat skims along the ground from (x0, y) to (x1, y) with small hops, like a bowled ball. Returns the end time. */
+  function lowToss(tl, treatEl, dx, t, dur = 0.9) {
+    tl.fromTo(treatEl, { opacity: 0 }, { opacity: 1, duration: 0.15 }, t);
+    tl.to(treatEl, { x: dx, duration: dur, ease: 'power2.out' }, t);
+    tl.to(treatEl, { y: -10, duration: dur / 6, ease: 'sine.out', yoyo: true, repeat: 3 }, t);
+    tl.to(treatEl, { rotation: 540, duration: dur, ease: 'power2.out' }, t);
+    return t + dur;
+  }
+
+  window.TM = { sitDog, lowToss, order, style, clamp, say, at, put, partCard, head, videoFrame, videoSlide, row, treat, bubble, word, strike, centerX, PLAY };
 })();

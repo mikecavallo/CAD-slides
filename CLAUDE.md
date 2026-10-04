@@ -141,6 +141,18 @@ pipeline). This file records the state, decisions and working agreements from ea
   overlays it in the frame, muted by default.
 - Open with Tori: the doc's position-changes line still says his marker is "x" (placeholder; on screen shows no word);
   typos fixed in the lesson only ("Hre we are working in him" -> "Here we are working on him").
+- Round 1 feedback (applied): every slide's kicker is the course title "Markers and Mechanics" (TM.head ignores the
+  per-slide kicker); plan slide is What you'll learn / How we'll get there (five parts) / Why it matters; filmstrip frames
+  Standing, Looking away, Sit!, Getting up, Pulling on the leash, and the drawn green dog sits then gets marked
+  (`TM.sitDog`); the treat-to-the-mouth icon is the dog, never a person's face; on screen the marker itself is "Mark", not
+  "Word" (Mark, Pause, Move); tosses are low and along the ground like bowling (`TM.lowToss`), never arcs through the air;
+  sessions use a different marker each (Yip, Chase, Scatter); "A consistent response" (no "not dramatic"); tm05s01 redesigned
+  as a clean four-column sequence (Tori found the circle loop childish). Tori's illustrations: `tm_img_checkin.jpg`
+  (tm01s05, revealed left half then right), `tm_img_mouth.jpg`, `tm_img_toss.jpg`, `tm_img_scatter.jpg` (tm04s02 to s04:
+  the picture shows in the video frame first, then the clip plays: clip `"fit": "contain"` and `"atBeat"`, which timing.py
+  turns into the clip start time). Narration changed at Tori's request (paste into the doc): tm01s04 b0 "standing still
+  to take a treat from your hand", tm01s05 b0 "a way to get your dog's attention", tm04s03 new bowling beat, tm04s06 b1
+  "before moving the hand with the food".
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

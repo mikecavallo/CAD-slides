@@ -32,28 +32,23 @@
     {
      "id": "tm00plan",
      "heading": "Where we're headed",
-     "visual_concept": "Plan slide, four cards, one per item: What markers mean, Food games, How to teach them, Your mechanics.",
+     "visual_concept": "Plan slide like the other chapters, three cards: What you'll learn (markers, food games, how to teach them), How we'll get there (the five parts), Why it matters (clear, consistent information).",
      "assets": [],
      "beats": [
       {
-       "say": "In this section, we’ll cover what markers mean,",
-       "show": "Card: What markers mean.",
-       "onscreen": "What markers mean"
-      },
-      {
-       "say": "why we use different food games,",
-       "show": "Card: Food games.",
-       "onscreen": "Food games"
+       "say": "In this section, we’ll cover what markers mean, why we use different food games,",
+       "show": "Card: What you'll learn, rows land as said.",
+       "onscreen": "What you'll learn"
       },
       {
        "say": "and how to teach them.",
-       "show": "Card: How to teach them.",
-       "onscreen": "How to teach them"
+       "show": "Card: How we'll get there, the five parts.",
+       "onscreen": "How we'll get there"
       },
       {
        "say": "We’ll also practise your mechanics so your dog receives clear, consistent information.",
-       "show": "Card: Your mechanics.",
-       "onscreen": "Your mechanics"
+       "show": "Card: Why it matters.",
+       "onscreen": "Why it matters"
       }
      ]
     }
@@ -69,7 +64,7 @@
     {
      "id": "tm01s01",
      "heading": "What is a marker?",
-     "visual_concept": "A 'Yip!' bubble and the promise line; a filmstrip of a sit; the flash freezes the frame where the bottom touches down, then the treat arrives.",
+     "visual_concept": "Yip bubble and the promise line; a filmstrip (standing, looking away, sit, getting up, pulling on the leash); the drawn green dog sits, then the mark and the treat.",
      "assets": [],
      "beats": [
       {
@@ -157,8 +152,8 @@
      "assets": [],
      "beats": [
       {
-       "say": "Some dogs need movement when they’re becoming stressed or aroused. For those dogs, stopping to search for a scatter near something worrying may make the situation harder.",
-       "show": "Track, worry sign, dog close; scatter crossed: Harder up close.",
+       "say": "Some dogs need movement when they’re becoming stressed or aroused. For those dogs, standing still to take a treat from your hand near something worrying may make the situation harder.",
+       "show": "Track, worry sign, dog close; food to the mouth up close crossed: Harder up close.",
        "onscreen": "Some dogs need movement"
       },
       {
@@ -168,7 +163,7 @@
       },
       {
        "say": "Another dog may find food delivered directly to their mouth easier to follow. Watch how your dog responds, and make the situation easier if they cannot comfortably engage.",
-       "show": "Card: To the mouth, easier to follow; Watch your dog.",
+       "show": "Chips: Every dog is different; Watch how your dog responds.",
        "onscreen": "Watch your dog"
       },
       {
@@ -181,11 +176,13 @@
     {
      "id": "tm01s05",
      "heading": "What a marker is not",
-     "visual_concept": "Crossed chips No / Stop / Look at me; then two panels: the check-in (dog looks at you, marked, green) and the mistake (pulling and staring at a squirrel, marked, red: reinforces pulling); banner: say it once, always follow through.",
-     "assets": [],
+     "visual_concept": "Crossed chips No / Stop / Look at me; Tori's illustration: mark the check-in, avoid marking the pulling (left half on the check-in line, right half on the pulling line); say it once, always follow through.",
+     "assets": [
+      "tm_img_checkin.jpg"
+     ],
      "beats": [
       {
-       "say": "A marker is not a correction or an attention-getter. It does not mean “no,” “stop,” or “look at me.”",
+       "say": "A marker is not a correction or a way to get your dog’s attention. It does not mean “no,” “stop,” or “look at me.”",
        "show": "Crossed chips: No, Stop, Look at me.",
        "onscreen": "Not a correction or an attention-getter"
       },
@@ -421,8 +418,10 @@
     {
      "id": "tm04s02",
      "heading": "Teach the mouth-delivery marker",
-     "visual_concept": "Video slide (Introducing Yip); rows at left.",
-     "assets": [],
+     "visual_concept": "Tori's picture first in the frame, then her video plays in the same frame (clip starts on beat 1).",
+     "assets": [
+      "tm_img_mouth.jpg"
+     ],
      "beats": [
       {
        "say": "Say your chosen marker, pause briefly, then bring a treat directly to your dog’s mouth.",
@@ -447,23 +446,32 @@
        920,
        518
       ],
-      "poster": "tm_clip_yip.jpg",
+      "poster": "tm_img_mouth.jpg",
       "label": "Introducing “Yip”",
       "at": 1.2,
       "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=P54Wuz8WTMk"
+      "youtube": "https://www.youtube.com/watch?v=P54Wuz8WTMk",
+      "fit": "contain",
+      "atBeat": 1
      }
     },
     {
      "id": "tm04s03",
      "heading": "Teach the treat-toss marker",
-     "visual_concept": "Video slide (treat tosses); a small toss arc; rows.",
-     "assets": [],
+     "visual_concept": "Tori's picture first in the frame, then her video plays in the same frame (clip starts on beat 2).",
+     "assets": [
+      "tm_img_toss.jpg"
+     ],
      "beats": [
       {
        "say": "Say your chosen word, pause briefly, then toss one treat a short distance where your dog can easily see and reach it.",
        "show": "Arc; row: Word, pause, short easy toss.",
        "onscreen": "A short, easy toss"
+      },
+      {
+       "say": "Use a low, sweeping motion, like you’re bowling. The hand closest to your dog guides the treat down low and across your body, so it travels along the ground instead of flying through the air.",
+       "show": "Hand sweeps low and across; the treat rolls along the ground.",
+       "onscreen": "Low and across, like bowling"
       },
       {
        "say": "Let them finish eating before repeating. Start with easy tosses, then gradually vary the direction and distance as they learn the game.",
@@ -483,18 +491,22 @@
        920,
        518
       ],
-      "poster": "tm_clip_toss.jpg",
+      "poster": "tm_img_toss.jpg",
       "label": "Introducing treat tosses",
       "at": 1.2,
       "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk"
+      "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk",
+      "fit": "contain",
+      "atBeat": 2
      }
     },
     {
      "id": "tm04s04",
      "heading": "Teach the scatter marker",
-     "visual_concept": "Video slide (scatters); treats sprinkle onto a ground line; rows.",
-     "assets": [],
+     "visual_concept": "Tori's picture first in the frame, then her video plays in the same frame (clip starts on beat 1).",
+     "assets": [
+      "tm_img_scatter.jpg"
+     ],
      "beats": [
       {
        "say": "Say your chosen word, pause briefly, then scatter a few small treats on the ground.",
@@ -519,11 +531,13 @@
        920,
        518
       ],
-      "poster": "tm_clip_scatter.jpg",
+      "poster": "tm_img_scatter.jpg",
       "label": "Introducing scatters",
       "at": 1.2,
       "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=8PEainzd9mo"
+      "youtube": "https://www.youtube.com/watch?v=8PEainzd9mo",
+      "fit": "contain",
+      "atBeat": 1
      }
     },
     {
@@ -566,7 +580,7 @@
        "onscreen": "Click = treat to the mouth"
       },
       {
-       "say": "Watch how they respond to the sound before the food arrives.",
+       "say": "Watch how they respond to the sound before moving the hand with the food.",
        "show": "Row: Watch the response, before the food.",
        "onscreen": "Before the food arrives"
       }
@@ -597,7 +611,7 @@
     {
      "id": "tm05s01",
      "heading": "Mark the moment",
-     "visual_concept": "The rep loop: Watch, Mark, Pause, Feed the game, lit in turn; examples (a sit: bottom touches; a check-in: looks at you); banner: food ready, word and hand separate.",
+     "visual_concept": "A clean four-step sequence (Watch, Mark, Pause, Feed the game) with large light numerals and a progress rule; two example cards (a sit, a check-in); a quiet callout: food ready, mark and hand separate.",
      "assets": [],
      "beats": [
       {

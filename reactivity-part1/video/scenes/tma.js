@@ -13,7 +13,7 @@
   .tma-fr { position: absolute; top: 24px; width: 176px; height: 188px; border-radius: 10px; background: #fff; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 12px; box-sizing: border-box; border: 5px solid #fff; }
   .tma-fr svg { width: 74px; height: 74px; color: var(--ink-soft); stroke-width: 1.9; }
-  .tma-fr span { font: 700 26px/1 var(--font-body); color: var(--ink-soft); white-space: nowrap; }
+  .tma-fr span { font: 700 26px/1.1 var(--font-body); color: var(--ink-soft); white-space: nowrap; text-align: center; }
   .tma-fr.hit svg, .tma-fr.hit span { color: var(--green-dark); }
   .tma-flash { position: absolute; inset: 0; border-radius: 6px; background: #fff; }
   .tma-col { position: absolute; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); box-sizing: border-box; padding: 26px 28px; }
@@ -33,11 +33,14 @@
   registerScene('tm00intro', ctx => SKIT.titleSlide(ctx));
 
   registerScene('tm00plan', ctx => SKIT.planSlide(ctx, [
-    { icon: 'volume-2', bg: 'var(--green-pale)', fg: 'var(--green-dark)', lab: 'What markers mean', text: 'One word or sound: *that earned a treat*.' },
-    { icon: 'cookie', bg: 'var(--amber-pale)', fg: 'var(--amber)', lab: 'Food games', text: 'Mouth, toss, scatter: *why each one*.' },
-    { icon: 'graduation-cap', bg: 'var(--green-pale)', fg: 'var(--green-dark)', lab: 'How to teach them', text: '*One marker at a time*, in short sessions.' },
-    { icon: 'hand', bg: 'var(--green)', fg: '#fff', lab: 'Your mechanics', text: '*Word, pause,* then movement.' },
-  ], [[], [], [], []]));
+    { ...SKIT.PLAN.gain, lab: 'What you’ll learn', rows: ['What markers mean', 'Why we use food games', 'How to teach them'], rowIcons: ['volume-2', 'cookie', 'graduation-cap'], rowBg: 'var(--green-pale)', rowFg: 'var(--green-dark)' },
+    { ...SKIT.PLAN.how, rows: ['Markers and food games', 'Choosing your markers', 'Your mechanics', 'Teaching your dog', 'Using your markers'] },
+    { ...SKIT.PLAN.why, text: 'Your dog gets *clear, consistent information*.' },
+  ], [
+    [['what markers mean', 0.2], ['food games', 0.7], ['how to teach', 0.9]],
+    [['how to teach', 0.1], ['', 0.3], ['', 0.5], ['', 0.7], ['', 0.85]],
+    [],
+  ]));
 
   // ---------------------------------------------------------------- what is a marker?
   registerScene('tm01s01', ctx => {
@@ -50,7 +53,7 @@
     A.in(tl, q, at(ctx, 0, 'that’s it', 0.5), 'fadeUp', { dur: 0.7 });
 
     // a filmstrip of a sit; the flash lands on the frame where the bottom touches down
-    const FR = [['dog', 'Standing'], ['arrow-down', 'Lowering'], ['circle-check', 'Sit!'], ['arrow-up', 'Getting up'], ['footprints', 'Wandering']];
+    const FR = [['dog', 'Standing'], ['eye-off', 'Looking away'], ['circle-check', 'Sit!'], ['arrow-up', 'Getting up'], ['move-right', 'Pulling on<br>the leash']];
     const film = put(stage, K.el('div', 'tma-film'), 100, 500, { width: '1000px' });
     const frs = FR.map(([ic, lab], i) => {
       const f = put(film, K.el('div', 'tma-fr'), 18 + i * 196, 24);
@@ -60,25 +63,30 @@
     });
     const tF = at(ctx, 1, 'snapshot', 0.4);
     tl.fromTo(film, { opacity: 0, x: 260 }, { opacity: 1, x: 0, duration: 1.4, ease: 'power2.out' }, tF);
-    const sl = put(stage, K.el('div', 'tm-lab', 'A snapshot of the behavior'), 1160, 540, { fontSize: '36px', color: 'var(--green-dark)' });
+    const sl = put(stage, K.el('div', 'tm-lab', 'A snapshot of the behavior'), 100, 760, { fontSize: '34px', color: 'var(--green-dark)' });
     A.in(tl, sl, tF + 0.6, 'fadeUp', { dur: 0.6 });
+    // the green dog stands, sits, and the mark lands as the bottom touches the ground
+    const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
+    const D = TM.sitDog(sv, 1440, 620, 0.78);
+    A.in(tl, D.stand.outer, tF + 0.3, 'fade', { dur: 0.6 });
     const hit = frs[2];
     const fl = K.el('div', 'tma-flash');
     hit.appendChild(fl);
     tl.set(fl, { opacity: 0 }, 0);
     const tS = at(ctx, 2, 'bottom touches', 0.5);
-    tl.to(fl, { opacity: 1, duration: 0.08 }, tS);
-    tl.to(fl, { opacity: 0, duration: 0.5 }, tS + 0.1);
-    tl.to(hit, { borderColor: '#619537', scale: 1.12, y: -8, duration: 0.5, ease: 'back.out(2)', zIndex: 2 }, tS + 0.05);
-    tl.call(() => hit.classList.add('hit'), null, tS + 0.05);
-    tl.to(frs.filter(f => f !== hit), { opacity: 0.45, duration: 0.5 }, tS + 0.2);
-    const m1 = put(stage, K.el('div', 'tm-lab', 'Bottom touches: <b style="color:var(--green)">mark it</b>'), 1160, 610, { fontSize: '36px' });
-    A.in(tl, m1, tS + 0.2, 'fadeUp', { dur: 0.5 });
+    D.sitAt(tl, tS - 0.15);
+    tl.to(fl, { opacity: 1, duration: 0.08 }, tS + 0.25);
+    tl.to(fl, { opacity: 0, duration: 0.5 }, tS + 0.35);
+    tl.to(hit, { borderColor: '#619537', scale: 1.12, y: -8, duration: 0.5, ease: 'back.out(2)', zIndex: 2 }, tS + 0.3);
+    tl.call(() => hit.classList.add('hit'), null, tS + 0.3);
+    tl.to(frs.filter(f => f !== hit), { opacity: 0.45, duration: 0.5 }, tS + 0.45);
+    const mk = TM.bubble(stage, 'Yip!', { x: 1500, y: 400, size: 44 });
+    A.in(tl, mk, tS + 0.25, 'pop', { dur: 0.4 });
+    const cap = put(stage, K.el('div', 'tm-lab', 'Bottom touches: <b style="color:var(--green)">mark</b>, then the treat'), 1170, 800, { fontSize: '32px' });
+    A.in(tl, cap, tS + 0.6, 'fadeUp', { dur: 0.5 });
     const tT = at(ctx, 2, 'deliver the treat', 0.85);
-    const m2 = put(stage, K.el('div', 'tm-lab', 'Then the treat'), 1220, 680, { fontSize: '36px' });
-    const tr = TM.treat(stage, 1180, 700, 1.4);
-    A.in(tl, m2, tT, 'fadeUp', { dur: 0.5 });
-    tl.fromTo(tr, { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.5, ease: 'bounce.out' }, tT + 0.1);
+    const tr = TM.treat(stage, D.mouth[0] + 30, D.mouth[1] + 60, 1.3);
+    tl.fromTo(tr, { opacity: 0, x: 90, y: 20 }, { opacity: 1, x: 0, y: 0, duration: 0.5, ease: 'power2.out' }, tT);
   });
 
   // ---------------------------------------------------------------- introducing food games
@@ -105,7 +113,7 @@
     {
       const st = cols[0].st, t0 = cols[0].tc + 0.4;
       const h = K.iconBadge(st, 'hand', { x: 60, y: 35, size: 80, variant: 'amber' });
-      const m = K.iconBadge(st, 'smile', { x: 340, y: 35, size: 80, variant: 'solid' });
+      const m = K.iconBadge(st, 'dog', { x: 340, y: 35, size: 80, variant: 'solid' });
       const tr = TM.treat(st, 140, 75, 1.2);
       A.in(tl, [h, m], t0, 'pop', { dur: 0.4, stagger: 0.1 });
       tl.fromTo(tr, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t0 + 0.4);
@@ -113,12 +121,13 @@
     }
     {
       const st = cols[1].st, t0 = cols[1].tc + 0.4;
+      const hd = K.iconBadge(st, 'hand', { x: 30, y: 60, size: 70, variant: 'amber' });
       const sv = K.svg(st, { x: 0, y: 0, w: 484, h: 150 });
-      const arc = K.path(sv, 'M 60 120 C 160 0, 320 0, 420 120', { stroke: '#d9912b', 'stroke-width': 5, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
-      const tr = TM.treat(st, 60, 116, 1.2);
-      A.draw(tl, arc, t0, 0.8);
-      tl.fromTo(tr, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t0);
-      tl.to(tr, { motionPath: { path: 'M 0 0 C 100 -120, 260 -120, 360 4' }, duration: 0.9, ease: 'power1.inOut' }, t0);
+      const trail = K.path(sv, 'M 100 118 C 200 128, 320 126, 430 118', { stroke: '#d9912b', 'stroke-width': 4, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
+      const tr = TM.treat(st, 110, 116, 1.2);
+      A.in(tl, hd, t0, 'pop', { dur: 0.4 });
+      A.draw(tl, trail, t0 + 0.3, 0.9);
+      TM.lowToss(tl, tr, 310, t0 + 0.3);
     }
     {
       const st = cols[2].st, t0 = cols[2].tc + 0.4;
@@ -153,8 +162,8 @@
     css(stage);
     TM.head(ctx, 'Each game has a purpose', 'Why food delivery matters');
     const ROWS = [
-      ['To the mouth', 'smile', 1, [['Stay near you', 'stay near you'], ['Hold a position', 'maintain a position']]],
-      ['Toss', 'move-up-right', 2, [['Movement', 'movement'], ['Reset for another rep', 'reset'], ['Distance from something hard', 'distance']]],
+      ['To the mouth', 'dog', 1, [['Stay near you', 'stay near you'], ['Hold a position', 'maintain a position']]],
+      ['Toss', 'move-right', 2, [['Movement', 'movement'], ['Reset for another rep', 'reset'], ['Distance from something hard', 'distance']]],
       ['Scatter', 'search', 3, [['Sniffing and searching', 'sniffing'], ['Settling, with enough space', 'settle']]],
     ];
     ROWS.forEach(([t, ic, b, chips], i) => {

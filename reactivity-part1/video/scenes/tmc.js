@@ -53,7 +53,7 @@
     {
       const st = cols[0].st, t0 = cue(1) + 0.2;
       const h = K.iconBadge(st, 'hand', { x: 60, y: 25, size: 80, variant: 'amber' });
-      const m = K.iconBadge(st, 'smile', { x: 340, y: 25, size: 80, variant: 'solid' });
+      const m = K.iconBadge(st, 'dog', { x: 340, y: 25, size: 80, variant: 'solid' });
       const tr = TM.treat(st, 140, 65, 1.2);
       A.in(tl, [h, m], t0, 'pop', { dur: 0.4, stagger: 0.1 });
       tl.fromTo(tr, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t0 + 0.4);
@@ -61,12 +61,13 @@
     }
     {
       const st = cols[1].st, t0 = cue(2) + 0.2;
+      const hd = K.iconBadge(st, 'hand', { x: 30, y: 45, size: 64, variant: 'amber' });
       const sv = K.svg(st, { x: 0, y: 0, w: 484, h: 130 });
-      const arc = K.path(sv, 'M 60 105 C 160 0, 320 0, 420 105', { stroke: '#d9912b', 'stroke-width': 5, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
-      const tr = TM.treat(st, 60, 102, 1.2);
-      A.draw(tl, arc, t0, 0.8);
-      tl.fromTo(tr, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t0);
-      tl.to(tr, { motionPath: { path: 'M 0 0 C 100 -105, 260 -105, 360 3' }, duration: 0.9, ease: 'power1.inOut' }, t0);
+      const trail = K.path(sv, 'M 100 100 C 200 110, 320 108, 430 100', { stroke: '#d9912b', 'stroke-width': 4, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
+      const tr = TM.treat(st, 110, 98, 1.2);
+      A.in(tl, hd, t0, 'pop', { dur: 0.4 });
+      A.draw(tl, trail, t0 + 0.3, 0.9);
+      TM.lowToss(tl, tr, 310, t0 + 0.3);
     }
     {
       const st = cols[2].st, t0 = cue(3) + 0.2;
@@ -114,7 +115,7 @@
     const X0 = 380, X1 = 1500;
     const lanes = (y, label, cls) => {
       const tag = put(stage, K.el('div', 'tm-lab', label), 100, y - 6, { fontSize: '34px', color: cls === 'bad' ? 'var(--red)' : 'var(--green-dark)' });
-      const lw = put(stage, K.el('div', 'tmc-ll', 'Word'), 240, y + 28);
+      const lw = put(stage, K.el('div', 'tmc-ll', 'Mark'), 240, y + 28);
       const lh = put(stage, K.el('div', 'tmc-ll', 'Hand'), 240, y + 108);
       const a = put(stage, K.el('div', 'tmc-lane'), X0, y + 42, { width: X1 - X0 + 'px' });
       const b = put(stage, K.el('div', 'tmc-lane'), X0, y + 122, { width: X1 - X0 + 'px' });
@@ -149,11 +150,11 @@
     A.in(tl, w2, tW, 'grow', { dur: 0.4 });
     A.in(tl, h2, tW + 0.2, 'grow', { dur: 0.4 });
     const eye = K.iconBadge(stage, 'eye', { x: 980, y: 640, size: 90, variant: 'red' });
-    const el = put(stage, K.el('div', 'tm-lab', 'Your dog watches your hand,<br>not the word'), 1090, 648, { fontSize: '30px', color: 'var(--red)' });
+    const el = put(stage, K.el('div', 'tm-lab', 'Your dog watches your hand,<br>not the mark'), 1090, 648, { fontSize: '30px', color: 'var(--red)' });
     A.in(tl, [eye, el], at(ctx, 2, 'movement predicts', 0.5), 'fadeUp', { dur: 0.5, stagger: 0.1 });
     const bn = put(stage, K.el('div', 'tm-banner'), 0, 850);
     bn.appendChild(K.icon('volume-2'));
-    bn.appendChild(K.el('span', null, 'Kept separate, the word becomes <b>a clear, reliable signal</b>'));
+    bn.appendChild(K.el('span', null, 'Kept separate, the mark becomes <b>a clear, reliable signal</b>'));
     TM.centerX(bn, 960);
     A.in(tl, bn, at(ctx, 3, 'keeping', 0.1), 'fadeUp', { dur: 0.6 });
   });
@@ -165,12 +166,12 @@
       kicker: 'Practicing your mechanics', heading: 'Practice without your dog first', gap: 28,
       rows: [
         { icon: 'hand', html: 'Treats in your hand', beat: 1, phrase: 'hold treats', fb: 0.05 },
-        { icon: 'volume-2', html: 'Word, pause, *then into a bowl*', beat: 1, phrase: 'pause briefly', fb: 0.3 },
-        { icon: 'pause', html: 'Hand still *until the word ends*', beat: 1, phrase: 'keep your hand still', fb: 0.7 },
+        { icon: 'volume-2', html: 'Mark, pause, *then into a bowl*', beat: 1, phrase: 'pause briefly', fb: 0.3 },
+        { icon: 'pause', html: 'Hand still *until the mark ends*', beat: 1, phrase: 'keep your hand still', fb: 0.7 },
         { icon: 'repeat', html: 'Until it’s *consistent*', beat: 2, phrase: 'practice until', fb: 0.05 },
       ],
     });
-    const o = TM.order(stage, ['Word', 'Pause', 'Move'], { x: 100, y: 720, size: 32, icons: ['volume-2', 'pause', 'hand'] });
+    const o = TM.order(stage, ['Mark', 'Pause', 'Move'], { x: 100, y: 700, size: 28, icons: ['volume-2', 'pause', 'hand'] });
     A.in(tl, o.items, at(ctx, 3, 'word', 0.3), 'fadeRight', { dur: 0.4, stagger: 0.15 });
   });
 })();

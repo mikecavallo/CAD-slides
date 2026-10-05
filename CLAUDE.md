@@ -169,6 +169,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   markers is now four slides: tm02s01 mouth, tm02s02 toss (Chase, Toss, Get it), tm02s03 scatter, tm02s04 one word each /
   avoid good, yes / reserve. Teaching slides say "Mark, pause, move: <the delivery>". Toss and scatter each have a picture
   slide and a separate video slide (tm04s03v, tm04s04v; one Claude-written line each). tm04s06 "Responding to his markers".
+- Round 4 feedback (applied): magnet hand handler wears a grey jacket (no green next to the green dog), stands on the
+  dog's paw line, and the dog's legs walk too (both swing in step, tail wags). tm02s03 name "Treats scattered"; the game
+  name and its words stack in one column so they never overlap. Words added: mouth "X" (Tori's own marker word), toss
+  "Free" (narration updated; paste into the doc).
 - Review videos: Tori asked to see only what changed. Build the full video as usual, then
   `python3 tools/changes_reel.py --video out/NAME.mp4 --ids <changed ids> --out out/NAME-changes-roundN.mp4` (each part is
   labelled with its slide title and its time in the full video) and send that. Full video only when Tori asks.

@@ -76,26 +76,29 @@
     tl.to(sv.querySelectorAll('path[stroke="#d9912b"]'), { opacity: 0, duration: 0.4 }, tM - 0.1);
     const MX = 470, MY = 560, S2 = 0.62;
     const nose = [MX + 173 * S2, MY - 55];
-    const PX = nose[0] - 34;
-    // the handler (drawn behind the dog): ponytail, olive jacket, jeans, grey shoes, as in Tori's pictures
-    const P = K.group(sv, { transform: `translate(${PX} 666)` });
+    const PAW = MY + 129 * S2;  // the dog's paws touch the ground here; the handler stands on the same line
+    const SC = 0.86, PX = nose[0] - 30;
+    // the handler (drawn behind the dog): ponytail, grey jacket (never green, so the dog stands out), jeans, grey shoes
+    const P = K.group(sv, { transform: `translate(${PX} ${PAW})` });
+    const Pi = K.group(P, { transform: `scale(${SC})` });
+    const JACKET = '#6b7078';
     const leg = (dx, col) => {
-      const g = K.group(P);
-      K.path(g, `M ${dx} -150 L ${dx - 4} -80 L ${dx - 8} -14`, { stroke: col, 'stroke-width': 21, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' });
-      K.path(g, `M ${dx - 20} -6 C ${dx - 20} -18 ${dx + 4} -20 ${dx + 14} -10 C ${dx + 20} -4 ${dx + 16} 2 ${dx + 8} 2 L ${dx - 18} 2 C ${dx - 22} 2 ${dx - 22} -2 ${dx - 20} -6 Z`, { fill: '#6d6f68', stroke: 'none' });
+      const g = K.group(Pi);
+      K.path(g, `M ${dx} -138 L ${dx - 3} -74 L ${dx - 6} -12`, { stroke: col, 'stroke-width': 21, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' });
+      K.path(g, `M ${dx - 18} -6 C ${dx - 18} -16 ${dx + 4} -18 ${dx + 14} -9 C ${dx + 20} -4 ${dx + 16} 0 ${dx + 8} 0 L ${dx - 16} 0 C ${dx - 20} 0 ${dx - 20} -3 ${dx - 18} -6 Z`, { fill: '#5d5f59', stroke: 'none' });
       return g;
     };
     const legB = leg(-4, '#3d5a85'), legF = leg(4, '#4a6fa5');
-    K.path(P, 'M -32 -266 C -38 -228 -36 -180 -32 -142 C -14 -134 14 -134 32 -142 C 36 -180 36 -228 30 -266 C 16 -276 -18 -276 -32 -266 Z', { fill: '#5b6b3a', stroke: 'none' });
-    K.path(P, 'M -8 -270 L 10 -270 L 1 -246 Z', { fill: '#efe6d2', stroke: 'none' });
-    K.rect(P, -7, -284, 16, 18, { fill: '#e2b48f', stroke: 'none', rx: 4 });
-    K.path(P, 'M -18 -312 C -40 -304 -46 -280 -36 -258 C -30 -276 -26 -292 -12 -302 Z', { fill: '#6b3f22', stroke: 'none' });
-    K.svgEl('ellipse', { cx: 6, cy: -302, rx: 22, ry: 26, fill: '#e2b48f' }, P);
-    K.path(P, 'M -16 -304 C -18 -334 24 -340 30 -310 C 22 -320 2 -322 -6 -308 C -10 -302 -14 -300 -16 -304 Z', { fill: '#6b3f22', stroke: 'none' });
-    K.circle(P, 19, -304, 2.5, { fill: '#3a2a1e' });
-    const hx = nose[0] - PX + 4, hy = nose[1] - 666 - 6;
-    K.path(P, `M 8 -256 C 22 -230 30 -206 28 -196 C 26 -184 ${hx - 6} ${hy - 22} ${hx} ${hy}`, { stroke: '#5b6b3a', 'stroke-width': 17, 'stroke-linecap': 'round', fill: 'none' });
-    K.circle(P, hx, hy, 9, { fill: '#e2b48f' });
+    K.path(Pi, 'M -32 -256 C -38 -218 -36 -170 -32 -132 C -14 -124 14 -124 32 -132 C 36 -170 36 -218 30 -256 C 16 -266 -18 -266 -32 -256 Z', { fill: JACKET, stroke: 'none' });
+    K.path(Pi, 'M -8 -260 L 10 -260 L 1 -236 Z', { fill: '#efe6d2', stroke: 'none' });
+    K.rect(Pi, -7, -274, 16, 18, { fill: '#e2b48f', stroke: 'none', rx: 4 });
+    K.path(Pi, 'M -18 -302 C -40 -294 -46 -270 -36 -248 C -30 -266 -26 -282 -12 -292 Z', { fill: '#6b3f22', stroke: 'none' });
+    K.svgEl('ellipse', { cx: 6, cy: -292, rx: 22, ry: 26, fill: '#e2b48f' }, Pi);
+    K.path(Pi, 'M -16 -294 C -18 -324 24 -330 30 -300 C 22 -310 2 -312 -6 -298 C -10 -292 -14 -290 -16 -294 Z', { fill: '#6b3f22', stroke: 'none' });
+    K.circle(Pi, 19, -294, 2.5, { fill: '#3a2a1e' });
+    const hx = (nose[0] - PX + 4) / SC, hy = (nose[1] - PAW - 6) / SC;
+    K.path(Pi, `M 8 -246 C 22 -220 30 -196 28 -186 C 26 -174 ${hx - 6} ${hy - 22} ${hx} ${hy}`, { stroke: JACKET, 'stroke-width': 17, 'stroke-linecap': 'round', fill: 'none' });
+    K.circle(Pi, hx, hy, 9, { fill: '#e2b48f' });
     const M = C2.dog(sv, MX, MY, S2);
     const tH = TM.treat(stage, nose[0] + 2, nose[1] - 4, 0.9);
     A.in(tl, [P, M.outer], tM + 0.2, 'fade', { dur: 0.5 });
@@ -103,9 +106,13 @@
     const walk = Math.max(2, end(3) - tM - 0.8);
     tl.to([M.outer, P], { x: '+=620', duration: walk, ease: 'none' }, tM + 0.7);
     tl.to(tH, { x: 620, duration: walk, ease: 'none' }, tM + 0.7);
+    // both walk: the handler's legs and the dog's four legs swing in step
     const steps = Math.max(1, Math.floor(walk / 0.5));
-    tl.fromTo(legB, { rotation: -16, svgOrigin: '0 -150' }, { rotation: 16, svgOrigin: '0 -150', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
-    tl.fromTo(legF, { rotation: 16, svgOrigin: '0 -150' }, { rotation: -16, svgOrigin: '0 -150', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
+    const swing = (el, a) => tl.fromTo(el, { rotation: -a, transformOrigin: '50% 4%' }, { rotation: a, transformOrigin: '50% 4%', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
+    swing(legB, 16); swing(legF, -16);
+    const [, farHind, farFront, , nearHind, nearFront] = M.fig.children;
+    swing(farHind, -14); swing(nearFront, -14); swing(nearHind, 14); swing(farFront, 14);
+    C2.wag(tl, M, tM + 0.7, tM + 0.7 + walk);
     const m = TM.word(stage, 'Magnet hand: walk away before your dog looks and reacts', { x: 100, y: 735, variant: 'pale', size: 30, icon: 'magnet' });
     A.in(tl, m, at(ctx, 3, 'magnet hand', 0.1), 'fadeUp', { dur: 0.5 });
     const w = TM.word(stage, 'Watch how your dog responds', { x: 100, y: 820, variant: 'green', size: 30, icon: 'eye' });

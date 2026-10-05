@@ -282,7 +282,7 @@
        "onscreen": "Choose a word for each game"
       },
       {
-       "say": "Food to the mouth: “Yip,” “Yep,” “Mark,” “Nice,” or “Treat.”",
+       "say": "Food to the mouth: “Yip,” “Yep,” “Mark,” “Nice,” “Treat,” or “X.”",
        "show": "Mouth column chips.",
        "onscreen": "To the mouth"
       }
@@ -297,7 +297,7 @@
      ],
      "beats": [
       {
-       "say": "A tossed treat: “Chase,” “Toss,” or “Get it.”",
+       "say": "A tossed treat: “Chase,” “Toss,” “Get it,” or “Free.”",
        "show": "Toss column chips.",
        "onscreen": "Tossed"
       }
@@ -305,7 +305,7 @@
     },
     {
      "id": "tm02s03",
-     "heading": "Treats scattered on the ground",
+     "heading": "Treats scattered",
      "visual_concept": "Tori's scatter picture shown whole; the example words drop in as chips.",
      "assets": [
       "tm_scatter.jpg"

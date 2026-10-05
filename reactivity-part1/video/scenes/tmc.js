@@ -37,9 +37,11 @@
     ph.root.style.border = '8px solid #fff';
     A.in(tl, ph.root, o.tPic, 'fadeUp', { dur: 0.7 });
     const X = 100 + w + 80, W = 1820 - X;
-    const name = put(stage, K.el('div', 'tm-lab', o.name), X, 320, { fontSize: '56px', fontFamily: 'var(--font-head)', color: 'var(--ink)', whiteSpace: 'normal', width: W + 'px' });
+    // the name and the words stack in one column, so a long name can never run into the words
+    const colm = put(stage, K.el('div'), X, 320, { position: 'absolute', width: W + 'px', display: 'flex', flexDirection: 'column', gap: '34px' });
+    const name = flow(put(colm, K.el('div', 'tm-lab', o.name), 0, 0, { fontSize: '56px', fontFamily: 'var(--font-head)', color: 'var(--ink)', whiteSpace: 'normal', width: W + 'px' }));
     A.in(tl, name, o.tPic + 0.2, 'fadeUp', { dur: 0.6 });
-    const chips = put(stage, K.el('div'), X, 430, { position: 'absolute', width: W + 'px', display: 'flex', flexWrap: 'wrap', gap: '18px' });
+    const chips = flow(put(colm, K.el('div'), 0, 0, { width: W + 'px', display: 'flex', flexWrap: 'wrap', gap: '18px' }));
     o.words.forEach(([wd, p], k) => {
       const n = flow(TM.word(chips, '“' + wd + '”', { variant: 'pale', size: 40 }));
       A.in(tl, n, at(ctx, o.beat, p, 0.25 + 0.13 * k), 'pop', { dur: 0.4 });
@@ -50,7 +52,7 @@
   registerScene('tm02s01', ctx => {
     const { stage, tl, cue } = ctx;
     const g = gameSlide(ctx, { src: 'tm_mouth_3.jpg', ar: 524 / 828, name: 'Food to the mouth', beat: 1, tPic: cue(1),
-      words: [['Yip', 'yip'], ['Yep', 'yep'], ['Mark', 'mark'], ['Nice', 'nice'], ['Treat', 'treat']] });
+      words: [['Yip', 'yip'], ['Yep', 'yep'], ['Mark', 'mark'], ['Nice', 'nice'], ['Treat', 'treat'], ['X', 'x']] });
     const lead = put(stage, K.el('div', 'tm-lab', 'Choose a <b style="color:var(--green)">short, distinct word</b> for each food game.'), 100, 300, { fontSize: '40px', whiteSpace: 'normal', width: '1400px' });
     A.in(tl, lead, cue(0) + 0.2, 'fadeUp', { dur: 0.6 });
     tl.to(lead, { opacity: 0, duration: 0.4 }, cue(1) - 0.2);
@@ -58,11 +60,11 @@
 
   registerScene('tm02s02', ctx => {
     gameSlide(ctx, { src: 'tm_toss.jpg', ar: 1468 / 968, name: 'A tossed treat', beat: 0, tPic: ctx.cue(0) + 0.1,
-      words: [['Chase', 'chase'], ['Toss', 'toss'], ['Get it', 'get it']] });
+      words: [['Chase', 'chase'], ['Toss', 'toss'], ['Get it', 'get it'], ['Free', 'free']] });
   });
 
   registerScene('tm02s03', ctx => {
-    gameSlide(ctx, { src: 'tm_scatter.jpg', ar: 1466 / 962, name: 'Treats scattered on the ground', beat: 0, tPic: ctx.cue(0) + 0.1,
+    gameSlide(ctx, { src: 'tm_scatter.jpg', ar: 1466 / 962, name: 'Treats scattered', beat: 0, tPic: ctx.cue(0) + 0.1,
       words: [['Scatter', 'scatter'], ['Find it', 'find it'], ['Search', 'search']] });
   });
 

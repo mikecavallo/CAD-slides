@@ -312,7 +312,7 @@
      ],
      "beats": [
       {
-       "say": "Treats scattered on the ground: “Scatter,” “Find it,” or “Search.”",
+       "say": "Treats scattered on the ground: “Scatter,” “Find it,” “Search,” or “Get it.”",
        "show": "Scatter column chips.",
        "onscreen": "Scattered"
       }

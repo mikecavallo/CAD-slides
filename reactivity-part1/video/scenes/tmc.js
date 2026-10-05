@@ -65,7 +65,7 @@
 
   registerScene('tm02s03', ctx => {
     gameSlide(ctx, { src: 'tm_scatter.jpg', ar: 1466 / 962, name: 'Treats scattered', beat: 0, tPic: ctx.cue(0) + 0.1,
-      words: [['Scatter', 'scatter'], ['Find it', 'find it'], ['Search', 'search']] });
+      words: [['Scatter', 'scatter'], ['Find it', 'find it'], ['Search', 'search'], ['Get it', 'get it']] });
   });
 
   registerScene('tm02s04', ctx => {

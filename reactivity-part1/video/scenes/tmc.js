@@ -25,64 +25,86 @@
   const css = stage => { TM.style(stage); if (!stage.querySelector('style[data-tmc]')) { const s = K.el('style', null, CSS); s.dataset.tmc = '1'; stage.appendChild(s); } };
   const flow = n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; return n; };
 
-  // ---------------------------------------------------------------- give each game its own word
-  registerScene('tm02s01', ctx => {
-    const { stage, tl, cue, end } = ctx;
+  // ---------------------------------------------------------------- give each game its own word: one slide per game
+  // Tori's picture shown whole at the left; the game's name and its example words at the right
+  const gameSlide = (ctx, o) => {
+    const { stage, tl, cue } = ctx;
     css(stage);
     TM.head(ctx, 'Choosing your markers', 'Give each game its own word');
-    const COLS = [
-      ['To the mouth', ['Yip', 'Yep', 'Mark', 'Nice', 'Treat'], ['yip', 'yep', 'mark', 'nice', 'treat'], 1, 'tm_mouth_3.jpg', '50% 32%'],
-      ['A tossed treat', ['Chase', 'Toss', 'Get it'], ['chase', 'toss', 'get it'], 2, 'tm_toss.jpg', '50% 62%'],
-      ['Scattered', ['Scatter', 'Find it', 'Search'], ['scatter', 'find it', 'search'], 3, 'tm_scatter.jpg', '45% 62%'],
-    ];
-    const cols = COLS.map(([t, ws, ps, beat, src, pos], i) => {
-      const c = put(stage, K.el('div', 'tmc-col'), 100 + i * 590, 275, { width: '540px', height: '560px' });
-      const st = K.el('div', 'stage');
-      const im = K.el('img');
-      im.src = '../assets/img/' + src;
-      im.style.objectPosition = pos;
-      st.appendChild(im);
-      c.appendChild(st);
-      c.appendChild(K.el('div', 'tt', t));
-      const chips = K.el('div', 'chips');
-      c.appendChild(chips);
-      tl.fromTo(c, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, cue(0) + 0.2 + i * 0.12);
-      const ns = ws.map((w, k) => {
-        const n = flow(TM.word(chips, w, { variant: 'pale' }));
-        A.in(tl, n, at(ctx, beat, ps[k], 0.25 + 0.13 * k), 'pop', { dur: 0.4 });
-        return n;
-      });
-      return { c, st, chips, ns };
+    const MAXW = o.ar < 1 ? 420 : 860, MAXH = 620;
+    const w = Math.round(Math.min(MAXW, MAXH * o.ar)), h = Math.round(w / o.ar);
+    const ph = K.photo(stage, o.src, { x: 100, y: 300, w, h, radius: 22 });
+    ph.root.style.border = '8px solid #fff';
+    A.in(tl, ph.root, o.tPic, 'fadeUp', { dur: 0.7 });
+    const X = 100 + w + 80, W = 1820 - X;
+    const name = put(stage, K.el('div', 'tm-lab', o.name), X, 320, { fontSize: '56px', fontFamily: 'var(--font-head)', color: 'var(--ink)', whiteSpace: 'normal', width: W + 'px' });
+    A.in(tl, name, o.tPic + 0.2, 'fadeUp', { dur: 0.6 });
+    const chips = put(stage, K.el('div'), X, 430, { position: 'absolute', width: W + 'px', display: 'flex', flexWrap: 'wrap', gap: '18px' });
+    o.words.forEach(([wd, p], k) => {
+      const n = flow(TM.word(chips, '“' + wd + '”', { variant: 'pale', size: 40 }));
+      A.in(tl, n, at(ctx, o.beat, p, 0.25 + 0.13 * k), 'pop', { dur: 0.4 });
     });
-    // each picture lifts in on its beat
-    cols.forEach((k, i) => tl.fromTo(k.st.querySelector('img'), { scale: 1.12, opacity: 0.25 }, { scale: 1, opacity: 1, duration: 1.0, ease: 'power2.out' }, cue(i + 1) + 0.1));
-    // pick one per game; a clicker can be the mouth marker
-    const tP = at(ctx, 4, 'one word for each', 0.1);
-    cols.forEach((k, i) => tl.to(k.ns[0], { backgroundColor: '#619537', color: '#fff', borderColor: '#619537', scale: 1.08, duration: 0.4 }, tP + 0.25 * i));
-    cols.forEach((k, i) => tl.to(k.ns.slice(1), { opacity: 0.45, duration: 0.4 }, tP + 0.25 * i));
-    const ck = flow(TM.word(cols[0].chips, 'Clicker', { variant: 'pale', icon: 'mouse-pointer-click' }));
-    A.in(tl, ck, at(ctx, 4, 'clicker', 0.7), 'pop', { dur: 0.45 });
-    tl.to(ck, { backgroundColor: '#619537', color: '#fff', borderColor: '#619537', duration: 0.4 }, at(ctx, 4, 'clicker', 0.7) + 0.5);
-    // avoid good and yes
-    const row = put(stage, K.el('div'), 0, 865, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
+    return { X, W, ph };
+  };
+
+  registerScene('tm02s01', ctx => {
+    const { stage, tl, cue } = ctx;
+    const g = gameSlide(ctx, { src: 'tm_mouth_3.jpg', ar: 524 / 828, name: 'Food to the mouth', beat: 1, tPic: cue(1),
+      words: [['Yip', 'yip'], ['Yep', 'yep'], ['Mark', 'mark'], ['Nice', 'nice'], ['Treat', 'treat']] });
+    const lead = put(stage, K.el('div', 'tm-lab', 'Choose a <b style="color:var(--green)">short, distinct word</b> for each food game.'), 100, 300, { fontSize: '40px', whiteSpace: 'normal', width: '1400px' });
+    A.in(tl, lead, cue(0) + 0.2, 'fadeUp', { dur: 0.6 });
+    tl.to(lead, { opacity: 0, duration: 0.4 }, cue(1) - 0.2);
+  });
+
+  registerScene('tm02s02', ctx => {
+    gameSlide(ctx, { src: 'tm_toss.jpg', ar: 1468 / 968, name: 'A tossed treat', beat: 0, tPic: ctx.cue(0) + 0.1,
+      words: [['Chase', 'chase'], ['Toss', 'toss'], ['Get it', 'get it']] });
+  });
+
+  registerScene('tm02s03', ctx => {
+    gameSlide(ctx, { src: 'tm_scatter.jpg', ar: 1466 / 962, name: 'Treats scattered on the ground', beat: 0, tPic: ctx.cue(0) + 0.1,
+      words: [['Scatter', 'scatter'], ['Find it', 'find it'], ['Search', 'search']] });
+  });
+
+  registerScene('tm02s04', ctx => {
+    const { stage, tl, cue, end } = ctx;
+    css(stage);
+    TM.head(ctx, 'Choosing your markers', 'One word for each game');
+    const H = 300;
+    const T = [['tm_mouth_3.jpg', 524 / 828, 'Yip'], ['tm_toss.jpg', 1468 / 968, 'Chase'], ['tm_scatter.jpg', 1466 / 962, 'Scatter']];
+    const ws = T.map(t => Math.round(H * t[1])), GAP = 70;
+    let x = (1920 - ws.reduce((a, b) => a + b, 0) - 2 * GAP) / 2;
+    const tP = at(ctx, 0, 'one word for each', 0.1);
+    const tiles = T.map(([src, , wd], i) => {
+      const ph = K.photo(stage, src, { x, y: 290, w: ws[i], h: H, radius: 18 });
+      ph.root.style.border = '6px solid #fff';
+      const chip = TM.word(stage, '“' + wd + '”', { x, y: 610, variant: 'green', size: 34 });
+      A.in(tl, ph.root, tP + 0.2 * i, 'fadeUp', { dur: 0.6 });
+      A.in(tl, chip, tP + 0.2 * i + 0.4, 'pop', { dur: 0.4 });
+      const r = { x, w: ws[i], chip };
+      x += ws[i] + GAP;
+      return r;
+    });
+    tl.call(() => {}, null, 0);
+    const ck = TM.word(stage, 'or a Clicker', { x: tiles[0].x, y: 690, variant: 'pale', size: 30, icon: 'mouse-pointer-click' });
+    A.in(tl, ck, at(ctx, 0, 'clicker', 0.7), 'pop', { dur: 0.45 });
+    const row = put(stage, K.el('div'), 0, 800, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
     const al = flow(put(row, K.el('div', 'tm-lab', 'Avoid:'), 0, 0, { fontSize: '34px', color: 'var(--red)' }));
-    const bad = [['“Good”', 'good'], ['“Yes”', 'yes']].map(([w, p]) => {
+    A.in(tl, al, at(ctx, 1, 'avoiding', 0.15) - 0.2, 'fadeUp', { dur: 0.4 });
+    [['“Good”', 'good'], ['“Yes”', 'yes']].forEach(([w, p]) => {
       const n = flow(TM.word(row, w, { variant: 'red', cross: true, size: 32 }));
-      const t = at(ctx, 5, p, 0.2);
+      const t = at(ctx, 1, p, 0.2);
       A.in(tl, n, t, 'pop', { dur: 0.4 });
       TM.strike(tl, n, t + 0.35);
-      return n;
     });
     const why = flow(put(row, K.el('div', 'tm-lab', 'Everyday words, often no food'), 0, 0, { fontSize: '30px', color: 'var(--ink-soft)' }));
-    A.in(tl, al, at(ctx, 5, 'avoiding', 0.15) - 0.2, 'fadeUp', { dur: 0.4 });
-    A.in(tl, why, at(ctx, 5, 'everyday', 0.5), 'fadeUp', { dur: 0.5 });
-    const tR = at(ctx, 6, 'reserve', 0.4);
-    tl.to(row, { opacity: 0, duration: 0.35 }, cue(6));
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 858);
+    A.in(tl, why, at(ctx, 1, 'everyday', 0.5), 'fadeUp', { dur: 0.5 });
+    tl.to(row, { opacity: 0, duration: 0.35 }, cue(2));
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 795);
     bn.appendChild(K.icon('lock'));
     bn.appendChild(K.el('span', null, 'Reserve your words <b>for these games</b>'));
     TM.centerX(bn, 960);
-    A.in(tl, bn, tR, 'fadeUp', { dur: 0.6 });
+    A.in(tl, bn, at(ctx, 2, 'reserve', 0.4), 'fadeUp', { dur: 0.6 });
   });
 
   // ---------------------------------------------------------------- your mechanics matter

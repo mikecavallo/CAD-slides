@@ -161,6 +161,17 @@ pipeline). This file records the state, decisions and working agreements from ea
   tm04s03 "vary the distance" only (narration changed too). tm04s06 is now Tori's blind dog hearing his markers ("treat" =
   to his mouth, "get it" = head to the floor for a scatter; narration written by Claude, clip pending; the clicker example
   is out). tm05s01 is three steps: Mark, Pause, Move (your hand to deliver the treat).
+- Round 3 feedback (applied): plan has two cards (What you'll learn: What markers are / Why we use food games / How to
+  teach them; Why it matters). Tori's pictures are always shown whole, never cropped (natural aspect, no Ken Burns).
+  tm01s02 is a row of the three pictures with labels only (no word chips). tm01s03 scatter is only "sniffing and
+  searching" (narration changed). tm01s04: magnet hand explained in a new beat ("walk them away ... if your dog looks,
+  they'll react"), handler drawn to match her pictures. tm01s05 caption "You will reinforce pulling and staring." Choosing
+  markers is now four slides: tm02s01 mouth, tm02s02 toss (Chase, Toss, Get it), tm02s03 scatter, tm02s04 one word each /
+  avoid good, yes / reserve. Teaching slides say "Mark, pause, move: <the delivery>". Toss and scatter each have a picture
+  slide and a separate video slide (tm04s03v, tm04s04v; one Claude-written line each). tm04s06 "Responding to his markers".
+- Review videos: Tori asked to see only what changed. Build the full video as usual, then
+  `python3 tools/changes_reel.py --video out/NAME.mp4 --ids <changed ids> --out out/NAME-changes-roundN.mp4` (each part is
+  labelled with its slide title and its time in the full video) and send that. Full video only when Tori asks.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

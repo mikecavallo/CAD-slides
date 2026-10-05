@@ -75,33 +75,43 @@
     tl.to(sceneOut, { opacity: 0, duration: 0.4 }, tM - 0.1);
     tl.to(sv.querySelectorAll('path[stroke="#d9912b"]'), { opacity: 0, duration: 0.4 }, tM - 0.1);
     const MX = 470, MY = 560, S2 = 0.62;
-    const M = C2.dog(sv, MX, MY, S2);
     const nose = [MX + 173 * S2, MY - 55];
-    const PX = nose[0] + 74;
+    const PX = nose[0] - 34;
+    // the handler (drawn behind the dog): ponytail, olive jacket, jeans, grey shoes, as in Tori's pictures
     const P = K.group(sv, { transform: `translate(${PX} 666)` });
-    const leg1 = K.path(P, 'M 0 -138 L -16 -4', { stroke: '#41608f', 'stroke-width': 20, 'stroke-linecap': 'round', fill: 'none' });
-    const leg2 = K.path(P, 'M 0 -138 L 16 -4', { stroke: '#4a6fa5', 'stroke-width': 20, 'stroke-linecap': 'round', fill: 'none' });
-    K.path(P, 'M -26 -250 C -30 -200 -28 -160 -24 -128 L 24 -128 C 28 -160 30 -200 26 -250 C 14 -262 -14 -262 -26 -250 Z', { fill: '#5b6b3a', stroke: 'none' });
-    K.path(P, 'M 4 -236 C -18 -214 -40 -186 ' + (nose[0] - PX + 6) + ' ' + (nose[1] - 666 - 4), { stroke: '#5b6b3a', 'stroke-width': 15, 'stroke-linecap': 'round', fill: 'none' });
-    K.circle(P, nose[0] - PX + 6, nose[1] - 666 - 4, 9, { fill: '#e2b48f' });
-    K.circle(P, 0, -286, 27, { fill: '#e2b48f' });
-    K.path(P, 'M -27 -290 C -26 -318 22 -322 28 -296 C 20 -306 -6 -306 -14 -296 C -22 -286 -30 -276 -38 -262 C -36 -276 -30 -284 -27 -290 Z', { fill: '#6b3f22', stroke: 'none' });
+    const leg = (dx, col) => {
+      const g = K.group(P);
+      K.path(g, `M ${dx} -150 L ${dx - 4} -80 L ${dx - 8} -14`, { stroke: col, 'stroke-width': 21, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' });
+      K.path(g, `M ${dx - 20} -6 C ${dx - 20} -18 ${dx + 4} -20 ${dx + 14} -10 C ${dx + 20} -4 ${dx + 16} 2 ${dx + 8} 2 L ${dx - 18} 2 C ${dx - 22} 2 ${dx - 22} -2 ${dx - 20} -6 Z`, { fill: '#6d6f68', stroke: 'none' });
+      return g;
+    };
+    const legB = leg(-4, '#3d5a85'), legF = leg(4, '#4a6fa5');
+    K.path(P, 'M -32 -266 C -38 -228 -36 -180 -32 -142 C -14 -134 14 -134 32 -142 C 36 -180 36 -228 30 -266 C 16 -276 -18 -276 -32 -266 Z', { fill: '#5b6b3a', stroke: 'none' });
+    K.path(P, 'M -8 -270 L 10 -270 L 1 -246 Z', { fill: '#efe6d2', stroke: 'none' });
+    K.rect(P, -7, -284, 16, 18, { fill: '#e2b48f', stroke: 'none', rx: 4 });
+    K.path(P, 'M -18 -312 C -40 -304 -46 -280 -36 -258 C -30 -276 -26 -292 -12 -302 Z', { fill: '#6b3f22', stroke: 'none' });
+    K.svgEl('ellipse', { cx: 6, cy: -302, rx: 22, ry: 26, fill: '#e2b48f' }, P);
+    K.path(P, 'M -16 -304 C -18 -334 24 -340 30 -310 C 22 -320 2 -322 -6 -308 C -10 -302 -14 -300 -16 -304 Z', { fill: '#6b3f22', stroke: 'none' });
+    K.circle(P, 19, -304, 2.5, { fill: '#3a2a1e' });
+    const hx = nose[0] - PX + 4, hy = nose[1] - 666 - 6;
+    K.path(P, `M 8 -256 C 22 -230 30 -206 28 -196 C 26 -184 ${hx - 6} ${hy - 22} ${hx} ${hy}`, { stroke: '#5b6b3a', 'stroke-width': 17, 'stroke-linecap': 'round', fill: 'none' });
+    K.circle(P, hx, hy, 9, { fill: '#e2b48f' });
+    const M = C2.dog(sv, MX, MY, S2);
     const tH = TM.treat(stage, nose[0] + 2, nose[1] - 4, 0.9);
-    const grp = [M.outer, P];
-    A.in(tl, grp, tM + 0.2, 'fade', { dur: 0.5 });
+    A.in(tl, [P, M.outer], tM + 0.2, 'fade', { dur: 0.5 });
     A.in(tl, tH, tM + 0.5, 'pop', { dur: 0.35 });
-    const walk = Math.max(2, end(2) - tM - 0.8);
+    const walk = Math.max(2, end(3) - tM - 0.8);
     tl.to([M.outer, P], { x: '+=620', duration: walk, ease: 'none' }, tM + 0.7);
     tl.to(tH, { x: 620, duration: walk, ease: 'none' }, tM + 0.7);
     const steps = Math.max(1, Math.floor(walk / 0.5));
-    tl.fromTo(leg1, { rotation: -14, svgOrigin: '0 -138' }, { rotation: 14, svgOrigin: '0 -138', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
-    tl.fromTo(leg2, { rotation: 14, svgOrigin: '0 -138' }, { rotation: -14, svgOrigin: '0 -138', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
-    const m = TM.word(stage, 'Magnet hand: the treat stays at the nose as you walk', { x: 100, y: 735, variant: 'pale', size: 30, icon: 'magnet' });
-    A.in(tl, m, tM + 0.6, 'fadeUp', { dur: 0.5 });
+    tl.fromTo(legB, { rotation: -16, svgOrigin: '0 -150' }, { rotation: 16, svgOrigin: '0 -150', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
+    tl.fromTo(legF, { rotation: 16, svgOrigin: '0 -150' }, { rotation: -16, svgOrigin: '0 -150', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
+    const m = TM.word(stage, 'Magnet hand: walk away before your dog looks and reacts', { x: 100, y: 735, variant: 'pale', size: 30, icon: 'magnet' });
+    A.in(tl, m, at(ctx, 3, 'magnet hand', 0.1), 'fadeUp', { dur: 0.5 });
     const w = TM.word(stage, 'Watch how your dog responds', { x: 100, y: 820, variant: 'green', size: 30, icon: 'eye' });
-    A.in(tl, w, at(ctx, 2, 'watch how', 0.6), 'fadeUp', { dur: 0.5 });
+    A.in(tl, w, at(ctx, 4, 'watch how', 0.05), 'fadeUp', { dur: 0.5 });
     const pg = TM.word(stage, 'Coming later: pattern games', { x: 1260, y: 820, variant: 'pale', size: 30, icon: 'sparkles' });
-    A.in(tl, pg, at(ctx, 3, 'pattern games', 0.5), 'pop', { dur: 0.45 });
+    A.in(tl, pg, at(ctx, 5, 'pattern games', 0.5), 'pop', { dur: 0.45 });
   });
 
   // ---------------------------------------------------------------- what a marker is not
@@ -121,20 +131,20 @@
     const card = (x, src, title, cap, good) => {
       const t = put(stage, K.el('div', 'tm-lab', title), x, 370, { fontSize: '34px', color: good ? 'var(--green-dark)' : 'var(--red)', display: 'flex', alignItems: 'center', gap: '12px' });
       t.prepend(K.icon(good ? 'circle-check' : 'circle-x', { size: 36 }));
-      const ph = K.photo(stage, src, { x, y: 425, w: 560, h: 452, pos: '50% 45%' });
+      const ph = K.photo(stage, src, { x, y: 425, w: 560, h: 467, pos: '50% 50%' });
       ph.root.style.border = '6px solid ' + (good ? '#619537' : '#b8452d');
-      const c = put(stage, K.el('div', 'tm-lab', cap), x, 892, { fontSize: '28px', color: 'var(--ink-soft)', width: '560px', whiteSpace: 'normal' });
+      const c = put(stage, K.el('div', 'tm-lab', cap), x, 905, { fontSize: '28px', color: 'var(--ink-soft)', width: '560px', whiteSpace: 'normal' });
       return { t, ph, c };
     };
     const G = card(100, 'tm_ck_good.jpg', 'Mark the check-in', 'Looking at you earns the treat.', true);
-    const Bd = card(700, 'tm_ck_bad.jpg', 'Avoid marking the pulling', 'You may reinforce pulling and staring.', false);
+    const Bd = card(700, 'tm_ck_bad.jpg', 'Avoid marking the pulling', 'You will reinforce pulling and staring.', false);
     const tG = at(ctx, 2, 'check in', 0.1);
     A.in(tl, [G.t, G.ph.root], tG, 'fadeUp', { dur: 0.7, stagger: 0.12 });
-    A.kenburns(tl, G.ph.img, { from: 1.0, to: 1.08 });
+    
     A.in(tl, G.c, at(ctx, 2, 'look at you', 0.9), 'fadeUp', { dur: 0.5 });
     const tB = at(ctx, 3, 'get their attention', 0.15);
     A.in(tl, [Bd.t, Bd.ph.root], tB, 'fadeUp', { dur: 0.7, stagger: 0.12 });
-    A.kenburns(tl, Bd.ph.img, { from: 1.0, to: 1.08 });
+    
     A.in(tl, Bd.c, at(ctx, 3, 'accidentally reinforce', 0.55), 'fadeUp', { dur: 0.5 });
     const lead = put(stage, K.el('div', null, 'Mark behavior you want <b style="color:var(--green)">repeated</b>.'), 1310, 425, { position: 'absolute', width: '510px', font: '500 40px/1.3 var(--font-body)', color: 'var(--ink)' });
     A.in(tl, lead, at(ctx, 1, 'mark behavior', 0.3), 'fadeUp', { dur: 0.6 });

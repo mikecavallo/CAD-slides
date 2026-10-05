@@ -63,7 +63,7 @@
     const v = TM.videoSlide(ctx, {
       kicker: 'Teaching your dog', heading: 'Teach the mouth-delivery marker',
       rows: [
-        { icon: 'dog', html: 'Mark, pause, *treat to the mouth*', beat: 0, phrase: 'say your chosen', fb: 0.05 },
+        { icon: 'dog', html: 'Mark, pause, move: *treat to the mouth*', beat: 0, phrase: 'say your chosen', fb: 0.05 },
         { icon: 'timer', html: 'A short break *between reps*', beat: 1, phrase: 'short break', fb: 0.2 },
         { icon: 'mouse-pointer-click', html: 'Clicker: *click, pause, treat*', beat: 2, phrase: 'clicker', fb: 0.2 },
       ],
@@ -73,7 +73,7 @@
     const bg = put(stage, K.el('div'), bx, by, { position: 'absolute', width: bw + 'px', height: bh + 'px', background: 'var(--green-mist)' });
     A.in(tl, bg, 0.25, 'fade', { dur: 0.6 });
     const PW = 268, PH = 440, GAP = (bw - 3 * PW) / 4, PY = by + (bh - PH) / 2;
-    const STEP = [['tm_mouth_1.jpg', 'Mark', 'say your chosen marker'], ['tm_mouth_2.jpg', 'Pause', 'pause briefly'], ['tm_mouth_3.jpg', 'Treat to the mouth', 'bring a treat']];
+    const STEP = [['tm_mouth_1.jpg', 'Mark', 'say your chosen marker'], ['tm_mouth_2.jpg', 'Pause', 'pause briefly'], ['tm_mouth_3.jpg', 'Move', 'bring a treat']];
     const ts = [];
     const panels = STEP.map(([src, lab, p], i) => {
       const x = bx + GAP + i * (PW + GAP);
@@ -92,17 +92,30 @@
     });
   });
 
+  // picture slide: rows at left, Tori's picture shown whole at right
+  const picSlide = (ctx, o) => {
+    const { stage, tl } = ctx;
+    TM.head(ctx, 'Teaching your dog', o.heading);
+    const w = 900, h = Math.round(w / o.ar);
+    const ph = K.photo(stage, o.src, { x: 920, y: 300, w, h, radius: 22 });
+    ph.root.style.border = '8px solid #fff';
+    A.in(tl, ph.root, 0.3, 'fadeUp', { dur: 0.8 });
+    const col = put(stage, K.el('div', 'tm-col'), 100, o.top, { width: '760px', gap: '26px' });
+    o.rows.forEach(r => {
+      const n = TM.row(col, r.icon, r.html, { size: 32 });
+      A.in(tl, n, at(ctx, r.beat, r.phrase, r.fb ?? 0.15), 'fadeRight', { dur: 0.6 });
+    });
+  };
+
   registerScene('tm04s03', ctx => {
     const { stage, tl, cue } = ctx;
-    TM.videoSlide(ctx, {
-      kicker: 'Teaching your dog', heading: 'Teach the treat-toss marker', top: 470, gap: 26,
-      rows: [
-        { icon: 'move-right', html: 'Mark, pause, *a short, easy toss*', beat: 0, phrase: 'toss one treat', fb: 0.4 },
-        { icon: 'hand', html: 'Low and across your body, *like bowling*', beat: 1, phrase: 'low, sweeping', fb: 0.1 },
-        { icon: 'move-horizontal', html: 'Then vary *the distance*', beat: 2, phrase: 'gradually vary', fb: 0.6 },
-        { icon: 'shield-check', html: 'A safe area *with room*', beat: 3, phrase: 'safe area', fb: 0.4 },
-      ],
-    });
+    TM.style(stage);
+    picSlide(ctx, { heading: 'Teach the treat-toss marker', src: 'tm_toss.jpg', ar: 1468 / 968, top: 470, rows: [
+      { icon: 'move-right', html: 'Mark, pause, move: *toss a treat*', beat: 0, phrase: 'toss one treat', fb: 0.4 },
+      { icon: 'hand', html: 'Low and across your body, *like bowling*', beat: 1, phrase: 'low, sweeping', fb: 0.1 },
+      { icon: 'move-horizontal', html: 'Then vary *the distance*', beat: 2, phrase: 'gradually vary', fb: 0.6 },
+      { icon: 'shield-check', html: 'A safe area *with room*', beat: 3, phrase: 'safe area', fb: 0.4 },
+    ] });
     // the bowling motion: the hand sweeps down low and across, the treat skims along the ground
     const sv = K.svg(stage, { x: 100, y: 290, w: 740, h: 160 });
     const ground = K.path(sv, 'M 10 140 L 730 140', { stroke: '#cfe3b8', 'stroke-width': 6, 'stroke-linecap': 'round', fill: 'none' });
@@ -111,26 +124,28 @@
     const tr = TM.treat(stage, 330, 418, 1.2);
     A.draw(tl, ground, cue(0) + 0.3, 0.6);
     A.in(tl, hand, cue(0) + 0.4, 'pop', { dur: 0.4 });
-    const run = t => {
-      tl.to(hand, { motionPath: { path: 'M 0 0 C 0 90, 80 120, 190 110' }, duration: 0.7, ease: 'power2.inOut' }, t);
-      A.draw(tl, sweep, t, 0.7);
-      TM.lowToss(tl, tr, 420, t + 0.6, 1.0);
-    };
-    run(at(ctx, 0, 'toss one treat', 0.4));
+    const t0 = at(ctx, 0, 'toss one treat', 0.4);
+    tl.to(hand, { motionPath: { path: 'M 0 0 C 0 90, 80 120, 190 110' }, duration: 0.7, ease: 'power2.inOut' }, t0);
+    A.draw(tl, sweep, t0, 0.7);
+    TM.lowToss(tl, tr, 420, t0 + 0.6, 1.0);
     const lab = put(stage, K.el('div', 'tm-lab', 'Low and across, like bowling'), 380, 300, { fontSize: '28px', color: 'var(--green-dark)' });
     A.in(tl, lab, at(ctx, 1, 'bowling', 0.3), 'fadeUp', { dur: 0.5 });
   });
 
+  registerScene('tm04s03v', ctx => {
+    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Treat tosses in action', rows: [
+      { icon: 'move-right', html: 'Mark, pause, move: *toss a treat*', beat: 0, phrase: 'looks like', fb: 0.3 },
+    ] });
+  });
+
   registerScene('tm04s04', ctx => {
     const { stage, tl, cue, end } = ctx;
-    TM.videoSlide(ctx, {
-      kicker: 'Teaching your dog', heading: 'Teach the scatter marker', top: 470, gap: 30,
-      rows: [
-        { icon: 'circle-dot', html: 'Mark, pause, *scatter a few*', beat: 0, phrase: 'scatter a few', fb: 0.5 },
-        { icon: 'square', html: 'Clear surface: *one scatter = one rep*', beat: 1, phrase: 'each scatter', fb: 0.8 },
-        { icon: 'leaf', html: 'Then other surfaces, *like short grass*', beat: 2, phrase: 'short grass', fb: 0.7 },
-      ],
-    });
+    TM.style(stage);
+    picSlide(ctx, { heading: 'Teach the scatter marker', src: 'tm_scatter.jpg', ar: 1466 / 962, top: 470, rows: [
+      { icon: 'circle-dot', html: 'Mark, pause, move: *scatter a few treats*', beat: 0, phrase: 'scatter a few', fb: 0.5 },
+      { icon: 'square', html: 'Clear surface: *one scatter = one rep*', beat: 1, phrase: 'each scatter', fb: 0.8 },
+      { icon: 'leaf', html: 'Then other surfaces, *like short grass*', beat: 2, phrase: 'short grass', fb: 0.7 },
+    ] });
     const sv = K.svg(stage, { x: 100, y: 290, w: 740, h: 160 });
     const ground = K.path(sv, 'M 10 130 L 730 130', { stroke: '#b8d99a', 'stroke-width': 8, 'stroke-linecap': 'round', fill: 'none' });
     A.draw(tl, ground, cue(0) + 0.4, 0.6);
@@ -139,6 +154,12 @@
       const t = TM.treat(stage, 100 + x, 290 + 112 - (i % 2) * 6, 1.0);
       tl.fromTo(t, { opacity: 0, y: -110 }, { opacity: 1, y: 0, duration: 0.55, ease: 'bounce.out' }, tS + d * 3);
     });
+  });
+
+  registerScene('tm04s04v', ctx => {
+    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatters in action', rows: [
+      { icon: 'circle-dot', html: 'Mark, pause, move: *scatter a few treats*', beat: 0, phrase: 'scatter', fb: 0.3 },
+    ] });
   });
 
   // ---------------------------------------------------------------- does your dog understand?
@@ -185,7 +206,7 @@
 
   registerScene('tm04s06', ctx => {
     TM.videoSlide(ctx, {
-      kicker: 'See it at work', heading: 'Hearing his markers', gap: 30,
+      kicker: 'See it at work', heading: 'Responding to his markers', gap: 30,
       rows: [
         { icon: 'ear', html: 'A blind dog: *he relies on the sound*', beat: 0, phrase: 'blind', fb: 0.4 },
         { icon: 'dog', html: '“Treat”: *coming to his mouth*', beat: 1, phrase: 'treat', fb: 0.2 },

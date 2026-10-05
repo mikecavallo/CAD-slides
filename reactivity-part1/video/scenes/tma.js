@@ -34,12 +34,10 @@
   registerScene('tm00intro', ctx => SKIT.titleSlide(ctx));
 
   registerScene('tm00plan', ctx => SKIT.planSlide(ctx, [
-    { ...SKIT.PLAN.gain, lab: 'What you’ll learn', rows: ['What markers mean', 'Why we use food games', 'How to teach them'], rowIcons: ['volume-2', 'cookie', 'graduation-cap'], rowBg: 'var(--green-pale)', rowFg: 'var(--green-dark)' },
-    { ...SKIT.PLAN.how, rows: ['Markers and food games', 'Choosing your markers', 'Your mechanics', 'Teaching your dog', 'Using your markers'] },
+    { ...SKIT.PLAN.gain, lab: 'What you’ll learn', rows: ['What markers are', 'Why we use food games', 'How to teach them'], rowIcons: ['volume-2', 'cookie', 'graduation-cap'], rowBg: 'var(--green-pale)', rowFg: 'var(--green-dark)' },
     { ...SKIT.PLAN.why, text: 'Your dog gets *clear, consistent information*.' },
   ], [
-    [['what markers mean', 0.2], ['food games', 0.7], ['how to teach', 0.9]],
-    [['how to teach', 0.1], ['', 0.3], ['', 0.5], ['', 0.7], ['', 0.85]],
+    [['what markers mean', 0.2], ['food games', 0.6], ['how to teach', 0.85]],
     [],
   ]));
 
@@ -97,43 +95,32 @@
     TM.head(ctx, 'Food games', 'Introducing food games');
     const sub = K.text(stage, 'Different ways to deliver <b style="color:var(--green)">the treat</b>', { x: 1000, y: 175, cls: 'lead', size: 34 });
     A.in(tl, sub, at(ctx, 0, 'food games', 0.7), 'fadeUp', { dur: 0.6 });
-    const G = [['To the mouth', 'Yip', 'mouth', 'tm_mouth_3.jpg', '50% 35%'], ['A toss to chase', 'Chase', 'tossing', 'tm_toss.jpg', '50% 60%'], ['A scatter', 'Scatter', 'scattering', 'tm_scatter.jpg', '45% 60%']];
-    const cols = G.map(([t, w, p, src, pos], i) => {
-      const c = put(stage, K.el('div', 'tma-col'), 100 + i * 590, 290, { width: '540px', height: '490px' });
-      const st = K.el('div', 'stage');
-      const im = K.el('img');
-      im.src = '../assets/img/' + src;
-      im.style.objectPosition = pos;
-      st.appendChild(im);
-      c.appendChild(st);
-      c.appendChild(K.el('div', 'tt', t));
-      const wd = K.el('div', 'wd');
-      c.appendChild(wd);
+    // Tori's pictures, shown whole at one height, labelled underneath
+    const H = 400;
+    const G = [['To the mouth', 'mouth', 'tm_mouth_3.jpg', 524 / 828], ['A toss to chase', 'tossing', 'tm_toss.jpg', 1468 / 968], ['A scatter', 'scattering', 'tm_scatter.jpg', 1466 / 962]];
+    const ws = G.map(g => Math.round(H * g[3])), GAP = 60;
+    let x = (1920 - ws.reduce((a, b) => a + b, 0) - GAP * 2) / 2;
+    G.forEach(([t, p, src], i) => {
+      const ph = K.photo(stage, src, { x, y: 300, w: ws[i], h: H, radius: 20 });
+      ph.root.style.border = '8px solid #fff';
+      const lab = put(stage, K.el('div', 'tm-lab', t), x, 726, { fontSize: '38px', fontFamily: 'var(--font-head)', width: ws[i] + 'px', textAlign: 'center' });
       const tc = at(ctx, 1, p, 0.2 + 0.3 * i);
-      tl.fromTo(c, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, tc);
-      const chip = TM.word(wd, '“' + w + '”', { variant: 'green', size: 34 });
-      return { c, st, chip, tc };
+      A.in(tl, ph.root, tc, 'fadeUp', { dur: 0.7 });
+      A.in(tl, lab, tc + 0.25, 'fadeUp', { dur: 0.5 });
+      x += ws[i] + GAP;
     });
-    // a slow drift on each picture
-    cols.forEach(k => tl.fromTo(k.st.querySelector('img'), { scale: 1.0 }, { scale: 1.08, duration: Math.max(2, end(3) - k.tc), ease: 'none' }, k.tc));
-    // a word for each game
-    const tW = at(ctx, 2, 'different marker word', 0.15);
-    cols.forEach((k, i) => A.in(tl, k.chip, tW + 0.3 * i, 'pop', { dur: 0.45 }));
-    const pill = put(stage, K.el('div', 'tm-banner'), 0, 805);
+    const pill = put(stage, K.el('div', 'tm-banner'), 0, 815);
     pill.appendChild(K.icon('volume-2'));
-    pill.appendChild(K.el('span', null, 'The marker says: <b>which moment</b> + <b>which game</b>'));
+    pill.appendChild(K.el('span', null, 'Each game has its own marker: <b>which moment</b> + <b>which game</b>'));
     TM.centerX(pill, 960);
-    A.in(tl, pill, at(ctx, 2, 'both which moment', 0.6), 'fadeUp', { dur: 0.6 });
-    // no guessing
+    A.in(tl, pill, at(ctx, 2, 'different marker word', 0.15), 'fadeUp', { dur: 0.6 });
     const tN = at(ctx, 3, 'won’t have to guess', 0.45);
     tl.to(pill, { opacity: 0, duration: 0.35 }, tN - 0.3);
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 805);
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 815);
     bn.appendChild(K.icon('circle-check'));
     bn.appendChild(K.el('span', null, 'No guessing: <b>your hand, or the ground?</b>'));
     TM.centerX(bn, 960);
     A.in(tl, bn, tN, 'fadeUp', { dur: 0.6 });
-    const cf = put(stage, K.el('div', 'tm-lab', 'Less confusion and frustration'), 0, 915, { width: '1920px', textAlign: 'center', fontSize: '30px', color: 'var(--green-dark)' });
-    A.in(tl, cf, at(ctx, 3, 'confusion and frustration', 0.3), 'fadeUp', { dur: 0.5 });
   });
 
   // ---------------------------------------------------------------- why food delivery matters
@@ -144,7 +131,7 @@
     const ROWS = [
       ['To the mouth', 'dog', 1, [['Stay near you', 'stay near you'], ['Hold a position', 'maintain a position']]],
       ['Toss', 'move-right', 2, [['Movement', 'movement'], ['Reset for another rep', 'reset'], ['Distance from something hard', 'distance']]],
-      ['Scatter', 'search', 3, [['Sniffing and searching', 'sniffing'], ['Settling, with enough space', 'settle']]],
+      ['Scatter', 'search', 3, [['Sniffing and searching', 'sniffing']]],
     ];
     ROWS.forEach(([t, ic, b, chips], i) => {
       const r = put(stage, K.el('div', 'tma-row'), 100, 290 + i * 165);

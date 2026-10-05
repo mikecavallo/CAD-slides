@@ -32,18 +32,13 @@
     {
      "id": "tm00plan",
      "heading": "Where we're headed",
-     "visual_concept": "Plan slide like the other chapters, three cards: What you'll learn (markers, food games, how to teach them), How we'll get there (the five parts), Why it matters (clear, consistent information).",
+     "visual_concept": "Plan slide, two cards: What you'll learn, Why it matters.",
      "assets": [],
      "beats": [
       {
-       "say": "In this section, we’ll cover what markers mean, why we use different food games,",
-       "show": "Card: What you'll learn, rows land as said.",
+       "say": "In this section, we’ll cover what markers mean, why we use different food games, and how to teach them.",
+       "show": "Card: What you'll learn (What markers are, Why we use food games, How to teach them).",
        "onscreen": "What you'll learn"
-      },
-      {
-       "say": "and how to teach them.",
-       "show": "Card: How we'll get there, the five parts.",
-       "onscreen": "How we'll get there"
       },
       {
        "say": "We’ll also practise your mechanics so your dog receives clear, consistent information.",
@@ -87,7 +82,7 @@
     {
      "id": "tm01s02",
      "heading": "Introducing food games",
-     "visual_concept": "Three game cards with small animated headers (to the mouth, a toss to chase, a scatter); each gets its own word chip; 'which moment + which game'; no guessing: hand or ground.",
+     "visual_concept": "Tori's three pictures shown whole (no cropping) in a row, labelled To the mouth / A toss to chase / A scatter; pill: which moment + which game; no guessing.",
      "assets": [
       "tm_mouth_3.jpg",
       "tm_toss.jpg",
@@ -138,8 +133,8 @@
        "onscreen": "Toss"
       },
       {
-       "say": "Scatters encourage sniffing and searching, which may help your dog settle when they have enough space to feel comfortable.",
-       "show": "Row 3: Scatter: Sniffing, Settling (with enough space).",
+       "say": "Scatters encourage sniffing and searching.",
+       "show": "Row 3: Scatter: Sniffing and searching.",
        "onscreen": "Scatter"
       },
       {
@@ -166,8 +161,18 @@
        "onscreen": "Chase, then scatter"
       },
       {
-       "say": "Another dog may find food delivered directly to their mouth easier to follow. Watch how your dog responds, and make the situation easier if they cannot comfortably engage.",
-       "show": "Magnet hand: a person walks away with the dog following the treat held at its nose.",
+       "say": "Another dog may find food delivered directly to their mouth easier to follow.",
+       "show": "Magnet hand scene starts: a person walks away, the dog follows the treat at its nose.",
+       "onscreen": "Food to the mouth"
+      },
+      {
+       "say": "This is called a magnet hand. Hold a treat at your dog’s nose and walk them away. It helps when you know that if your dog looks, they’ll react.",
+       "show": "Chip: Magnet hand: move away before they look and react.",
+       "onscreen": "Magnet hand"
+      },
+      {
+       "say": "Watch how your dog responds, and make the situation easier if they cannot comfortably engage.",
+       "show": "Chip: Watch how your dog responds.",
        "onscreen": "Watch your dog"
       },
       {
@@ -265,12 +270,10 @@
    "scenes": [
     {
      "id": "tm02s01",
-     "heading": "Give each game its own word",
-     "visual_concept": "Three columns (To the mouth, A tossed treat, Scattered) with animated headers; the options drop in as chips; one chip per column turns green (picked), a clicker chip joins the mouth column; Good and Yes crossed in red; banner: reserve your words.",
+     "heading": "Food to the mouth",
+     "visual_concept": "Tori's mouth picture shown whole at left; heading; the example words drop in as chips.",
      "assets": [
-      "tm_mouth_3.jpg",
-      "tm_toss.jpg",
-      "tm_scatter.jpg"
+      "tm_mouth_3.jpg"
      ],
      "beats": [
       {
@@ -282,17 +285,49 @@
        "say": "Food to the mouth: “Yip,” “Yep,” “Mark,” “Nice,” or “Treat.”",
        "show": "Mouth column chips.",
        "onscreen": "To the mouth"
-      },
+      }
+     ]
+    },
+    {
+     "id": "tm02s02",
+     "heading": "A tossed treat",
+     "visual_concept": "Tori's toss picture shown whole; the example words drop in as chips.",
+     "assets": [
+      "tm_toss.jpg"
+     ],
+     "beats": [
       {
        "say": "A tossed treat: “Chase,” “Toss,” or “Get it.”",
        "show": "Toss column chips.",
        "onscreen": "Tossed"
-      },
+      }
+     ]
+    },
+    {
+     "id": "tm02s03",
+     "heading": "Treats scattered on the ground",
+     "visual_concept": "Tori's scatter picture shown whole; the example words drop in as chips.",
+     "assets": [
+      "tm_scatter.jpg"
+     ],
+     "beats": [
       {
        "say": "Treats scattered on the ground: “Scatter,” “Find it,” or “Search.”",
        "show": "Scatter column chips.",
        "onscreen": "Scattered"
-      },
+      }
+     ]
+    },
+    {
+     "id": "tm02s04",
+     "heading": "One word for each game",
+     "visual_concept": "Three picture tiles, each with its picked word; a clicker joins the mouth game; avoid good and yes; reserve your words.",
+     "assets": [
+      "tm_mouth_3.jpg",
+      "tm_toss.jpg",
+      "tm_scatter.jpg"
+     ],
+     "beats": [
       {
        "say": "Choose one word for each game and use it consistently. A clicker can also be your marker for food delivered to the mouth.",
        "show": "One chip per column turns green; Clicker chip added to the mouth column.",
@@ -468,7 +503,7 @@
     {
      "id": "tm04s03",
      "heading": "Teach the treat-toss marker",
-     "visual_concept": "Tori's picture first in the frame, then her video plays in the same frame (clip starts on beat 2).",
+     "visual_concept": "Tori's toss picture shown whole; bowling sweep graphic; rows (Mark, pause, move: toss a treat).",
      "assets": [
       "tm_toss.jpg"
      ],
@@ -493,6 +528,19 @@
        "show": "Row: A safe area with room.",
        "onscreen": "A safe area"
       }
+     ]
+    },
+    {
+     "id": "tm04s03v",
+     "heading": "Treat tosses in action",
+     "visual_concept": "Video slide: Tori's treat-toss video plays in the frame.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Here’s what that looks like with a real dog.",
+       "show": "Video frame; row: Mark, pause, toss.",
+       "onscreen": "In action"
+      }
      ],
      "clip": {
       "box": [
@@ -502,17 +550,16 @@
        518
       ],
       "poster": "tm_toss.jpg",
-      "label": "Introducing treat tosses",
+      "label": "Treat tosses",
       "at": 1.2,
       "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk",
-      "atBeat": 2
+      "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk"
      }
     },
     {
      "id": "tm04s04",
      "heading": "Teach the scatter marker",
-     "visual_concept": "Tori's picture first in the frame, then her video plays in the same frame (clip starts on beat 1).",
+     "visual_concept": "Tori's scatter picture shown whole; rows (Mark, pause, move: scatter a few treats).",
      "assets": [
       "tm_scatter.jpg"
      ],
@@ -532,6 +579,19 @@
        "show": "Row: Then other surfaces, like short grass.",
        "onscreen": "Then short grass"
       }
+     ]
+    },
+    {
+     "id": "tm04s04v",
+     "heading": "Scatters in action",
+     "visual_concept": "Video slide: Tori's scatter video plays in the frame.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "And here’s a scatter with a real dog.",
+       "show": "Video frame; row: Mark, pause, scatter.",
+       "onscreen": "In action"
+      }
      ],
      "clip": {
       "box": [
@@ -541,11 +601,10 @@
        518
       ],
       "poster": "tm_scatter.jpg",
-      "label": "Introducing scatters",
+      "label": "Scatters",
       "at": 1.2,
       "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=8PEainzd9mo",
-      "atBeat": 1
+      "youtube": "https://www.youtube.com/watch?v=8PEainzd9mo"
      }
     },
     {
@@ -578,7 +637,7 @@
     },
     {
      "id": "tm04s06",
-     "heading": "Hearing his markers",
+     "heading": "Responding to his markers",
      "visual_concept": "Video slide: Tori's blind dog responds to his markers by sound: Treat = to his mouth, Get it = head to the floor for a scatter.",
      "assets": [],
      "beats": [
@@ -606,7 +665,7 @@
        518
       ],
       "poster": "",
-      "label": "Hearing his markers",
+      "label": "Responding to his markers",
       "at": 1.2,
       "volume": 0
      }

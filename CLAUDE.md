@@ -173,6 +173,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   dog's paw line, and the dog's legs walk too (both swing in step, tail wags). tm02s03 name "Treats scattered"; the game
   name and its words stack in one column so they never overlap. Words added: mouth "X" (Tori's own marker word), toss
   "Free", scatter "Get it" (narration updated; paste into the doc).
+- Clips received: tm04s03v = Tori's "Fisher free bowling at park" (24 s, uploaded Oct 5; clips/tm04s03v.mp4, re-upload in a
+  new session). It plays with its own sound (volume 1) after the slide's narration line (clip `"afterNarration": true`).
+  YouTube downloads fail from this container (bot check, googlevideo.com blocked): Tori uploads files instead.
 - Review videos: Tori asked to see only what changed. Build the full video as usual, then
   `python3 tools/changes_reel.py --video out/NAME.mp4 --ids <changed ids> --out out/NAME-changes-roundN.mp4` (each part is
   labelled with its slide title and its time in the full video) and send that. Full video only when Tori asks.

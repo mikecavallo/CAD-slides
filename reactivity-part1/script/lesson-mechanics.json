@@ -550,10 +550,11 @@
        518
       ],
       "poster": "tm_toss.jpg",
-      "label": "Treat tosses",
+      "label": "Fisher: “Free” with a low toss",
       "at": 1.2,
-      "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk"
+      "volume": 1.0,
+      "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk",
+      "afterNarration": true
      }
     },
     {

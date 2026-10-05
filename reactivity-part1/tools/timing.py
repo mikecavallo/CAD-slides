@@ -41,6 +41,8 @@ def clip_info(sc, beats=()):
     info["at"] = c.get("at", 1.2)
     if "atBeat" in c and c["atBeat"] < len(beats):  # start the clip when that beat starts (a picture shows in the frame until then)
         info["at"] = round(beats[c["atBeat"]]["t"], 3)
+    if c.get("afterNarration") and beats:  # the clip starts once the slide's narration is done (its own sound plays clean)
+        info["at"] = round(beats[-1]["end"] + 0.3, 3)
     f = find_clip(sc["id"])
     if f:
         a = c.get("from", 0.0)

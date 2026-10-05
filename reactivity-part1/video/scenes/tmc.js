@@ -6,7 +6,8 @@
   const { at, put, clamp } = TM;
   const CSS = `
   .tmc-col { position: absolute; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); box-sizing: border-box; padding: 26px 28px; }
-  .tmc-col .stage { position: relative; height: 130px; border-radius: 18px; background: var(--green-mist); overflow: hidden; }
+  .tmc-col .stage { position: relative; height: 190px; border-radius: 18px; background: var(--green-mist); overflow: hidden; }
+  .tmc-col .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .tmc-col .tt { margin-top: 20px; font: 700 38px/1 var(--font-head); color: var(--ink); }
   .tmc-col .chips { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 14px; }
   .tmc-col .chips .tm-word { position: relative; font-size: 30px; padding: 12px 24px; }
@@ -30,13 +31,17 @@
     css(stage);
     TM.head(ctx, 'Choosing your markers', 'Give each game its own word');
     const COLS = [
-      ['To the mouth', ['Yip', 'Yep', 'Mark', 'Nice', 'Treat'], ['yip', 'yep', 'mark', 'nice', 'treat'], 1],
-      ['A tossed treat', ['Chase', 'Toss', 'Get it'], ['chase', 'toss', 'get it'], 2],
-      ['Scattered', ['Scatter', 'Find it', 'Search'], ['scatter', 'find it', 'search'], 3],
+      ['To the mouth', ['Yip', 'Yep', 'Mark', 'Nice', 'Treat'], ['yip', 'yep', 'mark', 'nice', 'treat'], 1, 'tm_mouth_3.jpg', '50% 32%'],
+      ['A tossed treat', ['Chase', 'Toss', 'Get it'], ['chase', 'toss', 'get it'], 2, 'tm_toss.jpg', '50% 62%'],
+      ['Scattered', ['Scatter', 'Find it', 'Search'], ['scatter', 'find it', 'search'], 3, 'tm_scatter.jpg', '45% 62%'],
     ];
-    const cols = COLS.map(([t, ws, ps, beat], i) => {
-      const c = put(stage, K.el('div', 'tmc-col'), 100 + i * 590, 280, { width: '540px', height: '500px' });
+    const cols = COLS.map(([t, ws, ps, beat, src, pos], i) => {
+      const c = put(stage, K.el('div', 'tmc-col'), 100 + i * 590, 275, { width: '540px', height: '560px' });
       const st = K.el('div', 'stage');
+      const im = K.el('img');
+      im.src = '../assets/img/' + src;
+      im.style.objectPosition = pos;
+      st.appendChild(im);
       c.appendChild(st);
       c.appendChild(K.el('div', 'tt', t));
       const chips = K.el('div', 'chips');
@@ -49,33 +54,8 @@
       });
       return { c, st, chips, ns };
     });
-    // header animations, each on its beat
-    {
-      const st = cols[0].st, t0 = cue(1) + 0.2;
-      const h = K.iconBadge(st, 'hand', { x: 60, y: 25, size: 80, variant: 'amber' });
-      const m = K.iconBadge(st, 'dog', { x: 340, y: 25, size: 80, variant: 'solid' });
-      const tr = TM.treat(st, 140, 65, 1.2);
-      A.in(tl, [h, m], t0, 'pop', { dur: 0.4, stagger: 0.1 });
-      tl.fromTo(tr, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t0 + 0.4);
-      tl.to(tr, { x: 190, duration: 0.8, ease: 'power2.inOut' }, t0 + 0.6);
-    }
-    {
-      const st = cols[1].st, t0 = cue(2) + 0.2;
-      const hd = K.iconBadge(st, 'hand', { x: 30, y: 45, size: 64, variant: 'amber' });
-      const sv = K.svg(st, { x: 0, y: 0, w: 484, h: 130 });
-      const trail = K.path(sv, 'M 100 100 C 200 110, 320 108, 430 100', { stroke: '#d9912b', 'stroke-width': 4, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
-      const tr = TM.treat(st, 110, 98, 1.2);
-      A.in(tl, hd, t0, 'pop', { dur: 0.4 });
-      A.draw(tl, trail, t0 + 0.3, 0.9);
-      TM.lowToss(tl, tr, 310, t0 + 0.3);
-    }
-    {
-      const st = cols[2].st, t0 = cue(3) + 0.2;
-      [[90, 0], [170, 0.1], [240, 0.05], [310, 0.18], [390, 0.12]].forEach(([x, d], k) => {
-        const tr = TM.treat(st, x, 98 - (k % 2) * 8, 1.0);
-        tl.fromTo(tr, { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.5, ease: 'bounce.out' }, t0 + d * 3);
-      });
-    }
+    // each picture lifts in on its beat
+    cols.forEach((k, i) => tl.fromTo(k.st.querySelector('img'), { scale: 1.12, opacity: 0.25 }, { scale: 1, opacity: 1, duration: 1.0, ease: 'power2.out' }, cue(i + 1) + 0.1));
     // pick one per game; a clicker can be the mouth marker
     const tP = at(ctx, 4, 'one word for each', 0.1);
     cols.forEach((k, i) => tl.to(k.ns[0], { backgroundColor: '#619537', color: '#fff', borderColor: '#619537', scale: 1.08, duration: 0.4 }, tP + 0.25 * i));
@@ -84,7 +64,7 @@
     A.in(tl, ck, at(ctx, 4, 'clicker', 0.7), 'pop', { dur: 0.45 });
     tl.to(ck, { backgroundColor: '#619537', color: '#fff', borderColor: '#619537', duration: 0.4 }, at(ctx, 4, 'clicker', 0.7) + 0.5);
     // avoid good and yes
-    const row = put(stage, K.el('div'), 0, 820, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
+    const row = put(stage, K.el('div'), 0, 865, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
     const al = flow(put(row, K.el('div', 'tm-lab', 'Avoid:'), 0, 0, { fontSize: '34px', color: 'var(--red)' }));
     const bad = [['“Good”', 'good'], ['“Yes”', 'yes']].map(([w, p]) => {
       const n = flow(TM.word(row, w, { variant: 'red', cross: true, size: 32 }));
@@ -98,7 +78,7 @@
     A.in(tl, why, at(ctx, 5, 'everyday', 0.5), 'fadeUp', { dur: 0.5 });
     const tR = at(ctx, 6, 'reserve', 0.4);
     tl.to(row, { opacity: 0, duration: 0.35 }, cue(6));
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 815);
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 858);
     bn.appendChild(K.icon('lock'));
     bn.appendChild(K.el('span', null, 'Reserve your words <b>for these games</b>'));
     TM.centerX(bn, 960);

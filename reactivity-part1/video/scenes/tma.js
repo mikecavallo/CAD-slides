@@ -17,7 +17,8 @@
   .tma-fr.hit svg, .tma-fr.hit span { color: var(--green-dark); }
   .tma-flash { position: absolute; inset: 0; border-radius: 6px; background: #fff; }
   .tma-col { position: absolute; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); box-sizing: border-box; padding: 26px 28px; }
-  .tma-col .stage { position: relative; height: 150px; border-radius: 18px; background: var(--green-mist); overflow: hidden; }
+  .tma-col .stage { position: relative; height: 240px; border-radius: 18px; background: var(--green-mist); overflow: hidden; }
+  .tma-col .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .tma-col .tt { margin-top: 22px; font: 700 40px/1 var(--font-head); color: var(--ink); }
   .tma-col .wd { margin-top: 26px; height: 70px; position: relative; }
   .tma-row { position: absolute; left: 100px; width: 1720px; height: 140px; box-sizing: border-box; border-radius: 26px; background: #fff; border: 1px solid #e6e9e1;
@@ -96,10 +97,14 @@
     TM.head(ctx, 'Food games', 'Introducing food games');
     const sub = K.text(stage, 'Different ways to deliver <b style="color:var(--green)">the treat</b>', { x: 1000, y: 175, cls: 'lead', size: 34 });
     A.in(tl, sub, at(ctx, 0, 'food games', 0.7), 'fadeUp', { dur: 0.6 });
-    const G = [['To the mouth', 'Yip', 'mouth'], ['A toss to chase', 'Chase', 'tossing'], ['A scatter', 'Scatter', 'scattering']];
-    const cols = G.map(([t, w, p], i) => {
-      const c = put(stage, K.el('div', 'tma-col'), 100 + i * 590, 300, { width: '540px', height: '400px' });
+    const G = [['To the mouth', 'Yip', 'mouth', 'tm_mouth_3.jpg', '50% 35%'], ['A toss to chase', 'Chase', 'tossing', 'tm_toss.jpg', '50% 60%'], ['A scatter', 'Scatter', 'scattering', 'tm_scatter.jpg', '45% 60%']];
+    const cols = G.map(([t, w, p, src, pos], i) => {
+      const c = put(stage, K.el('div', 'tma-col'), 100 + i * 590, 290, { width: '540px', height: '490px' });
       const st = K.el('div', 'stage');
+      const im = K.el('img');
+      im.src = '../assets/img/' + src;
+      im.style.objectPosition = pos;
+      st.appendChild(im);
       c.appendChild(st);
       c.appendChild(K.el('div', 'tt', t));
       const wd = K.el('div', 'wd');
@@ -109,37 +114,12 @@
       const chip = TM.word(wd, '“' + w + '”', { variant: 'green', size: 34 });
       return { c, st, chip, tc };
     });
-    // header animations
-    {
-      const st = cols[0].st, t0 = cols[0].tc + 0.4;
-      const h = K.iconBadge(st, 'hand', { x: 60, y: 35, size: 80, variant: 'amber' });
-      const m = K.iconBadge(st, 'dog', { x: 340, y: 35, size: 80, variant: 'solid' });
-      const tr = TM.treat(st, 140, 75, 1.2);
-      A.in(tl, [h, m], t0, 'pop', { dur: 0.4, stagger: 0.1 });
-      tl.fromTo(tr, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t0 + 0.4);
-      tl.to(tr, { x: 190, duration: 0.8, ease: 'power2.inOut' }, t0 + 0.6);
-    }
-    {
-      const st = cols[1].st, t0 = cols[1].tc + 0.4;
-      const hd = K.iconBadge(st, 'hand', { x: 30, y: 60, size: 70, variant: 'amber' });
-      const sv = K.svg(st, { x: 0, y: 0, w: 484, h: 150 });
-      const trail = K.path(sv, 'M 100 118 C 200 128, 320 126, 430 118', { stroke: '#d9912b', 'stroke-width': 4, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
-      const tr = TM.treat(st, 110, 116, 1.2);
-      A.in(tl, hd, t0, 'pop', { dur: 0.4 });
-      A.draw(tl, trail, t0 + 0.3, 0.9);
-      TM.lowToss(tl, tr, 310, t0 + 0.3);
-    }
-    {
-      const st = cols[2].st, t0 = cols[2].tc + 0.4;
-      [[90, 0], [170, 0.1], [240, 0.05], [310, 0.18], [390, 0.12]].forEach(([x, d], k) => {
-        const tr = TM.treat(st, x, 112 - (k % 2) * 8, 1.0);
-        tl.fromTo(tr, { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.5, ease: 'bounce.out' }, t0 + d * 3);
-      });
-    }
+    // a slow drift on each picture
+    cols.forEach(k => tl.fromTo(k.st.querySelector('img'), { scale: 1.0 }, { scale: 1.08, duration: Math.max(2, end(3) - k.tc), ease: 'none' }, k.tc));
     // a word for each game
     const tW = at(ctx, 2, 'different marker word', 0.15);
     cols.forEach((k, i) => A.in(tl, k.chip, tW + 0.3 * i, 'pop', { dur: 0.45 }));
-    const pill = put(stage, K.el('div', 'tm-banner'), 0, 760);
+    const pill = put(stage, K.el('div', 'tm-banner'), 0, 805);
     pill.appendChild(K.icon('volume-2'));
     pill.appendChild(K.el('span', null, 'The marker says: <b>which moment</b> + <b>which game</b>'));
     TM.centerX(pill, 960);
@@ -147,12 +127,12 @@
     // no guessing
     const tN = at(ctx, 3, 'won’t have to guess', 0.45);
     tl.to(pill, { opacity: 0, duration: 0.35 }, tN - 0.3);
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 760);
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 805);
     bn.appendChild(K.icon('circle-check'));
     bn.appendChild(K.el('span', null, 'No guessing: <b>your hand, or the ground?</b>'));
     TM.centerX(bn, 960);
     A.in(tl, bn, tN, 'fadeUp', { dur: 0.6 });
-    const cf = put(stage, K.el('div', 'tm-lab', 'Less confusion and frustration'), 0, 880, { width: '1920px', textAlign: 'center', fontSize: '30px', color: 'var(--green-dark)' });
+    const cf = put(stage, K.el('div', 'tm-lab', 'Less confusion and frustration'), 0, 915, { width: '1920px', textAlign: 'center', fontSize: '30px', color: 'var(--green-dark)' });
     A.in(tl, cf, at(ctx, 3, 'confusion and frustration', 0.3), 'fadeUp', { dur: 0.5 });
   });
 

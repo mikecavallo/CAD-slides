@@ -28,12 +28,12 @@
     const panel = put(stage, K.el('div', 'tm-panel'), 100, 290, { width: '1720px', height: '410px' });
     A.in(tl, panel, cue(0) + 0.2, 'fadeUp', { dur: 0.6 });
     // something worrying at the left
-    const wr = K.iconBadge(stage, 'triangle-alert', { x: 150, y: 400, size: 110, variant: 'amber' });
-    const wl = put(stage, K.el('div', 'tm-lab', 'Something worrying'), 110, 530, { fontSize: '28px', color: '#8a5410' });
+    const wr = K.iconBadge(stage, 'triangle-alert', { x: 200, y: 370, size: 100, variant: 'amber' });
+    const wl = put(stage, K.el('div', 'tm-lab', 'Something<br>worrying'), 160, 486, { fontSize: '28px', color: '#8a5410', width: '180px', textAlign: 'center', whiteSpace: 'normal' });
     A.in(tl, [wr, wl], at(ctx, 0, 'stressed', 0.3), 'pop', { dur: 0.5, stagger: 0.1 });
     // the dog, close to it and facing it
     const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
-    const DX = 560, DY = 560;
+    const DX = 640, DY = 560;
     const D = C2.dog(sv, DX, DY, 0.62);
     tl.set(D.outer, { scaleX: -1, svgOrigin: `${DX} ${DY}` }, 0);
     A.in(tl, D.outer, cue(0) + 0.6, 'fade', { dur: 0.6 });
@@ -41,12 +41,12 @@
     A.draw(tl, ground, cue(0) + 0.5, 0.8);
     // food to the mouth up close: harder for this dog
     const tSc = at(ctx, 0, 'standing still', 0.6);
-    const hand = K.iconBadge(stage, 'hand', { x: 330, y: 470, size: 76, variant: 'amber' });
-    const tr0 = TM.treat(stage, 420, 520, 1.1);
+    const hand = K.iconBadge(stage, 'hand', { x: 400, y: 440, size: 70, variant: 'amber' });
+    const tr0 = TM.treat(stage, 488, 482, 1.1);
     A.in(tl, hand, tSc, 'pop', { dur: 0.4 });
     tl.fromTo(tr0, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }, tSc + 0.3);
     const close = [hand, tr0];
-    const hard = TM.word(stage, 'Standing still for a treat up close: harder', { x: 330, y: 316, variant: 'red', size: 30, icon: 'x' });
+    const hard = TM.word(stage, 'Standing still for a treat up close: harder', { x: 400, y: 316, variant: 'red', size: 30, icon: 'x' });
     A.in(tl, hard, at(ctx, 0, 'harder', 0.85), 'pop', { dur: 0.45 });
     // chase while moving away (low, along the ground), then a scatter with enough space
     const t1 = at(ctx, 1, 'treat chases', 0.15);
@@ -69,9 +69,35 @@
     });
     const ok = TM.word(stage, 'Enough space: scatter', { x: 1360, y: 316, variant: 'green', size: 30, icon: 'check' });
     A.in(tl, ok, tSp, 'pop', { dur: 0.45 });
-    // every dog is different
-    const m = TM.word(stage, 'Every dog is different', { x: 100, y: 735, variant: 'pale', size: 30, icon: 'dog' });
-    A.in(tl, m, at(ctx, 2, 'another dog', 0.1), 'fadeUp', { dur: 0.5 });
+    // another dog: the magnet hand, walking away with a treat held at the dog's nose
+    const tM = at(ctx, 2, 'another dog', 0.05);
+    const sceneOut = [...stage.querySelectorAll('.tm-treat'), away, ok, D.outer];
+    tl.to(sceneOut, { opacity: 0, duration: 0.4 }, tM - 0.1);
+    tl.to(sv.querySelectorAll('path[stroke="#d9912b"]'), { opacity: 0, duration: 0.4 }, tM - 0.1);
+    const MX = 470, MY = 560, S2 = 0.62;
+    const M = C2.dog(sv, MX, MY, S2);
+    const nose = [MX + 173 * S2, MY - 55];
+    const PX = nose[0] + 74;
+    const P = K.group(sv, { transform: `translate(${PX} 666)` });
+    const leg1 = K.path(P, 'M 0 -138 L -16 -4', { stroke: '#41608f', 'stroke-width': 20, 'stroke-linecap': 'round', fill: 'none' });
+    const leg2 = K.path(P, 'M 0 -138 L 16 -4', { stroke: '#4a6fa5', 'stroke-width': 20, 'stroke-linecap': 'round', fill: 'none' });
+    K.path(P, 'M -26 -250 C -30 -200 -28 -160 -24 -128 L 24 -128 C 28 -160 30 -200 26 -250 C 14 -262 -14 -262 -26 -250 Z', { fill: '#5b6b3a', stroke: 'none' });
+    K.path(P, 'M 4 -236 C -18 -214 -40 -186 ' + (nose[0] - PX + 6) + ' ' + (nose[1] - 666 - 4), { stroke: '#5b6b3a', 'stroke-width': 15, 'stroke-linecap': 'round', fill: 'none' });
+    K.circle(P, nose[0] - PX + 6, nose[1] - 666 - 4, 9, { fill: '#e2b48f' });
+    K.circle(P, 0, -286, 27, { fill: '#e2b48f' });
+    K.path(P, 'M -27 -290 C -26 -318 22 -322 28 -296 C 20 -306 -6 -306 -14 -296 C -22 -286 -30 -276 -38 -262 C -36 -276 -30 -284 -27 -290 Z', { fill: '#6b3f22', stroke: 'none' });
+    const tH = TM.treat(stage, nose[0] + 2, nose[1] - 4, 0.9);
+    const grp = [M.outer, P];
+    A.in(tl, grp, tM + 0.2, 'fade', { dur: 0.5 });
+    A.in(tl, tH, tM + 0.5, 'pop', { dur: 0.35 });
+    const walk = Math.max(2, end(2) - tM - 0.8);
+    tl.to([M.outer, P], { x: '+=620', duration: walk, ease: 'none' }, tM + 0.7);
+    tl.to(tH, { x: 620, duration: walk, ease: 'none' }, tM + 0.7);
+    const steps = Math.max(1, Math.floor(walk / 0.5));
+    tl.fromTo(leg1, { rotation: -14, svgOrigin: '0 -138' }, { rotation: 14, svgOrigin: '0 -138', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
+    tl.fromTo(leg2, { rotation: 14, svgOrigin: '0 -138' }, { rotation: -14, svgOrigin: '0 -138', duration: 0.25, ease: 'sine.inOut', yoyo: true, repeat: 2 * steps - 1 }, tM + 0.7);
+    const m = TM.word(stage, 'Magnet hand: the treat stays at the nose as you walk', { x: 100, y: 735, variant: 'pale', size: 30, icon: 'magnet' });
+    A.in(tl, m, tM + 0.6, 'fadeUp', { dur: 0.5 });
     const w = TM.word(stage, 'Watch how your dog responds', { x: 100, y: 820, variant: 'green', size: 30, icon: 'eye' });
     A.in(tl, w, at(ctx, 2, 'watch how', 0.6), 'fadeUp', { dur: 0.5 });
     const pg = TM.word(stage, 'Coming later: pattern games', { x: 1260, y: 820, variant: 'pale', size: 30, icon: 'sparkles' });
@@ -83,7 +109,7 @@
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Just as important', 'What a marker is not');
-    const row = put(stage, K.el('div'), 100, 280, { position: 'absolute', display: 'flex', alignItems: 'center', gap: '18px' });
+    const row = put(stage, K.el('div'), 100, 272, { position: 'absolute', display: 'flex', alignItems: 'center', gap: '18px' });
     const nl = flow(put(row, K.el('div', 'tm-lab', 'It never means:'), 0, 0, { fontSize: '34px' }));
     A.in(tl, nl, at(ctx, 0, 'does not mean', 0.5), 'fadeUp', { dur: 0.5 });
     [['“No”', 'no'], ['“Stop”', 'stop'], ['“Look at me”', 'look at me']].forEach(([w, p]) => {
@@ -92,30 +118,32 @@
       A.in(tl, n, t, 'pop', { dur: 0.4 });
       TM.strike(tl, n, t + 0.35);
     });
-    const pic = K.photo(stage, 'tm_img_checkin.jpg', { x: 100, y: 370, w: 960, h: 576, radius: 22 });
-    pic.img.style.objectFit = 'contain';
-    pic.root.style.background = '#fff';
+    const card = (x, src, title, cap, good) => {
+      const t = put(stage, K.el('div', 'tm-lab', title), x, 370, { fontSize: '34px', color: good ? 'var(--green-dark)' : 'var(--red)', display: 'flex', alignItems: 'center', gap: '12px' });
+      t.prepend(K.icon(good ? 'circle-check' : 'circle-x', { size: 36 }));
+      const ph = K.photo(stage, src, { x, y: 425, w: 560, h: 452, pos: '50% 45%' });
+      ph.root.style.border = '6px solid ' + (good ? '#619537' : '#b8452d');
+      const c = put(stage, K.el('div', 'tm-lab', cap), x, 892, { fontSize: '28px', color: 'var(--ink-soft)', width: '560px', whiteSpace: 'normal' });
+      return { t, ph, c };
+    };
+    const G = card(100, 'tm_ck_good.jpg', 'Mark the check-in', 'Looking at you earns the treat.', true);
+    const Bd = card(700, 'tm_ck_bad.jpg', 'Avoid marking the pulling', 'You may reinforce pulling and staring.', false);
     const tG = at(ctx, 2, 'check in', 0.1);
-    tl.fromTo(pic.root, { opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' }, { opacity: 1, clipPath: 'inset(0% 50% 0% 0%)', duration: 0.9, ease: 'power2.out' }, tG);
-    tl.to(pic.root, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: 'power2.out' }, at(ctx, 3, 'get their attention', 0.15));
-    const col = put(stage, K.el('div', 'tm-col'), 1120, 380, { width: '700px', gap: '40px' });
-    const lead = K.el('div', null, 'Mark behavior you want <b style="color:var(--green)">repeated</b>.');
-    Object.assign(lead.style, { font: '500 40px/1.3 var(--font-body)', color: 'var(--ink)' });
-    col.appendChild(lead);
+    A.in(tl, [G.t, G.ph.root], tG, 'fadeUp', { dur: 0.7, stagger: 0.12 });
+    A.kenburns(tl, G.ph.img, { from: 1.0, to: 1.08 });
+    A.in(tl, G.c, at(ctx, 2, 'look at you', 0.9), 'fadeUp', { dur: 0.5 });
+    const tB = at(ctx, 3, 'get their attention', 0.15);
+    A.in(tl, [Bd.t, Bd.ph.root], tB, 'fadeUp', { dur: 0.7, stagger: 0.12 });
+    A.kenburns(tl, Bd.ph.img, { from: 1.0, to: 1.08 });
+    A.in(tl, Bd.c, at(ctx, 3, 'accidentally reinforce', 0.55), 'fadeUp', { dur: 0.5 });
+    const lead = put(stage, K.el('div', null, 'Mark behavior you want <b style="color:var(--green)">repeated</b>.'), 1310, 425, { position: 'absolute', width: '510px', font: '500 40px/1.3 var(--font-body)', color: 'var(--ink)' });
     A.in(tl, lead, at(ctx, 1, 'mark behavior', 0.3), 'fadeUp', { dur: 0.6 });
-    const r1 = TM.row(col, 'circle-check', 'Check-in: *mark the look*', { size: 34 });
-    A.in(tl, r1, at(ctx, 2, 'mark the moment', 0.7), 'fadeRight', { dur: 0.5 });
-    const r2 = TM.row(col, 'x', 'Pulling: <b style="color:var(--red)">don’t mark it</b>', { size: 34 });
-    r2.querySelector('.ic').style.background = 'var(--red-pale)';
-    r2.querySelector('.ic').style.color = 'var(--red)';
-    A.in(tl, r2, at(ctx, 3, 'accidentally reinforce', 0.55), 'fadeRight', { dur: 0.5 });
-    const bn = put(stage, K.el('div', 'tm-banner'), 1120, 760, { width: '700px', boxSizing: 'border-box' });
+    const bn = put(stage, K.el('div', 'tm-banner'), 1310, 600, { width: '510px', boxSizing: 'border-box' });
     bn.appendChild(K.icon('circle-check'));
-    bn.appendChild(K.el('span', null, 'Say it once. <b>Always follow through with the food.</b>'));
+    bn.appendChild(K.el('span', null, 'Say it once. <b>Always follow through.</b>'));
     A.in(tl, bn, at(ctx, 4, 'say the marker once', 0.1), 'fadeUp', { dur: 0.6 });
     const tN = at(ctx, 5, 'marker in action', 0.7);
-    tl.to(bn, { opacity: 0, duration: 0.35 }, tN - 0.35);
-    const nx = put(stage, K.el('div', 'tm-banner'), 1120, 760, { width: '700px', boxSizing: 'border-box' });
+    const nx = put(stage, K.el('div', 'tm-banner'), 1310, 820, { width: '510px', boxSizing: 'border-box' });
     nx.appendChild(K.icon('circle-play'));
     nx.appendChild(K.el('span', null, 'Next: <b>a marker in action</b>'));
     A.in(tl, nx, tN, 'fadeUp', { dur: 0.6 });

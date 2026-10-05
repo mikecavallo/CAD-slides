@@ -88,7 +88,11 @@
      "id": "tm01s02",
      "heading": "Introducing food games",
      "visual_concept": "Three game cards with small animated headers (to the mouth, a toss to chase, a scatter); each gets its own word chip; 'which moment + which game'; no guessing: hand or ground.",
-     "assets": [],
+     "assets": [
+      "tm_mouth_3.jpg",
+      "tm_toss.jpg",
+      "tm_scatter.jpg"
+     ],
      "beats": [
       {
        "say": "There are different ways we can deliver that treat. We call these food games.",
@@ -163,7 +167,7 @@
       },
       {
        "say": "Another dog may find food delivered directly to their mouth easier to follow. Watch how your dog responds, and make the situation easier if they cannot comfortably engage.",
-       "show": "Chips: Every dog is different; Watch how your dog responds.",
+       "show": "Magnet hand: a person walks away with the dog following the treat held at its nose.",
        "onscreen": "Watch your dog"
       },
       {
@@ -176,9 +180,10 @@
     {
      "id": "tm01s05",
      "heading": "What a marker is not",
-     "visual_concept": "Crossed chips No / Stop / Look at me; Tori's illustration: mark the check-in, avoid marking the pulling (left half on the check-in line, right half on the pulling line); say it once, always follow through.",
+     "visual_concept": "Crossed chips No / Stop / Look at me; Tori's two scenes cut from her graphic as separate framed pictures: Mark the check-in (green) on the check-in line, Avoid marking the pulling (red) on the pulling line; say it once, always follow through.",
      "assets": [
-      "tm_img_checkin.jpg"
+      "tm_ck_good.jpg",
+      "tm_ck_bad.jpg"
      ],
      "beats": [
       {
@@ -262,7 +267,11 @@
      "id": "tm02s01",
      "heading": "Give each game its own word",
      "visual_concept": "Three columns (To the mouth, A tossed treat, Scattered) with animated headers; the options drop in as chips; one chip per column turns green (picked), a clicker chip joins the mouth column; Good and Yes crossed in red; banner: reserve your words.",
-     "assets": [],
+     "assets": [
+      "tm_mouth_3.jpg",
+      "tm_toss.jpg",
+      "tm_scatter.jpg"
+     ],
      "beats": [
       {
        "say": "Choose a short, distinct word for each food game. Some options include:",
@@ -418,9 +427,11 @@
     {
      "id": "tm04s02",
      "heading": "Teach the mouth-delivery marker",
-     "visual_concept": "Tori's picture first in the frame, then her video plays in the same frame (clip starts on beat 1).",
+     "visual_concept": "Tori's three-step picture as an animation in the frame (Yip, pause, treat to the mouth, one panel per phrase); then her video plays in the same frame (clip starts on beat 1).",
      "assets": [
-      "tm_img_mouth.jpg"
+      "tm_mouth_1.jpg",
+      "tm_mouth_2.jpg",
+      "tm_mouth_3.jpg"
      ],
      "beats": [
       {
@@ -446,12 +457,11 @@
        920,
        518
       ],
-      "poster": "tm_img_mouth.jpg",
+      "poster": "",
       "label": "Introducing “Yip”",
       "at": 1.2,
       "volume": 0,
       "youtube": "https://www.youtube.com/watch?v=P54Wuz8WTMk",
-      "fit": "contain",
       "atBeat": 1
      }
     },
@@ -460,7 +470,7 @@
      "heading": "Teach the treat-toss marker",
      "visual_concept": "Tori's picture first in the frame, then her video plays in the same frame (clip starts on beat 2).",
      "assets": [
-      "tm_img_toss.jpg"
+      "tm_toss.jpg"
      ],
      "beats": [
       {
@@ -474,9 +484,9 @@
        "onscreen": "Low and across, like bowling"
       },
       {
-       "say": "Let them finish eating before repeating. Start with easy tosses, then gradually vary the direction and distance as they learn the game.",
-       "show": "Row: Then vary direction and distance.",
-       "onscreen": "Then vary it"
+       "say": "Let them finish eating before repeating. Start with easy tosses, then gradually vary the distance as they learn the game.",
+       "show": "Row: Then vary the distance.",
+       "onscreen": "Then vary the distance"
       },
       {
        "say": "Check that you’re tossing into a safe area with enough room for your dog to follow.",
@@ -491,12 +501,11 @@
        920,
        518
       ],
-      "poster": "tm_img_toss.jpg",
+      "poster": "tm_toss.jpg",
       "label": "Introducing treat tosses",
       "at": 1.2,
       "volume": 0,
       "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk",
-      "fit": "contain",
       "atBeat": 2
      }
     },
@@ -505,7 +514,7 @@
      "heading": "Teach the scatter marker",
      "visual_concept": "Tori's picture first in the frame, then her video plays in the same frame (clip starts on beat 1).",
      "assets": [
-      "tm_img_scatter.jpg"
+      "tm_scatter.jpg"
      ],
      "beats": [
       {
@@ -531,12 +540,11 @@
        920,
        518
       ],
-      "poster": "tm_img_scatter.jpg",
+      "poster": "tm_scatter.jpg",
       "label": "Introducing scatters",
       "at": 1.2,
       "volume": 0,
       "youtube": "https://www.youtube.com/watch?v=8PEainzd9mo",
-      "fit": "contain",
       "atBeat": 1
      }
     },
@@ -570,19 +578,24 @@
     },
     {
      "id": "tm04s06",
-     "heading": "A marker your dog understands",
-     "visual_concept": "Video slide (a dog responding to the clicker); rows at left.",
+     "heading": "Hearing his markers",
+     "visual_concept": "Video slide: Tori's blind dog responds to his markers by sound: Treat = to his mouth, Get it = head to the floor for a scatter.",
      "assets": [],
      "beats": [
       {
-       "say": "In this video, the dog has learned that the click predicts a treat delivered to their mouth.",
-       "show": "Row: Click means a treat to the mouth.",
-       "onscreen": "Click = treat to the mouth"
+       "say": "My dog in this video is blind, so he relies completely on the sound of his markers.",
+       "show": "Row: He relies on the sound.",
+       "onscreen": "He relies on the sound"
       },
       {
-       "say": "Watch how they respond to the sound before moving the hand with the food.",
-       "show": "Row: Watch the response, before the food.",
-       "onscreen": "Before the food arrives"
+       "say": "When I say “treat,” he knows the treat is coming to his mouth. When I say “get it,” he drops his head to the floor, because the treats will be scattered.",
+       "show": "Rows: Treat, to his mouth; Get it, head to the floor.",
+       "onscreen": "Treat / Get it"
+      },
+      {
+       "say": "Watch how he responds to each word before my hand moves.",
+       "show": "Row: He responds before the hand moves.",
+       "onscreen": "Before the hand moves"
       }
      ],
      "clip": {
@@ -592,11 +605,10 @@
        920,
        518
       ],
-      "poster": "tm_clip_clicker.jpg",
-      "label": "Responding to the clicker",
+      "poster": "",
+      "label": "Hearing his markers",
       "at": 1.2,
-      "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=UiUIU5rHcrA"
+      "volume": 0
      }
     }
    ]
@@ -611,7 +623,7 @@
     {
      "id": "tm05s01",
      "heading": "Mark the moment",
-     "visual_concept": "A clean four-step sequence (Watch, Mark, Pause, Feed the game) with large light numerals and a progress rule; two example cards (a sit, a check-in); a quiet callout: food ready, mark and hand separate.",
+     "visual_concept": "A clean three-step sequence (Mark, Pause, Move your hand to deliver the treat) with light numerals and a progress rule; two example cards; a quiet note.",
      "assets": [],
      "beats": [
       {

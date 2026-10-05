@@ -59,13 +59,36 @@
 
   // ---------------------------------------------------------------- the three introductions (clips)
   registerScene('tm04s02', ctx => {
-    TM.videoSlide(ctx, {
+    const { stage, tl, cue, end } = ctx;
+    const v = TM.videoSlide(ctx, {
       kicker: 'Teaching your dog', heading: 'Teach the mouth-delivery marker',
       rows: [
         { icon: 'dog', html: 'Mark, pause, *treat to the mouth*', beat: 0, phrase: 'say your chosen', fb: 0.05 },
         { icon: 'timer', html: 'A short break *between reps*', beat: 1, phrase: 'short break', fb: 0.2 },
         { icon: 'mouse-pointer-click', html: 'Clicker: *click, pause, treat*', beat: 2, phrase: 'clicker', fb: 0.2 },
       ],
+    });
+    // Tori's three-step picture, one panel at a time inside the frame (her video plays in the same frame afterwards)
+    const [bx, by, bw, bh] = v.vf.box;
+    const bg = put(stage, K.el('div'), bx, by, { position: 'absolute', width: bw + 'px', height: bh + 'px', background: 'var(--green-mist)' });
+    A.in(tl, bg, 0.25, 'fade', { dur: 0.6 });
+    const PW = 268, PH = 440, GAP = (bw - 3 * PW) / 4, PY = by + (bh - PH) / 2;
+    const STEP = [['tm_mouth_1.jpg', 'Mark', 'say your chosen marker'], ['tm_mouth_2.jpg', 'Pause', 'pause briefly'], ['tm_mouth_3.jpg', 'Treat to the mouth', 'bring a treat']];
+    const ts = [];
+    const panels = STEP.map(([src, lab, p], i) => {
+      const x = bx + GAP + i * (PW + GAP);
+      const ph = K.photo(stage, src, { x, y: PY, w: PW, h: PH, radius: 16, pos: '50% 40%' });
+      const tag = put(stage, K.el('div', 'tm-word green'), x + 12, PY + PH - 58, { fontSize: '24px', padding: '8px 16px' });
+      tag.textContent = lab;
+      const t = Math.max(at(ctx, 0, p, 0.15 + 0.3 * i), (ts[i - 1] || 0) + 0.6);
+      ts.push(t);
+      A.in(tl, ph.root, t, 'fadeUp', { dur: 0.6 });
+      A.in(tl, tag, t + 0.3, 'pop', { dur: 0.35 });
+      if (i) {
+        const ar = K.iconBadge(stage, 'arrow-right', { x: x - GAP / 2 - 18, y: PY + PH / 2 - 18, size: 36, variant: 'solid' });
+        A.in(tl, ar, t - 0.15, 'fade', { dur: 0.3 });
+      }
+      return ph;
     });
   });
 
@@ -76,7 +99,7 @@
       rows: [
         { icon: 'move-right', html: 'Mark, pause, *a short, easy toss*', beat: 0, phrase: 'toss one treat', fb: 0.4 },
         { icon: 'hand', html: 'Low and across your body, *like bowling*', beat: 1, phrase: 'low, sweeping', fb: 0.1 },
-        { icon: 'shuffle', html: 'Then vary *direction and distance*', beat: 2, phrase: 'gradually vary', fb: 0.6 },
+        { icon: 'move-horizontal', html: 'Then vary *the distance*', beat: 2, phrase: 'gradually vary', fb: 0.6 },
         { icon: 'shield-check', html: 'A safe area *with room*', beat: 3, phrase: 'safe area', fb: 0.4 },
       ],
     });
@@ -162,10 +185,12 @@
 
   registerScene('tm04s06', ctx => {
     TM.videoSlide(ctx, {
-      kicker: 'See it at work', heading: 'A marker your dog understands',
+      kicker: 'See it at work', heading: 'Hearing his markers', gap: 30,
       rows: [
-        { icon: 'mouse-pointer-click', html: 'Click = *a treat to the mouth*', beat: 0, phrase: 'click predicts', fb: 0.5 },
-        { icon: 'eye', html: 'Watch the response, *before the hand moves*', beat: 1, phrase: 'respond', fb: 0.3 },
+        { icon: 'ear', html: 'A blind dog: *he relies on the sound*', beat: 0, phrase: 'blind', fb: 0.4 },
+        { icon: 'dog', html: '“Treat”: *coming to his mouth*', beat: 1, phrase: 'treat', fb: 0.2 },
+        { icon: 'arrow-down', html: '“Get it”: *head to the floor, a scatter*', beat: 1, phrase: 'get it', fb: 0.6 },
+        { icon: 'eye', html: 'He responds *before the hand moves*', beat: 2, phrase: 'responds', fb: 0.3 },
       ],
     });
   });

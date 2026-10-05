@@ -153,6 +153,14 @@ pipeline). This file records the state, decisions and working agreements from ea
   turns into the clip start time). Narration changed at Tori's request (paste into the doc): tm01s04 b0 "standing still
   to take a treat from your hand", tm01s05 b0 "a way to get your dog's attention", tm04s03 new bowling beat, tm04s06 b1
   "before moving the hand with the food".
+- Round 2 feedback (applied): Tori's pictures are cut into clean panels (no black or white background; `tm_ck_good/bad`,
+  `tm_mouth_1..3`, `tm_toss`, `tm_scatter`) and animated like the other courses: food-game cards (tm01s01/tm02s01) use them
+  as headers; tm01s05 shows the check-in and pulling scenes as two framed pictures; tm04s02 plays the three mouth panels
+  (Mark, Pause, Treat to the mouth) one by one in the frame before the clip. tm01s04: worry sign moved in, hand clear of
+  the words; the "another dog" line shows the magnet hand (a drawn person walks away with a treat held at the dog's nose).
+  tm04s03 "vary the distance" only (narration changed too). tm04s06 is now Tori's blind dog hearing his markers ("treat" =
+  to his mouth, "get it" = head to the floor for a scatter; narration written by Claude, clip pending; the clicker example
+  is out). tm05s01 is three steps: Mark, Pause, Move (your hand to deliver the treat).
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

@@ -7,7 +7,7 @@
 
   const CSS = `
   .tme-seq { position: absolute; left: 100px; top: 290px; width: 1720px; height: 290px; background: #fff; border-radius: 26px; border: 1px solid #e6e9e1;
-    box-shadow: var(--shadow-soft); overflow: hidden; display: grid; grid-template-columns: repeat(4, 1fr); }
+    box-shadow: var(--shadow-soft); overflow: hidden; display: grid; grid-template-columns: repeat(3, 1fr); }
   .tme-seq .rail { position: absolute; left: 0; top: 0; height: 8px; width: 100%; background: #eef1ea; }
   .tme-seq .fill { position: absolute; left: 0; top: 0; height: 8px; width: 100%; background: var(--green); transform-origin: left center; }
   .tme-step { position: relative; padding: 44px 40px 0; border-left: 2px solid #eef1ea; }
@@ -36,7 +36,7 @@
     const seq = put(stage, K.el('div', 'tme-seq'), 100, 290);
     const rail = K.el('div', 'rail'), fill = K.el('div', 'fill');
     seq.appendChild(rail); seq.appendChild(fill);
-    const STEPS = [['Watch', 'for the behavior you want', 'watch for'], ['Mark', 'the instant it happens', 'mark the instant'], ['Pause', 'briefly, hand still', 'pause briefly'], ['Feed', 'the matching food game', 'deliver the matching']];
+    const STEPS = [['Mark', 'the instant it happens', 'mark the instant'], ['Pause', 'briefly, hand still', 'pause briefly'], ['Move', 'your hand to deliver the treat', 'deliver the matching']];
     const cols = STEPS.map(([t, d], i) => {
       const c = K.el('div', 'tme-step', `<div class="n">0${i + 1}</div><div class="t">${t}</div><div class="d">${d}</div>`);
       seq.appendChild(c);
@@ -48,7 +48,7 @@
     const ts = STEPS.map(([, , p], i) => at(ctx, 1, p, 0.1 + 0.25 * i));
     ts.forEach((t, i) => {
       tl.to(cols[i], { opacity: 1, duration: 0.4 }, t);
-      tl.to(fill, { scaleX: (i + 1) / 4, duration: 0.5, ease: 'power2.out' }, t);
+      tl.to(fill, { scaleX: (i + 1) / 3, duration: 0.5, ease: 'power2.out' }, t);
       tl.to(cols[i].querySelector('.n'), { color: '#619537', duration: 0.4 }, t);
     });
     // examples

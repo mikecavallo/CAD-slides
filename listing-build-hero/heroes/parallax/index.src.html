@@ -12,7 +12,7 @@
 /* Layout: a pinned stage of five chapters. Each photo is a small 3D scene that turns with the pointer;
    between chapters the next photo assembles from the far wall forward along a scan line.
    Chapter list runs down the right edge; the caption sits lower left. */
-.story{position:relative;height:620vh;background:var(--stage)}
+.story{position:relative;height:1150vh;background:var(--stage)}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--stage);color:var(--on-stage)}
 #gl{position:absolute;inset:0;width:100%;height:100%;display:block}
 .fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -29,7 +29,7 @@
 .cap .acts .ghost{background:transparent;color:var(--on-stage);border:1px solid rgba(244,247,246,.5)}
 .cap .in{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.chapters{position:absolute;right:var(--gutter);top:50%;transform:translateY(-50%);margin:0;padding:0;list-style:none;display:grid;gap:14px;justify-items:end}
+.chapters{position:absolute;right:var(--gutter);top:50%;transform:translateY(-50%);margin:0;padding:0;list-style:none;display:grid;gap:11px;justify-items:end}
 .chapters{padding:16px 14px 16px 22px;border-radius:4px;background:rgba(6,12,11,.38);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .chapters li{display:flex;align-items:center;gap:12px;font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(244,247,246,.62);cursor:pointer}
 .chapters li i{width:18px;height:2px;background:currentColor;border-radius:2px;transition:width .4s}
@@ -47,7 +47,7 @@
   <a class="btn" href="#showing">Book a showing</a>
 </header>
 
-<section class="story" id="top" aria-label="106 Steinmann Avenue in five scenes">
+<section class="story" id="top" aria-label="106 Steinmann Avenue in ten scenes">
   <div class="stage">
     <img class="fallback" src="media/front2.jpg" alt="Front of 106 Steinmann Avenue">
     <canvas id="gl" aria-hidden="true"></canvas>
@@ -71,15 +71,25 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const P = DepthCam.P3;
 
 const CH = [
-  {scene: "front2", name: "Arrival", look: P(48, 50, 0.45), push: 0.32,
+  {scene: "front2", name: "Arrival", look: P(48, 50, 0.45), push: 0.32, zoom: 1.14, orbit: 0.07,
    html: `<p class="eyebrow">New listing · Middlebury, CT</p><h2>106 Steinmann Avenue</h2><p>A New England Cape on 0.39 acres, set back on a lawn ringed by mature pines.</p><ul class="facts"><li class="price">$439,900</li><li><b>4</b> bd</li><li><b>2</b> ba</li><li><b>1,630</b> sq ft</li></ul>`},
-  {scene: "living", name: "Living room", look: P(44, 50, 0.36), push: 0.5,
-   html: `<p class="eyebrow">Main level</p><h2>A fireplace, and a straight line to the kitchen.</h2><p>Oak floors and crown molding, a brick fireplace with built-in shelves, and the dining area opening onto a big tile-floored kitchen.</p>`},
-  {scene: "decktub", name: "The deck", look: P(48, 50, 0.18), push: 0.38,
-   html: `<p class="eyebrow">Off the kitchen</p><h2>Dinner outside, all summer.</h2><p>The back door opens onto a large wood deck with room for a table and lounge chairs, looking out across the lawn.</p>`},
-  {scene: "back", name: "Backyard", look: P(50, 46, 0.34), push: 0.36,
+  {scene: "fireplace", name: "Fireplace", look: P(50, 51, 0.5), look2: P(43, 59, 0.6), push: 0.4, zoom: 1.1, orbit: 0.05,
+   html: `<p class="eyebrow">Living room</p><h2>A real brick fireplace.</h2><p>A white mantel with fluted pilasters, built-in shelves on one side, and oak floors running the length of the room.</p>`},
+  {scene: "living", name: "Dining", look: P(44, 50, 0.36), push: 0.5, zoom: 1.14, orbit: 0.07,
+   html: `<p class="eyebrow">Main level</p><h2>A straight line to the kitchen.</h2><p>Past the stairs, the dining area opens onto a big kitchen with tile floors and the door to the deck.</p>`},
+  {scene: "kitchen2", name: "Kitchen", look: P(50, 52, 0.66), push: 0.4, zoom: 1.05, orbit: 0.07,
+   html: `<p class="eyebrow">Kitchen</p><h2>Cabinets all the way up.</h2><p>White cabinets to the ceiling, a full-height pantry, dark counters and a window over the sink.</p>`},
+  {scene: "bath1", name: "Main bath", look: P(45, 45, 0.5), push: 0.3, zoom: 1.3, orbit: 0.05,
+   html: `<p class="eyebrow">Main level · renovated</p><h2>A fresh full bath.</h2><p>A quartz-top vanity, marble-look tile, and a tub with shower, with a window out to the yard.</p>`},
+  {scene: "primary2", name: "Primary", look: P(47, 56, 0.47), push: 0.35, zoom: 1.08, orbit: 0.07,
+   html: `<p class="eyebrow">Upstairs</p><h2>A vaulted primary suite.</h2><p>Vaulted ceiling, octagon window, a big closet, and a slider out to a private balcony.</p>`},
+  {scene: "bed2", name: "Blue room", look: P(50, 52, 0.56), push: 0.35, zoom: 1.08, orbit: 0.07,
+   html: `<p class="eyebrow">Upstairs</p><h2>Another vaulted bedroom.</h2><p>Windows on two walls, an octagon window, built-in shelves and hardwood floors.</p>`},
+  {scene: "deckgazebo", name: "Deck", look: P(50, 50, 0.56), push: 0.4, zoom: 1.08, orbit: 0.06,
+   html: `<p class="eyebrow">Off the kitchen</p><h2>Dinner outside, all summer.</h2><p>A big wood deck with room to eat and lounge, looking out over the lawn.</p>`},
+  {scene: "back", name: "Backyard", look: P(50, 46, 0.34), push: 0.36, zoom: 1.14, orbit: 0.07,
    html: `<p class="eyebrow">0.39 acres</p><h2>A level, landscaped yard.</h2><p>Rose of Sharon along the side, lawn to the tree line, and the primary bedroom's balcony looking over it all.</p>`},
-  {scene: "front", name: "See it", look: P(50, 47, 0.45), push: 0.3,
+  {scene: "front", name: "See it", look: P(50, 47, 0.45), push: 0.3, zoom: 1.14, orbit: 0.07,
    html: `<p class="eyebrow">Private showings this week</p><h2>Come see it in person.</h2><ul class="facts"><li class="price">$439,900</li><li>Taxes <b>$7,968</b>/yr</li><li>No HOA</li></ul><div class="acts"><a class="btn" href="#showing">Book a showing</a><a class="btn ghost" href="#details">Listing details</a></div>`}
 ];
 const N = CH.length;
@@ -134,12 +144,13 @@ addEventListener("pointermove", e => { tmx = e.clientX/innerWidth*2 - 1; tmy = e
 
 function cam(k, local, time, mxv, myv){
   const c = CH[k];
-  const z = c.push*smooth(local);
-  const orbit = reduce ? 0 : 1;
-  const ox = mxv*0.07 + orbit*0.02*Math.sin(time*0.3 + k), oy = -myv*0.035 + orbit*0.012*Math.sin(time*0.23 + k);
-  const pos = [ox, oy, z - 0.06];
-  const [yaw, pitch] = DepthCam.aim(pos, c.look);
-  return {pos, yaw, pitch, roll: -mxv*0.01, zoom: 1.14};
+  const e = smooth(local), z = c.push*e;
+  const drift = reduce ? 0 : 1, o = c.orbit;
+  const ox = mxv*o + drift*o*0.3*Math.sin(time*0.3 + k), oy = -myv*o*0.5 + drift*o*0.18*Math.sin(time*0.23 + k);
+  const pos = [ox, oy, z - 0.04];
+  const look = c.look2 ? c.look.map((v, i) => v + (c.look2[i] - v)*e) : c.look;
+  const [yaw, pitch] = DepthCam.aim(pos, look);
+  return {pos, yaw, pitch, roll: -mxv*0.008, zoom: c.zoom};
 }
 
 const cv = $("gl");
@@ -148,7 +159,7 @@ let shown = scrollP();
 window.__story = {lock: null, set(p){ this.lock = shown = p; }};
 ui(shown);
 if (!eng){ cv.remove(); window.__ready = true; return; }
-/* MEDIA:front2.jpg MEDIA:front2-depth.png MEDIA:living.jpg MEDIA:living-depth.png MEDIA:decktub.jpg MEDIA:decktub-depth.png MEDIA:back.jpg MEDIA:back-depth.png MEDIA:front.jpg MEDIA:front-depth.png */
+/* MEDIA:front2.jpg MEDIA:front2-depth.png MEDIA:fireplace.jpg MEDIA:fireplace-depth.png MEDIA:living.jpg MEDIA:living-depth.png MEDIA:kitchen2.jpg MEDIA:kitchen2-depth.png MEDIA:bath1.jpg MEDIA:bath1-depth.png MEDIA:primary2.jpg MEDIA:primary2-depth.png MEDIA:bed2.jpg MEDIA:bed2-depth.png MEDIA:deckgazebo.jpg MEDIA:deckgazebo-depth.png MEDIA:back.jpg MEDIA:back-depth.png MEDIA:front.jpg MEDIA:front-depth.png */
 const names = [...new Set(CH.map(c => c.scene))];
 Promise.all(names.map(n => eng.add(n, `media/${n}.jpg`, `media/${n}-depth.png`))).then(() => {
   document.querySelector(".fallback").hidden = true;

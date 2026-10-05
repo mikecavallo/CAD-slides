@@ -40,7 +40,7 @@ for page in pages:
         out = here/"dist"/page; out.mkdir(parents=True, exist_ok=True)
     used = sorted(set(re.findall(r"media/([\w.\-]+\.(?:jpg|png|mp3))", html)))
     # media referenced from script template strings like `media/${n}.jpg`
-    for m in re.findall(r"\[([^\]]*)\]\.map\(n => eng\.add\(n, `media/\$\{n\}\.jpg`", html):
+    for m in re.findall(r"\[([^\]]*)\]\.map\(n => eng\.add\(n, `(?:\.\./)?media/\$\{n\}\.jpg`", html):
         for n in re.findall(r'"([\w-]+)"', m): used += [f"{n}.jpg", f"{n}-depth.png"]
     used += re.findall(r'MEDIA:([\w.\-]+)', html)
     used += re.findall(r'"media/([\w.\-]+\.(?:jpg|png|mp3))"', html)

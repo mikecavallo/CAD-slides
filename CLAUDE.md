@@ -183,6 +183,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   (video/lib.js): the background drifts like a slow camera move on every slide and slides exit with a lift and soft blur.
   Other lessons are unchanged. Still needed for the premium feel: Tori's real voice, a licensed music track (`assemble.py
   --music FILE`, ducked under the voice), Tori's real clips, and ideally a short on-camera intro and outro by Tori.
+- Round 6 (Oct 7): tm01s02 animates the three food-game pictures as they are named (pictures stay whole): the named one
+  lifts and the others soften; a ring pulses at the hand and mouth; a treat skims low along the floor leaving a dotted
+  trail to where it lands; treats drop from the hand to the ground with small rings; tags "Your hand" / "The ground"
+  pop on the last line. Tori rejected the drawn-dog animation test on tm01s03 ("terrible"; reverted): Claude's code-drawn
+  characters are not good enough; animate over Tori's pictures and clips instead. Tori is making AI clips in Kling
+  (Motion Control with a reference cut from the Fisher clip: out/kling-motion-reference-toss-tight.mp4, start picture
+  out/kling-start-toss-treat-in-hand.jpg).
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

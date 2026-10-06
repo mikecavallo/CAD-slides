@@ -100,15 +100,83 @@
     const G = [['To the mouth', 'mouth', 'tm_mouth_3.jpg', 524 / 828], ['A toss to chase', 'tossing', 'tm_toss.jpg', 1468 / 968], ['A scatter', 'scattering', 'tm_scatter.jpg', 1466 / 962]];
     const ws = G.map(g => Math.round(H * g[3])), GAP = 60;
     let x = (1920 - ws.reduce((a, b) => a + b, 0) - GAP * 2) / 2;
+    // as each game is named its picture lifts into focus and a quick overlay shows where the treat goes:
+    // a ring at the hand and mouth, a low path skimming along the floor, treats dropping to the ground
+    const B = 8, cards = [];
     G.forEach(([t, p, src], i) => {
-      const ph = K.photo(stage, src, { x, y: 300, w: ws[i], h: H, radius: 20 });
-      ph.root.style.border = '8px solid #fff';
-      const lab = put(stage, K.el('div', 'tm-lab', t), x, 726, { fontSize: '38px', fontFamily: 'var(--font-head)', width: ws[i] + 'px', textAlign: 'center' });
+      const w = ws[i];
+      const wrap = put(stage, K.el('div'), x, 300, { position: 'absolute', width: w + 'px', height: H + 'px', transformOrigin: '50% 60%' });
+      const ph = K.photo(wrap, src, { x: 0, y: 0, w, h: H, radius: 20 });
+      ph.root.style.border = B + 'px solid #fff';
+      const sv = K.svg(wrap, { x: 0, y: 0, w, h: H });
+      sv.style.overflow = 'visible';
+      const P = (nx, ny) => [B + nx * (w - 2 * B), B + ny * (H - 2 * B)];
+      const lab = put(stage, K.el('div', 'tm-lab', t), x, 726, { fontSize: '38px', fontFamily: 'var(--font-head)', width: w + 'px', textAlign: 'center' });
       const tc = at(ctx, 1, p, 0.2 + 0.3 * i);
-      A.in(tl, ph.root, tc, 'fadeUp', { dur: 0.7 });
+      A.in(tl, wrap, tc, 'fadeUp', { dur: 0.7 });
       A.in(tl, lab, tc + 0.25, 'fadeUp', { dur: 0.5 });
-      x += ws[i] + GAP;
+      cards.push({ wrap, lab, sv, P, tc, w, x });
+      x += w + GAP;
     });
+    const ring = (sv, [cx, cy], t, n = 2, r = 20) => {
+      const g = K.group(sv);
+      K.circle(g, cx, cy, r, { fill: 'none', stroke: '#fff', 'stroke-width': 8 });
+      K.circle(g, cx, cy, r, { fill: 'none', stroke: 'var(--green)', 'stroke-width': 4 });
+      tl.set(g, { opacity: 0 }, 0);
+      tl.fromTo(g, { opacity: 1, scale: 0.5, svgOrigin: `${cx} ${cy}` }, { keyframes: [{ opacity: 1, scale: 1.1, duration: 0.45, ease: 'power2.out' }, { opacity: 0, scale: 1.5, duration: 0.45, ease: 'power1.in' }], svgOrigin: `${cx} ${cy}`, repeat: n - 1, immediateRender: false }, t);
+    };
+    const dot = (sv, [cx, cy], r = 6) => K.circle(sv, cx, cy, r, { fill: '#c98a45', stroke: '#fff', 'stroke-width': 2.5 });
+    const fx = cards.map(c => c.tc + 0.75);
+    // to the mouth: the treat goes from the hand straight to the mouth
+    ring(cards[0].sv, cards[0].P(0.454, 0.457), fx[0]);
+    // a toss: the treat skims low along the floor from her feet to where it lands, leaving a dotted trail
+    {
+      const c = cards[1], a = c.P(0.27, 0.80), e = c.P(0.945, 0.84), N = 16;
+      const tr = dot(c.sv, a, 7);
+      tl.set(tr, { opacity: 0 }, 0);
+      for (let k = 1; k < N; k++) {
+        const u = k / N, px = a[0] + (e[0] - a[0]) * u, py = a[1] + (e[1] - a[1]) * u;
+        const d = K.circle(c.sv, px, py, 3.2, { fill: '#fff', opacity: 0.95 });
+        tl.set(d, { opacity: 0 }, 0);
+                tl.to(d, { opacity: 0.95, duration: 0.08 }, fx[1] + 0.9 * (1 - Math.sqrt(1 - u)));
+        tl.to(d, { opacity: 0, duration: 0.5 }, fx[1] + 2.2 + u * 0.3);
+      }
+      tl.set(tr, { opacity: 1 }, fx[1]);
+      tl.to(tr, { x: e[0] - a[0], y: e[1] - a[1], duration: 0.9, ease: 'power2.out' }, fx[1]);
+      tl.to(tr, { y: '-=6', duration: 0.11, ease: 'sine.out', yoyo: true, repeat: 3 }, fx[1]);
+      tl.to(tr, { opacity: 0, duration: 0.2 }, fx[1] + 0.95);
+      ring(c.sv, e, fx[1] + 0.85, 1);
+    }
+    // a scatter: a few treats drop from the hand to the ground, each lands with a small ring
+    {
+      const c = cards[2], h = c.P(0.33, 0.6);
+      [[0.405, 0.875], [0.44, 0.865], [0.47, 0.885], [0.50, 0.87], [0.525, 0.88]].forEach(([nx, ny], k) => {
+        const e = c.P(nx, ny), t = fx[2] + k * 0.09;
+        const tr = dot(c.sv, [0, 0], 6);
+        tl.set(tr, { opacity: 0 }, 0);
+        tl.set(tr, { opacity: 1 }, t);
+        tl.fromTo(tr, { x: h[0], y: h[1] }, { x: e[0], y: e[1], duration: 0.5, ease: 'power2.in', immediateRender: false }, t);
+        tl.to(tr, { opacity: 0, duration: 0.25 }, t + 0.8);
+        ring(c.sv, e, t + 0.45, 1, 13);
+      });
+    }
+    // focus: the picture being named lifts, the others soften; all come back once the three are named
+    cards.forEach((c, i) => {
+      tl.fromTo(c.wrap, { scale: 1 }, { scale: 1.045, duration: 0.5, ease: 'power2.out', immediateRender: false }, fx[i] - 0.2);
+      cards.filter((_, k) => k !== i && cards[k].tc < c.tc).forEach(o => tl.to(o.wrap, { opacity: 0.55, scale: 1, duration: 0.4 }, fx[i] - 0.2));
+    });
+    const tAll = Math.max(fx[2] + 1.6, end(1) - 0.4);
+    tl.to(cards.map(c => c.wrap), { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, tAll);
+    // "your hand, or the ground?": tags on the pictures as they are said
+    const tag = (c, text, t) => {
+      const n = put(stage, K.el('div', 'tm-word green', K.md(text)), 0, 240, { fontSize: '26px', padding: '10px 22px' });
+      TM.centerX(n, c.x + c.w / 2);
+      A.in(tl, n, t, 'pop', { dur: 0.45 });
+    };
+    const tH = at(ctx, 3, 'your hand', 0.75), tG = at(ctx, 3, 'on the ground', 0.92);
+    tag(cards[0], 'Your hand', tH);
+    tag(cards[1], 'The ground', tG);
+    tag(cards[2], 'The ground', tG + 0.12);
     const pill = put(stage, K.el('div', 'tm-banner'), 0, 815);
     pill.appendChild(K.icon('volume-2'));
     pill.appendChild(K.el('span', null, 'Each game has its own marker: <b>which moment</b> + <b>which game</b>'));

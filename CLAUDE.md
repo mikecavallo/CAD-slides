@@ -157,7 +157,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   `tm_mouth_1..3`, `tm_toss`, `tm_scatter`) and animated like the other courses: food-game cards (tm01s01/tm02s01) use them
   as headers; tm01s05 shows the check-in and pulling scenes as two framed pictures; tm04s02 plays the three mouth panels
   (Mark, Pause, Treat to the mouth) one by one in the frame before the clip. tm01s04: worry sign moved in, hand clear of
-  the words; the "another dog" line shows the magnet hand (a drawn person walks away with a treat held at the dog's nose).
+  the words; the "another dog" line showed the magnet hand (removed in round 8).
   tm04s03 "vary the distance" only (narration changed too). tm04s06 is now Tori's blind dog hearing his markers ("treat" =
   to his mouth, "get it" = head to the floor for a scatter; narration written by Claude, clip pending; the clicker example
   is out). tm05s01 is three steps: Mark, Pause, Move (your hand to deliver the treat).
@@ -197,6 +197,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   the word, her still hand in amber, the treat at the mouth), tm04s03 (the bowling sweep and low toss drawn on her
   picture, replayed for "vary the distance" short then long; the old clip-art hand and sweep are gone), tm04s04 (treats
   drop from her hand, one ring takes in the scatter). Use this kit for every new picture slide.
+- Round 8 (Oct 7): magnet hand is gone (narration beat and visual; Tori must delete "This is called a magnet hand ...
+  they'll react." from the doc). tm01s04 is rebuilt on Tori's pictures: toss picture first, an amber warning pops
+  behind the dog ("Something worrying, too close", red "Standing still for a treat here: harder"), she bowls a treat
+  away and the dog follows (green "More space" line), then the scatter picture ("Enough space: scatter"), then the
+  mouth picture ("Another dog"); Watch your dog / pattern games later underneath. The drawn dog and handler are no
+  longer used in tm01s04.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

@@ -148,7 +148,7 @@
     {
      "id": "tm01s04",
      "heading": "Match the game to your dog’s needs",
-     "visual_concept": "A distance track: a worry sign at left, the drawn dog close to it; a scatter up close is crossed (harder); the dog moves away with toss arcs, then a scatter once there's space; second idea: food to the mouth, easier to follow; pill: pattern games later.",
+     "visual_concept": "Tori's toss picture: something worrying appears too close, a treat is tossed low away from it and the dog follows; then her scatter picture once there is space; then her mouth picture for another dog. Watch your dog; pattern games later.",
      "assets": [],
      "beats": [
       {
@@ -165,11 +165,6 @@
        "say": "Another dog may find food delivered directly to their mouth easier to follow.",
        "show": "Magnet hand scene starts: a person walks away, the dog follows the treat at its nose.",
        "onscreen": "Food to the mouth"
-      },
-      {
-       "say": "This is called a magnet hand. Hold a treat at your dog’s nose and walk them away. It helps when you know that if your dog looks, they’ll react.",
-       "show": "Chip: Magnet hand: move away before they look and react.",
-       "onscreen": "Magnet hand"
       },
       {
        "say": "Watch how your dog responds, and make the situation easier if they cannot comfortably engage.",

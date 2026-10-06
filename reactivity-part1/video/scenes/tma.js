@@ -3,7 +3,7 @@
 //   tm00plan   plan slide: four cards (what markers mean, food games, how to teach them, your mechanics)
 //   tm01s01    what is a marker? "Yip!", the promise line, a filmstrip of a sit, the flash on the right frame, the treat
 //   tm01s02    introducing food games: three game cards with animated headers, a word for each, no guessing
-//   tm01s03    why food delivery matters: three cards, each a small live scene of its game (hand to the mouth, a toss the dog chases, a scatter it sniffs out)
+//   tm01s03    why food delivery matters: one row per game with its purposes; "it depends on" banner
 (() => {
   const { at, put, clamp } = TM;
   const CSS = `
@@ -21,15 +21,6 @@
   .tma-col .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .tma-col .tt { margin-top: 22px; font: 700 40px/1 var(--font-head); color: var(--ink); }
   .tma-col .wd { margin-top: 26px; height: 70px; position: relative; }
-  .tma-game { position: absolute; height: 562px; background: #fff; border-radius: 28px; border: 1px solid #e6e9e1; box-shadow: var(--shadow); box-sizing: border-box; padding: 22px; transform-origin: 50% 60%; }
-  .tma-game .stg { position: relative; height: 250px; border-radius: 18px; background: linear-gradient(180deg, #f6faf0, #e9f2dd); overflow: hidden; }
-  .tma-game .stg .svgfill { position: absolute; left: 0; top: 0; }
-  .tma-game .tt { margin-top: 22px; font: 700 40px/1 var(--font-head); color: var(--ink); }
-  .tma-game .wd { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px 12px; }
-  .tma-game .wd .tm-word { position: relative; left: auto; top: auto; }
-  .tma-game .alert { position: absolute; width: 68px; height: 68px; border-radius: 50%; background: var(--amber-pale); color: #b06d12; display: grid; place-items: center; }
-  .tma-game .alert svg { width: 38px; height: 38px; stroke-width: 2.3; }
-  .tma-game .gaplab { position: absolute; font: 700 22px/1 var(--font-body); color: #b06d12; white-space: nowrap; }
   .tma-row { position: absolute; left: 100px; width: 1720px; height: 140px; box-sizing: border-box; border-radius: 26px; background: #fff; border: 1px solid #e6e9e1;
     box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 22px; padding: 0 30px; }
   .tma-row .hd { display: flex; align-items: center; gap: 20px; width: 400px; flex: 0 0 auto; font: 700 40px/1 var(--font-head); color: var(--ink); white-space: nowrap; }
@@ -134,137 +125,26 @@
 
   // ---------------------------------------------------------------- why food delivery matters
   registerScene('tm01s03', ctx => {
-    const { stage, tl, cue, end, dur } = ctx;
+    const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Each game has a purpose', 'Why food delivery matters');
-    // three cards, each a small live scene of its game; the card being talked about is lit, the others rest dimmed
-    const GAMES = [
-      ['To the mouth', 1, [['Stay near you', 'stay near you'], ['Hold a position', 'maintain a position']]],
-      ['Toss', 2, [['Movement', 'movement'], ['Reset for another rep', 'reset'], ['Distance from something hard', 'distance']]],
-      ['Scatter', 3, [['Sniffing and searching', 'sniffing']]],
+    const ROWS = [
+      ['To the mouth', 'dog', 1, [['Stay near you', 'stay near you'], ['Hold a position', 'maintain a position']]],
+      ['Toss', 'move-right', 2, [['Movement', 'movement'], ['Reset for another rep', 'reset'], ['Distance from something hard', 'distance']]],
+      ['Scatter', 'search', 3, [['Sniffing and searching', 'sniffing']]],
     ];
-    const CW = 553, SW = 509, SH = 250, GROUND = 222, S = 0.5;
-    const JACKET = '#6b7078', SKIN = '#e2b48f';
-    const cards = GAMES.map(([t, b, chips], i) => {
-      const c = put(stage, K.el('div', 'tma-game'), 100 + i * (CW + 30), 282, { width: CW + 'px' });
-      const sc = K.el('div', 'stg'); c.appendChild(sc);
-      const sv = K.svg(sc, { x: 0, y: 0, w: SW, h: SH });
-      K.line(sv, 18, GROUND + 4, SW - 18, GROUND + 4, { stroke: '#d6e5c4', 'stroke-width': 3 });
-      c.appendChild(K.el('div', 'tt', t));
-      const wd = K.el('div', 'wd'); c.appendChild(wd);
-      const ws = chips.map(([w, ph], k) => {
-        const n = flow(TM.word(wd, w, { variant: 'pale', size: 26 }));
-        A.in(tl, n, at(ctx, b, ph, 0.35 + 0.2 * k), 'pop', { dur: 0.45 });
-        return n;
+    ROWS.forEach(([t, ic, b, chips], i) => {
+      const r = put(stage, K.el('div', 'tma-row'), 100, 290 + i * 165);
+      const hd = K.el('div', 'hd', `<span class="b">${K.icon(ic).outerHTML}</span><span>${t}</span>`);
+      r.appendChild(hd);
+      tl.fromTo(r, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' }, cue(b) + 0.05);
+      chips.forEach(([w, p], k) => {
+        const n = TM.word(r, w, { variant: 'pale', size: 30 });
+        flow(n);
+        A.in(tl, n, at(ctx, b, p, 0.35 + 0.2 * k), 'pop', { dur: 0.45 });
       });
-      tl.fromTo(c, { opacity: 0, y: 46 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, cue(b) - 0.05);
-      return { c, sc, sv, b };
     });
-    // focus: the current card is lit, the earlier ones dim; all come back for the closing line
-    cards.forEach((k, i) => {
-      cards.slice(0, i).forEach(p => tl.to(p.c, { opacity: 0.42, scale: 0.97, duration: 0.5, ease: 'power2.out' }, cue(k.b) - 0.05));
-      tl.to(k.c, { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }, cue(4));
-    });
-    tl.fromTo(cards[0].c, { scale: 1 }, { scale: 1, duration: 0.01 }, 0);
-
-    const legs = D => { const [, fh, ff, , nh, nf] = D.fig.children; return [fh, ff, nh, nf]; };
-    const trot = (D, t, d, a = 18, per = 0.2) => {
-      const n = Math.max(1, Math.round(d / per));
-      legs(D).forEach((el, k) => tl.fromTo(el, { rotation: (k === 0 || k === 3) ? -a : a, transformOrigin: '50% 4%' },
-        { rotation: (k === 0 || k === 3) ? a : -a, transformOrigin: '50% 4%', duration: per / 2, ease: 'sine.inOut', yoyo: true, repeat: 2 * n - 1, immediateRender: false }, t));
-    };
-    // a hand with a treat, its fingertips at (0, 0), reaching in from the right
-    const hand = sv => {
-      const g = K.group(sv);
-      const r = K.group(g, { transform: 'rotate(-14)' });
-      K.path(r, 'M 92 -4 L 420 -10', { stroke: JACKET, 'stroke-width': 40, fill: 'none', 'stroke-linecap': 'round' });
-      K.path(r, 'M 84 -4 L 98 -4', { stroke: '#555a61', 'stroke-width': 44, fill: 'none', 'stroke-linecap': 'butt' });
-      K.path(r, 'M 30 -2 L 84 -4', { stroke: SKIN, 'stroke-width': 30, fill: 'none', 'stroke-linecap': 'round' });
-      K.svgEl('ellipse', { cx: 26, cy: -1, rx: 22, ry: 18, fill: SKIN }, r);
-      K.svgEl('ellipse', { cx: 9, cy: 7, rx: 15, ry: 8, fill: '#d6a47d' }, r);
-      K.svgEl('ellipse', { cx: 12, cy: -11, rx: 14, ry: 7, fill: SKIN, transform: 'rotate(-18 12 -11)' }, r);
-      const tr = K.svgEl('ellipse', { cx: -4, cy: -2, rx: 11, ry: 8, fill: '#b9773a' }, r);
-      return { g, tr };
-    };
-    const deliver = (H, mx, my, t) => {
-      tl.set(H.tr, { opacity: 1 }, t - 0.01);
-      tl.fromTo(H.g, { x: mx + 300, y: my - 70 }, { x: mx + 4, y: my, duration: 0.5, ease: 'power2.out', immediateRender: false }, t);
-      tl.to(H.tr, { opacity: 0, duration: 0.12 }, t + 0.62);
-      tl.to(H.g, { x: mx + 300, y: my - 70, duration: 0.5, ease: 'power2.in' }, t + 0.8);
-    };
-
-    // 1. to the mouth: the hand brings the treat right to the dog's mouth; on "position" the dog sits and gets another
-    {
-      const { sv } = cards[0], cx = 190, cy = GROUND - 129 * S;
-      const D = TM.sitDog(sv, cx, cy, S);
-      const mS = [cx - 222 * S + 396 * S, cy - 168 * S + 94 * S];
-      const H = hand(sv); tl.set(H.g, { x: 900, y: 0 }, 0);
-      const tStay = at(ctx, 1, 'stay near', 0.3), tPos = at(ctx, 1, 'maintain', 0.6);
-      deliver(H, mS[0], mS[1], tStay);
-      C2.wag(tl, D.stand, tStay + 0.6, tPos);
-      D.sitAt(tl, tPos);
-      deliver(H, D.mouth[0], D.mouth[1] - 6, tPos + 0.5);
-    }
-
-    // 2. toss: a low toss skims away, the dog runs after it, trots back to reset; then a toss away from something hard
-    {
-      const { sv, sc } = cards[1], cx = 150, cy = GROUND - 129 * S;
-      const wrap = K.group(sv);
-      const D = C2.dog(wrap, cx, cy, S);
-      const frontX = cx - 222 * S + 400 * S;
-      const tMove = at(ctx, 2, 'movement', 0.2), tReset = at(ctx, 2, 'reset', 0.45), tDist = at(ctx, 2, 'distance', 0.8);
-      const toss = (t, dx) => {
-        const tr = TM.treat(sc, frontX + 18, GROUND - 6, 0.7);
-        tl.set(tr, { opacity: 0 }, 0);
-        const tE = TM.lowToss(tl, tr, dx, t, 0.8);
-        tl.to(tr, { opacity: 0, duration: 0.15 }, tE + 0.5);
-        return tE;
-      };
-      toss(tMove, 200);
-      tl.to(wrap, { x: 190, duration: 0.95, ease: 'power1.inOut' }, tMove + 0.2);
-      trot(D, tMove + 0.2, 0.95, 22, 0.19);
-      // turn, trot back to the start, turn again: ready for another rep
-      tl.to(wrap, { scaleX: -1, transformOrigin: '50% 50%', duration: 0.25, ease: 'power2.inOut' }, tReset);
-      tl.to(wrap, { x: 0, duration: 1.1, ease: 'power1.inOut' }, tReset + 0.2);
-      trot(D, tReset + 0.2, 1.1, 16, 0.24);
-      tl.to(wrap, { scaleX: 1, transformOrigin: '50% 50%', duration: 0.25, ease: 'power2.inOut' }, tReset + 1.35);
-      // something hard appears at the left; the next toss takes the dog away from it
-      const al = put(sc, K.el('div', 'alert'), 14, 26);
-      al.appendChild(K.icon('triangle-alert'));
-      A.in(tl, al, tDist - 0.2, 'pop', { dur: 0.45 });
-      toss(tDist + 0.3, 200);
-      tl.to(wrap, { x: 230, duration: 1.05, ease: 'power1.inOut' }, tDist + 0.5);
-      trot(D, tDist + 0.5, 1.05, 22, 0.19);
-      const gap = K.line(sv, 92, 60, 300, 60, { stroke: '#d9912b', 'stroke-width': 4, 'stroke-dasharray': '10 9' });
-      tl.fromTo(gap, { attr: { x2: 92 } }, { attr: { x2: 300 }, duration: 1.05, ease: 'power1.inOut' }, tDist + 0.5);
-      const gl = put(sc, K.el('div', 'gaplab', 'More distance'), 104, 76);
-      A.in(tl, gl, tDist + 1.3, 'fadeUp', { dur: 0.4 });
-      C2.wag(tl, D, tDist + 1.6, dur);
-    }
-
-    // 3. scatter: treats rain down across the ground; the dog drops its nose and sniffs its way along them
-    {
-      const { sv, sc } = cards[2], cx = 120, cy = GROUND - 129 * S;
-      const wrap = K.group(sv);
-      const D = C2.dog(wrap, cx, cy, S);
-      const t3 = cue(3) + 0.1;
-      const XS = [236, 268, 300, 334, 366, 398, 432];
-      const walkT = t3 + 0.9, walkD = Math.max(2, dur - 0.7 - walkT), walkX = 230;
-      const nose0 = cx - 222 * S + 398 * S;
-      XS.forEach((x, k) => {
-        const tr = TM.treat(sc, x, GROUND - 5 - (k % 2) * 4, 0.55);
-        tl.fromTo(tr, { opacity: 0, y: -200 - (k % 3) * 30, rotation: -90 }, { opacity: 1, y: 0, rotation: 0, duration: 0.6, ease: 'bounce.out' }, t3 + k * 0.06);
-        const tGone = walkT + Math.max(0, (x - nose0 - 6) / walkX) * walkD;
-        if (tGone < dur - 0.6) tl.to(tr, { opacity: 0, scale: 0.4, duration: 0.15 }, tGone);
-      });
-      tl.to(D.head, { rotation: 78, svgOrigin: '300 172', duration: 0.6, ease: 'power2.inOut' }, t3 + 0.45);
-      tl.to(D.head, { rotation: 70, svgOrigin: '300 172', duration: 0.35, ease: 'sine.inOut', yoyo: true, repeat: Math.max(1, Math.floor(walkD / 0.35)) }, walkT);
-      tl.to(wrap, { x: walkX, duration: walkD, ease: 'none' }, walkT);
-      trot(D, walkT, walkD, 9, 0.5);
-      C2.wag(tl, D, walkT, dur, 0.3);
-    }
-
-    const row = put(stage, K.el('div'), 0, 874, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
+    const row = put(stage, K.el('div'), 0, 800, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
     const lab = flow(put(row, K.el('div', 'tm-lab', 'The best choice depends on:'), 0, 0, { fontSize: '34px', color: 'var(--green-dark)' }));
     A.in(tl, lab, cue(4) + 0.05, 'fadeUp', { dur: 0.5 });
     [['What we’re teaching', 'graduation-cap', 'teaching'], ['The situation', 'map-pin', 'situation'], ['Your dog’s needs', 'dog', 'needs']].forEach(([w, ic, p]) => {

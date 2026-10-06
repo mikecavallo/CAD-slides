@@ -179,6 +179,10 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Review videos: Tori asked to see only what changed. Build the full video as usual, then
   `python3 tools/changes_reel.py --video out/NAME.mp4 --ids <changed ids> --out out/NAME-changes-roundN.mp4` (each part is
   labelled with its slide title and its time in the full video) and send that. Full video only when Tori asks.
+- Premium pass (Oct 6, Tori asked for "$5,000 course" quality): the lesson's series block has `"motion": "cinematic"`
+  (video/lib.js): the background drifts like a slow camera move on every slide and slides exit with a lift and soft blur.
+  Other lessons are unchanged. Still needed for the premium feel: Tori's real voice, a licensed music track (`assemble.py
+  --music FILE`, ducked under the voice), Tori's real clips, and ideally a short on-camera intro and outro by Tori.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

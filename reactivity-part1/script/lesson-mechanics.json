@@ -5,7 +5,8 @@
   "titleLines": [
    "Markers and",
    "Mechanics"
-  ]
+  ],
+  "motion": "cinematic"
  },
  "notes": "Core Skills course video. Narration is Tori's Google Doc 'Your Training Mechanics: Narration Script' (id 1_KZQVrH49fPoTVFp-EzrqNILy9VyYOZVu5xb4SV4v_k), synced Oct 4. Video slides carry a 'clip' block: Tori's own video plays inside the frame (clips/<scene id>.mp4) and Tori narrates over it. Build with LESSON=lesson-mechanics.json.",
  "tail": 4.0,

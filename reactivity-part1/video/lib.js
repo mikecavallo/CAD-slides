@@ -539,9 +539,18 @@
       window.__ctx = ctx;
       build(ctx);
     }
+    // series "motion": "cinematic" (lesson file): the background drifts like a slow camera move for the whole slide,
+    // and the exit lifts and softens the scene instead of a plain fade
+    const cine = (T.series || {}).motion === 'cinematic';
+    if (cine) {
+      const bg = stage.querySelector('.bg');
+      const dir = (T.order.indexOf(id) % 2) ? 1 : -1;
+      tl.fromTo(bg, { scale: 1.02, x: 0 }, { scale: 1.07, x: 34 * dir, duration: dur, ease: 'none' }, 0);
+    }
     // automatic exit: everything in the scene layer fades out over the last ~0.5s
     if (ctx.exit && layer.children.length) {
-      tl.to(layer, { opacity: 0, duration: 0.42, ease: 'power2.in' }, Math.max(0, dur - 0.5));
+      if (cine) tl.to(layer, { opacity: 0, y: -18, filter: 'blur(5px)', duration: 0.45, ease: 'power2.in' }, Math.max(0, dur - 0.52));
+      else tl.to(layer, { opacity: 0, duration: 0.42, ease: 'power2.in' }, Math.max(0, dur - 0.5));
     }
     tl.set({}, {}, dur);
 

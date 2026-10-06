@@ -73,17 +73,23 @@
     const bg = put(stage, K.el('div'), bx, by, { position: 'absolute', width: bw + 'px', height: bh + 'px', background: 'var(--green-mist)' });
     A.in(tl, bg, 0.25, 'fade', { dur: 0.6 });
     const PW = 268, PH = 440, GAP = (bw - 3 * PW) / 4, PY = by + (bh - PH) / 2;
+    const NAT = [[526, 828], [516, 828], [524, 828]];
     const STEP = [['tm_mouth_1.jpg', 'Mark', 'say your chosen marker'], ['tm_mouth_2.jpg', 'Pause', 'pause briefly'], ['tm_mouth_3.jpg', 'Move', 'bring a treat']];
     const ts = [];
     const panels = STEP.map(([src, lab, p], i) => {
       const x = bx + GAP + i * (PW + GAP);
-      const ph = K.photo(stage, src, { x, y: PY, w: PW, h: PH, radius: 16, pos: '50% 40%' });
+      const ph = TM.pic(stage, src, { x, y: PY, w: PW, h: PH, nat: NAT[i], border: 0, radius: 16, pos: [0.5, 0.4] });
+      ph.root = ph.wrap;
       const tag = put(stage, K.el('div', 'tm-word green'), x + 12, PY + PH - 58, { fontSize: '24px', padding: '8px 16px' });
       tag.textContent = lab;
       const t = Math.max(at(ctx, 0, p, 0.15 + 0.3 * i), (ts[i - 1] || 0) + 0.6);
       ts.push(t);
       A.in(tl, ph.root, t, 'fadeUp', { dur: 0.6 });
       A.in(tl, tag, t + 0.3, 'pop', { dur: 0.35 });
+      // Mark: the word lands as the dog looks up; Pause: her hand stays still; Move: the treat goes to the mouth
+      const MARKS = [[0.46, 0.17, 'var(--green)'], [0.14, 0.53, 'var(--amber)'], [0.454, 0.457, 'var(--green)']];
+      const [mx, my, mc] = MARKS[i];
+      TM.fx.ring(tl, ph.sv, ph.P(mx, my), t + 0.55, { n: 2, r: 22, color: mc });
       if (i) {
         const ar = K.iconBadge(stage, 'arrow-right', { x: x - GAP / 2 - 18, y: PY + PH / 2 - 18, size: 36, variant: 'solid' });
         A.in(tl, ar, t - 0.15, 'fade', { dur: 0.3 });
@@ -97,39 +103,39 @@
     const { stage, tl } = ctx;
     TM.head(ctx, 'Teaching your dog', o.heading);
     const w = 900, h = Math.round(w / o.ar);
-    const ph = K.photo(stage, o.src, { x: 920, y: 300, w, h, radius: 22 });
-    ph.root.style.border = '8px solid #fff';
-    A.in(tl, ph.root, 0.3, 'fadeUp', { dur: 0.8 });
+    const ph = TM.pic(stage, o.src, { x: 920, y: 300, w, h, nat: o.nat, radius: 22 });
+    A.in(tl, ph.wrap, 0.3, 'fadeUp', { dur: 0.8 });
     const col = put(stage, K.el('div', 'tm-col'), 100, o.top, { width: '760px', gap: '26px' });
     o.rows.forEach(r => {
       const n = TM.row(col, r.icon, r.html, { size: 32 });
       A.in(tl, n, at(ctx, r.beat, r.phrase, r.fb ?? 0.15), 'fadeRight', { dur: 0.6 });
     });
+    return ph;
   };
 
   registerScene('tm04s03', ctx => {
     const { stage, tl, cue } = ctx;
     TM.style(stage);
-    picSlide(ctx, { heading: 'Teach the treat-toss marker', src: 'tm_toss.jpg', ar: 1468 / 968, top: 470, rows: [
+    const ph = picSlide(ctx, { heading: 'Teach the treat-toss marker', src: 'tm_toss.jpg', ar: 1468 / 968, nat: [1468, 968], top: 470, rows: [
       { icon: 'move-right', html: 'Mark, pause, move: *toss a treat*', beat: 0, phrase: 'toss one treat', fb: 0.4 },
       { icon: 'hand', html: 'Low and across your body, *like bowling*', beat: 1, phrase: 'low, sweeping', fb: 0.1 },
       { icon: 'move-horizontal', html: 'Then vary *the distance*', beat: 2, phrase: 'gradually vary', fb: 0.6 },
       { icon: 'shield-check', html: 'A safe area *with room*', beat: 3, phrase: 'safe area', fb: 0.4 },
     ] });
-    // the bowling motion: the hand sweeps down low and across, the treat skims along the ground
-    const sv = K.svg(stage, { x: 100, y: 290, w: 740, h: 160 });
-    const ground = K.path(sv, 'M 10 140 L 730 140', { stroke: '#cfe3b8', 'stroke-width': 6, 'stroke-linecap': 'round', fill: 'none' });
-    const sweep = K.path(sv, 'M 40 20 C 40 110, 120 140, 230 130', { stroke: '#d9912b', 'stroke-width': 5, fill: 'none', 'stroke-dasharray': '3 12', 'stroke-linecap': 'round' });
-    const hand = K.iconBadge(stage, 'hand', { x: 105, y: 290, size: 70, variant: 'amber' });
-    const tr = TM.treat(stage, 330, 418, 1.2);
-    A.draw(tl, ground, cue(0) + 0.3, 0.6);
-    A.in(tl, hand, cue(0) + 0.4, 'pop', { dur: 0.4 });
-    const t0 = at(ctx, 0, 'toss one treat', 0.4);
-    tl.to(hand, { motionPath: { path: 'M 0 0 C 0 90, 80 120, 190 110' }, duration: 0.7, ease: 'power2.inOut' }, t0);
-    A.draw(tl, sweep, t0, 0.7);
-    TM.lowToss(tl, tr, 420, t0 + 0.6, 1.0);
-    const lab = put(stage, K.el('div', 'tm-lab', 'Low and across, like bowling'), 380, 300, { fontSize: '28px', color: 'var(--green-dark)' });
+    // on her picture: the hand sweeps down low and across, then the treat skims along the floor to where it lands
+    const { sv, P } = ph, H0 = P(0.235, 0.5), F0 = P(0.29, 0.81);
+    const bowl = (t, endX, hold = 1.4) => {
+      TM.fx.dots(tl, sv, [H0, P(0.24, 0.68), P(0.26, 0.77), F0], t, { dur: 0.45, hold, r: 3.6, color: '#fff', stroke: 'var(--amber)' });
+      return TM.fx.toss(tl, sv, F0, P(endX, 0.84), t + 0.45, { hold });
+    };
+    bowl(at(ctx, 0, 'toss one treat', 0.4), 0.945);
+    bowl(at(ctx, 1, 'low, sweeping', 0.4), 0.945);
+    const lab = put(stage, K.el('div', 'tm-lab', 'Low and across, like bowling'), 100, 360, { fontSize: '34px', color: 'var(--green-dark)' });
     A.in(tl, lab, at(ctx, 1, 'bowling', 0.3), 'fadeUp', { dur: 0.5 });
+    // vary the distance: a short toss, then a long one
+    const tV = at(ctx, 2, 'gradually vary', 0.6);
+    bowl(tV, 0.55, 2.6);
+    bowl(tV + 1.5, 0.945, 1.2);
   });
 
   registerScene('tm04s03v', ctx => {
@@ -141,19 +147,15 @@
   registerScene('tm04s04', ctx => {
     const { stage, tl, cue, end } = ctx;
     TM.style(stage);
-    picSlide(ctx, { heading: 'Teach the scatter marker', src: 'tm_scatter.jpg', ar: 1466 / 962, top: 470, rows: [
+    const ph = picSlide(ctx, { heading: 'Teach the scatter marker', src: 'tm_scatter.jpg', ar: 1466 / 962, nat: [1466, 962], top: 470, rows: [
       { icon: 'circle-dot', html: 'Mark, pause, move: *scatter a few treats*', beat: 0, phrase: 'scatter a few', fb: 0.5 },
       { icon: 'square', html: 'Clear surface: *one scatter = one rep*', beat: 1, phrase: 'each scatter', fb: 0.8 },
       { icon: 'leaf', html: 'Then other surfaces, *like short grass*', beat: 2, phrase: 'short grass', fb: 0.7 },
     ] });
-    const sv = K.svg(stage, { x: 100, y: 290, w: 740, h: 160 });
-    const ground = K.path(sv, 'M 10 130 L 730 130', { stroke: '#b8d99a', 'stroke-width': 8, 'stroke-linecap': 'round', fill: 'none' });
-    A.draw(tl, ground, cue(0) + 0.4, 0.6);
-    const tS = at(ctx, 0, 'scatter a few', 0.5);
-    [[150, 0], [260, 0.12], [330, 0.05], [430, 0.2], [520, 0.09], [610, 0.16]].forEach(([x, d], i) => {
-      const t = TM.treat(stage, 100 + x, 290 + 112 - (i % 2) * 6, 1.0);
-      tl.fromTo(t, { opacity: 0, y: -110 }, { opacity: 1, y: 0, duration: 0.55, ease: 'bounce.out' }, tS + d * 3);
-    });
+    // on her picture: a few treats drop from her hand to the floor; on "one rep" a ring takes in the whole scatter
+    const PTS = [[0.405, 0.875], [0.44, 0.865], [0.47, 0.885], [0.50, 0.87], [0.525, 0.88]].map(([x, y]) => ph.P(x, y));
+    TM.fx.drops(tl, ph.sv, ph.P(0.33, 0.6), PTS, at(ctx, 0, 'scatter a few', 0.5));
+    TM.fx.ring(tl, ph.sv, ph.P(0.465, 0.875), at(ctx, 1, 'each scatter', 0.8), { n: 2, r: 70 });
   });
 
   registerScene('tm04s04v', ctx => {

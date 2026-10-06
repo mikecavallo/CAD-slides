@@ -138,8 +138,8 @@
     const card = (x, src, title, cap, good) => {
       const t = put(stage, K.el('div', 'tm-lab', title), x, 370, { fontSize: '34px', color: good ? 'var(--green-dark)' : 'var(--red)', display: 'flex', alignItems: 'center', gap: '12px' });
       t.prepend(K.icon(good ? 'circle-check' : 'circle-x', { size: 36 }));
-      const ph = K.photo(stage, src, { x, y: 425, w: 560, h: 467, pos: '50% 50%' });
-      ph.root.style.border = '6px solid ' + (good ? '#619537' : '#b8452d');
+      const ph = TM.pic(stage, src, { x, y: 425, w: 560, h: 467, nat: good ? [744, 620] : [754, 620], border: 6, radius: 0, borderColor: good ? '#619537' : '#b8452d' });
+      ph.root = ph.wrap;
       const c = put(stage, K.el('div', 'tm-lab', cap), x, 905, { fontSize: '28px', color: 'var(--ink-soft)', width: '560px', whiteSpace: 'normal' });
       return { t, ph, c };
     };
@@ -153,6 +153,22 @@
     A.in(tl, [Bd.t, Bd.ph.root], tB, 'fadeUp', { dur: 0.7, stagger: 0.12 });
     
     A.in(tl, Bd.c, at(ctx, 3, 'accidentally reinforce', 0.55), 'fadeUp', { dur: 0.5 });
+    // the check-in: a dotted line from the dog's eyes up to her face, a ring where their eyes meet
+    {
+      const { sv, P } = G.ph, t = tG + 1.0;
+      TM.fx.dots(tl, sv, [P(0.44, 0.42), P(0.29, 0.14)], t, { dur: 0.6, hold: 2.4, r: 5.5, gap: 18, stroke: 'var(--green)' });
+      TM.fx.ring(tl, sv, P(0.43, 0.42), t + 0.6, { n: 2, r: 24 });
+    }
+    // the pull: the dog's stare runs to the squirrel, the leash pulls tight, both in red
+    {
+      const { sv, P } = Bd.ph, t = tB + 1.0, RED = 'var(--red)';
+      TM.fx.dots(tl, sv, [P(0.80, 0.53), P(0.93, 0.35)], t, { dur: 0.5, hold: 2.6, r: 4, color: '#fff', stroke: RED });
+      TM.fx.ring(tl, sv, P(0.935, 0.33), t + 0.5, { n: 2, r: 26, color: RED });
+      const ls = K.path(sv, `M ${P(0.215, 0.355).join(' ')} L ${P(0.56, 0.545).join(' ')}`, { stroke: RED, 'stroke-width': 7, opacity: 0.85 });
+      tl.fromTo(ls, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.5, ease: 'power2.out' }, t + 1.0);
+      tl.to(ls, { opacity: 0.35, duration: 0.25, yoyo: true, repeat: 3 }, t + 1.5);
+      tl.to(ls, { opacity: 0, duration: 0.5 }, t + 4.2);
+    }
     const lead = put(stage, K.el('div', null, 'Mark behavior you want <b style="color:var(--green)">repeated</b>.'), 1310, 425, { position: 'absolute', width: '510px', font: '500 40px/1.3 var(--font-body)', color: 'var(--ink)' });
     A.in(tl, lead, at(ctx, 1, 'mark behavior', 0.3), 'fadeUp', { dur: 0.6 });
     const bn = put(stage, K.el('div', 'tm-banner'), 1310, 600, { width: '510px', boxSizing: 'border-box' });

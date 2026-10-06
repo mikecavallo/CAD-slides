@@ -25,6 +25,7 @@
   const css = stage => { TM.style(stage); if (!stage.querySelector('style[data-tmc]')) { const s = K.el('style', null, CSS); s.dataset.tmc = '1'; stage.appendChild(s); } };
   const flow = n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; return n; };
 
+  const SCATTER = [[0.405, 0.875], [0.44, 0.865], [0.47, 0.885], [0.50, 0.87], [0.525, 0.88]];  // where the treats lie in tm_scatter.jpg
   // ---------------------------------------------------------------- give each game its own word: one slide per game
   // Tori's picture shown whole at the left; the game's name and its example words at the right
   const gameSlide = (ctx, o) => {
@@ -33,9 +34,9 @@
     TM.head(ctx, 'Choosing your markers', 'Give each game its own word');
     const MAXW = o.ar < 1 ? 420 : 860, MAXH = 620;
     const w = Math.round(Math.min(MAXW, MAXH * o.ar)), h = Math.round(w / o.ar);
-    const ph = K.photo(stage, o.src, { x: 100, y: 300, w, h, radius: 22 });
-    ph.root.style.border = '8px solid #fff';
-    A.in(tl, ph.root, o.tPic, 'fadeUp', { dur: 0.7 });
+    const ph = TM.pic(stage, o.src, { x: 100, y: 300, w, h, nat: o.nat, radius: 22 });
+    A.in(tl, ph.wrap, o.tPic, 'fadeUp', { dur: 0.7 });
+    if (o.fx) o.fx(ph, o.tPic + 0.9);
     const X = 100 + w + 80, W = 1820 - X;
     // the name and the words stack in one column, so a long name can never run into the words
     const colm = put(stage, K.el('div'), X, 320, { position: 'absolute', width: W + 'px', display: 'flex', flexDirection: 'column', gap: '34px' });
@@ -51,7 +52,7 @@
 
   registerScene('tm02s01', ctx => {
     const { stage, tl, cue } = ctx;
-    const g = gameSlide(ctx, { src: 'tm_mouth_3.jpg', ar: 524 / 828, name: 'Food to the mouth', beat: 1, tPic: cue(1),
+    const g = gameSlide(ctx, { src: 'tm_mouth_3.jpg', ar: 524 / 828, nat: [524, 828], fx: (ph, t) => TM.fx.ring(tl, ph.sv, ph.P(0.454, 0.457), t, { n: 2, r: 26 }), name: 'Food to the mouth', beat: 1, tPic: cue(1),
       words: [['Yip', 'yip'], ['Yep', 'yep'], ['Mark', 'mark'], ['Nice', 'nice'], ['Treat', 'treat'], ['X', 'x']] });
     const lead = put(stage, K.el('div', 'tm-lab', 'Choose a <b style="color:var(--green)">short, distinct word</b> for each food game.'), 100, 300, { fontSize: '40px', whiteSpace: 'normal', width: '1400px' });
     A.in(tl, lead, cue(0) + 0.2, 'fadeUp', { dur: 0.6 });
@@ -59,12 +60,12 @@
   });
 
   registerScene('tm02s02', ctx => {
-    gameSlide(ctx, { src: 'tm_toss.jpg', ar: 1468 / 968, name: 'A tossed treat', beat: 0, tPic: ctx.cue(0) + 0.1,
+    gameSlide(ctx, { src: 'tm_toss.jpg', ar: 1468 / 968, nat: [1468, 968], fx: (ph, t) => TM.fx.toss(ctx.tl, ph.sv, ph.P(0.27, 0.80), ph.P(0.945, 0.84), t), name: 'A tossed treat', beat: 0, tPic: ctx.cue(0) + 0.1,
       words: [['Chase', 'chase'], ['Toss', 'toss'], ['Get it', 'get it'], ['Free', 'free']] });
   });
 
   registerScene('tm02s03', ctx => {
-    gameSlide(ctx, { src: 'tm_scatter.jpg', ar: 1466 / 962, name: 'Treats scattered', beat: 0, tPic: ctx.cue(0) + 0.1,
+    gameSlide(ctx, { src: 'tm_scatter.jpg', ar: 1466 / 962, nat: [1466, 962], fx: (ph, t) => TM.fx.drops(ctx.tl, ph.sv, ph.P(0.33, 0.6), SCATTER.map(([x, y]) => ph.P(x, y)), t), name: 'Treats scattered', beat: 0, tPic: ctx.cue(0) + 0.1,
       words: [['Scatter', 'scatter'], ['Find it', 'find it'], ['Search', 'search'], ['Get it', 'get it']] });
   });
 

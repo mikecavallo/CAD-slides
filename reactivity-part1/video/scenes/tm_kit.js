@@ -255,5 +255,85 @@
     return t + dur;
   }
 
-  window.TM = { sitDog, lowToss, order, style, clamp, say, at, put, partCard, head, videoFrame, videoSlide, row, treat, bubble, word, strike, centerX, PLAY };
+
+  /**
+   * One of Tori's pictures with an SVG layer on top for animated marks. o: { x, y, w, h, nat: [natural w, h], border, radius,
+   * pos: [0..1, 0..1] (object-position), borderColor }. P(nx, ny) maps a point given as a fraction of the picture to layer px.
+   */
+  function pic(parent, src, o) {
+    const B = o.border ?? 8, w = o.w, h = o.h, pos = o.pos || [0.5, 0.5];
+    const wrap = put(parent, K.el('div'), o.x, o.y, { position: 'absolute', width: w + 'px', height: h + 'px', transformOrigin: '50% 60%' });
+    const ph = K.photo(wrap, src, { x: 0, y: 0, w, h, radius: o.radius ?? 20, pos: `${pos[0] * 100}% ${pos[1] * 100}%` });
+    if (B) ph.root.style.border = B + 'px solid ' + (o.borderColor || '#fff');
+    const sv = K.svg(wrap, { x: 0, y: 0, w, h });
+    sv.style.overflow = 'visible';
+    const iw = w - 2 * B, ih = h - 2 * B, [nw, nh] = o.nat, sc = Math.max(iw / nw, ih / nh), dw = nw * sc, dh = nh * sc;
+    const ox = (iw - dw) * pos[0], oy = (ih - dh) * pos[1];
+    return { wrap, root: ph.root, img: ph.img, sv, w, h, P: (nx, ny) => [B + ox + nx * dw, B + oy + ny * dh] };
+  }
+
+  /** Animated marks drawn over a picture's layer (see pic). Colours: green for what we want, red for what we don't. */
+  const fx = {
+    ring(tl, sv, [cx, cy], t, o = {}) {
+      const g = K.group(sv), r = o.r ?? 20, col = o.color || 'var(--green)';
+      K.circle(g, cx, cy, r, { fill: 'none', stroke: '#fff', 'stroke-width': 8 });
+      K.circle(g, cx, cy, r, { fill: 'none', stroke: col, 'stroke-width': 4 });
+      tl.set(g, { opacity: 0 }, 0);
+      tl.fromTo(g, { opacity: 1, scale: 0.5, svgOrigin: `${cx} ${cy}` }, { keyframes: [{ opacity: 1, scale: 1.1, duration: 0.45, ease: 'power2.out' },
+        { opacity: 0, scale: 1.5, duration: 0.45, ease: 'power1.in' }], svgOrigin: `${cx} ${cy}`, repeat: (o.n ?? 1) - 1, immediateRender: false }, t);
+      return g;
+    },
+    treat(sv, [cx, cy], r = 7) { return K.circle(sv, cx, cy, r, { fill: '#c98a45', stroke: '#fff', 'stroke-width': 2.5 }); },
+    /** A dotted line that draws itself from a to e (a gaze, a direction); fades after o.hold s. */
+    dots(tl, sv, pts, t, o = {}) {
+      const dur = o.dur ?? 0.7, hold = o.hold ?? 1.6, gap = o.gap ?? 16, col = o.color || '#fff';
+      // resample the polyline at even spacing
+      let L = 0; const seg = [];
+      for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); L += d; }
+      const n = Math.max(2, Math.floor(L / gap)), out = [];
+      for (let k = 1; k <= n; k++) {
+        let u = k / n * L, i = 0;
+        while (i < seg.length - 1 && u > seg[i]) { u -= seg[i]; i++; }
+        const f = seg[i] ? u / seg[i] : 0, a = pts[i], b = pts[i + 1];
+        const d = K.circle(sv, a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, o.r ?? 3.4, { fill: col, stroke: o.stroke || 'none', 'stroke-width': 1.5 });
+        tl.set(d, { opacity: 0 }, 0);
+        tl.to(d, { opacity: 1, duration: 0.08 }, t + dur * (o.ease === 'out' ? 1 - Math.sqrt(1 - k / n) : k / n));
+        if (hold > 0) tl.to(d, { opacity: 0, duration: 0.5 }, t + dur + hold + 0.3 * k / n);
+        out.push(d);
+      }
+      return out;
+    },
+    /** A low toss: the treat skims along the floor from a to e leaving a dotted trail; a ring where it lands. */
+    toss(tl, sv, a, e, t, o = {}) {
+      const dur = o.dur ?? 0.9;
+      fx.dots(tl, sv, [a, e], t, { dur, hold: o.hold ?? 1.4, ease: 'out', r: 3.2 });
+      const tr = fx.treat(sv, a);
+      tl.set(tr, { opacity: 0 }, 0);
+      tl.set(tr, { opacity: 1 }, t);
+      tl.to(tr, { x: e[0] - a[0], y: e[1] - a[1], duration: dur, ease: 'power2.out' }, t);
+      tl.to(tr, { y: '-=6', duration: dur / 8, ease: 'sine.out', yoyo: true, repeat: 3 }, t);
+      tl.to(tr, { opacity: 0, duration: 0.2 }, t + dur + 0.05);
+      fx.ring(tl, sv, e, t + dur - 0.05);
+      return t + dur;
+    },
+    /** A scatter: treats drop from the hand to each point, each landing with a small ring. */
+    drops(tl, sv, from, pts, t) {
+      pts.forEach((e, k) => {
+        const tk = t + k * 0.09, tr = fx.treat(sv, [0, 0], 6);
+        tl.set(tr, { opacity: 0 }, 0);
+        tl.set(tr, { opacity: 1 }, tk);
+        tl.fromTo(tr, { x: from[0], y: from[1] }, { x: e[0], y: e[1], duration: 0.5, ease: 'power2.in', immediateRender: false }, tk);
+        tl.to(tr, { opacity: 0, duration: 0.25 }, tk + 0.8);
+        fx.ring(tl, sv, e, tk + 0.45, { r: 13 });
+      });
+    },
+    /** A small tag pinned over the picture (fraction coords of the wrap box). */
+    tag(tl, wrap, text, x, y, t, variant = 'green') {
+      const n = put(wrap, K.el('div', 'tm-word ' + variant, K.md(text)), x, y, { fontSize: '24px', padding: '8px 18px', zIndex: 3 });
+      A.in(tl, n, t, 'pop', { dur: 0.4 });
+      return n;
+    },
+  };
+
+  window.TM = { pic, fx, sitDog, lowToss, order, style, clamp, say, at, put, partCard, head, videoFrame, videoSlide, row, treat, bubble, word, strike, centerX, PLAY };
 })();

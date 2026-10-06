@@ -190,6 +190,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   characters are not good enough; animate over Tori's pictures and clips instead. Tori is making AI clips in Kling
   (Motion Control with a reference cut from the Fisher clip: out/kling-motion-reference-toss-tight.mp4, start picture
   out/kling-start-toss-treat-in-hand.jpg).
+- Round 7 (Oct 7, Tori: "much better, I want the animations to be quality like this"): the tm01s02 style is now a kit,
+  `TM.pic` (Tori's picture whole, with an SVG layer and `P(nx, ny)` mapping picture fractions to px, cover crop aware)
+  and `TM.fx` (ring, dots, toss, drops, tag). Applied to tm01s05 (gaze dots and ring on the check-in; red stare line,
+  squirrel ring and red taut leash on the pull), tm02s01-03 (each game's mark on its picture), tm04s02 (ring per panel:
+  the word, her still hand in amber, the treat at the mouth), tm04s03 (the bowling sweep and low toss drawn on her
+  picture, replayed for "vary the distance" short then long; the old clip-art hand and sweep are gone), tm04s04 (treats
+  drop from her hand, one ring takes in the scatter). Use this kit for every new picture slide.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

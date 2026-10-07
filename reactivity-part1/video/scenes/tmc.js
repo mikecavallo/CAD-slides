@@ -20,6 +20,14 @@
   .tmc-blk.hand { background: var(--green); }
   .tmc-blk.bad { background: var(--red); }
   .tmc-gap { position: absolute; font: 600 28px/1 var(--font-body); color: var(--muted); text-align: center; }
+  .tmc-step { position: absolute; width: 280px; height: 340px; box-sizing: border-box; border-radius: 26px; background: #fff; border: 1px solid #e6e9e1;
+    box-shadow: var(--shadow-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: var(--ink); overflow: hidden; }
+  .tmc-step .n { position: absolute; top: 18px; left: 22px; font: 800 30px/1 var(--font-head); color: var(--green-light); }
+  .tmc-step .ic { width: 96px; height: 96px; border-radius: 50%; background: var(--green-pale); color: var(--green-dark); display: grid; place-items: center; }
+  .tmc-step .ic svg { width: 50px; height: 50px; stroke-width: 2.2; }
+  .tmc-step .t { font: 800 44px/1 var(--font-head); }
+  .tmc-step .s { font: 600 26px/1.2 var(--font-body); opacity: 0.8; text-align: center; padding: 0 16px; }
+  .tmc-step .bar { position: absolute; left: 0; bottom: 0; height: 10px; width: 100%; background: var(--amber); transform-origin: left center; transform: scaleX(0); }
   .tmc-ph { position: absolute; width: 4px; border-radius: 2px; background: var(--amber); }
   `;
   const css = stage => { TM.style(stage); if (!stage.querySelector('style[data-tmc]')) { const s = K.el('style', null, CSS); s.dataset.tmc = '1'; stage.appendChild(s); } };
@@ -166,17 +174,25 @@
 
   // ---------------------------------------------------------------- practice without your dog first (clip)
   registerScene('tm03s02', ctx => {
-    const { stage, tl } = ctx;
-    TM.videoSlide(ctx, {
-      kicker: 'Practicing your mechanics', heading: 'Practice without your dog first', gap: 28,
-      rows: [
-        { icon: 'hand', html: 'Treats in your hand', beat: 1, phrase: 'hold treats', fb: 0.05 },
-        { icon: 'volume-2', html: 'Mark, pause, *then into a bowl*', beat: 1, phrase: 'pause briefly', fb: 0.3 },
-        { icon: 'pause', html: 'Hand still *until the mark ends*', beat: 1, phrase: 'keep your hand still', fb: 0.7 },
-        { icon: 'repeat', html: 'Until it’s *consistent*', beat: 2, phrase: 'practice until', fb: 0.05 },
-      ],
+    const { stage, tl, cue } = ctx;
+    css(stage);
+    TM.head(ctx, 'Practicing your mechanics', 'Practice without your dog first');
+    const col = put(stage, K.el('div', 'tm-col'), 100, 300, { width: '760px', gap: '28px' });
+    [['hand', 'Treats in your hand', 1, 'hold treats', 0.05], ['volume-2', 'Mark, pause, *then into a bowl*', 1, 'pause briefly', 0.3],
+     ['pause', 'Hand still *until the mark ends*', 1, 'keep your hand still', 0.7], ['repeat', 'Until it’s *consistent*', 2, 'practice until', 0.05]]
+      .forEach(([ic, h, b, p, fb]) => A.in(tl, TM.row(col, ic, h), at(ctx, b, p, fb), 'fadeRight', { dur: 0.6 }));
+    // three step cards at the right: each appears as it is said, then the order banner
+    const STEPS = [['volume-2', 'Mark', 'Say your word', 'say your marker'], ['pause', 'Pause', 'Hand still', 'pause briefly'], ['arrow-down', 'Move', 'Treat into a bowl', 'place a treat']];
+    const cards = STEPS.map(([ic, t, sub, p], i) => {
+      const c = put(stage, K.el('div', 'tmc-step'), 920 + i * 310, 300);
+      c.innerHTML = `<div class="n">${i + 1}</div><div class="ic"></div><div class="t">${t}</div><div class="s">${sub}</div>`;
+      c.querySelector('.ic').appendChild(K.icon(ic));
+      A.in(tl, c, at(ctx, 1, p, 0.2 + 0.3 * i), 'fadeUp', { dur: 0.6 });
+      return c;
     });
-    const o = TM.order(stage, ['Mark', 'Pause', 'Move'], { x: 100, y: 700, size: 28, icons: ['volume-2', 'pause', 'hand'] });
-    A.in(tl, o.items, at(ctx, 3, 'word', 0.3), 'fadeRight', { dur: 0.4, stagger: 0.15 });
+    const tW = at(ctx, 3, 'word', 0.3);
+    const bn = put(stage, K.el('div', 'tm-banner'), 920, 690, { width: '900px', boxSizing: 'border-box' });
+    bn.appendChild(K.icon('circle-check')); bn.appendChild(K.el('span', null, 'Word, pause, <b>then movement</b>'));
+    A.in(tl, bn, tW, 'fadeUp', { dur: 0.5 });
   });
 })();

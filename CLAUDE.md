@@ -233,6 +233,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   tall frame at the right (box [1188,190,632,790], clip `crop` [0,480,1080,1344] keeps the middle so Tori's burned-in
   captions read clearly); rows, the two chips side by side and the Separate sessions / Familiar / Mix markers strip at
   the left (fixes the "Always follow through" overlap).
+- Round 13 (Oct 7): tm04s04v "Scatters in action" now plays Tori's "Scatter Demo with captions" (indoor golden, Tori says
+  "Scatter"); new tm04s04w "Why use a scatter?" plays "Scatter example" (snowy yard, no sound) with Tori's reason: the dog
+  jumped to grab the arm of anyone but the owner when walked inside; arms and hands were already too exciting (he'd
+  target them to grab and tug), so no food from the hand; mark while he's calm and walking BEFORE any jump, then scatter
+  low next to you so his head goes down, not up at arms. Narration for both written by Claude from Tori's explanation
+  (paste into the doc). tm03s02 has NO video (Tori won't film the bowl practice): rows plus three step cards (Mark: say
+  your word, Pause: hand still, Move: treat into a bowl) and a "Word, pause, then movement" banner; no lighting effects.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

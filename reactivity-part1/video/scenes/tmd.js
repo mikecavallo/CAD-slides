@@ -168,10 +168,18 @@
   });
 
   registerScene('tm04s04v', ctx => {
-    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatters in action', gap: 28, rows: [
-      { icon: 'footprints', html: 'Mark the calm walking, *before any jump*', beat: 0, phrase: 'calm', fb: 0.5 },
-      { icon: 'x', html: 'Not after the dog *has already jumped*', beat: 0, phrase: 'before any jump', fb: 0.7 },
-      { icon: 'circle-dot', html: 'Then scatter: *nose to the ground*', beat: 0, phrase: 'scatter treats', fb: 0.85 },
+    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatters in action', rows: [
+      { icon: 'volume-2', html: 'Listen for *“Scatter”*', beat: 0, phrase: 'listen for', fb: 0.4 },
+      { icon: 'circle-dot', html: 'Then the treats land *on the floor*', beat: 0, phrase: 'land on the floor', fb: 0.75 },
+    ] });
+  });
+
+  registerScene('tm04s04w', ctx => {
+    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Why use a scatter?', gap: 26, rows: [
+      { icon: 'triangle-alert', html: 'He jumped to grab *arms and hands*', beat: 0, phrase: 'jump up and grab', fb: 0.3 },
+      { icon: 'hand', html: 'Not from the hand: *hands were already too exciting*', beat: 0, phrase: 'feeding from the hand', fb: 0.8 },
+      { icon: 'footprints', html: 'Mark the calm walking, *before any jump*', beat: 1, phrase: 'calm and walking', fb: 0.3 },
+      { icon: 'arrow-down', html: 'Scatter low: *head down, not up at arms*', beat: 1, phrase: 'head down', fb: 0.8 },
     ] });
   });
 

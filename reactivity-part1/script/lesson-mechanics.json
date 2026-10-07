@@ -381,7 +381,7 @@
     {
      "id": "tm03s02",
      "heading": "Practice without your dog first",
-     "visual_concept": "Video slide: Tori practicing without a dog. Left: steps; Word, Pause, Move strip at the end.",
+     "visual_concept": "Rows at left; three step cards at right (Mark: say your word, Pause: hand still, Move: treat into a bowl) appearing as each is said, then lighting in order for 'word, pause, then movement'. No video.",
      "assets": [],
      "beats": [
       {
@@ -404,19 +404,7 @@
        "show": "Strip: Word, Pause, Move.",
        "onscreen": "Word, pause, movement"
       }
-     ],
-     "clip": {
-      "box": [
-       900,
-       290,
-       920,
-       518
-      ],
-      "poster": "",
-      "label": "Practicing without a dog",
-      "at": 1.2,
-      "volume": 0
-     }
+     ]
     }
    ]
   },
@@ -610,9 +598,39 @@
      "assets": [],
      "beats": [
       {
-       "say": "Here’s a real reason to use a scatter. This dog used to jump up and grab my arm on the walk to the house. I mark while the dog is calm and walking with me, before any jump, then scatter treats on the ground.",
-       "show": "Video frame; three rows; step strip.",
-       "onscreen": "Mark the calm walking"
+       "say": "Here’s what a scatter looks like. Listen for “Scatter,” then watch the treats land on the floor for the dog to find.",
+       "show": "Video frame; rows.",
+       "onscreen": "A scatter"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       290,
+       920,
+       518
+      ],
+      "poster": "tm_clip_scatterdemo.jpg",
+      "label": "Scatter demo: “Scatter,” then treats on the floor",
+      "afterNarration": true,
+      "volume": 1.0
+     }
+    },
+    {
+     "id": "tm04s04w",
+     "heading": "Why use a scatter?",
+     "visual_concept": "Tori's 'Scatter example' clip in the frame (no sound, her caption); rows: why a scatter for a dog who grabs at arms.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Here’s a real reason to use a scatter. This dog would jump up and grab at the arm of anyone walking him inside, except his owner. Arms and hands were already too exciting, so feeding from the hand would only add to it.",
+       "show": "Rows 1 and 2.",
+       "onscreen": "Arms and hands were the problem"
+      },
+      {
+       "say": "Instead, I mark while he’s calm and walking with me, before any jump, then scatter the treats low, next to us. That keeps his head down instead of up at our arms.",
+       "show": "Rows 3 and 4.",
+       "onscreen": "Mark calm, scatter low"
       }
      ],
      "clip": {
@@ -623,10 +641,9 @@
        518
       ],
       "poster": "tm_clip_scatter.jpg",
-      "label": "Scatter for calm walking to the house",
-      "at": 1.2,
-      "volume": 0,
-      "afterNarration": true
+      "label": "Marking calm walking, then a scatter",
+      "afterNarration": true,
+      "volume": 0
      }
     },
     {

@@ -169,8 +169,9 @@
 
   registerScene('tm04s04v', ctx => {
     TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatters in action', rows: [
+      { icon: 'circle-dot', html: 'Mark, pause, move: *scatter a few treats*', beat: 0, phrase: 'scatter looks like', fb: 0.2 },
       { icon: 'volume-2', html: 'Listen for *“Scatter”*', beat: 0, phrase: 'listen for', fb: 0.4 },
-      { icon: 'circle-dot', html: 'Then the treats land *on the floor*', beat: 0, phrase: 'land on the floor', fb: 0.75 },
+      { icon: 'arrow-down', html: 'Then the treats land *on the floor*', beat: 0, phrase: 'land on the floor', fb: 0.75 },
     ] });
   });
 
@@ -178,9 +179,12 @@
     TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Why use a scatter?', gap: 26, rows: [
       { icon: 'triangle-alert', html: 'He jumped to grab *arms and hands*', beat: 0, phrase: 'jump up and grab', fb: 0.3 },
       { icon: 'hand', html: 'Not from the hand: *hands were already too exciting*', beat: 0, phrase: 'feeding from the hand', fb: 0.8 },
-      { icon: 'footprints', html: 'Mark the calm walking, *before any jump*', beat: 1, phrase: 'calm and walking', fb: 0.3 },
+      { icon: 'paw-print', html: 'Mark the calm walking, *before any jump*', beat: 1, phrase: 'calm and walking', fb: 0.3 },
       { icon: 'arrow-down', html: 'Scatter low: *head down, not up at arms*', beat: 1, phrase: 'head down', fb: 0.8 },
     ] });
+    // the clip has no sound: say so beside the frame
+    const ns = TM.word(ctx.stage, 'This video has no sound', { x: 900, y: 214, variant: 'pale', size: 24, icon: 'volume-x' });
+    A.in(ctx.tl, ns, Math.max(0.5, (ctx.info.clip || {}).at - 1.5 || 1), 'fadeUp', { dur: 0.5 });
   });
 
   // ---------------------------------------------------------------- does your dog understand?

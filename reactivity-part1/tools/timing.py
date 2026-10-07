@@ -37,7 +37,7 @@ def clip_info(sc, beats=()):
     c = sc.get("clip")
     if not c:
         return None
-    info = {k: c[k] for k in ("box", "poster", "label", "fit", "full") if k in c}
+    info = {k: c[k] for k in ("box", "poster", "label", "fit", "full", "steps", "marks", "stepOffsets") if k in c}
     info["at"] = c.get("at", 1.2)
     if "atBeat" in c and c["atBeat"] < len(beats):  # start the clip when that beat starts (a picture shows in the frame until then)
         info["at"] = round(beats[c["atBeat"]]["t"], 3)

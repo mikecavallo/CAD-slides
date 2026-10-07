@@ -166,7 +166,29 @@
       A.in(tl, n, t, 'fadeRight', { dur: 0.6 });
       return n;
     });
-    return { hd, vf, col, rows };
+    // the clip plays in the frame: a step strip under the rows lights each step as it happens in the clip
+    // (lesson clip block: "steps" ["Mark “X”", "Pause", "Treat"], "marks" [s into the clip], "stepOffsets" per step)
+    const c = ctx.info.clip || {};
+    let strip = null;
+    if (c.steps && c.steps.length) {
+      const [bx, by, , bh] = c.box || [900, 290, 920, 518];
+      strip = order(stage, c.steps, { x: bx, y: o.stepsY ?? by + bh + 92, size: 26, variant: 'pale' });
+      const chips = strip.items.filter((_, i) => i % 2 === 0);
+      A.in(tl, strip.items, Math.max(0.3, (c.at ?? 1.2) - 1.0), 'fadeRight', { dur: 0.4, stagger: 0.1 });
+      const offs = c.stepOffsets || chips.map((_, i) => [0, 0.6, 1.3][i] ?? i * 0.6);
+      const from = c.from || 0, t0 = c.at ?? 1.2, tEnd = t0 + (c.len || 99);
+      chips.forEach(ch => { const cs = getComputedStyle(ch); ch.dataset.bg = cs.backgroundColor; ch.dataset.fg = cs.color; ch.dataset.bd = cs.borderColor; });
+      (c.marks || []).forEach(m => {
+        const tm = t0 + (m - from);
+        chips.forEach((ch, i) => {
+          const t = tm + offs[i];
+          if (t < t0 || t > tEnd - 0.4) return;
+          tl.to(ch, { backgroundColor: '#3f6b22', borderColor: '#3f6b22', color: '#ffffff', scale: 1.08, duration: 0.15, ease: 'power2.out' }, t);
+          tl.to(ch, { backgroundColor: ch.dataset.bg, borderColor: ch.dataset.bd, color: ch.dataset.fg, scale: 1, duration: 0.35, ease: 'power2.in' }, t + 0.55);
+        });
+      });
+    }
+    return { hd, vf, col, rows, strip };
   }
 
   function treat(parent, x, y, s = 1) {

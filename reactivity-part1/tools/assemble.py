@@ -157,8 +157,10 @@ def overlay_clips(video, segs, scale=1):
         d = max(0.2, t1 - t0)
         inputs += ["-i", str(ROOT / c["file"])]
         chains.append(
-            f"[{nin}:v]trim=start={c['from']:.3f}:duration={c['len']:.3f},setpts=PTS-STARTPTS,fps=30,"
-            f"scale={w}:{h}:force_original_aspect_ratio=decrease,pad={w}:{h}:(ow-iw)/2:(oh-ih)/2:color=0x111111,setsar=1,"
+            f"[{nin}:v]trim=start={c['from']:.3f}:duration={c['len']:.3f},setpts=PTS-STARTPTS,fps=30,split=2[fa{k}][fb{k}];"
+            f"[fa{k}]scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},boxblur=24:2,eq=brightness=-0.10:saturation=0.75[fbg{k}];"
+            f"[fb{k}]scale={w}:{h}:force_original_aspect_ratio=decrease,setsar=1[ffg{k}];"
+            f"[fbg{k}][ffg{k}]overlay=(W-w)/2:(H-h)/2,setsar=1,"
             f"tpad=stop_mode=clone:stop_duration={d:.3f},trim=duration={d:.3f},format=yuva420p,"
             f"fade=t=in:st=0:d=0.35:alpha=1,fade=t=out:st={max(0, d - 0.42):.3f}:d=0.42:alpha=1,setpts=PTS+{t0:.3f}/TB[c{k}]")
         nin += 1
@@ -222,7 +224,7 @@ def main():
             except subprocess.CalledProcessError:
                 snd = np.zeros(0, np.float32)  # the clip has no sound track
             snd = snd[int(SR * c["from"]):int(SR * (c["from"] + c["len"]))].copy()
-            if c.get("full") and len(snd):
+            if len(snd):
                 # phone audio: bring the clip's speech up to the narration's level, with short fades at the edges
                 act = np.abs(snd) > 0.02
                 rms = float(np.sqrt(np.mean(snd[act] ** 2))) if act.any() else 0

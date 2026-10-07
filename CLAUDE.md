@@ -220,6 +220,14 @@ pipeline). This file records the state, decisions and working agreements from ea
   the drawn dog is gone); tm04s06 = LSM Jeter captions (blind dog Jeter). Pending: Tori's scatter video (reinforcing a dog
   for walking to the house without jumping up to grab an arm) for tm04s04v, with a line on why to use a scatter.
   Part cards (bumpers) open with a branded two-band green wipe when the series motion is cinematic.
+- Round 11 (Oct 7): Tori prefers demo clips IN the slide frame so the steps stay visible; only the response videos
+  play full screen (tm04s05 clicker testing understanding, tm04s06 Jeter). In-frame clips still play after the
+  narration with their own sound (levelled), bars filled with a blurred copy. A step strip under the frame lights each
+  step in sync with the clip (lesson clip `steps`, `marks` = seconds into the clip where the marker is said, optional
+  `stepOffsets`; default 0 / 0.6 / 1.3 s): tm01s06 Mark "X" / Pause / Treat to his mouth, tm04s02 Yip, tm04s03e Free,
+  tm04s04v Calm walking / Mark "Scatter" / Scatter treats. tm04s04v = Tori's "Scatter example" (no sound, her own
+  caption): a dog marked for calm walking to the house BEFORE any jump, never after jumping (Tori's point; rows say so).
+  New Claude-written lines to add to the doc: tm04s03e Eskara line, tm04s03v Fisher line, tm04s04v scatter line.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

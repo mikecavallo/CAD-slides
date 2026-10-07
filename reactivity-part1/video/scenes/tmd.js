@@ -168,8 +168,10 @@
   });
 
   registerScene('tm04s04v', ctx => {
-    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatters in action', rows: [
-      { icon: 'circle-dot', html: 'Mark, pause, move: *scatter a few treats*', beat: 0, phrase: 'scatter', fb: 0.3 },
+    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatters in action', gap: 28, rows: [
+      { icon: 'footprints', html: 'Mark the calm walking, *before any jump*', beat: 0, phrase: 'calm', fb: 0.5 },
+      { icon: 'x', html: 'Not after the dog *has already jumped*', beat: 0, phrase: 'before any jump', fb: 0.7 },
+      { icon: 'circle-dot', html: 'Then scatter: *nose to the ground*', beat: 0, phrase: 'scatter treats', fb: 0.85 },
     ] });
   });
 

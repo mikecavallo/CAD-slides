@@ -251,8 +251,20 @@
       "poster": "tm_clip_timingx.jpg",
       "label": "Marker timing: “X” the moment he is in position",
       "at": 1.2,
-      "full": true,
-      "afterNarration": true
+      "afterNarration": true,
+      "volume": 1.0,
+      "steps": [
+       "Mark “X”",
+       "Pause",
+       "Treat to his mouth"
+      ],
+      "marks": [
+       3.1,
+       7.6,
+       11.6,
+       16.2,
+       29.3
+      ]
      }
     }
    ]
@@ -491,10 +503,21 @@
       "poster": "",
       "label": "Fisher: “Yip”, a pause, then the treat to his mouth",
       "at": 1.2,
-      "full": true,
       "afterNarration": true,
       "from": 0.0,
-      "to": 21.0
+      "to": 21.0,
+      "volume": 1.0,
+      "steps": [
+       "Mark “Yip”",
+       "Pause",
+       "Treat to the mouth"
+      ],
+      "marks": [
+       0.86,
+       7.12,
+       12.9,
+       18.58
+      ]
      }
     },
     {
@@ -548,8 +571,18 @@
       ],
       "poster": "tm_clip_eskara.jpg",
       "label": "Eskara: learning “Free”",
-      "full": true,
-      "afterNarration": true
+      "afterNarration": true,
+      "volume": 1.0,
+      "steps": [
+       "Mark “Free”",
+       "Pause",
+       "A low toss"
+      ],
+      "marks": [
+       1.32,
+       6.32,
+       13.0
+      ]
      }
     },
     {
@@ -575,7 +608,7 @@
       "label": "Fisher: already knows the game, moving for the next toss",
       "at": 1.2,
       "afterNarration": true,
-      "full": true
+      "volume": 1.0
      }
     },
     {
@@ -610,9 +643,9 @@
      "assets": [],
      "beats": [
       {
-       "say": "And here’s a scatter with a real dog.",
-       "show": "Video frame; row: Mark, pause, scatter.",
-       "onscreen": "In action"
+       "say": "Here’s a real reason to use a scatter. This dog used to jump up and grab my arm on the walk to the house. I mark while the dog is calm and walking with me, before any jump, then scatter treats on the ground.",
+       "show": "Video frame; three rows; step strip.",
+       "onscreen": "Mark the calm walking"
       }
      ],
      "clip": {
@@ -622,11 +655,26 @@
        920,
        518
       ],
-      "poster": "tm_scatter.jpg",
-      "label": "Scatters",
+      "poster": "tm_clip_scatter.jpg",
+      "label": "Scatter for calm walking to the house",
       "at": 1.2,
       "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=8PEainzd9mo"
+      "afterNarration": true,
+      "steps": [
+       "Calm walking",
+       "Mark “Scatter”",
+       "Scatter treats"
+      ],
+      "marks": [
+       0.4,
+       5.2,
+       14.2
+      ],
+      "stepOffsets": [
+       -1.0,
+       0,
+       1.0
+      ]
      }
     },
     {

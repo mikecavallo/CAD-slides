@@ -240,6 +240,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   low next to you so his head goes down, not up at arms. Narration for both written by Claude from Tori's explanation
   (paste into the doc). tm03s02 has NO video (Tori won't film the bowl practice): rows plus three step cards (Mark: say
   your word, Pause: hand still, Move: treat into a bowl) and a "Word, pause, then movement" banner; no lighting effects.
+- Round 14 (Oct 7): tm04s04v gets a "Mark, pause, move: scatter a few treats" row; tm04s04w's calm-walking row uses the
+  paw-print icon (never people's feet for a dog) and a "This video has no sound" chip sits above the frame (label starts
+  "No sound:"). Full presentation (13:48) published to the online preview in six parts. web_page.py takes --kicker
+  (use "Core Skills course" for this video).
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

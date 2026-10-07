@@ -157,7 +157,9 @@ def overlay_clips(video, segs, scale=1):
         d = max(0.2, t1 - t0)
         inputs += ["-i", str(ROOT / c["file"])]
         chains.append(
-            f"[{nin}:v]trim=start={c['from']:.3f}:duration={c['len']:.3f},setpts=PTS-STARTPTS,fps=30,split=2[fa{k}][fb{k}];"
+            f"[{nin}:v]trim=start={c['from']:.3f}:duration={c['len']:.3f},setpts=PTS-STARTPTS,fps=30,"
+            + (f"crop={c['crop'][2]}:{c['crop'][3]}:{c['crop'][0]}:{c['crop'][1]}," if c.get("crop") else "")
+            + f"split=2[fa{k}][fb{k}];"
             f"[fa{k}]scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},boxblur=24:2,eq=brightness=-0.10:saturation=0.75[fbg{k}];"
             f"[fb{k}]scale={w}:{h}:force_original_aspect_ratio=decrease,setsar=1[ffg{k}];"
             f"[fbg{k}][ffg{k}]overlay=(W-w)/2:(H-h)/2,setsar=1,"

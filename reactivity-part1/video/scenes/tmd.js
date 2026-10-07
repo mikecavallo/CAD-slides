@@ -180,18 +180,22 @@
     const { stage, tl, cue, end } = ctx;
     TM.style(stage);
     TM.head(ctx, 'Check for understanding', 'Does your dog understand?');
-    // Tori's clicker clip waits in the frame at left; it plays full screen once the narration is done
-    TM.videoFrame(ctx);
-    const col = put(stage, K.el('div', 'tm-col'), 980, 300, { width: '840px', gap: '30px' });
+    // Tori's clicker clip in a tall frame at the right (cropped to its middle, so her captions stay readable);
+    // it plays in the frame once the narration is done
+    const vf = TM.videoFrame(ctx);
+    vf.cap.style.display = 'none';
+    const col = put(stage, K.el('div', 'tm-col'), 100, 300, { width: '1000px', gap: '30px' });
     const R = [['arrow-left', 'Turns toward you: *to the mouth*', 'turn toward you'], ['move-up-right', 'Gets ready to follow: *a toss*', 'follow a toss'], ['arrow-down', 'Looks at the ground: *a scatter*', 'toward the ground']];
     R.forEach(([ic, h, p]) => A.in(tl, TM.row(col, ic, h, { size: 33 }), at(ctx, 1, p, 0.3), 'fadeRight', { dur: 0.5 }));
-    // consistent, not dramatic; always follow through
-    const c1 = TM.word(stage, 'A consistent response', { x: 980, y: 640, variant: 'green', size: 30, icon: 'check' });
+    // consistent, not dramatic; always follow through (one row, side by side)
+    const r2 = put(stage, K.el('div'), 100, 600, { position: 'absolute', display: 'flex', gap: '18px' });
+    const c1 = TM.word(r2, 'A consistent response', { variant: 'green', size: 28, icon: 'check' });
+    const c2 = TM.word(r2, 'Always follow through', { variant: 'pale', size: 28, icon: 'cookie' });
+    [c1, c2].forEach(n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; });
     A.in(tl, c1, at(ctx, 2, 'consistent response', 0.4), 'pop', { dur: 0.45 });
-    const c2 = TM.word(stage, 'Always follow through', { x: 980, y: 722, variant: 'pale', size: 30, icon: 'cookie' });
     A.in(tl, c2, at(ctx, 2, 'always follow', 0.7), 'pop', { dur: 0.45 });
     // separate sessions, then mixed
-    const o = TM.order(stage, ['Separate sessions', 'Familiar and consistent', 'Mix markers in one session'], { y: 830, size: 30, center: true, icons: ['calendar', 'circle-check', 'shuffle'] });
+    const o = TM.order(stage, ['Separate sessions', 'Familiar', 'Mix markers'], { x: 100, y: 740, size: 28, icons: ['calendar', 'circle-check', 'shuffle'] });
     A.in(tl, o.items, at(ctx, 3, 'separate sessions', 0.2), 'fadeRight', { dur: 0.45, stagger: 0.35 });
   });
 

@@ -252,19 +252,7 @@
       "label": "Marker timing: “X” the moment he is in position",
       "at": 1.2,
       "afterNarration": true,
-      "volume": 1.0,
-      "steps": [
-       "Mark “X”",
-       "Pause",
-       "Treat to his mouth"
-      ],
-      "marks": [
-       3.1,
-       7.6,
-       11.6,
-       16.2,
-       29.3
-      ]
+      "volume": 1.0
      }
     }
    ]
@@ -506,18 +494,7 @@
       "afterNarration": true,
       "from": 0.0,
       "to": 21.0,
-      "volume": 1.0,
-      "steps": [
-       "Mark “Yip”",
-       "Pause",
-       "Treat to the mouth"
-      ],
-      "marks": [
-       0.86,
-       7.12,
-       12.9,
-       18.58
-      ]
+      "volume": 1.0
      }
     },
     {
@@ -572,17 +549,7 @@
       "poster": "tm_clip_eskara.jpg",
       "label": "Eskara: learning “Free”",
       "afterNarration": true,
-      "volume": 1.0,
-      "steps": [
-       "Mark “Free”",
-       "Pause",
-       "A low toss"
-      ],
-      "marks": [
-       1.32,
-       6.32,
-       13.0
-      ]
+      "volume": 1.0
      }
     },
     {
@@ -659,22 +626,7 @@
       "label": "Scatter for calm walking to the house",
       "at": 1.2,
       "volume": 0,
-      "afterNarration": true,
-      "steps": [
-       "Calm walking",
-       "Mark “Scatter”",
-       "Scatter treats"
-      ],
-      "marks": [
-       0.4,
-       5.2,
-       14.2
-      ],
-      "stepOffsets": [
-       -1.0,
-       0,
-       1.0
-      ]
+      "afterNarration": true
      }
     },
     {
@@ -706,15 +658,21 @@
      ],
      "clip": {
       "box": [
-       100,
-       290,
-       820,
-       440
+       1188,
+       190,
+       632,
+       790
       ],
       "poster": "tm_clip_clicker.jpg",
       "label": "Testing understanding: does her head whip up at the click?",
-      "full": true,
-      "afterNarration": true
+      "afterNarration": true,
+      "volume": 1.0,
+      "crop": [
+       0,
+       480,
+       1080,
+       1344
+      ]
      }
     },
     {
@@ -749,8 +707,8 @@
       "poster": "tm_clip_jeter.jpg",
       "label": "Jeter: “Treat” to his mouth, “Get it” to the floor",
       "at": 1.2,
-      "full": true,
-      "afterNarration": true
+      "afterNarration": true,
+      "volume": 1.0
      }
     }
    ]

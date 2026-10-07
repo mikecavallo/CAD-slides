@@ -228,6 +228,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   tm04s04v Calm walking / Mark "Scatter" / Scatter treats. tm04s04v = Tori's "Scatter example" (no sound, her own
   caption): a dog marked for calm walking to the house BEFORE any jump, never after jumping (Tori's point; rows say so).
   New Claude-written lines to add to the doc: tm04s03e Eskara line, tm04s03v Fisher line, tm04s04v scatter line.
+- Round 12 (Oct 7): Tori dislikes the lighting step strips: removed (no `steps` in any clip; the kit code stays but is
+  unused). ALL clips now play in the slide frame, none full screen (Jeter too). tm04s05's vertical clicker clip sits in a
+  tall frame at the right (box [1188,190,632,790], clip `crop` [0,480,1080,1344] keeps the middle so Tori's burned-in
+  captions read clearly); rows, the two chips side by side and the Separate sessions / Familiar / Mix markers strip at
+  the left (fixes the "Always follow through" overlap).
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

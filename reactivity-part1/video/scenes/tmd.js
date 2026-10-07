@@ -25,7 +25,7 @@
     css(stage);
     TM.head(ctx, 'Teaching your dog', 'Introduce one marker at a time');
     const r1 = put(stage, K.el('div'), 100, 285, { position: 'absolute', display: 'flex', gap: '18px' });
-    [['Quiet, comfortable place', 'house', 'quiet'], ['Small treats ready', 'cookie', 'small treats']].forEach(([w, ic, p]) => {
+    [['Quiet, low-distraction area', 'house', 'quiet'], ['Small treats ready', 'cookie', 'small treats']].forEach(([w, ic, p]) => {
       const n = flow(TM.word(r1, w, { variant: 'pale', icon: ic, size: 32 }));
       A.in(tl, n, at(ctx, 0, p, 0.3), 'pop', { dur: 0.45 });
     });
@@ -54,7 +54,7 @@
     lt.appendChild(K.el('div', 't', 'Later'));
     lt.appendChild(K.el('div', 'n', 'Mix markers in one session, once each is familiar'));
     A.in(tl, lt, at(ctx, 2, 'before using multiple', 0.75), 'fadeUp', { dur: 0.6 });
-    const o = TM.order(stage, ['Mark or click', 'Pause', 'Move your hand'], { y: 830, size: 32, center: true, icons: ['volume-2', 'pause', 'hand'] });
+    const o = TM.order(stage, ['Mark', 'Pause', 'Move your hand'], { y: 830, size: 32, center: true, icons: ['volume-2', 'pause', 'hand'] });
     A.in(tl, o.items, at(ctx, 3, 'same order', 0.2), 'fadeRight', { dur: 0.4, stagger: 0.15 });
   });
 
@@ -65,8 +65,8 @@
       kicker: 'Teaching your dog', heading: 'Teach the mouth-delivery marker',
       rows: [
         { icon: 'dog', html: 'Mark, pause, move: *treat to the mouth*', beat: 0, phrase: 'say your chosen', fb: 0.05 },
-        { icon: 'timer', html: 'A short break *between reps*', beat: 1, phrase: 'short break', fb: 0.2 },
-        { icon: 'mouse-pointer-click', html: 'Clicker: *click, pause, treat*', beat: 2, phrase: 'clicker', fb: 0.2 },
+        { icon: 'calendar', html: 'Short sessions, *once or twice a day*, for all markers together', beat: 1, phrase: 'once or twice', fb: 0.3 },
+        { icon: 'mouse-pointer-click', html: 'Clicker: *click, pause, move*', beat: 2, phrase: 'clicker', fb: 0.2 },
       ],
     });
     // Tori's three-step picture, one panel at a time inside the frame (her video plays in the same frame afterwards)
@@ -106,11 +106,12 @@
     const w = 900, h = Math.round(w / o.ar);
     const ph = TM.pic(stage, o.src, { x: 920, y: 300, w, h, nat: o.nat, radius: 22 });
     A.in(tl, ph.wrap, 0.3, 'fadeUp', { dur: 0.8 });
-    const col = put(stage, K.el('div', 'tm-col'), 100, o.top, { width: '760px', gap: '26px' });
+    const col = put(stage, K.el('div', 'tm-col'), 100, 300, { width: '760px', gap: '34px' });
     o.rows.forEach(r => {
       const n = TM.row(col, r.icon, r.html, { size: 32 });
       A.in(tl, n, at(ctx, r.beat, r.phrase, r.fb ?? 0.15), 'fadeRight', { dur: 0.6 });
     });
+    col.style.top = Math.round(300 + h / 2 - col.offsetHeight / 2) + 'px';
     return ph;
   };
 
@@ -131,8 +132,6 @@
     };
     bowl(at(ctx, 0, 'toss one treat', 0.4), 0.945);
     bowl(at(ctx, 1, 'low, sweeping', 0.4), 0.945);
-    const lab = put(stage, K.el('div', 'tm-lab', 'Low and across, like bowling'), 100, 360, { fontSize: '34px', color: 'var(--green-dark)' });
-    A.in(tl, lab, at(ctx, 1, 'bowling', 0.3), 'fadeUp', { dur: 0.5 });
     // vary the distance: a short toss, then a long one
     const tV = at(ctx, 2, 'gradually vary', 0.6);
     bowl(tV, 0.55, 2.6);
@@ -141,14 +140,15 @@
 
   registerScene('tm04s03e', ctx => {
     TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Teaching the toss marker', rows: [
-      { icon: 'volume-2', html: 'Listen for *“Free”*', beat: 0, phrase: 'listen for', fb: 0.4 },
-      { icon: 'move-right', html: 'Then the treat rolls *low along the floor*', beat: 0, phrase: 'roll low', fb: 0.75 },
+      { icon: 'volume-2', html: 'Eskara: listen for *“Free”*', beat: 0, phrase: 'listen for', fb: 0.35 },
+      { icon: 'hand', html: 'The hand closest to her *bowls low, across the body*', beat: 0, phrase: 'closest to her', fb: 0.6 },
+      { icon: 'move-right', html: 'The treat rolls *along the floor*', beat: 0, phrase: 'rolls along', fb: 0.85 },
     ] });
   });
 
   registerScene('tm04s03v', ctx => {
     TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Treat tosses in action', rows: [
-      { icon: 'graduation-cap', html: 'A dog who *already knows the game*', beat: 0, phrase: 'already knows', fb: 0.2 },
+      { icon: 'graduation-cap', html: 'Fisher *already knows the game*', beat: 0, phrase: 'already knows', fb: 0.2 },
       { icon: 'eye', html: 'He anticipates it: *knows where to move*', beat: 0, phrase: 'where to move', fb: 0.7 },
     ] });
   });
@@ -162,16 +162,16 @@
       { icon: 'leaf', html: 'Then other surfaces, *like short grass*', beat: 2, phrase: 'short grass', fb: 0.7 },
     ] });
     // on her picture: a few treats drop from her hand to the floor; on "one rep" a ring takes in the whole scatter
-    const PTS = [[0.405, 0.875], [0.44, 0.865], [0.47, 0.885], [0.50, 0.87], [0.525, 0.88]].map(([x, y]) => ph.P(x, y));
+    const PTS = [[0.455, 0.878], [0.47, 0.869], [0.485, 0.882], [0.466, 0.89], [0.497, 0.873]].map(([x, y]) => ph.P(x, y));
     TM.fx.drops(tl, ph.sv, ph.P(0.33, 0.6), PTS, at(ctx, 0, 'scatter a few', 0.5));
-    TM.fx.ring(tl, ph.sv, ph.P(0.465, 0.875), at(ctx, 1, 'each scatter', 0.8), { n: 2, r: 70 });
+    TM.fx.ring(tl, ph.sv, ph.P(0.476, 0.879), at(ctx, 1, 'each scatter', 0.8), { n: 2, r: 46 });
   });
 
   registerScene('tm04s04v', ctx => {
-    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatters in action', rows: [
-      { icon: 'circle-dot', html: 'Mark, pause, move: *scatter a few treats*', beat: 0, phrase: 'scatter looks like', fb: 0.2 },
+    TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatter demonstration', rows: [
+      { icon: 'circle-dot', html: 'Mark, pause, move: *scatter a few treats*', beat: 0, phrase: 'scatter demonstration', fb: 0.2 },
       { icon: 'volume-2', html: 'Listen for *“Scatter”*', beat: 0, phrase: 'listen for', fb: 0.4 },
-      { icon: 'arrow-down', html: 'Then the treats land *on the floor*', beat: 0, phrase: 'land on the floor', fb: 0.75 },
+      { icon: 'arrow-down', html: 'The treats land *right in front of the dog*', beat: 0, phrase: 'in front of', fb: 0.8 },
     ] });
   });
 
@@ -179,11 +179,12 @@
     TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Why use a scatter?', gap: 26, rows: [
       { icon: 'triangle-alert', html: 'He jumped to grab *arms and hands*', beat: 0, phrase: 'jump up and grab', fb: 0.3 },
       { icon: 'hand', html: 'Not from the hand: *hands were already too exciting*', beat: 0, phrase: 'feeding from the hand', fb: 0.8 },
-      { icon: 'paw-print', html: 'Mark the calm walking, *before any jump*', beat: 1, phrase: 'calm and walking', fb: 0.3 },
+      { icon: 'paw-print', html: 'Mark calm walking, *before the jumping starts*', beat: 1, phrase: 'calm and walking', fb: 0.3 },
       { icon: 'arrow-down', html: 'Scatter low: *head down, not up at arms*', beat: 1, phrase: 'head down', fb: 0.8 },
     ] });
     // the clip has no sound: say so beside the frame
-    const ns = TM.word(ctx.stage, 'This video has no sound', { x: 900, y: 214, variant: 'pale', size: 24, icon: 'volume-x' });
+    const [nbx, nby] = (ctx.info.clip || {}).box || [900, 330];
+    const ns = TM.word(ctx.stage, 'This video doesn’t have sound', { x: nbx - 12, y: nby - 12 - 70, variant: 'pale', size: 24, icon: 'volume-x' });
     A.in(ctx.tl, ns, Math.max(0.5, (ctx.info.clip || {}).at - 1.5 || 1), 'fadeUp', { dur: 0.5 });
   });
 
@@ -196,18 +197,19 @@
     // it plays in the frame once the narration is done
     const vf = TM.videoFrame(ctx);
     vf.cap.style.display = 'none';
-    const col = put(stage, K.el('div', 'tm-col'), 100, 300, { width: '1000px', gap: '30px' });
+    const col = put(stage, K.el('div', 'tm-col'), 100, 330, { width: '1000px', gap: '30px' });
     const R = [['arrow-left', 'Turns toward you: *to the mouth*', 'turn toward you'], ['move-up-right', 'Gets ready to follow: *a toss*', 'follow a toss'], ['arrow-down', 'Looks at the ground: *a scatter*', 'toward the ground']];
     R.forEach(([ic, h, p]) => A.in(tl, TM.row(col, ic, h, { size: 33 }), at(ctx, 1, p, 0.3), 'fadeRight', { dur: 0.5 }));
     // consistent, not dramatic; always follow through (one row, side by side)
-    const r2 = put(stage, K.el('div'), 100, 600, { position: 'absolute', display: 'flex', gap: '18px' });
+    const r2 = put(stage, K.el('div'), 100, 640, { position: 'absolute', display: 'flex', gap: '18px' });
     const c1 = TM.word(r2, 'A consistent response', { variant: 'green', size: 28, icon: 'check' });
     const c2 = TM.word(r2, 'Always follow through', { variant: 'pale', size: 28, icon: 'cookie' });
     [c1, c2].forEach(n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; });
     A.in(tl, c1, at(ctx, 2, 'consistent response', 0.4), 'pop', { dur: 0.45 });
     A.in(tl, c2, at(ctx, 2, 'always follow', 0.7), 'pop', { dur: 0.45 });
     // separate sessions, then mixed
-    const o = TM.order(stage, ['Separate sessions', 'Familiar', 'Mix markers'], { x: 100, y: 740, size: 28, icons: ['calendar', 'circle-check', 'shuffle'] });
+    const o = TM.order(stage, ['Separate sessions', 'Familiar', 'Mix markers'], { x: 100, y: 780, size: 26, icons: ['calendar', 'circle-check', 'shuffle'] });
+    o.row.style.gap = '14px';
     A.in(tl, o.items, at(ctx, 3, 'separate sessions', 0.2), 'fadeRight', { dur: 0.45, stagger: 0.35 });
   });
 

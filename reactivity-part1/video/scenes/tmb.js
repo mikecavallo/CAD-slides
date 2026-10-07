@@ -26,22 +26,22 @@
     TM.head(ctx, 'Your dog’s needs', 'Match the game to your dog’s needs', { size: 62 });
     // a distance strip: something worrying at the left, "too close" fading into "enough space" to the right.
     // The dog is a marker on the strip; treats skim along it, the dog follows them out to where there is room.
-    const X0 = 100, W = 1720, Y = 285, H = 270, GY = Y + 190;
+    const X0 = 100, W = 1720, Y = 280, H = 280, GY = Y + 205;
     const panel = put(stage, K.el('div'), X0, Y, { position: 'absolute', width: W + 'px', height: H + 'px', borderRadius: '26px', overflow: 'hidden',
       background: 'linear-gradient(90deg, #f8e3dd 0%, #fbefd9 28%, #f3f8ec 52%, #e8f1dc 100%)', border: '2px solid #e6e9e1' });
     A.in(tl, panel, cue(0) + 0.1, 'fadeUp', { dur: 0.6 });
     const sv = K.svg(stage, { x: X0, y: Y, w: W, h: H });
     sv.style.overflow = 'visible';
-    const ground = K.path(sv, `M 40 ${GY - Y} L ${W - 40} ${GY - Y}`, { stroke: '#d7dccf', 'stroke-width': 5 });
+    const ground = K.path(sv, `M 210 ${GY - Y} L ${W - 40} ${GY - Y}`, { stroke: '#d7dccf', 'stroke-width': 5 });
     A.draw(tl, ground, cue(0) + 0.3, 0.7);
-    const zl = (t, x, col) => put(stage, K.el('div', 'tm-lab', t), x, Y + 210, { fontSize: '26px', color: col });
-    const zTC = zl('Too close', X0 + 180, 'var(--red)'), zES = zl('Enough space', X0 + W - 250, 'var(--green-dark)');
+    const zl = (t, x, col) => put(stage, K.el('div', 'tm-lab', t), x, GY + 20, { fontSize: '26px', color: col });
+    const zTC = zl('Too close', X0 + 220, 'var(--red)'), zES = zl('Enough space', X0 + W - 240, 'var(--green-dark)');
     // the worry
-    const wb = K.iconBadge(stage, 'triangle-alert', { x: X0 + 40, y: GY - 120, size: 96, variant: 'amber' });
-    const wl = put(stage, K.el('div', 'tm-lab', 'Something<br>worrying'), X0 + 26, GY - 12, { fontSize: '24px', color: '#8a5410', width: '130px', textAlign: 'center', whiteSpace: 'normal' });
+    const wb = K.iconBadge(stage, 'triangle-alert', { x: X0 + 46, y: GY - 150, size: 96, variant: 'amber' });
+    const wl = put(stage, K.el('div', 'tm-lab', 'Something<br>worrying'), X0 + 29, GY - 42, { fontSize: '24px', color: '#8a5410', width: '130px', textAlign: 'center', whiteSpace: 'normal' });
     const tW = at(ctx, 0, 'stressed', 0.3);
     A.in(tl, [wb, wl], tW, 'pop', { dur: 0.5, stagger: 0.1 });
-    TM.fx.ring(tl, sv, [88, GY - Y - 72], tW + 0.3, { n: 2, r: 46, color: 'var(--amber)' });
+    TM.fx.ring(tl, sv, [94, GY - Y - 102], tW + 0.3, { n: 2, r: 46, color: 'var(--amber)' });
     A.in(tl, [zTC, zES], tW + 0.4, 'fade', { dur: 0.5 });
     // the dog: a marker on the strip, close to the worry
     const dog = put(stage, K.el('div'), 0, 0, { position: 'absolute', width: '96px', height: '96px', borderRadius: '50%', background: 'var(--green)', color: '#fff',
@@ -66,24 +66,24 @@
       TM.fx.toss(tl, sv, [a, gy], [b, gy], t, { dur: 0.8, hold: 1.0 });
       tl.to(dog, { left: X0 + b - 48 + 'px', duration: 0.75, ease: 'power2.inOut' }, t + 0.55);
     });
-    const tChase = TM.word(stage, 'Treat chases, moving away', { x: X0 + 700, y: Y + 26, variant: 'green', size: 28, icon: 'move-right' });
+    const tChase = TM.word(stage, 'Treat chases, moving away', { x: X0 + 640, y: Y + 24, variant: 'green', size: 28, icon: 'move-right' });
     A.in(tl, tChase, t1 + 0.4, 'pop', { dur: 0.45 });
     // with enough space: a scatter around the dog
     const tS = at(ctx, 1, 'scatter', 0.7);
     const cx = 1260;
     TM.fx.drops(tl, sv, [cx, gy - 120], [[cx - 70, gy + 2], [cx - 30, gy - 8], [cx + 20, gy + 4], [cx + 60, gy - 6], [cx + 100, gy + 3]], tS);
-    const tScat = TM.word(stage, 'Enough space: scatter', { x: X0 + 1130, y: Y + 26, variant: 'green', size: 28, icon: 'sparkles' });
+    const tScat = TM.word(stage, 'Enough space: scatter', { x: X0 + 700, y: Y + 24, variant: 'green', size: 28, icon: 'sparkles' });
     tl.to(tChase, { opacity: 0, duration: 0.3 }, tS - 0.3);
     A.in(tl, tScat, tS, 'pop', { dur: 0.45 });
 
     // underneath: Tori's pictures of the games, each lit as it is mentioned
-    const PH = 250, G = [['tm_toss.jpg', [1468, 968], 'Toss to chase'], ['tm_scatter.jpg', [1466, 962], 'Scatter'], ['tm_mouth_3.jpg', [524, 828], 'Another dog: food to the mouth']];
+    const PH = 215, G = [['tm_toss.jpg', [1468, 968], 'Toss to chase'], ['tm_scatter.jpg', [1466, 962], 'Scatter'], ['tm_mouth_3.jpg', [524, 828], 'To the mouth']];
     const ws = G.map(([, [nw, nh]]) => Math.round(PH * nw / nh)), GAP = 40;
     let x = (1920 - ws.reduce((a, b) => a + b, 0) - 2 * GAP) / 2;
     const pics = G.map(([src, nat, lab], i) => {
-      const ph = TM.pic(stage, src, { x, y: 590, w: ws[i], h: PH, nat, radius: 18, border: 6 });
+      const ph = TM.pic(stage, src, { x, y: 598, w: ws[i], h: PH, nat, radius: 18, border: 6 });
       tl.set(ph.wrap, { opacity: 0 }, 0);
-      ph.lab = put(stage, K.el('div', 'tm-lab', lab), x - 40, 850, { fontSize: '28px', fontFamily: 'var(--font-head)', width: ws[i] + 80 + 'px', textAlign: 'center' });
+      ph.lab = put(stage, K.el('div', 'tm-lab', lab), x - 40, 828, { fontSize: '28px', fontFamily: 'var(--font-head)', width: ws[i] + 80 + 'px', textAlign: 'center' });
       tl.set(ph.lab, { opacity: 0 }, 0);
       x += ws[i] + GAP;
       return ph;
@@ -103,7 +103,7 @@
     // watch your dog; pattern games later
     tl.to([panel, sv, dog, wb, wl, zTC, zES, tScat, pics[0].wrap, pics[1].wrap, pics[0].lab, pics[1].lab], { opacity: 1, duration: 0.5 }, cue(3));
     tl.to(pics[2].wrap, { scale: 1, duration: 0.5 }, cue(3));
-    const row = put(stage, K.el('div'), 0, 912, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', gap: '24px' });
+    const row = put(stage, K.el('div'), 0, 896, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', gap: '24px' });
     const w = flow(TM.word(row, 'Watch how your dog responds', { variant: 'green', size: 28, icon: 'eye' }));
     A.in(tl, w, at(ctx, 3, 'watch how', 0.05), 'fadeUp', { dur: 0.5 });
     const pg = flow(TM.word(row, 'Coming later: pattern games', { variant: 'pale', size: 28, icon: 'sparkles' }));
@@ -145,7 +145,7 @@
     // the check-in: a dotted line from the dog's eyes up to her face, a ring where their eyes meet
     {
       const { sv, P } = G.ph, t = tG + 1.0;
-      TM.fx.dots(tl, sv, [P(0.44, 0.42), P(0.29, 0.14)], t, { dur: 0.6, hold: 2.4, r: 5.5, gap: 18, stroke: 'var(--green)' });
+      TM.fx.dots(tl, sv, [P(0.435, 0.40), P(0.30, 0.10)], t, { dur: 0.6, hold: 2.4, r: 5.5, gap: 18, stroke: 'var(--green)' });
       TM.fx.ring(tl, sv, P(0.43, 0.42), t + 0.6, { n: 2, r: 24 });
     }
     // the pull: the dog's stare runs to the squirrel, the leash pulls tight, both in red

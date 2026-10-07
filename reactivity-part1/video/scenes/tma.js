@@ -93,10 +93,8 @@
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Food games', 'Introducing food games');
-    const sub = K.text(stage, 'Different ways to deliver <b style="color:var(--green)">the treat</b>', { x: 1000, y: 175, cls: 'lead', size: 34 });
-    A.in(tl, sub, at(ctx, 0, 'food games', 0.7), 'fadeUp', { dur: 0.6 });
     // Tori's pictures, shown whole at one height, labelled underneath
-    const H = 400;
+    const H = 370;
     const G = [['To the mouth', 'mouth', 'tm_mouth_3.jpg', 524 / 828], ['A toss to chase', 'tossing', 'tm_toss.jpg', 1468 / 968], ['A scatter', 'scattering', 'tm_scatter.jpg', 1466 / 962]];
     const ws = G.map(g => Math.round(H * g[3])), GAP = 60;
     let x = (1920 - ws.reduce((a, b) => a + b, 0) - GAP * 2) / 2;
@@ -105,13 +103,14 @@
     const B = 8, cards = [];
     G.forEach(([t, p, src], i) => {
       const w = ws[i];
-      const wrap = put(stage, K.el('div'), x, 300, { position: 'absolute', width: w + 'px', height: H + 'px', transformOrigin: '50% 60%' });
+      const wrap = put(stage, K.el('div'), x, 310, { position: 'absolute', width: w + 'px', height: H + 'px', transformOrigin: '50% 60%' });
       const ph = K.photo(wrap, src, { x: 0, y: 0, w, h: H, radius: 20 });
       ph.root.style.border = B + 'px solid #fff';
       const sv = K.svg(wrap, { x: 0, y: 0, w, h: H });
       sv.style.overflow = 'visible';
       const P = (nx, ny) => [B + nx * (w - 2 * B), B + ny * (H - 2 * B)];
-      const lab = put(stage, K.el('div', 'tm-lab', t), x, 726, { fontSize: '38px', fontFamily: 'var(--font-head)', width: w + 'px', textAlign: 'center' });
+      const lab = put(stage, K.el('div', 'tm-lab', t), x, 708, { fontSize: '38px', fontFamily: 'var(--font-head)' });
+      TM.centerX(lab, x + w / 2);
       const tc = at(ctx, 1, p, 0.2 + 0.3 * i);
       A.in(tl, wrap, tc, 'fadeUp', { dur: 0.7 });
       A.in(tl, lab, tc + 0.25, 'fadeUp', { dur: 0.5 });
@@ -150,7 +149,7 @@
     // a scatter: a few treats drop from the hand to the ground, each lands with a small ring
     {
       const c = cards[2], h = c.P(0.33, 0.6);
-      [[0.405, 0.875], [0.44, 0.865], [0.47, 0.885], [0.50, 0.87], [0.525, 0.88]].forEach(([nx, ny], k) => {
+      [[0.455, 0.878], [0.47, 0.869], [0.485, 0.882], [0.466, 0.89], [0.497, 0.873]].forEach(([nx, ny], k) => {
         const e = c.P(nx, ny), t = fx[2] + k * 0.09;
         const tr = dot(c.sv, [0, 0], 6);
         tl.set(tr, { opacity: 0 }, 0);
@@ -167,26 +166,27 @@
     });
     const tAll = Math.max(fx[2] + 1.6, end(1) - 0.4);
     tl.to(cards.map(c => c.wrap), { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, tAll);
-    // "your hand, or the ground?": tags on the pictures as they are said
-    const tag = (c, text, t) => {
-      const n = put(stage, K.el('div', 'tm-word green', K.md(text)), 0, 240, { fontSize: '26px', padding: '10px 22px' });
+    // where your dog will find the food: a line under each game's name as it is said
+    const tag = (c, text, icon, t) => {
+      const n = put(stage, K.el('div', 'tm-lab'), 0, 764, { fontSize: '27px', color: 'var(--green-dark)', display: 'flex', alignItems: 'center', gap: '10px' });
+      n.appendChild(K.icon(icon, { size: 28 }));
+      n.appendChild(K.el('span', null, K.md(text)));
       TM.centerX(n, c.x + c.w / 2);
-      A.in(tl, n, t, 'pop', { dur: 0.45 });
+      A.in(tl, n, t, 'fadeUp', { dur: 0.45 });
     };
-    const tH = at(ctx, 3, 'your hand', 0.75), tG = at(ctx, 3, 'on the ground', 0.92);
-    tag(cards[0], 'Your hand', tH);
-    tag(cards[1], 'The ground', tG);
-    tag(cards[2], 'The ground', tG + 0.12);
-    const pill = put(stage, K.el('div', 'tm-banner'), 0, 815);
+    tag(cards[0], 'At their mouth', 'dog', at(ctx, 3, 'their mouth', 0.6));
+    tag(cards[1], 'Rolling along the ground', 'move-right', at(ctx, 3, 'rolling', 0.75));
+    tag(cards[2], 'On the ground in front of them', 'arrow-down', at(ctx, 3, 'in front of them', 0.92));
+    const pill = put(stage, K.el('div', 'tm-banner'), 0, 838);
     pill.appendChild(K.icon('volume-2'));
     pill.appendChild(K.el('span', null, 'Each game has its own marker: <b>which moment</b> + <b>which game</b>'));
     TM.centerX(pill, 960);
     A.in(tl, pill, at(ctx, 2, 'different marker word', 0.15), 'fadeUp', { dur: 0.6 });
     const tN = at(ctx, 3, 'won’t have to guess', 0.45);
     tl.to(pill, { opacity: 0, duration: 0.35 }, tN - 0.3);
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 815);
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 838);
     bn.appendChild(K.icon('circle-check'));
-    bn.appendChild(K.el('span', null, 'No guessing: <b>your hand, or the ground?</b>'));
+    bn.appendChild(K.el('span', null, 'No guessing: <b>they know where the food will be</b>'));
     TM.centerX(bn, 960);
     A.in(tl, bn, tN, 'fadeUp', { dur: 0.6 });
   });

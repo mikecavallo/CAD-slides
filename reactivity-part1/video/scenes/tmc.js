@@ -33,7 +33,7 @@
   const css = stage => { TM.style(stage); if (!stage.querySelector('style[data-tmc]')) { const s = K.el('style', null, CSS); s.dataset.tmc = '1'; stage.appendChild(s); } };
   const flow = n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; return n; };
 
-  const SCATTER = [[0.405, 0.875], [0.44, 0.865], [0.47, 0.885], [0.50, 0.87], [0.525, 0.88]];  // where the treats lie in tm_scatter.jpg
+  const SCATTER = [[0.455, 0.878], [0.47, 0.869], [0.485, 0.882], [0.466, 0.89], [0.497, 0.873]];  // where the treats lie in tm_scatter.jpg
   // ---------------------------------------------------------------- give each game its own word: one slide per game
   // Tori's picture shown whole at the left; the game's name and its example words at the right
   const gameSlide = (ctx, o) => {
@@ -55,6 +55,7 @@
       const n = flow(TM.word(chips, '“' + wd + '”', { variant: 'pale', size: 40 }));
       A.in(tl, n, at(ctx, o.beat, p, 0.25 + 0.13 * k), 'pop', { dur: 0.4 });
     });
+    colm.style.top = Math.round(300 + h / 2 - colm.offsetHeight / 2) + 'px';  // centred on the picture
     return { X, W, ph };
   };
 
@@ -89,7 +90,8 @@
     const tiles = T.map(([src, , wd], i) => {
       const ph = K.photo(stage, src, { x, y: 290, w: ws[i], h: H, radius: 18 });
       ph.root.style.border = '6px solid #fff';
-      const chip = TM.word(stage, '“' + wd + '”', { x, y: 610, variant: 'green', size: 34 });
+      const chip = TM.word(stage, '“' + wd + '”', { x, y: 618, variant: 'green', size: 34 });
+      TM.centerX(chip, x + ws[i] / 2);
       A.in(tl, ph.root, tP + 0.2 * i, 'fadeUp', { dur: 0.6 });
       A.in(tl, chip, tP + 0.2 * i + 0.4, 'pop', { dur: 0.4 });
       const r = { x, w: ws[i], chip };
@@ -97,9 +99,10 @@
       return r;
     });
     tl.call(() => {}, null, 0);
-    const ck = TM.word(stage, 'or a Clicker', { x: tiles[0].x, y: 690, variant: 'pale', size: 30, icon: 'mouse-pointer-click' });
+    const ck = TM.word(stage, 'Clicker', { x: tiles[0].x, y: 708, variant: 'pale', size: 28, icon: 'mouse-pointer-click' });
+    TM.centerX(ck, tiles[0].x + tiles[0].w / 2);
     A.in(tl, ck, at(ctx, 0, 'clicker', 0.7), 'pop', { dur: 0.45 });
-    const row = put(stage, K.el('div'), 0, 800, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
+    const row = put(stage, K.el('div'), 0, 830, { position: 'absolute', width: '1920px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' });
     const al = flow(put(row, K.el('div', 'tm-lab', 'Avoid:'), 0, 0, { fontSize: '34px', color: 'var(--red)' }));
     A.in(tl, al, at(ctx, 1, 'avoiding', 0.15) - 0.2, 'fadeUp', { dur: 0.4 });
     [['“Good”', 'good'], ['“Yes”', 'yes']].forEach(([w, p]) => {
@@ -111,7 +114,7 @@
     const why = flow(put(row, K.el('div', 'tm-lab', 'Everyday words, often no food'), 0, 0, { fontSize: '30px', color: 'var(--ink-soft)' }));
     A.in(tl, why, at(ctx, 1, 'everyday', 0.5), 'fadeUp', { dur: 0.5 });
     tl.to(row, { opacity: 0, duration: 0.35 }, cue(2));
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 795);
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 822);
     bn.appendChild(K.icon('lock'));
     bn.appendChild(K.el('span', null, 'Reserve your words <b>for these games</b>'));
     TM.centerX(bn, 960);
@@ -119,80 +122,98 @@
   });
 
   // ---------------------------------------------------------------- your mechanics matter
+  // two clean panels, Right and Wrong, each with a Mark lane and a Hand lane; the pause is a shaded band across both lanes;
+  // each panel's takeaway sits in its own column at the right, clear of the lanes
   registerScene('tm03s01', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Practicing your mechanics', 'Your mechanics matter');
-    const lead = K.text(stage, 'Two separate actions. <b style="color:var(--green)">Never at the same time.</b>', { x: 100, y: 270, cls: 'lead', size: 38 });
+    const lead = K.text(stage, 'Two separate actions. <b style="color:var(--green)">Never at the same time.</b>', { x: 100, y: 268, cls: 'lead', size: 38 });
     A.in(tl, lead, at(ctx, 0, 'two separate actions', 0.4), 'fadeUp', { dur: 0.6 });
-    const X0 = 380, X1 = 1500;
-    const lanes = (y, label, cls) => {
-      const tag = put(stage, K.el('div', 'tm-lab', label), 100, y - 6, { fontSize: '34px', color: cls === 'bad' ? 'var(--red)' : 'var(--green-dark)' });
-      const lw = put(stage, K.el('div', 'tmc-ll', 'Mark'), 240, y + 28);
-      const lh = put(stage, K.el('div', 'tmc-ll', 'Hand'), 240, y + 108);
-      const a = put(stage, K.el('div', 'tmc-lane'), X0, y + 42, { width: X1 - X0 + 'px' });
-      const b = put(stage, K.el('div', 'tmc-lane'), X0, y + 122, { width: X1 - X0 + 'px' });
-      return { tag, all: [lw, lh, a, b] };
+    const PX = 100, PW = 1720, PH = 220, X0 = 480, X1 = 1300, NX = 1360;
+    const panel = (y, good) => {
+      const p = put(stage, K.el('div'), PX, y, { position: 'absolute', width: PW + 'px', height: PH + 'px', boxSizing: 'border-box', borderRadius: '26px',
+        background: good ? 'var(--green-mist)' : 'var(--red-pale)', border: '2px solid ' + (good ? '#d6e6c3' : '#efc5b9') });
+      const tag = put(stage, K.el('div', 'tm-lab'), PX + 36, y + PH / 2 - 22, { fontSize: '38px', fontFamily: 'var(--font-head)', color: good ? 'var(--green-dark)' : 'var(--red)',
+        display: 'flex', alignItems: 'center', gap: '12px' });
+      tag.appendChild(K.icon(good ? 'circle-check' : 'circle-x', { size: 40 }));
+      tag.appendChild(K.el('span', null, good ? 'Right' : 'Wrong'));
+      const yM = y + 78, yH = y + 160;
+      const lw = put(stage, K.el('div', 'tmc-ll', 'Mark'), 365, yM - 16);
+      const lh = put(stage, K.el('div', 'tmc-ll', 'Hand'), 365, yH - 16);
+      const a = put(stage, K.el('div', 'tmc-lane'), X0, yM - 3, { width: X1 - X0 + 'px' });
+      const b = put(stage, K.el('div', 'tmc-lane'), X0, yH - 3, { width: X1 - X0 + 'px' });
+      const sep = put(stage, K.el('div'), NX - 30, y + 30, { position: 'absolute', width: '2px', height: PH - 60 + 'px', background: good ? '#d6e6c3' : '#efc5b9' });
+      return { p, tag, yM, yH, all: [p, tag, lw, lh, a, b, sep] };
     };
-    const blk = (x, y, w, cls, icon, txt) => {
-      const n = put(stage, K.el('div', 'tmc-blk ' + cls), x, y, { width: w + 'px' });
+    const blk = (x, yc, w, cls, icon, txt) => {
+      const n = put(stage, K.el('div', 'tmc-blk ' + cls), x, yc - 30, { width: w + 'px', height: '60px' });
       if (icon) n.appendChild(K.icon(icon));
       n.appendChild(K.el('span', null, txt));
       return n;
     };
-    // the right way
-    const R = lanes(370, 'Right', 'good');
-    A.in(tl, [R.tag, ...R.all], cue(0) + 0.6, 'fade', { dur: 0.5, stagger: 0.05 });
-    const w1 = blk(X0, 380, 220, 'word', 'volume-2', 'Yip');
-    const gp = put(stage, K.el('div', 'tmc-gap', 'pause'), X0 + 240, 400, { width: '200px' });
-    const h1 = blk(X0 + 460, 460, 320, 'hand', 'hand', 'Treat');
-    const ph = put(stage, K.el('div', 'tmc-ph'), X0, 360, { height: '180px' });
+    const note = (y, html, icon, col) => {
+      const n = put(stage, K.el('div', 'tm-lab'), NX, y + PH / 2 - 40, { fontSize: '30px', lineHeight: '1.3', color: col, display: 'flex', alignItems: 'center', gap: '16px', whiteSpace: 'normal', width: '430px' });
+      const ic = K.icon(icon);
+      Object.assign(ic.style, { width: '44px', height: '44px', flex: '0 0 auto' });
+      n.appendChild(ic);
+      n.appendChild(K.el('span', null, html));
+      return n;
+    };
+    // the right way: the word, a pause, then the hand
+    const RY = 340, R = panel(RY, true);
+    A.in(tl, R.all, cue(0) + 0.6, 'fade', { dur: 0.5, stagger: 0.04 });
+    const w1 = blk(X0, R.yM, 220, 'word', 'volume-2', 'Yip');
+    const band = put(stage, K.el('div'), X0 + 230, RY + 22, { position: 'absolute', width: '200px', height: PH - 44 + 'px', borderRadius: '14px', background: '#f7ecd6', border: '2px dashed rgba(217,145,43,0.75)', boxSizing: 'border-box' });
+    // the band hides the lanes inside it; its label sits in the middle, between the lanes
+    const bl = put(stage, K.el('div', 'tm-lab', 'Pause'), X0 + 230, (R.yM + R.yH) / 2 - 16, { fontSize: '30px', color: '#8a5410', width: '200px', textAlign: 'center' });
+    const h1 = blk(X0 + 440, R.yH, 320, 'hand', 'hand', 'Treat');
     const tR = at(ctx, 1, 'say the word', 0.05);
     A.in(tl, w1, tR, 'grow', { dur: 0.5 });
-    A.in(tl, gp, at(ctx, 1, 'pause', 0.4), 'fade', { dur: 0.4 });
+    A.in(tl, [band, bl], at(ctx, 1, 'pause', 0.4), 'fade', { dur: 0.4 });
     A.in(tl, h1, at(ctx, 1, 'reach for', 0.7), 'grow', { dur: 0.5 });
-    tl.fromTo(ph, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tR);
-    tl.to(ph, { x: 800, duration: Math.max(1.5, end(1) - tR), ease: 'none' }, tR);
-    tl.to(ph, { opacity: 0, duration: 0.3 }, end(1));
+    const n1 = note(RY, 'The mark <b style="color:var(--green)">predicts the treat</b>', 'volume-2', 'var(--ink)');
+    A.in(tl, n1, at(ctx, 1, 'deliver the treat', 0.9), 'fadeUp', { dur: 0.5 });
     // the wrong way: the hand moves during the word
-    const W = lanes(600, 'Wrong', 'bad');
+    const WY = 600, Wp = panel(WY, false);
     const tW = at(ctx, 2, 'before or during', 0.2);
-    A.in(tl, [W.tag, ...W.all], tW - 0.4, 'fade', { dur: 0.4, stagger: 0.05 });
-    const w2 = blk(X0, 610, 220, 'word', 'volume-2', 'Yip');
-    const h2 = blk(X0 + 60, 690, 320, 'bad', 'hand', 'Treat');
+    A.in(tl, Wp.all, tW - 0.4, 'fade', { dur: 0.4, stagger: 0.04 });
+    const w2 = blk(X0, Wp.yM, 220, 'word', 'volume-2', 'Yip');
+    const h2 = blk(X0 + 60, Wp.yH, 320, 'bad', 'hand', 'Treat');
     A.in(tl, w2, tW, 'grow', { dur: 0.4 });
     A.in(tl, h2, tW + 0.2, 'grow', { dur: 0.4 });
-    const eye = K.iconBadge(stage, 'eye', { x: 980, y: 640, size: 90, variant: 'red' });
-    const el = put(stage, K.el('div', 'tm-lab', 'Your dog watches your hand,<br>not the mark'), 1090, 648, { fontSize: '30px', color: 'var(--red)' });
-    A.in(tl, [eye, el], at(ctx, 2, 'movement predicts', 0.5), 'fadeUp', { dur: 0.5, stagger: 0.1 });
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 850);
+    const n2 = note(WY, 'Your dog watches <b>your hand</b>, not the mark', 'eye', 'var(--red)');
+    A.in(tl, n2, at(ctx, 2, 'movement predicts', 0.5), 'fadeUp', { dur: 0.5 });
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 868);
     bn.appendChild(K.icon('volume-2'));
     bn.appendChild(K.el('span', null, 'Kept separate, the mark becomes <b>a clear, reliable signal</b>'));
     TM.centerX(bn, 960);
     A.in(tl, bn, at(ctx, 3, 'keeping', 0.1), 'fadeUp', { dur: 0.6 });
   });
 
-  // ---------------------------------------------------------------- practice without your dog first (clip)
+  // ---------------------------------------------------------------- practice without your dog first (no clip)
+  // setup rows at the left, the three steps (Mark, Pause, Move) as cards at the right, the order banner underneath; centred on the page
   registerScene('tm03s02', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
     TM.head(ctx, 'Practicing your mechanics', 'Practice without your dog first');
-    const col = put(stage, K.el('div', 'tm-col'), 100, 300, { width: '760px', gap: '28px' });
-    [['hand', 'Treats in your hand', 1, 'hold treats', 0.05], ['volume-2', 'Mark, pause, *then into a bowl*', 1, 'pause briefly', 0.3],
-     ['pause', 'Hand still *until the mark ends*', 1, 'keep your hand still', 0.7], ['repeat', 'Until it’s *consistent*', 2, 'practice until', 0.05]]
+    const TOP = 330, CH = 380;
+    const col = put(stage, K.el('div', 'tm-col'), 100, TOP, { width: '760px', gap: '40px' });
+    [['hand', 'Treats in hand, *a bowl nearby*', 1, 'hold treats', 0.05], ['pause', 'Hand still *until the word ends*', 1, 'keep your hand still', 0.7],
+     ['repeat', 'Practice until it’s *consistent*', 2, 'practice until', 0.05]]
       .forEach(([ic, h, b, p, fb]) => A.in(tl, TM.row(col, ic, h), at(ctx, b, p, fb), 'fadeRight', { dur: 0.6 }));
-    // three step cards at the right: each appears as it is said, then the order banner
-    const STEPS = [['volume-2', 'Mark', 'Say your word', 'say your marker'], ['pause', 'Pause', 'Hand still', 'pause briefly'], ['arrow-down', 'Move', 'Treat into a bowl', 'place a treat']];
-    const cards = STEPS.map(([ic, t, sub, p], i) => {
-      const c = put(stage, K.el('div', 'tmc-step'), 920 + i * 310, 300);
+    col.style.top = Math.round(TOP + CH / 2 - col.offsetHeight / 2) + 'px';
+    const STEPS = [['volume-2', 'Mark', 'Say your word', 'say your marker'], ['pause', 'Pause', 'Hand still', 'pause briefly'], ['arrow-down', 'Move', 'A treat into the bowl', 'place a treat']];
+    STEPS.forEach(([ic, t, sub, p], i) => {
+      const c = put(stage, K.el('div', 'tmc-step'), 920 + i * 310, TOP, { height: CH + 'px' });
       c.innerHTML = `<div class="n">${i + 1}</div><div class="ic"></div><div class="t">${t}</div><div class="s">${sub}</div>`;
       c.querySelector('.ic').appendChild(K.icon(ic));
       A.in(tl, c, at(ctx, 1, p, 0.2 + 0.3 * i), 'fadeUp', { dur: 0.6 });
-      return c;
     });
     const tW = at(ctx, 3, 'word', 0.3);
-    const bn = put(stage, K.el('div', 'tm-banner'), 920, 690, { width: '900px', boxSizing: 'border-box' });
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, TOP + CH + 70);
     bn.appendChild(K.icon('circle-check')); bn.appendChild(K.el('span', null, 'Word, pause, <b>then movement</b>'));
+    TM.centerX(bn, 960);
     A.in(tl, bn, tW, 'fadeUp', { dur: 0.5 });
   });
 })();

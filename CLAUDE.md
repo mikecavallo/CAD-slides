@@ -130,8 +130,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   welcome line). Ids prefixed `tm`. Chapters = the doc's sections, each with the automatic silent card labelled "Part N"
   (chapter `"kicker": "Part"`, read by timing.py and lib.js): `tm00` Welcome (title, plan with four cards), `tm01`
   Understanding Markers and Food Games (s01 to s06), `tm02` Choosing Your Markers (s01), `tm03` Practicing Your
-  Mechanics (s01, s02), `tm04` Teaching Your Dog (s01 to s06), `tm05` Using Your Markers During Training (s01, s02 with
-  the logo close). Food games: to the mouth, toss (chase), scatter; each game has its own marker word.
+  Mechanics (s01, s02), `tm04` Teaching Your Dog (s01 to s07, s07 = key takeaways with the logo close;
+  Part 5 was removed in round 15). Food games: to the mouth, toss (chase), scatter; each game has its own marker word.
 - Scene code: `video/scenes/tm_kit.js` (`window.TM`: heads, video frame and video slide, rows, treat, bubble, word chips,
   order strip), `tma.js` to `tme.js`.
 - Video slides (Tori's own clips, narrated over): tm01s06 position changes, tm03s02 practicing without a dog (no
@@ -244,6 +244,20 @@ pipeline). This file records the state, decisions and working agreements from ea
   paw-print icon (never people's feet for a dog) and a "This video has no sound" chip sits above the frame (label starts
   "No sound:"). Full presentation (13:48) published to the online preview in six parts. web_page.py takes --kicker
   (use "Core Skills course" for this video).
+- Round 15 (Oct 7, "make it look like a $5,000 course"): restructure: tm04 order is s01, s02 (mouth), s05 (Does your dog
+  understand?, right after the mouth marker), s03, s03e, s03v, s04, s04v, s04w, s06 (Jeter, the final example), s07 key
+  takeaways (old tm05s02 merged with tm05s01's "mark the instant" content, logo close). Part 5 (tm05) is gone. No captions
+  under any video (they repeated the rows); rows sit centred on the frame; frame box [900,330,920,518] (tm04s05 tall frame
+  [1250,240,570,710]). Clips no longer flash back to the slide at their end: `tools/clip_ends.py` (run after timing.py)
+  writes assets/img/clipend_<id>.jpg (gitignored) and TM.videoFrame shows it under the clip. tm01s02 says where the dog
+  finds the food (At their mouth / Rolling along the ground / On the ground in front of them; narration changed); tm01s04
+  labels "To the mouth", strip respaced; tm01s05 gaze ends at her eyes; tm02s04 "Clicker" chip; tm03s01 rebuilt as Right /
+  Wrong panels with a pause band; tm03s02 rows + Mark / Pause / Move cards, centred; tm04s01 "Quiet, low-distraction area",
+  order strip "Mark"; tm04s02 "Short sessions, once or twice a day, for all markers together", "click, pause, move";
+  scatter treats land in a tight group at the nose (all scatter slides); toss slide's duplicate bowling label removed;
+  Eskara line names the hand closest to the dog; "Scatter demonstration" with a new poster (Tori and the dog looking at
+  each other, 0.8 s into the clip); "before the jumping starts"; "This video doesn't have sound". Pending: Tori's outdoor
+  pictures for tm01s04 (three ChatGPT prompts given).
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

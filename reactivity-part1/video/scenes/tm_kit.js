@@ -110,7 +110,7 @@
   function videoFrame(ctx, t0 = 0.25) {
     const { stage, tl, info, dur } = ctx;
     style(stage);
-    const c = info.clip || { box: [900, 290, 920, 518], poster: '', label: 'Video' };
+    const c = info.clip || { box: [900, 330, 920, 518], poster: '', label: 'Video' };
     const [x, y, w, h] = c.box, B = 12;
     const fr = put(stage, K.el('div', 'tm-frame'), x - B, y - B, { width: w + 2 * B + 'px', height: h + 2 * B + 'px' });
     const scr = put(fr, K.el('div', 'scr'), B, B, { width: w + 'px', height: h + 'px' });
@@ -131,6 +131,14 @@
     const play = K.el('div', 'play', PLAY);
     if (!pic) scr.appendChild(play);
     const cap = put(stage, K.el('div', 'tm-cap', `<span class="dot">${PLAY}</span><span>${K.md(c.label || '')}</span>`), x, y + h + B + 26);
+    if (!c.label) cap.style.display = 'none';  // no caption: the rows beside the frame already say what to watch
+    // under the clip: its own last frame (tools/clip_ends.py), so nothing else shows through when the clip fades out
+    if (c.file && !c.full) {
+      const endImg = put(stage, K.el('img'), x, y, { position: 'absolute', width: w + 'px', height: h + 'px', objectFit: 'cover', zIndex: 5 });
+      endImg.src = '../assets/img/clipend_' + ctx.id + '.jpg';
+      tl.set(endImg, { opacity: 0 }, 0);
+      tl.set(endImg, { opacity: 1 }, (c.at ?? 1.2) + 0.6);
+    }
     tl.fromTo(fr, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, t0);
     A.in(tl, cap, t0 + 0.4, 'fadeUp', { dur: 0.6 });
     // the poster: a slow drift; the play badge eases off when the clip would start (the real clip covers the screen from then on)
@@ -166,6 +174,8 @@
       A.in(tl, n, t, 'fadeRight', { dur: 0.6 });
       return n;
     });
+    // the rows sit centred on the frame's height
+    if (o.top == null) { const [, by, , bh] = vf.box; col.style.top = Math.round(by + bh / 2 - col.offsetHeight / 2) + 'px'; }
     // the clip plays in the frame: a step strip under the rows lights each step as it happens in the clip
     // (lesson clip block: "steps" ["Mark “X”", "Pause", "Treat"], "marks" [s into the clip], "stepOffsets" per step)
     const c = ctx.info.clip || {};

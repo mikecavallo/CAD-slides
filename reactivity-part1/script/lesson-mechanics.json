@@ -106,7 +106,7 @@
        "onscreen": "One word per game"
       },
       {
-       "say": "Knowing what to expect can reduce confusion and frustration. Your dog won’t have to guess whether food is coming from your hand or landing on the ground.",
+       "say": "Knowing what to expect can reduce confusion and frustration. Your dog won’t have to guess whether the food is coming to their mouth, rolling along the ground, or landing on the ground in front of them.",
        "show": "Banner: No guessing. Hand or ground?",
        "onscreen": "No guessing"
       }
@@ -244,12 +244,11 @@
      "clip": {
       "box": [
        900,
-       290,
+       330,
        920,
        518
       ],
       "poster": "tm_clip_timingx.jpg",
-      "label": "Marker timing: “X” the moment he is in position",
       "at": 1.2,
       "afterNarration": true,
       "volume": 1.0
@@ -422,7 +421,7 @@
      "assets": [],
      "beats": [
       {
-       "say": "Start in a quiet, comfortable place with small treats ready.",
+       "say": "Start in a quiet, low-distraction area with small treats ready.",
        "show": "Chips: Quiet place, Small treats.",
        "onscreen": "Quiet place, small treats"
       },
@@ -459,12 +458,12 @@
        "onscreen": "To the mouth"
       },
       {
-       "say": "Allow a short break between repetitions.",
+       "say": "Keep these sessions short, and do them only once or twice a day. That’s once or twice a day for all of your markers together, not for each one.",
        "show": "Row: A short break between reps.",
        "onscreen": "Short breaks"
       },
       {
-       "say": "If you’re using a clicker, the process is the same: click once, pause briefly, then deliver the treat.",
+       "say": "If you’re using a clicker, the process is the same: click once, pause briefly, then move your hand to deliver the treat.",
        "show": "Row: Clicker: click, pause, treat.",
        "onscreen": "Clicker: same process"
       }
@@ -472,17 +471,61 @@
      "clip": {
       "box": [
        900,
-       290,
+       330,
        920,
        518
       ],
       "poster": "",
-      "label": "Fisher: “Yip”, a pause, then the treat to his mouth",
       "at": 1.2,
       "afterNarration": true,
       "from": 0.0,
       "to": 21.0,
       "volume": 1.0
+     }
+    },
+    {
+     "id": "tm04s05",
+     "heading": "Does your dog understand?",
+     "visual_concept": "Tori's 'Clicker - Testing Understanding' clip in the frame at left, the three responses at right; the clip plays full screen with its own sound after the narration.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Look for your dog anticipating the correct food game after hearing the marker, before your hand moves.",
+       "show": "Panel, dog, Yip bubble, hand still: Before your hand moves.",
+       "onscreen": "Before your hand moves"
+      },
+      {
+       "say": "They might turn toward you for food to the mouth, prepare to follow a toss, or look toward the ground for a scatter.",
+       "show": "Three response cards land as said.",
+       "onscreen": "What to look for"
+      },
+      {
+       "say": "You don’t need a dramatic response, just a consistent response that fits the game. Always follow the marker with its food delivery, even if your dog seems unsure.",
+       "show": "Pill: Consistent, not dramatic; Always follow through.",
+       "onscreen": "Consistent, not dramatic"
+      },
+      {
+       "say": "If they need more practice, continue with separate sessions for that marker. Once each marker is familiar and your dog consistently anticipates its game, you can begin using different markers within one session.",
+       "show": "Separate sessions, then one mixed session.",
+       "onscreen": "Then mix them"
+      }
+     ],
+     "clip": {
+      "box": [
+       1250,
+       240,
+       570,
+       710
+      ],
+      "poster": "tm_clip_clicker.jpg",
+      "afterNarration": true,
+      "volume": 1.0,
+      "crop": [
+       0,
+       480,
+       1080,
+       1344
+      ]
      }
     },
     {
@@ -522,7 +565,7 @@
      "assets": [],
      "beats": [
       {
-       "say": "Here’s Eskara learning her toss marker. Listen for “Free,” then watch the treat roll low along the floor.",
+       "say": "Here’s Eskara learning her toss marker. Listen for “Free.” Notice that the hand closest to her bowls the treat low and across my body, so it rolls along the floor.",
        "show": "Video frame; one row.",
        "onscreen": "Learning the marker"
       }
@@ -530,12 +573,11 @@
      "clip": {
       "box": [
        900,
-       290,
+       330,
        920,
        518
       ],
       "poster": "tm_clip_eskara.jpg",
-      "label": "Eskara: learning “Free”",
       "afterNarration": true,
       "volume": 1.0
      }
@@ -555,12 +597,11 @@
      "clip": {
       "box": [
        900,
-       290,
+       330,
        920,
        518
       ],
       "poster": "tm_clip_fisher.jpg",
-      "label": "Fisher: already knows the game, moving for the next toss",
       "at": 1.2,
       "afterNarration": true,
       "volume": 1.0
@@ -593,12 +634,12 @@
     },
     {
      "id": "tm04s04v",
-     "heading": "Scatters in action",
+     "heading": "Scatter demonstration",
      "visual_concept": "Video slide: Tori's scatter video plays in the frame.",
      "assets": [],
      "beats": [
       {
-       "say": "Here’s what a scatter looks like. Listen for “Scatter,” then watch the treats land on the floor for the dog to find.",
+       "say": "Here’s a scatter demonstration. Listen for “Scatter,” then watch the treats land on the floor right in front of the dog.",
        "show": "Video frame; rows.",
        "onscreen": "A scatter"
       }
@@ -606,12 +647,11 @@
      "clip": {
       "box": [
        900,
-       290,
+       330,
        920,
        518
       ],
       "poster": "tm_clip_scatterdemo.jpg",
-      "label": "Scatter demo: “Scatter,” then treats on the floor",
       "afterNarration": true,
       "volume": 1.0
      }
@@ -628,7 +668,7 @@
        "onscreen": "Arms and hands were the problem"
       },
       {
-       "say": "Instead, I mark while he’s calm and walking with me, before any jump, then scatter the treats low, next to us. That keeps his head down instead of up at our arms.",
+       "say": "Instead, I mark while he’s calm and walking with me, before the jumping starts, then scatter the treats low, next to us. That keeps his head down instead of up at our arms.",
        "show": "Rows 3 and 4.",
        "onscreen": "Mark calm, scatter low"
       }
@@ -636,60 +676,13 @@
      "clip": {
       "box": [
        900,
-       290,
+       330,
        920,
        518
       ],
       "poster": "tm_clip_scatter.jpg",
-      "label": "No sound: marking calm walking, then a scatter",
       "afterNarration": true,
       "volume": 0
-     }
-    },
-    {
-     "id": "tm04s05",
-     "heading": "Does your dog understand?",
-     "visual_concept": "Tori's 'Clicker - Testing Understanding' clip in the frame at left, the three responses at right; the clip plays full screen with its own sound after the narration.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "Look for your dog anticipating the correct food game after hearing the marker, before your hand moves.",
-       "show": "Panel, dog, Yip bubble, hand still: Before your hand moves.",
-       "onscreen": "Before your hand moves"
-      },
-      {
-       "say": "They might turn toward you for food to the mouth, prepare to follow a toss, or look toward the ground for a scatter.",
-       "show": "Three response cards land as said.",
-       "onscreen": "What to look for"
-      },
-      {
-       "say": "You don’t need a dramatic response, just a consistent response that fits the game. Always follow the marker with its food delivery, even if your dog seems unsure.",
-       "show": "Pill: Consistent, not dramatic; Always follow through.",
-       "onscreen": "Consistent, not dramatic"
-      },
-      {
-       "say": "If they need more practice, continue with separate sessions for that marker. Once each marker is familiar and your dog consistently anticipates its game, you can begin using different markers within one session.",
-       "show": "Separate sessions, then one mixed session.",
-       "onscreen": "Then mix them"
-      }
-     ],
-     "clip": {
-      "box": [
-       1188,
-       190,
-       632,
-       790
-      ],
-      "poster": "tm_clip_clicker.jpg",
-      "label": "Testing understanding: does her head whip up at the click?",
-      "afterNarration": true,
-      "volume": 1.0,
-      "crop": [
-       0,
-       480,
-       1080,
-       1344
-      ]
      }
     },
     {
@@ -717,56 +710,18 @@
      "clip": {
       "box": [
        900,
-       290,
+       330,
        920,
        518
       ],
       "poster": "tm_clip_jeter.jpg",
-      "label": "Jeter: “Treat” to his mouth, “Get it” to the floor",
       "at": 1.2,
       "afterNarration": true,
       "volume": 1.0
      }
-    }
-   ]
-  },
-  {
-   "id": "tm05",
-   "num": 5,
-   "kicker": "Part",
-   "title": "Using Your Markers During Training",
-   "slide_refs": [],
-   "scenes": [
-    {
-     "id": "tm05s01",
-     "heading": "Mark the moment",
-     "visual_concept": "A clean three-step sequence (Mark, Pause, Move your hand to deliver the treat) with light numerals and a progress rule; two example cards; a quiet note.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "Once your dog understands the markers, use them to identify behavior you want to reinforce.",
-       "show": "Heading; loop draws.",
-       "onscreen": "Mark what you want to reinforce"
-      },
-      {
-       "say": "Watch for the behavior, mark the instant it happens, pause briefly, then deliver the matching food game.",
-       "show": "Nodes light one after another.",
-       "onscreen": "Watch, mark, pause, feed"
-      },
-      {
-       "say": "If you’re reinforcing a sit, mark when their bottom touches the ground. If you’re reinforcing a check-in, mark when they look at you.",
-       "show": "Example chips.",
-       "onscreen": "Sit / check-in"
-      },
-      {
-       "say": "Have your food ready so you can follow through promptly while keeping your word and hand movement separate.",
-       "show": "Banner: Food ready. Word and hand separate.",
-       "onscreen": "Food ready"
-      }
-     ]
     },
     {
-     "id": "tm05s02",
+     "id": "tm04s07",
      "heading": "Your key takeaways",
      "visual_concept": "Training photo at left, four numbered takeaways at right; logo close.",
      "assets": [
@@ -777,6 +732,11 @@
        "say": "During training, a marker identifies the moment that earned a treat. Each food game has its own marker, so your dog also knows what comes next.",
        "show": "1: The moment, and what comes next.",
        "onscreen": "The moment, and what comes next"
+      },
+      {
+       "say": "Once your dog understands the markers, watch for the behavior you want, mark the instant it happens, pause briefly, then deliver the matching food game. For a sit, mark when their bottom touches the ground. For a check-in, mark when they look at you.",
+       "show": "Row 2: mark the moment, sit and check-in examples.",
+       "onscreen": "Mark the instant it happens, pause, then its food game"
       },
       {
        "say": "Practice your mechanics without your dog first: word, pause, then movement.",

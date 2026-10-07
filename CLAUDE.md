@@ -203,6 +203,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   away and the dog follows (green "More space" line), then the scatter picture ("Enough space: scatter"), then the
   mouth picture ("Another dog"); Watch your dog / pattern games later underneath. The drawn dog and handler are no
   longer used in tm01s04.
+- Round 9 (Oct 7): Tori said the indoor pictures don't fit a "something worrying" scene, tried Kling clips for it (moonwalking
+  dogs, wrong toss direction, style drift) and found the AI-clip workflow "way too much". tm01s04 is now a distance strip
+  (red "Too close" to green "Enough space", amber worry at the left, the dog as a green marker): red "Standing still for a
+  treat this close: harder", two low tosses carry the dog away ("Treat chases, moving away"), a scatter around it ("Enough
+  space: scatter"); Tori's toss, scatter and mouth pictures appear underneath as each game is named ("Another dog: food to
+  the mouth" lifts while the strip dims). Don't push more AI-clip work on Tori unless asked.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

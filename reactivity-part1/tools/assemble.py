@@ -100,6 +100,26 @@ def captions(timing):
     return cues
 
 
+def label_png(text, scale, out):
+    """The full-screen clip label: a rounded green pill with a play dot and the label in bold white (brand font)."""
+    from PIL import Image, ImageDraw, ImageFont
+    f = ImageFont.truetype(str(ROOT / "assets/fonts/Montserrat-700.ttf"), 30 * scale)
+    pad, dot = 22 * scale, 34 * scale
+    tw = int(f.getlength(text)); th = 30 * scale
+    w, h = pad + dot + 14 * scale + tw + pad + 6 * scale, th + 2 * 18 * scale
+    im = Image.new("RGBA", (w + 16 * scale, h + 16 * scale), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle((8 * scale, 12 * scale, w + 8 * scale, h + 12 * scale), radius=h // 2, fill=(0, 0, 0, 60))  # soft shadow
+    d.rounded_rectangle((0, 0, w, h), radius=h // 2, fill=(63, 107, 34, 240))
+    cx, cy = pad + dot // 2, h // 2
+    d.ellipse((cx - dot // 2, cy - dot // 2, cx + dot // 2, cy + dot // 2), fill=(184, 217, 154, 255))
+    r = dot * 0.22
+    d.polygon([(cx - r * 0.7, cy - r), (cx - r * 0.7, cy + r), (cx + r, cy)], fill=(44, 74, 23, 255))
+    d.text((pad + dot + 14 * scale, cy), text, font=f, fill=(255, 255, 255, 255), anchor="lm")
+    im.save(out)
+    return out
+
+
 def overlay_clips(video, segs, scale=1):
     """Video slides: play the trainer's own clips inside each slide's frame (box in 1920 x 1080 stage px).
     A clip starts at the slide's clip time, fades in and out, and holds its last frame if the slide outlasts it."""
@@ -107,7 +127,7 @@ def overlay_clips(video, segs, scale=1):
     if not items:
         return video
     inputs, chains, last = [], [], "[0:v]"
-    font = ROOT / "assets/fonts/Montserrat-700.ttf"
+    nin = 1  # the next ffmpeg input index (0 is the slides)
     for k, s in enumerate(items):
         c = s["clip"]
         if c.get("full"):
@@ -116,21 +136,19 @@ def overlay_clips(video, segs, scale=1):
             W, H = 1920 * scale, 1080 * scale
             t0 = s["start"] + c["at"]
             d = c["len"]
-            lab = BUILD / f"clip_label_{k}.txt"
-            lab.write_text(c.get("label", "").replace("*", ""))
-            fs, m = 30 * scale, 56 * scale
-            alpha = f"if(lt(t,0.7),0,if(lt(t,1.2),(t-0.7)/0.5,if(lt(t,{d - 0.9:.3f}),1,max(0,({d - 0.4:.3f}-t)/0.5))))"
-            inputs += ["-i", str(ROOT / c["file"])]
+            lab = label_png(c.get("label", "").replace("*", ""), scale, BUILD / f"clip_label_{k}.png")
+            m = 48 * scale
+            inputs += ["-i", str(ROOT / c["file"]), "-loop", "1", "-t", f"{d:.3f}", "-i", str(lab)]
             chains.append(
-                f"[{k + 1}:v]trim=start={c['from']:.3f}:duration={d:.3f},setpts=PTS-STARTPTS,fps=30,split=2[ca{k}][cb{k}];"
+                f"[{nin}:v]trim=start={c['from']:.3f}:duration={d:.3f},setpts=PTS-STARTPTS,fps=30,split=2[ca{k}][cb{k}];"
                 f"[ca{k}]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=40:2,eq=brightness=-0.10:saturation=0.75[bg{k}];"
                 f"[cb{k}]scale={W}:{H}:force_original_aspect_ratio=decrease,setsar=1[fg{k}];"
-                f"[bg{k}][fg{k}]overlay=(W-w)/2:(H-h)/2,setsar=1,"
-                f"drawtext=fontfile={font}:textfile={lab}:x={m}:y=h-{m + fs + 40 * scale}:fontsize={fs}:fontcolor=white:"
-                f"box=1:boxcolor=0x3f6b22@0.92:boxborderw={18 * scale}:alpha='{alpha}',"
+                f"[{nin + 1}:v]format=rgba,fade=t=in:st=0.7:d=0.5:alpha=1,fade=t=out:st={max(0.8, d - 1.0):.3f}:d=0.5:alpha=1[lb{k}];"
+                f"[bg{k}][fg{k}]overlay=(W-w)/2:(H-h)/2,setsar=1[cv{k}];[cv{k}][lb{k}]overlay={m}:{m}:shortest=1,"
                 f"format=yuva420p,fade=t=in:st=0:d=0.5:alpha=1,fade=t=out:st={max(0, d - 0.5):.3f}:d=0.5:alpha=1,setpts=PTS+{t0:.3f}/TB[c{k}]")
             chains.append(f"{last}[c{k}]overlay=0:0:eof_action=pass:enable='between(t,{t0:.3f},{t0 + d:.3f})'[v{k}]")
             last = f"[v{k}]"
+            nin += 2
             continue
         x, y, w, h = (round(v * scale) for v in c["box"])
         w, h = w - w % 2, h - h % 2
@@ -139,10 +157,11 @@ def overlay_clips(video, segs, scale=1):
         d = max(0.2, t1 - t0)
         inputs += ["-i", str(ROOT / c["file"])]
         chains.append(
-            f"[{k + 1}:v]trim=start={c['from']:.3f}:duration={c['len']:.3f},setpts=PTS-STARTPTS,fps=30,"
+            f"[{nin}:v]trim=start={c['from']:.3f}:duration={c['len']:.3f},setpts=PTS-STARTPTS,fps=30,"
             f"scale={w}:{h}:force_original_aspect_ratio=decrease,pad={w}:{h}:(ow-iw)/2:(oh-ih)/2:color=0x111111,setsar=1,"
             f"tpad=stop_mode=clone:stop_duration={d:.3f},trim=duration={d:.3f},format=yuva420p,"
             f"fade=t=in:st=0:d=0.35:alpha=1,fade=t=out:st={max(0, d - 0.42):.3f}:d=0.42:alpha=1,setpts=PTS+{t0:.3f}/TB[c{k}]")
+        nin += 1
         chains.append(f"{last}[c{k}]overlay={x}:{y}:eof_action=pass:enable='between(t,{t0:.3f},{t1:.3f})'[v{k}]")
         last = f"[v{k}]"
     out = BUILD / "video_clips.mp4"

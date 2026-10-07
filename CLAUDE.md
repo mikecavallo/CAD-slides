@@ -209,6 +209,17 @@ pipeline). This file records the state, decisions and working agreements from ea
   treat this close: harder", two low tosses carry the dog away ("Treat chases, moving away"), a scatter around it ("Enough
   space: scatter"); Tori's toss, scatter and mouth pictures appear underneath as each game is named ("Another dog: food to
   the mouth" lifts while the strip dims). Don't push more AI-clip work on Tori unless asked.
+- Round 10 (Oct 7): Tori's clips came from Drive (folder "Videos"; Tori set them to anyone-with-link; the Drive connector
+  cannot pass big files, so download with curl from drive.usercontent.google.com/download?id=ID&export=download&confirm=t;
+  originals in clips/src/, gitignored). Tori will NOT narrate over videos: every clip slide has a short intro line, then
+  the clip plays FULL SCREEN with its own sound (clip `"full": true` + `"afterNarration": true`; assemble.py fills bars with
+  a blurred copy, adds a branded label from the clip's `label`, fades in from and back out to the slide, levels the
+  clip's speech to the narration). Mapping: tm01s06 = Marker Timing X Sit to Stand; tm04s02 = VerbalCuewithFisher (0 to
+  21 s); new tm04s03e = Eskara Free Marker Intro (learning the toss marker); tm04s03v = Fisher toss, new line "a dog who
+  already knows the game ... knows where to move for the next treat"; tm04s05 = Clicker - Testing Understanding (vertical,
+  the drawn dog is gone); tm04s06 = LSM Jeter captions (blind dog Jeter). Pending: Tori's scatter video (reinforcing a dog
+  for walking to the house without jumping up to grab an arm) for tm04s04v, with a line on why to use a scatter.
+  Part cards (bumpers) open with a branded two-band green wipe when the series motion is cinematic.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

@@ -37,7 +37,7 @@ def clip_info(sc, beats=()):
     c = sc.get("clip")
     if not c:
         return None
-    info = {k: c[k] for k in ("box", "poster", "label", "fit") if k in c}
+    info = {k: c[k] for k in ("box", "poster", "label", "fit", "full") if k in c}
     info["at"] = c.get("at", 1.2)
     if "atBeat" in c and c["atBeat"] < len(beats):  # start the clip when that beat starts (a picture shows in the frame until then)
         info["at"] = round(beats[c["atBeat"]]["t"], 3)
@@ -47,7 +47,7 @@ def clip_info(sc, beats=()):
     if f:
         a = c.get("from", 0.0)
         b = c.get("to") or media_dur(f)
-        info.update({"file": str(f.relative_to(ROOT)), "from": a, "len": round(max(0.1, b - a), 3), "volume": c.get("volume", 0)})
+        info.update({"file": str(f.relative_to(ROOT)), "from": a, "len": round(max(0.1, b - a), 3), "volume": c.get("volume", 1.0 if c.get("full") else 0)})
     return info
 
 
@@ -61,7 +61,8 @@ def scene_seg(ch, sc, start, dur, beats, audio):
     if clip:
         seg["clip"] = clip
         if "len" in clip:  # the slide lasts at least as long as the trainer's clip
-            seg["dur"] = frames(max(dur, clip["at"] + clip["len"] + CLIP_END))
+            # a full-screen clip fades back to the slide, which holds a moment before it exits
+            seg["dur"] = frames(max(dur, clip["at"] + clip["len"] + (1.3 if clip.get("full") else CLIP_END)))
     return seg
 
 

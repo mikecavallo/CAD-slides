@@ -107,8 +107,31 @@ def overlay_clips(video, segs, scale=1):
     if not items:
         return video
     inputs, chains, last = [], [], "[0:v]"
+    font = ROOT / "assets/fonts/Montserrat-700.ttf"
     for k, s in enumerate(items):
         c = s["clip"]
+        if c.get("full"):
+            # full screen: the trainer's clip fills the frame (a soft blurred copy fills any bars), plays with its own
+            # sound, a small branded label names what to watch, and it fades in from the slide and back out to it
+            W, H = 1920 * scale, 1080 * scale
+            t0 = s["start"] + c["at"]
+            d = c["len"]
+            lab = BUILD / f"clip_label_{k}.txt"
+            lab.write_text(c.get("label", "").replace("*", ""))
+            fs, m = 30 * scale, 56 * scale
+            alpha = f"if(lt(t,0.7),0,if(lt(t,1.2),(t-0.7)/0.5,if(lt(t,{d - 0.9:.3f}),1,max(0,({d - 0.4:.3f}-t)/0.5))))"
+            inputs += ["-i", str(ROOT / c["file"])]
+            chains.append(
+                f"[{k + 1}:v]trim=start={c['from']:.3f}:duration={d:.3f},setpts=PTS-STARTPTS,fps=30,split=2[ca{k}][cb{k}];"
+                f"[ca{k}]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=40:2,eq=brightness=-0.10:saturation=0.75[bg{k}];"
+                f"[cb{k}]scale={W}:{H}:force_original_aspect_ratio=decrease,setsar=1[fg{k}];"
+                f"[bg{k}][fg{k}]overlay=(W-w)/2:(H-h)/2,setsar=1,"
+                f"drawtext=fontfile={font}:textfile={lab}:x={m}:y=h-{m + fs + 40 * scale}:fontsize={fs}:fontcolor=white:"
+                f"box=1:boxcolor=0x3f6b22@0.92:boxborderw={18 * scale}:alpha='{alpha}',"
+                f"format=yuva420p,fade=t=in:st=0:d=0.5:alpha=1,fade=t=out:st={max(0, d - 0.5):.3f}:d=0.5:alpha=1,setpts=PTS+{t0:.3f}/TB[c{k}]")
+            chains.append(f"{last}[c{k}]overlay=0:0:eof_action=pass:enable='between(t,{t0:.3f},{t0 + d:.3f})'[v{k}]")
+            last = f"[v{k}]"
+            continue
         x, y, w, h = (round(v * scale) for v in c["box"])
         w, h = w - w % 2, h - h % 2
         t0 = s["start"] + c["at"]
@@ -179,7 +202,18 @@ def main():
                 snd = decode(ROOT / c["file"])
             except subprocess.CalledProcessError:
                 snd = np.zeros(0, np.float32)  # the clip has no sound track
-            snd = snd[int(SR * c["from"]):int(SR * (c["from"] + c["len"]))] * float(c["volume"])
+            snd = snd[int(SR * c["from"]):int(SR * (c["from"] + c["len"]))].copy()
+            if c.get("full") and len(snd):
+                # phone audio: bring the clip's speech up to the narration's level, with short fades at the edges
+                act = np.abs(snd) > 0.02
+                rms = float(np.sqrt(np.mean(snd[act] ** 2))) if act.any() else 0
+                if rms > 0:
+                    snd = np.clip(snd * min(8.0, 0.09 / rms), -0.98, 0.98)
+                f = min(len(snd) // 2, int(SR * 0.4))
+                if f:
+                    snd[:f] *= np.linspace(0, 1, f)
+                    snd[-f:] *= np.linspace(1, 0, f)
+            snd = snd * float(c["volume"])
             a = int(round(SR * (s["start"] + c["at"])))
             n = max(0, min(len(snd), len(mix) - a))
             mix[a:a + n] += snd[:n]

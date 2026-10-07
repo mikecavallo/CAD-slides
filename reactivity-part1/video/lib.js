@@ -501,6 +501,14 @@
     A.in(tl, bar, 0.25, 'grow', { dur: 0.6 });
     A.in(tl, kick, 0.35, 'fadeUp', { dur: 0.6 });
     A.in(tl, title, 0.5, 'fadeUp', { dur: 0.8 });
+    if ((window.TIMING.series || {}).motion === 'cinematic') {
+      // a branded wipe opens each part: two angled green bands sweep across and reveal the card
+      const mk = (bg, z) => { const w = el('div'); Object.assign(w.style, { position: 'absolute', top: '-10%', left: '0', width: '140%', height: '120%', background: bg,
+        clipPath: 'polygon(12% 0, 100% 0, 88% 100%, 0 100%)', zIndex: z }); stage.appendChild(w); return w; };
+      const w1 = mk('var(--green)', 60), w2 = mk('var(--green-deep)', 61);
+      tl.fromTo(w2, { xPercent: -100 }, { xPercent: 75, duration: 0.75, ease: 'power3.inOut' }, 0);
+      tl.fromTo(w1, { xPercent: -110 }, { xPercent: 75, duration: 0.85, ease: 'power3.inOut' }, 0.06);
+    }
   }
 
   async function boot() {

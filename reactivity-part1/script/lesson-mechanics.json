@@ -248,11 +248,11 @@
        920,
        518
       ],
-      "poster": "tm_clip_action.jpg",
-      "label": "Position changes",
+      "poster": "tm_clip_timingx.jpg",
+      "label": "Marker timing: “X” the moment he is in position",
       "at": 1.2,
-      "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=Q6cp9zz7U0o"
+      "full": true,
+      "afterNarration": true
      }
     }
    ]
@@ -489,11 +489,12 @@
        518
       ],
       "poster": "",
-      "label": "Introducing “Yip”",
+      "label": "Fisher: “Yip”, a pause, then the treat to his mouth",
       "at": 1.2,
-      "volume": 0,
-      "youtube": "https://www.youtube.com/watch?v=P54Wuz8WTMk",
-      "atBeat": 1
+      "full": true,
+      "afterNarration": true,
+      "from": 0.0,
+      "to": 21.0
      }
     },
     {
@@ -527,15 +528,15 @@
      ]
     },
     {
-     "id": "tm04s03v",
-     "heading": "Treat tosses in action",
-     "visual_concept": "Video slide: Tori's treat-toss video plays in the frame.",
+     "id": "tm04s03e",
+     "heading": "Teaching the toss marker",
+     "visual_concept": "Tori's 'Eskara Free Marker Intro' clip: a dog learning the toss marker; it plays full screen with its own sound after the line.",
      "assets": [],
      "beats": [
       {
-       "say": "Here’s what that looks like with a real dog.",
-       "show": "Video frame; row: Mark, pause, toss.",
-       "onscreen": "In action"
+       "say": "Here’s Eskara learning her toss marker. Listen for “Free,” then watch the treat roll low along the floor.",
+       "show": "Video frame; one row.",
+       "onscreen": "Learning the marker"
       }
      ],
      "clip": {
@@ -545,12 +546,36 @@
        920,
        518
       ],
-      "poster": "tm_toss.jpg",
-      "label": "Fisher: “Free” with a low toss",
-      "at": 1.2,
-      "volume": 1.0,
-      "youtube": "https://www.youtube.com/watch?v=yHqwW1jrEvk",
+      "poster": "tm_clip_eskara.jpg",
+      "label": "Eskara: learning “Free”",
+      "full": true,
       "afterNarration": true
+     }
+    },
+    {
+     "id": "tm04s03v",
+     "heading": "Treat tosses in action",
+     "visual_concept": "Video slide: Tori's treat-toss video plays in the frame.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Here’s what this looks like with a dog who already knows the game. Watch how Fisher anticipates it. He knows where to move for the next treat.",
+       "show": "Video frame with Fisher; rows.",
+       "onscreen": "A dog who knows the game"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       290,
+       920,
+       518
+      ],
+      "poster": "tm_clip_fisher.jpg",
+      "label": "Fisher: already knows the game, moving for the next toss",
+      "at": 1.2,
+      "afterNarration": true,
+      "full": true
      }
     },
     {
@@ -607,7 +632,7 @@
     {
      "id": "tm04s05",
      "heading": "Does your dog understand?",
-     "visual_concept": "The drawn dog in a panel; the marker bubble; the hand stays still; three response cards (turns to you, ready to follow, looks at the ground); 'consistent, not dramatic'; separate sessions, then mixed.",
+     "visual_concept": "Tori's 'Clicker - Testing Understanding' clip in the frame at left, the three responses at right; the clip plays full screen with its own sound after the narration.",
      "assets": [],
      "beats": [
       {
@@ -630,7 +655,19 @@
        "show": "Separate sessions, then one mixed session.",
        "onscreen": "Then mix them"
       }
-     ]
+     ],
+     "clip": {
+      "box": [
+       100,
+       290,
+       820,
+       440
+      ],
+      "poster": "tm_clip_clicker.jpg",
+      "label": "Testing understanding: does her head whip up at the click?",
+      "full": true,
+      "afterNarration": true
+     }
     },
     {
      "id": "tm04s06",
@@ -661,10 +698,11 @@
        920,
        518
       ],
-      "poster": "",
-      "label": "Responding to his markers",
+      "poster": "tm_clip_jeter.jpg",
+      "label": "Jeter: “Treat” to his mouth, “Get it” to the floor",
       "at": 1.2,
-      "volume": 0
+      "full": true,
+      "afterNarration": true
      }
     }
    ]

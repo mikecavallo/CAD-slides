@@ -256,8 +256,17 @@ pipeline). This file records the state, decisions and working agreements from ea
   order strip "Mark"; tm04s02 "Short sessions, once or twice a day, for all markers together", "click, pause, move";
   scatter treats land in a tight group at the nose (all scatter slides); toss slide's duplicate bowling label removed;
   Eskara line names the hand closest to the dog; "Scatter demonstration" with a new poster (Tori and the dog looking at
-  each other, 0.8 s into the clip); "before the jumping starts"; "This video doesn't have sound". Pending: Tori's outdoor
-  pictures for tm01s04 (three ChatGPT prompts given).
+  each other, 0.8 s into the clip); "before the jumping starts"; "This video doesn't have sound". Tori's outdoor pictures for
+  tm01s04: see round 16.
+- Round 16 (Oct 8): tm01s04 has ONE picture, Tori's outdoor park toss (`tm_toss_park.jpg`, man bowls a treat low away,
+  brindle dog follows, woman and golden in the background), shown whole at left; the distance strip and the scatter and
+  mouth pictures are gone from this slide. On the picture: amber ring on the golden ("something worrying", again on
+  "Something unexpected" with an amber tag), the low toss trail and ring on the treat, the dog's dotted path, a green
+  "More distance" measure along the grass. Points land at right (movement, standing still up close harder, toss away,
+  scatter, another dog: food to the mouth, watch your dog, pattern games). Beat 1 narration rewritten at Tori's request
+  (paste into the doc): "For example, if something unexpected appears too close, like another dog, we might toss a treat
+  away from it. Your dog follows the treat and gets more distance. Once there's enough space, we can offer a scatter."
+  The scatter-with-space composite (made for this slide) is not used.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

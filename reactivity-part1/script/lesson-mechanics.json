@@ -148,22 +148,22 @@
     {
      "id": "tm01s04",
      "heading": "Match the game to your dog’s needs",
-     "visual_concept": "Tori's toss picture: something worrying appears too close, a treat is tossed low away from it and the dog follows; then her scatter picture once there is space; then her mouth picture for another dog. Watch your dog; pattern games later.",
+     "visual_concept": "Tori's park toss picture, whole: another dog appears (amber ring, 'Something unexpected'); a treat skims low away from it, the brindle dog follows, a green measure shows 'More distance'. Points at right: movement, standing still up close is harder, toss away, scatter once there is space, another dog: food to the mouth, watch your dog, pattern games later. No other pictures.",
      "assets": [],
      "beats": [
       {
        "say": "Some dogs need movement when they’re becoming stressed or aroused. For those dogs, standing still to take a treat from your hand near something worrying may make the situation harder.",
-       "show": "Track, worry sign, dog close; food to the mouth up close crossed: Harder up close.",
+       "show": "Park picture fades in; amber ring on the other dog; red chip: Standing still for a treat up close: harder.",
        "onscreen": "Some dogs need movement"
       },
       {
-       "say": "We might start with treat chases while moving away, then offer a scatter once there’s enough space.",
-       "show": "Dog moves right with toss arcs; scatter at the far end: Enough space.",
-       "onscreen": "Chase, then scatter"
+       "say": "For example, if something unexpected appears too close, like another dog, we might toss a treat away from it. Your dog follows the treat and gets more distance. Once there’s enough space, we can offer a scatter.",
+       "show": "Amber tag Something unexpected; low toss away with a dotted trail; the dog's path to the treat; green measure More distance; row Enough space: scatter.",
+       "onscreen": "Toss away: more distance"
       },
       {
        "say": "Another dog may find food delivered directly to their mouth easier to follow.",
-       "show": "Magnet hand scene starts: a person walks away, the dog follows the treat at its nose.",
+       "show": "Picture steps back; row: Another dog: food to the mouth.",
        "onscreen": "Food to the mouth"
       },
       {

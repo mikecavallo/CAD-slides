@@ -267,6 +267,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   (paste into the doc): "For example, if something unexpected appears too close, like another dog, we might toss a treat
   away from it. Your dog follows the treat and gets more distance. Once there's enough space, we can offer a scatter."
   The scatter-with-space composite (made for this slide) is not used.
+- Oct 9: the full current narration (every change through round 16, slide order as built, video notes) was written to a
+  NEW Google Doc in Tori's Drive, "Markers and Mechanics: Narration Script (updated Oct 9)", id
+  1eBXnYRkbY032AKBkn0JJMxidBR83rWdTMradmG72JKQ. Tori's original doc (1_KZQ...) is out of date until Tori replaces it.
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

@@ -100,6 +100,83 @@ def captions(timing):
     return cues
 
 
+def label_png(text, scale, out):
+    """The full-screen clip label: a rounded green pill with a play dot and the label in bold white (brand font)."""
+    from PIL import Image, ImageDraw, ImageFont
+    f = ImageFont.truetype(str(ROOT / "assets/fonts/Montserrat-700.ttf"), 30 * scale)
+    pad, dot = 22 * scale, 34 * scale
+    tw = int(f.getlength(text)); th = 30 * scale
+    w, h = pad + dot + 14 * scale + tw + pad + 6 * scale, th + 2 * 18 * scale
+    im = Image.new("RGBA", (w + 16 * scale, h + 16 * scale), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle((8 * scale, 12 * scale, w + 8 * scale, h + 12 * scale), radius=h // 2, fill=(0, 0, 0, 60))  # soft shadow
+    d.rounded_rectangle((0, 0, w, h), radius=h // 2, fill=(63, 107, 34, 240))
+    cx, cy = pad + dot // 2, h // 2
+    d.ellipse((cx - dot // 2, cy - dot // 2, cx + dot // 2, cy + dot // 2), fill=(184, 217, 154, 255))
+    r = dot * 0.22
+    d.polygon([(cx - r * 0.7, cy - r), (cx - r * 0.7, cy + r), (cx + r, cy)], fill=(44, 74, 23, 255))
+    d.text((pad + dot + 14 * scale, cy), text, font=f, fill=(255, 255, 255, 255), anchor="lm")
+    im.save(out)
+    return out
+
+
+def overlay_clips(video, segs, scale=1):
+    """Video slides: play the trainer's own clips inside each slide's frame (box in 1920 x 1080 stage px).
+    A clip starts at the slide's clip time, fades in and out, and holds its last frame if the slide outlasts it."""
+    items = [s for s in segs if (s.get("clip") or {}).get("file")]
+    if not items:
+        return video
+    inputs, chains, last = [], [], "[0:v]"
+    nin = 1  # the next ffmpeg input index (0 is the slides)
+    for k, s in enumerate(items):
+        c = s["clip"]
+        if c.get("full"):
+            # full screen: the trainer's clip fills the frame (a soft blurred copy fills any bars), plays with its own
+            # sound, a small branded label names what to watch, and it fades in from the slide and back out to it
+            W, H = 1920 * scale, 1080 * scale
+            t0 = s["start"] + c["at"]
+            d = c["len"]
+            lab = label_png(c.get("label", "").replace("*", ""), scale, BUILD / f"clip_label_{k}.png")
+            m = 48 * scale
+            inputs += ["-i", str(ROOT / c["file"]), "-loop", "1", "-t", f"{d:.3f}", "-i", str(lab)]
+            chains.append(
+                f"[{nin}:v]trim=start={c['from']:.3f}:duration={d:.3f},setpts=PTS-STARTPTS,fps=30,split=2[ca{k}][cb{k}];"
+                f"[ca{k}]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=40:2,eq=brightness=-0.10:saturation=0.75[bg{k}];"
+                f"[cb{k}]scale={W}:{H}:force_original_aspect_ratio=decrease,setsar=1[fg{k}];"
+                f"[{nin + 1}:v]format=rgba,fade=t=in:st=0.7:d=0.5:alpha=1,fade=t=out:st={max(0.8, d - 1.0):.3f}:d=0.5:alpha=1[lb{k}];"
+                f"[bg{k}][fg{k}]overlay=(W-w)/2:(H-h)/2,setsar=1[cv{k}];[cv{k}][lb{k}]overlay={m}:{m}:shortest=1,"
+                f"format=yuva420p,fade=t=in:st=0:d=0.5:alpha=1,fade=t=out:st={max(0, d - 0.5):.3f}:d=0.5:alpha=1,setpts=PTS+{t0:.3f}/TB[c{k}]")
+            chains.append(f"{last}[c{k}]overlay=0:0:eof_action=pass:enable='between(t,{t0:.3f},{t0 + d:.3f})'[v{k}]")
+            last = f"[v{k}]"
+            nin += 2
+            continue
+        x, y, w, h = (round(v * scale) for v in c["box"])
+        w, h = w - w % 2, h - h % 2
+        t0 = s["start"] + c["at"]
+        t1 = s["start"] + s["dur"] - 0.5  # the slide itself fades out over its last 0.5 s
+        d = max(0.2, t1 - t0)
+        inputs += ["-i", str(ROOT / c["file"])]
+        chains.append(
+            f"[{nin}:v]trim=start={c['from']:.3f}:duration={c['len']:.3f},setpts=PTS-STARTPTS,fps=30,"
+            + (f"crop={c['crop'][2]}:{c['crop'][3]}:{c['crop'][0]}:{c['crop'][1]}," if c.get("crop") else "")
+            + f"split=2[fa{k}][fb{k}];"
+            f"[fa{k}]scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},boxblur=24:2,eq=brightness=-0.10:saturation=0.75[fbg{k}];"
+            f"[fb{k}]scale={w}:{h}:force_original_aspect_ratio=decrease,setsar=1[ffg{k}];"
+            f"[fbg{k}][ffg{k}]overlay=(W-w)/2:(H-h)/2,setsar=1,"
+            f"tpad=stop_mode=clone:stop_duration={d:.3f},trim=duration={d:.3f},format=yuva420p,"
+            f"fade=t=in:st=0:d=0.35:alpha=1,fade=t=out:st={max(0, d - 0.42):.3f}:d=0.42:alpha=1,setpts=PTS+{t0:.3f}/TB[c{k}]")
+        nin += 1
+        chains.append(f"{last}[c{k}]overlay={x}:{y}:eof_action=pass:enable='between(t,{t0:.3f},{t1:.3f})'[v{k}]")
+        last = f"[v{k}]"
+    out = BUILD / "video_clips.mp4"
+    run("ffmpeg", "-v", "error", "-y", "-i", str(video), *inputs, "-filter_complex", ";".join(chains), "-map", last,
+        "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-tune", "animation", "-pix_fmt", "yuv420p", "-r", "30",
+        "-force_key_frames", ",".join(f"{s['start']:.3f}" for s in segs),  # keep exact cuts for the chapter files
+        "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-color_range", "tv", str(out))
+    print(f"  video slides: {len(items)} clip(s) played in their frames")
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", default="Reactivity-and-Aggression-Part-1")
@@ -120,6 +197,7 @@ def main():
     lst.write_text("".join(f"file '{(BUILD / args.segments / (s['id'] + '.mp4')).resolve()}'\n" for s in segs))
     video = BUILD / "video_only.mp4"
     run("ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", str(video))
+    video = overlay_clips(video, segs, scale=2 if "@2x" in args.segments else 1)
 
     # 2) audio: place narration clips on one timeline, chimes on chapter cards
     total = timing["total"]
@@ -136,11 +214,32 @@ def main():
                 cache[f] = decode(f)
             clip = cache[f]
             if "from" in item:  # a slice of a longer recording
-                s = int(round(SR * item["from"]))
-                clip = clip[s:s + int(round(SR * item["dur"]))]
+                k0 = int(round(SR * item["from"]))
+                clip = clip[k0:k0 + int(round(SR * item["dur"]))]
             a = int(round(SR * item["at"]))
             n = min(len(clip), len(mix) - a)
             mix[a:a + n] += clip[:n]
+        c = s.get("clip") or {}
+        if c.get("file") and c.get("volume") and not args.silent:  # a video slide that keeps some of the clip's own sound
+            try:
+                snd = decode(ROOT / c["file"])
+            except subprocess.CalledProcessError:
+                snd = np.zeros(0, np.float32)  # the clip has no sound track
+            snd = snd[int(SR * c["from"]):int(SR * (c["from"] + c["len"]))].copy()
+            if len(snd):
+                # phone audio: bring the clip's speech up to the narration's level, with short fades at the edges
+                act = np.abs(snd) > 0.02
+                rms = float(np.sqrt(np.mean(snd[act] ** 2))) if act.any() else 0
+                if rms > 0:
+                    snd = np.clip(snd * min(8.0, 0.09 / rms), -0.98, 0.98)
+                f = min(len(snd) // 2, int(SR * 0.4))
+                if f:
+                    snd[:f] *= np.linspace(0, 1, f)
+                    snd[-f:] *= np.linspace(1, 0, f)
+            snd = snd * float(c["volume"])
+            a = int(round(SR * (s["start"] + c["at"])))
+            n = max(0, min(len(snd), len(mix) - a))
+            mix[a:a + n] += snd[:n]
     mix = mix[: int(SR * total)]
     raw = BUILD / "mix.f32"
     mix.tofile(raw)

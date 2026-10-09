@@ -120,6 +120,159 @@ pipeline). This file records the state, decisions and working agreements from ea
 - The lesson has `"tail": 5.0` (applies to its very last slide only) so the thermometer reveal holds before the logo close.
 - Online preview (temporary AI voice): https://claude.ai/artifact/Nzf2aTAYk5iAVNdqKmb1Js (`out/web/chapter2/`).
 
+## Markers and Mechanics (Core Skills course video; was "Your Training Mechanics"; preview voice only)
+
+- Script source of truth: Tori's Google Doc "Your Training Mechanics: Narration Script", id
+  `1_KZQVrH49fPoTVFp-EzrqNILy9VyYOZVu5xb4SV4v_k` (Claude created it from the first draft; Tori rewrote it on Oct 4 and
+  the video was rebuilt from it: "start over with the script"). Sync `script/lesson-mechanics.json` to it before every
+  build; the doc wins. The original deck (6- Your Training Mechanics.pptx) is superseded.
+- Lesson `script/lesson-mechanics.json` (`LESSON=lesson-mechanics.json`), series title "Markers and Mechanics" (Tori's
+  welcome line). Ids prefixed `tm`. Chapters = the doc's sections, each with the automatic silent card labelled "Part N"
+  (chapter `"kicker": "Part"`, read by timing.py and lib.js): `tm00` Welcome (title, plan with four cards), `tm01`
+  Understanding Markers and Food Games (s01 to s06), `tm02` Choosing Your Markers (s01), `tm03` Practicing Your
+  Mechanics (s01, s02), `tm04` Teaching Your Dog (s01 to s07, s07 = key takeaways with the logo close;
+  Part 5 was removed in round 15). Food games: to the mouth, toss (chase), scatter; each game has its own marker word.
+- Scene code: `video/scenes/tm_kit.js` (`window.TM`: heads, video frame and video slide, rows, treat, bubble, word chips,
+  order strip), `tma.js` to `tme.js`.
+- Video slides (Tori's own clips, narrated over): tm01s06 position changes, tm03s02 practicing without a dog (no
+  thumbnail; green placeholder), tm04s02 introducing Yip, tm04s03 treat tosses, tm04s04 scatters, tm04s06 a dog responding
+  to the clicker (assumed the Quill clicker video). `"clip"` block per scene; Tori's file goes in
+  `clips/<scene id>.mp4` (gitignored; YouTube is blocked here). timing.py stretches the slide to the clip; assemble.py
+  overlays it in the frame, muted by default.
+- Open with Tori: the doc's position-changes line still says his marker is "x" (placeholder; on screen shows no word);
+  typos fixed in the lesson only ("Hre we are working in him" -> "Here we are working on him").
+- Round 1 feedback (applied): every slide's kicker is the course title "Markers and Mechanics" (TM.head ignores the
+  per-slide kicker); plan slide is What you'll learn / How we'll get there (five parts) / Why it matters; filmstrip frames
+  Standing, Looking away, Sit!, Getting up, Pulling on the leash, and the drawn green dog sits then gets marked
+  (`TM.sitDog`); the treat-to-the-mouth icon is the dog, never a person's face; on screen the marker itself is "Mark", not
+  "Word" (Mark, Pause, Move); tosses are low and along the ground like bowling (`TM.lowToss`), never arcs through the air;
+  sessions use a different marker each (Yip, Chase, Scatter); "A consistent response" (no "not dramatic"); tm05s01 redesigned
+  as a clean four-column sequence (Tori found the circle loop childish). Tori's illustrations: `tm_img_checkin.jpg`
+  (tm01s05, revealed left half then right), `tm_img_mouth.jpg`, `tm_img_toss.jpg`, `tm_img_scatter.jpg` (tm04s02 to s04:
+  the picture shows in the video frame first, then the clip plays: clip `"fit": "contain"` and `"atBeat"`, which timing.py
+  turns into the clip start time). Narration changed at Tori's request (paste into the doc): tm01s04 b0 "standing still
+  to take a treat from your hand", tm01s05 b0 "a way to get your dog's attention", tm04s03 new bowling beat, tm04s06 b1
+  "before moving the hand with the food".
+- Round 2 feedback (applied): Tori's pictures are cut into clean panels (no black or white background; `tm_ck_good/bad`,
+  `tm_mouth_1..3`, `tm_toss`, `tm_scatter`) and animated like the other courses: food-game cards (tm01s01/tm02s01) use them
+  as headers; tm01s05 shows the check-in and pulling scenes as two framed pictures; tm04s02 plays the three mouth panels
+  (Mark, Pause, Treat to the mouth) one by one in the frame before the clip. tm01s04: worry sign moved in, hand clear of
+  the words; the "another dog" line showed the magnet hand (removed in round 8).
+  tm04s03 "vary the distance" only (narration changed too). tm04s06 is now Tori's blind dog hearing his markers ("treat" =
+  to his mouth, "get it" = head to the floor for a scatter; narration written by Claude, clip pending; the clicker example
+  is out). tm05s01 is three steps: Mark, Pause, Move (your hand to deliver the treat).
+- Round 3 feedback (applied): plan has two cards (What you'll learn: What markers are / Why we use food games / How to
+  teach them; Why it matters). Tori's pictures are always shown whole, never cropped (natural aspect, no Ken Burns).
+  tm01s02 is a row of the three pictures with labels only (no word chips). tm01s03 scatter is only "sniffing and
+  searching" (narration changed). tm01s04: magnet hand explained in a new beat ("walk them away ... if your dog looks,
+  they'll react"), handler drawn to match her pictures. tm01s05 caption "You will reinforce pulling and staring." Choosing
+  markers is now four slides: tm02s01 mouth, tm02s02 toss (Chase, Toss, Get it), tm02s03 scatter, tm02s04 one word each /
+  avoid good, yes / reserve. Teaching slides say "Mark, pause, move: <the delivery>". Toss and scatter each have a picture
+  slide and a separate video slide (tm04s03v, tm04s04v; one Claude-written line each). tm04s06 "Responding to his markers".
+- Round 4 feedback (applied): magnet hand handler wears a grey jacket (no green next to the green dog), stands on the
+  dog's paw line, and the dog's legs walk too (both swing in step, tail wags). tm02s03 name "Treats scattered"; the game
+  name and its words stack in one column so they never overlap. Words added: mouth "X" (Tori's own marker word), toss
+  "Free", scatter "Get it" (narration updated; paste into the doc).
+- Clips received: tm04s03v = Tori's "Fisher free bowling at park" (24 s, uploaded Oct 5; clips/tm04s03v.mp4, re-upload in a
+  new session). It plays with its own sound (volume 1) after the slide's narration line (clip `"afterNarration": true`).
+  YouTube downloads fail from this container (bot check, googlevideo.com blocked): Tori uploads files instead.
+- Review videos: Tori asked to see only what changed. Build the full video as usual, then
+  `python3 tools/changes_reel.py --video out/NAME.mp4 --ids <changed ids> --out out/NAME-changes-roundN.mp4` (each part is
+  labelled with its slide title and its time in the full video) and send that. Full video only when Tori asks.
+- Premium pass (Oct 6, Tori asked for "$5,000 course" quality): the lesson's series block has `"motion": "cinematic"`
+  (video/lib.js): the background drifts like a slow camera move on every slide and slides exit with a lift and soft blur.
+  Other lessons are unchanged. Still needed for the premium feel: Tori's real voice, a licensed music track (`assemble.py
+  --music FILE`, ducked under the voice), Tori's real clips, and ideally a short on-camera intro and outro by Tori.
+- Round 6 (Oct 7): tm01s02 animates the three food-game pictures as they are named (pictures stay whole): the named one
+  lifts and the others soften; a ring pulses at the hand and mouth; a treat skims low along the floor leaving a dotted
+  trail to where it lands; treats drop from the hand to the ground with small rings; tags "Your hand" / "The ground"
+  pop on the last line. Tori rejected the drawn-dog animation test on tm01s03 ("terrible"; reverted): Claude's code-drawn
+  characters are not good enough; animate over Tori's pictures and clips instead. Tori is making AI clips in Kling
+  (Motion Control with a reference cut from the Fisher clip: out/kling-motion-reference-toss-tight.mp4, start picture
+  out/kling-start-toss-treat-in-hand.jpg).
+- Round 7 (Oct 7, Tori: "much better, I want the animations to be quality like this"): the tm01s02 style is now a kit,
+  `TM.pic` (Tori's picture whole, with an SVG layer and `P(nx, ny)` mapping picture fractions to px, cover crop aware)
+  and `TM.fx` (ring, dots, toss, drops, tag). Applied to tm01s05 (gaze dots and ring on the check-in; red stare line,
+  squirrel ring and red taut leash on the pull), tm02s01-03 (each game's mark on its picture), tm04s02 (ring per panel:
+  the word, her still hand in amber, the treat at the mouth), tm04s03 (the bowling sweep and low toss drawn on her
+  picture, replayed for "vary the distance" short then long; the old clip-art hand and sweep are gone), tm04s04 (treats
+  drop from her hand, one ring takes in the scatter). Use this kit for every new picture slide.
+- Round 8 (Oct 7): magnet hand is gone (narration beat and visual; Tori must delete "This is called a magnet hand ...
+  they'll react." from the doc). tm01s04 is rebuilt on Tori's pictures: toss picture first, an amber warning pops
+  behind the dog ("Something worrying, too close", red "Standing still for a treat here: harder"), she bowls a treat
+  away and the dog follows (green "More space" line), then the scatter picture ("Enough space: scatter"), then the
+  mouth picture ("Another dog"); Watch your dog / pattern games later underneath. The drawn dog and handler are no
+  longer used in tm01s04.
+- Round 9 (Oct 7): Tori said the indoor pictures don't fit a "something worrying" scene, tried Kling clips for it (moonwalking
+  dogs, wrong toss direction, style drift) and found the AI-clip workflow "way too much". tm01s04 is now a distance strip
+  (red "Too close" to green "Enough space", amber worry at the left, the dog as a green marker): red "Standing still for a
+  treat this close: harder", two low tosses carry the dog away ("Treat chases, moving away"), a scatter around it ("Enough
+  space: scatter"); Tori's toss, scatter and mouth pictures appear underneath as each game is named ("Another dog: food to
+  the mouth" lifts while the strip dims). Don't push more AI-clip work on Tori unless asked.
+- Round 10 (Oct 7): Tori's clips came from Drive (folder "Videos"; Tori set them to anyone-with-link; the Drive connector
+  cannot pass big files, so download with curl from drive.usercontent.google.com/download?id=ID&export=download&confirm=t;
+  originals in clips/src/, gitignored). Tori will NOT narrate over videos: every clip slide has a short intro line, then
+  the clip plays FULL SCREEN with its own sound (clip `"full": true` + `"afterNarration": true`; assemble.py fills bars with
+  a blurred copy, adds a branded label from the clip's `label`, fades in from and back out to the slide, levels the
+  clip's speech to the narration). Mapping: tm01s06 = Marker Timing X Sit to Stand; tm04s02 = VerbalCuewithFisher (0 to
+  21 s); new tm04s03e = Eskara Free Marker Intro (learning the toss marker); tm04s03v = Fisher toss, new line "a dog who
+  already knows the game ... knows where to move for the next treat"; tm04s05 = Clicker - Testing Understanding (vertical,
+  the drawn dog is gone); tm04s06 = LSM Jeter captions (blind dog Jeter). Pending: Tori's scatter video (reinforcing a dog
+  for walking to the house without jumping up to grab an arm) for tm04s04v, with a line on why to use a scatter.
+  Part cards (bumpers) open with a branded two-band green wipe when the series motion is cinematic.
+- Round 11 (Oct 7): Tori prefers demo clips IN the slide frame so the steps stay visible; only the response videos
+  play full screen (tm04s05 clicker testing understanding, tm04s06 Jeter). In-frame clips still play after the
+  narration with their own sound (levelled), bars filled with a blurred copy. A step strip under the frame lights each
+  step in sync with the clip (lesson clip `steps`, `marks` = seconds into the clip where the marker is said, optional
+  `stepOffsets`; default 0 / 0.6 / 1.3 s): tm01s06 Mark "X" / Pause / Treat to his mouth, tm04s02 Yip, tm04s03e Free,
+  tm04s04v Calm walking / Mark "Scatter" / Scatter treats. tm04s04v = Tori's "Scatter example" (no sound, her own
+  caption): a dog marked for calm walking to the house BEFORE any jump, never after jumping (Tori's point; rows say so).
+  New Claude-written lines to add to the doc: tm04s03e Eskara line, tm04s03v Fisher line, tm04s04v scatter line.
+- Round 12 (Oct 7): Tori dislikes the lighting step strips: removed (no `steps` in any clip; the kit code stays but is
+  unused). ALL clips now play in the slide frame, none full screen (Jeter too). tm04s05's vertical clicker clip sits in a
+  tall frame at the right (box [1188,190,632,790], clip `crop` [0,480,1080,1344] keeps the middle so Tori's burned-in
+  captions read clearly); rows, the two chips side by side and the Separate sessions / Familiar / Mix markers strip at
+  the left (fixes the "Always follow through" overlap).
+- Round 13 (Oct 7): tm04s04v "Scatters in action" now plays Tori's "Scatter Demo with captions" (indoor golden, Tori says
+  "Scatter"); new tm04s04w "Why use a scatter?" plays "Scatter example" (snowy yard, no sound) with Tori's reason: the dog
+  jumped to grab the arm of anyone but the owner when walked inside; arms and hands were already too exciting (he'd
+  target them to grab and tug), so no food from the hand; mark while he's calm and walking BEFORE any jump, then scatter
+  low next to you so his head goes down, not up at arms. Narration for both written by Claude from Tori's explanation
+  (paste into the doc). tm03s02 has NO video (Tori won't film the bowl practice): rows plus three step cards (Mark: say
+  your word, Pause: hand still, Move: treat into a bowl) and a "Word, pause, then movement" banner; no lighting effects.
+- Round 14 (Oct 7): tm04s04v gets a "Mark, pause, move: scatter a few treats" row; tm04s04w's calm-walking row uses the
+  paw-print icon (never people's feet for a dog) and a "This video has no sound" chip sits above the frame (label starts
+  "No sound:"). Full presentation (13:48) published to the online preview in six parts. web_page.py takes --kicker
+  (use "Core Skills course" for this video).
+- Round 15 (Oct 7, "make it look like a $5,000 course"): restructure: tm04 order is s01, s02 (mouth), s05 (Does your dog
+  understand?, right after the mouth marker), s03, s03e, s03v, s04, s04v, s04w, s06 (Jeter, the final example), s07 key
+  takeaways (old tm05s02 merged with tm05s01's "mark the instant" content, logo close). Part 5 (tm05) is gone. No captions
+  under any video (they repeated the rows); rows sit centred on the frame; frame box [900,330,920,518] (tm04s05 tall frame
+  [1250,240,570,710]). Clips no longer flash back to the slide at their end: `tools/clip_ends.py` (run after timing.py)
+  writes assets/img/clipend_<id>.jpg (gitignored) and TM.videoFrame shows it under the clip. tm01s02 says where the dog
+  finds the food (At their mouth / Rolling along the ground / On the ground in front of them; narration changed); tm01s04
+  labels "To the mouth", strip respaced; tm01s05 gaze ends at her eyes; tm02s04 "Clicker" chip; tm03s01 rebuilt as Right /
+  Wrong panels with a pause band; tm03s02 rows + Mark / Pause / Move cards, centred; tm04s01 "Quiet, low-distraction area",
+  order strip "Mark"; tm04s02 "Short sessions, once or twice a day, for all markers together", "click, pause, move";
+  scatter treats land in a tight group at the nose (all scatter slides); toss slide's duplicate bowling label removed;
+  Eskara line names the hand closest to the dog; "Scatter demonstration" with a new poster (Tori and the dog looking at
+  each other, 0.8 s into the clip); "before the jumping starts"; "This video doesn't have sound". Tori's outdoor pictures for
+  tm01s04: see round 16.
+- Round 16 (Oct 8): tm01s04 has ONE picture, Tori's outdoor park toss (`tm_toss_park.jpg`, man bowls a treat low away,
+  brindle dog follows, woman and golden in the background), shown whole at left; the distance strip and the scatter and
+  mouth pictures are gone from this slide. On the picture: amber ring on the golden ("something worrying", again on
+  "Something unexpected" with an amber tag), the low toss trail and ring on the treat, the dog's dotted path, a green
+  "More distance" measure along the grass. Points land at right (movement, standing still up close harder, toss away,
+  scatter, another dog: food to the mouth, watch your dog, pattern games). Beat 1 narration rewritten at Tori's request
+  (paste into the doc): "For example, if something unexpected appears too close, like another dog, we might toss a treat
+  away from it. Your dog follows the treat and gets more distance. Once there's enough space, we can offer a scatter."
+  The scatter-with-space composite (made for this slide) is not used.
+- Oct 9: the full current narration (every change through round 16, slide order as built, video notes) was written to a
+  NEW Google Doc in Tori's Drive, "Markers and Mechanics: Narration Script (updated Oct 9)", id
+  1eBXnYRkbY032AKBkn0JJMxidBR83rWdTMradmG72JKQ. Tori's original doc (1_KZQ...) is out of date until Tori replaces it.
+- Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
+- Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
+
 ## Recordings (Tori's voice)
 
 - One file per slide, named by scene id: `Ch01s05.m4a` (case does not matter). A slide in pieces:

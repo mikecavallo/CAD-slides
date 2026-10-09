@@ -77,3 +77,13 @@ Republishing the same file path keeps the same URL. Chat uploads must stay under
 usually 25 to 30 MB.
 
 Timestamps for the delivery note: each segment in `build/timing.json` has `id` and `start` in seconds.
+
+## Video slides (the trainer's own clips)
+
+When Tori wants her own video on a slide and to narrate over it, give the scene a `"clip"` block in the lesson
+(`box` [x, y, w, h] in stage px, `poster` image in assets/img, `label`, optional `at`, `from`, `to`, `volume`) and draw the
+frame with `TM.videoFrame(ctx)` or `TM.videoSlide(ctx, ...)` (`video/scenes/tm_kit.js`; it reads the box from the lesson,
+so the drawn frame and the played clip always match). Tori's file goes in `clips/<scene id>.mp4` (gitignored, like
+`narration/`). `timing.py` stretches the slide to the clip's length; `assemble.py` overlays the clip in the box, muted
+by default. Keep animation off the box while the clip plays (it covers the box). YouTube is blocked from this
+container, so ask Tori to upload the clip files.

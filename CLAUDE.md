@@ -111,6 +111,38 @@ pipeline). This file records the state, decisions and working agreements from ea
   again here. That's intentional." and the then/now pairs; its line is now "In this chapter, we're focusing on factors
   that can be changed, managed, or improved." with Changed / Managed / Improved lighting word by word. s12's thermometer
   goes in through the middle of the pot's opening (front rim redrawn over it).
+- Round 13: the goal is a lower baseline, said early: s03 adds "That's the goal: the lower the baseline a dog starts out
+  with, the better." (Claude's wording, Tori asked) with a "The goal: a lower baseline" pill. Emotional experiences that
+  raise the water are the unpleasant or stressful ones (good experiences don't): s08 "When unpleasant or stressful
+  emotional experiences happen repeatedly ... they can shift the dog's overall mood in a negative direction and affect
+  the water level in the pot." (pill "Repeated stressful or unpleasant experiences"); s10 "several unpleasant or
+  stressful experiences" and "together they can shift the dog's mood in a negative direction and raise the water level"
+  (pill "Unpleasant experiences"). Never say a dog is "in a bad mood" (too anthropomorphic); since round 15 never say
+  "negative direction" either (viewers read negative as taking away, but the water is being added). s12 thermometer is shorter so it stays clear of the Part labels.
+- Round 14: s02 defines baseline as "the dog's overall starting state: their starting level of stress and arousal before
+  a trigger appears" (card and "A trigger appears" event); s03 "A higher baseline means there's less room for additional
+  stress before they react. A lower water level leaves more room." ("Less room before a reaction" / "for additional
+  stress before they react"); one unpleasant or stressful experience is enough to matter, never imply it takes several:
+  s08 "An unpleasant or stressful emotional experience, even a single one, can shift the dog's overall mood in a negative
+  direction and affect the water level in the pot, especially when those experiences happen repeatedly or there isn't
+  enough opportunity to recover between them."; s10 "or even a single unpleasant or stressful experience" (pill "Even
+  one unpleasant experience").
+- Round 15: s03's room explanation is now Tori's three paragraphs (beats 5 to 7; goal is beat 8, "come back" beat 9):
+  "The rim represents the limit of what your dog can manage in that situation. If the water rises beyond it, the pot
+  overflows, representing an intense response." (rim glows, water spills down the glass, "Overflow = an intense
+  response"); low water: "more room before the pot overflows ... may be able to handle more added stress or arousal
+  before an intense response occurs" (long amber "Added stress or arousal" arrow, "Still under the rim"); high water:
+  "less room ... a smaller amount of added stress or arousal may trigger an intense response" (short arrow, it spills).
+  Added stress or arousal is shown as the water rising (an arrow), not as drops, so it still fits heat in Chapter 4.
+  s06 "other animals" (not other dogs, paw icon). s08 "can affect the dog's overall mood and add to the water level in
+  the pot"; s10 "together they can weigh on the dog's mood and raise the water level".
+- Round 16: Tori now edits the Chapter 2 script in the Drive doc "Chapter 2 script (round 15, paste into Script v4)"
+  (id 1SbwVdgb1781rBJC9iftjBWaeeFXiyTx2xBwK7P7_XQA); read it before each build, it wins over the lesson. s03 is Tori's
+  rewrite in six beats: starting water level = baseline incl. cumulative mood; not stress or arousal in the moment ("In a
+  later chapter"); "Rim = what your dog can manage" / "Overflow = an intense response" (spills); lower level = more room
+  (long arrow stays under) and higher level = less room (short arrow spills) in one beat; "Goal: a lower baseline" + "More
+  room to handle stress or arousal"; flame bookmark "We'll add heat in a later chapter". The "lower/higher water level"
+  line and "Why does that matter?" are gone. s08 pill is "An unpleasant or stressful experience" (no "even one").
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

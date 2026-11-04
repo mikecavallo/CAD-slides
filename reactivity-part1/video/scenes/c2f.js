@@ -228,7 +228,7 @@
     // ---------- beat 3: a dashed slot on the pot for another part
     const t4 = cue(3);
     const TX = 0; // thermometer x in pot coordinates: it goes in through the middle of the opening
-    const slot = K.path(P.svg, `M ${TX - 30} 250 L ${TX - 30} -110 A 30 30 0 0 1 ${TX + 30} -110 L ${TX + 30} 250`, { stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10', fill: 'rgba(255,255,255,0.4)' });
+    const slot = K.path(P.svg, `M ${TX - 30} 250 L ${TX - 30} -30 A 30 30 0 0 1 ${TX + 30} -30 L ${TX + 30} 250`, { stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10', fill: 'rgba(255,255,255,0.4)' });
 
     const slotC = K.circle(P.svg, TX, 286, 50, { fill: 'rgba(255,255,255,0.4)', stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '12 10' });
 
@@ -241,11 +241,11 @@
     // ---------- beat 4: temperature: the thermometer drops in, its line rises; Part 2 is temperature
     const t5 = cue(4);
     const th = K.group(P.svg);
-    K.rect(th, TX - 28, -140, 56, 420, { rx: 28, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
+    K.rect(th, TX - 28, -50, 56, 330, { rx: 28, fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 }); // short, so it stays clear of the Part labels
     K.circle(th, TX, 286, 48, { fill: '#ffffff', stroke: C.greenDeep, 'stroke-width': 7 });
     K.circle(th, TX, 286, 34, { fill: C.red });
     const merc = K.rect(th, TX - 12, 240, 24, 50, { rx: 12, fill: C.red });
-    [-90, -30, 30, 90, 150].forEach(y => K.line(th, TX + 6, y, TX + 22, y, { stroke: C.greenDeep, 'stroke-width': 4 }));
+    [-10, 50, 110, 170].forEach(y => K.line(th, TX + 6, y, TX + 22, y, { stroke: C.greenDeep, 'stroke-width': 4 }));
     // the front half of the rim, drawn again over the thermometer, so the stem reads as standing inside the pot
     K.path(P.svg, `M ${-C2.R} 0 A ${C2.R} 42 0 0 0 ${C2.R} 0`, { stroke: C.rim, 'stroke-width': 16, fill: 'none' });
     K.path(P.svg, `M ${-C2.R + 20} 8 A ${C2.R - 20} 34 0 0 0 ${C2.R - 20} 8`, { stroke: '#8fbf62', 'stroke-width': 5, fill: 'none', opacity: 0.8 });
@@ -255,7 +255,7 @@
     tl.fromTo(th, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t5 + 0.1);
     P.ripple(tl, t5 + 0.7);
     tl.to(th, { y: 10, duration: 0.15, yoyo: true, repeat: 1, ease: 'power1.out' }, t5 + 0.75);
-    tl.fromTo(merc, { attr: { y: 240, height: 50 } }, { attr: { y: -70, height: 360 }, duration: 1.6, ease: 'power2.inOut', immediateRender: false }, t5 + 1.0);
+    tl.fromTo(merc, { attr: { y: 240, height: 50 } }, { attr: { y: 10, height: 280 }, duration: 1.6, ease: 'power2.inOut', immediateRender: false }, t5 + 1.0);
     tl.to(qcs, { opacity: 0, x: 40, duration: 0.4, stagger: 0.05, ease: 'power2.in' }, t5 + 0.2);
     tl.to(p2, { opacity: 0, duration: 0.3 }, t5 + 0.5);
     tl.fromTo(p2b, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t5 + 0.7);

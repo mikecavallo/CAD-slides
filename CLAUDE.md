@@ -285,6 +285,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   and its Mark / Pause / Move strip (slide content moved down); tm04s02 clicker line now "the process is the same, with a
   click instead of a word" (row "Clicker: the same, with a click"); tm04s04v's "Mark, pause, move" row; takeaway #3 no
   longer says "pause". Don't add it back elsewhere.
+- Nov 4: editable script for Tori, Google Doc "Markers and Mechanics: Narration Script (updated Nov 4)", id
+  1fqvGTQKhgPAnFNGcuFUY6fpKEEn4B2g8PaY9J9uisvE (all changes through round 18, slide order, start times). Treat it as the
+  current source of truth: read it before the next build and sync any of Tori's edits into lesson-mechanics.json.
 - Fresh containers: clips are not in git. Re-download from Drive (folder id 1FdKn-_dNYyHfwDsNtjiuxNyEOhXlbsef) with curl;
   the Fisher toss clip (tm04s03v) is NOT on Drive: it was recovered from the published preview (part with tm04s03v, the
   frame box cropped out). Tools: pip install kokoro-onnx sherpa-onnx soundfile numpy pillow (use --ignore-installed for

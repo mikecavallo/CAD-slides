@@ -191,7 +191,13 @@ def main():
                 if piece:
                     parts.append(to_samples(clip_path(cache, sc["id"], i, j, voice, args.model, settings, piece).read_bytes()))
         parts.append(np.zeros(int(SR * TAIL), np.float32))
-        sf.write(out / f"{sc['id']}.wav", np.concatenate(parts), SR)
+        # loudness -23 LUFS with true-peak limiting: the expressive models leave single loud peaks, which would stop
+        # align.py's peak-capped gain from bringing the slide up to the level of the trainer's own takes
+        raw = out / f".{sc['id']}.raw.wav"
+        sf.write(raw, np.concatenate(parts), SR)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-af", "loudnorm=I=-23:TP=-2:LRA=11", "-ar", str(SR),
+                        "-ac", "1", str(out / f"{sc['id']}.wav")], check=True)
+        raw.unlink()
     print(f"takes written to {out.relative_to(ROOT) if out.is_relative_to(ROOT) else out}; next: align.py --dir {out}")
 
 

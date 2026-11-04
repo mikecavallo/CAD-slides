@@ -1,0 +1,1366 @@
+{
+ "title": "Management: Solutions and Setups",
+ "series": {
+  "title": "Management: Solutions and Setups",
+  "titleLines": [
+   "Management:",
+   "Solutions and Setups"
+  ],
+  "motion": "cinematic"
+ },
+ "notes": "Foundations course video, rebuilt from Tori's deck 'Management, Part two: solutions and set ups' (3-Master_Management part 2.pptx, Nov 4). The deck had no narration: Claude drafted it from the slide text; Tori gets paste-ready copy. Build with LESSON=lesson-management2.json.",
+ "tail": 4.0,
+ "chapters": [
+  {
+   "id": "ms00",
+   "num": 0,
+   "title": "Welcome",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "ms00intro",
+     "heading": "Management: Solutions and Setups",
+     "visual_concept": "The shared title slide.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Hi, I’m Tori Ganino with Calling All Dogs. Welcome to Management: Solutions and Setups.",
+       "show": "Title, headshot, name block, training photo.",
+       "onscreen": "Management: Solutions and Setups"
+      }
+     ]
+    },
+    {
+     "id": "ms00plan",
+     "heading": "Where we're headed",
+     "visual_concept": "Plan slide: What you'll learn (six setups), Why it matters.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "In part one, we covered what management is, and why it has to happen every time. Now we’ll put it to work: on walks, with sights and sounds at home, with resource guarding, with conflict between dogs, between dogs and cats, and on car rides.",
+       "show": "Card: What you'll learn.",
+       "onscreen": "What you'll learn"
+      },
+      {
+       "say": "For each one, you’ll get simple setups that stop the reaction before it starts.",
+       "show": "Card: Why it matters.",
+       "onscreen": "Why it matters"
+      }
+     ]
+    },
+    {
+     "id": "ms00s01",
+     "heading": "Always have two layers of safety",
+     "visual_concept": "A safety principle: a fired-up dog redirects onto whoever is closest; two independent barriers between the dog and the other animal or person; the first fails, the backup holds.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Before we get into the setups, one safety principle runs through all of them: always have two layers of safety.",
+       "show": "Heading; the dog and the cat with open space between.",
+       "onscreen": "Always have two layers of safety"
+      },
+      {
+       "say": "A reactive dog that’s fired up at one trigger doesn’t always aim at it. That arousal can spill over onto whoever is closest: the other dog, the cat, or a person in the room, even when none of them caused it.",
+       "show": "Trigger at the window; red redirect arrow onto the cat.",
+       "onscreen": "Redirects onto whoever’s closest"
+      },
+      {
+       "say": "So never lean on a single barrier. Your first layer is a solid separation, like a closed door, a secure crate, or a dog kept in its own room.",
+       "show": "First layer drops in; card.",
+       "onscreen": "First layer: a solid separation"
+      },
+      {
+       "say": "Your backup layer is a second barrier behind it, like a baby gate, or a leash on the dog.",
+       "show": "Backup layer drops in; card.",
+       "onscreen": "Backup layer: a second barrier"
+      },
+      {
+       "say": "One barrier will eventually fail. A door gets left open, or a leash slips. With two layers, a single mistake stays a near miss, never a bite.",
+       "show": "The first layer opens; the backup holds; Why two card.",
+       "onscreen": "Near miss, never a bite"
+      }
+     ]
+    }
+   ],
+   "kicker": "Part"
+  },
+  {
+   "id": "ms01",
+   "num": 1,
+   "title": "Going for Walks",
+   "slide_refs": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "scenes": [
+    {
+     "id": "ms01s00",
+     "heading": "Going for walks",
+     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let’s start with walks. Plan the route, the timing, and the distance, so most encounters never happen. And when one does, make space fast.",
+       "show": "Heading and summary line.",
+       "onscreen": "Going for walks"
+      },
+      {
+       "say": "Here are eight ways to do that.",
+       "show": "Numbered setups land one after another.",
+       "onscreen": "Choose strategic routes / Skip tight, no-exit spaces / Increase distance fast / Use visual barriers / Control greetings / Walk at quieter times of day / Avoid high-risk areas / Drive to a calmer spot"
+      }
+     ]
+    },
+    {
+     "id": "ms01s01",
+     "heading": "Choose strategic routes",
+     "visual_concept": "Ring on the dog resting in a quiet, open park.",
+     "assets": [
+      "ms_s05.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number one: choose strategic routes.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Choose strategic routes"
+      },
+      {
+       "say": "Pick routes with fewer dogs, and scout low-traffic streets where you can easily cross to the other side.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Plan the route, and most encounters never happen in the first place.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms01s02",
+     "heading": "Skip tight, no-exit spaces",
+     "visual_concept": "Amber dotted edges close in along the narrow trail; red tag No room to pass.",
+     "assets": [
+      "ms_s06.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number two: skip tight, no-exit spaces.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Skip tight, no-exit spaces"
+      },
+      {
+       "say": "Avoid narrow hiking trails, alleys, and fenced paths where you can’t make space. If a trigger appears, there’s no room to pass, and your dog ends up stuck facing it head-on.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Room to create distance is your main tool. In a pinch point, your dog feels trapped and tips over threshold fast.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms01s03",
+     "heading": "Increase distance fast",
+     "visual_concept": "Three move chips land as named; green tag Make space fast.",
+     "assets": [
+      "ms_s07.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number three: increase distance fast.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Increase distance fast"
+      },
+      {
+       "say": "See a dog approaching? Make space right away. Cross the street, turn around, or step behind a parked car.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Distance lowers the intensity of the trigger. The farther away, the calmer your dog.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms01s04",
+     "heading": "Use visual barriers",
+     "visual_concept": "Chips You, A car, A fence, A bush; ring on the parked car.",
+     "assets": [
+      "ms_s08.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number four: use visual barriers.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Use visual barriers"
+      },
+      {
+       "say": "Can’t get distance? Put yourself between your dog and the trigger, or duck behind a car, a fence, or a bush to block the line of sight.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "If your dog can’t see the other dog, there’s nothing to react to.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms01s05",
+     "heading": "Control greetings",
+     "visual_concept": "Ring on the Please give me space vest; No thanks chip.",
+     "assets": [
+      "ms_s09.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number five: control greetings.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Control greetings"
+      },
+      {
+       "say": "Don’t let strangers pet your dog, even when they ask. Politely decline, and keep moving.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Every declined greeting is a reaction that never gets practiced.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms01s06",
+     "heading": "Walk at quieter times of day",
+     "visual_concept": "Early morning and Later evening chips; ring on the dog on the empty path.",
+     "assets": [
+      "ms_s10.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number six: walk at quieter times of day.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Walk at quieter times of day"
+      },
+      {
+       "say": "Head out early in the morning or later in the evening, when fewer dogs, people, and delivery trucks are out and about.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Fewer triggers around means fewer chances for your dog to rehearse a reaction.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms01s07",
+     "heading": "Avoid high-risk areas",
+     "visual_concept": "Crossed-out red chips for the risky places; amber rings on the crowd and the bike.",
+     "assets": [
+      "ms_s11.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number seven: avoid high-risk areas.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Avoid high-risk areas"
+      },
+      {
+       "say": "Skip dog parks, pet store entrances, and busy trails. Take several short, controlled walks instead of one long one.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Fewer surprises means fewer chances to rehearse the reaction.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms01s08",
+     "heading": "Drive to a calmer spot",
+     "visual_concept": "Busy block to calmer spot strip; ring on the dog on the quiet trail.",
+     "assets": [
+      "ms_s12.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number eight: drive to a calmer spot.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Drive to a calmer spot"
+      },
+      {
+       "say": "If your own block is full of triggers, load up and drive to a quieter park, trail, or empty lot instead.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "A short drive can turn a stressful outing into an easy one. Starting somewhere calm beats fighting triggers the moment you step out the door.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    }
+   ],
+   "kicker": "Part"
+  },
+  {
+   "id": "ms02",
+   "num": 2,
+   "title": "At Home: Sights & Sounds",
+   "slide_refs": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+   ],
+   "scenes": [
+    {
+     "id": "ms02s00",
+     "heading": "At home: sights & sounds",
+     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "At home, manage the windows, the yard, the doorbell, and deliveries, so the sights and sounds outside stop setting your dog off indoors.",
+       "show": "Heading and summary line.",
+       "onscreen": "At home: sights & sounds"
+      },
+      {
+       "say": "Here are nine setups.",
+       "show": "Numbered setups land one after another.",
+       "onscreen": "Turn off the doorbell / Have guests wait before entering / Create physical barriers / Move deliveries away from the house / Block visual access to windows / Manage outdoor time / Mask or eliminate sounds / Create a safe space / Plan around predictable events"
+      }
+     ]
+    },
+    {
+     "id": "ms02s01",
+     "heading": "Turn off the doorbell",
+     "visual_concept": "Doorbell chip struck out; Text or knock quietly chip; ring on the dog resting.",
+     "assets": [
+      "ms_s14.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number one: turn off the doorbell.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Turn off the doorbell"
+      },
+      {
+       "say": "If the bell is the trigger, disconnect it, or post a note asking visitors to text or knock quietly instead.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Remove the sound, and you remove what starts the whole chain reaction.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s02",
+     "heading": "Have guests wait before entering",
+     "visual_concept": "Order strip: Guest waits, Dog secured, Door opens.",
+     "assets": [
+      "ms_s15.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number two: have guests wait before entering.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Have guests wait before entering"
+      },
+      {
+       "say": "Ask visitors to pause outside while you secure your dog.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "A calm, staged entry replaces the chaotic rush when the door swings open.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s03",
+     "heading": "Create physical barriers",
+     "visual_concept": "Three barrier chips; ring on the gate.",
+     "assets": [
+      "ms_s16.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number three: create physical barriers.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Create physical barriers"
+      },
+      {
+       "say": "Before guests arrive, settle your dog in a separate room, behind a baby gate, or in their crate with a high-value chew.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "No access, no door rushing. A barrier makes it physically impossible, so it can’t be practiced.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s04",
+     "heading": "Move deliveries away from the house",
+     "visual_concept": "Ring on the parcel box sign; tag Drop spot.",
+     "assets": [
+      "ms_s17.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number four: move deliveries away from the house.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Move deliveries away from the house"
+      },
+      {
+       "say": "Set up a drop spot for packages and mail away from the porch, like a parcel box at the end of the driveway, or a note asking carriers to leave them by the mailbox.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "If the carrier never comes close to the door, there’s far less for your dog to see or hear.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s05",
+     "heading": "Block visual access to windows",
+     "visual_concept": "Four chips; ring on the lowered shade.",
+     "assets": [
+      "ms_s18.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number five: block visual access to windows.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Block visual access to windows"
+      },
+      {
+       "say": "Use curtains, blinds, frosted film, or furniture, so your dog can’t see people walking by.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "No sight of passersby, no reaction to rehearse.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s06",
+     "heading": "Manage outdoor time",
+     "visual_concept": "Chips; ring on the dogs in the yard; tag Supervised.",
+     "assets": [
+      "ms_s19.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number six: manage outdoor time.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Manage outdoor time"
+      },
+      {
+       "say": "Don’t leave a yard barker outside unsupervised. Bring them in when delivery drivers are due, or when the street is busy.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "When you’re supervising, you can step in before the barking starts.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s07",
+     "heading": "Mask or eliminate sounds",
+     "visual_concept": "Three chips; ring on the speaker.",
+     "assets": [
+      "ms_s20.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number seven: mask or eliminate sounds.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Mask or eliminate sounds"
+      },
+      {
+       "say": "Use white noise machines, fans, or calming music to cover triggers. And if the doorbell is still a problem, swap in a quieter chime.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Covered triggers simply don’t reach your dog at the same intensity.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s08",
+     "heading": "Create a safe space",
+     "visual_concept": "Ring on the dog resting in the crate; tag Quiet den.",
+     "assets": [
+      "ms_s21.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number eight: create a safe space.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Create a safe space"
+      },
+      {
+       "say": "Set up a quiet room or crate in the most soundproof part of your home, for predictable noisy events.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "A quiet retreat keeps stress low, even when it’s loud outside.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s09",
+     "heading": "Plan around predictable events",
+     "visual_concept": "Calendar chip Tuesday 10:00; ring on the Kong.",
+     "assets": [
+      "ms_s22.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number nine: plan around predictable events.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Plan around predictable events"
+      },
+      {
+       "say": "Garbage truck every Tuesday at ten? Give your dog a frozen Kong in their safe space first.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Preparation turns a predictable trigger into a non-event.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms02s10",
+     "heading": "See it in action",
+     "visual_concept": "Video slide: Tori's client session, managing fence reactivity in the yard.",
+     "assets": [
+      "ms_clip_fence.jpg"
+     ],
+     "clip": {
+      "box": [
+       900,
+       330,
+       920,
+       518
+      ],
+      "poster": "ms_clip_fence.jpg",
+      "at": 1.2,
+      "afterNarration": true,
+      "volume": 1.0,
+      "label": "Client session: fence reactivity"
+     },
+     "beats": [
+      {
+       "say": "Here’s what that looks like in a real client session: managing fence reactivity in the yard.",
+       "show": "Rows; the video frame.",
+       "onscreen": "See it in action"
+      }
+     ]
+    },
+    {
+     "id": "ms02s11",
+     "heading": "What it looks like, day to day",
+     "visual_concept": "Tori's five real-life pictures, whole, each tagged as it is named.",
+     "assets": [
+      "ms_s24_1.jpg",
+      "ms_s24_2.jpg",
+      "ms_s24_3.jpg",
+      "ms_s24_4.jpg",
+      "ms_s24_5.jpg"
+     ],
+     "beats": [
+      {
+       "say": "And here’s what management looks like day to day, in real homes.",
+       "show": "Heading.",
+       "onscreen": "Management in real life"
+      },
+      {
+       "say": "Gates at the doors. A second fence line inside the yard. Frosted film on the windows. A sheet of cardboard that blocks the couch window when no one’s supervising. And a screen in front of the window.",
+       "show": "Pictures land as they are named.",
+       "onscreen": "Tags"
+      },
+      {
+       "say": "None of it is fancy. It just works, every single day.",
+       "show": "A green banner.",
+       "onscreen": "Simple, every day"
+      }
+     ]
+    }
+   ],
+   "kicker": "Part"
+  },
+  {
+   "id": "ms03",
+   "num": 3,
+   "title": "Resource Guarding",
+   "slide_refs": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+   ],
+   "scenes": [
+    {
+     "id": "ms03s00",
+     "heading": "Resource guarding",
+     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Next, resource guarding. Reduce conflict over food, toys, and space by managing access, so there’s nothing for your dog to guard in the first place.",
+       "show": "Heading and summary line.",
+       "onscreen": "Resource guarding"
+      },
+      {
+       "say": "Here are four ways to do that.",
+       "show": "Numbered setups land one after another.",
+       "onscreen": "Remove access to guarded items / Feed in a safe, isolated space / Prevent stealing opportunities / Manage space around the dog"
+      }
+     ]
+    },
+    {
+     "id": "ms03s01",
+     "heading": "Remove access to guarded items",
+     "visual_concept": "Three rows; ring on the food toy.",
+     "assets": [
+      "ms_s26.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number one: remove access to guarded items.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Remove access to guarded items"
+      },
+      {
+       "say": "Pick up toys when you’re not supervising play. Block the couch with furniture or gates. And feed away from people and other pets.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "No item to guard means no opportunity to guard it.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms03s02",
+     "heading": "Feed in a safe, isolated space",
+     "visual_concept": "Three chips; ring on the crate.",
+     "assets": [
+      "ms_s27.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number two: feed in a safe, isolated space.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Feed in a safe, isolated space"
+      },
+      {
+       "say": "At mealtimes, put your dog in a closed room, a crate, or behind a gate, so no one can approach while they’re eating.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Eating undisturbed removes the chance of mealtime trouble.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms03s03",
+     "heading": "Prevent stealing opportunities",
+     "visual_concept": "Crossed chips; ring on the toys.",
+     "assets": [
+      "ms_s28.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number three: prevent stealing opportunities.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Prevent stealing opportunities"
+      },
+      {
+       "say": "Don’t leave bones, bully sticks, or special toys out to be taken and guarded. Offer them only in controlled situations.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "High-value items only appear under your control. They’re never up for grabs.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms03s04",
+     "heading": "Manage space around the dog",
+     "visual_concept": "Amber ring on the dog on the couch; three chips.",
+     "assets": [
+      "ms_s29.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number four: manage space around the dog.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Manage space around the dog"
+      },
+      {
+       "say": "If your dog guards their person, keep them off the couch in social settings. Use a tether, a crate, or a separate room.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Controlling proximity prevents the tension that sparks guarding.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms03s05",
+     "heading": "See it in action",
+     "visual_concept": "Video slide: Knox, leaving the feeding area and seeing the empty bowl picked up.",
+     "assets": [
+      "ms_clip_knox.jpg"
+     ],
+     "clip": {
+      "box": [
+       900,
+       330,
+       920,
+       518
+      ],
+      "poster": "ms_clip_knox.jpg",
+      "at": 1.2,
+      "afterNarration": true,
+      "volume": 1.0,
+      "label": "Client session: Knox at mealtime"
+     },
+     "beats": [
+      {
+       "say": "Here’s a client session with Knox, practicing two moments that can set off guarding: leaving the feeding area, and seeing the empty bowl picked up.",
+       "show": "Rows; the video frame.",
+       "onscreen": "See it in action"
+      }
+     ]
+    },
+    {
+     "id": "ms03s06",
+     "heading": "When surprises keep happening",
+     "visual_concept": "The deck's statement; a few calm days with one surprise, then many surprises: adjust the plan.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "An occasional surprise is normal.",
+       "show": "Statement; a week with one amber surprise.",
+       "onscreen": "An occasional surprise is normal"
+      },
+      {
+       "say": "But if unexpected triggers happen often, or they keep catching you off guard, that’s a sign your management plan needs a small adjustment.",
+       "show": "More surprises; the adjust line.",
+       "onscreen": "Your plan needs a small adjustment"
+      },
+      {
+       "say": "Let me know, and we’ll adjust it together.",
+       "show": "Green banner.",
+       "onscreen": "We’ll adjust it together"
+      }
+     ]
+    }
+   ],
+   "kicker": "Part"
+  },
+  {
+   "id": "ms04",
+   "num": 4,
+   "title": "Multi-Dog Conflict",
+   "slide_refs": [
+    32,
+    33,
+    34,
+    35,
+    36
+   ],
+   "scenes": [
+    {
+     "id": "ms04s00",
+     "heading": "Multi-dog conflict",
+     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "When there’s more than one dog in the home, set up calm routines and separate resources, so two dogs under one roof stay relaxed around each other.",
+       "show": "Heading and summary line.",
+       "onscreen": "Multi-dog conflict"
+      },
+      {
+       "say": "Here are four ways to do that.",
+       "show": "Numbered setups land one after another.",
+       "onscreen": "Separate during high-risk times / Control space & supervise / Remove competition / Manage arrivals & rotate access"
+      }
+     ]
+    },
+    {
+     "id": "ms04s01",
+     "heading": "Separate during high-risk times",
+     "visual_concept": "Three flashpoint chips; rings on both dogs.",
+     "assets": [
+      "ms_s33.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number one: separate during high-risk times.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Separate during high-risk times"
+      },
+      {
+       "say": "Feed in separate rooms or crates. Split them up for high-value chews, and during greetings when you come home.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Removing the flashpoints prevents conflict before it starts.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms04s02",
+     "heading": "Control space & supervise",
+     "visual_concept": "Rows; ring on the gate.",
+     "assets": [
+      "ms_s34.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number two: control space, and supervise.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Control space & supervise"
+      },
+      {
+       "say": "Use baby gates to create separate zones. Don’t let the dogs crowd tight spaces, and if there’s any history, never leave them together unsupervised.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Managed space and supervision stop scuffles from igniting in tight spots.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms04s03",
+     "heading": "Remove competition",
+     "visual_concept": "Chips; amber ring on the toy.",
+     "assets": [
+      "ms_s35.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number three: remove competition.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Remove competition"
+      },
+      {
+       "say": "Pick up all toys, bones, and chews when you’re not supervising, and set out separate water bowls in different areas.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Nothing to compete over means nothing to fight over.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms04s04",
+     "heading": "Manage arrivals & rotate access",
+     "visual_concept": "One at a time strip; ring on the dog on the bed.",
+     "assets": [
+      "ms_s36.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number four: manage arrivals, and rotate access.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Manage arrivals & rotate access"
+      },
+      {
+       "say": "Put one dog away before letting the other out. If they compete for the couch or a bed, allow one at a time.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Staggering excitement and access defuses the moments when conflict flares.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    }
+   ],
+   "kicker": "Part"
+  },
+  {
+   "id": "ms05",
+   "num": 5,
+   "title": "Dog & Cat Conflict",
+   "slide_refs": [
+    37,
+    38,
+    39,
+    40,
+    41
+   ],
+   "scenes": [
+    {
+     "id": "ms05s00",
+     "heading": "Dog & cat conflict",
+     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "With dogs and cats, keep the cat safe by separating the species and giving the cat its own dog-free space, so the chase never gets a chance to start.",
+       "show": "Heading and summary line.",
+       "onscreen": "Dog & cat conflict"
+      },
+      {
+       "say": "Here are four setups.",
+       "show": "Numbered setups land one after another.",
+       "onscreen": "Give the cat dog-free zones / Put cat resources out of reach / Leash & supervise together time / Separate when you’re away"
+      }
+     ]
+    },
+    {
+     "id": "ms05s01",
+     "heading": "Give the cat dog-free zones",
+     "visual_concept": "Rings on the cats up high; tag Up and away.",
+     "assets": [
+      "ms_s38.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number one: give the cat dog-free zones.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Give the cat dog-free zones"
+      },
+      {
+       "say": "Use baby gates or a cracked door to wall off a room only the cat can reach, and add cat trees or shelves, so the cat can always get up and away.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "A cat with a safe exit never has to run, and a dog that can’t follow never gets to chase.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms05s02",
+     "heading": "Put cat resources out of reach",
+     "visual_concept": "Three chips; ring on the gate.",
+     "assets": [
+      "ms_s39.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number two: put the cat’s resources out of reach.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Put cat resources out of reach"
+      },
+      {
+       "say": "Move the litter box, food, and water somewhere the dog can’t get to, like up high, or behind a cat-only door.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Then there’s nothing to guard or chase over, and the dog stays away from problem areas.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms05s03",
+     "heading": "Leash & supervise together time",
+     "visual_concept": "Ring on the leash; ring on the cat up high.",
+     "assets": [
+      "ms_s40.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number three: leash and supervise together time.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Leash & supervise together time"
+      },
+      {
+       "say": "Keep a leash or drag line on the dog during any shared time, and reward calm behavior. Never let the two loose together until you’re sure it’s safe.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "A leash lets you stop a chase before it starts, so the dog never gets to practice it.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms05s04",
+     "heading": "Separate when you’re away",
+     "visual_concept": "Home and Away rows; ring on the pair.",
+     "assets": [
+      "ms_s41.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number four: separate when you’re away.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Separate when you’re away"
+      },
+      {
+       "say": "When no one’s home to supervise, crate the dog or close them in their own room, so the cat can move around freely and safely.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Full separation removes any chance of an incident you can’t interrupt.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    }
+   ],
+   "kicker": "Part"
+  },
+  {
+   "id": "ms06",
+   "num": 6,
+   "title": "Going for Rides",
+   "slide_refs": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+   ],
+   "scenes": [
+    {
+     "id": "ms06s00",
+     "heading": "Going for rides",
+     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Finally, going for rides. Cover the windows, secure your dog, and choose calm routes, so the car stops being a trigger on wheels.",
+       "show": "Heading and summary line.",
+       "onscreen": "Going for rides"
+      },
+      {
+       "say": "Here are five ways to do that.",
+       "show": "Numbered setups land one after another.",
+       "onscreen": "Block the view / Secure your dog properly / Choose calm routes / Avoid trips & park smart / Keep trips short"
+      }
+     ]
+    },
+    {
+     "id": "ms06s01",
+     "heading": "Block the view",
+     "visual_concept": "Three chips; ring on the dog at the window.",
+     "assets": [
+      "ms_s43.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number one: block the view.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Block the view"
+      },
+      {
+       "say": "Use window shades or a crate cover, or position the crate so your dog simply can’t see out the windows.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Removing the visual trigger entirely is the single most effective change in the car.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms06s02",
+     "heading": "Secure your dog properly",
+     "visual_concept": "Three chips; ring on the crate.",
+     "assets": [
+      "ms_s44.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number two: secure your dog properly.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Secure your dog properly"
+      },
+      {
+       "say": "Use a crash-tested crate, harness, or barrier, so they can’t move freely around the car.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "A settled, contained dog can’t pace, lunge, or pinball between windows.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms06s03",
+     "heading": "Choose calm routes",
+     "visual_concept": "Chips; green dotted road line Keep rolling.",
+     "assets": [
+      "ms_s45.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number three: choose calm routes.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Choose calm routes"
+      },
+      {
+       "say": "Map a route that keeps moving, like back roads and right turns, so you sit at fewer lights and stop signs. Less idling in traffic means fewer chances to stare out at passing dogs and people.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "A car that keeps rolling gives your dog far less to lock onto than one stuck at a busy intersection.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms06s04",
+     "heading": "Avoid trips & park smart",
+     "visual_concept": "Chips; ring on a far, quiet spot.",
+     "assets": [
+      "ms_s46.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number four: avoid extra trips, and park smart.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Avoid trips & park smart"
+      },
+      {
+       "say": "Limit rides to when they’re truly needed. Park away from traffic, busy entrances, and other cars with dogs in them.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Fewer, calmer trips mean fewer chances to practice the reaction.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms06s05",
+     "heading": "Keep trips short",
+     "visual_concept": "Short ride vs long drive bars; ring on the relaxed dog.",
+     "assets": [
+      "ms_s47.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Number five: keep trips short.",
+       "show": "Heading, topic chip, Tori's picture whole at right.",
+       "onscreen": "Keep trips short"
+      },
+      {
+       "say": "Start with very brief rides to low-stimulation places, rather than long drives through busy areas.",
+       "show": "Lead text and chips; a mark on the picture.",
+       "onscreen": ""
+      },
+      {
+       "say": "Short, easy trips keep your dog under threshold, where calm is possible.",
+       "show": "Why it works card.",
+       "onscreen": "Why it works"
+      }
+     ]
+    }
+   ],
+   "kicker": "Part"
+  },
+  {
+   "id": "ms07",
+   "num": 7,
+   "title": "Set Up for Success",
+   "slide_refs": [
+    48,
+    49,
+    50,
+    51
+   ],
+   "scenes": [
+    {
+     "id": "ms07s01",
+     "heading": "Be proactive, not reactive",
+     "visual_concept": "Key reminders: three cards.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Before we wrap up, a few key reminders. Be proactive, not reactive.",
+       "show": "Heading.",
+       "onscreen": "Be proactive, not reactive"
+      },
+      {
+       "say": "This isn’t avoidance. These strategies build the stable environment your dog needs to learn new, better responses.",
+       "show": "Card 1.",
+       "onscreen": "It’s not avoidance"
+      },
+      {
+       "say": "Plan ahead. Anticipate situations, and set your dog up for success before the trigger ever appears.",
+       "show": "Card 2.",
+       "onscreen": "Plan ahead"
+      },
+      {
+       "say": "And prevent the rehearsal. The goal is for your dog to never meet the trigger in an uncontrolled way.",
+       "show": "Card 3.",
+       "onscreen": "Prevent the rehearsal"
+      }
+     ]
+    },
+    {
+     "id": "ms07s02",
+     "heading": "Your management toolkit",
+     "visual_concept": "Nine tool cards in three groups: walks, home, always.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "The right gear does most of the heavy lifting. A few simple tools make prevention easy to stick to, so you’re never relying on willpower alone.",
+       "show": "Heading and lead.",
+       "onscreen": "Your management toolkit"
+      },
+      {
+       "say": "For walks: a well-fitted harness that’s secure and escape-proof, a four to six foot leash, never retractable, and a fifteen to thirty foot long line for safe freedom in wide, open spaces.",
+       "show": "Walk cards land as named.",
+       "onscreen": "Harness / Fixed-length leash / Long line"
+      },
+      {
+       "say": "At home: baby gates and barriers, a crate or pen, window film or covers, and a white noise machine.",
+       "show": "Home cards land as named.",
+       "onscreen": "Gates / Crate / Window film / White noise"
+      },
+      {
+       "say": "And always: a treat pouch with high-value rewards, to pay calm the instant it counts, and a basket muzzle, a comfortable safety layer for close or unavoidable encounters.",
+       "show": "Last two cards.",
+       "onscreen": "Treat pouch / Basket muzzle"
+      }
+     ]
+    },
+    {
+     "id": "ms07s03",
+     "heading": "Take home the tally sheet",
+     "visual_concept": "Tori's weekly tally sheet at left; four steps land at right.",
+     "assets": [
+      "ms_tally.png"
+     ],
+     "beats": [
+      {
+       "say": "To track your progress, take home the tally sheet.",
+       "show": "Heading; the sheet.",
+       "onscreen": "Take home the tally sheet"
+      },
+      {
+       "say": "Track every reaction, like barking at the window or lunging on a walk. Tally each one every day, then add up the total at the end of the week.",
+       "show": "Steps 1 and 2.",
+       "onscreen": "Track every reaction / Tally every day"
+      },
+      {
+       "say": "Look for patterns in when and where reactions spike, so you can see where more management is needed. And use the notes for context, like weather, visitors, or changes in your schedule.",
+       "show": "Steps 3 and 4.",
+       "onscreen": "Look for patterns / Use the notes"
+      }
+     ]
+    },
+    {
+     "id": "ms07s04",
+     "heading": "Remember",
+     "visual_concept": "The deck's closing statement on deep green, then the logo close.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Remember: management isn’t forever. It’s what protects the work, while we build something better.",
+       "show": "Statement; logo close.",
+       "onscreen": "Management isn’t forever"
+      }
+     ]
+    }
+   ],
+   "kicker": "Part"
+  }
+ ]
+}

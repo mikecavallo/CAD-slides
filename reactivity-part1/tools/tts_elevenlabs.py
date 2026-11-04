@@ -7,7 +7,8 @@ The output is a folder of per-slide takes named by scene id, so the build treats
     LESSON=lesson-mechanics.json python3 tools/timing.py --mode narration
     node tools/render.mjs --workers 3 && LESSON=lesson-mechanics.json python3 tools/assemble.py --name NAME
 
-Setup: the API key comes from the environment (ELEVENLABS_API_KEY, set as an environment secret; never commit it).
+Setup: the API key comes from the environment (ELEVENLABS_API_KEY, or a network secret the proxy adds for
+api.elevenlabs.io; never commit it).
 The voice is --voice, else ELEVENLABS_VOICE_ID, else the lesson's series "voice" field, else the one voice on the
 account whose name contains "Tori". `--list-voices` shows the account's voices; `--dry-run` shows how many characters
 (credits) a run would use without calling the API.
@@ -41,8 +42,10 @@ def call(path, key, body=None, accept="application/json", tries=5):
     """GET (body None) or POST JSON; retries rate limits and server errors. Returns the raw response bytes."""
     data = json.dumps(body).encode() if body is not None else None
     for n in range(tries):
-        req = urllib.request.Request(API + path, data=data, method="POST" if data else "GET",
-                                     headers={"xi-api-key": key, "Content-Type": "application/json", "Accept": accept})
+        headers = {"Content-Type": "application/json", "Accept": accept}
+        if key:  # without it, a network secret for api.elevenlabs.io may add the key on the way out
+            headers["xi-api-key"] = key
+        req = urllib.request.Request(API + path, data=data, method="POST" if data else "GET", headers=headers)
         try:
             with urllib.request.urlopen(req, timeout=180) as r:
                 return r.read()
@@ -51,7 +54,8 @@ def call(path, key, body=None, accept="application/json", tries=5):
             if e.code in (429, 500, 502, 503, 504) and n < tries - 1:
                 time.sleep(2 ** (n + 1))
                 continue
-            sys.exit(f"ElevenLabs {e.code} on {path.split('?')[0]}: {msg}")
+            hint = " (check the API key: ELEVENLABS_API_KEY or the environment's network secret)" if e.code in (401, 403) else ""
+            sys.exit(f"ElevenLabs {e.code} on {path.split('?')[0]}{hint}: {msg}")
         except urllib.error.URLError as e:
             if n < tries - 1:
                 time.sleep(2 ** (n + 1))
@@ -107,7 +111,7 @@ def main():
 
     key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     if not key and not args.dry_run:
-        sys.exit("ELEVENLABS_API_KEY is not set. Add it as an environment secret, then start a new session.")
+        print("ELEVENLABS_API_KEY is not set; trying the environment's network secret for api.elevenlabs.io")
     if args.list_voices:
         for x in voices(key):
             print(f"{x['voice_id']}  {x['name']}  ({x.get('category', '')})")

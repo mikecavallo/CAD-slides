@@ -494,13 +494,21 @@
     const n = String(info.chapterNum).padStart(2, '0');
     const num = el('div', 'bumper-num', n);
     const bar = el('div', 'bumper-bar');
-    const kick = el('div', 'bumper-kicker', 'Chapter ' + info.chapterNum);
+    const kick = el('div', 'bumper-kicker', (info.kicker || 'Chapter') + ' ' + info.chapterNum);
     const title = el('div', 'bumper-title', md(info.chapterTitle || ''));
     [num, bar, kick, title].forEach(x => stage.appendChild(x));
     A.in(tl, num, 0.05, 'fadeRight', { dur: 0.9 });
     A.in(tl, bar, 0.25, 'grow', { dur: 0.6 });
     A.in(tl, kick, 0.35, 'fadeUp', { dur: 0.6 });
     A.in(tl, title, 0.5, 'fadeUp', { dur: 0.8 });
+    if ((window.TIMING.series || {}).motion === 'cinematic') {
+      // a branded wipe opens each part: two angled green bands sweep across and reveal the card
+      const mk = (bg, z) => { const w = el('div'); Object.assign(w.style, { position: 'absolute', top: '-10%', left: '0', width: '140%', height: '120%', background: bg,
+        clipPath: 'polygon(12% 0, 100% 0, 88% 100%, 0 100%)', zIndex: z }); stage.appendChild(w); return w; };
+      const w1 = mk('var(--green)', 60), w2 = mk('var(--green-deep)', 61);
+      tl.fromTo(w2, { xPercent: -100 }, { xPercent: 75, duration: 0.75, ease: 'power3.inOut' }, 0);
+      tl.fromTo(w1, { xPercent: -110 }, { xPercent: 75, duration: 0.85, ease: 'power3.inOut' }, 0.06);
+    }
   }
 
   async function boot() {
@@ -539,9 +547,18 @@
       window.__ctx = ctx;
       build(ctx);
     }
+    // series "motion": "cinematic" (lesson file): the background drifts like a slow camera move for the whole slide,
+    // and the exit lifts and softens the scene instead of a plain fade
+    const cine = (T.series || {}).motion === 'cinematic';
+    if (cine) {
+      const bg = stage.querySelector('.bg');
+      const dir = (T.order.indexOf(id) % 2) ? 1 : -1;
+      tl.fromTo(bg, { scale: 1.02, x: 0 }, { scale: 1.07, x: 34 * dir, duration: dur, ease: 'none' }, 0);
+    }
     // automatic exit: everything in the scene layer fades out over the last ~0.5s
     if (ctx.exit && layer.children.length) {
-      tl.to(layer, { opacity: 0, duration: 0.42, ease: 'power2.in' }, Math.max(0, dur - 0.5));
+      if (cine) tl.to(layer, { opacity: 0, y: -18, filter: 'blur(5px)', duration: 0.45, ease: 'power2.in' }, Math.max(0, dur - 0.52));
+      else tl.to(layer, { opacity: 0, duration: 0.42, ease: 'power2.in' }, Math.max(0, dur - 0.5));
     }
     tl.set({}, {}, dur);
 

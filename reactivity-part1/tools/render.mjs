@@ -37,7 +37,7 @@ const srcs = Object.fromEntries(files.map(f => [f, fs.readFileSync(path.join(ROO
 const sceneIds = src => [...src.matchAll(/registerScene\('([^']+)'/g)].map(m => m[1]);
 for (const f of files) if (!sceneIds(srcs[f]).length) { const k = f.split('_')[0]; HELPERS[k] = (HELPERS[k] || '') + '\n' + srcs[f]; }
 // standalone branded videos (v_*.js) and later chapters may use the bowl and pot modules too
-const usesC1 = { c0: ['c1'], c2: ['c1'], c3: ['c1', 'c2'], v_: ['c1', 'c2'] };
+const usesC1 = { c0: ['c1'], c2: ['c1'], c3: ['c1', 'c2'], v_: ['c1', 'c2'], tm: ['c1', 'c2'] };
 for (const f of files) {
   const k = f.startsWith('v_') ? 'v_' : f.slice(0, 2);
   const deps = [k, ...(usesC1[k] || [])].map(d => HELPERS[d] || '').join('\n');

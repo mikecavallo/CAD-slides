@@ -70,3 +70,12 @@ Quality checks: `node tools/snap.mjs <scene>` makes stills at each beat; `python
 makes contact sheets from the rendered video, one frame every 1.5 s.
 
 Scene authoring rules and the component kit are documented in `video/SCENE_GUIDE.md`.
+
+## Video slides (your own clips inside the slide)
+
+A slide with a `"clip"` block in its lesson file has a video frame. Put your video in `clips/`, named by the slide's
+scene id (`clips/tm02s03.mp4`; mov, m4v, webm and mkv work too), and rebuild from `timing.py` on. Your clip plays inside
+the frame, muted, while your narration for that slide plays over it. The slide lasts at least as long as the clip; if you
+talk longer, the clip holds its last frame. Optional keys in the clip block: `"from"` / `"to"` (seconds) to use part
+of the clip, `"at"` (when it starts on the slide, default 1.2 s), `"volume"` (0 to 1) to keep some of its own sound.
+`clips/` is gitignored like `narration/`.

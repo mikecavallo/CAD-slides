@@ -11,6 +11,8 @@ LESSON_TAG = "" if SCRIPT.name == "lesson.json" else "-" + SCRIPT.stem.replace("
 BUILD = ROOT / "build"
 AUDIO = BUILD / "audio"
 NARRATION_DIR = ROOT / "narration"  # the trainer's recordings go here: ch00.wav, ch01.m4a, ...
+CLIPS_DIR = ROOT / "clips"  # the trainer's own videos for video slides, named by scene id: tm01s04.mp4 (gitignored)
+CLIP_EXT = (".mp4", ".mov", ".m4v", ".webm", ".mkv", ".avi")
 FPS = 30
 
 # pacing (seconds)
@@ -51,3 +53,19 @@ def iter_scenes(script):
     for ch in script["chapters"]:
         for sc in ch["scenes"]:
             yield ch, sc
+
+
+def find_clip(scene_id):
+    """The trainer's video for a video slide: clips/<scene id>.<ext>, case does not matter. None until it is added."""
+    if not CLIPS_DIR.is_dir():
+        return None
+    for f in sorted(CLIPS_DIR.iterdir()):
+        if f.suffix.lower() in CLIP_EXT and f.stem.lower() == scene_id.lower():
+            return f
+    return None
+
+
+def media_dur(path):
+    import subprocess
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)], capture_output=True, text=True, check=True).stdout
+    return float(out.strip())

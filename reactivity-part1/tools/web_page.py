@@ -71,7 +71,7 @@ aside h2 { margin: 0; padding: 14px 16px 10px; font: 600 15px/1.2 Rubik, system-
 
 <div class="wrap">
   <header>
-    <div class="kicker">Calling All Dogs &middot; Reactivity course</div>
+    <div class="kicker">Calling All Dogs &middot; __KICKER__</div>
     <h1>__HEADING__</h1>
     <p class="sub">__SUB__</p>
     <div class="meta">__CHIPS__</div>
@@ -165,6 +165,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", required=True)
     ap.add_argument("--title", required=True)
+    ap.add_argument("--kicker", default="Reactivity course")
     ap.add_argument("--heading", required=True)
     ap.add_argument("--sub", required=True)
     ap.add_argument("--chips", default="")
@@ -193,7 +194,7 @@ def main():
         chips.insert(1, f"{len({s['chapter'] for s in scenes})} chapters")
     chip_html = "".join(f'<span class="chip">{esc(c)}</span>' for c in chips)
     chip_html += "".join(f'<span class="chip flag">{esc(c)}</span>' for c in filter(None, args.chips.split("|")))
-    page = (PAGE.replace("__TITLE__", esc(args.title)).replace("__HEADING__", esc(args.heading)).replace("__SUB__", esc(args.sub))
+    page = (PAGE.replace("__TITLE__", esc(args.title)).replace("__KICKER__", esc(args.kicker)).replace("__HEADING__", esc(args.heading)).replace("__SUB__", esc(args.sub))
             .replace("__CHIPS__", chip_html).replace("__FIRST__", esc(first)).replace("__TOTAL__", fmt(m["total"]))
             .replace("__TOC__", "".join(toc)).replace("__NOTE__", esc(args.note))
             .replace("__MANIFEST__", json.dumps({"total": m["total"], "captionsOn": args.captions_on, "parts": [dict({k: p[k] for k in ("src", "start", "dur")}, cues=read_vtt(d / p["vtt"])) for p in m["parts"]]}).replace("</", "<\\/")))

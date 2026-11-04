@@ -10,7 +10,7 @@ Modes
 import argparse
 import json
 
-from common import (AUDIO, BUILD, BUMPER, FPS, GAP, HOLD, LEAD, SCENE_GAP, TAIL, chapter_num, load_script, spoken, words)
+from common import (AUDIO, BUILD, BUMPER, FPS, GAP, HOLD, LEAD, ROOT, SCENE_GAP, TAIL, chapter_num, find_clip, load_script, media_dur, spoken, words)
 
 
 def frames(sec):
@@ -19,18 +19,51 @@ def frames(sec):
 
 
 def bumper(ch, start):
-    return {
+    b = {
         "id": f"bumper_{ch['id']}", "kind": "bumper", "chapter": ch["id"], "chapterNum": ch.get("num", chapter_num(ch["id"])),
         "chapterTitle": ch["title"], "start": start, "dur": frames(BUMPER), "beats": [], "audio": [],
     }
+    if ch.get("kicker"):  # the card's small label word, e.g. "Part" (default "Chapter")
+        b["kicker"] = ch["kicker"]
+    return b
+
+
+CLIP_END = 0.6  # a video slide holds this long after the trainer's clip ends (the scene fades out over its last 0.5 s)
+
+
+def clip_info(sc, beats=()):
+    """A video slide ("clip" in the lesson): where the frame sits, when the clip starts, and the trainer's file if it is in clips/.
+    The clip plays muted by default (the trainer narrates over it); "from" / "to" trim it, "volume" mixes in its own sound."""
+    c = sc.get("clip")
+    if not c:
+        return None
+    info = {k: c[k] for k in ("box", "poster", "label", "fit", "full", "steps", "marks", "stepOffsets", "crop") if k in c}
+    info["at"] = c.get("at", 1.2)
+    if "atBeat" in c and c["atBeat"] < len(beats):  # start the clip when that beat starts (a picture shows in the frame until then)
+        info["at"] = round(beats[c["atBeat"]]["t"], 3)
+    if c.get("afterNarration") and beats:  # the clip starts once the slide's narration is done (its own sound plays clean)
+        info["at"] = round(beats[-1]["end"] + 0.3, 3)
+    f = find_clip(sc["id"])
+    if f:
+        a = c.get("from", 0.0)
+        b = c.get("to") or media_dur(f)
+        info.update({"file": str(f.relative_to(ROOT)), "from": a, "len": round(max(0.1, b - a), 3), "volume": c.get("volume", 1.0 if c.get("full") else 0)})
+    return info
 
 
 def scene_seg(ch, sc, start, dur, beats, audio):
-    return {
+    seg = {
         "id": sc["id"], "kind": "scene", "chapter": ch["id"], "chapterNum": ch.get("num", chapter_num(ch["id"])),
         "chapterTitle": ch["title"], "heading": sc.get("heading", ""), "start": start, "dur": frames(dur),
         "beats": beats, "audio": audio,
     }
+    clip = clip_info(sc, beats)
+    if clip:
+        seg["clip"] = clip
+        if "len" in clip:  # the slide lasts at least as long as the trainer's clip
+            # a full-screen clip fades back to the slide, which holds a moment before it exits
+            seg["dur"] = frames(max(dur, clip["at"] + clip["len"] + (1.3 if clip.get("full") else CLIP_END)))
+    return seg
 
 
 def build_sequential(script, beat_dur, beat_audio):
@@ -53,9 +86,9 @@ def build_sequential(script, beat_dur, beat_audio):
                     audio.append({"file": a, "at": round(t + local, 4), "dur": d})
                 local += d + GAP
             local += ((tail if ci == len(script["chapters"]) - 1 else TAIL) if last_in_ch else SCENE_GAP) - GAP
-            dur = frames(local)
-            segs.append(scene_seg(ch, sc, t, dur, beats, audio))
-            t += dur
+            seg = scene_seg(ch, sc, t, frames(local), beats, audio)
+            segs.append(seg)
+            t += seg["dur"]
     return segs
 
 
@@ -98,9 +131,9 @@ def build_narration(script, align):
                               "words": [{"w": w["w"], "t": round(w["t"] - s0, 3), "e": round(w["e"] - s0, 3)} for w in r.get("words", [])]})
             audio = [{"file": rec["file"], "at": round(t, 4), "from": round(s0, 4), "dur": round(s1 - s0, 4)}]
             hold = max(0.0, HOLD - (s1 - lasts[k]))  # top up only when her own pause is shorter than HOLD
-            dur = frames(s1 - s0 + hold)
-            segs.append(scene_seg(ch, sc, t, dur, beats, audio))
-            t += dur
+            seg = scene_seg(ch, sc, t, frames(s1 - s0 + hold), beats, audio)
+            segs.append(seg)
+            t += seg["dur"]
     return segs
 
 

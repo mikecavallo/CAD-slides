@@ -24,12 +24,12 @@
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Teaching your dog', 'Introduce one marker at a time');
-    const r1 = put(stage, K.el('div'), 100, 285, { position: 'absolute', display: 'flex', gap: '18px' });
+    const r1 = put(stage, K.el('div'), 100, 330, { position: 'absolute', display: 'flex', gap: '18px' });
     [['Quiet, low-distraction area', 'house', 'quiet'], ['Small treats ready', 'cookie', 'small treats']].forEach(([w, ic, p]) => {
       const n = flow(TM.word(r1, w, { variant: 'pale', icon: ic, size: 32 }));
       A.in(tl, n, at(ctx, 0, p, 0.3), 'pop', { dur: 0.45 });
     });
-    const r2 = put(stage, K.el('div'), 100, 380, { position: 'absolute', display: 'flex', alignItems: 'center', gap: '18px' });
+    const r2 = put(stage, K.el('div'), 100, 430, { position: 'absolute', display: 'flex', alignItems: 'center', gap: '18px' });
     const nl = flow(put(r2, K.el('div', 'tm-lab', 'Not needed yet:'), 0, 0, { fontSize: '32px' }));
     A.in(tl, nl, cue(1) + 0.1, 'fadeUp', { dur: 0.4 });
     [['Sit', 'sit'], ['Look at you', 'look at you'], ['Other behaviors', 'another behavior']].forEach(([w, p]) => {
@@ -38,24 +38,22 @@
       A.in(tl, n, t, 'pop', { dur: 0.4 });
       TM.strike(tl, n, t + 0.3);
     });
-    const lead = K.text(stage, 'You’re teaching <b style="color:var(--green)">what each marker predicts</b>.', { x: 100, y: 470, cls: 'lead', size: 36 });
+    const lead = K.text(stage, 'You’re teaching <b style="color:var(--green)">what each marker predicts</b>.', { x: 100, y: 525, cls: 'lead', size: 36 });
     A.in(tl, lead, at(ctx, 1, 'what each marker predicts', 0.8), 'fadeUp', { dur: 0.5 });
     // sessions: one marker each, then mixed later
     const S = [['Session 1', '“Yip”'], ['Session 2', '“Chase”'], ['Session 3', '“Scatter”']];
     const tS = at(ctx, 2, 'one marker per session', 0.1);
     S.forEach(([t, w], i) => {
-      const c = put(stage, K.el('div', 'tmd-ses'), 100 + i * 430, 560);
+      const c = put(stage, K.el('div', 'tmd-ses'), 100 + i * 430, 630);
       c.appendChild(K.el('div', 't', t));
       c.appendChild(TM.word(c, w, { variant: 'green', size: 30 }));
       c.appendChild(K.el('div', 'n', '10 reps'));
       tl.fromTo(c, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, tS + 0.35 * i);
     });
-    const lt = put(stage, K.el('div', 'tmd-ses later'), 1390, 560);
+    const lt = put(stage, K.el('div', 'tmd-ses later'), 1390, 630);
     lt.appendChild(K.el('div', 't', 'Later'));
     lt.appendChild(K.el('div', 'n', 'Mix markers in slowly, with one familiar in the mix'));
     A.in(tl, lt, at(ctx, 2, 'before using multiple', 0.75), 'fadeUp', { dur: 0.6 });
-    const o = TM.order(stage, ['Mark', 'Pause', 'Move your hand'], { y: 830, size: 32, center: true, icons: ['volume-2', 'pause', 'hand'] });
-    A.in(tl, o.items, at(ctx, 3, 'same order', 0.2), 'fadeRight', { dur: 0.4, stagger: 0.15 });
   });
 
   // ---------------------------------------------------------------- the three introductions (clips)
@@ -66,7 +64,7 @@
       rows: [
         { icon: 'dog', html: 'Mark, pause, move: *treat to the mouth*', beat: 0, phrase: 'say your chosen', fb: 0.05 },
         { icon: 'calendar', html: 'Short sessions, *once or twice a day*, for all markers together', beat: 1, phrase: 'once or twice', fb: 0.3 },
-        { icon: 'mouse-pointer-click', html: 'Clicker: *click, pause, move*', beat: 2, phrase: 'clicker', fb: 0.2 },
+        { icon: 'mouse-pointer-click', html: 'Clicker: *the same, with a click*', beat: 2, phrase: 'clicker', fb: 0.2 },
       ],
     });
     // Tori's three-step picture, one panel at a time inside the frame (her video plays in the same frame afterwards)
@@ -169,7 +167,6 @@
 
   registerScene('tm04s04v', ctx => {
     TM.videoSlide(ctx, { kicker: 'Teaching your dog', heading: 'Scatter demonstration', rows: [
-      { icon: 'circle-dot', html: 'Mark, pause, move: *scatter a few treats*', beat: 0, phrase: 'scatter demonstration', fb: 0.2 },
       { icon: 'volume-2', html: 'Listen for *“Scatter”*', beat: 0, phrase: 'listen for', fb: 0.4 },
       { icon: 'arrow-down', html: 'The treats land *right in front of the dog*', beat: 0, phrase: 'in front of', fb: 0.8 },
     ] });

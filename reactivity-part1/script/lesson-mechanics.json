@@ -420,11 +420,6 @@
        "say": "Practice until you can consistently separate those actions. Getting comfortable with this first helps prevent confusion that could mean reteaching the marker or choosing a new word.",
        "show": "Row: Until it's consistent.",
        "onscreen": "Until it's consistent"
-      },
-      {
-       "say": "Watch the order: mark, pause, move.",
-       "show": "Strip: Word, Pause, Move.",
-       "onscreen": "Word, pause, movement"
       }
      ]
     }
@@ -457,11 +452,6 @@
        "say": "Work on just one marker per session, for 10 repetitions. Give each marker several separate introductory sessions before using multiple markers in the same session.",
        "show": "Session cards: one marker each, 10 to 15 reps.",
        "onscreen": "One marker per session"
-      },
-      {
-       "say": "For every repetition, keep the same order: say the word or click, pause briefly, then move your hand to deliver the food.",
-       "show": "Strip: Word or click, Pause, Move.",
-       "onscreen": "Same order every rep"
       }
      ]
     },
@@ -486,7 +476,7 @@
        "onscreen": "Short breaks"
       },
       {
-       "say": "If you’re using a clicker, the process is the same: click once, pause briefly, then move your hand to deliver the treat.",
+       "say": "If you’re using a clicker, the process is the same, with a click instead of a word.",
        "show": "Row: Clicker: click, pause, treat.",
        "onscreen": "Clicker: same process"
       }
@@ -762,7 +752,7 @@
        "onscreen": "Word, pause, movement"
       },
       {
-       "say": "Once your dog understands the markers, watch for the behavior you want, mark the instant it happens, pause briefly, then deliver the matching food game. For a sit, mark when their bottom touches the ground. For a check-in, mark when they look at you.",
+       "say": "Once your dog understands the markers, watch for the behavior you want, mark the instant it happens, then deliver the matching food game. For a sit, mark when their bottom touches the ground. For a check-in, mark when they look at you.",
        "show": "Row 2: mark the moment, sit and check-in examples.",
        "onscreen": "Mark the instant it happens, pause, then its food game"
       },

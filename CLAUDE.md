@@ -279,6 +279,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   slowly, never several unfamiliar at once, keep one familiar in the mix (Familiar "Yip" -> Add one new "Free", crossed
   "Several new markers at once"). tm04s07: practice is #2, "In training" is #3 with the sit and check-in examples as
   bullets, #4 "then mix them in slowly".
+- Round 18 (Nov 4, Tori: "we are drilling in the mark, pause, move"): Mark, pause, move stays on the mechanics slides
+  (tm03s01, tm03s02 cards), the mouth / toss / scatter teaching slides (tm04s02 row and panels, tm04s03, tm04s04) and
+  takeaway #2. Removed: tm03s02 last beat "Watch the order..." and its banner; tm04s01 last beat "For every repetition..."
+  and its Mark / Pause / Move strip (slide content moved down); tm04s02 clicker line now "the process is the same, with a
+  click instead of a word" (row "Clicker: the same, with a click"); tm04s04v's "Mark, pause, move" row; takeaway #3 no
+  longer says "pause". Don't add it back elsewhere.
 - Fresh containers: clips are not in git. Re-download from Drive (folder id 1FdKn-_dNYyHfwDsNtjiuxNyEOhXlbsef) with curl;
   the Fisher toss clip (tm04s03v) is NOT on Drive: it was recovered from the published preview (part with tm04s03v, the
   frame box cropped out). Tools: pip install kokoro-onnx sherpa-onnx soundfile numpy pillow (use --ignore-installed for

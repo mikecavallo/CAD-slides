@@ -146,7 +146,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   The key is a NETWORK SECRET on the Default environment (host api.elevenlabs.io, header xi-api-key): it reaches running
   sessions through the proxy, so ELEVENLABS_API_KEY is not set and the tool says so; that is fine. The key is restricted
   to Text to Speech + Voices read (no user_read, so /v1/user calls fail by design). First test sent: ch01s01, Tori's real
-  take vs multilingual_v2 vs eleven_v4; Tori picks the model.
+  take vs multilingual_v2 vs eleven_v4. Tori chose eleven_v4 ("sounds more like me"): it is the tool's default.
+  Voiced builds now use the clone by default (skills updated); a slide Tori records replaces the clone
+  (the tool copies takes from narration/ into the output; --all-clone ignores them).
 - When the recording differs from the script, check the doc; usually Tori changed the wording on purpose.
   Update lesson.json and any cue phrases (`sayAt(ctx, beat, 'phrase')`) that no longer match.
 

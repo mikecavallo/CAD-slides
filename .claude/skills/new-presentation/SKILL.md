@@ -44,8 +44,10 @@ The reference is `script/lesson-mechanics.json`, `video/scenes/tm_kit.js` and `t
   change or write, and keep the full current narration in a separate Google Doc in Tori's Drive, updated each round.
 - Read everything first. Then ask all real questions once, in one numbered message, each with your recommended
   answer. Then build without stopping.
-- Use the temporary AI voice until Tori's recordings arrive. Recordings are named by scene id and are gitignored, so
-  in a new session ask Tori to upload them again. Images attached while you are mid-task are not saved: ask Tori to
+- Narrate with Tori's ElevenLabs voice (`tools/tts_elevenlabs.py`: Pro clone "Tori", model eleven_v4; see CLAUDE.md).
+  Any slide Tori records replaces the clone for that slide. The temporary Kokoro voice is only a fallback if
+  ElevenLabs is unreachable. Recordings are named by scene id and are gitignored, so in a new session ask Tori to
+  upload them again. Images attached while you are mid-task are not saved: ask Tori to
   resend them in a new message. Photo sites are blocked, so Tori supplies pictures (Claude can composite or clean them).
 
 ## 4. Each round

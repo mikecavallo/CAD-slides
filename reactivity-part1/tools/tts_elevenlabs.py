@@ -16,9 +16,15 @@ account whose name contains "Tori". `--list-voices` shows the account's voices; 
 Each beat is generated separately and cached by voice, model, settings and text (build/audio/eleven/), so after a
 script edit only the changed beats are paid for. The neighbouring beats are sent as context so the delivery flows.
 [pause] markers become real silence, as in the scratch voice.
+
+The trainer's own recordings win: a slide with a take in narration/ (Ch01s05.m4a, Ch01s07_part_1.m4a, ...) is not
+generated; its take is copied into the output folder instead, so one build mixes real takes and the clone.
+--all-clone ignores the recordings. Default model: eleven_v4 (Tori chose it over multilingual_v2 on Nov 4).
 """
 import argparse
 import hashlib
+import re
+import shutil
 import json
 import os
 import subprocess
@@ -36,6 +42,15 @@ from common import AUDIO, BUILD, PAUSE_RE, PAUSE_SEC, ROOT, iter_scenes, load_sc
 API = "https://api.elevenlabs.io/v1"
 SR = 44100
 LEAD_IN, PAUSE_BEAT, TAIL = 0.3, 0.45, 0.5
+AUDIO_EXT = {".wav", ".m4a", ".mp3", ".aac", ".flac", ".ogg", ".mov", ".mp4", ".aiff", ".aif", ".webm", ".opus"}
+
+
+def takes_for(folder, sid):
+    """The trainer's recording(s) of one slide in folder: ch01s05.m4a, or pieces like Ch01s07_part_1 / ch01s07 part 2."""
+    if not folder.is_dir():
+        return []
+    pat = re.compile(rf"^{re.escape(sid)}(?:[ _-]*part[ _-]*\d+)?$", re.I)
+    return sorted(p for p in folder.iterdir() if p.suffix.lower() in AUDIO_EXT and pat.match(p.stem))
 
 
 def call(path, key, body=None, accept="application/json", tries=5):
@@ -98,13 +113,15 @@ def to_samples(mp3):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--voice", help="ElevenLabs voice id")
-    ap.add_argument("--model", default="eleven_multilingual_v2")
+    ap.add_argument("--model", default="eleven_v4")
     ap.add_argument("--stability", type=float, default=0.5)
     ap.add_argument("--similarity", type=float, default=0.8)
     ap.add_argument("--style", type=float, default=0.0)
     ap.add_argument("--speed", type=float, default=1.0, help="0.7 to 1.2")
     ap.add_argument("--only", help="comma-separated scene ids")
     ap.add_argument("--out", default=str(BUILD / "eleven_narration"))
+    ap.add_argument("--recordings", default=str(ROOT / "narration"), help="the trainer's own takes, used instead of the clone")
+    ap.add_argument("--all-clone", action="store_true", help="ignore the trainer's recordings")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--list-voices", action="store_true")
     args = ap.parse_args()
@@ -128,8 +145,11 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
 
     scenes = [sc for _, sc in iter_scenes(script) if not only or sc["id"] in only]
+    recorded = {} if args.all_clone else {sc["id"]: t for sc in scenes if (t := takes_for(Path(args.recordings), sc["id"]))}
     todo, chars = [], 0
     for sc in scenes:
+        if sc["id"] in recorded:
+            continue
         says = [b["say"].strip() for b in sc["beats"]]
         for i, text in enumerate(says):
             for j, piece in enumerate(pieces(text)):
@@ -139,7 +159,8 @@ def main():
                 if not path.exists():
                     todo.append((path, piece, says[i - 1] if i else "", says[i + 1] if i + 1 < len(says) else ""))
                     chars += len(piece)
-    print(f"{len(scenes)} slides; {len(todo)} beats to generate, about {chars:,} characters (credits)")
+    print(f"{len(scenes)} slides ({len(recorded)} with the trainer's own takes); {len(todo)} beats to generate, "
+          f"about {chars:,} characters (credits)")
     if args.dry_run:
         return
 
@@ -154,6 +175,12 @@ def main():
 
     # one take per slide: lead-in, beats with a short breath between them, [pause] silences, tail
     for sc in scenes:
+        for old in takes_for(out, sc["id"]):  # a slide's earlier take (clone or real) must not linger beside the new one
+            old.unlink()
+        if sc["id"] in recorded:
+            for t in recorded[sc["id"]]:
+                shutil.copy2(t, out / t.name)
+            continue
         parts = [np.zeros(int(SR * LEAD_IN), np.float32)]
         for i, b in enumerate(sc["beats"]):
             if i:

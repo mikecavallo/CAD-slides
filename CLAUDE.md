@@ -9,9 +9,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   Refer to Tori by name; pronouns were never stated, so do not assume any.
 - Presentation: **"Understanding Dog Behavior"** (renamed by Tori in Chapter 2 round 4; it was "Getting Started with
   Dog Behavior: Understanding Reactivity and Aggression"), a narrated, animated slide video (HTML + GSAP scenes rendered to MP4, synced to Tori's recorded voice).
-- Script source of truth: Tori's Google Doc "Reactivity & Aggression Part 1: Script v4 (one chapter)",
-  id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (read it with the Google Drive connector; Claude cannot
-  edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
+- Script source of truth (since Nov 4): "Understanding Dog Behavior: Script v5 (Chapters 1 to 3, current)", id
+  `1VeX1aR2GQ8YyCE-HKw2FjvIqkRiDuozWOY6vZRDfkZA`. Claude made it (Tori asked Claude to do the script edits, not Tori):
+  Chapter 1 from v4 minus the Pain slide ch01s11 and typo fixes, Chapter 2 as built (round 16), Chapter 3 round 8.
+  The Drive connector can read and create files but not edit a doc in place, so each script change = Claude makes a
+  new version (v6, ...) and gives Tori the link; never ask Tori to paste. Older: Script v4
+  `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (Chapter 2 in it is the first draft). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
   that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
   water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
   warning signals) for later chapters; Chapter 3 is the ABCs, and Chapter 4 adds heat and the thermometer to the pot. Sync the lesson

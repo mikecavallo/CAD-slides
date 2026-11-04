@@ -140,8 +140,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   Needs `ELEVENLABS_API_KEY` as an environment secret (never in git or chat; the repo is public). Voice: `--voice`,
   `ELEVENLABS_VOICE_ID`, the lesson's series `"voice"`, or the account's one voice named "Tori" (`--list-voices`).
   Clips are cached per beat, so edits only pay for changed lines; `--dry-run` shows the characters (credits) a run uses
-  (Chapter 1 about 9,500, Chapter 2 about 6,700). Pending: Tori's plan, voice clone and key. First test: one slide in
-  the clone next to Tori's real take.
+  (Chapter 1 about 9,500, Chapter 2 about 6,700).
+  Set up Nov 4: Creator plan (131,000 credits a month); Professional clone "Tori" (voice id eE0zFMDzghsOgwS1dEwn, trained
+  on Tori's Chapter 1 takes; fine-tuned for eleven_multilingual_v2 and eleven_v4); "Me short clone" is an Instant clone.
+  The key is a NETWORK SECRET on the Default environment (host api.elevenlabs.io, header xi-api-key): it reaches running
+  sessions through the proxy, so ELEVENLABS_API_KEY is not set and the tool says so; that is fine. The key is restricted
+  to Text to Speech + Voices read (no user_read, so /v1/user calls fail by design). First test sent: ch01s01, Tori's real
+  take vs multilingual_v2 vs eleven_v4; Tori picks the model.
 - When the recording differs from the script, check the doc; usually Tori changed the wording on purpose.
   Update lesson.json and any cue phrases (`sayAt(ctx, beat, 'phrase')`) that no longer match.
 

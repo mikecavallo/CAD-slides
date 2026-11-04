@@ -313,6 +313,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   weakens the foundation"; the deck's dashed "Practice makes perfect, ly" pun is "Practice makes perfectly unwanted behaviors" (no dash);
   mistake 2's chips are short ("Outside sounds", "Shadows at a window", "Routine changes").
 - Recordings: `Mg00intro.m4a`, `Mg00plan.m4a`, `Mg01s01.m4a` ... named by scene id.
+- Tori asked (Nov 4) for every draft to be saved in the chat thread: each round, send the video, a storyboard of every
+  slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder
+  "Management: The Basics (video)" (id 10Fqf8KJHhF_Jcwan0sm65bz_VUbiucOV) holds the narration doc.
 
 ## Recordings (Tori's voice)
 

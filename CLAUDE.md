@@ -354,7 +354,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   toolkit grouping (walks / home / always) are Claude's; the tally sheet's "more than three, carry on into the next
   week's grid" line was left out (unclear); the deck's "Avoid trips & park smart" is narrated "avoid extra trips".
 - Draft 1 (Nov 4): video, storyboard and script sent in chat (`Management-Solutions-and-Setups-...-draft1`), online
-  preview (temporary AI voice) at `out/web/management2/` (web_page.py --kicker "Foundations course").
+  preview (temporary AI voice): https://claude.ai/artifact/3GTxLsy1JSsP9tEcnp4MgN (`out/web/management2/`, web_page.py --kicker
+  "Foundations course"; fix the chips line by hand: "16:05 min", "7 parts", "51 slides", flag "Draft 1"). Full video 16:05,
+  chat copy CRF 26 = 51 MB; render took 22 min with 4 workers.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s00.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

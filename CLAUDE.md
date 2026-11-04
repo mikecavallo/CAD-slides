@@ -135,6 +135,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   between takes. Partly recorded chapters build a video of just the recorded slides.
 - Preview without voice: `tools/tts_scratch.py`, `tools/scratch_narration.py`, then `align.py --dir
   build/scratch_narration`, `timing.py --mode narration`, render, `assemble.py --silent`.
+- ElevenLabs voice (Nov 4, Tori asked): `tools/tts_elevenlabs.py` narrates a lesson with Tori's cloned ElevenLabs voice,
+  one take per slide in `build/eleven_narration/`, then the normal voice build with `align.py --dir build/eleven_narration`.
+  Needs `ELEVENLABS_API_KEY` as an environment secret (never in git or chat; the repo is public). Voice: `--voice`,
+  `ELEVENLABS_VOICE_ID`, the lesson's series `"voice"`, or the account's one voice named "Tori" (`--list-voices`).
+  Clips are cached per beat, so edits only pay for changed lines; `--dry-run` shows the characters (credits) a run uses
+  (Chapter 1 about 9,500, Chapter 2 about 6,700). Pending: Tori's plan, voice clone and key. First test: one slide in
+  the clone next to Tori's real take.
 - When the recording differs from the script, check the doc; usually Tori changed the wording on purpose.
   Update lesson.json and any cue phrases (`sayAt(ctx, beat, 'phrase')`) that no longer match.
 

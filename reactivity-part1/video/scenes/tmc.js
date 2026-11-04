@@ -122,73 +122,80 @@
   });
 
   // ---------------------------------------------------------------- your mechanics matter
-  // two clean panels, Right and Wrong, each with a Mark lane and a Hand lane; the pause is a shaded band across both lanes;
-  // each panel's takeaway sits in its own column at the right, clear of the lanes
+  // Right: a full-width panel (the word, a pause band, then the hand). Underneath, two Wrong panels side by side:
+  // the hand moving during the word, and the hand starting first with the mark after it. Each panel's takeaway sits in its own space.
   registerScene('tm03s01', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Practicing your mechanics', 'Your mechanics matter');
-    const lead = K.text(stage, 'Two separate actions. <b style="color:var(--green)">Never at the same time.</b>', { x: 100, y: 268, cls: 'lead', size: 38 });
+    const lead = K.text(stage, 'Two separate actions. <b style="color:var(--green)">Never at the same time.</b>', { x: 100, y: 262, cls: 'lead', size: 38 });
     A.in(tl, lead, at(ctx, 0, 'two separate actions', 0.4), 'fadeUp', { dur: 0.6 });
-    const PX = 100, PW = 1720, PH = 220, X0 = 480, X1 = 1300, NX = 1360;
-    const panel = (y, good) => {
-      const p = put(stage, K.el('div'), PX, y, { position: 'absolute', width: PW + 'px', height: PH + 'px', boxSizing: 'border-box', borderRadius: '26px',
-        background: good ? 'var(--green-mist)' : 'var(--red-pale)', border: '2px solid ' + (good ? '#d6e6c3' : '#efc5b9') });
-      const tag = put(stage, K.el('div', 'tm-lab'), PX + 36, y + PH / 2 - 22, { fontSize: '38px', fontFamily: 'var(--font-head)', color: good ? 'var(--green-dark)' : 'var(--red)',
-        display: 'flex', alignItems: 'center', gap: '12px' });
-      tag.appendChild(K.icon(good ? 'circle-check' : 'circle-x', { size: 40 }));
-      tag.appendChild(K.el('span', null, good ? 'Right' : 'Wrong'));
-      const yM = y + 78, yH = y + 160;
-      const lw = put(stage, K.el('div', 'tmc-ll', 'Mark'), 365, yM - 16);
-      const lh = put(stage, K.el('div', 'tmc-ll', 'Hand'), 365, yH - 16);
-      const a = put(stage, K.el('div', 'tmc-lane'), X0, yM - 3, { width: X1 - X0 + 'px' });
-      const b = put(stage, K.el('div', 'tmc-lane'), X0, yH - 3, { width: X1 - X0 + 'px' });
-      const sep = put(stage, K.el('div'), NX - 30, y + 30, { position: 'absolute', width: '2px', height: PH - 60 + 'px', background: good ? '#d6e6c3' : '#efc5b9' });
-      return { p, tag, yM, yH, all: [p, tag, lw, lh, a, b, sep] };
+    const box = (x, y, w, h, good) => put(stage, K.el('div'), x, y, { position: 'absolute', width: w + 'px', height: h + 'px', boxSizing: 'border-box', borderRadius: '26px',
+      background: good ? 'var(--green-mist)' : 'var(--red-pale)', border: '2px solid ' + (good ? '#d6e6c3' : '#efc5b9') });
+    const tag = (x, y, good, txt) => {
+      const n = put(stage, K.el('div', 'tm-lab'), x, y, { fontSize: '34px', fontFamily: 'var(--font-head)', color: good ? 'var(--green-dark)' : 'var(--red)', display: 'flex', alignItems: 'center', gap: '12px' });
+      n.appendChild(K.icon(good ? 'circle-check' : 'circle-x', { size: 36 }));
+      n.appendChild(K.el('span', null, txt));
+      return n;
     };
+    const lanes = (x, x0, x1, yM, yH) => [
+      put(stage, K.el('div', 'tmc-ll', 'Mark'), x, yM - 16), put(stage, K.el('div', 'tmc-ll', 'Hand'), x, yH - 16),
+      put(stage, K.el('div', 'tmc-lane'), x0, yM - 3, { width: x1 - x0 + 'px' }), put(stage, K.el('div', 'tmc-lane'), x0, yH - 3, { width: x1 - x0 + 'px' })];
     const blk = (x, yc, w, cls, icon, txt) => {
-      const n = put(stage, K.el('div', 'tmc-blk ' + cls), x, yc - 30, { width: w + 'px', height: '60px' });
+      const n = put(stage, K.el('div', 'tmc-blk ' + cls), x, yc - 28, { width: w + 'px', height: '56px' });
       if (icon) n.appendChild(K.icon(icon));
       n.appendChild(K.el('span', null, txt));
       return n;
     };
-    const note = (y, html, icon, col) => {
-      const n = put(stage, K.el('div', 'tm-lab'), NX, y + PH / 2 - 40, { fontSize: '30px', lineHeight: '1.3', color: col, display: 'flex', alignItems: 'center', gap: '16px', whiteSpace: 'normal', width: '430px' });
+    const note = (x, y, w, html, icon, col) => {
+      const n = put(stage, K.el('div', 'tm-lab'), x, y, { fontSize: '28px', lineHeight: '1.3', color: col, display: 'flex', alignItems: 'center', gap: '14px', whiteSpace: 'normal', width: w + 'px' });
       const ic = K.icon(icon);
-      Object.assign(ic.style, { width: '44px', height: '44px', flex: '0 0 auto' });
+      Object.assign(ic.style, { width: '38px', height: '38px', flex: '0 0 auto' });
       n.appendChild(ic);
       n.appendChild(K.el('span', null, html));
       return n;
     };
     // the right way: the word, a pause, then the hand
-    const RY = 340, R = panel(RY, true);
-    A.in(tl, R.all, cue(0) + 0.6, 'fade', { dur: 0.5, stagger: 0.04 });
-    const w1 = blk(X0, R.yM, 220, 'word', 'volume-2', 'Yip');
-    const band = put(stage, K.el('div'), X0 + 230, RY + 22, { position: 'absolute', width: '200px', height: PH - 44 + 'px', borderRadius: '14px', background: '#f7ecd6', border: '2px dashed rgba(217,145,43,0.75)', boxSizing: 'border-box' });
-    // the band hides the lanes inside it; its label sits in the middle, between the lanes
-    const bl = put(stage, K.el('div', 'tm-lab', 'Pause'), X0 + 230, (R.yM + R.yH) / 2 - 16, { fontSize: '30px', color: '#8a5410', width: '200px', textAlign: 'center' });
-    const h1 = blk(X0 + 440, R.yH, 320, 'hand', 'hand', 'Treat');
-    const tR = at(ctx, 1, 'say the word', 0.05);
-    A.in(tl, w1, tR, 'grow', { dur: 0.5 });
+    const RY = 330, RH = 200;
+    const rp = box(100, RY, 1720, RH, true), rt = tag(136, RY + RH / 2 - 21, true, 'Right');
+    const yM = RY + 66, yH = RY + 140, X0 = 470, X1 = 1290;
+    const rl = lanes(360, X0, X1, yM, yH);
+    const sep = put(stage, K.el('div'), 1330, RY + 30, { position: 'absolute', width: '2px', height: RH - 60 + 'px', background: '#d6e6c3' });
+    A.in(tl, [rp, rt, ...rl, sep], cue(0) + 0.6, 'fade', { dur: 0.5, stagger: 0.04 });
+    const w1 = blk(X0, yM, 210, 'word', 'volume-2', 'Yip');
+    const band = put(stage, K.el('div'), X0 + 220, RY + 18, { position: 'absolute', width: '200px', height: RH - 36 + 'px', borderRadius: '14px', background: '#f7ecd6', border: '2px dashed rgba(217,145,43,0.75)', boxSizing: 'border-box' });
+    const bl = put(stage, K.el('div', 'tm-lab', 'Pause'), X0 + 220, (yM + yH) / 2 - 16, { fontSize: '30px', color: '#8a5410', width: '200px', textAlign: 'center' });
+    const h1 = blk(X0 + 430, yH, 300, 'hand', 'hand', 'Treat');
+    A.in(tl, w1, at(ctx, 1, 'say the word', 0.05), 'grow', { dur: 0.5 });
     A.in(tl, [band, bl], at(ctx, 1, 'pause', 0.4), 'fade', { dur: 0.4 });
     A.in(tl, h1, at(ctx, 1, 'reach for', 0.7), 'grow', { dur: 0.5 });
-    const n1 = note(RY, 'The mark <b style="color:var(--green)">predicts the treat</b>', 'volume-2', 'var(--ink)');
+    const n1 = note(1360, RY + RH / 2 - 38, 440, 'The mark <b style="color:var(--green)">predicts the treat</b>', 'volume-2', 'var(--ink)');
     A.in(tl, n1, at(ctx, 1, 'deliver the treat', 0.9), 'fadeUp', { dur: 0.5 });
-    // the wrong way: the hand moves during the word
-    const WY = 600, Wp = panel(WY, false);
-    const tW = at(ctx, 2, 'before or during', 0.2);
-    A.in(tl, Wp.all, tW - 0.4, 'fade', { dur: 0.4, stagger: 0.04 });
-    const w2 = blk(X0, Wp.yM, 220, 'word', 'volume-2', 'Yip');
-    const h2 = blk(X0 + 60, Wp.yH, 320, 'bad', 'hand', 'Treat');
-    A.in(tl, w2, tW, 'grow', { dur: 0.4 });
-    A.in(tl, h2, tW + 0.2, 'grow', { dur: 0.4 });
-    const n2 = note(WY, 'Your dog watches <b>your hand</b>, not the mark', 'eye', 'var(--red)');
-    A.in(tl, n2, at(ctx, 2, 'movement predicts', 0.5), 'fadeUp', { dur: 0.5 });
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, 868);
+    // two wrong ways, side by side
+    const WY = 556, WH = 280, PW = 850;
+    const wrong = (x, title, marks, noteHtml, noteIcon, tIn, tNote) => {
+      const p = box(x, WY, PW, WH, false), t = tag(x + 30, WY + 20, false, title);
+      const wyM = WY + 108, wyH = WY + 176, x0 = x + 140, x1 = x + PW - 30;
+      const l = lanes(x + 30, x0, x1, wyM, wyH);
+      A.in(tl, [p, t, ...l], tIn - 0.4, 'fade', { dur: 0.4, stagger: 0.04 });
+      const [wx, hx] = marks;
+      const w = blk(x0 + wx, wyM, 190, 'word', 'volume-2', 'Yip');
+      const h = blk(x0 + hx, wyH, 280, 'bad', 'hand', 'Treat');
+      const first = hx < wx ? [h, w] : [w, h];
+      A.in(tl, first[0], tIn, 'grow', { dur: 0.4 });
+      A.in(tl, first[1], tIn + 0.35, 'grow', { dur: 0.4 });
+      const n = note(x + 30, WY + WH - 58, PW - 60, noteHtml, noteIcon, 'var(--red)');
+      A.in(tl, n, tNote, 'fadeUp', { dur: 0.5 });
+    };
+    wrong(100, 'Hand during the word', [0, 50], 'Your dog watches <b>your hand</b>, not the mark', 'eye',
+      at(ctx, 2, 'before or during', 0.2), at(ctx, 2, 'movement predicts', 0.5));
+    wrong(970, 'Hand first, then the word', [330, 0], 'Your hand already said <b>food is coming</b>', 'hand',
+      at(ctx, 3, 'handing the treat', 0.1), at(ctx, 3, 'already told', 0.3));
+    const bn = put(stage, K.el('div', 'tm-banner'), 0, 868, { padding: '20px 36px', fontSize: '34px' });
     bn.appendChild(K.icon('volume-2'));
     bn.appendChild(K.el('span', null, 'Kept separate, the mark becomes <b>a clear, reliable signal</b>'));
     TM.centerX(bn, 960);
-    A.in(tl, bn, at(ctx, 3, 'keeping', 0.1), 'fadeUp', { dur: 0.6 });
+    A.in(tl, bn, at(ctx, 4, 'keeping', 0.1), 'fadeUp', { dur: 0.6 });
   });
 
   // ---------------------------------------------------------------- practice without your dog first (no clip)
@@ -212,7 +219,7 @@
     });
     const tW = at(ctx, 3, 'word', 0.3);
     const bn = put(stage, K.el('div', 'tm-banner'), 0, TOP + CH + 70);
-    bn.appendChild(K.icon('circle-check')); bn.appendChild(K.el('span', null, 'Word, pause, <b>then movement</b>'));
+    bn.appendChild(K.icon('circle-check')); bn.appendChild(K.el('span', null, 'Mark, pause, <b>move</b>'));
     TM.centerX(bn, 960);
     A.in(tl, bn, tW, 'fadeUp', { dur: 0.5 });
   });

@@ -64,7 +64,7 @@
      "assets": [],
      "beats": [
       {
-       "say": "A marker is a short word or sound that tells your dog, “That’s it! What you just did earned a treat.”",
+       "say": "A marker is a short word or sound that tells your dog, “That’s it! What you just did earned a treat.” The reward can also be a toy, but for now, we’re going to talk about treats.",
        "show": "Yip bubble; 'That's it! That earned a treat.'",
        "onscreen": "A short word or sound"
       },
@@ -109,6 +109,24 @@
        "say": "Knowing what to expect can reduce confusion and frustration. Your dog won’t have to guess whether the food is coming to their mouth, rolling along the ground, or landing on the ground in front of them.",
        "show": "Banner: No guessing. Hand or ground?",
        "onscreen": "No guessing"
+      }
+     ]
+    },
+    {
+     "id": "tm01s02p",
+     "heading": "Your marker is a promise",
+     "visual_concept": "A promise card: a treat is coming, and exactly where it will be; a broken promise in red.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Think of your marker as a promise. When you say it, you’re promising your dog a treat, and exactly where that treat will be. They’ll know exactly what’s coming.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "If you use your marker without delivering on it, with the treat and in the place you promised, you break that promise. And a broken promise is just confusing for your dog.",
+       "show": "",
+       "onscreen": ""
       }
      ]
     },
@@ -371,6 +389,11 @@
        "onscreen": "Hand during the word"
       },
       {
+       "say": "For example, don’t start handing the treat to your dog and then say your marker. By then, your hand has already told them food is coming.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
        "say": "Keeping these actions separate helps the word become a clear, reliable signal.",
        "show": "Banner: The word becomes a clear signal.",
        "onscreen": "A clear signal"
@@ -399,7 +422,7 @@
        "onscreen": "Until it's consistent"
       },
       {
-       "say": "Watch the order: word, pause, then movement.",
+       "say": "Watch the order: mark, pause, move.",
        "show": "Strip: Word, Pause, Move.",
        "onscreen": "Word, pause, movement"
       }
@@ -431,7 +454,7 @@
        "onscreen": "No behavior needed"
       },
       {
-       "say": "Work on just one marker per session, for 10 to 15 repetitions. Give each marker several separate introductory sessions before using multiple markers in the same session.",
+       "say": "Work on just one marker per session, for 10 repetitions. Give each marker several separate introductory sessions before using multiple markers in the same session.",
        "show": "Session cards: one marker each, 10 to 15 reps.",
        "onscreen": "One marker per session"
       },
@@ -505,7 +528,7 @@
        "onscreen": "Consistent, not dramatic"
       },
       {
-       "say": "If they need more practice, continue with separate sessions for that marker. Once each marker is familiar and your dog consistently anticipates its game, you can begin using different markers within one session.",
+       "say": "When you start mixing markers, go slowly. Don’t mix in several unfamiliar markers at once. Make sure at least one marker in the mix is already familiar before you add another.",
        "show": "Separate sessions, then one mixed session.",
        "onscreen": "Then mix them"
       }
@@ -734,17 +757,17 @@
        "onscreen": "The moment, and what comes next"
       },
       {
+       "say": "Practice your mechanics without your dog first: mark, pause, move.",
+       "show": "2: Word, pause, then movement.",
+       "onscreen": "Word, pause, movement"
+      },
+      {
        "say": "Once your dog understands the markers, watch for the behavior you want, mark the instant it happens, pause briefly, then deliver the matching food game. For a sit, mark when their bottom touches the ground. For a check-in, mark when they look at you.",
        "show": "Row 2: mark the moment, sit and check-in examples.",
        "onscreen": "Mark the instant it happens, pause, then its food game"
       },
       {
-       "say": "Practice your mechanics without your dog first: word, pause, then movement.",
-       "show": "2: Word, pause, then movement.",
-       "onscreen": "Word, pause, movement"
-      },
-      {
-       "say": "Introduce each marker separately in short sessions before combining them. Always follow it with its matching food game.",
+       "say": "Introduce each marker separately in short sessions, then mix them in slowly. Always follow your marker with its matching food game.",
        "show": "3: One marker at a time.",
        "onscreen": "One at a time"
       },

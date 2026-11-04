@@ -1,5 +1,5 @@
 // Markers and Mechanics, Part 4: teaching your dog.
-//   tm04s01  introduce one marker at a time: setup, no behavior needed, separate sessions of 10 to 15 reps, the order strip
+//   tm04s01  introduce one marker at a time: setup, no behavior needed, separate sessions of 10 reps, the order strip
 //   tm04s02  teach the mouth-delivery marker (clip)
 //   tm04s03e Eskara learning the toss marker (clip, full screen after the line); tm04s05 now waits with Tori's clicker clip
 //   tm04s03  teach the treat-toss marker (clip; a small toss arc)
@@ -47,12 +47,12 @@
       const c = put(stage, K.el('div', 'tmd-ses'), 100 + i * 430, 560);
       c.appendChild(K.el('div', 't', t));
       c.appendChild(TM.word(c, w, { variant: 'green', size: 30 }));
-      c.appendChild(K.el('div', 'n', '10 to 15 reps'));
+      c.appendChild(K.el('div', 'n', '10 reps'));
       tl.fromTo(c, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, tS + 0.35 * i);
     });
     const lt = put(stage, K.el('div', 'tmd-ses later'), 1390, 560);
     lt.appendChild(K.el('div', 't', 'Later'));
-    lt.appendChild(K.el('div', 'n', 'Mix markers in one session, once each is familiar'));
+    lt.appendChild(K.el('div', 'n', 'Mix markers in slowly, with one familiar in the mix'));
     A.in(tl, lt, at(ctx, 2, 'before using multiple', 0.75), 'fadeUp', { dur: 0.6 });
     const o = TM.order(stage, ['Mark', 'Pause', 'Move your hand'], { y: 830, size: 32, center: true, icons: ['volume-2', 'pause', 'hand'] });
     A.in(tl, o.items, at(ctx, 3, 'same order', 0.2), 'fadeRight', { dur: 0.4, stagger: 0.15 });
@@ -197,20 +197,26 @@
     // it plays in the frame once the narration is done
     const vf = TM.videoFrame(ctx);
     vf.cap.style.display = 'none';
-    const col = put(stage, K.el('div', 'tm-col'), 100, 330, { width: '1000px', gap: '30px' });
+    const col = put(stage, K.el('div', 'tm-col'), 100, 300, { width: '1000px', gap: '28px' });
     const R = [['arrow-left', 'Turns toward you: *to the mouth*', 'turn toward you'], ['move-up-right', 'Gets ready to follow: *a toss*', 'follow a toss'], ['arrow-down', 'Looks at the ground: *a scatter*', 'toward the ground']];
     R.forEach(([ic, h, p]) => A.in(tl, TM.row(col, ic, h, { size: 33 }), at(ctx, 1, p, 0.3), 'fadeRight', { dur: 0.5 }));
     // consistent, not dramatic; always follow through (one row, side by side)
-    const r2 = put(stage, K.el('div'), 100, 640, { position: 'absolute', display: 'flex', gap: '18px' });
+    const r2 = put(stage, K.el('div'), 100, 590, { position: 'absolute', display: 'flex', gap: '18px' });
     const c1 = TM.word(r2, 'A consistent response', { variant: 'green', size: 28, icon: 'check' });
     const c2 = TM.word(r2, 'Always follow through', { variant: 'pale', size: 28, icon: 'cookie' });
     [c1, c2].forEach(n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; });
     A.in(tl, c1, at(ctx, 2, 'consistent response', 0.4), 'pop', { dur: 0.45 });
     A.in(tl, c2, at(ctx, 2, 'always follow', 0.7), 'pop', { dur: 0.45 });
-    // separate sessions, then mixed
-    const o = TM.order(stage, ['Separate sessions', 'Familiar', 'Mix markers'], { x: 100, y: 780, size: 26, icons: ['calendar', 'circle-check', 'shuffle'] });
+    // mixing markers: go slowly; one familiar marker in the mix before adding a new one, never several unfamiliar at once
+    const ml = put(stage, K.el('div', 'tm-lab', 'Mixing markers? <b style="color:var(--green)">Go slowly.</b>'), 100, 700, { fontSize: '32px' });
+    A.in(tl, ml, at(ctx, 3, 'go slowly', 0.3), 'fadeUp', { dur: 0.5 });
+    const o = TM.order(stage, ['Familiar: “Yip”', 'Add one new: “Free”'], { x: 100, y: 755, size: 26, icons: ['circle-check', 'plus'] });
     o.row.style.gap = '14px';
-    A.in(tl, o.items, at(ctx, 3, 'separate sessions', 0.2), 'fadeRight', { dur: 0.45, stagger: 0.35 });
+    A.in(tl, o.items, at(ctx, 3, 'already familiar', 0.3), 'fadeRight', { dur: 0.45, stagger: 0.3 });
+    const no = TM.word(stage, 'Several new markers at once', { x: 100, y: 840, variant: 'red', cross: true, size: 26 });
+    const tN = at(ctx, 3, 'several unfamiliar', 0.4);
+    A.in(tl, no, tN, 'pop', { dur: 0.4 });
+    TM.strike(tl, no, tN + 0.35);
   });
 
   registerScene('tm04s06', ctx => {

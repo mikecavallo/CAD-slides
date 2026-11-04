@@ -116,7 +116,7 @@
     // the check-in: a dotted line from the dog's eyes up to her face, a ring where their eyes meet
     {
       const { sv, P } = G.ph, t = tG + 1.0;
-      TM.fx.dots(tl, sv, [P(0.435, 0.40), P(0.30, 0.10)], t, { dur: 0.6, hold: 2.4, r: 5.5, gap: 18, stroke: 'var(--green)' });
+      TM.fx.dots(tl, sv, [P(0.435, 0.40), P(0.345, 0.20)], t, { dur: 0.6, hold: 2.4, r: 5.5, gap: 18, stroke: 'var(--green)' });
       TM.fx.ring(tl, sv, P(0.43, 0.42), t + 0.6, { n: 2, r: 24 });
     }
     // the pull: the dog's stare runs to the squirrel, the leash pulls tight, both in red

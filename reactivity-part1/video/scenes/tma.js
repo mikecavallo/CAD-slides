@@ -50,9 +50,12 @@
     A.in(tl, yip, at(ctx, 0, 'short word', 0.15), 'pop', { dur: 0.5 });
     const q = put(stage, K.el('div', 'tm-quote', '“That’s it! <b>What you just did earned a treat.</b>”'), 330, 300, { width: '1300px', fontSize: '50px', textAlign: 'left' });
     A.in(tl, q, at(ctx, 0, 'that’s it', 0.5), 'fadeUp', { dur: 0.7 });
+    // the reward can also be a toy; this course uses treats
+    const toy = TM.word(stage, 'The reward can also be a toy. <b>Here: treats</b>', { x: 330, y: 392, variant: 'pale', size: 28, icon: 'gift' });
+    A.in(tl, toy, at(ctx, 0, 'also be a toy', 0.2), 'fadeUp', { dur: 0.5 });
 
     // a filmstrip of a sit; the flash lands on the frame where the bottom touches down
-    const FR = [['dog', 'Standing'], ['eye-off', 'Looking away'], ['circle-check', 'Sit!'], ['arrow-up', 'Getting up'], ['move-right', 'Pulling on<br>the leash']];
+    const FR = [['dog', 'Standing'], ['eye-off', 'Looking<br>away'], ['circle-check', 'Sit!'], ['arrow-up', 'Getting up'], ['move-right', 'Pulling on<br>the leash']];
     const film = put(stage, K.el('div', 'tma-film'), 100, 500, { width: '1000px' });
     const frs = FR.map(([ic, lab], i) => {
       const f = put(film, K.el('div', 'tma-fr'), 18 + i * 196, 24);
@@ -189,6 +192,65 @@
     bn.appendChild(K.el('span', null, 'No guessing: <b>they know where the food will be</b>'));
     TM.centerX(bn, 960);
     A.in(tl, bn, tN, 'fadeUp', { dur: 0.6 });
+  });
+
+
+  // ---------------------------------------------------------------- your marker is a promise
+  // the promise card (a treat is coming + exactly where) beside the three games' pictures; then the broken promise in red
+  registerScene('tm01s02p', ctx => {
+    const { stage, tl, cue, end } = ctx;
+    css(stage);
+    TM.head(ctx, 'Food games', 'Your marker is a promise');
+    const card = put(stage, K.el('div'), 100, 340, { position: 'absolute', width: '660px', height: '330px', boxSizing: 'border-box', padding: '34px 40px',
+      borderRadius: '26px', background: '#fff', border: '1px solid #e6e9e1', boxShadow: 'var(--shadow-soft)', display: 'flex', flexDirection: 'column', gap: '30px' });
+    const top = K.el('div', null, '');
+    Object.assign(top.style, { display: 'flex', alignItems: 'center', gap: '22px' });
+    card.appendChild(top);
+    const yip = TM.bubble(top, 'Yip!', { size: 42 });
+    Object.assign(yip.style, { position: 'relative', left: '', top: '' });
+    top.appendChild(K.el('div', 'tm-lab', '= a promise'));
+    top.lastChild.style.cssText += 'position:relative;font-size:40px;font-family:var(--font-head);color:var(--green-dark)';
+    A.in(tl, card, cue(0) + 0.1, 'fadeUp', { dur: 0.6 });
+    const rows = [['cookie', 'A treat is coming', 'promising your dog a treat'], ['map-pin', '*Exactly where* it will be', 'exactly where']].map(([ic, h, p]) => {
+      const r = TM.row(card, ic, h, { size: 36 });
+      A.in(tl, r, at(ctx, 0, p, 0.4), 'fadeRight', { dur: 0.5 });
+      return r;
+    });
+    // the three places a treat can be: each picture lifts in on "exactly where"
+    const H = 255, G = [['tm_mouth_3.jpg', [524, 828], 'At their mouth'], ['tm_toss.jpg', [1468, 968], 'Rolling along the ground'], ['tm_scatter.jpg', [1466, 962], 'In front of them']];
+    let x = 800;
+    const tW = at(ctx, 0, 'exactly where', 0.6);
+    const ws = G.map(([, [nw, nh]]) => Math.round(H * nw / nh)), GAP = (1820 - 800 - ws.reduce((a, b) => a + b, 0)) / 2;
+    const pics = G.map(([src, nat, lab], i) => {
+      const ph = TM.pic(stage, src, { x, y: 360, w: ws[i], h: H, nat, radius: 18, border: 6 });
+      const l = put(stage, K.el('div', 'tm-lab', lab), 0, 636, { fontSize: '24px', color: 'var(--green-dark)' });
+      TM.centerX(l, x + ws[i] / 2);
+      tl.fromTo(ph.wrap, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, tW + 0.25 * i);
+      A.in(tl, l, tW + 0.25 * i + 0.2, 'fadeUp', { dur: 0.4 });
+      x += ws[i] + GAP;
+      return { ph, l };
+    });
+    const tK = at(ctx, 0, 'know exactly', 0.3);
+    pics.forEach((p, i) => TM.fx.ring(tl, p.ph.sv, [p.ph.w / 2, H * 0.62], tK + 0.15 * i, { r: 26 }));
+    // breaking it: marking without delivering the treat, or not where you promised
+    const bp = put(stage, K.el('div'), 100, 740, { position: 'absolute', width: '1720px', height: '150px', boxSizing: 'border-box', padding: '0 40px',
+      borderRadius: '26px', background: 'var(--red-pale)', border: '2px solid #efc5b9', display: 'flex', alignItems: 'center', gap: '22px' });
+    const t1 = at(ctx, 1, 'without delivering', 0.1);
+    A.in(tl, bp, t1 - 0.2, 'fadeUp', { dur: 0.5 });
+    const lab = K.el('div', 'tm-lab', 'Marked, then:');
+    lab.style.cssText += 'position:relative;font-size:34px;color:var(--ink)';
+    bp.appendChild(lab);
+    [['No treat', 'with the treat'], ['Wrong place', 'place you promised']].forEach(([w, p]) => {
+      const n = TM.word(bp, w, { variant: 'red', cross: true, size: 30 });
+      Object.assign(n.style, { position: 'relative', left: '', top: '' });
+      const t = at(ctx, 1, p, 0.5);
+      A.in(tl, n, t, 'pop', { dur: 0.4 });
+      TM.strike(tl, n, t + 0.35);
+    });
+    const res = K.el('div', 'tm-lab', '= a broken promise: <b>confusing for your dog</b>');
+    res.style.cssText += 'position:relative;font-size:32px;color:var(--red)';
+    bp.appendChild(res);
+    A.in(tl, res, at(ctx, 1, 'confusing', 0.3), 'fadeUp', { dur: 0.5 });
   });
 
   // ---------------------------------------------------------------- why food delivery matters

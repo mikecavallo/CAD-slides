@@ -270,6 +270,19 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Oct 9: the full current narration (every change through round 16, slide order as built, video notes) was written to a
   NEW Google Doc in Tori's Drive, "Markers and Mechanics: Narration Script (updated Oct 9)", id
   1eBXnYRkbY032AKBkn0JJMxidBR83rWdTMradmG72JKQ. Tori's original doc (1_KZQ...) is out of date until Tori replaces it.
+- Round 17 (Nov 4): tm01s01 adds "The reward can also be a toy, but for now, we're going to talk about treats" (chip
+  "The reward can also be a toy. Here: treats"); filmstrip "Looking / away" on two lines. NEW slide tm01s02p "Your marker
+  is a promise" (a treat is coming + exactly where, the three games' pictures; broken promise row: No treat / Wrong place
+  = confusing for your dog). tm01s05 gaze dots stop short of her face. tm03s01: Right panel full width, two Wrong panels
+  side by side (Hand during the word; Hand first, then the word) with a new narration beat. tm03s02 ends "Mark, pause,
+  move" (banner and narration). tm04s01 "10 repetitions" (cards "10 reps"). tm04s05 beat 3 rewritten: mix markers
+  slowly, never several unfamiliar at once, keep one familiar in the mix (Familiar "Yip" -> Add one new "Free", crossed
+  "Several new markers at once"). tm04s07: practice is #2, "In training" is #3 with the sit and check-in examples as
+  bullets, #4 "then mix them in slowly".
+- Fresh containers: clips are not in git. Re-download from Drive (folder id 1FdKn-_dNYyHfwDsNtjiuxNyEOhXlbsef) with curl;
+  the Fisher toss clip (tm04s03v) is NOT on Drive: it was recovered from the published preview (part with tm04s03v, the
+  frame box cropped out). Tools: pip install kokoro-onnx sherpa-onnx soundfile numpy pillow (use --ignore-installed for
+  pillow), models in /opt/tts (kokoro-onnx release model-files-v1.0; sherpa-onnx asr-models zipformer-en-2023-06-26).
 - Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 

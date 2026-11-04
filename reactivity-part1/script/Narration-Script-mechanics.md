@@ -1,47 +1,65 @@
-# Your Training Mechanics
+# Markers and Mechanics
 
-Narration script. About 1,364 words, roughly 9 minutes at a relaxed pace.
+Narration script. About 1,644 words, roughly 11 minutes at a relaxed pace.
 
 ## Welcome
 
-Hi, I'm Tori Ganino with Calling All Dogs. Welcome to Your Training Mechanics.
+Hi, I’m Tori Ganino with Calling All Dogs. Welcome to Markers and Mechanics.
 
-Every lesson you teach your dog runs on the same few hand skills. When they're sloppy, your dog has to guess. When they're clean, learning gets easier for both of you. By the end, you'll have a clear marker, clean timing, and you'll know exactly where each treat should go. We'll cover what a marker is, how to charge it, how to mark with clean timing, how to tell your dog where to look for their treat, and how to use toss and scatter.
+In this section, we’ll cover what markers mean, why we use different food games, and how to teach them. We’ll also practise your mechanics so your dog receives clear, consistent information.
 
-Here's the big idea. When and where the food lands teaches your dog just as much as what the food is. Learn these skills once, and you'll use them in everything you teach.
+## Understanding Markers and Food Games
 
-## The Marker
+A marker is a short word or sound that tells your dog, “That’s it! What you just did earned a treat.” The reward can also be a toy, but for now, we’re going to talk about treats. Think of it as a snapshot of the behavior you want to reinforce. If you’re teaching a sit, mark the moment their bottom touches the ground, then deliver the treat.
 
-Part one: the marker. A marker is the most precise tool you have. It's one sound that tells your dog the exact instant they got it right, and that a treat is on its way.
+There are different ways we can deliver that treat. We call these food games. Some games we might play include feeding directly to your dog’s mouth, tossing a treat for them to chase, and scattering treats on the ground. We use a different marker word for each game. Once your dog learns those words, the marker tells them both which moment earned a treat and which game is coming. Knowing what to expect can reduce confusion and frustration. Your dog won’t have to guess whether the food is coming to their mouth, rolling along the ground, or landing on the ground in front of them.
 
-Think of your marker as a snapshot. You mark the exact moment your dog gets it right, and that sound tells them: that moment earned a treat. It also buys you time. The moment is captured, so you have a second or two to get the food there without losing the lesson. Pick a distinct word, like yip or mark, or use a clicker. Skip everyday words like yes or good. Your dog hears those all day. And there's one rule. The marker is always followed by food. No exceptions, or the promise stops working.
+Think of your marker as a promise. When you say it, you’re promising your dog a treat, and exactly where that treat will be. They’ll know exactly what’s coming. If you use your marker without delivering on it, with the treat and in the place you promised, you break that promise. And a broken promise is just confusing for your dog.
 
-Just as important is what a marker is not. It has exactly one job: to mark the instant your dog got it right. Use it for anything else, and it stops meaning a treat is coming. It's not an attention-getter. If you say it just to get your dog to look at you, with no behavior to pay, the word goes hollow. It's not a correction. A marker never means no, or stop that. It only points at something you liked. And it's not a bribe. You don't wave food first to get the behavior. The treat comes after the mark, never before. Keep it clean: one sound, one meaning.
+Each game serves a different purpose. Food to the mouth helps your dog stay near you or maintain a position. Tosses encourage movement, reset your dog for another repetition, and can help you create distance from something difficult. Scatters encourage sniffing and searching. The best choice depends on what we’re teaching, the situation, and your dog’s needs.
 
-Whatever you're teaching, every rep has the same shape. The moment changes, a sit, a glance at you, a response to their name, but your job doesn't. Catch it, mark it, pay it. First, the moment. Your dog does the thing you want. Then mark it, the instant it happens, not a beat later. Feed fast. The treat arrives within a second or two, and where it lands is your next choice. Then reset, and set up the next rep. Clean reps, stacked up, are how the habit forms. Say you're teaching a sit. Watch for the instant their bottom touches the ground, mark it right then, and let the treat follow. That's your window: one to two seconds. Late food pays the wrong moment, so watch your dog, and mark what you actually want.
+Some dogs need movement when they’re becoming stressed or aroused. For those dogs, standing still to take a treat from your hand near something worrying may make the situation harder. For example, if something unexpected appears too close, like another dog, we might toss a treat away from it. Your dog follows the treat and gets more distance. Once there’s enough space, we can offer a scatter. Another dog may find food delivered directly to their mouth easier to follow. Watch how your dog responds, and make the situation easier if they cannot comfortably engage. We’ll also use these food games in pattern games, which we’ll introduce later.
 
-Let's see it at work. Here, I'm using the marker during position changes: sit, and stand. Each time he nails the position, I say yip, and follow with a treat. One sound tells him exactly which moment paid. No guessing, no nagging. That's the whole idea in motion. Next, let's charge your own marker.
+A marker is not a correction or a way to get your dog’s attention. It does not mean “no,” “stop,” or “look at me.” During training, use it to mark behavior you want your dog to repeat in the future. For example, if you’re teaching your dog to check in with you on walks, mark the moment they look at you. If you use the marker to get their attention while they’re pulling on the leash and staring at a squirrel, you may accidentally reinforce the pulling and staring instead, making those unwanted behaviors more likely to happen again. Say the marker once, then deliver its food game. If you mark by mistake, still follow through with the food. Before you learn about how to teach your markers, let’s look at a marker in action.
 
-Before your marker means anything, you have to charge it. A few minutes of pairing turns a sound into a promise. Load up pea-sized treats where you can reach them fast. Say your marker, pause, then deliver a treat. Do ten to fifteen reps. Saying the marker and moving your hand are two separate actions. Say it first, then move. Then test it. Say the marker when your dog isn't expecting it. If their head snaps to you for the treat, it's charged.
+Here we are working on him understanding the difference between sitting and standing while keeping his front feet still. Watch the order here. I mark the moment my dog is in the correct position by saying his marker, “x.” Then I give the treat to his mouth, which is what he has learned “x” means.
 
-A clicker is just another marker. Charge it exactly the same way. Click once, then feed. Click, treat, click, treat, ten to fifteen reps. The click sounds the same every single time, and that consistency is its whole advantage. Test it the same way. Click when your dog isn't expecting it. A quick head snap to you means it's charged.
+## Choosing Your Markers
 
-Before you lean on your marker, make sure your dog actually understands it. The test is simple: give it when they're not expecting it, and watch what they do before any food appears. Pick a calm moment, when your dog isn't already staring at you. Mark once, and don't reach for food yet. A dog who knows it responds right away. Their head snaps to you, before the treat shows. A blank look? No worries. It just isn't fluent yet. Go back to easy pairing reps, and test again later. Then proof it. Test in new rooms, out in the yard, and with mild distractions. A word your dog knows everywhere is a word you can trust when it counts.
+Choose a short, distinct word for each food game. Some options include: Food to the mouth: “Yip,” “Yep,” “Mark,” “Nice,” “Treat,” or “X.”
 
-## Where the Treats Go
+A tossed treat: “Chase,” “Toss,” “Get it,” or “Free.”
 
-Part two: where the treats go. Delivery isn't an afterthought. Where the treat lands shapes what your dog does next. It can reset them, calm them, move them, or keep them right with you. So pick the placement on purpose.
+Treats scattered on the ground: “Scatter,” “Find it,” “Search,” or “Get it.”
 
-When we're training or playing a game, your dog is always wondering: where's my treat coming from? So we give each spot its own word. The word tells your dog where they'll get their treat, so they know exactly where to look. We call these LSMs. When I say treat, the food comes right to his mouth. When I say get it, the food is on the ground by his feet.
+Choose one word for each game and use it consistently. A clicker can also be your marker for food delivered to the mouth. I recommend avoiding “good” or “yes” because we often use those words in everyday conversation or as casual praise without following them with food. Choose words you can reserve for these games, so their meaning stays clear.
 
-Why bother? A dog who has to guess where the treat went gets frustrated, and frustration gets in the way of learning. LSMs take the guesswork out. The word tells your dog where to go, so they can stay relaxed and keep thinking. That's clarity: one word, one place. No searching your hands or scanning the floor. Less frustration: no guessing means no build-up of stress, so a calm dog keeps working with you. And each placement does a job. Treats to your hand keep your dog with you. Treats on the ground help them calm down. A treat tossed away resets them. And in a hard moment, one familiar word can send your dog straight to the food. No struggle, no confusion.
+## Practicing Your Mechanics
 
-Tossing resets and re-engages. Toss a piece a few feet away so your dog moves to get it, then comes back to you. The trip out and back resets their position and posture for a fresh rep. That bit of movement also adds a little space, and a beat to reset between reps. It's great for getting back to a start position, or buying a little distance from something exciting.
+Your mechanics are extremely important. Saying the marker and moving your hand to deliver food are two separate actions. They should not happen at the same time. Say the word, pause briefly, then reach for or deliver the treat. If your hand moves before or during the word, your dog may learn that your movement predicts food and pay little to no attention to the marker in the future. For example, don’t start handing the treat to your dog and then say your marker. By then, your hand has already told them food is coming. Keeping these actions separate helps the word become a clear, reliable signal.
 
-Scattering calms and decompresses. Sprinkle a few treats on the ground in front of your dog. Sniffing is naturally calming. It helps bring their arousal down while they search. It also brings your dog's head down. Use it as a distraction, or to help your dog calm down when things start to ramp up.
+I highly recommend practicing without your dog first. Hold treats in your hand, say your marker, pause briefly, then place a treat in a bowl. Keep your hand still until after you’ve finished saying the word. Practice until you can consistently separate those actions. Getting comfortable with this first helps prevent confusion that could mean reteaching the marker or choosing a new word.
 
-Now pick your words. Here are some examples. For food that goes to the mouth: a clicker, yip, yep, mark, nice, or treat. For treats scattered on the ground: scatter, get it, find it, search, or ground. For a tossed treat: toss, go, chase, or free. Whatever you pick, give each spot its own word, and use it every time.
+## Teaching Your Dog
 
-Let's pull it together. A marker is a promise. It pinpoints the exact moment and is always followed by food. Pick one, and keep it everywhere. Mark the instant it happens, then feed within a second or two. Late food pays the wrong moment. Where the treat lands is a tool. Toss it away to reset, scatter it to calm, and hand-feed to keep your dog with you. And LSMs take the guesswork out. One word tells your dog where to look for their treat.
+Start in a quiet, low-distraction area with small treats ready. At this stage, your dog does not need to sit, look at you, or perform another behavior. You’re teaching what each marker predicts. Work on just one marker per session, for 10 repetitions. Give each marker several separate introductory sessions before using multiple markers in the same session.
 
-Remember: these skills never change. Only the target does. A sit, a look, a calm choice. You'll mark it, feed it, and place it the same way every time. Thanks for training with me.
+Say your chosen marker, pause briefly, then bring a treat directly to your dog’s mouth. Keep these sessions short, and do them only once or twice a day. That’s once or twice a day for all of your markers together, not for each one. If you’re using a clicker, the process is the same, with a click instead of a word.
+
+Look for your dog anticipating the correct food game after hearing the marker, before your hand moves. They might turn toward you for food to the mouth, prepare to follow a toss, or look toward the ground for a scatter. You don’t need a dramatic response, just a consistent response that fits the game. Always follow the marker with its food delivery, even if your dog seems unsure. When you start mixing markers, go slowly. Don’t mix in several unfamiliar markers at once. Make sure at least one marker in the mix is already familiar before you add another.
+
+Say your chosen word, pause briefly, then toss one treat a short distance where your dog can easily see and reach it. Use a low, sweeping motion, like you’re bowling. The hand closest to your dog guides the treat down low and across your body, so it travels along the ground instead of flying through the air. Let them finish eating before repeating. Start with easy tosses, then gradually vary the distance as they learn the game. Check that you’re tossing into a safe area with enough room for your dog to follow.
+
+Here’s Eskara learning her toss marker. Listen for “Free.” Notice that the hand closest to her bowls the treat low and across my body, so it rolls along the floor.
+
+Here’s what this looks like with a dog who already knows the game. Watch how Fisher anticipates it. He knows where to move for the next treat.
+
+Say your chosen word, pause briefly, then scatter a few small treats on the ground. Start on a clear surface where the food is easy to find. Let your dog finish searching before repeating. Each scatter counts as one repetition. As they learn the game, you can practise on other suitable surfaces, including short grass.
+
+Here’s a scatter demonstration. Listen for “Scatter,” then watch the treats land on the floor right in front of the dog.
+
+Here’s a real reason to use a scatter. This dog would jump up and grab at the arm of anyone walking him inside, except his owner. Arms and hands were already too exciting, so feeding from the hand would only add to it. Instead, I mark while he’s calm and walking with me, before the jumping starts, then scatter the treats low, next to us. That keeps his head down instead of up at our arms.
+
+My dog in this video is blind, so he relies completely on the sound of his markers. When I say “treat,” he knows the treat is coming to his mouth. When I say “get it,” he drops his head to the floor, because the treats will be scattered. Watch how he responds to each word before my hand moves.
+
+During training, a marker identifies the moment that earned a treat. Each food game has its own marker, so your dog also knows what comes next. Practice your mechanics without your dog first: mark, pause, move. Once your dog understands the markers, watch for the behavior you want, mark the instant it happens, then deliver the matching food game. For a sit, mark when their bottom touches the ground. For a check-in, mark when they look at you. Introduce each marker separately in short sessions, then mix them in slowly. Always follow your marker with its matching food game. As we build on these skills, we’ll choose the game that fits what we’re teaching and what your dog needs.

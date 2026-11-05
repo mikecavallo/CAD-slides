@@ -1,7 +1,7 @@
 // Chapter 1 (v5): scenes built by group d. Bowl parts come from window.C1 (c1_bowl.js).
 //   ch01s10  Training tools and methods   chip + red tool tags; the dog's day, all decided by humans; the 'Boss?' crown;
 //                                         Suppress gives way to Understand and Help; a resource-guarding example
-//                                         (growl corrected away, feeling unchanged); a green heart over the bowl
+//                                         in pictures (growl corrected away, stress stays); a green heart over the bowl
 //   ch01s11  Pain and discomfort          chip; sore spots on a dog + six sensitivities; two panels (looks fine / leans away);
 //                                         a sudden change forks into Behavior and Physical health, then 'Vet visit first'
 //   ch01s12  Putting it together          all eight ingredients drop into the bowl as named; then a glass pot of water (Chapter 2) slides in;
@@ -38,11 +38,6 @@
   .c1d-pill.amber { background:#fff; border:3px solid var(--amber); color:#8a5410; }
   .c1d-pill.amber .ic { background:var(--amber-pale); color:#a8650f; }
   .c1d-row { position:absolute; display:flex; justify-content:center; align-items:center; gap:22px; }
-  .c1d-pill.sm { height:68px; padding:0 28px 0 8px; gap:14px; font-size:32px; }
-  .c1d-pill.sm .ic { width:52px; height:52px; }
-  .c1d-pill.sm .ic svg { width:30px; height:30px; }
-  .c1d-arrow { position:absolute; color:var(--muted); }
-  .c1d-arrow svg { width:34px; height:34px; stroke-width:2.4; }
   .c1d-row .c1d-pill { position:relative; }
   .c1d-boss { position:absolute; font:700 40px/1 var(--font-head); color:var(--ink-soft); white-space:nowrap; }
   .c1d-tlab { position:absolute; text-align:center; font:700 30px/1.1 var(--font-body); white-space:nowrap; }
@@ -299,47 +294,80 @@
     A.in(tl, und, tU, 'pop', { dur: 0.6 });
     A.in(tl, help, Math.max(tU + 0.6, at(3, 'helping them', 0.88, 0.3)), 'pop', { dur: 0.6 });
 
-    // ---------- beat 4: an example of suppressing behavior, resource guarding (Tori, Nov 5). The story runs down the left:
-    // a person approaches the dog with its item, it growls, it is corrected, the growl stops; then what really happened:
-    // it doesn't feel better, and people approaching are now confirmed as a bad thing
+    // ---------- beat 4: an example of suppressing behavior, resource guarding (Tori, Nov 5), told in pictures (no word
+    // pills, Tori asked): the dog stands over its ball; a person walks in; red growl waves; a squirt-bottle spray and a
+    // shock-collar zap; the waves stop, but a red stress pulse stays in the dog and it leans away; the person turns red
     const t4 = cue(4);
     A.out(tl, [LB, LC, LD], t4 - 0.3, 'fade', { dur: 0.5 });
     const LF = C1.layer(stage);
     const l4 = C1.put(LF, 'c1-big', 'Example: *resource guarding*', { x: 100, y: 300 });
     A.in(tl, l4, clamp(at(4, 'resource guarding', 0.1, 0.3), t4 + 0.2, end(4) - 10), 'fadeUp', { dur: 0.8 });
-    const X0 = 100, Y0 = 420, STEP = 94;
-    const steps = [
-      ['white', 'user', 'A person approaches', 'a person approaches', 0.14],
-      ['amber', 'bone', 'Dog growls, shows teeth', 'growl or show', 0.3],
-      ['red', 'ban', 'Corrected for it', 'correct the dog', 0.45],
-      ['grey', 'volume-x', 'The growl stops', 'may stop growling', 0.58],
-    ];
-    let tS = t4 + 0.8;
-    const tStep = [];
-    const sn = steps.map(([cls, ic, txt, ph, fb], i) => {
-      const n = pill(LF, cls + ' sm', ic, txt, { x: X0, y: Y0 + i * STEP });
-      tS = Math.max(tS + 0.6, at(4, ph, fb, 0.3));
-      tStep.push(tS);
-      A.in(tl, n, tS, 'fadeRight', { dur: 0.55 });
-      return n;
-    });
-    // the corrections Tori names ("like with a squirt bottle or a shock collar"), as red tags beside 'Corrected for it'
-    let tagX = X0 + sn[2].offsetWidth + 30, tTag = tStep[2];
-    [['droplets', 'Squirt bottle', 'squirt bottle'], ['zap', 'Shock collar', 'shock collar']].forEach(([ic, txt, ph], i) => {
-      const n = pill(LF, 'red sm', ic, txt, { x: tagX, y: Y0 + 2 * STEP });
-      tagX += n.offsetWidth + 22;
-      tTag = Math.min(tStep[3] - 0.3, Math.max(tTag + 0.5, at(4, ph, 0.5 + i * 0.04, 0.25)));
-      A.in(tl, n, tTag, 'pop', { dur: 0.5 });
-    });
-    // ...but: the feeling hasn't changed, and the approach is now confirmed as bad
-    const tBut = Math.max(tS + 1.0, at(4, "doesn't feel better", 0.72, 0.3));
-    const still = pill(LF, 'amber sm', 'frown', 'Still doesn’t feel better', { x: X0, y: Y0 + 4 * STEP + 18 });
-    A.in(tl, still, tBut, 'fadeRight', { dur: 0.6 });
-    tl.to(sn[3], { opacity: 0.55, duration: 0.5 }, tBut);
-    const tVal = Math.max(tBut + 1.2, at(4, 'validated', 0.84, 0.3));
-    const conf = pill(LF, 'red sm', 'triangle-alert', 'Confirmed: people approaching are a bad thing', { x: X0, y: Y0 + 5 * STEP + 18 });
-    A.in(tl, conf, tVal, 'fadeRight', { dur: 0.6 });
-    tl.to(sn[0], { scale: 1.06, transformOrigin: '0% 50%', duration: 0.3, yoyo: true, repeat: 1 }, tVal + 0.4);
+    const gs = K.svg(LF, { x: 0, y: 0, w: 1920, h: 1080 });
+    const GY = 829;
+    K.line(gs, 150, GY + 4, 1130, GY + 4, { stroke: '#dfe4d8', 'stroke-width': 4 });
+    const RG = dogAt(gs, 400, 700, 1.0);
+    const [mx, my] = RG.pt(396, 84), [nkx, nky] = RG.pt(300, 114), [chx, chy] = RG.pt(210, 160);
+    const ball = K.group(gs);
+    K.circle(ball, 572, GY - 26, 26, { fill: '#2f7fae', stroke: '#fff', 'stroke-width': 4 });
+    K.path(ball, `M 552 ${GY - 34} C 564 ${GY - 22} 580 ${GY - 22} 592 ${GY - 34}`, { stroke: '#cfe3f0', 'stroke-width': 4, fill: 'none' });
+    const tDog = t4 + 0.35;
+    A.in(tl, RG.outer, tDog, 'fadeUp', { dur: 0.8 });
+    tl.fromTo(ball, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2.5)' }, tDog + 0.5);
+    // the person: an outline from Tori's ABC illustration, walking in from the right
+    const PH = 400, PW = Math.round(PH * 228 / 600), PX1 = 860;
+    const per = K.el('img'); per.src = '../assets/img/sil_person.png';
+    const perR = K.el('img'); perR.src = '../assets/img/sil_person_red.png';
+    [per, perR].forEach(im => { Object.assign(im.style, { position: 'absolute', left: PX1 + 'px', top: GY + 6 - PH + 'px', width: PW + 'px', height: PH + 'px' }); LF.appendChild(im); });
+    const tWalk = Math.max(tDog + 1.2, at(4, 'a person approaches', 0.14, 0.4));
+    tl.set(perR, { opacity: 0 }, 0);
+    tl.fromTo(per, { opacity: 0, x: 260 }, { opacity: 1, x: 0, duration: 1.8, ease: 'power1.out' }, tWalk);
+    tl.to(per, { y: -8, duration: 0.22, yoyo: true, repeat: 7, ease: 'sine.inOut' }, tWalk);
+    // growl: red waves from the mouth toward the person, pulsing until the correction lands
+    const tGrowl = Math.max(tWalk + 1.6, at(4, 'growl or show', 0.3, 0.3));
+    const waves = [0, 1, 2].map(k => K.path(gs, `M ${mx + 30 + k * 26} ${my - 30 - k * 10} Q ${mx + 46 + k * 30} ${my} ${mx + 30 + k * 26} ${my + 30 + k * 10}`,
+      { stroke: C.red, 'stroke-width': 7, fill: 'none', 'stroke-linecap': 'round', opacity: 0 }));
+    tl.to(RG.fig, { skewX: -6, x: 8, transformOrigin: '50% 100%', duration: 0.4, ease: 'power2.out' }, tGrowl);
+    const tCor = Math.max(tGrowl + 1.6, at(4, 'squirt bottle', 0.5, 0.35));
+    const nPulse = Math.max(1, Math.floor((tCor - tGrowl) / 0.9));
+    waves.forEach((w, k) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: nPulse * 2 - 1, repeatDelay: 0.15, ease: 'sine.inOut', immediateRender: false }, tGrowl + k * 0.12));
+    // the corrections: a squirt bottle sprays the dog's face, then a shock collar zaps at the neck
+    const sq = C1.badge(LF, 'spray-can', PX1 - 46, GY - 250, 96, '#e6f1f8', '#2f7fae');
+    Object.assign(sq.style, { border: '4px solid #fff', boxShadow: 'var(--shadow-soft)' });
+    A.in(tl, sq, tCor, 'pop', { dur: 0.45 });
+    const drops = Array.from({ length: 7 }, (_, k) => K.circle(gs, 0, 0, 7 - k * 0.4, { fill: '#5aa7d6', opacity: 0 }));
+    drops.forEach((d, k) => tl.fromTo(d, { attr: { cx: PX1 - 100, cy: GY - 250 }, opacity: 0.95 },
+      { attr: { cx: mx + 20 + (k % 3) * 8, cy: my - 10 + (k % 4) * 8 }, opacity: 0.2, duration: 0.55, ease: 'power1.in', immediateRender: false }, tCor + 0.3 + k * 0.06));
+    tl.to(drops, { opacity: 0, duration: 0.3 }, tCor + 1.3);
+    const tZap = Math.max(tCor + 1.2, at(4, 'shock collar', 0.55, 0.3));
+    tl.to(sq, { opacity: 0, scale: 0.8, duration: 0.35 }, tZap - 0.2);
+    const zap = C1.badge(LF, 'zap', nkx - 70, nky - 120, 84, C.amberPale, C.red);
+    Object.assign(zap.style, { border: '4px solid #fff', boxShadow: '0 10px 24px rgba(160,50,20,0.25)' });
+    A.in(tl, zap, tZap, 'pop', { dur: 0.35 });
+    const spark = K.circle(gs, nkx, nky, 20, { fill: 'none', stroke: C.amber, 'stroke-width': 6, opacity: 0 });
+    tl.fromTo(spark, { attr: { r: 18 }, opacity: 1 }, { attr: { r: 70 }, opacity: 0, duration: 0.6, ease: 'power2.out', repeat: 1, immediateRender: false }, tZap + 0.1);
+    tl.to(RG.outer, { x: -10, duration: 0.06, yoyo: true, repeat: 5, ease: 'none' }, tZap + 0.1);
+    // the growl stops: the waves are gone and a muted-speaker badge says so, without words
+    const tQuiet = Math.max(tZap + 1.0, at(4, 'may stop growling', 0.58, 0.3));
+    tl.to(waves, { opacity: 0, duration: 0.3, overwrite: 'auto' }, tQuiet - 0.2);
+    tl.to(zap, { opacity: 0, scale: 0.8, duration: 0.35 }, tQuiet - 0.2);
+    tl.to(RG.fig, { skewX: 0, x: 0, duration: 0.5, ease: 'power2.inOut' }, tQuiet);
+    const mute = C1.badge(LF, 'volume-x', mx + 80, my - 90, 92, '#eef0ea', C.muted);
+    Object.assign(mute.style, { border: '4px solid #fff', boxShadow: 'var(--shadow-soft)' });
+    A.in(tl, mute, tQuiet, 'pop', { dur: 0.45 });
+    // ...but it doesn't feel better: a red stress pulse stays in the dog's chest, and it leans away from the person
+    const tFeel = Math.max(tQuiet + 1.0, at(4, "doesn't feel better", 0.72, 0.3));
+    soreSpot(tl, RG, 210, 160, tFeel, end(4) - 0.2);
+    lean(tl, RG, tFeel + 0.2, 0.8);
+    tl.to(mute, { opacity: 0, duration: 0.4 }, tFeel + 1.0);
+    // people approaching are now confirmed as bad: the person turns red, with a warning badge and a red line from the dog
+    const tVal = Math.max(tFeel + 1.4, at(4, 'validated', 0.84, 0.3));
+    tl.to(perR, { opacity: 1, duration: 0.6 }, tVal);
+    tl.to(per, { opacity: 0, duration: 0.6 }, tVal);
+    const warn = C1.badge(LF, 'triangle-alert', PX1 + PW + 66, GY - PH + 60, 96, C.redPale || '#f8e3dd', C.red);
+    Object.assign(warn.style, { border: '4px solid #fff', boxShadow: '0 10px 24px rgba(160,50,20,0.22)' });
+    A.in(tl, warn, tVal + 0.3, 'pop', { dur: 0.5 });
+    const link = K.line(gs, mx + 10, my, PX1 - 10, GY - PH * 0.7, { stroke: C.red, 'stroke-width': 5, 'stroke-dasharray': '3 14', 'stroke-linecap': 'round' });
+    A.draw(tl, link, tVal + 0.2, 0.8);
 
     // ---------- beat 5: everything fades; a green heart pulses once over the bowl
     const t5 = cue(5);

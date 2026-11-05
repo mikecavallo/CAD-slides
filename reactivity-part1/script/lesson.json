@@ -445,8 +445,8 @@
               "onscreen": "Suppressing behavior ≠ changing behavior"
             },
             {
-              "say": "For example, take resource guarding. If a person approaches a dog that has an item, and the dog starts to growl or show its teeth, and we correct the dog for doing that, the dog may stop growling or showing its teeth, but it doesn't feel better about the situation. We've actually validated that people approaching are a bad thing. We will get into this much more later.",
-              "show": "Example strip: A person approaches (white), Dog growls, shows teeth (amber, the dog has an item), Corrected for it (red); then The growl stops (grey); then Still doesn't feel better (amber) and Confirmed: people approaching are a bad thing (red).",
+              "say": "For example, take resource guarding. If a person approaches a dog that has an item, and the dog starts to growl or show its teeth, and we correct the dog for doing that, like with a squirt bottle or a shock collar, the dog may stop growling or showing its teeth, but it doesn't feel better about the situation. We've actually validated that people approaching are a bad thing. We will get into this much more later.",
+              "show": "Example strip: A person approaches (white), Dog growls, shows teeth (amber, the dog has an item), Corrected for it (red) with Squirt bottle and Shock collar tags beside it as they are named; then The growl stops (grey); then Still doesn't feel better (amber) and Confirmed: people approaching are a bad thing (red).",
               "onscreen": "Example: resource guarding"
             },
             {

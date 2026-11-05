@@ -315,11 +315,21 @@
       ['grey', 'volume-x', 'The growl stops', 'may stop growling', 0.58],
     ];
     let tS = t4 + 0.8;
+    const tStep = [];
     const sn = steps.map(([cls, ic, txt, ph, fb], i) => {
       const n = pill(LF, cls + ' sm', ic, txt, { x: X0, y: Y0 + i * STEP });
       tS = Math.max(tS + 0.6, at(4, ph, fb, 0.3));
+      tStep.push(tS);
       A.in(tl, n, tS, 'fadeRight', { dur: 0.55 });
       return n;
+    });
+    // the corrections Tori names ("like with a squirt bottle or a shock collar"), as red tags beside 'Corrected for it'
+    let tagX = X0 + sn[2].offsetWidth + 30, tTag = tStep[2];
+    [['droplets', 'Squirt bottle', 'squirt bottle'], ['zap', 'Shock collar', 'shock collar']].forEach(([ic, txt, ph], i) => {
+      const n = pill(LF, 'red sm', ic, txt, { x: tagX, y: Y0 + 2 * STEP });
+      tagX += n.offsetWidth + 22;
+      tTag = Math.min(tStep[3] - 0.3, Math.max(tTag + 0.5, at(4, ph, 0.5 + i * 0.04, 0.25)));
+      A.in(tl, n, tTag, 'pop', { dur: 0.5 });
     });
     // ...but: the feeling hasn't changed, and the approach is now confirmed as bad
     const tBut = Math.max(tS + 1.0, at(4, "doesn't feel better", 0.72, 0.3));

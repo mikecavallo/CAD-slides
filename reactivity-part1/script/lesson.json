@@ -359,7 +359,7 @@
               "onscreen": "More selective with age"
             },
             {
-              "say": "That's normal, not a problem. But the dog who loved the dog park at one year old may not want it as a three-year-old, and pushing them can end in a fight.",
+              "say": "That's normal, not a problem. But the dog who loved the dog park as a one-year-old may not want it as a three-year-old, and pushing them can end in a fight.",
               "show": "A small dog park card appears with a trees icon: 'Age 1: loved it' with a green check, then 'Age 3: not anymore' with an amber caution badge.",
               "onscreen": "Normal, not a problem"
             },
@@ -440,9 +440,14 @@
               "onscreen": "A reaction isn't a power struggle"
             },
             {
-              "say": "The idea that dogs need to be dominated has led to tools and techniques designed to suppress behavior through force or intimidation. But suppressing behavior isn't the same as understanding why a dog is responding that way in the first place and helping them to change that response. We will get into this much more later.",
+              "say": "The idea that dogs need to be dominated has led to tools and techniques designed to suppress behavior through force or intimidation. But suppressing behavior isn't the same as understanding why a dog is responding that way in the first place and helping them to change that response.",
               "show": "'Suppress' appears in red over the dog icon and fades away; the words 'Understand' and 'Help' replace it in green.",
               "onscreen": "Suppressing behavior ≠ changing behavior"
+            },
+            {
+              "say": "For example, take resource guarding. If a person approaches a dog that has an item, and the dog starts to growl or show its teeth, and we correct the dog for doing that, the dog may stop growling or showing its teeth, but it doesn't feel better about the situation. We've actually validated that people approaching are a bad thing. We will get into this much more later.",
+              "show": "Example strip: A person approaches (white), Dog growls, shows teeth (amber, the dog has an item), Corrected for it (red); then The growl stops (grey); then Still doesn't feel better (amber) and Confirmed: people approaching are a bad thing (red).",
+              "onscreen": "Example: resource guarding"
             },
             {
               "say": "If you've used any of these, be kind to yourself. You did your best, and now you know more.",

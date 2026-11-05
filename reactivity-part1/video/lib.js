@@ -480,10 +480,7 @@
     stage.appendChild(logo);
     const f = el('div', 'chrome-footer');
     f.appendChild(el('div', 'url', 'www.' + (B.url || 'callingalldogsny.com')));
-    f.appendChild(el('div', 'rule'));
-    const tab = el('div', 'tab');
-    tab.appendChild(el('span', null, info.chapterNum ? String(info.chapterNum) : ''));
-    f.appendChild(tab);
+    f.appendChild(el('div', 'rule'));  // no chapter-number tab (Tori, Nov 5): the rule runs on to the right margin instead
     stage.appendChild(f);
     const url = f.querySelector('.url');
     return { logo, footer: f, hideUrl: () => (url.style.opacity = 0), hideLogo: () => (logo.style.opacity = 0), hideFooter: () => (f.style.opacity = 0) };

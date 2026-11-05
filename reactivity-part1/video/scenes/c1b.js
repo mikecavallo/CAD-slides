@@ -2,7 +2,7 @@
 //   ch01s03  Why?                          photo + 'Why?', the bowl with eight blank chips, the chips start drifting down
 //   ch01s04  Genetics and temperament      genetics chip drops in, sensitive and easygoing dog portraits, a tiny smoke alarm
 //   ch01s05  Before birth                  prenatal chip drops in; health, nutrition and experiences gather around it
-//   ch01s07  Early life and socialization  timeline window, gaps, how we expose, pass the puppy, no break, party and leash
+//   ch01s07  Early life and socialization  timeline window, missed experiences, how we expose, pass the puppy, no break, party and leash
 (() => {
   const CSS = `
   .c1b-sub { position: absolute; font: 600 54px/1.16 var(--font-head); color: var(--ink); white-space: nowrap; }
@@ -337,14 +337,15 @@
     const tCells = Math.max(tFew + 0.9, at(0, 'especially influenced', 0.85));
     tl.fromTo(cells, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.14, ease: 'back.out(2)' }, tCells);
 
-    // ---------- beat 1: too little exposure. Gaps open in the window; the missing experiences are named
+    // ---------- beat 1: too little exposure. The window stays whole; the experiences the puppy missed leave empty
+    // dashed slots in it (Tori: light stripes cut into the window read as gaps in time, which made no sense)
     const sub1 = C1.put(stage, 'c1b-sub', 'Too little *exposure*', { x: 100, y: SUB_Y });
     swap(tl, sub0, sub1, cue(1));
     const GAP = [1, 2, 3, 4];
-    const gaps = GAP.map(k => K.rect(tsvg, cx(k) - 36, TY, 72, TH, { fill: '#e1e7d9' }));
+    const slots = GAP.map(k => K.circle(tsvg, cx(k), TY + TH / 2, 21, { fill: 'none', stroke: '#fff', 'stroke-width': 3, 'stroke-dasharray': '5 6', opacity: 0.75 }));
     const tGap = Math.max(cue(1) + 0.3, at(1, "don't have enough", 0.05));
-    tl.to(GAP.map(k => cells[k]), { opacity: 0, y: 30, duration: 0.4, stagger: 0.12, ease: 'power2.in' }, tGap);
-    tl.fromTo(gaps, { scaleY: 0, transformOrigin: '50% 50%' }, { scaleY: 1, duration: 0.45, stagger: 0.12, ease: 'power2.out' }, tGap + 0.2);
+    tl.to(GAP.map(k => cells[k]), { opacity: 0, scale: 0.6, transformOrigin: '50% 50%', duration: 0.4, stagger: 0.12, ease: 'power2.in' }, tGap);
+    tl.fromTo(slots, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }, { opacity: 0.75, scale: 1, duration: 0.45, stagger: 0.12, ease: 'power2.out' }, tGap + 0.25);
     // tags in the order the narration names them: people, places, experiences
     const TAGS = [['user', 'Strangers', 'people'], ['map-pin', 'New places', 'places'], ['bus', 'Buses', 'experiences'], ['skateboard', 'Skateboards', 'experiences']];
     const trow = K.el('div', null);

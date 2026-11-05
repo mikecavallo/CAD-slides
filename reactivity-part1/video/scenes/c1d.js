@@ -1,6 +1,7 @@
 // Chapter 1 (v5): scenes built by group d. Bowl parts come from window.C1 (c1_bowl.js).
 //   ch01s10  Training tools and methods   chip + red tool tags; the dog's day, all decided by humans; the 'Boss?' crown;
-//                                         Suppress gives way to Understand and Help; a green heart over the bowl
+//                                         Suppress gives way to Understand and Help; a resource-guarding example
+//                                         (growl corrected away, feeling unchanged); a green heart over the bowl
 //   ch01s11  Pain and discomfort          chip; sore spots on a dog + six sensitivities; two panels (looks fine / leans away);
 //                                         a sudden change forks into Behavior and Physical health, then 'Vet visit first'
 //   ch01s12  Putting it together          all eight ingredients drop into the bowl as named; then a glass pot of water (Chapter 2) slides in;
@@ -37,6 +38,11 @@
   .c1d-pill.amber { background:#fff; border:3px solid var(--amber); color:#8a5410; }
   .c1d-pill.amber .ic { background:var(--amber-pale); color:#a8650f; }
   .c1d-row { position:absolute; display:flex; justify-content:center; align-items:center; gap:22px; }
+  .c1d-pill.sm { height:68px; padding:0 28px 0 8px; gap:14px; font-size:32px; }
+  .c1d-pill.sm .ic { width:52px; height:52px; }
+  .c1d-pill.sm .ic svg { width:30px; height:30px; }
+  .c1d-arrow { position:absolute; color:var(--muted); }
+  .c1d-arrow svg { width:34px; height:34px; stroke-width:2.4; }
   .c1d-row .c1d-pill { position:relative; }
   .c1d-boss { position:absolute; font:700 40px/1 var(--font-head); color:var(--ink-soft); white-space:nowrap; }
   .c1d-tlab { position:absolute; text-align:center; font:700 30px/1.1 var(--font-body); white-space:nowrap; }
@@ -293,15 +299,47 @@
     A.in(tl, und, tU, 'pop', { dur: 0.6 });
     A.in(tl, help, Math.max(tU + 0.6, at(3, 'helping them', 0.88, 0.3)), 'pop', { dur: 0.6 });
 
-    // ---------- beat 4: everything fades; a green heart pulses once over the bowl
+    // ---------- beat 4: an example of suppressing behavior, resource guarding (Tori, Nov 5). The story runs down the left:
+    // a person approaches the dog with its item, it growls, it is corrected, the growl stops; then what really happened:
+    // it doesn't feel better, and people approaching are now confirmed as a bad thing
     const t4 = cue(4);
-    A.out(tl, [LB, LC, LD], t4 - 0.15, 'fade', { dur: 0.6 });
+    A.out(tl, [LB, LC, LD], t4 - 0.3, 'fade', { dur: 0.5 });
+    const LF = C1.layer(stage);
+    const l4 = C1.put(LF, 'c1-big', 'Example: *resource guarding*', { x: 100, y: 300 });
+    A.in(tl, l4, clamp(at(4, 'resource guarding', 0.1, 0.3), t4 + 0.2, end(4) - 10), 'fadeUp', { dur: 0.8 });
+    const X0 = 100, Y0 = 420, STEP = 94;
+    const steps = [
+      ['white', 'user', 'A person approaches', 'a person approaches', 0.14],
+      ['amber', 'bone', 'Dog growls, shows teeth', 'growl or show', 0.3],
+      ['red', 'ban', 'Corrected for it', 'correct the dog', 0.45],
+      ['grey', 'volume-x', 'The growl stops', 'may stop growling', 0.58],
+    ];
+    let tS = t4 + 0.8;
+    const sn = steps.map(([cls, ic, txt, ph, fb], i) => {
+      const n = pill(LF, cls + ' sm', ic, txt, { x: X0, y: Y0 + i * STEP });
+      tS = Math.max(tS + 0.6, at(4, ph, fb, 0.3));
+      A.in(tl, n, tS, 'fadeRight', { dur: 0.55 });
+      return n;
+    });
+    // ...but: the feeling hasn't changed, and the approach is now confirmed as bad
+    const tBut = Math.max(tS + 1.0, at(4, "doesn't feel better", 0.72, 0.3));
+    const still = pill(LF, 'amber sm', 'frown', 'Still doesn’t feel better', { x: X0, y: Y0 + 4 * STEP + 18 });
+    A.in(tl, still, tBut, 'fadeRight', { dur: 0.6 });
+    tl.to(sn[3], { opacity: 0.55, duration: 0.5 }, tBut);
+    const tVal = Math.max(tBut + 1.2, at(4, 'validated', 0.84, 0.3));
+    const conf = pill(LF, 'red sm', 'triangle-alert', 'Confirmed: people approaching are a bad thing', { x: X0, y: Y0 + 5 * STEP + 18 });
+    A.in(tl, conf, tVal, 'fadeRight', { dur: 0.6 });
+    tl.to(sn[0], { scale: 1.06, transformOrigin: '0% 50%', duration: 0.3, yoyo: true, repeat: 1 }, tVal + 0.4);
+
+    // ---------- beat 5: everything fades; a green heart pulses once over the bowl
+    const t5 = cue(5);
+    A.out(tl, [LF], t5 - 0.15, 'fade', { dur: 0.6 });
     const LE = C1.layer(stage);
     const kind = C1.put(LE, 'c1-best', 'Be kind to yourself', { x: 100, y: 440 });
     const ul = K.el('div', 'accent-bar');
     Object.assign(ul.style, { left: '104px', top: '568px', width: '160px' });
     LE.appendChild(ul);
-    const tKind = clamp(at(4, 'be kind to yourself', 0.1, 0.3), t4 + 0.4, end(4) - 4);
+    const tKind = clamp(at(5, 'be kind to yourself', 0.1, 0.3), t5 + 0.4, end(5) - 4);
     A.in(tl, kind, tKind, 'fadeUp', { dur: 0.9 });
     A.in(tl, ul, tKind + 0.5, 'grow', { dur: 0.6 });
     const HBX = C1.STD.cx, HBY = C1.STD.y - 400 * C1.STD.s;
@@ -314,7 +352,7 @@
     hs.setAttribute('fill', C.green);
     heart.appendChild(hs);
     stage.appendChild(heart);
-    const tH = t4 + 0.35;
+    const tH = t5 + 0.35;
     A.in(tl, heart, tH, 'pop', { dur: 0.6 });
     tl.to(heart, { scale: 1.25, duration: 0.28, ease: 'power2.out', yoyo: true, repeat: 1 }, tH + 0.8);
     tl.fromTo(ring, { opacity: 0.9, scale: 0.7 }, { opacity: 0, scale: 1.6, duration: 1.0, ease: 'power2.out', immediateRender: false }, tH + 0.85);

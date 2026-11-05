@@ -136,7 +136,16 @@ pipeline). This file records the state, decisions and working agreements from ea
   wording (Whisper medium.en + sherpa transcripts of the takes, reconciled and verified per slide; 20 beats changed,
   slips such as a half word, a dropped "can" and "with" for "within" were not kept); old text in git history.
   Cue phrases updated to match (why it's, before it's even born, choose if they, every other dog, as a three,
-  rushes them, without even thinking). Build voiced Chapter 1 with --all-clone so the real takes are not mixed back in. QA fixes in the same round:
+  rushes them, without even thinking). Build voiced Chapter 1 with --all-clone so the real takes are not mixed back in.
+  Nov 5 round 2 (Tori): ch01s06 silhouette row's 5th dog is now sil_lab.png (GrabCut cut of breed_working.jpg; the
+  old sil_collie had stub legs, deleted); ch01s07 beat 1 keeps the first-months window solid and shows dashed empty
+  slots for missed experiences (light stripes cut into it made no sense); ch01s08 "as a one-year-old"; ch01s10 has a
+  new beat 4, a resource-guarding example of suppression (person approaches, growl, corrected, growl stops / still
+  doesn't feel better / confirmed: people approaching are a bad thing; narration from Tori's own words), old beat 4
+  is beat 5; footer has no chapter-number tab any more, the rule runs to 76 px from the right edge (lib.js, base.css,
+  all videos on this branch). The "repetition" Tori heard was web_parts.py: stream-copy cuts at the rounded slide
+  start landed on the keyframe before it, so each web part replayed the end of the previous slide; fixed (seek
+  +10 ms, length check). The downloaded MP4 never repeated. QA fixes in the same round:
   align.py no longer trims a misheard first word ("Ingredient two" was cut), the chapter chime fades out, ch01s07's
   last beat shows "Not a checklist" / "Positive associations, support and choice" before the "Socialization is one
   ingredient" card (which now lands on its words), and lesson.json "tail": 4.5 holds the logo close longer.

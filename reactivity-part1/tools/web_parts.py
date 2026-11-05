@@ -86,8 +86,15 @@ def main():
         a = segs[g[0]]["start"]
         b = segs[g[-1]]["start"] + segs[g[-1]]["dur"] if g[-1] < len(segs) - 1 else total
         name = f"part{p + 1}.mp4"
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{a:.3f}", "-i", str(web), "-t", f"{b - a:.3f}", "-c", "copy",
+        # Seek a hair past the start: the forced keyframe sits on the first frame at or after the (rounded) start time,
+        # and a stream-copy seek to the rounded time itself lands on the keyframe BEFORE it, so the part would open
+        # with seconds of the previous slide (Tori heard the end of one slide repeated at the start of the next part).
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{a + 0.01:.3f}", "-i", str(web), "-t", f"{b - a:.3f}", "-c", "copy",
                         "-avoid_negative_ts", "make_zero", "-movflags", "+faststart", str(out / name)], check=True)
+        got = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out / name)],
+                                   capture_output=True, text=True, check=True).stdout)
+        if abs(got - (b - a)) > 0.2:
+            raise SystemExit(f"{name}: {got:.2f}s but the segments add up to {b - a:.2f}s; the cut missed its keyframe")
         vtt = ["WEBVTT", ""]
         for (ca, cb, txt) in cues:
             if cb <= a or ca >= b:

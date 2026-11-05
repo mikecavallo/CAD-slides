@@ -130,7 +130,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   Pro clone, so no re-record is needed unless Tori wants one. The other slides are Tori's real takes; the original files
   were not in the container, so they were recovered from the published narrated video (artifact Q4WnoBBniuysUrV4ssy7hT,
   parts cut at the ~2 s silences between slides) into narration/Ch00s02.wav, Ch01s01.wav ... Ch01s10.wav (gitignored).
-  If Tori re-uploads the originals, drop them in narration/ and re-run the voiced build. QA fixes in the same round:
+  If Tori re-uploads the originals, drop them in narration/ and re-run the voiced build.
+  Nov 5 (Tori: "take the exact words that I use in the recording and re-record with my AI voice, so all videos sound
+  consistent"): the whole chapter is now the clone (tts_elevenlabs.py --all-clone). lesson.json carries Tori's recorded
+  wording (Whisper medium.en + sherpa transcripts of the takes, reconciled and verified per slide; 20 beats changed,
+  slips such as a half word, a dropped "can" and "with" for "within" were not kept); old text in git history.
+  Cue phrases updated to match (why it's, before it's even born, choose if they, every other dog, as a three,
+  rushes them, without even thinking). Build voiced Chapter 1 with --all-clone so the real takes are not mixed back in. QA fixes in the same round:
   align.py no longer trims a misheard first word ("Ingredient two" was cut), the chapter chime fades out, ch01s07's
   last beat shows "Not a checklist" / "Positive associations, support and choice" before the "Socialization is one
   ingredient" card (which now lands on its words), and lesson.json "tail": 4.5 holds the logo close longer.

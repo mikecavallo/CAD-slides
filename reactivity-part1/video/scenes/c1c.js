@@ -181,7 +181,7 @@
     park.appendChild(pcol);
     stage.appendChild(park);
     const tPark = Math.max(cue(3) + 1.2, sayAt(ctx, 3, 'loved the dog park', 0.45, 0.6));
-    const tNo = Math.max(tPark + 1.2, sayAt(ctx, 3, 'at three', 0.72));
+    const tNo = Math.max(tPark + 1.2, sayAt(ctx, 3, 'as a three', 0.72));
     A.in(tl, park, tPark, 'fadeUp', { dur: 0.7 });
     A.in(tl, ln1.l, tPark + 0.3, 'fadeRight', { dur: 0.6 });
     A.in(tl, ln1.mk, tPark + 0.7, 'pop', { dur: 0.5 });
@@ -283,7 +283,7 @@
     A.draw(tl, base, tT1 + 0.3, 0.9);
     tl.fromTo(dots.map(d => d.c), { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' },
       { opacity: 1, scale: 1, duration: 0.35, stagger: 0.05, ease: 'back.out(2)' }, tT1 + 0.5);
-    const tStrike = Math.max(tT1 + 1.6, sayAt(ctx, 0, 'rushes yours', 0.55, 0.3));
+    const tStrike = Math.max(tT1 + 1.6, sayAt(ctx, 0, 'rushes them', 0.55, 0.3));
     tl.fromTo(bolt, { opacity: 0, y: -110 }, { opacity: 1, y: 0, duration: 0.28, ease: 'power4.in' }, tStrike);
     tl.fromTo(hit, { opacity: 0, scale: 0.2, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(3)' }, tStrike + 0.26);
     tl.fromTo(rays, { opacity: 0, drawSVG: '0% 0%' }, { opacity: 1, drawSVG: '0% 100%', duration: 0.3, ease: 'power2.out' }, tStrike + 0.26);
@@ -467,7 +467,7 @@
     tl.fromTo(dotted, { opacity: 0 }, { opacity: 0.6, duration: 0.6 }, t3c + 0.6);
     const w1 = clamp(sayAt(ctx, 3, 'walk it every day', 0.25, 0.2), t3c + 1.0, dur - 6.4);
     const w2 = clamp(sayAt(ctx, 3, 'it wears in', 0.4, 0.2), w1 + 1.0, dur - 5.4);
-    const w3 = clamp(sayAt(ctx, 3, 'without thinking', 0.6, 0.3), w2 + 0.9, dur - 4.4);
+    const w3 = clamp(sayAt(ctx, 3, 'without even thinking', 0.6, 0.3), w2 + 0.9, dur - 4.4);
     tl.set(worn, { attr: { 'stroke-width': 12 } }, w1);
     A.draw(tl, worn, w1, 0.9, { ease: 'power1.inOut' });
     tl.to(worn, { attr: { 'stroke-width': 34 }, duration: 0.7, ease: 'power2.out' }, w2);

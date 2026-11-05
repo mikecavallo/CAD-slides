@@ -245,7 +245,7 @@
     A.in(tl, cap1, land1 - 0.2, 'fadeUp', { dur: 0.6 });
 
     const sub = C1.put(stage, 'c1b-sub', 'Before birth *matters too*', { x: 100, y: SUB_Y });
-    A.in(tl, sub, clamp(sayAt(ctx, 0, 'before it is even born', 0.3), land1 + 0.3, dur - 6), 'fadeUp', { dur: 0.8 });
+    A.in(tl, sub, clamp(sayAt(ctx, 0, 'before it\'s even born', 0.3), land1 + 0.3, dur - 6), 'fadeUp', { dur: 0.8 });
 
     // a hub for the prenatal environment with health, nutrition and experiences around it, one per word
     const HX = 600, HY = 580;
@@ -524,7 +524,7 @@
       A.in(tl, u.lab, tOut + 0.15, 'fadeUp', { dur: 0.5 });
     });
     // the puppy leans toward them, a hand closes the gap, and it is back in the middle
-    const tLean = clamp(at(4, 'choose whether', 0.6), tOut + 0.8, cue(5) - 3);
+    const tLean = clamp(at(4, 'choose if they', 0.6), tOut + 0.8, cue(5) - 3);
     const la = ((180 - ang(5)) * Math.PI) / 180;
     tl.to(pupPos, { x: CX + Math.cos(la) * 70, y: CY + Math.sin(la) * 70, duration: 0.45, ease: 'power2.out' }, tLean);
     tl.to(pupPos, { x: CX, y: CY, duration: 0.45, ease: 'power2.in' }, tLean + 0.75);
@@ -549,7 +549,7 @@
       const pop = sIcon(it.inner, 'party-popper', 52, -52, 46, { stroke: C.amber, 'stroke-width': 2.2 });
       return { it, pop, x };
     });
-    const tRow = Math.max(cue(5) + 0.3, at(5, 'every dog or person', 0.15));
+    const tRow = Math.max(cue(5) + 0.3, at(5, 'every other dog', 0.15));
     tl.fromTo(party.map(p => p.it.inner), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.12, ease: 'back.out(2)' }, tRow);
     // the party puppy
     const pup = K.group(qsvg);

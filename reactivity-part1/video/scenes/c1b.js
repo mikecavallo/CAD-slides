@@ -621,15 +621,43 @@
     const cap2 = C1.caption(stage, 3, STD.cx, CAP_Y);
     A.in(tl, cap2, land - 0.2, 'fadeUp', { dur: 0.6 });
     const LZ = C1.layer(stage);
+    // "isn't about checking off a list ... positive associations ... support and choice": two lines while it is said
+    const pre = K.el('div', 'c1-card');
+    Object.assign(pre.style, { left: '100px', top: '400px', width: '1000px', height: '250px', display: 'flex', flexDirection: 'column',
+      justifyContent: 'center', gap: '30px', padding: '0 48px', boxSizing: 'border-box' });
+    const preRow = (icon, col, text) => {
+      const r = K.el('div');
+      Object.assign(r.style, { display: 'flex', alignItems: 'center', gap: '24px', font: '600 40px/1.15 var(--font-head)', color: 'var(--ink)', whiteSpace: 'nowrap' });
+      const ic = K.el('div');
+      Object.assign(ic.style, { width: '66px', height: '66px', borderRadius: '50%', background: col, color: '#fff', display: 'grid', placeItems: 'center', flex: '0 0 auto' });
+      const svg = K.icon(icon);
+      Object.assign(svg.style, { width: '38px', height: '38px', strokeWidth: 2.8 });
+      ic.appendChild(svg);
+      r.appendChild(ic);
+      r.appendChild(K.el('span', null, text));
+      pre.appendChild(r);
+      return r;
+    };
+    const rNot = preRow('x', C.red, 'Not a checklist');
+    const rPos = preRow('check', 'var(--green)', 'Positive associations, support and choice');
+    LZ.appendChild(pre);
+    const tNot = clamp(at(6, 'checking off', 0.12), land - 0.2, dur - 6);
+    const tPos = clamp(at(6, 'positive associations', 0.45), tNot + 1.2, dur - 5);
+    const tCard = clamp(at(6, 'socialization is one', 0.62), tPos + 1.5, dur - 3);
+    A.in(tl, pre, tNot - 0.3, 'fadeUp', { dur: 0.6 });
+    A.in(tl, rNot, tNot, 'fadeRight', { dur: 0.5 });
+    A.in(tl, rPos, tPos, 'fadeRight', { dur: 0.5 });
+    A.out(tl, pre, tCard - 0.6, 'fade', { dur: 0.45 });
+    // "Socialization is one ingredient": the card lands as it is said
     const card = K.el('div', 'c1-card');
     Object.assign(card.style, { left: '100px', top: '400px', width: '1000px', height: '250px' });
     LZ.appendChild(card);
     const hb = C1.badge(LZ, ING[3].icon, 206, 525, 130, ING[3].col, '#fff');
     const htxt = C1.put(LZ, 'c1-big', 'Socialization is<br>*one ingredient*', { x: 310, y: 458 });
-    A.in(tl, card, land - 0.3, 'fadeUp', { dur: 0.7 });
-    A.in(tl, hb, land - 0.1, 'pop', { dur: 0.6 });
-    A.in(tl, htxt, land, 'fadeUp', { dur: 0.7 });
+    A.in(tl, card, tCard - 0.2, 'fadeUp', { dur: 0.7 });
+    A.in(tl, hb, tCard, 'pop', { dur: 0.6 });
+    A.in(tl, htxt, tCard + 0.1, 'fadeUp', { dur: 0.7 });
     // "in the larger picture": every ingredient so far glows together
-    glowTokens(tl, B, 4, clamp(at(6, 'one ingredient', 0.72), land + 1.5, dur - 1.8));
+    glowTokens(tl, B, 4, clamp(at(6, 'one ingredient', 0.72), tCard + 1.0, dur - 1.8));
   });
 })();

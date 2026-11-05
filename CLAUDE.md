@@ -126,9 +126,14 @@ pipeline). This file records the state, decisions and working agreements from ea
   `Ch01s07_part_1`, `Ch01s07_part_2`. Files go in `reactivity-part1/narration/`.
 - `narration/` is gitignored (the repo is public), so **recordings are not in GitHub**. In a new session, ask
   Tori to re-upload the takes for any slide being rebuilt with voice.
-- Chapter 1 takes still needed (Oct 4): `Ch00s01` (new title) and `Ch01s12` (pain gone, water ending). Until then
-  the Chapter 1 build uses the stand-in voice for those two slides (narration/ch00s01.wav, ch01s12.wav, made from the
-  scratch clips; delete them when Tori's takes arrive).
+- Chapter 1 (Nov 4): rebuilt with voice. ch00s01 (welcome) and ch01s12 (last slide) are narrated by Tori's ElevenLabs
+  Pro clone, so no re-record is needed unless Tori wants one. The other slides are Tori's real takes; the original files
+  were not in the container, so they were recovered from the published narrated video (artifact Q4WnoBBniuysUrV4ssy7hT,
+  parts cut at the ~2 s silences between slides) into narration/Ch00s02.wav, Ch01s01.wav ... Ch01s10.wav (gitignored).
+  If Tori re-uploads the originals, drop them in narration/ and re-run the voiced build. QA fixes in the same round:
+  align.py no longer trims a misheard first word ("Ingredient two" was cut), the chapter chime fades out, ch01s07's
+  last beat shows "Not a checklist" / "Positive associations, support and choice" before the "Socialization is one
+  ingredient" card (which now lands on its words), and lesson.json "tail": 4.5 holds the logo close longer.
 - Build with voice: `python3 tools/align.py && python3 tools/timing.py --mode narration && node tools/render.mjs
   --workers 3 && python3 tools/assemble.py --name Getting-Started-with-Dog-Behavior`.
   align.py levels each take, trims lead-in/tail noise and slates (voiced-sound based), and cuts slides exactly

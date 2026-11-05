@@ -9,9 +9,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   Refer to Tori by name; pronouns were never stated, so do not assume any.
 - Presentation: **"Understanding Dog Behavior"** (renamed by Tori in Chapter 2 round 4; it was "Getting Started with
   Dog Behavior: Understanding Reactivity and Aggression"), a narrated, animated slide video (HTML + GSAP scenes rendered to MP4, synced to Tori's recorded voice).
-- Script source of truth: Tori's Google Doc "Reactivity & Aggression Part 1: Script v4 (one chapter)",
-  id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (read it with the Google Drive connector; Claude cannot
-  edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
+- Script source of truth (since Nov 4): "Understanding Dog Behavior: Script v5 (Chapters 1 to 3, current)", id
+  `1VeX1aR2GQ8YyCE-HKw2FjvIqkRiDuozWOY6vZRDfkZA`. Claude made it (Tori asked Claude to do the script edits, not Tori):
+  Chapter 1 from v4 minus the Pain slide ch01s11 and typo fixes, Chapter 2 as built (round 16), Chapter 3 round 8.
+  The Drive connector can read and create files but not edit a doc in place, so each script change = Claude makes a
+  new version (v6, ...) and gives Tori the link; never ask Tori to paste. Older: Script v4
+  `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (Chapter 2 in it is the first draft). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
   that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
   water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
   warning signals) for later chapters; Chapter 3 is the ABCs, and Chapter 4 adds heat and the thermometer to the pot. Sync the lesson
@@ -111,6 +114,38 @@ pipeline). This file records the state, decisions and working agreements from ea
   again here. That's intentional." and the then/now pairs; its line is now "In this chapter, we're focusing on factors
   that can be changed, managed, or improved." with Changed / Managed / Improved lighting word by word. s12's thermometer
   goes in through the middle of the pot's opening (front rim redrawn over it).
+- Round 13: the goal is a lower baseline, said early: s03 adds "That's the goal: the lower the baseline a dog starts out
+  with, the better." (Claude's wording, Tori asked) with a "The goal: a lower baseline" pill. Emotional experiences that
+  raise the water are the unpleasant or stressful ones (good experiences don't): s08 "When unpleasant or stressful
+  emotional experiences happen repeatedly ... they can shift the dog's overall mood in a negative direction and affect
+  the water level in the pot." (pill "Repeated stressful or unpleasant experiences"); s10 "several unpleasant or
+  stressful experiences" and "together they can shift the dog's mood in a negative direction and raise the water level"
+  (pill "Unpleasant experiences"). Never say a dog is "in a bad mood" (too anthropomorphic); since round 15 never say
+  "negative direction" either (viewers read negative as taking away, but the water is being added). s12 thermometer is shorter so it stays clear of the Part labels.
+- Round 14: s02 defines baseline as "the dog's overall starting state: their starting level of stress and arousal before
+  a trigger appears" (card and "A trigger appears" event); s03 "A higher baseline means there's less room for additional
+  stress before they react. A lower water level leaves more room." ("Less room before a reaction" / "for additional
+  stress before they react"); one unpleasant or stressful experience is enough to matter, never imply it takes several:
+  s08 "An unpleasant or stressful emotional experience, even a single one, can shift the dog's overall mood in a negative
+  direction and affect the water level in the pot, especially when those experiences happen repeatedly or there isn't
+  enough opportunity to recover between them."; s10 "or even a single unpleasant or stressful experience" (pill "Even
+  one unpleasant experience").
+- Round 15: s03's room explanation is now Tori's three paragraphs (beats 5 to 7; goal is beat 8, "come back" beat 9):
+  "The rim represents the limit of what your dog can manage in that situation. If the water rises beyond it, the pot
+  overflows, representing an intense response." (rim glows, water spills down the glass, "Overflow = an intense
+  response"); low water: "more room before the pot overflows ... may be able to handle more added stress or arousal
+  before an intense response occurs" (long amber "Added stress or arousal" arrow, "Still under the rim"); high water:
+  "less room ... a smaller amount of added stress or arousal may trigger an intense response" (short arrow, it spills).
+  Added stress or arousal is shown as the water rising (an arrow), not as drops, so it still fits heat in Chapter 4.
+  s06 "other animals" (not other dogs, paw icon). s08 "can affect the dog's overall mood and add to the water level in
+  the pot"; s10 "together they can weigh on the dog's mood and raise the water level".
+- Round 16: Tori now edits the Chapter 2 script in the Drive doc "Chapter 2 script (round 15, paste into Script v4)"
+  (id 1SbwVdgb1781rBJC9iftjBWaeeFXiyTx2xBwK7P7_XQA); read it before each build, it wins over the lesson. s03 is Tori's
+  rewrite in six beats: starting water level = baseline incl. cumulative mood; not stress or arousal in the moment ("In a
+  later chapter"); "Rim = what your dog can manage" / "Overflow = an intense response" (spills); lower level = more room
+  (long arrow stays under) and higher level = less room (short arrow spills) in one beat; "Goal: a lower baseline" + "More
+  room to handle stress or arousal"; flame bookmark "We'll add heat in a later chapter". The "lower/higher water level"
+  line and "Why does that matter?" are gone. s08 pill is "An unpleasant or stressful experience" (no "even one").
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

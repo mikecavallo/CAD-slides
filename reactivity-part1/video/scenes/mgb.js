@@ -29,7 +29,7 @@
   registerScene('mg03s01', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
-    TM.head(ctx, 'The golden rule', 'The golden rule: 100% consistency');
+    TM.head(ctx, 'The golden rule', 'The golden rule');
     // the ring fills as the number counts up to 100
     const CX = 560, CY = 610, R = 250;
     const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
@@ -44,7 +44,7 @@
     // the rule at right
     const r1 = put(stage, K.el('div', 'mgb-sm', 'There is one rule, and only one:'), 940, 400, { width: '880px' });
     A.in(tl, r1, at(ctx, 0, 'one rule', 0.1), 'fadeUp', { dur: 0.6 });
-    const r2 = put(stage, K.el('div', 'mgb-rule', 'Management must be followed <b>100% of the time</b>.'), 940, 470, { width: '860px', fontSize: '58px' });
+    const r2 = put(stage, K.el('div', 'mgb-rule', 'Management must be followed <b>every single time</b>.'), 940, 470, { width: '860px', fontSize: '58px' });
     A.in(tl, r2, at(ctx, 0, 'management must', 0.4), 'fadeUp', { dur: 0.7 });
     // not good enough
     const row = put(stage, K.el('div'), 940, 720, { position: 'absolute', display: 'flex', alignItems: 'center', gap: '22px' });
@@ -61,7 +61,7 @@
   registerScene('mg03s02', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
-    TM.head(ctx, 'Consistency across everyone', 'Everyone has to follow the plan');
+    TM.head(ctx, 'Consistency across everyone', 'Everyone follows the plan');
     // every time, every person
     const row = put(stage, K.el('div'), 100, 300, { position: 'absolute', display: 'flex', alignItems: 'center', gap: '18px' });
     const et = flow(TM.word(row, 'Every time', { variant: 'pale', icon: 'clock', size: 36 }));
@@ -72,7 +72,7 @@
     const why = put(stage, K.el('div', 'mgb-sm', 'Your dog can’t tell the difference between <b style="color:var(--ink)">a rule that bends</b> for one person and <b style="color:var(--ink)">a rule that doesn’t exist</b>.'),
       100, 410, { width: '800px', fontSize: '34px' });
     A.in(tl, why, cue(1) + 0.1, 'fadeUp', { dur: 0.7 });
-    const call = MG.callout(stage, 'One person who lets it slide teaches your dog <b>the rule is optional</b>. That’s all it takes to bring the reaction back.', { x: 100, y: 660, w: 800, variant: 'red', size: 33 });
+    const call = MG.callout(stage, 'One person who lets it slide teaches your dog <b>the rule is optional</b>. That’s all it takes to bring <b>the unwanted behavior</b> back.', { x: 100, y: 660, w: 800, variant: 'red', size: 33 });
     tl.fromTo(call, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, cue(6) + 0.05);
     tl.to(why, { opacity: 0.55, duration: 0.5 }, cue(6));
     // the four people cards at right
@@ -89,19 +89,19 @@
   registerScene('mg03s03', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
-    TM.head(ctx, 'Why prevention matters', 'Practice makes perfectly unwanted behaviors', { w: 1480, size: 60 });
+    TM.head(ctx, 'Why prevention matters', 'Practice makes perfect');
     const { w, h } = MG.fit([1050, 1400], 480, 640);
     const ph = TM.pic(stage, 'mg_practice.jpg', { x: 100, y: 300, w, h, nat: [1050, 1400], radius: 22 });
     tl.fromTo(ph.wrap, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, 0.35);
     const X = 100 + w + 70, W = 1820 - X;
-    const lead = put(stage, K.el('div', 'mg-lead', 'Every time your dog performs an action, <b>that pathway gets stronger</b>.'), X, 300, { width: W + 'px', fontSize: '38px' });
+    const lead = put(stage, K.el('div', 'mg-lead', 'Every time your dog performs an action, <b>the neural pathway in the brain gets stronger</b>.'), X, 296, { width: W + 'px', fontSize: '38px' });
     A.in(tl, lead, at(ctx, 0, 'every time', 0.45), 'fadeUp', { dur: 0.7 });
 
     // a path in the woods: faint the first time, worn in after many walks; a paw walks it each time
-    const PY = 420, PH = 280;
+    const PY = lead.offsetTop + lead.offsetHeight + 30, PH = 240;
     const woods = put(stage, K.el('div', 'mgb-woods'), X, PY, { width: W + 'px', height: PH + 'px' });
     // trees along the edges, clear of the trail
-    [[0.5, 12], [0.64, 10], [0.78, 14], [0.38, 196], [0.52, 200], [0.88, 186]].forEach(([fx, ty]) => put(woods, K.el('div', 'mgb-tree', K.icon('trees').outerHTML), Math.round(fx * W), ty));
+    [[0.5, 10], [0.64, 8], [0.78, 12], [0.38, 176], [0.52, 176], [0.88, 172]].forEach(([fx, ty]) => put(woods, K.el('div', 'mgb-tree', K.icon('trees').outerHTML), Math.round(fx * W), ty));
     const sv = K.svg(woods, { x: 0, y: 0, w: W, h: PH });
     const d = `M -20 ${PH - 70} C ${W * 0.2} ${PH - 40}, ${W * 0.3} 80, ${W * 0.5} 130 S ${W * 0.8} ${PH - 30}, ${W + 20} 70`;
     const trail = K.path(sv, d, { fill: 'none', stroke: '#b9926a', 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-dasharray': '4 18', opacity: 0.45 });
@@ -132,13 +132,12 @@
     pass('Walked often: easy to follow', tB + 1.4);
 
     // the rehearsals
-    const rr = put(stage, K.el('div'), X, PY + PH + 40, { position: 'absolute', display: 'flex', flexWrap: 'wrap', gap: '16px', width: W + 'px' });
+    const rr = put(stage, K.el('div'), X, PY + PH + 36, { position: 'absolute', display: 'flex', flexWrap: 'wrap', gap: '16px', width: W + 'px' });
     [['Jumping on guests', 'jumping'], ['Barking at the mail carrier', 'barking']].forEach(([t, p], k) => {
       const n = flow(TM.word(rr, t, { variant: 'red', icon: 'repeat', size: 30 }));
       A.in(tl, n, at(ctx, 2, p, 0.2 + 0.3 * k), 'pop', { dur: 0.45 });
     });
-    const call = MG.callout(stage, 'Every rehearsal makes the behavior <b>more automatic</b>, and <b>much harder to change</b> later.', { x: X, y: 0, w: W, variant: 'red', size: 32 });
-    call.style.top = (300 + h - call.offsetHeight) + 'px';
+    const call = MG.callout(stage, 'Every rehearsal: <b>more automatic</b>, and <b>harder to change</b> later.', { x: X, y: rr.offsetTop + rr.offsetHeight + 40, w: W, variant: 'red', size: 32 });
     tl.fromTo(call, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, cue(3) + 0.05);
   });
 
@@ -146,7 +145,7 @@
   registerScene('mg03s04', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
-    TM.head(ctx, 'Rewiring the brain', 'One pathway fades as another forms');
+    TM.head(ctx, 'Rewiring the brain', 'Rewiring the brain');
     const NAT = [682, 788];
     const { w, h } = MG.fit(NAT, 560, 640);
     const ph = TM.pic(stage, 'mg_brain.png', { x: 160, y: 300, w, h, nat: NAT, radius: 0, border: 0 });
@@ -168,11 +167,12 @@
     K.path(fog, 'M ' + OLD.map(p => p.join(' ')).join(' L '), { fill: 'none', stroke: '#e3ecd6', 'stroke-width': 30, 'stroke-linecap': 'round' });
     tl.set(fog, { opacity: 0 }, 0);
     tl.to(fog, { opacity: 0.82, duration: 1.4, ease: 'power1.inOut' }, at(ctx, 1, 'old reaction fades', 0.8) - 0.2);
-    const r1 = TM.row(stage, 'arrow-down', 'The old reaction <b style="color:var(--red)">fades</b>', { size: 38 });
+    const r1 = TM.row(stage, 'arrow-down', 'The old pathway in the brain <b style="color:var(--red)">fades</b>', { size: 38 });
     put(stage, r1, 900, 360, { position: 'absolute' });
     r1.querySelector('.ic').style.cssText += ';background:var(--red-pale);color:var(--red)';
-    const s1 = put(stage, K.el('div', 'mgb-sm', 'With no rehearsals to keep it worn in, the brain stops maintaining the route.'), 986, 440, { width: '830px', fontSize: '30px' });
+    const s1 = put(stage, K.el('div', 'mgb-sm', 'With no rehearsals to keep it worn in, the brain stops maintaining it.'), 986, 440, { width: '830px', fontSize: '30px' });
     A.in(tl, [r1, s1], t1, 'fadeRight', { dur: 0.6, stagger: 0.12 });
+    TM.fx.tag(tl, ph.wrap, 'Old pathway', Math.round(w * 0.0), Math.round(h * 0.86), t1 + 0.3, 'red').style.fontSize = '26px';
 
     // beat 2: the new route lights up node by node to the check
     const t2 = at(ctx, 2, 'each training rep', 0.1);
@@ -180,10 +180,11 @@
     A.draw(tl, nl, t2 + 0.3, 1.6);
     NEW.slice(1).forEach((p, i) => TM.fx.ring(tl, ph.sv, p, t2 + 0.6 + i * 0.5, { r: 22 }));
     TM.fx.ring(tl, ph.sv, NEW[3], at(ctx, 2, 'replacement behaviors', 0.8), { r: 40, n: 2 });
-    const r2 = TM.row(stage, 'arrow-up', 'A new calm response <b>forms</b>', { size: 38 });
+    const r2 = TM.row(stage, 'arrow-up', 'A new pathway in the brain <b>forms</b>', { size: 38 });
     put(stage, r2, 900, 590, { position: 'absolute' });
-    const s2 = put(stage, K.el('div', 'mgb-sm', 'Each training rep strengthens a new pathway: calm emotions and replacement behaviors.'), 986, 670, { width: '830px', fontSize: '30px' });
+    const s2 = put(stage, K.el('div', 'mgb-sm', 'Each training rep builds it: calm emotions and replacement behaviors.'), 986, 670, { width: '830px', fontSize: '30px' });
     A.in(tl, [r2, s2], t2, 'fadeRight', { dur: 0.6, stagger: 0.12 });
+    TM.fx.tag(tl, ph.wrap, 'New pathway', Math.round(w * 0.6), Math.round(h * 0.86), t2 + 0.3, 'green').style.fontSize = '26px';
 
     // beat 3: the banner
     const bn = put(stage, K.el('div', 'tm-banner'), 900, 830, { width: '920px', boxSizing: 'border-box', fontSize: '33px' });

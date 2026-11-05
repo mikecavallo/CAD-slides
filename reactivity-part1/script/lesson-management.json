@@ -62,7 +62,7 @@
    "scenes": [
     {
      "id": "mg01s01",
-     "heading": "A quick recap: triggers and thresholds",
+     "heading": "Triggers and thresholds",
      "visual_concept": "A quick recap: trigger and threshold cards at left; a threshold gauge at right with over (red) and under (green) zones; banner: management keeps your dog under threshold.",
      "assets": [],
      "beats": [
@@ -100,7 +100,7 @@
     },
     {
      "id": "mg01s02",
-     "heading": "Management is the training foundation",
+     "heading": "Where management fits",
      "visual_concept": "Three numbered blocks built like a house: Management as the wide foundation, Training on top, Get out at the side; closing line.",
      "assets": [],
      "beats": [
@@ -144,7 +144,7 @@
    "scenes": [
     {
      "id": "mg02s01",
-     "heading": "What management is, and isn’t",
+     "heading": "What it is, and isn’t",
      "visual_concept": "Your dog's world as a circle that shrinks on purpose, keeping triggers out, then opens back up; IT IS NOT (red) and IT IS (green) cards.",
      "assets": [],
      "beats": [
@@ -194,7 +194,7 @@
    "scenes": [
     {
      "id": "mg03s01",
-     "heading": "100% consistency",
+     "heading": "The golden rule",
      "visual_concept": "A ring fills and counts to 100%; 'Good enough' struck out.",
      "assets": [],
      "beats": [
@@ -212,7 +212,7 @@
     },
     {
      "id": "mg03s02",
-     "heading": "Everyone has to follow the plan",
+     "heading": "Everyone follows the plan",
      "visual_concept": "Every time, every person; four people cards; red callout: one person who lets it slide.",
      "assets": [],
      "beats": [
@@ -247,7 +247,7 @@
        "onscreen": "Whoever answers the door"
       },
       {
-       "say": "One person who lets it slide teaches your dog the rule is optional, and that’s all it takes to bring the reaction back.",
+       "say": "One person who lets it slide teaches your dog the rule is optional, and that’s all it takes to bring the unwanted behavior back.",
        "show": "Red callout.",
        "onscreen": "One person who lets it slide"
       }
@@ -255,16 +255,16 @@
     },
     {
      "id": "mg03s03",
-     "heading": "Practice makes perfectly unwanted behaviors",
+     "heading": "Practice makes perfect",
      "visual_concept": "Tori's dog picture whole at left; a path in the woods that wears in with each walk; two rehearsal chips; callout.",
      "assets": [
       "mg_practice.jpg"
      ],
      "beats": [
       {
-       "say": "Why does consistency matter so much? Every time your dog performs an action, that neural pathway gets stronger.",
+       "say": "Why does consistency matter so much? Every time your dog performs an action, the neural pathway in the brain gets stronger.",
        "show": "Picture; lead line.",
-       "onscreen": "The pathway gets stronger"
+       "onscreen": "The neural pathway in the brain gets stronger"
       },
       {
        "say": "Think of a path in the woods. The first time, it’s barely visible. But the more it’s walked, the easier it is to follow.",
@@ -285,7 +285,7 @@
     },
     {
      "id": "mg03s04",
-     "heading": "One pathway fades as another forms",
+     "heading": "Rewiring the brain",
      "visual_concept": "Tori's brain picture whole; the old red route pulses then fades, the new green route lights node by node to the check; two rows; banner.",
      "assets": [
       "mg_brain.png"
@@ -297,17 +297,17 @@
        "onscreen": "Both ways"
       },
       {
-       "say": "With no rehearsals to keep it worn in, the brain stops maintaining the old route, and the old reaction fades.",
-       "show": "Old route pulses red, then fades. Row: The old reaction fades.",
+       "say": "With no rehearsals to keep it worn in, the brain stops maintaining the old pathway, and the old reaction fades.",
+       "show": "Old pathway on the brain pulses red, then fades. Row: The old pathway in the brain fades.",
        "onscreen": "The old reaction fades"
       },
       {
-       "say": "At the same time, each training rep strengthens a new pathway, based on calm emotions and replacement behaviors.",
-       "show": "New route lights green to the check. Row: A new calm response forms.",
+       "say": "At the same time, each training rep builds a new pathway in the brain, based on calm emotions and replacement behaviors.",
+       "show": "New pathway on the brain lights green to the check. Row: A new pathway in the brain forms.",
        "onscreen": "A new calm response forms"
       },
       {
-       "say": "Management weakens the old pathway, while training builds the new one.",
+       "say": "Management weakens the old pathway in the brain, while training builds the new one.",
        "show": "Banner.",
        "onscreen": "Management weakens, training builds"
       }
@@ -315,7 +315,7 @@
     },
     {
      "id": "mg03s05",
-     "heading": "“Just this once won’t hurt.” But it does.",
+     "heading": "“Just this once”",
      "visual_concept": "Tori's house picture without the crack; Management tag on the foundation; a red crack runs up from the foundation and the house shifts; callout.",
      "assets": [
       "mg_house_clean.png"
@@ -345,7 +345,7 @@
     },
     {
      "id": "mg03s06",
-     "heading": "Exposure alone doesn’t fade reactivity",
+     "heading": "A dangerous myth",
      "visual_concept": "The myth card and what actually happens card; a loop strip (trigger, bark and lunge, trigger goes away) whose strength bar grows; callout.",
      "assets": [],
      "beats": [
@@ -355,25 +355,30 @@
        "onscreen": "A dangerous myth"
       },
       {
-       "say": "It goes: let him see the trigger enough times, and he’ll learn, it’s fine, nothing bad happened, I’ll get over it. But dogs don’t work that way.",
+       "say": "It goes: let him see the trigger enough times, and he’ll learn. It’s fine, nothing bad happened, he’ll get over it. But dogs don’t work that way.",
        "show": "Card: The myth.",
        "onscreen": "The myth"
       },
       {
-       "say": "A dog that reacts and lives through it doesn’t decide the trigger was harmless. The barking and lunging worked. The scary thing went away. So the behavior gets stronger every time.",
-       "show": "Card: What actually happens; loop strip and strength bar.",
+       "say": "Take a fearful dog. A dog who reacts and lives through it doesn’t decide the trigger was harmless. The barking and lunging worked: the scary thing went away. So the behavior gets stronger every time.",
+       "show": "Card: A fearful dog, what actually happens; loop strip and strength bar.",
        "onscreen": "What actually happens"
       },
       {
        "say": "Repeated exposure with no plan doesn’t fade reactivity out. It drills it in.",
        "show": "Red callout.",
        "onscreen": "It drills it in"
+      },
+      {
+       "say": "To understand what a reaction is doing for your dog, we ask WTF: What’s the Function? We explain it in another video, The ABCs of Behavior.",
+       "show": "WTF card: What’s the Function? Explained in The ABCs of Behavior.",
+       "onscreen": "WTF? What’s the Function?"
       }
      ]
     },
     {
      "id": "mg03s07",
-     "heading": "Even quiet watching won’t change how they feel",
+     "heading": "Calm isn’t cured",
      "visual_concept": "Looks like progress (amber) and The truth (green) cards; strip: Trigger shows up, Good things happen, over and over.",
      "assets": [],
      "beats": [
@@ -383,7 +388,7 @@
        "onscreen": "Calm isn't cured"
       },
       {
-       "say": "A dog can stare at a trigger, stay under threshold, never make a sound, and still feel exactly the same about it tomorrow.",
+       "say": "A dog can stare at a trigger, stay under threshold, never make a sound, and still feel exactly the same about it tomorrow, or possibly worse.",
        "show": "Card: Looks like progress.",
        "onscreen": "Looks like progress"
       },
@@ -434,15 +439,15 @@
        "onscreen": "Even with the best intentions"
       },
       {
-       "say": "Understanding these five common mistakes helps you avoid them from the start. Each one quietly weakens the foundation you’re trying to build.",
-       "show": "Five numbered pictures.",
-       "onscreen": "Five common mistakes"
+       "say": "Let’s look at five common mistakes, and how to avoid each one.",
+       "show": "Five numbered pictures, no labels.",
+       "onscreen": "What to watch for"
       }
      ]
     },
     {
      "id": "mg04s01",
-     "heading": "Picking and choosing which parts to follow",
+     "heading": "Picking and choosing",
      "visual_concept": "Picture whole at right; the owner's quote; a plan checklist with a skipped piece leaving a red gap; How to avoid it card.",
      "assets": [
       "mg_mistake1.jpg"
@@ -472,7 +477,7 @@
     },
     {
      "id": "mg04s02",
-     "heading": "Underestimating the environment",
+     "heading": "Missing subtle triggers",
      "visual_concept": "Picture whole at right with the hound's gaze drawn off to the side and an amber ring; three subtle trigger chips; How to avoid it card.",
      "assets": [
       "mg_mistake2.jpg"
@@ -502,7 +507,7 @@
     },
     {
      "id": "mg04s03",
-     "heading": "Relaxing management too soon",
+     "heading": "Relaxing too soon",
      "visual_concept": "Picture whole at right; old (red) and new (green) pathway bars; steps down for reducing management gradually; How to avoid it card.",
      "assets": [
       "mg_mistake3.jpg"
@@ -514,17 +519,17 @@
        "onscreen": "Mistake 3"
       },
       {
-       "say": "After a little improvement, it’s easy to assume the problem is solved. But the new responses aren’t solid yet.",
-       "show": "Bars: New response still short.",
-       "onscreen": "Not solid yet"
+       "say": "After a little improvement, it’s easy to assume the problem is solved. But the new pathway in the brain isn’t solid yet.",
+       "show": "Brain picture: the new pathway is faint.",
+       "onscreen": "New pathway: not solid yet"
       },
       {
-       "say": "So the dog reverts in the real world, because the old neural pathways are still stronger.",
-       "show": "Old pathway bar longer, in red.",
-       "onscreen": "The old pathway is still stronger"
+       "say": "So the dog reverts in the real world, because the old pathway is still stronger.",
+       "show": "The old pathway lights up red.",
+       "onscreen": "Old pathway: still stronger"
       },
       {
-       "say": "How to avoid it: be patient and trust the process. Reduce management gradually and strategically, based on your dog’s consistent success, not your own impatience.",
+       "say": "How to avoid it: be patient and trust the process. Reduce management gradually and strategically, based on your dog’s consistent success, not your own timeline.",
        "show": "How to avoid it card; gentle steps.",
        "onscreen": "How to avoid it"
       }
@@ -532,7 +537,7 @@
     },
     {
      "id": "mg04s04",
-     "heading": "Viewing management as punishment",
+     "heading": "Seeing it as punishment",
      "visual_concept": "Picture whole at right; 'Punishment' struck out, 'Protection' in green; How to avoid it card.",
      "assets": [
       "mg_mistake4.jpg"
@@ -562,7 +567,7 @@
     },
     {
      "id": "mg04s05",
-     "heading": "Feeding after the reaction has started",
+     "heading": "Feeding too late",
      "visual_concept": "Picture whole at right with a red ring on the barking mouth; two strips: Trigger, Bark, Treat (red) and Trigger, Calm notice, Treat (green); How to avoid it card.",
      "assets": [
       "mg_mistake5.jpg"
@@ -592,7 +597,7 @@
     },
     {
      "id": "mg04s06",
-     "heading": "Management is the foundation",
+     "heading": "Bringing it together",
      "visual_concept": "The house picture standing whole on its foundation; three numbered takeaways; the closing statement; logo close.",
      "assets": [
       "mg_house_clean.png"

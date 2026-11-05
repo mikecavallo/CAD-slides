@@ -69,7 +69,7 @@
   registerScene('mg01s01', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
-    TM.head(ctx, 'A quick recap', 'A quick recap: triggers and thresholds');
+    TM.head(ctx, 'A quick recap', 'Triggers and thresholds');
 
     // left: the two definitions
     const c1 = MG.card(stage, { x: 100, y: 292, w: 800, label: 'A trigger', icon: 'zap', body: 'Anything that *sets your dog off*.' });
@@ -124,9 +124,7 @@
   registerScene('mg01s02', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
-    TM.head(ctx, 'Where management fits', 'Management is the training foundation');
-    const lead = put(stage, K.el('div', 'mg-lead', 'Management is <b>the foundation</b> of your training plan.'), 100, 290, { width: '1700px' });
-    A.in(tl, lead, at(ctx, 0, 'foundation', 0.6), 'fadeUp', { dur: 0.6 });
+    TM.head(ctx, 'Where management fits', 'Where management fits');
 
     const blk = (cls, n, t, tag, body, x, y, w, h) => {
       const b = put(stage, K.el('div', 'mga-blk ' + cls), x, y, { width: w + 'px', height: h + 'px' });
@@ -134,19 +132,20 @@
       return b;
     };
     // the slab at the bottom, Training built on it, Get out at the side
-    const slab = blk('slab', 1, 'Management', 'The foundation', 'Set up your dog’s life so they don’t get hit with triggers you didn’t plan for.', 100, 680, 1180, 230);
-    const trn = blk('white', 2, 'Training', 'Creates change', 'Planned sessions where you pair the trigger with *good things*.', 170, 410, 1040, 230);
-    const out = put(stage, K.el('div', 'mga-blk white'), 1330, 410, { width: '490px', height: '500px', justifyContent: 'flex-start' });
+    const slab = blk('slab', 1, 'Management', 'The foundation', 'Set up your dog’s life so they don’t get hit with triggers you didn’t plan for.', 100, 610, 1180, 230);
+    const trn = blk('white', 2, 'Training', 'Creates change', 'Planned sessions where you pair the trigger with *good things*.', 170, 340, 1040, 230);
+    const out = put(stage, K.el('div', 'mga-blk white'), 1330, 340, { width: '490px', height: '500px', justifyContent: 'flex-start' });
     out.innerHTML = `<div class="ic">${K.icon('door-open').outerHTML}</div><div class="top"><div class="n">3</div><div class="t">Get out</div></div>
       <div class="tag" style="margin-left:0;align-self:flex-start;background:var(--green-pale);color:var(--green-dark)">Escape hatch</div>
       <div class="b">Remove your dog from the situation if an <b style="color:var(--ink)">unexpected trigger</b> appears.</div>`;
-    tl.fromTo(slab, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, cue(1) + 0.05);
+    // the foundation slab lands as "foundation" is said; what it means fills in on the next line
+    tl.fromTo(slab, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, at(ctx, 0, 'foundation', 0.6));
+    A.in(tl, slab.querySelector('.b'), cue(1) + 0.1, 'fadeUp', { dur: 0.6 });
     tl.fromTo(trn, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'bounce.out' }, cue(2) + 0.05);
     tl.fromTo(out, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, cue(3) + 0.05);
     // the groundwork: the slab glows, the lead line changes
     const tG = cue(4) + 0.1;
-    tl.to(lead, { opacity: 0, duration: 0.35 }, tG - 0.1);
-    const lead2 = put(stage, K.el('div', 'mg-lead', 'Get this right, and everything else has <b>something solid to stand on</b>.'), 100, 290, { width: '1700px' });
+    const lead2 = put(stage, K.el('div', 'mg-lead', 'Get this right, and everything else has <b>something solid to stand on</b>.'), 100, 876, { width: '1720px' });
     A.in(tl, lead2, tG + 0.3, 'fadeUp', { dur: 0.6 });
     tl.to(slab, { boxShadow: '0 0 0 8px rgba(184,217,154,1), 0 24px 54px rgba(63,107,34,0.4)', scale: 1.02, duration: 0.7, ease: 'power2.out' }, tG);
     tl.to([trn, out], { opacity: 0.6, duration: 0.6 }, tG);
@@ -157,7 +156,7 @@
   registerScene('mg02s01', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
-    TM.head(ctx, 'The basics', 'What management is, and isn’t');
+    TM.head(ctx, 'The basics', 'What it is, and isn’t');
     const lead = put(stage, K.el('div', 'mg-lead', 'Controlling <b>the environment</b>, not changing the behavior itself.'), 100, 290, { width: '1720px' });
     A.in(tl, lead, cue(0) + 0.2, 'fadeUp', { dur: 0.6 });
 
@@ -166,15 +165,15 @@
     const world = put(stage, K.el('div', 'mga-world'), WX, WY, { width: WW + 'px', height: WH + 'px' });
     A.in(tl, world, cue(0) + 0.5, 'fadeUp', { dur: 0.7 });
     const sv = K.svg(world, { x: 0, y: 0, w: WW, h: WH });
-    const CX = WW / 2, CY = 250;
-    const circ = K.circle(sv, CX, CY, 200, { fill: '#fff', stroke: 'var(--green)', 'stroke-width': 6 });
-    tl.fromTo(circ, { attr: { r: 0 }, opacity: 0 }, { attr: { r: 200 }, opacity: 1, duration: 0.9, ease: 'power3.out' }, cue(0) + 0.8);
+    const CX = WW / 2, CY = 232;
+    const circ = K.circle(sv, CX, CY, 185, { fill: '#fff', stroke: 'var(--green)', 'stroke-width': 6 });
+    tl.fromTo(circ, { attr: { r: 0 }, opacity: 0 }, { attr: { r: 185 }, opacity: 1, duration: 0.9, ease: 'power3.out' }, cue(0) + 0.8);
     const dog = put(world, K.el('div', 'mga-paw', K.icon('paw-print').outerHTML), CX - 32, CY - 32);
     A.in(tl, dog, cue(0) + 1.1, 'pop', { dur: 0.5 });
-    const wl = put(world, K.el('div', 'mga-wlab', 'Your dog’s world'), 0, 474);
+    const wl = put(world, K.el('div', 'mga-wlab', 'Your dog’s world'), 0, 470);
     A.in(tl, wl, cue(0) + 1.2, 'fadeUp', { dur: 0.5 });
     // triggers sit inside the big world: dog, mail, door, car
-    const TR = [['dog', -130, -110], ['mail', 140, -90], ['door-closed', -150, 100], ['car', 130, 115]];
+    const TR = [['dog', -95, -85], ['mail', 100, -70], ['door-closed', -105, 75], ['car', 95, 85]];
     const trs = TR.map(([ic, dx, dy]) => {
       const n = put(world, K.el('div', 'mga-trig', K.icon(ic).outerHTML), CX + dx - 37, CY + dy - 37);
       A.in(tl, n, cue(0) + 1.4, 'pop', { dur: 0.4 });
@@ -183,19 +182,19 @@
     // beat 1: the world shrinks; the triggers end up outside it
     const tS = at(ctx, 1, 'shrink', 0.15);
     tl.to(circ, { attr: { r: 95 }, duration: 1.1, ease: 'power3.inOut' }, tS);
-    trs.forEach(({ n, dx, dy }) => tl.to(n, { x: dx * 0.55, y: dy * 0.55 * 0.9, duration: 1.1, ease: 'power3.inOut' }, tS));
+    trs.forEach(({ n, dx, dy }) => tl.to(n, { x: dx * 0.75, y: dy * 0.75, duration: 1.1, ease: 'power3.inOut' }, tS));
     tl.to(wl, { opacity: 0, duration: 0.3 }, tS);
-    const wl2 = put(world, K.el('div', 'mga-wlab', 'A smaller world, on purpose'), 0, 474);
+    const wl2 = put(world, K.el('div', 'mga-wlab', 'A smaller world, on purpose'), 0, 470);
     A.in(tl, wl2, tS + 0.9, 'fadeUp', { dur: 0.5 });
     // beat 2: it opens back up, on our terms: the triggers are back inside, now calm (green)
     const tO = at(ctx, 2, 'open it back up', 0.4);
-    tl.to(circ, { attr: { r: 230 }, duration: 1.4, ease: 'power2.inOut' }, tO);
+    tl.to(circ, { attr: { r: 190 }, duration: 1.4, ease: 'power2.inOut' }, tO);
     trs.forEach(({ n }, k) => {
       tl.to(n, { x: 0, y: 0, duration: 1.4, ease: 'power2.inOut' }, tO);
       tl.to(n, { backgroundColor: '#e8f1dc', borderColor: '#619537', color: '#3f6b22', duration: 0.5 }, tO + 1.0 + 0.15 * k);
     });
     tl.to(wl2, { opacity: 0, duration: 0.3 }, tO);
-    const wl3 = put(world, K.el('div', 'mga-wlab', 'Opened back up, <span style="color:var(--green)">on our terms</span>'), 0, 474);
+    const wl3 = put(world, K.el('div', 'mga-wlab', 'Opened back up, <span style="color:var(--green)">on our terms</span>'), 0, 470);
     A.in(tl, wl3, tO + 1.0, 'fadeUp', { dur: 0.5 });
 
     // right: it is not / it is

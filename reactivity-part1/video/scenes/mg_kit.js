@@ -6,7 +6,8 @@
 //   MG.card(parent, o)                a labelled card: { x, y, w, h, variant: 'red' | 'green' | 'amber' | '', label, icon, title, body }
 //   MG.callout(parent, html, o)       a line with a coloured bar at its left: { x, y, w, variant: 'red' | 'green', size }
 //   MG.avoid(ctx, o)                  the green "How to avoid it" card: { x, y, w, text, t }
-//   MG.mistake(ctx, o)                a common-mistake slide: heading at left, Tori's picture whole at right, a "Mistake N" chip
+//   MG.mistake(ctx, o)                a common-mistake slide: heading at left, Tori's picture whole at right, a "Mistake N" chip,
+//                                     and m.col, a column for the slide's content with even spacing
 (() => {
   // Ask for every brand font weight as soon as the page is parsed, so they are loaded before the scene measures its
   // text (scenes are built before document.fonts.ready; a heading measured in a fallback font can wrap differently).
@@ -21,6 +22,19 @@
     document.body.appendChild(w);
   };
   if (document.body) warm(); else document.addEventListener('DOMContentLoaded', warm);
+
+  // Slide numbers in the footer tab (Tori's deck numbers its slides): this lesson's slides count up from the title (1, not
+  // shown); the Part cards show no number. lib.js builds the tab with the chapter number at load, before its first await,
+  // so this load listener (added after lib.js's) runs once the tab exists.
+  window.addEventListener('load', () => {
+    const T = window.TIMING || {};
+    const id = new URLSearchParams(location.search).get('scene') || (T.order || [])[0] || '';
+    if (!/^(mg|bumper_mg)/.test(id)) return;
+    const span = document.querySelector('.chrome-footer .tab span');
+    if (!span) return;
+    const n = T.order.filter(s => !s.startsWith('bumper_')).indexOf(id) + 1;
+    span.textContent = n > 1 ? String(n) : '';
+  });
 })();
 
 (() => {
@@ -109,7 +123,10 @@
     const top = hd.h.root.offsetTop + hd.h.root.offsetHeight + 34;
     const chip = put(stage, K.el('div', 'mg-chip red', `<span>Mistake ${o.n}</span>`), 100, top);
     A.in(tl, chip, 0.5, 'fadeRight', { dur: 0.6 });
-    return { hd, ph, chip, X: 100, W, top: top + 84, px, py, w, h };
+    const ctop = top + chip.offsetHeight + 44;
+    // the slide's content stacks in one column with even spacing (items keep their own reveal animations)
+    const col = put(stage, K.el('div'), 100, ctop, { position: 'absolute', width: W + 'px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: (o.gap ?? 38) + 'px' });
+    return { hd, ph, chip, col, X: 100, W, top: ctop, px, py, w, h };
   }
 
   window.MG = { css, fit, card, callout, avoid, mistake };

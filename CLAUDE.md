@@ -290,8 +290,10 @@ pipeline). This file records the state, decisions and working agreements from ea
 
 - Source: Tori's deck "Management, Part one: the basics" (Master_Management_part_1.pptx, uploaded Nov 4; 19 slides, no
   speaker notes). Claude wrote all the narration from the slide text and put it in a NEW Google Doc in Tori's Drive,
-  "Management: The Basics: Narration Script (Nov 4)", id 1_fXa1ZaPbhuah0T9OnesaBnyFUJ4uC0IwuoIrtlIg0Q. That doc is the
-  source of truth now; sync `script/lesson-management.json` to it before every build.
+  "Management: The Basics: Narration Script (Nov 4)", id 1_fXa1ZaPbhuah0T9OnesaBnyFUJ4uC0IwuoIrtlIg0Q (now titled "draft 1,
+  superseded"). Current script doc: "Management: The Basics: Narration Script (draft 2, Nov 5)", id
+  1Q6ji2K9_KzjrbpkCATQM_Ky6z8nVcoXDZqu844t7e0k (slide numbers in its headings). The newest doc is the source of truth; sync
+  `script/lesson-management.json` to it before every build. Each round: a new doc version in the Drive folder, old one renamed.
 - Lesson `script/lesson-management.json` (`LESSON=lesson-management.json`), series title "Management: The Basics"
   (title lines "Management:" / "The Basics"), `"motion": "cinematic"`, ids prefixed `mg`. Chapters use the silent
   "Part N" cards like Markers and Mechanics: `mg00` Welcome (intro, plan: What you'll learn + Why it matters), `mg01` Where
@@ -315,6 +317,26 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Draft 1 (Nov 4): full video 9:19 sent in chat (`out/Management-The-Basics-draft1.mp4`, CRF 26, 25 MB), storyboard and
   script sent too. Online preview (temporary AI voice): https://claude.ai/artifact/BHXsejnE1aLqyYg2HRsmoa
   (`out/web/management/`, web_page.py --kicker "Foundations course"; fix the chips line by hand: "4 parts", "19 slides").
+- Round 2 (Nov 5, Tori's draft 1 notes, applied as draft 2): every title is short (Triggers and thresholds, Where
+  management fits, What it is, and isn't, The golden rule, Everyone follows the plan, Practice makes perfect, Rewiring the
+  brain, "Just this once", A dangerous myth, Calm isn't cured, Five common mistakes, Picking and choosing, Missing subtle
+  triggers, Relaxing too soon, Seeing it as punishment, Feeding too late, Bringing it together); Tori wants short titles
+  everywhere. The footer tab now shows the SLIDE number (title = 1, hidden; Part cards show none): mg_kit.js sets it on
+  load, no lib.js change. mg01s02: no repeated "foundation" line (the slab carries it). mg02s01: label clear of the circle.
+  mg03s01: 100% shown once (the ring); text says "every single time". mg03s02: "bring the unwanted behavior back".
+  mg03s03 and mg03s04: say "the neural pathway in the brain", "old pathway in the brain", "new pathway in the brain"; brain
+  picture tagged Old pathway / New pathway; spacing on mg03s03 measured, not fixed. mg03s05: the house is LEVEL and builds
+  floor by floor on a level foundation, then the crack opens in the slab and runs up, and the house shifts (body and slab
+  are separate layers: `mg_house_body.png`, `mg_house_slab.png`, `mg_house_level.png`, made from mg_house_clean.png by
+  rotating the house body 3 degrees upright; the crack is Tori's, mapped onto the level house). Never start with a tilted
+  house; the closing slide uses the level house too. mg03s06: myth quote ends "he'll get over it"; the example is a fearful
+  dog (card "A fearful dog: what happens"); new beat 4 points to WTF, What's the Function?, explained in The ABCs of Behavior
+  (Chapter 3 of Understanding Dog Behavior). mg03s07: "still feel exactly the same about it tomorrow, or possibly worse".
+  mg04s00 is an intro, not a summary: "Let's look at five common mistakes, and how to avoid each one", numbered pictures,
+  no labels. Mistake slides stack their content in one evenly spaced column (MG.mistake m.col); mistake 1 lost the
+  managed/skipped chips (the quote says it); mistake 3 shows the brain picture again (new pathway faint and dashed, old
+  pathway red) instead of bars, less text, "not your own timeline"; mistake 4 has no ring on the picture (Tori found it
+  weird; keep picture marks small and meaningful).
 - Recordings: `Mg00intro.m4a`, `Mg00plan.m4a`, `Mg01s01.m4a` ... named by scene id.
 - Tori asked (Nov 4) for every draft to be saved in the chat thread: each round, send the video, a storyboard of every
   slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder

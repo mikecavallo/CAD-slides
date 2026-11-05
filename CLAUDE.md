@@ -314,7 +314,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   they feel" (the myth quote keeps "him"); the deck's slide 13 typo ("Each one quietly foundation") reads "quietly
   weakens the foundation"; the deck's dashed "Practice makes perfect, ly" pun is "Practice makes perfectly unwanted behaviors" (no dash);
   mistake 2's chips are short ("Outside sounds", "Shadows at a window", "Routine changes").
-- Draft 1 (Nov 4): full video 9:19 sent in chat (`out/Management-The-Basics-draft1.mp4`, CRF 26, 25 MB), storyboard and
+- Draft 2 (Nov 5): 9:29, sent in chat with storyboard and script; preview page republished (same link). Draft 1 (Nov 4): full video 9:19 sent in chat (`out/Management-The-Basics-draft1.mp4`, CRF 26, 25 MB), storyboard and
   script sent too. Online preview (temporary AI voice): https://claude.ai/artifact/BHXsejnE1aLqyYg2HRsmoa
   (`out/web/management/`, web_page.py --kicker "Foundations course"; fix the chips line by hand: "4 parts", "19 slides").
 - Round 2 (Nov 5, Tori's draft 1 notes, applied as draft 2): every title is short (Triggers and thresholds, Where

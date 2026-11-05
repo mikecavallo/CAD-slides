@@ -51,7 +51,8 @@ def main():
 
     # 1) web encode with a keyframe at every segment start
     web = out / "_web.mp4"
-    kf = ",".join(f"{t:.3f}" for t in starts)
+    # just under each start: the keyframe must land ON the slide's first frame (rounding up would push it one frame late)
+    kf = ",".join(f"{max(0.0, t - 0.002):.3f}" for t in starts)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", args.video, "-c:v", "libx264", "-preset", "slow", "-crf", str(args.crf),
                     "-tune", "animation", "-maxrate", "1400k", "-bufsize", "2800k", "-pix_fmt", "yuv420p", "-force_key_frames", kf,
                     "-c:a", "aac", "-b:a", "96k", "-ac", "1", "-movflags", "+faststart", str(web)], check=True)
@@ -86,9 +87,8 @@ def main():
         a = segs[g[0]]["start"]
         b = segs[g[-1]]["start"] + segs[g[-1]]["dur"] if g[-1] < len(segs) - 1 else total
         name = f"part{p + 1}.mp4"
-        # Seek a hair past the start: the forced keyframe sits on the first frame at or after the (rounded) start time,
-        # and a stream-copy seek to the rounded time itself lands on the keyframe BEFORE it, so the part would open
-        # with seconds of the previous slide (Tori heard the end of one slide repeated at the start of the next part).
+        # Seek a hair past the start so the stream-copy cut lands on the slide's own keyframe; a cut that falls back to the
+        # keyframe before it opens the part with seconds of the previous slide (Tori heard that as the slide repeating).
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{a + 0.01:.3f}", "-i", str(web), "-t", f"{b - a:.3f}", "-c", "copy",
                         "-avoid_negative_ts", "make_zero", "-movflags", "+faststart", str(out / name)], check=True)
         got = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out / name)],

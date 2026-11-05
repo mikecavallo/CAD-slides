@@ -119,12 +119,12 @@
      "assets": [],
      "beats": [
       {
-       "say": "Think of your marker as a promise. When you say it, you’re promising your dog a treat, and exactly where that treat will be. They’ll know exactly what’s coming.",
+       "say": "Think of your marker as a promise. It tells your dog a treat is coming, and where they’ll find it.",
        "show": "",
        "onscreen": ""
       },
       {
-       "say": "If you use your marker without delivering on it, with the treat and in the place you promised, you break that promise. And a broken promise is just confusing for your dog.",
+       "say": "If you mark without following through, with the treat in the place your dog expects, you break that promise. That’s confusing for your dog.",
        "show": "",
        "onscreen": ""
       }
@@ -466,7 +466,7 @@
      ],
      "beats": [
       {
-       "say": "Say your chosen marker, pause briefly, then bring a treat directly to your dog’s mouth.",
+       "say": "First, we’ll introduce the marker for food to the mouth. Say your chosen marker, pause briefly, then bring a treat directly to your dog’s mouth.",
        "show": "Rows: Word, pause, treat to the mouth.",
        "onscreen": "To the mouth"
       },
@@ -479,6 +479,11 @@
        "say": "If you’re using a clicker, the process is the same, with a click instead of a word.",
        "show": "Row: Clicker: click, pause, treat.",
        "onscreen": "Clicker: same process"
+      },
+      {
+       "say": "Here, we’re demonstrating the marker for food to the mouth with Fisher.",
+       "show": "The clip plays in the frame.",
+       "onscreen": ""
       }
      ],
      "clip": {
@@ -550,7 +555,7 @@
      ],
      "beats": [
       {
-       "say": "Say your chosen word, pause briefly, then toss one treat a short distance where your dog can easily see and reach it.",
+       "say": "Next, we’ll introduce the marker for a treat toss. Say your chosen word, pause briefly, then toss one treat a short distance where your dog can easily see and reach it.",
        "show": "Arc; row: Word, pause, short easy toss.",
        "onscreen": "A short, easy toss"
       },
@@ -578,7 +583,7 @@
      "assets": [],
      "beats": [
       {
-       "say": "Here’s Eskara learning her toss marker. Listen for “Free.” Notice that the hand closest to her bowls the treat low and across my body, so it rolls along the floor.",
+       "say": "Here, we’re demonstrating the marker for a treat toss with Eskara. Listen for “Free.” Notice that the hand closest to her bowls the treat low and across my body, so it rolls along the floor.",
        "show": "Video frame; one row.",
        "onscreen": "Learning the marker"
       }
@@ -629,7 +634,7 @@
      ],
      "beats": [
       {
-       "say": "Say your chosen word, pause briefly, then scatter a few small treats on the ground.",
+       "say": "Next, we’ll introduce the marker for a scatter. Say your chosen word, pause briefly, then scatter a few small treats on the ground.",
        "show": "Treats sprinkle; row: Word, pause, scatter a few.",
        "onscreen": "Scatter a few"
       },
@@ -652,7 +657,7 @@
      "assets": [],
      "beats": [
       {
-       "say": "Here’s a scatter demonstration. Listen for “Scatter,” then watch the treats land on the floor right in front of the dog.",
+       "say": "Here, we’re demonstrating the marker for a scatter. Listen for “Scatter,” then watch the treats land on the floor right in front of the dog.",
        "show": "Video frame; rows.",
        "onscreen": "A scatter"
       }

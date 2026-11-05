@@ -285,6 +285,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   and its Mark / Pause / Move strip (slide content moved down); tm04s02 clicker line now "the process is the same, with a
   click instead of a word" (row "Clicker: the same, with a click"); tm04s04v's "Mark, pause, move" row; takeaway #3 no
   longer says "pause". Don't add it back elsewhere.
+- Round 19 (Nov 5): the promise slide says "promise" twice and never "exactly" (b0 "It tells your dog a treat is coming,
+  and where they'll find it."; b1 "...you break that promise. That's confusing for your dog."; card "Where they'll find
+  it", result "= confusing for your dog"). Each teaching slide opens by naming the marker ("First/Next, we'll introduce the
+  marker for food to the mouth / a treat toss / a scatter."), and each demo says what it shows before the clip
+  (tm04s02 new last beat "Here, we're demonstrating the marker for food to the mouth with Fisher."; tm04s03e and tm04s04v
+  open "Here, we're demonstrating the marker for ...").
 - Nov 4: editable script for Tori, Google Doc "Markers and Mechanics: Narration Script (updated Nov 4)", id
   1fqvGTQKhgPAnFNGcuFUY6fpKEEn4B2g8PaY9J9uisvE (all changes through round 18, slide order, start times). Treat it as the
   current source of truth: read it before the next build and sync any of Tori's edits into lesson-mechanics.json.

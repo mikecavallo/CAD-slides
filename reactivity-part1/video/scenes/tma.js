@@ -211,7 +211,7 @@
     top.appendChild(K.el('div', 'tm-lab', '= a promise'));
     top.lastChild.style.cssText += 'position:relative;font-size:40px;font-family:var(--font-head);color:var(--green-dark)';
     A.in(tl, card, cue(0) + 0.1, 'fadeUp', { dur: 0.6 });
-    const rows = [['cookie', 'A treat is coming', 'promising your dog a treat'], ['map-pin', '*Exactly where* it will be', 'exactly where']].map(([ic, h, p]) => {
+    const rows = [['cookie', 'A treat is coming', 'a treat is coming'], ['map-pin', '*Where* they’ll find it', 'where they']].map(([ic, h, p]) => {
       const r = TM.row(card, ic, h, { size: 36 });
       A.in(tl, r, at(ctx, 0, p, 0.4), 'fadeRight', { dur: 0.5 });
       return r;
@@ -219,7 +219,7 @@
     // the three places a treat can be: each picture lifts in on "exactly where"
     const H = 255, G = [['tm_mouth_3.jpg', [524, 828], 'At their mouth'], ['tm_toss.jpg', [1468, 968], 'Rolling along the ground'], ['tm_scatter.jpg', [1466, 962], 'In front of them']];
     let x = 800;
-    const tW = at(ctx, 0, 'exactly where', 0.6);
+    const tW = at(ctx, 0, 'where they', 0.6);
     const ws = G.map(([, [nw, nh]]) => Math.round(H * nw / nh)), GAP = (1820 - 800 - ws.reduce((a, b) => a + b, 0)) / 2;
     const pics = G.map(([src, nat, lab], i) => {
       const ph = TM.pic(stage, src, { x, y: 360, w: ws[i], h: H, nat, radius: 18, border: 6 });
@@ -230,24 +230,24 @@
       x += ws[i] + GAP;
       return { ph, l };
     });
-    const tK = at(ctx, 0, 'know exactly', 0.3);
+    const tK = at(ctx, 0, 'find it', 0.6);
     pics.forEach((p, i) => TM.fx.ring(tl, p.ph.sv, [p.ph.w / 2, H * 0.62], tK + 0.15 * i, { r: 26 }));
     // breaking it: marking without delivering the treat, or not where you promised
     const bp = put(stage, K.el('div'), 100, 740, { position: 'absolute', width: '1720px', height: '150px', boxSizing: 'border-box', padding: '0 40px',
       borderRadius: '26px', background: 'var(--red-pale)', border: '2px solid #efc5b9', display: 'flex', alignItems: 'center', gap: '22px' });
-    const t1 = at(ctx, 1, 'without delivering', 0.1);
+    const t1 = at(ctx, 1, 'without following', 0.1);
     A.in(tl, bp, t1 - 0.2, 'fadeUp', { dur: 0.5 });
     const lab = K.el('div', 'tm-lab', 'Marked, then:');
     lab.style.cssText += 'position:relative;font-size:34px;color:var(--ink)';
     bp.appendChild(lab);
-    [['No treat', 'with the treat'], ['Wrong place', 'place you promised']].forEach(([w, p]) => {
+    [['No treat', 'with the treat'], ['Wrong place', 'your dog expects']].forEach(([w, p]) => {
       const n = TM.word(bp, w, { variant: 'red', cross: true, size: 30 });
       Object.assign(n.style, { position: 'relative', left: '', top: '' });
       const t = at(ctx, 1, p, 0.5);
       A.in(tl, n, t, 'pop', { dur: 0.4 });
       TM.strike(tl, n, t + 0.35);
     });
-    const res = K.el('div', 'tm-lab', '= a broken promise: <b>confusing for your dog</b>');
+    const res = K.el('div', 'tm-lab', '= <b>confusing for your dog</b>');
     res.style.cssText += 'position:relative;font-size:32px;color:var(--red)';
     bp.appendChild(res);
     A.in(tl, res, at(ctx, 1, 'confusing', 0.3), 'fadeUp', { dur: 0.5 });

@@ -13,9 +13,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   id `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (read it with the Google Drive connector; Claude cannot
   edit it, so give Tori paste-ready text). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
   that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
-  water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,
-  warning signals) for later chapters; Chapter 3 is the ABCs, and Chapter 4 adds heat and the thermometer to the pot. Sync the lesson
-  file to the doc before every build; the doc wins.
+  water-in-a-pot chapter). Below that is **Chapter 3: The ABCs of Behavior** (CH03,S01 to S17). The doc moved the ABCs
+  ahead of temperature: Chapter 3 is the ABCs and ends "Now we can add temperature"; temperature is Chapter 4. Sync the
+  lesson file to the doc before every build; the doc wins.
 
 ## Current structure (Chapter 1 is finished, pending Tori's later edits)
 
@@ -119,6 +119,40 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Recordings: `Ch02intro.m4a`, `Ch02plan.m4a`, `Ch02s01.m4a` ... `Ch02s12.m4a` (rename Tori's files to match).
 - The lesson has `"tail": 5.0` (applies to its very last slide only) so the thermometer reveal holds before the logo close.
 - Online preview (temporary AI voice): https://claude.ai/artifact/Nzf2aTAYk5iAVNdqKmb1Js (`out/web/chapter2/`).
+
+## Chapter 3 video (built, preview voice only)
+
+- Lesson `script/lesson-ch3.json` (`LESSON=lesson-ch3.json`): `ch03intro`, `ch03card`, `ch03plan`, `ch03s01` to `ch03s14`.
+  About 8 minutes. Renumbered again in round 6; recording ids follow these numbers.
+- The current script is `script/Chapter-3-Script.txt` (regenerate it from the lesson after every change). It is also in
+  Tori's Drive as "Chapter 3 script v3 (paste into Script v4)" (id 1DSB9NQNFvhxaEv_mapkFZQ1Wl-Z9gOeHEY8DiNOv2tk; v2 was
+  14Mrf88lQQMxOM2PX6ZAddF6v9LgbIYRGNUmAfNf8FsQ). Drive can only create new files: no Google Docs editor connector, so
+  Claude can't edit Script v4 in place. The lesson file is the source until Tori's doc catches up.
+- Slides: s01 ABCs intro (pot with the thermometer through the middle, label just "Temperature"; A, B, C tiles sit around the circled dog, never "Before"/"After" chips, then drop into a row); s02 The ABCs: the
+  excited-greeting strip is the explainer (definitions inside the frames in order A, B, then the plum heart "Emotional
+  response" between A and B, then C; each definition fades into the greeting photo); s03 "WTF? What's the Function?" (A, B,
+  C tiles become W, T, F, then the question "What did the behavior accomplish?", the greeting's possible function, "two more
+  examples"; round 7 cut the function definition card and the looks like vs does cards as repeats); s04 approach and s05 guard (the other dog "goes away", it turns and walks off; frames open with the definitions, kit `defs` option); s06 same behavior
+  different job ("look at the whole picture with the ABCs, not just the behavior"; "it worked, so it's more likely to be repeated"); s07 movement isn't function ("May look like: wants to get
+  closer" / "In reality: wants the other dog to go away"; "Look at the entire picture: the ABCs"); s08 Why the Pattern
+  Repeats (its own slide: A, B, C tiles, it worked, got what it wanted or needed, next time B more likely); s09 Before
+  Training (strip with definitions first); s10 What Training Includes (management, changing emotions, new behaviors); s11
+  Building a New Path (Chapter 1's lawn from ch01s09 + a management gate; "Old path: e.g. barking, lunging", "New path: e.g.
+  looks back at you, checks in"; occasional practice grows the old path back); s12 Training in Action (during: "Management,
+  e.g. more distance", the consequence still needs to work, "Same consequence. A better behavior in its place."; after:
+  "Emotions changed" (no "calmer"), less management; C: less space needed, then Tori's painting `abc_after_c2.jpg`,
+  "Building a relationship"; no "that's a good thing", no arousal columns); s13 Your Homework (examples prefixed "e.g.";
+  WTF with the function question; "It doesn't have to be perfect. I'll help you with that."); s14 temperature and logo close (says "closer to the rim of the pot", not threshold).
+- Rules from Tori's rounds: no cycles anywhere (linear ABC only); any behavior named on screen gets "e.g." examples so the
+  course is not only about barking and lunging; cut anything that repeats (Four Broad Directions, the separate
+  emotional-response slide, Emotion vs Function, When Behavior Works, the doc's old S14/S15 were all cut); the
+  consequence, not the behavior, still has to work for the dog; training = management + changing emotions + new
+  behaviors; no straight line across the pot top (c2_pot.js `BODY_OPEN`; Chapter 2 picks it up on its next render).
+- Scene code: `c3a.js` (intro, card, plan, s01 to s03; `C3.potWithThermo`), `c3b.js` (s04 to s06), `c3c.js` (s07),
+  `c3d.js` (s08 to s12), `c3e.js` (s13, s14); kit `c3_abc.js` (photo ABC strip, function tag, tiles, chips, rows).
+- Colours: A olive, B green, C deep green; the emotional response is plum (`#8b5d8f`); function green with a target icon.
+- Online preview (temporary AI voice): https://claude.ai/artifact/LgEH4FvtiMGM1FG7V3iDuz (`out/web/chapter3/`; publish
+  without the .vtt files, captions are inline).
 
 ## Recordings (Tori's voice)
 

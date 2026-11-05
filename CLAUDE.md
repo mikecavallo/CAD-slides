@@ -292,7 +292,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   the Fisher toss clip (tm04s03v) is NOT on Drive: it was recovered from the published preview (part with tm04s03v, the
   frame box cropped out). Tools: pip install kokoro-onnx sherpa-onnx soundfile numpy pillow (use --ignore-installed for
   pillow), models in /opt/tts (kokoro-onnx release model-files-v1.0; sherpa-onnx asr-models zipformer-en-2023-06-26).
-- Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
+- Online page (Tori's cloned voice since Nov 5): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

@@ -1,0 +1,626 @@
+{
+ "title": "Management: The Basics",
+ "series": {
+  "title": "Management: The Basics",
+  "titleLines": [
+   "Management:",
+   "The Basics"
+  ],
+  "motion": "cinematic"
+ },
+ "notes": "Foundations course video, rebuilt from Tori's deck 'Management, Part one: the basics' (Master_Management_part_1.pptx, Nov 4). The deck had no narration: Claude drafted it from the slide text; Tori gets paste-ready copy. Build with LESSON=lesson-management.json.",
+ "tail": 4.0,
+ "chapters": [
+  {
+   "id": "mg00",
+   "num": 0,
+   "title": "Welcome",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "mg00intro",
+     "heading": "Management: The Basics",
+     "visual_concept": "The shared title slide.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Hi, I’m Tori Ganino with Calling All Dogs. Welcome to Management: The Basics.",
+       "show": "Title, headshot, name block, training photo.",
+       "onscreen": "Management: The Basics"
+      }
+     ]
+    },
+    {
+     "id": "mg00plan",
+     "heading": "Where we're headed",
+     "visual_concept": "Plan slide: What you'll learn (four rows), Why it matters.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "In this section, we’ll look at where management fits into training, what management is and what it isn’t, the golden rule of management, and five common mistakes, with how to avoid them.",
+       "show": "Card: What you'll learn.",
+       "onscreen": "What you'll learn"
+      },
+      {
+       "say": "Get management right, and everything else you teach has something solid to stand on.",
+       "show": "Card: Why it matters.",
+       "onscreen": "Why it matters"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mg01",
+   "num": 1,
+   "kicker": "Part",
+   "title": "Where Management Fits",
+   "slide_refs": [
+    3,
+    4
+   ],
+   "scenes": [
+    {
+     "id": "mg01s01",
+     "heading": "Triggers and thresholds",
+     "visual_concept": "A quick recap: trigger and threshold cards at left; a threshold gauge at right with over (red) and under (green) zones; banner: management keeps your dog under threshold.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Before we get into management, let’s do a quick recap of two words we’ll use a lot: triggers and thresholds.",
+       "show": "Heading; two card outlines.",
+       "onscreen": "A quick recap"
+      },
+      {
+       "say": "A trigger is anything that sets your dog off, like another dog, the mail carrier, or a knock at the door.",
+       "show": "Card: A trigger, with three examples.",
+       "onscreen": "A trigger"
+      },
+      {
+       "say": "The threshold is the point where your dog stops being comfortable and stress signs start to show.",
+       "show": "Card: The threshold; the gauge's threshold line.",
+       "onscreen": "The threshold"
+      },
+      {
+       "say": "Over threshold, your dog may be barking, lunging, or panicking. Adrenaline takes over, and they can’t listen or learn.",
+       "show": "Gauge: Over threshold zone in red.",
+       "onscreen": "Over threshold"
+      },
+      {
+       "say": "Under threshold, your dog notices the trigger but stays calm. They can think, settle, and learn.",
+       "show": "Gauge: Under threshold zone in green.",
+       "onscreen": "Under threshold"
+      },
+      {
+       "say": "Every management choice has one job: keep your dog under threshold, where learning can happen.",
+       "show": "Banner; marker settles in the green zone.",
+       "onscreen": "Management keeps your dog here"
+      }
+     ]
+    },
+    {
+     "id": "mg01s02",
+     "heading": "Where management fits",
+     "visual_concept": "Three numbered blocks built like a house: Management as the wide foundation, Training on top, Get out at the side; closing line.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "So where does management fit? It’s the foundation of your training plan.",
+       "show": "Heading.",
+       "onscreen": "The foundation"
+      },
+      {
+       "say": "Management means setting up your dog’s life so they don’t get hit with triggers you didn’t plan for.",
+       "show": "Block 1: Management, The foundation.",
+       "onscreen": "Management"
+      },
+      {
+       "say": "Training is planned sessions where you pair the trigger with good things. That’s what creates change.",
+       "show": "Block 2: Training, Creates change.",
+       "onscreen": "Training"
+      },
+      {
+       "say": "And if an unexpected trigger appears, you get out. Remove your dog from the situation. That’s your escape hatch.",
+       "show": "Block 3: Get out, Escape hatch.",
+       "onscreen": "Get out"
+      },
+      {
+       "say": "Management is the groundwork that makes training possible and keeps your progress from unraveling. Get this right, and everything else has something solid to stand on.",
+       "show": "Foundation glows; closing line.",
+       "onscreen": "The groundwork"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mg02",
+   "num": 2,
+   "kicker": "Part",
+   "title": "What Management Is (and Isn’t)",
+   "slide_refs": [
+    5
+   ],
+   "scenes": [
+    {
+     "id": "mg02s01",
+     "heading": "What it is, and isn’t",
+     "visual_concept": "Your dog's world as a circle that shrinks on purpose, keeping triggers out, then opens back up; IT IS NOT (red) and IT IS (green) cards.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Management is about controlling the environment, not changing the behavior itself.",
+       "show": "Lead line: controlling the environment.",
+       "onscreen": "Controlling the environment"
+      },
+      {
+       "say": "We shrink your dog’s world on purpose, so the reactions stop happening by accident.",
+       "show": "The world circle shrinks; triggers stay outside.",
+       "onscreen": "A smaller world, on purpose"
+      },
+      {
+       "say": "That small, controlled world is exactly what lets us open it back up later, on our terms, without the reactions coming back.",
+       "show": "The circle opens back up: On our terms.",
+       "onscreen": "Open it back up later"
+      },
+      {
+       "say": "So management is not changing how your dog feels. That’s the job of training.",
+       "show": "Card: It is not.",
+       "onscreen": "It is not"
+      },
+      {
+       "say": "Management is preventing the unwanted behavior from ever being practiced.",
+       "show": "Card: It is.",
+       "onscreen": "It is"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mg03",
+   "num": 3,
+   "kicker": "Part",
+   "title": "The Golden Rule",
+   "slide_refs": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "scenes": [
+    {
+     "id": "mg03s01",
+     "heading": "The golden rule",
+     "visual_concept": "A ring fills and counts to 100%; 'Good enough' struck out.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "There is one rule, and only one: management must be followed one hundred percent of the time.",
+       "show": "Ring counts up to 100%.",
+       "onscreen": "100%"
+      },
+      {
+       "say": "This is not an area where good enough is good enough.",
+       "show": "'Good enough' chip struck through.",
+       "onscreen": "Not good enough"
+      }
+     ]
+    },
+    {
+     "id": "mg03s02",
+     "heading": "Everyone follows the plan",
+     "visual_concept": "Every time, every person; four people cards; red callout: one person who lets it slide.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "The golden rule isn’t only about every time. It’s about every person.",
+       "show": "Every time / Every person.",
+       "onscreen": "Every person"
+      },
+      {
+       "say": "Your dog can’t tell the difference between a rule that bends for one person and a rule that doesn’t exist.",
+       "show": "Line under it.",
+       "onscreen": "A rule that bends"
+      },
+      {
+       "say": "Everyone in the family, kids included, uses the same gates, cues, and routines.",
+       "show": "Card: Family and kids.",
+       "onscreen": "Family and kids"
+      },
+      {
+       "say": "Brief house guests before they arrive, every single time.",
+       "show": "Card: House guests.",
+       "onscreen": "House guests"
+      },
+      {
+       "say": "Leave walkers and sitters written instructions, with no exceptions.",
+       "show": "Card: Walkers and sitters.",
+       "onscreen": "Walkers and sitters"
+      },
+      {
+       "say": "And whoever answers the door, the plan still runs, even when you’re busy or not home.",
+       "show": "Card: Whoever answers the door.",
+       "onscreen": "Whoever answers the door"
+      },
+      {
+       "say": "One person who lets it slide teaches your dog the rule is optional, and that’s all it takes to bring the unwanted behavior back.",
+       "show": "Red callout.",
+       "onscreen": "One person who lets it slide"
+      }
+     ]
+    },
+    {
+     "id": "mg03s03",
+     "heading": "Practice makes perfect",
+     "visual_concept": "Tori's dog picture whole at left; a path in the woods that wears in with each walk; two rehearsal chips; callout.",
+     "assets": [
+      "mg_practice.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Why does consistency matter so much? Every time your dog performs an action, the neural pathway in the brain gets stronger.",
+       "show": "Picture; lead line.",
+       "onscreen": "The neural pathway in the brain gets stronger"
+      },
+      {
+       "say": "Think of a path in the woods. The first time, it’s barely visible. But the more it’s walked, the easier it is to follow.",
+       "show": "A faint trail darkens and widens with each walk.",
+       "onscreen": "A path in the woods"
+      },
+      {
+       "say": "Let your dog rehearse jumping on guests or barking at the mail carrier, and you’re helping them perfect the very thing you don’t want.",
+       "show": "Red chips: Jumping on guests, Barking at the mail carrier.",
+       "onscreen": "Rehearsals"
+      },
+      {
+       "say": "Every rehearsal makes the behavior more automatic, and much harder to change later.",
+       "show": "Callout.",
+       "onscreen": "More automatic, harder to change"
+      }
+     ]
+    },
+    {
+     "id": "mg03s04",
+     "heading": "Rewiring the brain",
+     "visual_concept": "Tori's brain picture whole; the old red route pulses then fades, the new green route lights node by node to the check; two rows; banner.",
+     "assets": [
+      "mg_brain.png"
+     ],
+     "beats": [
+      {
+       "say": "Here’s the good news: this works both ways.",
+       "show": "Brain picture.",
+       "onscreen": "Both ways"
+      },
+      {
+       "say": "With no rehearsals to keep it worn in, the brain stops maintaining the old pathway, and the old reaction fades.",
+       "show": "Old pathway on the brain pulses red, then fades. Row: The old pathway in the brain fades.",
+       "onscreen": "The old reaction fades"
+      },
+      {
+       "say": "At the same time, each training rep builds a new pathway in the brain, based on calm emotions and replacement behaviors.",
+       "show": "New pathway on the brain lights green to the check. Row: A new pathway in the brain forms.",
+       "onscreen": "A new calm response forms"
+      },
+      {
+       "say": "Management weakens the old pathway in the brain, while training builds the new one.",
+       "show": "Banner.",
+       "onscreen": "Management weakens, training builds"
+      }
+     ]
+    },
+    {
+     "id": "mg03s05",
+     "heading": "“Just this once”",
+     "visual_concept": "Tori's house picture without the crack; Management tag on the foundation; a red crack runs up from the foundation and the house shifts; callout.",
+     "assets": [
+      "mg_house_clean.png"
+     ],
+     "beats": [
+      {
+       "say": "It’s easy to think, just this once won’t hurt. But it does.",
+       "show": "Heading; the house.",
+       "onscreen": "Just this once"
+      },
+      {
+       "say": "Picture a house built floor by floor. The rooms can be flawless, but if the foundation underneath has a crack, the whole structure shifts, splits, and eventually comes down.",
+       "show": "Floors light up one by one; a crack starts in the foundation.",
+       "onscreen": "A crack in the foundation"
+      },
+      {
+       "say": "Management is that foundation. Every time you let your dog rehearse an unwanted behavior, another crack runs through it, and the work you built on top starts to fall.",
+       "show": "Tag: Management on the foundation; the crack runs up the house and it shifts.",
+       "onscreen": "Management is the foundation"
+      },
+      {
+       "say": "It might not seem like much in the moment, but a cracked foundation brings the whole house down.",
+       "show": "Callout.",
+       "onscreen": "A cracked foundation"
+      }
+     ]
+    },
+    {
+     "id": "mg03s06",
+     "heading": "A dangerous myth",
+     "visual_concept": "The myth card and what actually happens card; a loop strip (trigger, bark and lunge, trigger goes away) whose strength bar grows; callout.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "There’s a dangerous myth that goes along with this.",
+       "show": "Heading.",
+       "onscreen": "A dangerous myth"
+      },
+      {
+       "say": "It goes: let him see the trigger enough times, and he’ll learn. It’s fine, nothing bad happened, he’ll get over it. But dogs don’t work that way.",
+       "show": "Card: The myth.",
+       "onscreen": "The myth"
+      },
+      {
+       "say": "Take a fearful dog. A dog who reacts and lives through it doesn’t decide the trigger was harmless. The barking and lunging worked: the scary thing went away. So the behavior gets stronger every time.",
+       "show": "Card: A fearful dog, what actually happens; loop strip and strength bar.",
+       "onscreen": "What actually happens"
+      },
+      {
+       "say": "Repeated exposure with no plan doesn’t fade reactivity out. It drills it in.",
+       "show": "Red callout.",
+       "onscreen": "It drills it in"
+      },
+      {
+       "say": "To understand what a reaction is doing for your dog, we ask WTF: What’s the Function? We explain it in another video, The ABCs of Behavior.",
+       "show": "WTF card: What’s the Function? Explained in The ABCs of Behavior.",
+       "onscreen": "WTF? What’s the Function?"
+      }
+     ]
+    },
+    {
+     "id": "mg03s07",
+     "heading": "Calm isn’t cured",
+     "visual_concept": "Looks like progress (amber) and The truth (green) cards; strip: Trigger shows up, Good things happen, over and over.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "And calm isn’t the same as cured.",
+       "show": "Kicker line.",
+       "onscreen": "Calm isn't cured"
+      },
+      {
+       "say": "A dog can stare at a trigger, stay under threshold, never make a sound, and still feel exactly the same about it tomorrow, or possibly worse.",
+       "show": "Card: Looks like progress.",
+       "onscreen": "Looks like progress"
+      },
+      {
+       "say": "Quietly tolerating something isn’t the same as feeling good about it. And your dog won’t connect the dots on their own. We have to help them build the association.",
+       "show": "Card: The truth.",
+       "onscreen": "The truth"
+      },
+      {
+       "say": "Trigger shows up, good things happen. Over and over, on purpose. That’s what changes how they feel, and it’s the whole reason planned training sessions exist.",
+       "show": "Strip: Trigger shows up, Good things happen; Over and over, on purpose.",
+       "onscreen": "Trigger shows up, good things happen"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mg04",
+   "num": 4,
+   "kicker": "Part",
+   "title": "Five Common Mistakes",
+   "slide_refs": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "scenes": [
+    {
+     "id": "mg04s00",
+     "heading": "Five common mistakes",
+     "visual_concept": "Tori's five pictures in a row, whole, numbered 1 to 5.",
+     "assets": [
+      "mg_mistake1.jpg",
+      "mg_mistake2.jpg",
+      "mg_mistake3.jpg",
+      "mg_mistake4.jpg",
+      "mg_mistake5.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Even with the best intentions, it’s easy to slip.",
+       "show": "Heading.",
+       "onscreen": "Even with the best intentions"
+      },
+      {
+       "say": "Let’s look at five common mistakes, and how to avoid each one.",
+       "show": "Five numbered pictures, no labels.",
+       "onscreen": "What to watch for"
+      }
+     ]
+    },
+    {
+     "id": "mg04s01",
+     "heading": "Picking and choosing",
+     "visual_concept": "Picture whole at right; the owner's quote; a plan checklist with a skipped piece leaving a red gap; How to avoid it card.",
+     "assets": [
+      "mg_mistake1.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Mistake number one: picking and choosing which parts to follow.",
+       "show": "Heading; picture.",
+       "onscreen": "Mistake 1"
+      },
+      {
+       "say": "You might hear something like, I’ll manage not seeing other dogs, but I don’t need to worry about the barking.",
+       "show": "Quote.",
+       "onscreen": "Quote"
+      },
+      {
+       "say": "But you can’t cherry-pick management. Each piece works together as a whole, and the parts you skip leave gaps where unwanted behaviors slip through and get practiced.",
+       "show": "Plan pieces with a red gap.",
+       "onscreen": "Gaps"
+      },
+      {
+       "say": "How to avoid it: commit to the entire plan, even the parts that seem minor. If something truly doesn’t fit your lifestyle, reach out so we can find an alternative. Don’t just skip it.",
+       "show": "How to avoid it card.",
+       "onscreen": "How to avoid it"
+      }
+     ]
+    },
+    {
+     "id": "mg04s02",
+     "heading": "Missing subtle triggers",
+     "visual_concept": "Picture whole at right with the hound's gaze drawn off to the side and an amber ring; three subtle trigger chips; How to avoid it card.",
+     "assets": [
+      "mg_mistake2.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Mistake number two: underestimating the environment.",
+       "show": "Heading; picture.",
+       "onscreen": "Mistake 2"
+      },
+      {
+       "say": "Many owners manage the obvious triggers, but miss the subtle ones: sounds from outside, shadows moving past a window, or a change in household routine.",
+       "show": "Three amber chips; gaze on the picture.",
+       "onscreen": "The subtle ones"
+      },
+      {
+       "say": "These unmanaged triggers keep filling the stress bucket and sabotage progress.",
+       "show": "Line: they add up.",
+       "onscreen": "They add up"
+      },
+      {
+       "say": "How to avoid it: observe your dog carefully. What makes them alert, tense, or reactive? Keep a log if you need to. The more thorough you are, the more complete your plan.",
+       "show": "How to avoid it card.",
+       "onscreen": "How to avoid it"
+      }
+     ]
+    },
+    {
+     "id": "mg04s03",
+     "heading": "Relaxing too soon",
+     "visual_concept": "Picture whole at right; old (red) and new (green) pathway bars; steps down for reducing management gradually; How to avoid it card.",
+     "assets": [
+      "mg_mistake3.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Mistake number three: relaxing management too soon.",
+       "show": "Heading; picture.",
+       "onscreen": "Mistake 3"
+      },
+      {
+       "say": "After a little improvement, it’s easy to assume the problem is solved. But the new pathway in the brain isn’t solid yet.",
+       "show": "Brain picture: the new pathway is faint.",
+       "onscreen": "New pathway: not solid yet"
+      },
+      {
+       "say": "So the dog reverts in the real world, because the old pathway is still stronger.",
+       "show": "The old pathway lights up red.",
+       "onscreen": "Old pathway: still stronger"
+      },
+      {
+       "say": "How to avoid it: be patient and trust the process. Reduce management gradually and strategically, based on your dog’s consistent success, not your own timeline.",
+       "show": "How to avoid it card; gentle steps.",
+       "onscreen": "How to avoid it"
+      }
+     ]
+    },
+    {
+     "id": "mg04s04",
+     "heading": "Seeing it as punishment",
+     "visual_concept": "Picture whole at right; 'Punishment' struck out, 'Protection' in green; How to avoid it card.",
+     "assets": [
+      "mg_mistake4.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Mistake number four: viewing management as punishment.",
+       "show": "Heading; picture.",
+       "onscreen": "Mistake 4"
+      },
+      {
+       "say": "Some owners feel guilty, as if they’re depriving their dog of freedom or fun. That mindset makes the plan hard to stick to.",
+       "show": "Line: feeling guilty.",
+       "onscreen": "Feeling guilty"
+      },
+      {
+       "say": "But here’s the truth: management isn’t punishment. It’s protection, from stress and from rehearsing behaviors that make life harder.",
+       "show": "Punishment struck out; Protection.",
+       "onscreen": "Protection"
+      },
+      {
+       "say": "How to avoid it: reframe your thinking. Management is a gift: a chance for your dog to feel safe, learn new skills, and build a better future. It’s temporary, and it’s essential.",
+       "show": "How to avoid it card.",
+       "onscreen": "How to avoid it"
+      }
+     ]
+    },
+    {
+     "id": "mg04s05",
+     "heading": "Feeding too late",
+     "visual_concept": "Picture whole at right with a red ring on the barking mouth; two strips: Trigger, Bark, Treat (red) and Trigger, Calm notice, Treat (green); How to avoid it card.",
+     "assets": [
+      "mg_mistake5.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Mistake number five: feeding after the reaction has started.",
+       "show": "Heading; picture.",
+       "onscreen": "Mistake 5"
+      },
+      {
+       "say": "It’s an ordinary moment. Your dog is at the window or loose in the yard, and a trigger appears. Your dog barks, and you hand over treats to settle them.",
+       "show": "Red strip: Trigger, Bark, Treats.",
+       "onscreen": "Trigger, bark, treats"
+      },
+      {
+       "say": "But food after the bark or lunge pays for the reaction, not the calm.",
+       "show": "Pays for the reaction.",
+       "onscreen": "Pays for the reaction"
+      },
+      {
+       "say": "How to avoid it: stay a step ahead. Cover the window, and scan the yard first. Feed for calmly noticing a trigger, before the reaction.",
+       "show": "Green strip and How to avoid it card.",
+       "onscreen": "How to avoid it"
+      }
+     ]
+    },
+    {
+     "id": "mg04s06",
+     "heading": "Bringing it together",
+     "visual_concept": "The house picture standing whole on its foundation; three numbered takeaways; the closing statement; logo close.",
+     "assets": [
+      "mg_house_clean.png"
+     ],
+     "beats": [
+      {
+       "say": "Let’s bring it together. Management keeps your dog under threshold, so the old reactions aren’t practiced, and training can build something new.",
+       "show": "Takeaway 1.",
+       "onscreen": "Under threshold"
+      },
+      {
+       "say": "Follow it one hundred percent of the time, with everyone in your dog’s life.",
+       "show": "Takeaway 2.",
+       "onscreen": "100%, everyone"
+      },
+      {
+       "say": "Management is the foundation. Everything else falls apart without it.",
+       "show": "Closing statement, then the logo close.",
+       "onscreen": "Management is the foundation"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

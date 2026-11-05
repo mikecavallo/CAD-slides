@@ -481,9 +481,13 @@
     const f = el('div', 'chrome-footer');
     f.appendChild(el('div', 'url', 'www.' + (B.url || 'callingalldogsny.com')));
     f.appendChild(el('div', 'rule'));
-    const tab = el('div', 'tab');
-    tab.appendChild(el('span', null, info.chapterNum ? String(info.chapterNum) : ''));
-    f.appendChild(tab);
+    // series "footerTab": false (lesson file) drops the green number tab; the rule then runs to the right margin
+    if ((window.TIMING.series || {}).footerTab === false) f.querySelector('.rule').style.right = '76px';
+    else {
+      const tab = el('div', 'tab');
+      tab.appendChild(el('span', null, info.chapterNum ? String(info.chapterNum) : ''));
+      f.appendChild(tab);
+    }
     stage.appendChild(f);
     const url = f.querySelector('.url');
     return { logo, footer: f, hideUrl: () => (url.style.opacity = 0), hideLogo: () => (logo.style.opacity = 0), hideFooter: () => (f.style.opacity = 0) };

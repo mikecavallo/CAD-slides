@@ -291,6 +291,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   marker for food to the mouth / a treat toss / a scatter."), and each demo says what it shows before the clip
   (tm04s02 new last beat "Here, we're demonstrating the marker for food to the mouth with Fisher."; tm04s03e and tm04s04v
   open "Here, we're demonstrating the marker for ...").
+- Nov 5: Tori removed the green number tab at the bottom right; the footer rule runs to the right margin. Lesson series
+  `"footerTab": false` (video/lib.js buildChrome); only Markers and Mechanics has it so far (ask before changing the others).
 - Nov 4: editable script for Tori, Google Doc "Markers and Mechanics: Narration Script (updated Nov 4)", id
   1fqvGTQKhgPAnFNGcuFUY6fpKEEn4B2g8PaY9J9uisvE (all changes through round 18, slide order, start times). Treat it as the
   current source of truth: read it before the next build and sync any of Tori's edits into lesson-mechanics.json.

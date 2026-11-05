@@ -320,6 +320,45 @@ pipeline). This file records the state, decisions and working agreements from ea
   slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder
   "Management: The Basics (video)" (id 10Fqf8KJHhF_Jcwan0sm65bz_VUbiucOV) holds the narration doc.
 
+## Management: Solutions and Setups (Foundations course video, Management part 2; preview voice only)
+
+- Source: Tori's deck "Management, Part two: solutions and set ups" (3-Master_Management part 2.pptx, 51 slides, 43 MB, no
+  speaker notes; Tori shared it from Proton Drive: the public link opens in headless Chromium and the LAST "Download"
+  button saves it). Claude wrote all the narration from the slide text and put it in a NEW Google Doc,
+  "Management: Solutions and Setups: Narration Script (Nov 4)", id 1Zq2RdUwbp6cBYSBfpT4c00a2IUn-1Tl8WMGRZGPHxiU, in the
+  Drive folder "Management: Solutions and Setups (video)" (id 1tFQpVyvXjCazVdAH-IcOlJirl3NIciSm). The doc is the source of
+  truth; sync `script/lesson-management2.json` to it before every build.
+- Lesson `script/lesson-management2.json` (`LESSON=lesson-management2.json`), series title "Management: Solutions and
+  Setups" (title lines "Management:" / "Solutions and Setups"), `"motion": "cinematic"`, ids prefixed `ms`. Deck order kept.
+  `ms00` Welcome (intro, plan with six rows + Why it matters, s01 two layers of safety), then silent "Part N" cards:
+  `ms01` Going for Walks (s00 overview, s01 to s08), `ms02` At Home: Sights & Sounds (s00, s01 to s09, s10 see it in
+  action: fence reactivity clip, s11 day to day: Tori's five real-life pictures), `ms03` Resource Guarding (s00, s01 to
+  s04, s05 see it in action: Knox clip, s06 when surprises keep happening), `ms04` Multi-Dog Conflict (s00, s01 to s04),
+  `ms05` Dog & Cat Conflict (s00, s01 to s04), `ms06` Going for Rides (s00, s01 to s05), `ms07` Set Up for Success (s01 key
+  reminders, s02 toolkit, s03 tally sheet, s04 Remember + logo close). 58 segments, 16:06 with the AI voice.
+- Scene code: `video/scenes/ms_kit.js` (`window.MS`: `tip` = one setup slide: heading, section chip "Going for walks ·
+  01", Tori's picture whole at right with TM.fx rings, dotted lines and one tag, lead, word chips landing on their
+  phrases, and the green "Why it works" card on the bottom; `overview` = section opener with the deck's summary line and
+  the numbered setups), `msa.js` to `mse.js` (setup data live in each file). render.mjs `usesC1.ms = ['c1','c2','tm','mg']`.
+  ms00plan injects CSS to tighten the plan card's row gap (six rows overflowed the fixed-height card).
+- Tori's pictures (from the deck, shown whole, uncropped originals): `ms_s05.jpg` ... `ms_s47.jpg` (named by deck slide),
+  `ms_s24_1..5.jpg` (the real-life slide), `ms_tally.png` (the tally sheet, cut from the deck render). Clip posters
+  `ms_clip_fence.jpg`, `ms_clip_knox.jpg` are the YouTube thumbnails.
+- Video slides: ms02s10 = YouTube I_ihrcVAxAA "Management of Fence Reactivity"; ms03s05 = YouTube 2eVFt_velbU "Knox RG:
+  Leaving the feeding area/seeing empty bowl picked up". YouTube blocks downloads here, so both show the poster until
+  Tori uploads the files as `clips/ms02s10.mp4` and `clips/ms03s05.mp4` (they play in the frame after the line, own sound).
+- Claude's choices to confirm with Tori: tip 1 (strategic routes) narration drops the deck's "walk during quieter times"
+  because tip 6 covers it; home tip 7 drops "disconnect the doorbell" (tip 1) and keeps "swap in a quieter chime"; the
+  plan line, every overview line, the clip intros, the real-life captions (guessed from the pictures: gates, a second
+  fence line, frosted film, cardboard on the couch window, a screen), "Let me know, and we'll adjust it together" and the
+  toolkit grouping (walks / home / always) are Claude's; the tally sheet's "more than three, carry on into the next
+  week's grid" line was left out (unclear); the deck's "Avoid trips & park smart" is narrated "avoid extra trips".
+- Draft 1 (Nov 4): video, storyboard and script sent in chat (`Management-Solutions-and-Setups-...-draft1`), online
+  preview (temporary AI voice): https://claude.ai/artifact/3GTxLsy1JSsP9tEcnp4MgN (`out/web/management2/`, web_page.py --kicker
+  "Foundations course"; fix the chips line by hand: "16:05 min", "7 parts", "51 slides", flag "Draft 1"). Full video 16:05,
+  chat copy CRF 26 = 51 MB; render took 22 min with 4 workers.
+- Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s00.m4a` ... named by scene id.
+
 ## Recordings (Tori's voice)
 
 - One file per slide, named by scene id: `Ch01s05.m4a` (case does not matter). A slide in pieces:

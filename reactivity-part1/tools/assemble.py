@@ -39,6 +39,8 @@ def chime(length=1.6):
         tt = np.clip(t - d, 0, None)
         env = (t >= d) * (1 - np.exp(-tt * 90)) * np.exp(-tt * 3.2)
         out += env * (np.sin(2 * np.pi * f * tt) + 0.25 * np.sin(2 * np.pi * 2 * f * tt) + 0.08 * np.sin(2 * np.pi * 3 * f * tt))
+    fade = int(SR * 0.5)  # the decay is still audible at the end of the buffer: ease it out instead of stopping dead
+    out[-fade:] *= 0.5 * (1 + np.cos(np.linspace(0, np.pi, fade)))
     return (out / np.max(np.abs(out)) * 0.16).astype(np.float32)
 
 

@@ -304,13 +304,15 @@
     A.in(tl, l4, clamp(at(4, 'resource guarding', 0.1, 0.3), t4 + 0.2, end(4) - 10), 'fadeUp', { dur: 0.8 });
     const gs = K.svg(LF, { x: 0, y: 0, w: 1920, h: 1080 });
     const GY = 829;
-    K.line(gs, 150, GY + 4, 1130, GY + 4, { stroke: '#dfe4d8', 'stroke-width': 4 });
+    const floor = K.line(gs, 150, GY + 4, 1130, GY + 4, { stroke: '#dfe4d8', 'stroke-width': 4 });
     const RG = dogAt(gs, 400, 700, 1.0);
     const [mx, my] = RG.pt(396, 84), [nkx, nky] = RG.pt(300, 114), [chx, chy] = RG.pt(210, 160);
     const ball = K.group(gs);
     K.circle(ball, 572, GY - 26, 26, { fill: '#2f7fae', stroke: '#fff', 'stroke-width': 4 });
     K.path(ball, `M 552 ${GY - 34} C 564 ${GY - 22} 580 ${GY - 22} 592 ${GY - 34}`, { stroke: '#cfe3f0', 'stroke-width': 4, fill: 'none' });
     const tDog = t4 + 0.35;
+    // the floor line only belongs to this scene: hidden until it starts (it had shown through 'Human decides' in beat 1)
+    tl.fromTo(floor, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power1.out' }, tDog);
     A.in(tl, RG.outer, tDog, 'fadeUp', { dur: 0.8 });
     tl.fromTo(ball, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2.5)' }, tDog + 0.5);
     // the person: an outline from Tori's ABC illustration, walking in from the right

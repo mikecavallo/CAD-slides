@@ -1,11 +1,11 @@
-// Management: The Basics, Part 4 (five common mistakes) and the close.
-//   mg04s00  five common mistakes: Tori's five pictures in a row, whole, numbered (an intro, so no labels yet)
-//   mg04s01  picking and choosing: the owner's quote; skipped parts leave gaps; how to avoid it
-//   mg04s02  missing subtle triggers: the hound's gaze off to the side; three subtle triggers; the stress bucket fills
-//   mg04s03  relaxing too soon: Tori's brain picture again, the new pathway faint, the old one red; the line still on
-//   mg04s04  seeing it as punishment: Punishment struck out, Protection
-//   mg04s05  feeding too late: Trigger, Bark, Treats (red) vs Trigger, Calmly notices, Treats (green)
-//   mg04s06  bringing it together: the level house on its foundation; two takeaways and the closing statement; logo close
+// Management: The Basics, Part 3 (five common mistakes) and the close.
+//   mg03s00  five common mistakes: Tori's five pictures in a row, whole, numbered (an intro, so no labels yet)
+//   mg03s01  picking and choosing: the owner's quote; skipped parts leave gaps; how to avoid it
+//   mg03s02  underestimating the environment: the hound's gaze off to the side; three subtle triggers; the stress bucket fills
+//   mg03s03  relaxing management too soon: Tori's brain picture again, the new pathway faint, the old one red; the line still on
+//   mg03s04  viewing management as punishment: Punishment struck out, Protection from rehearsing and from uncomfortable situations
+//   mg03s05  feeding too late: Trigger, Bark, Treats (red) vs Trigger, Calmly notices, Treats (green)
+//   mg03s06  bringing it together: the level house on its foundation; two takeaways and the closing statement; logo close
 (() => {
   const { at, put, clamp } = TM;
   const CSS = `
@@ -37,7 +37,8 @@
   // the How to avoid it card, sitting on the bottom of the content area
   const avoid = (ctx, m, text, beat = 3) => {
     const c = MG.avoid(ctx, { x: m.X, y: 0, w: m.W, text, t: ctx.cue(beat) + 0.05, size: 31 });
-    c.style.top = (948 - c.offsetHeight) + 'px';
+    // right under the slide's content (Tori: no big gap between the words and the card)
+    c.style.top = Math.min(948 - c.offsetHeight, m.col.offsetTop + m.col.offsetHeight + 52) + 'px';
     return c;
   };
 
@@ -57,7 +58,7 @@
   const PICS = [['mg_mistake1.jpg', [1050, 1400]], ['mg_mistake2.jpg', [933, 1400]], ['mg_mistake3.jpg', [1050, 1400]], ['mg_mistake4.jpg', [1050, 1400]], ['mg_mistake5.jpg', [1400, 1050]]];
 
   // ---------------------------------------------------------------- five common mistakes (the intro: numbered pictures, no labels yet)
-  registerScene('mg04s00', ctx => {
+  registerScene('mg03s00', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Even with the best intentions', 'Five common mistakes');
@@ -80,22 +81,22 @@
   });
 
   // ---------------------------------------------------------------- 1: picking and choosing
-  registerScene('mg04s01', ctx => {
+  registerScene('mg03s01', ctx => {
     const { stage, tl, cue } = ctx;
     const m = mistake(ctx, { n: 1, title: 'Picking and choosing', src: 'mg_mistake1.jpg', nat: [1050, 1400] });
     const q = K.el('div', 'mgd-q', `${K.icon('quote').outerHTML}“I’ll manage not seeing other dogs, but I don’t need to worry about the barking.”`);
     Object.assign(q.style, { position: 'relative', width: '100%' });
     m.col.appendChild(q);
     tl.fromTo(q, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, cue(1) + 0.05);
-    const g = txtIn(m.col, 'Skipped parts leave <b>gaps</b> where unwanted behavior gets practiced.', 'red');
+    const g = txtIn(m.col, 'Skipped parts leave <b>gaps</b>: unwanted behaviors get practiced, and the emotions we’re trying to change keep happening.', 'red');
     A.in(tl, g, at(ctx, 2, 'parts you skip', 0.6), 'fadeUp', { dur: 0.6 });
     avoid(ctx, m, 'Commit to *the entire plan*, even the parts that seem minor. Something doesn’t fit your lifestyle? *Reach out* for an alternative.');
   });
 
   // ---------------------------------------------------------------- 2: missing subtle triggers
-  registerScene('mg04s02', ctx => {
+  registerScene('mg03s02', ctx => {
     const { stage, tl, cue } = ctx;
-    const m = mistake(ctx, { n: 2, title: 'Missing subtle triggers', src: 'mg_mistake2.jpg', nat: [933, 1400] });
+    const m = mistake(ctx, { n: 2, title: 'Underestimating the environment', src: 'mg_mistake2.jpg', nat: [933, 1400] });
     const lead = txtIn(m.col, 'The obvious triggers get managed. <b>The subtle ones get missed:</b>');
     A.in(tl, lead, cue(1) + 0.05, 'fadeUp', { dur: 0.6 });
     const { row, els } = rowIn(m.col, [['Outside sounds', 'amber', 'volume-2'], ['Shadows at a window', 'amber', 'app-window'], ['Routine changes', 'amber', 'calendar-clock']], 26);
@@ -118,9 +119,9 @@
   });
 
   // ---------------------------------------------------------------- 3: relaxing too soon (back to the brain: the new pathway isn't solid yet)
-  registerScene('mg04s03', ctx => {
+  registerScene('mg03s03', ctx => {
     const { stage, tl, cue } = ctx;
-    const m = mistake(ctx, { n: 3, title: 'Relaxing too soon', src: 'mg_mistake3.jpg', nat: [1050, 1400] });
+    const m = mistake(ctx, { n: 3, title: 'Relaxing management too soon', src: 'mg_mistake3.jpg', nat: [1050, 1400] });
     const NAT = [682, 788], BH = 330, BW = Math.round(BH * NAT[0] / NAT[1]);
     const row = K.el('div');
     Object.assign(row.style, { position: 'relative', display: 'flex', alignItems: 'center', gap: '44px' });
@@ -158,9 +159,9 @@
   });
 
   // ---------------------------------------------------------------- 4: seeing it as punishment
-  registerScene('mg04s04', ctx => {
+  registerScene('mg03s04', ctx => {
     const { stage, tl, cue } = ctx;
-    const m = mistake(ctx, { n: 4, title: 'Seeing it as punishment', src: 'mg_mistake4.jpg', nat: [1050, 1400] });
+    const m = mistake(ctx, { n: 4, title: 'Viewing management as punishment', src: 'mg_mistake4.jpg', nat: [1050, 1400] });
     const lead = txtIn(m.col, 'Feeling guilty, as if you’re depriving your dog of <b>freedom or fun</b>? That mindset makes the plan <b style="color:var(--red)">hard to stick to</b>.');
     A.in(tl, lead, cue(1) + 0.05, 'fadeUp', { dur: 0.6 });
     const { els } = rowIn(m.col, [['Punishment', 'red', null, true], '>', ['Protection', 'green', 'shield-check']], 36);
@@ -168,13 +169,18 @@
     A.in(tl, els[0], tP, 'pop', { dur: 0.4 });
     TM.strike(tl, els[0], tP + 0.4);
     A.in(tl, [els[1], els[2]], at(ctx, 2, 'protection', 0.55), 'pop', { dur: 0.4, stagger: 0.15 });
-    const sub = txtIn(m.col, 'From stress, and from rehearsing behaviors that <b>make life harder</b>.');
-    A.in(tl, sub, at(ctx, 2, 'from stress', 0.7), 'fadeUp', { dur: 0.6 });
+    // what it protects your dog from: rehearsing, and uncomfortable situations that stall or reverse progress with triggers
+    const prot = K.el('div'); Object.assign(prot.style, { position: 'relative', display: 'flex', flexDirection: 'column', gap: '18px', width: '100%' });
+    m.col.appendChild(prot);
+    const p1 = TM.row(prot, 'repeat', 'Rehearsing behaviors that <b>make life harder</b>', { size: 30 });
+    const p2 = TM.row(prot, 'trending-down', 'Uncomfortable situations, where progress with triggers <b>stalls or goes backward</b>', { size: 30 });
+    A.in(tl, p1, at(ctx, 2, 'from rehearsing', 0.6), 'fadeRight', { dur: 0.5 });
+    A.in(tl, p2, at(ctx, 2, 'situations that make them', 0.75), 'fadeRight', { dur: 0.5 });
     avoid(ctx, m, 'Reframe your thinking. Management is *a gift*: a chance to feel safe, learn new skills, and build a better future. *Temporary, and essential.*');
   });
 
   // ---------------------------------------------------------------- 5: feeding too late
-  registerScene('mg04s05', ctx => {
+  registerScene('mg03s05', ctx => {
     const { stage, tl, cue } = ctx;
     const m = mistake(ctx, { n: 5, title: 'Feeding too late', src: 'mg_mistake5.jpg', nat: [1400, 1050], maxW: 560 });
     const bad = rowIn(m.col, [['Trigger appears', 'amber', 'zap'], '>', ['Bark', 'red', 'megaphone'], '>', ['Treats', 'red', 'cookie']], 28);
@@ -182,7 +188,7 @@
     A.in(tl, [bad.els[1], bad.els[2]], at(ctx, 1, 'your dog barks', 0.6), 'pop', { dur: 0.4, stagger: 0.12 });
     A.in(tl, [bad.els[3], bad.els[4]], at(ctx, 1, 'hand over treats', 0.8), 'pop', { dur: 0.4, stagger: 0.12 });
     TM.fx.ring(tl, m.ph.sv, m.ph.P(0.595, 0.40), at(ctx, 1, 'your dog barks', 0.6), { r: 30, n: 2, color: 'var(--red)' });
-    const pays = txtIn(m.col, 'Food after the bark or lunge <b>pays for the reaction</b>, not the calm.', 'red');
+    const pays = txtIn(m.col, 'Food after the bark or lunge <b>can pay for the reaction</b>, and teach your dog to keep doing it.', 'red');
     A.in(tl, pays, cue(2) + 0.05, 'fadeUp', { dur: 0.6 });
     // the fix: before the reaction
     const t3 = cue(3) + 0.05;
@@ -193,7 +199,7 @@
   });
 
   // ---------------------------------------------------------------- the close: management is the foundation
-  registerScene('mg04s06', ctx => {
+  registerScene('mg03s06', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     const hd = TM.head(ctx, 'Building block', 'Bringing it together');

@@ -1,9 +1,9 @@
-// Management: The Basics: welcome, Part 1 (where management fits) and Part 2 (what it is and isn't).
+// Management: The Basics: welcome, Part 1 (understanding management: where it fits, what it is and isn't).
 //   mg00intro  title slide (shared kit)
 //   mg00plan   plan slide: What you'll learn (four parts), Why it matters
 //   mg01s01    triggers and thresholds: trigger and threshold cards; a gauge with over (red) and under (green) zones; the job of management
 //   mg01s02    management is the training foundation: Management as the slab, Training on top, Get out at the side
-//   mg02s01    what management is and isn't: your dog's world shrinks on purpose, then opens back up; It is not / It is
+//   mg01s03    what management is and isn't: your dog's world shrinks on purpose, then opens back up; It is not / It is
 (() => {
   const { at, put, clamp } = TM;
   const CSS = `
@@ -132,7 +132,7 @@
       return b;
     };
     // the slab at the bottom, Training built on it, Get out at the side
-    const slab = blk('slab', 1, 'Management', 'The foundation', 'Set up your dog’s life so they don’t get hit with triggers you didn’t plan for.', 100, 610, 1180, 230);
+    const slab = blk('slab', 1, 'Management', 'The foundation', 'Set up your dog’s environment so they don’t get hit with triggers you didn’t plan for.', 100, 610, 1180, 230);
     const trn = blk('white', 2, 'Training', 'Creates change', 'Planned sessions where you pair the trigger with *good things*.', 170, 340, 1040, 230);
     const out = put(stage, K.el('div', 'mga-blk white'), 1330, 340, { width: '490px', height: '500px', justifyContent: 'flex-start' });
     out.innerHTML = `<div class="ic">${K.icon('door-open').outerHTML}</div><div class="top"><div class="n">3</div><div class="t">Get out</div></div>
@@ -153,7 +153,7 @@
   });
 
   // ---------------------------------------------------------------- what management is, and isn't
-  registerScene('mg02s01', ctx => {
+  registerScene('mg01s03', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'The basics', 'What it is, and isn’t');

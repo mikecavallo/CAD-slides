@@ -1,8 +1,8 @@
-// Management: The Basics, Part 3 (the golden rule), first half.
-//   mg03s01  100% consistency: a ring fills and counts to 100%; "Good enough" struck out
-//   mg03s02  everyone has to follow the plan: every time, every person; four people cards; red callout
-//   mg03s03  practice makes perfectly unwanted behaviors: Tori's dog picture; a path in the woods wears in with each walk; rehearsals
-//   mg03s04  one pathway fades as another forms: Tori's brain picture; the old route fades, the new one lights up
+// Management: The Basics, Part 2 (the golden rule), first half.
+//   mg02s01  100% consistency: a ring fills and counts to 100%; "Good enough" struck out
+//   mg02s02  everyone has to follow the plan: every time, every person; four people cards; red callout
+//   mg02s03  practice makes perfectly unwanted behaviors: Tori's dog picture; a path in the woods wears in with each walk; rehearsals
+//   mg02s04  one pathway fades as another forms: Tori's brain picture; the old route fades, the new one lights up
 (() => {
   const { at, put, clamp } = TM;
   const CSS = `
@@ -26,7 +26,7 @@
   const flow = n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; return n; };
 
   // ---------------------------------------------------------------- 100% consistency
-  registerScene('mg03s01', ctx => {
+  registerScene('mg02s01', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'The golden rule', 'The golden rule');
@@ -58,7 +58,7 @@
   });
 
   // ---------------------------------------------------------------- everyone has to follow the plan
-  registerScene('mg03s02', ctx => {
+  registerScene('mg02s02', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Consistency across everyone', 'Everyone follows the plan');
@@ -86,7 +86,7 @@
   });
 
   // ---------------------------------------------------------------- practice makes perfectly unwanted behaviors
-  registerScene('mg03s03', ctx => {
+  registerScene('mg02s03', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Why prevention matters', 'Practice makes perfect');
@@ -142,7 +142,7 @@
   });
 
   // ---------------------------------------------------------------- one pathway fades as another forms
-  registerScene('mg03s04', ctx => {
+  registerScene('mg02s04', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Rewiring the brain', 'Rewiring the brain');

@@ -1,7 +1,7 @@
-// Management: The Basics, Part 3 (the golden rule), second half.
-//   mg03s05  "Just this once": Tori's house, levelled, builds floor by floor on its foundation; a crack opens, runs up, and the house shifts
-//   mg03s06  a dangerous myth: The myth / A fearful dog: what happens; a loop (trigger, bark and lunge, it goes away) that grows stronger; WTF
-//   mg03s07  calm isn't the same as cured: Looks like progress / The truth; Trigger shows up, good things happen, over and over
+// Management: The Basics, Part 2 (the golden rule), second half.
+//   mg02s05  "Just this once": Tori's house, levelled, builds floor by floor on its foundation; a crack opens, runs up, and the house shifts
+//   mg02s06  a dangerous myth: The myth / A fearful dog: what happens; a loop (trigger, bark and lunge, it goes away) that grows stronger; WTF
+//   mg02s07  calm isn't the same as cured: Looks like progress / The truth; Trigger shows up, good things happen, over and over
 (() => {
   const { at, put, clamp } = TM;
   const CSS = `
@@ -38,7 +38,7 @@
   const BRANCH = [[[598, 585], [528, 574]], [[640, 652], [720, 622]], [[596, 720], [531, 712]], [[648, 790], [718, 756]]].map(p => p.map(lev));
 
   // ---------------------------------------------------------------- just this once won't hurt
-  registerScene('mg03s05', ctx => {
+  registerScene('mg02s05', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Inconsistency is the enemy', '“Just this once”');
@@ -103,7 +103,7 @@
   });
 
   // ---------------------------------------------------------------- exposure alone doesn't fade reactivity
-  registerScene('mg03s06', ctx => {
+  registerScene('mg02s06', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'A dangerous myth', 'A dangerous myth');
@@ -116,6 +116,10 @@
     const what = MG.card(stage, { x: 980, y: 300, w: 840, size: 32, label: 'A fearful dog: what happens', icon: 'eye',
       body: 'They don’t decide the trigger was harmless. The barking and lunging **worked**: the scary thing went away.' });
     tl.fromTo(what, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(2) + 0.05);
+    // beat 3: a fearful dog who doesn't bark or lunge isn't getting over it either (learned helplessness is on the next slide)
+    const quiet = TM.word(what, 'No barking? They may <b>shut down</b> instead.', { variant: 'amber', icon: 'cloud-rain', size: 26 });
+    Object.assign(quiet.style, { position: 'relative', left: 'auto', top: 'auto', alignSelf: 'flex-start', marginTop: '6px' });
+    A.in(tl, quiet, cue(3) + 0.3, 'pop', { dur: 0.45 });
     const CB = 300 + Math.max(myth.offsetHeight, what.offsetHeight);  // both cards end on one line
     [myth, what].forEach(c => { c.style.height = CB - 300 + 'px'; });
 
@@ -139,34 +143,39 @@
       A.pulse(tl, els[6], tS + 0.5 * k, { scale: 1.1 });
     });
     const call = MG.callout(stage, 'Repeated exposure with no plan doesn’t fade reactivity out. <b>It drills it in.</b>', { x: 100, y: CB + 236, w: 1720, variant: 'red', size: 34 });
-    tl.fromTo(call, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, cue(3) + 0.05);
+    tl.fromTo(call, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, cue(4) + 0.05);
 
-    // beat 4: WTF, What's the Function? (explained in The ABCs of Behavior): it takes the loop's place
-    const t4 = cue(4) + 0.05;
+    // beat 5: WTF, What's the Function? (explained in The ABCs of Behavior): it takes the loop's place
+    const t4 = cue(5) + 0.05;
     tl.to([loop, meter, ml], { opacity: 0, y: -10, duration: 0.4, ease: 'power2.in' }, t4 - 0.1);
     const wtf = put(stage, K.el('div', 'mgc-wtf'), 100, CB + 40, { width: '1720px' });
     wtf.innerHTML = `<div class="tiles"><span>W</span><span>T</span><span>F</span><em>?</em></div>
       <div class="tx"><div class="t">What’s the Function?</div><div class="s">${K.icon('circle-play').outerHTML}<span>Explained in another video: <b>The ABCs of Behavior</b></span></div></div>`;
     tl.fromTo(wtf, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, t4 + 0.25);
-    A.in(tl, wtf.querySelectorAll('.tiles span'), at(ctx, 4, 'WTF', 0.5), 'pop', { dur: 0.4, stagger: 0.12 });
+    A.in(tl, wtf.querySelectorAll('.tiles span'), at(ctx, 5, 'WTF', 0.5), 'pop', { dur: 0.4, stagger: 0.12 });
   });
 
   // ---------------------------------------------------------------- calm isn't the same as cured
-  registerScene('mg03s07', ctx => {
+  registerScene('mg02s07', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'Calm isn’t cured', 'Calm isn’t cured');
-    const looks = MG.card(stage, { x: 100, y: 300, w: 840, size: 32, variant: 'amber', label: 'Looks like progress', icon: 'eye',
-      body: 'A dog can stare at a trigger, stay under threshold, never make a sound, and **still feel the same, or worse,** about it tomorrow.' });
+    // three cards: what it looks like, what it can be (learned helplessness), and the truth
+    const CW = Math.round((1720 - 2 * 24) / 3);
+    const looks = MG.card(stage, { x: 100, y: 300, w: CW, size: 30, variant: 'amber', label: 'Looks like progress', icon: 'eye',
+      body: 'Staring at a trigger, **over threshold**, not making a sound. Still feels the same, **or worse**, tomorrow.' });
     tl.fromTo(looks, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(1) + 0.05);
-    const truth = MG.card(stage, { x: 980, y: 300, w: 840, size: 32, variant: 'green', label: 'The truth', icon: 'lightbulb',
-      body: 'Quietly tolerating something isn’t feeling good about it. Your dog won’t connect the dots alone: *we help them build the association*.' });
-    tl.fromTo(truth, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(2) + 0.05);
-    const CB = 300 + Math.max(looks.offsetHeight, truth.offsetHeight);
-    [looks, truth].forEach(c => { c.style.height = CB - 300 + 'px'; });
+    const lh = MG.card(stage, { x: 100 + CW + 24, y: 300, w: CW, size: 30, variant: 'red', label: 'Learned helplessness', icon: 'cloud-rain',
+      body: 'Nothing they do makes the scary thing stop, so they **stop trying and shut down**. Calm outside, still afraid.' });
+    tl.fromTo(lh, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(2) + 0.05);
+    const truth = MG.card(stage, { x: 100 + 2 * (CW + 24), y: 300, w: CW, size: 30, variant: 'green', label: 'The truth', icon: 'lightbulb',
+      body: 'Tolerating isn’t feeling good. Your dog won’t connect the dots alone: *we help them build the association*.' });
+    tl.fromTo(truth, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(3) + 0.05);
+    const CB = 300 + Math.max(looks.offsetHeight, lh.offsetHeight, truth.offsetHeight);
+    [looks, lh, truth].forEach(c => { c.style.height = CB - 300 + 'px'; });
 
     // trigger shows up, good things happen: over and over, on purpose
-    const t3 = cue(3) + 0.05;
+    const t3 = cue(4) + 0.05;
     const strip = TM.order(stage, ['Trigger shows up', 'Good things happen'], { x: 100, y: CB + 60, size: 36, icons: ['zap', 'cookie'] });
     A.in(tl, strip.items, t3, 'fadeRight', { dur: 0.5, stagger: 0.3 });
     const rep = put(stage, K.el('div', 'tm-word pale'), 0, CB + 64);
@@ -174,10 +183,10 @@
     rep.appendChild(K.el('span', null, 'Over and over, on purpose'));
     rep.style.fontSize = '32px';
     rep.style.left = (strip.row.offsetLeft + strip.row.offsetWidth + 40) + 'px';
-    A.in(tl, rep, at(ctx, 3, 'over and over', 0.35), 'pop', { dur: 0.45 });
+    A.in(tl, rep, at(ctx, 4, 'over and over', 0.35), 'pop', { dur: 0.45 });
     const bn = put(stage, K.el('div', 'tm-banner'), 100, CB + 190, { width: '1720px', boxSizing: 'border-box', fontSize: '34px' });
     bn.appendChild(K.icon('heart'));
     bn.appendChild(K.el('span', null, 'That’s what changes how they feel, and <b>why planned training sessions exist</b>.'));
-    tl.fromTo(bn, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 3, 'changes how they feel', 0.65));
+    tl.fromTo(bn, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 4, 'changes how they feel', 0.65));
   });
 })();

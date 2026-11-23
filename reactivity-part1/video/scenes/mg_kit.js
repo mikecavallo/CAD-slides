@@ -23,18 +23,6 @@
   };
   if (document.body) warm(); else document.addEventListener('DOMContentLoaded', warm);
 
-  // Slide numbers in the footer tab (Tori's deck numbers its slides): this lesson's slides count up from the title (1, not
-  // shown); the Part cards show no number. lib.js builds the tab with the chapter number at load, before its first await,
-  // so this load listener (added after lib.js's) runs once the tab exists.
-  window.addEventListener('load', () => {
-    const T = window.TIMING || {};
-    const id = new URLSearchParams(location.search).get('scene') || (T.order || [])[0] || '';
-    if (!/^(mg|bumper_mg)/.test(id)) return;
-    const span = document.querySelector('.chrome-footer .tab span');
-    if (!span) return;
-    const n = T.order.filter(s => !s.startsWith('bumper_')).indexOf(id) + 1;
-    span.textContent = n > 1 ? String(n) : '';
-  });
 })();
 
 (() => {
@@ -117,7 +105,7 @@
     const { w, h } = fit(o.nat, o.maxW ?? 520, o.maxH ?? 640);
     const px = 1820 - w, py = 300 + Math.round(((o.maxH ?? 640) - h) / 2);
     const W = px - 100 - 80;
-    const hd = TM.head(ctx, 'Common mistakes', o.title, { w: W });
+    const hd = TM.head(ctx, 'Common mistakes', o.title, { w: W, size: o.hsize ?? 60 });
     const ph = TM.pic(stage, o.src, { x: px, y: py, w, h, nat: o.nat, radius: 22 });
     tl.fromTo(ph.wrap, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, 0.35);
     const top = hd.h.root.offsetTop + hd.h.root.offsetHeight + 34;

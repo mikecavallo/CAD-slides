@@ -6,7 +6,8 @@
    "Management:",
    "The Basics"
   ],
-  "motion": "cinematic"
+  "motion": "cinematic",
+  "footerTab": false
  },
  "notes": "Foundations course video, rebuilt from Tori's deck 'Management, Part one: the basics' (Master_Management_part_1.pptx, Nov 4). The deck had no narration: Claude drafted it from the slide text; Tori gets paste-ready copy. Build with LESSON=lesson-management.json.",
  "tail": 4.0,
@@ -54,10 +55,11 @@
    "id": "mg01",
    "num": 1,
    "kicker": "Part",
-   "title": "Where Management Fits",
+   "title": "Understanding Management",
    "slide_refs": [
     3,
-    4
+    4,
+    5
    ],
    "scenes": [
     {
@@ -110,7 +112,7 @@
        "onscreen": "The foundation"
       },
       {
-       "say": "Management means setting up your dog’s life so they don’t get hit with triggers you didn’t plan for.",
+       "say": "Management means setting up your dog’s environment so they don’t get hit with triggers you didn’t plan for.",
        "show": "Block 1: Management, The foundation.",
        "onscreen": "Management"
       },
@@ -130,20 +132,9 @@
        "onscreen": "The groundwork"
       }
      ]
-    }
-   ]
-  },
-  {
-   "id": "mg02",
-   "num": 2,
-   "kicker": "Part",
-   "title": "What Management Is (and Isn’t)",
-   "slide_refs": [
-    5
-   ],
-   "scenes": [
+    },
     {
-     "id": "mg02s01",
+     "id": "mg01s03",
      "heading": "What it is, and isn’t",
      "visual_concept": "Your dog's world as a circle that shrinks on purpose, keeping triggers out, then opens back up; IT IS NOT (red) and IT IS (green) cards.",
      "assets": [],
@@ -178,8 +169,8 @@
    ]
   },
   {
-   "id": "mg03",
-   "num": 3,
+   "id": "mg02",
+   "num": 2,
    "kicker": "Part",
    "title": "The Golden Rule",
    "slide_refs": [
@@ -193,7 +184,7 @@
    ],
    "scenes": [
     {
-     "id": "mg03s01",
+     "id": "mg02s01",
      "heading": "The golden rule",
      "visual_concept": "A ring fills and counts to 100%; 'Good enough' struck out.",
      "assets": [],
@@ -211,7 +202,7 @@
      ]
     },
     {
-     "id": "mg03s02",
+     "id": "mg02s02",
      "heading": "Everyone follows the plan",
      "visual_concept": "Every time, every person; four people cards; red callout: one person who lets it slide.",
      "assets": [],
@@ -254,7 +245,7 @@
      ]
     },
     {
-     "id": "mg03s03",
+     "id": "mg02s03",
      "heading": "Practice makes perfect",
      "visual_concept": "Tori's dog picture whole at left; a path in the woods that wears in with each walk; two rehearsal chips; callout.",
      "assets": [
@@ -284,7 +275,7 @@
      ]
     },
     {
-     "id": "mg03s04",
+     "id": "mg02s04",
      "heading": "Rewiring the brain",
      "visual_concept": "Tori's brain picture whole; the old red route pulses then fades, the new green route lights node by node to the check; two rows; banner.",
      "assets": [
@@ -314,7 +305,7 @@
      ]
     },
     {
-     "id": "mg03s05",
+     "id": "mg02s05",
      "heading": "“Just this once”",
      "visual_concept": "Tori's house picture without the crack; Management tag on the foundation; a red crack runs up from the foundation and the house shifts; callout.",
      "assets": [
@@ -344,7 +335,7 @@
      ]
     },
     {
-     "id": "mg03s06",
+     "id": "mg02s06",
      "heading": "A dangerous myth",
      "visual_concept": "The myth card and what actually happens card; a loop strip (trigger, bark and lunge, trigger goes away) whose strength bar grows; callout.",
      "assets": [],
@@ -365,6 +356,11 @@
        "onscreen": "What actually happens"
       },
       {
+       "say": "And a fearful dog who doesn’t bark or lunge isn’t getting over it either. They may simply shut down. We’ll look at that next.",
+       "show": "A quiet fearful dog: shut down, not getting over it.",
+       "onscreen": "Quiet isn’t over it"
+      },
+      {
        "say": "Repeated exposure with no plan doesn’t fade reactivity out. It drills it in.",
        "show": "Red callout.",
        "onscreen": "It drills it in"
@@ -377,7 +373,7 @@
      ]
     },
     {
-     "id": "mg03s07",
+     "id": "mg02s07",
      "heading": "Calm isn’t cured",
      "visual_concept": "Looks like progress (amber) and The truth (green) cards; strip: Trigger shows up, Good things happen, over and over.",
      "assets": [],
@@ -388,9 +384,14 @@
        "onscreen": "Calm isn't cured"
       },
       {
-       "say": "A dog can stare at a trigger, stay under threshold, never make a sound, and still feel exactly the same about it tomorrow, or possibly worse.",
+       "say": "A dog can stare at a trigger, be over threshold, never make a sound, and still feel the same, or even worse, about it tomorrow.",
        "show": "Card: Looks like progress.",
        "onscreen": "Looks like progress"
+      },
+      {
+       "say": "This can be learned helplessness. When a dog learns that nothing they do makes the scary thing stop, they stop trying and shut down. They look calm, but they’re still afraid, and they aren’t learning that the trigger is safe.",
+       "show": "Card: Learned helplessness.",
+       "onscreen": "Learned helplessness"
       },
       {
        "say": "Quietly tolerating something isn’t the same as feeling good about it. And your dog won’t connect the dots on their own. We have to help them build the association.",
@@ -407,8 +408,8 @@
    ]
   },
   {
-   "id": "mg04",
-   "num": 4,
+   "id": "mg03",
+   "num": 3,
    "kicker": "Part",
    "title": "Five Common Mistakes",
    "slide_refs": [
@@ -422,7 +423,7 @@
    ],
    "scenes": [
     {
-     "id": "mg04s00",
+     "id": "mg03s00",
      "heading": "Five common mistakes",
      "visual_concept": "Tori's five pictures in a row, whole, numbered 1 to 5.",
      "assets": [
@@ -446,7 +447,7 @@
      ]
     },
     {
-     "id": "mg04s01",
+     "id": "mg03s01",
      "heading": "Picking and choosing",
      "visual_concept": "Picture whole at right; the owner's quote; a plan checklist with a skipped piece leaving a red gap; How to avoid it card.",
      "assets": [
@@ -464,8 +465,8 @@
        "onscreen": "Quote"
       },
       {
-       "say": "But you can’t cherry-pick management. Each piece works together as a whole, and the parts you skip leave gaps where unwanted behaviors slip through and get practiced.",
-       "show": "Plan pieces with a red gap.",
+       "say": "But you can’t cherry-pick management. Each piece works together as a whole. The parts you skip leave gaps where unwanted behaviors get practiced, and where the emotions we’re trying to change keep happening. Without consistency, those emotions won’t change.",
+       "show": "Gaps: behaviors practiced, emotions keep happening.",
        "onscreen": "Gaps"
       },
       {
@@ -476,8 +477,8 @@
      ]
     },
     {
-     "id": "mg04s02",
-     "heading": "Missing subtle triggers",
+     "id": "mg03s02",
+     "heading": "Underestimating the environment",
      "visual_concept": "Picture whole at right with the hound's gaze drawn off to the side and an amber ring; three subtle trigger chips; How to avoid it card.",
      "assets": [
       "mg_mistake2.jpg"
@@ -506,8 +507,8 @@
      ]
     },
     {
-     "id": "mg04s03",
-     "heading": "Relaxing too soon",
+     "id": "mg03s03",
+     "heading": "Relaxing management too soon",
      "visual_concept": "Picture whole at right; old (red) and new (green) pathway bars; steps down for reducing management gradually; How to avoid it card.",
      "assets": [
       "mg_mistake3.jpg"
@@ -536,8 +537,8 @@
      ]
     },
     {
-     "id": "mg04s04",
-     "heading": "Seeing it as punishment",
+     "id": "mg03s04",
+     "heading": "Viewing management as punishment",
      "visual_concept": "Picture whole at right; 'Punishment' struck out, 'Protection' in green; How to avoid it card.",
      "assets": [
       "mg_mistake4.jpg"
@@ -554,8 +555,8 @@
        "onscreen": "Feeling guilty"
       },
       {
-       "say": "But here’s the truth: management isn’t punishment. It’s protection, from stress and from rehearsing behaviors that make life harder.",
-       "show": "Punishment struck out; Protection.",
+       "say": "But here’s the truth: management isn’t punishment. It’s protection. It protects your dog from rehearsing behaviors that make life harder, and from situations that make them uncomfortable, where the associations we’re building with triggers stall, or even go backward.",
+       "show": "Punishment struck out; Protection, from two things.",
        "onscreen": "Protection"
       },
       {
@@ -566,7 +567,7 @@
      ]
     },
     {
-     "id": "mg04s05",
+     "id": "mg03s05",
      "heading": "Feeding too late",
      "visual_concept": "Picture whole at right with a red ring on the barking mouth; two strips: Trigger, Bark, Treat (red) and Trigger, Calm notice, Treat (green); How to avoid it card.",
      "assets": [
@@ -584,9 +585,9 @@
        "onscreen": "Trigger, bark, treats"
       },
       {
-       "say": "But food after the bark or lunge pays for the reaction, not the calm.",
+       "say": "But food after the bark or lunge can end up paying for the reaction, and teach your dog to keep doing it.",
        "show": "Pays for the reaction.",
-       "onscreen": "Pays for the reaction"
+       "onscreen": "Can pay for the reaction"
       },
       {
        "say": "How to avoid it: stay a step ahead. Cover the window, and scan the yard first. Feed for calmly noticing a trigger, before the reaction.",
@@ -596,7 +597,7 @@
      ]
     },
     {
-     "id": "mg04s06",
+     "id": "mg03s06",
      "heading": "Bringing it together",
      "visual_concept": "The house picture standing whole on its foundation; three numbered takeaways; the closing statement; logo close.",
      "assets": [

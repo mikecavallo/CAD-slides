@@ -35,7 +35,19 @@ Check first: `ls /opt/tts` may already list them.
 Before switching lessons, copy `build/timing.json`, `build/timing.js` and `build/align.json` to the scratchpad if
 you will need the other lesson again soon; otherwise just re-run its timing later.
 
-## Preview build (temporary AI voice)
+## Voiced build (Tori's ElevenLabs voice, the default)
+
+```bash
+export LESSON=lesson-chN.json
+python3 tools/tts_elevenlabs.py --dry-run  # characters (credits) it will use; about 1,000 a minute of narration
+python3 tools/tts_elevenlabs.py           # one take per slide; Tori's own takes in narration/ are used where present
+python3 tools/align.py --dir build/eleven_narration
+python3 tools/timing.py --mode narration
+node tools/render.mjs --workers 4
+python3 tools/assemble.py --name Chapter-N-Title --no-chapters
+```
+
+## Preview build (temporary AI voice, only if ElevenLabs is unreachable)
 
 ```bash
 export LESSON=lesson-chN.json

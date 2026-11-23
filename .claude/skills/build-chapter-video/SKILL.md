@@ -54,8 +54,8 @@ chapter's metaphor, and list it under "My choices" in the delivery note).
 - A metaphor would break if shown literally (Tori has caught physics errors before: a fuller pot does not boil faster).
 
 Defaults you apply without asking, unless Tori says otherwise: a title slide and a plan (agenda) slide at the
-start, like Chapters 1 and 2, with narration you draft; a narrated chapter card; the temporary AI voice until
-Tori's recordings exist; on-screen text taken from the copy.
+start, like Chapters 1 and 2, with narration you draft; a narrated chapter card; Tori's ElevenLabs voice (`tools/tts_elevenlabs.py`, model eleven_v4), with Tori's own
+takes replacing it slide by slide when they exist (Kokoro preview voice only if ElevenLabs is unreachable); on-screen text taken from the copy.
 
 Write the questions as one numbered message, each with your recommended answer, so Tori can reply "go with your
 picks" or answer only the ones they care about. No preamble. Example:

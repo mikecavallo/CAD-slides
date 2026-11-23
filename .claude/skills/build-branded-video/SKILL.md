@@ -19,7 +19,7 @@ Only ask what the copy doesn't answer, in the same single numbered message, each
 - **Title** for the title slide, and where it breaks into lines. Recommend one from the copy.
 - **Call to action** at the end, if any (book a session, sign up for a class, visit the site). Recommend the most
   likely one from the copy; if the copy has none, use no extra line.
-- **Voice**: Tori's recording or the temporary AI voice. Default: the temporary voice as a preview.
+- **Voice**: Tori's ElevenLabs voice (`tools/tts_elevenlabs.py`, model eleven_v4) by default, or Tori's own recording.
 
 Decide yourself: length (follow the copy), whether a plan slide is needed (only for videos over about three minutes
 or with four or more sections), layout and animation.

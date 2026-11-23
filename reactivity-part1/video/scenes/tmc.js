@@ -199,12 +199,12 @@
   });
 
   // ---------------------------------------------------------------- practice without your dog first (no clip)
-  // setup rows at the left, the three steps (Mark, Pause, Move) as cards at the right, the order banner underneath; centred on the page
+  // setup rows at the left, the three steps (Mark, Pause, Move) as cards at the right; centred on the page
   registerScene('tm03s02', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
     TM.head(ctx, 'Practicing your mechanics', 'Practice without your dog first');
-    const TOP = 330, CH = 380;
+    const TOP = 400, CH = 420;  // no banner underneath: rows and cards sit in the middle of the page
     const col = put(stage, K.el('div', 'tm-col'), 100, TOP, { width: '760px', gap: '40px' });
     [['hand', 'Treats in hand, *a bowl nearby*', 1, 'hold treats', 0.05], ['pause', 'Hand still *until the word ends*', 1, 'keep your hand still', 0.7],
      ['repeat', 'Practice until it’s *consistent*', 2, 'practice until', 0.05]]
@@ -217,10 +217,5 @@
       c.querySelector('.ic').appendChild(K.icon(ic));
       A.in(tl, c, at(ctx, 1, p, 0.2 + 0.3 * i), 'fadeUp', { dur: 0.6 });
     });
-    const tW = at(ctx, 3, 'word', 0.3);
-    const bn = put(stage, K.el('div', 'tm-banner'), 0, TOP + CH + 70);
-    bn.appendChild(K.icon('circle-check')); bn.appendChild(K.el('span', null, 'Mark, pause, <b>move</b>'));
-    TM.centerX(bn, 960);
-    A.in(tl, bn, tW, 'fadeUp', { dur: 0.5 });
   });
 })();

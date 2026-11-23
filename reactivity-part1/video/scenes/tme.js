@@ -14,7 +14,7 @@
     [
       ['A marker identifies *the moment that earned a treat*, and its game tells your dog *what comes next*.', 0, 'identifies the moment'],
       ['Practice without your dog first: *mark, pause, move*.', 1, 'practice your mechanics'],
-      ['In training: *mark the instant* the behavior happens, pause, then its food game.', 2, 'watch for the behavior',
+      ['In training: *mark the instant* the behavior happens, then its food game.', 2, 'watch for the behavior',
         [['A sit: *bottom touches the ground*', 'for a sit'], ['A check-in: *they look at you*', 'for a check-in']]],
       ['Introduce *one marker at a time*, then mix them in slowly. Always follow through.', 3, 'introduce each marker'],
       ['Choose *the game that fits* what you’re teaching and what your dog needs.', 4, 'choose the game'],

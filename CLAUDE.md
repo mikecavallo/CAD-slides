@@ -279,11 +279,28 @@ pipeline). This file records the state, decisions and working agreements from ea
   slowly, never several unfamiliar at once, keep one familiar in the mix (Familiar "Yip" -> Add one new "Free", crossed
   "Several new markers at once"). tm04s07: practice is #2, "In training" is #3 with the sit and check-in examples as
   bullets, #4 "then mix them in slowly".
+- Round 18 (Nov 4, Tori: "we are drilling in the mark, pause, move"): Mark, pause, move stays on the mechanics slides
+  (tm03s01, tm03s02 cards), the mouth / toss / scatter teaching slides (tm04s02 row and panels, tm04s03, tm04s04) and
+  takeaway #2. Removed: tm03s02 last beat "Watch the order..." and its banner; tm04s01 last beat "For every repetition..."
+  and its Mark / Pause / Move strip (slide content moved down); tm04s02 clicker line now "the process is the same, with a
+  click instead of a word" (row "Clicker: the same, with a click"); tm04s04v's "Mark, pause, move" row; takeaway #3 no
+  longer says "pause". Don't add it back elsewhere.
+- Round 19 (Nov 5): the promise slide says "promise" twice and never "exactly" (b0 "It tells your dog a treat is coming,
+  and where they'll find it."; b1 "...you break that promise. That's confusing for your dog."; card "Where they'll find
+  it", result "= confusing for your dog"). Each teaching slide opens by naming the marker ("First/Next, we'll introduce the
+  marker for food to the mouth / a treat toss / a scatter."), and each demo says what it shows before the clip
+  (tm04s02 new last beat "Here, we're demonstrating the marker for food to the mouth with Fisher."; tm04s03e and tm04s04v
+  open "Here, we're demonstrating the marker for ...").
+- Nov 5: Tori removed the green number tab at the bottom right; the footer rule runs to the right margin. Lesson series
+  `"footerTab": false` (video/lib.js buildChrome); only Markers and Mechanics has it so far (ask before changing the others).
+- Nov 4: editable script for Tori, Google Doc "Markers and Mechanics: Narration Script (updated Nov 4)", id
+  1fqvGTQKhgPAnFNGcuFUY6fpKEEn4B2g8PaY9J9uisvE (all changes through round 18, slide order, start times). Treat it as the
+  current source of truth: read it before the next build and sync any of Tori's edits into lesson-mechanics.json.
 - Fresh containers: clips are not in git. Re-download from Drive (folder id 1FdKn-_dNYyHfwDsNtjiuxNyEOhXlbsef) with curl;
   the Fisher toss clip (tm04s03v) is NOT on Drive: it was recovered from the published preview (part with tm04s03v, the
   frame box cropped out). Tools: pip install kokoro-onnx sherpa-onnx soundfile numpy pillow (use --ignore-installed for
   pillow), models in /opt/tts (kokoro-onnx release model-files-v1.0; sherpa-onnx asr-models zipformer-en-2023-06-26).
-- Online preview (temporary AI voice): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
+- Online page (Tori's cloned voice since Nov 5): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 
 ## Management: The Basics (Foundations course video; preview voice only)
@@ -357,6 +374,19 @@ pipeline). This file records the state, decisions and working agreements from ea
   between takes. Partly recorded chapters build a video of just the recorded slides.
 - Preview without voice: `tools/tts_scratch.py`, `tools/scratch_narration.py`, then `align.py --dir
   build/scratch_narration`, `timing.py --mode narration`, render, `assemble.py --silent`.
+- ElevenLabs voice (Nov 4, Tori asked): `tools/tts_elevenlabs.py` narrates a lesson with Tori's cloned ElevenLabs voice,
+  one take per slide in `build/eleven_narration/`, then the normal voice build with `align.py --dir build/eleven_narration`.
+  Needs `ELEVENLABS_API_KEY` as an environment secret (never in git or chat; the repo is public). Voice: `--voice`,
+  `ELEVENLABS_VOICE_ID`, the lesson's series `"voice"`, or the account's one voice named "Tori" (`--list-voices`).
+  Clips are cached per beat, so edits only pay for changed lines; `--dry-run` shows the characters (credits) a run uses.
+  Set up Nov 4: Creator plan (131,000 credits a month); Professional clone "Tori" (voice id eE0zFMDzghsOgwS1dEwn, trained
+  on Tori's Chapter 1 takes; fine-tuned for eleven_multilingual_v2 and eleven_v4); "Me short clone" is an Instant clone.
+  The key is a NETWORK SECRET on the Default environment (host api.elevenlabs.io, header xi-api-key): it reaches running
+  sessions through the proxy, so ELEVENLABS_API_KEY is not set and the tool says so; that is fine. The key is restricted
+  to Text to Speech + Voices read (no user_read, so /v1/user calls fail by design). First test sent: ch01s01, Tori's real
+  take vs multilingual_v2 vs eleven_v4. Tori chose eleven_v4 ("sounds more like me"): it is the tool's default.
+  Voiced builds now use the clone by default (skills updated); a slide Tori records replaces the clone
+  (the tool copies takes from narration/ into the output; --all-clone ignores them).
 - When the recording differs from the script, check the doc; usually Tori changed the wording on purpose.
   Update lesson.json and any cue phrases (`sayAt(ctx, beat, 'phrase')`) that no longer match.
 

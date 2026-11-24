@@ -370,7 +370,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   ms05s02 adds "the cat can reach them easily, without walking through the dog's space"; ms05s04 adds "if your dog is in
   a crate, the cat can't walk up to it and bother them". ms07s03 tally marks sit in row 1's cells (Barks, 4 3 3 2 2 1 1,
   total 16; cell centres measured from ms_tally.png). New narration doc: "Management: Solutions and Setups: Narration
-  Script (draft 2, Nov 24)", id 12UOY1P5Ozl8S4mku8j_G-AgDJ-4qCDBAzZvR2LWkwRM (the Nov 4 doc is renamed OLD). 18:00 long.
+  Script (draft 2, Nov 24)", id 12UOY1P5Ozl8S4mku8j_G-AgDJ-4qCDBAzZvR2LWkwRM (the Nov 4 doc is renamed OLD). 18:02 long;
+  draft 2 video, storyboard and script sent in chat; preview page republished (chips "18:02 min", "7 parts", "51 slides",
+  flag "Draft 2"). lib.js changed, so every Part 2 segment re-rendered (18 min with 4 workers).
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s00.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

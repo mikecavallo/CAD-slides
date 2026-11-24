@@ -1,7 +1,8 @@
 // Management: Solutions and Setups: welcome, the safety principle and Part 1 (going for walks).
 //   ms00intro  title slide (shared kit)
-//   ms00plan   plan slide: What you'll learn (six setups), Why it matters
-//   ms00s01    always have two layers of safety: the fired-up dog redirects onto the cat; layer 1, the backup layer; layer 1 fails, the backup holds
+//   ms00plan   plan slide: What you'll learn (six setups), Why it matters, Coming up later (behaviors we'll teach)
+//   ms00s01    always have two layers of safety between the dog and the trigger: layer 1, the backup; layer 1 fails, the backup holds;
+//              side note: a fired-up dog can redirect onto whoever is closest (person on the leash, another dog, the cat)
 //   ms01s00    going for walks: the deck's summary line and the eight setups
 //   ms01s01-08 one setup each on Tori's pictures
 (() => {
@@ -33,95 +34,117 @@
     { ...SKIT.PLAN.gain, lab: 'What you’ll learn', rows: ['Going for walks', 'At home: sights & sounds', 'Resource guarding', 'Multi-dog conflict', 'Dog & cat conflict', 'Going for rides'],
       rowIcons: ['paw-print', 'house', 'bone', 'dog', 'cat', 'car'], rowBg: 'var(--green-pale)', rowFg: 'var(--green-dark)' },
     { ...SKIT.PLAN.why, text: 'Simple setups that *stop the reaction before it starts*.' },
+    { icon: 'graduation-cap', bg: 'var(--green)', fg: '#fff', lab: 'Coming up later', text: 'In another section, we’ll teach your dog *behaviors that make management easier*.' },
   ], [
     [['on walks', 0.45], ['sights and sounds', 0.55], ['resource guarding', 0.65], ['conflict between dogs', 0.75], ['dogs and cats', 0.85], ['car rides', 0.92]],
-    [],
+    [], [],
   ])));
+
+  /** A dotted arrow along pts (stage px) with its head on the last point, pointing along the last stretch. */
+  const arrow = (tl, sv, pts, t, o = {}) => {
+    const col = o.color || '#b8452d', dur = o.dur ?? 0.8;
+    const dots = TM.fx.dots(tl, sv, pts, t, { color: col, r: o.r ?? 5.5, gap: o.gap ?? 20, dur, hold: 0 });
+    const [x1, y1] = pts[pts.length - 2], [x2, y2] = pts[pts.length - 1];
+    const ang = Math.atan2(y2 - y1, x2 - x1), L = o.head ?? 22, sp = 0.55;
+    const w1 = [x2 - L * Math.cos(ang - sp), y2 - L * Math.sin(ang - sp)], w2 = [x2 - L * Math.cos(ang + sp), y2 - L * Math.sin(ang + sp)];
+    const head = K.path(sv, `M ${w1[0]} ${w1[1]} L ${x2} ${y2} L ${w2[0]} ${w2[1]}`, { fill: 'none', stroke: col, 'stroke-width': 7, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    tl.set(head, { opacity: 0 }, 0);
+    tl.set(head, { opacity: 1 }, t + dur);
+    return [...dots, head];
+  };
 
   // ---------------------------------------------------------------- always have two layers of safety
   registerScene('ms00s01', ctx => {
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'A safety principle', 'Always have two layers of safety');
-    // left: the diagram. The dog at left, the cat at right, the trigger above the dog.
-    const panel = put(stage, K.el('div', 'msa-panel'), 100, 300, { width: '900px', height: '600px' });
+    // left: the diagram. The dog at left, the trigger at right, the two layers between them.
+    const panel = put(stage, K.el('div', 'msa-panel'), 100, 290, { width: '900px', height: '640px' });
     tl.fromTo(panel, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.35);
-    const node = (icon, x, y, cls, lab) => {
-      const n = put(stage, K.el('div', 'msa-node' + (cls ? ' ' + cls : '')), x - 75, y - 75);
+    const node = (icon, x, y, cls, lab, size = 150) => {
+      const n = put(stage, K.el('div', 'msa-node' + (cls ? ' ' + cls : '')), x - size / 2, y - size / 2, { width: size + 'px', height: size + 'px' });
       n.appendChild(K.icon(icon));
-      const l = put(stage, K.el('div', 'msa-nlab', lab), x - 110, y + 92);
+      if (size < 150) n.querySelector('svg').style.cssText = `width:${Math.round(size * 0.48)}px;height:${Math.round(size * 0.48)}px`;
+      const l = put(stage, K.el('div', 'msa-nlab', lab), x - 120, y + size / 2 + 14, { width: '240px' });
       return { n, l };
     };
-    const DOG = [250, 640], CAT = [850, 640], TRIG = [250, 390];
+    const DOG = [235, 500], TRIG = [865, 500], WALL = 470, GATE = 640;
     const dog = node('dog', ...DOG, '', 'Your dog');
-    const cat = node('cat', ...CAT, '', 'Whoever’s closest');
+    const trig = node('zap', ...TRIG, 'amber', 'The trigger');
     A.in(tl, [dog.n, dog.l], 0.6, 'pop', { dur: 0.5, stagger: 0.1 });
-    A.in(tl, [cat.n, cat.l], 0.9, 'pop', { dur: 0.5, stagger: 0.1 });
-    // beat 1: a trigger fires the dog up; the arousal spills over onto the cat
-    const trig = put(stage, K.el('div', 'msa-node amber'), TRIG[0] - 55, TRIG[1] - 55, { width: '110px', height: '110px' });
-    trig.appendChild(K.icon('zap'));
-    trig.querySelector('svg').style.cssText = 'width:54px;height:54px';
-    const tlab = put(stage, K.el('div', 'msa-lab amber', 'A trigger'), TRIG[0] + 75, TRIG[1] - 16);
-    const t1 = at(ctx, 1, 'fired up', 0.15);
-    A.in(tl, [trig, tlab], t1, 'pop', { dur: 0.45, stagger: 0.1 });
-    tl.to(dog.n, { borderColor: '#b8452d', duration: 0.3 }, t1 + 0.4);
-    A.pulse(tl, dog.n, t1 + 0.45, { scale: 1.1 });
+    A.in(tl, [trig.n, trig.l], 0.9, 'pop', { dur: 0.5, stagger: 0.1 });
     const sv = K.svg(stage, { x: 0, y: 0, w: 1920, h: 1080 });
     sv.style.overflow = 'visible';
-    // the spill-over: red dots arc from the dog over to whoever is closest
-    const bez = (u, a, b, c, d) => (1 - u) ** 3 * a + 3 * (1 - u) ** 2 * u * b + 3 * (1 - u) * u * u * c + u ** 3 * d;
-    const A0 = [DOG[0] + 82, DOG[1] - 30], A3 = [CAT[0] - 90, CAT[1] - 30];
-    const pts = Array.from({ length: 24 }, (_, k) => { const u = k / 23; return [bez(u, A0[0], 430, 670, A3[0]), bez(u, A0[1], 520, 520, A3[1])]; });
-    const tR = at(ctx, 1, 'spill over', 0.5);
-    const arc = TM.fx.dots(tl, sv, pts, tR, { color: '#b8452d', r: 6, gap: 22, dur: 0.9, hold: 0 });
-    const head = K.path(sv, `M ${A3[0] - 26} ${A3[1] - 14} L ${A3[0]} ${A3[1]} L ${A3[0] - 22} ${A3[1] + 20}`,
-      { fill: 'none', stroke: '#b8452d', 'stroke-width': 7, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
-    tl.fromTo(head, { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: true }, tR + 0.85);
-    const rlab = put(stage, K.el('div', 'msa-lab red', 'Redirects onto whoever’s closest'), 0, 452);
-    rlab.style.left = Math.round(550 - rlab.offsetWidth / 2) + 'px';
-    A.in(tl, rlab, tR + 0.5, 'fadeUp', { dur: 0.5 });
-    tl.to(cat.n, { borderColor: '#b8452d', duration: 0.3 }, tR + 0.9);
+    // beat 0: nothing between them yet
+    const tG = at(ctx, 0, 'between your dog', 0.7);
+    const gaze = TM.fx.dots(tl, sv, [[DOG[0] + 85, DOG[1]], [TRIG[0] - 85, TRIG[1]]], tG, { color: '#fff', stroke: '#d9912b', r: 6, gap: 22, dur: 0.7, hold: 99 });
     // right: the cards
     const X = 1060, W = 760;
-    const c1 = MG.card(stage, { x: X, y: 300, w: W, label: 'First layer', icon: 'door-closed', title: 'A solid separation', body: 'A closed door, a secure crate, or a dog in its own room.', size: 28 });
+    const c1 = MG.card(stage, { x: X, y: 290, w: W, label: 'First layer', icon: 'door-closed', title: 'A solid separation', body: 'A closed door, a secure crate, or a dog in its own room.', size: 28 });
     const c2 = MG.card(stage, { x: X, y: 0, w: W, label: 'Backup layer', icon: 'fence', title: 'A second barrier behind it', body: 'A baby gate, or a leash on the dog.', size: 28 });
-    c2.style.top = (300 + c1.offsetHeight + 22) + 'px';
+    c2.style.top = (290 + c1.offsetHeight + 22) + 'px';
     const c3 = MG.card(stage, { x: X, y: 0, w: W, variant: 'red', label: 'Why two', icon: 'triangle-alert', body: 'One barrier will eventually fail. Two layers: a *near miss, never a bite*.', size: 28 });
     c3.style.top = (c2.offsetTop + c2.offsetHeight + 22) + 'px';
-    // beat 2: the first layer drops in and stops the arrow
-    const WALL = 470, GATE = 640;
-    const wall = put(stage, K.el('div', 'msa-wall'), WALL - 17, 490, { height: '310px' });
-    const n1 = put(stage, K.el('div', 'msa-num', '1'), WALL - 26, 820);
-    const t2 = cue(2) + 0.1;
-    tl.fromTo(wall, { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.6, ease: 'power3.out' }, at(ctx, 2, 'first layer', 0.3));
-    A.in(tl, n1, at(ctx, 2, 'first layer', 0.3) + 0.3, 'pop', { dur: 0.4 });
-    tl.to([...arc, head], { opacity: 0, duration: 0.5 }, t2);
-    tl.to([dog.n, cat.n], { borderColor: '#619537', duration: 0.5 }, t2);
-    tl.to(rlab, { opacity: 0, duration: 0.4 }, t2);
-    tl.fromTo(c1, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 2, 'first layer', 0.3) + 0.2);
-    // beat 3: the backup layer
-    const gate = put(stage, K.el('div', 'msa-gate'), GATE - 30, 540, { height: '240px' });
-    const n2 = put(stage, K.el('div', 'msa-num', '2'), GATE - 26, 820);
-    const t3 = at(ctx, 3, 'backup layer', 0.2);
+    // beat 1: the first layer drops in between them
+    const wall = put(stage, K.el('div', 'msa-wall'), WALL - 17, 360, { height: '280px' });
+    const n1 = put(stage, K.el('div', 'msa-num', '1'), WALL - 26, 300);
+    const tW = at(ctx, 1, 'first layer', 0.3);
+    tl.fromTo(wall, { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.6, ease: 'power3.out' }, tW);
+    A.in(tl, n1, tW + 0.3, 'pop', { dur: 0.4 });
+    tl.to(gaze, { opacity: 0, duration: 0.4 }, tW + 0.1);
+    tl.fromTo(c1, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, tW + 0.2);
+    // beat 2: the backup layer
+    const gate = put(stage, K.el('div', 'msa-gate'), GATE - 30, 400, { height: '200px' });
+    const n2 = put(stage, K.el('div', 'msa-num', '2'), GATE - 26, 300);
+    const t3 = at(ctx, 2, 'backup layer', 0.2);
     tl.fromTo(gate, { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, t3);
     A.in(tl, n2, t3 + 0.3, 'pop', { dur: 0.4 });
     tl.fromTo(c2, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, t3 + 0.2);
-    // beat 4: the first layer fails (left open); the dog rushes to the gate; the backup holds
-    const tF = at(ctx, 4, 'door gets left open', 0.35);
-    const ghost = put(stage, K.el('div'), WALL - 17, 490, { position: 'absolute', width: '34px', height: '310px', boxSizing: 'border-box', border: '4px dashed #d9912b', borderRadius: '10px' });
+    // beat 3: the first layer fails (left open); the dog gets to the gate; the backup holds
+    const tF = at(ctx, 3, 'door gets left open', 0.35);
+    const ghost = put(stage, K.el('div'), WALL - 17, 360, { position: 'absolute', width: '34px', height: '280px', boxSizing: 'border-box', border: '4px dashed #d9912b', borderRadius: '10px' });
     tl.set(ghost, { opacity: 0 }, 0);
     tl.to(wall, { opacity: 0, y: -30, duration: 0.5, ease: 'power2.in' }, tF);
     tl.to(ghost, { opacity: 1, duration: 0.4 }, tF + 0.2);
-    const open = put(stage, K.el('div', 'msa-lab amber', 'Left open'), WALL - 140, 448);
+    const open = put(stage, K.el('div', 'msa-lab amber', 'Left open'), 0, 660);
+    open.style.left = Math.round(WALL - open.offsetWidth / 2) + 'px';
     A.in(tl, open, tF + 0.3, 'pop', { dur: 0.4 });
     tl.to(dog.n, { x: (GATE - 42 - 150) - (DOG[0] - 75), duration: 0.8, ease: 'power2.in' }, tF + 0.6);
     tl.to(dog.l, { opacity: 0, duration: 0.3 }, tF + 0.6);
     A.pulse(tl, gate, tF + 1.4, { scale: 1.08 });
-    const hold = put(stage, K.el('div', 'msa-lab green', 'The backup holds'), GATE - 40, 492);
+    const hold = put(stage, K.el('div', 'msa-lab green', 'The backup holds'), 0, 620);
+    hold.style.left = Math.round(GATE + 60 - hold.offsetWidth / 2) + 'px';
     A.in(tl, hold, tF + 1.5, 'pop', { dur: 0.4 });
-    tl.fromTo(c3, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 4, 'two layers', 0.6));
-    tl.to(dog.n, { x: 0, duration: 0.9, ease: 'power2.inOut' }, Math.min(end(4) - 0.6, tF + 3.2));
-    tl.to(dog.l, { opacity: 1, duration: 0.4 }, Math.min(end(4) - 0.2, tF + 3.8));
+    tl.fromTo(c3, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 3, 'two layers', 0.6));
+    const tBack = Math.max(tF + 3.2, end(3) - 0.9);
+    tl.to(dog.n, { x: 0, duration: 0.9, ease: 'power2.inOut' }, tBack);
+    tl.to(dog.l, { opacity: 1, duration: 0.4 }, tBack + 0.6);
+    tl.to([open, hold], { opacity: 0, duration: 0.4 }, tBack + 0.3);
+    // beat 4, a side note: a fired-up dog can redirect onto whoever is closest
+    const t4 = cue(4) + 0.05;
+    tl.to([c1, c2, c3], { opacity: 0, y: -20, duration: 0.5, ease: 'power2.in' }, t4);
+    const tUp = at(ctx, 4, 'fired up', 0.15);
+    tl.to(dog.n, { borderColor: '#b8452d', duration: 0.3 }, tUp);
+    A.pulse(tl, dog.n, tUp + 0.05, { scale: 1.1 });
+    A.pulse(tl, trig.n, tUp + 0.05, { scale: 1.08 });
+    const note = MG.card(stage, { x: X, y: 290, w: W, variant: 'amber', label: 'Side note: redirection', icon: 'triangle-alert', title: 'Whoever’s closest',
+      body: 'A fired-up dog doesn’t always aim at the trigger. That arousal can land on whoever is nearby.', size: 28 });
+    tl.fromTo(note, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, t4 + 0.35);
+    const col = put(stage, K.el('div', 'tm-col'), X + 10, 290 + note.offsetHeight + 40, { width: W - 10 + 'px', gap: '26px' });
+    const NB = [['user', 'The person holding the leash', 'Person on the leash', 'person holding'], ['dog', 'Another dog in the yard', 'Another dog', 'another dog'],
+      ['cat', 'The cat in the room', 'The cat', 'the cat']];
+    const NY = 805, NX = [195, 450, 705];
+    NB.forEach(([ic, row, lab, p], i) => {
+      const r = TM.row(col, ic, row, { size: 32 });
+      const t = at(ctx, 4, p, 0.55 + 0.12 * i);
+      A.in(tl, r, t, 'fadeRight', { dur: 0.5 });
+      const sm = node(ic, NX[i], NY, 'amber', lab, 96);
+      sm.l.style.fontSize = '26px';
+      A.in(tl, [sm.n, sm.l], t, 'pop', { dur: 0.45, stagger: 0.08 });
+      // a red dotted arrow from the dog down to each of them
+      const a = [DOG[0] + (i - 1) * 40, DOG[1] + 140], e = [a[0] + (NX[i] - a[0]) * 0.9, NY - 58];
+      arrow(tl, sv, [a, e], t - 0.2, { dur: 0.5, gap: 18, r: 5 });
+    });
   });
 
   // ---------------------------------------------------------------- Part 1: going for walks

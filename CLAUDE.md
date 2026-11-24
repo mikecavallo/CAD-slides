@@ -327,7 +327,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   button saves it). Claude wrote all the narration from the slide text and put it in a NEW Google Doc,
   "Management: Solutions and Setups: Narration Script (Nov 4)", id 1Zq2RdUwbp6cBYSBfpT4c00a2IUn-1Tl8WMGRZGPHxiU, in the
   Drive folder "Management: Solutions and Setups (video)" (id 1tFQpVyvXjCazVdAH-IcOlJirl3NIciSm). The doc is the source of
-  truth; sync `script/lesson-management2.json` to it before every build.
+  truth (now the draft 2 doc, see round 1); sync `script/lesson-management2.json` to it before every build.
 - Lesson `script/lesson-management2.json` (`LESSON=lesson-management2.json`), series title "Management: Solutions and
   Setups" (title lines "Management:" / "Solutions and Setups"), `"motion": "cinematic"`, ids prefixed `ms`. Deck order kept.
   `ms00` Welcome (intro, plan with six rows + Why it matters, s01 two layers of safety), then silent "Part N" cards:
@@ -357,6 +357,20 @@ pipeline). This file records the state, decisions and working agreements from ea
   preview (temporary AI voice): https://claude.ai/artifact/3GTxLsy1JSsP9tEcnp4MgN (`out/web/management2/`, web_page.py --kicker
   "Foundations course"; fix the chips line by hand: "16:05 min", "7 parts", "51 slides", flag "Draft 1"). Full video 16:05,
   chat copy CRF 26 = 51 MB; render took 22 min with 4 workers.
+- Round 1 feedback (Nov 24, applied; draft 2): footer has no number tab, the rule runs to the right margin like Chapter 1
+  (lesson series `"footer": "line"`, read by lib.js buildChrome; other lessons unchanged). ms00s01 puts the two layers
+  between the dog and THE TRIGGER (dog left, trigger right, layer 1 wall, backup gate; layer 1 left open, the backup
+  holds); redirection onto whoever is closest is a side note on the last beat (person holding the leash, another dog in
+  the yard, the cat in the room while barking at the window), red dotted arrows whose heads follow the line. Every
+  section outline (s00) names each setup ("First, ... Second, ...") and each lands on its ordinal word. Setup slides
+  (MS.tip) were re-spaced: bigger picture, 40 px lead, 32 px chips, 34 px Why card, the column and picture centred in the
+  area under a full-width heading (Tori: too much empty space). Plan slide has a third card, "Coming up later": in
+  another section we teach the dog behaviors that make management easier. ms02s05 adds bottom-half shades with Tori's
+  bay window picture (`ms_shade_bottom.jpg`, swaps in on its beat via MS.tip `pic2`; tags Sunlight in / View blocked).
+  ms05s02 adds "the cat can reach them easily, without walking through the dog's space"; ms05s04 adds "if your dog is in
+  a crate, the cat can't walk up to it and bother them". ms07s03 tally marks sit in row 1's cells (Barks, 4 3 3 2 2 1 1,
+  total 16; cell centres measured from ms_tally.png). New narration doc: "Management: Solutions and Setups: Narration
+  Script (draft 2, Nov 24)", id 12UOY1P5Ozl8S4mku8j_G-AgDJ-4qCDBAzZvR2LWkwRM (the Nov 4 doc is renamed OLD). 18:00 long.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s00.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

@@ -9,7 +9,7 @@
 //   MS.mark(ctx, ph, m, t)       the picture marks of a tip: rings, dotted lines and one tag (fractions of the picture)
 (() => {
   const CSS = `
-  .ms-lead { position: absolute; font: 600 36px/1.36 var(--font-body); color: var(--ink-soft); }
+  .ms-lead { position: absolute; font: 600 40px/1.34 var(--font-body); color: var(--ink-soft); }
   .ms-lead b { color: var(--green-dark); }
   .ms-lead.red b { color: var(--red); }
   .ms-row { position: absolute; display: flex; align-items: center; flex-wrap: wrap; gap: 16px 16px; }
@@ -43,15 +43,14 @@
     (m.dots || []).forEach(([pts, col], i) => TM.fx.dots(tl, ph.sv, pts.map(p => ph.P(p[0], p[1])), t + 0.15 * i,
       { color: '#fff', stroke: col || '#d9912b', r: 5, gap: 18, dur: 0.7, hold: 99 }));
     (m.rings || []).forEach(([fx, fy, r, col], i) => TM.fx.ring(tl, ph.sv, ph.P(fx, fy), t + 0.35 * i, { r: r || 40, n: 2, color: col || 'var(--green)' }));
-    if (m.tag) {
-      const [text, wx, wy, variant] = m.tag;
-      const tg = TM.fx.tag(tl, ph.wrap, text, 0, 0, t + 0.45, variant || 'green');
+    (m.tag ? [m.tag] : []).concat(m.tags || []).forEach(([text, wx, wy, variant], i) => {
+      const tg = TM.fx.tag(tl, ph.wrap, text, 0, 0, t + 0.45 + 0.4 * i, variant || 'green');
       tg.style.fontSize = '26px';
       // keep the tag inside the picture: wx, wy are fractions of the picture box (right or bottom aligned past 0.5)
       const tw = tg.offsetWidth, th = tg.offsetHeight;
       tg.style.left = Math.round(wx > 0.5 ? w * wx - tw : w * wx) + 'px';
       tg.style.top = Math.round(wy > 0.5 ? h * wy - th : h * wy) + 'px';
-    }
+    });
   }
 
   /**
@@ -61,32 +60,44 @@
   function tip(ctx, o) {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const land = o.nat[0] > o.nat[1];
-    const maxW = o.maxW ?? (land ? 640 : 520), maxH = o.maxH ?? (land ? 520 : 640);
-    const { w, h } = MG.fit(o.nat, maxW, maxH);
-    const px = 1820 - w, py = 300 + Math.round((640 - h) / 2);
-    const X = 100, W = px - X - 80;
-    const hd = TM.head(ctx, 'Setup', o.title, { w: W });
-    const ph = TM.pic(stage, o.src, { x: px, y: py, w, h, nat: o.nat, radius: 22 });
+    const whyBeat = o.whyBeat ?? 2;
+    // the picture area at right; a second picture (o.pic2) can replace the first on its beat
+    const box = nat => {
+      const land = nat[0] > nat[1];
+      return MG.fit(nat, o.maxW ?? (land ? 760 : 580), o.maxH ?? (land ? 560 : 680));
+    };
+    const f1 = box(o.nat), f2 = o.pic2 ? box(o.pic2.nat) : { w: 0, h: 0 };
+    const PW = Math.max(f1.w, f2.w);
+    const X = 100, W = 1820 - PW - 80 - X;
+    const hd = TM.head(ctx, 'Setup', o.title);
+    // the content area under the heading; the column and the picture are both centred in it
+    const top = hd.h.root.offsetTop + hd.h.root.offsetHeight + 44, bottom = 952, AH = bottom - top;
+    const place = (src, nat, f) => {
+      let { w, h } = f;
+      if (h > AH) { w = Math.round(w * AH / h); h = AH; }
+      return TM.pic(stage, src, { x: 1820 - w, y: Math.round(top + (AH - h) / 2), w, h, nat, radius: 22 });
+    };
+    const ph = place(o.src, o.nat, f1);
     tl.fromTo(ph.wrap, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, 0.35);
-    let y = hd.h.root.offsetTop + hd.h.root.offsetHeight + 34;
-    const sec = put(stage, K.el('div', 'mg-chip green ms-sec', `${K.icon(o.icon).outerHTML}<span>${o.sec} · ${String(o.n).padStart(2, '0')}</span>`), X, y);
+    // the column: section chip, lead, chips, Why it works, stacked with even gaps
+    const col = [];
+    const sec = put(stage, K.el('div', 'mg-chip green ms-sec', `${K.icon(o.icon).outerHTML}<span>${o.sec} · ${String(o.n).padStart(2, '0')}</span>`), X, 0);
     A.in(tl, sec, 0.5, 'fadeRight', { dur: 0.6 });
-    y += 84 + 6;
+    col.push([sec, 30]);
     const t1 = cue(1) + 0.05;
     const parts = [];
     const addLead = () => {
       if (!o.lead) return;
-      const ld = put(stage, K.el('div', 'ms-lead' + (o.leadRed ? ' red' : ''), K.md(o.lead)), X, y, { width: W + 'px' });
+      const ld = put(stage, K.el('div', 'ms-lead' + (o.leadRed ? ' red' : ''), K.md(o.lead)), X, 0, { width: W + 'px' });
       const t = o.leadAt ? at(ctx, o.leadAt[0], o.leadAt[1], 0.5) : t1;
       A.in(tl, ld, t, 'fadeUp', { dur: 0.6 });
-      y += ld.offsetHeight + 28;
+      col.push([ld, 30]);
       parts.push(ld);
     };
     const addChips = () => {
       if (!o.chips || !o.chips.length) return;
       const items = o.chips.map(c => (c === '>' ? '>' : [c[0], c[1], c[2], c[3]]));
-      const r = chips(stage, X, y, items, { w: W, size: o.chipSize ?? 30 });
+      const r = chips(stage, X, 0, items, { w: W, size: o.chipSize ?? 32 });
       let k = 0;
       r.els.forEach((e, i) => {
         const c = o.chips[i];
@@ -96,20 +107,33 @@
         if (c[3]) TM.strike(tl, e, t + 0.35);
         k++;
       });
-      y += r.row.offsetHeight + 30;
+      col.push([r.row, 44]);
       parts.push(r.row);
     };
     if (o.chipsFirst) { addChips(); addLead(); } else { addLead(); addChips(); }
-    // the green Why it works card on the bottom of the content area
-    const why = MG.card(stage, { x: X, y: 0, w: W, variant: 'green', label: 'Why it works', icon: 'lightbulb', body: o.why, size: 31 });
-    why.style.top = (948 - why.offsetHeight) + 'px';
-    tl.fromTo(why, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(2) + 0.05);
+    const why = MG.card(stage, { x: X, y: 0, w: W, variant: 'green', label: 'Why it works', icon: 'lightbulb', body: o.why, size: 34 });
+    tl.fromTo(why, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(whyBeat) + 0.05);
+    col.push([why, 0]);
+    // stack and centre the column in the content area
+    const total = col.reduce((s, [n, g], i) => s + n.offsetHeight + (i < col.length - 1 ? g : 0), 0);
+    let y = Math.max(top, Math.round(top + (AH - total) / 2));
+    col.forEach(([n, g]) => { n.style.top = y + 'px'; y += n.offsetHeight + g; });
     if (o.mark) {
       const mk = o.mark;
       const t = mk.phrase ? at(ctx, mk.beat ?? 1, mk.phrase, 0.4) : cue(mk.beat ?? 1) + 0.6;
-      mark(ctx, ph, w, h, mk, t);
+      mark(ctx, ph, ph.w, ph.h, mk, t);
     }
-    return { hd, ph, sec, why, parts, X, W, y, px, py, w, h };
+    // the second picture: the first steps aside, the second takes its place, with its own marks
+    let ph2 = null;
+    if (o.pic2) {
+      const p2 = o.pic2;
+      ph2 = place(p2.src, p2.nat, f2);
+      const t2 = p2.phrase ? at(ctx, p2.beat, p2.phrase, 0.1) : cue(p2.beat) + 0.1;
+      tl.to(ph.wrap, { opacity: 0, x: -40, duration: 0.6, ease: 'power2.in' }, t2);
+      tl.fromTo(ph2.wrap, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', immediateRender: true }, t2 + 0.35);
+      if (p2.mark) mark(ctx, ph2, ph2.w, ph2.h, p2.mark, p2.mark.phrase ? at(ctx, p2.beat, p2.mark.phrase, 0.5) : t2 + 1.0);
+    }
+    return { hd, ph, ph2, sec, why, parts, X, W };
   }
 
   /** Section opener. o: { title, lead, items, icon } -> the summary line and the numbered setups. */
@@ -134,8 +158,14 @@
     const order = [];
     for (let c = 0; c < 2; c++) for (let r = 0; r < rows; r++) { const i = c * rows + r; if (i < n) order.push(i); }
     its.forEach((it, i) => { it.style.gridColumn = String(Math.floor(i / rows) + 1); it.style.gridRow = String((i % rows) + 1); });
-    const t1 = cue(1) + 0.1, step = Math.min(0.22, Math.max(0.12, (ctx.end(1) + 0.8 - t1) / n));
-    order.forEach((i, k) => A.in(tl, its[i], t1 + k * step, 'fadeRight', { dur: 0.5 }));
+    // each setup lands as it is named ("First, ...", "Second, ..."): the ordinal word starts it
+    const ORD = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
+    let lo = cue(1) + 0.1;
+    order.forEach((i, k) => {
+      const t = Math.max(lo, at(ctx, 1, (o.phrases || ORD)[i], (k + 1) / (n + 1)));
+      A.in(tl, its[i], t, 'fadeRight', { dur: 0.5 });
+      lo = t + 0.15;
+    });
     return { hd, ld, grid, its };
   }
 

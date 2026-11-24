@@ -484,6 +484,11 @@
     const tab = el('div', 'tab');
     tab.appendChild(el('span', null, info.chapterNum ? String(info.chapterNum) : ''));
     f.appendChild(tab);
+    // series "footer": "line" (lesson file): no number tab; the rule runs on to the right margin, like Chapter 1's frame
+    if (((window.TIMING || {}).series || {}).footer === 'line') {
+      tab.style.display = 'none';
+      f.querySelector('.rule').style.right = '76px';
+    }
     stage.appendChild(f);
     const url = f.querySelector('.url');
     return { logo, footer: f, hideUrl: () => (url.style.opacity = 0), hideLogo: () => (logo.style.opacity = 0), hideFooter: () => (f.style.opacity = 0) };

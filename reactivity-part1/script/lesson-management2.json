@@ -6,7 +6,8 @@
    "Management:",
    "Solutions and Setups"
   ],
-  "motion": "cinematic"
+  "motion": "cinematic",
+  "footer": "line"
  },
  "notes": "Foundations course video, rebuilt from Tori's deck 'Management, Part two: solutions and set ups' (3-Master_Management part 2.pptx, Nov 4). The deck had no narration: Claude drafted it from the slide text; Tori gets paste-ready copy. Build with LESSON=lesson-management2.json.",
  "tail": 4.0,
@@ -33,7 +34,7 @@
     {
      "id": "ms00plan",
      "heading": "Where we're headed",
-     "visual_concept": "Plan slide: What you'll learn (six setups), Why it matters.",
+     "visual_concept": "Plan slide: What you'll learn (six setups), Why it matters, Coming up later (behaviors that help).",
      "assets": [],
      "beats": [
       {
@@ -45,28 +46,28 @@
        "say": "For each one, you’ll get simple setups that stop the reaction before it starts.",
        "show": "Card: Why it matters.",
        "onscreen": "Why it matters"
+      },
+      {
+       "say": "And in another section, we’ll teach your dog specific behaviors that make management even easier.",
+       "show": "Card: Coming up later.",
+       "onscreen": "Behaviors that help"
       }
      ]
     },
     {
      "id": "ms00s01",
      "heading": "Always have two layers of safety",
-     "visual_concept": "A safety principle: a fired-up dog redirects onto whoever is closest; two independent barriers between the dog and the other animal or person; the first fails, the backup holds.",
+     "visual_concept": "Two independent barriers between the dog and the trigger; the first fails, the backup holds. Side note: a fired-up dog can redirect onto whoever is closest (the person on the leash, another dog, the cat).",
      "assets": [],
      "beats": [
       {
-       "say": "Before we get into the setups, one safety principle runs through all of them: always have two layers of safety.",
-       "show": "Heading; the dog and the cat with open space between.",
+       "say": "Before we get into the setups, one safety principle runs through all of them: always keep two layers of safety between your dog and the trigger.",
+       "show": "Heading; the dog and the trigger with nothing between them.",
        "onscreen": "Always have two layers of safety"
       },
       {
-       "say": "A reactive dog that’s fired up at one trigger doesn’t always aim at it. That arousal can spill over onto whoever is closest: the other dog, the cat, or a person in the room, even when none of them caused it.",
-       "show": "Trigger at the window; red redirect arrow onto the cat.",
-       "onscreen": "Redirects onto whoever’s closest"
-      },
-      {
-       "say": "So never lean on a single barrier. Your first layer is a solid separation, like a closed door, a secure crate, or a dog kept in its own room.",
-       "show": "First layer drops in; card.",
+       "say": "Never lean on a single barrier. Your first layer is a solid separation, like a closed door, a secure crate, or a dog kept in its own room.",
+       "show": "First layer drops in between them; card.",
        "onscreen": "First layer: a solid separation"
       },
       {
@@ -76,8 +77,13 @@
       },
       {
        "say": "One barrier will eventually fail. A door gets left open, or a leash slips. With two layers, a single mistake stays a near miss, never a bite.",
-       "show": "The first layer opens; the backup holds; Why two card.",
+       "show": "The first layer opens; the dog reaches the backup, which holds; Why two card.",
        "onscreen": "Near miss, never a bite"
+      },
+      {
+       "say": "One more thing to know: a dog that’s fired up at a trigger doesn’t always aim at it. That arousal can redirect onto whoever is closest, like the person holding the leash, another dog in the yard, or the cat in the room while your dog barks at the window.",
+       "show": "Side note: red dotted arrows from the dog to the person, another dog and the cat.",
+       "onscreen": "Side note: redirection"
       }
      ]
     }
@@ -112,8 +118,8 @@
        "onscreen": "Going for walks"
       },
       {
-       "say": "Here are eight ways to do that.",
-       "show": "Numbered setups land one after another.",
+       "say": "We’ll cover eight setups. First, choose strategic routes. Second, skip tight, no-exit spaces. Third, increase distance fast. Fourth, use visual barriers. Fifth, control greetings. Sixth, walk at quieter times of day. Seventh, avoid high-risk areas. And eighth, drive to a calmer spot.",
+       "show": "Each setup lands as it is named.",
        "onscreen": "Choose strategic routes / Skip tight, no-exit spaces / Increase distance fast / Use visual barriers / Control greetings / Walk at quieter times of day / Avoid high-risk areas / Drive to a calmer spot"
       }
      ]
@@ -352,8 +358,8 @@
        "onscreen": "At home: sights & sounds"
       },
       {
-       "say": "Here are nine setups.",
-       "show": "Numbered setups land one after another.",
+       "say": "We’ll cover nine setups. First, turn off the doorbell. Second, have guests wait before entering. Third, create physical barriers. Fourth, move deliveries away from the house. Fifth, block visual access to windows. Sixth, manage outdoor time. Seventh, mask or eliminate sounds. Eighth, create a safe space. And ninth, plan around predictable events.",
+       "show": "Each setup lands as it is named.",
        "onscreen": "Turn off the doorbell / Have guests wait before entering / Create physical barriers / Move deliveries away from the house / Block visual access to windows / Manage outdoor time / Mask or eliminate sounds / Create a safe space / Plan around predictable events"
       }
      ]
@@ -463,7 +469,8 @@
      "heading": "Block visual access to windows",
      "visual_concept": "Four chips; ring on the lowered shade.",
      "assets": [
-      "ms_s18.jpg"
+      "ms_s18.jpg",
+      "ms_shade_bottom.jpg"
      ],
      "beats": [
       {
@@ -475,6 +482,11 @@
        "say": "Use curtains, blinds, frosted film, or furniture, so your dog can’t see people walking by.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
+      },
+      {
+       "say": "Another option: shades that cover just the bottom half of the window. Sunlight still comes in through the top, and your dog is too short to see out of it.",
+       "show": "Tori's bay window picture replaces the first; tags Sunlight in (top) and View blocked (bottom).",
+       "onscreen": "Bottom-half shades"
       },
       {
        "say": "No sight of passersby, no reaction to rehearse.",
@@ -669,8 +681,8 @@
        "onscreen": "Resource guarding"
       },
       {
-       "say": "Here are four ways to do that.",
-       "show": "Numbered setups land one after another.",
+       "say": "We’ll cover four setups. First, remove access to guarded items. Second, feed in a safe, isolated space. Third, prevent stealing opportunities. And fourth, manage space around the dog.",
+       "show": "Each setup lands as it is named.",
        "onscreen": "Remove access to guarded items / Feed in a safe, isolated space / Prevent stealing opportunities / Manage space around the dog"
       }
      ]
@@ -853,8 +865,8 @@
        "onscreen": "Multi-dog conflict"
       },
       {
-       "say": "Here are four ways to do that.",
-       "show": "Numbered setups land one after another.",
+       "say": "We’ll cover four setups. First, separate during high-risk times. Second, control space and supervise. Third, remove competition. And fourth, manage arrivals and rotate access.",
+       "show": "Each setup lands as it is named.",
        "onscreen": "Separate during high-risk times / Control space & supervise / Remove competition / Manage arrivals & rotate access"
       }
      ]
@@ -986,8 +998,8 @@
        "onscreen": "Dog & cat conflict"
       },
       {
-       "say": "Here are four setups.",
-       "show": "Numbered setups land one after another.",
+       "say": "We’ll cover four setups. First, give the cat dog-free zones. Second, put the cat’s resources out of reach. Third, leash and supervise together time. And fourth, separate when you’re away.",
+       "show": "Each setup lands as it is named.",
        "onscreen": "Give the cat dog-free zones / Put cat resources out of reach / Leash & supervise together time / Separate when you’re away"
       }
      ]
@@ -1031,7 +1043,7 @@
        "onscreen": "Put cat resources out of reach"
       },
       {
-       "say": "Move the litter box, food, and water somewhere the dog can’t get to, like up high, or behind a cat-only door.",
+       "say": "Move the litter box, food, and water somewhere the dog can’t get to, like up high, or behind a cat-only door. And make sure the cat can reach them easily, without walking through the dog’s space to get there.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -1081,7 +1093,7 @@
        "onscreen": "Separate when you’re away"
       },
       {
-       "say": "When no one’s home to supervise, crate the dog or close them in their own room, so the cat can move around freely and safely.",
+       "say": "When no one’s home to supervise, crate the dog or close them in their own room, so the cat can move around freely and safely. And if your dog is in a crate, make sure the cat can’t walk up to it and bother them.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -1120,8 +1132,8 @@
        "onscreen": "Going for rides"
       },
       {
-       "say": "Here are five ways to do that.",
-       "show": "Numbered setups land one after another.",
+       "say": "We’ll cover five setups. First, block the view. Second, secure your dog properly. Third, choose calm routes. Fourth, avoid extra trips and park smart. And fifth, keep trips short.",
+       "show": "Each setup lands as it is named.",
        "onscreen": "Block the view / Secure your dog properly / Choose calm routes / Avoid trips & park smart / Keep trips short"
       }
      ]

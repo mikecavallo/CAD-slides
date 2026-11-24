@@ -83,13 +83,27 @@
       const r = TM.row(col, null, t, { num: i + 1, size: 34 });
       A.in(tl, r, at(ctx, b, p, 0.1 + 0.4 * (i % 2)), 'fadeRight', { dur: 0.6 });
     });
-    // the sheet's first row gets a few tally marks as the steps are said
-    const marks = [0.33, 0.42, 0.5].map((fx, k) => {
-      const [x, y] = ph.P(fx, 0.315);
-      const m = K.path(ph.sv, `M ${x - 6} ${y + 12} L ${x + 6} ${y - 12}`, { stroke: '#619537', 'stroke-width': 5, 'stroke-linecap': 'round', fill: 'none' });
-      A.draw(tl, m, at(ctx, 1, 'every day', 0.6) + 0.25 * k, 0.3);
-      return m;
+    // the sheet's first row fills in as the steps are said: the behavior, a tally per day (Su to S), then the week's total.
+    // Cell centres as fractions of ms_tally.png (measured from its grid lines): row 1 at y 0.251.
+    const RY = 0.251, DAYS = [0.260, 0.350, 0.440, 0.529, 0.618, 0.708, 0.797], COUNT = [4, 3, 3, 2, 2, 1, 1];
+    const ink = { fill: '#3f6b22', 'font-family': 'Montserrat, sans-serif', 'font-weight': 700, 'font-style': 'italic', 'text-anchor': 'middle', 'dominant-baseline': 'central' };
+    const [bx, by] = ph.P(0.135, RY);
+    const beh = K.svgText(ph.sv, bx, by, 'Barks', { ...ink, 'font-size': 26 });
+    A.in(tl, beh, at(ctx, 1, 'track every reaction', 0.15), 'fade', { dur: 0.5 });
+    const tA = at(ctx, 1, 'tally each one', 0.45), tB = Math.max(tA + 2.2, at(ctx, 1, 'add up the total', 0.8));
+    const step = (tB - tA - 0.4) / COUNT.reduce((x, y) => x + y, 0);
+    let k = 0;
+    DAYS.forEach((fx, d) => {
+      const [cx, cy] = ph.P(fx, RY);
+      for (let j = 0; j < COUNT[d]; j++) {
+        const x = cx + (j - (COUNT[d] - 1) / 2) * 8;
+        const m = K.path(ph.sv, `M ${x} ${cy - 10} L ${x} ${cy + 10}`, { stroke: '#3f6b22', 'stroke-width': 3.5, 'stroke-linecap': 'round', fill: 'none' });
+        A.draw(tl, m, tA + step * k++, 0.15);
+      }
     });
+    const [tx, ty] = ph.P(0.897, RY);
+    const tot = K.svgText(ph.sv, tx, ty, String(COUNT.reduce((x, y) => x + y, 0)), { ...ink, 'font-size': 28, 'font-style': 'normal' });
+    A.in(tl, tot, tB, 'pop', { dur: 0.4 });
   });
 
   // ---------------------------------------------------------------- remember: the close

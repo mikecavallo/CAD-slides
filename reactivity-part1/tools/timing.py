@@ -97,7 +97,7 @@ def build_narration(script, align):
                 beats.append({"t": round(max(0.05, r["start"] - s0 - 0.12), 3), "end": round(r["end"] - s0, 3), "say": spoken(b["say"]), "onscreen": b.get("onscreen", ""),
                               "words": [{"w": w["w"], "t": round(w["t"] - s0, 3), "e": round(w["e"] - s0, 3)} for w in r.get("words", [])]})
             audio = [{"file": rec["file"], "at": round(t, 4), "from": round(s0, 4), "dur": round(s1 - s0, 4)}]
-            hold = max(0.0, HOLD - (s1 - lasts[k]))  # top up only when her own pause is shorter than HOLD
+            hold = max(0.0, HOLD - (s1 - lasts[k]))  # top up only when the recorded pause is shorter than HOLD
             dur = frames(s1 - s0 + hold)
             segs.append(scene_seg(ch, sc, t, dur, beats, audio))
             t += dur

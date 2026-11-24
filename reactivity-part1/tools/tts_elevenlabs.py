@@ -41,7 +41,7 @@ from common import AUDIO, BUILD, PAUSE_RE, PAUSE_SEC, ROOT, iter_scenes, load_sc
 
 API = "https://api.elevenlabs.io/v1"
 SR = 44100
-LEAD_IN, PAUSE_BEAT, TAIL = 0.3, 0.45, 0.5
+LEAD_IN, TAIL = 0.3, 0.5
 AUDIO_EXT = {".wav", ".m4a", ".mp3", ".aac", ".flac", ".ogg", ".mov", ".mp4", ".aiff", ".aif", ".webm", ".opus"}
 
 
@@ -117,7 +117,8 @@ def main():
     ap.add_argument("--stability", type=float, default=0.5)
     ap.add_argument("--similarity", type=float, default=0.8)
     ap.add_argument("--style", type=float, default=0.0)
-    ap.add_argument("--speed", type=float, default=1.0, help="0.7 to 1.2")
+    ap.add_argument("--speed", type=float, default=0.95, help="0.7 to 1.2 (0.95: Tori found 1.0 read out too fast)")
+    ap.add_argument("--beat-pause", type=float, default=1.0, help="seconds of silence between a slide's beats (was 0.45)")
     ap.add_argument("--only", help="comma-separated scene ids")
     ap.add_argument("--out", default=str(BUILD / "eleven_narration"))
     ap.add_argument("--recordings", default=str(ROOT / "narration"), help="the trainer's own takes, used instead of the clone")
@@ -173,7 +174,7 @@ def main():
         path.write_bytes(call(f"/text-to-speech/{voice}?output_format=mp3_44100_128", key, body, accept="audio/mpeg"))
         print(f"  [{k}/{len(todo)}] {path.name}", flush=True)
 
-    # one take per slide: lead-in, beats with a short breath between them, [pause] silences, tail
+    # one take per slide: lead-in, beats with a breath between them (--beat-pause), [pause] silences, tail
     for sc in scenes:
         for old in takes_for(out, sc["id"]):  # a slide's earlier take (clone or real) must not linger beside the new one
             old.unlink()
@@ -184,7 +185,7 @@ def main():
         parts = [np.zeros(int(SR * LEAD_IN), np.float32)]
         for i, b in enumerate(sc["beats"]):
             if i:
-                parts.append(np.zeros(int(SR * PAUSE_BEAT), np.float32))
+                parts.append(np.zeros(int(SR * args.beat_pause), np.float32))
             for j, piece in enumerate(pieces(b["say"])):
                 if j:
                     parts.append(np.zeros(int(SR * PAUSE_SEC), np.float32))

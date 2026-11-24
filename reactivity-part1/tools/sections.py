@@ -1,9 +1,9 @@
 """Cut a finished lesson into one video per section (for YouTube), with captions and thumbnails.
 
-    python3 tools/sections.py --name Understanding-Dog-Behavior-Ch1 [--no-thumbs]
+    python3 tools/sections.py --name Understanding-Dog-Behavior-Ch1 [--no-thumbs | --thumbs-only] [--only 3 4]
 
-Sections come from the lesson's "sections" list: [[first slide id, title], ...]; each runs until the next one
-starts. Without it, every slide with a heading starts a section and chapter cards and the plan slide join the one
+Sections come from the lesson's "sections" list: [[first slide id, title, one-sentence description], ...]; each
+runs until the next one starts. Without it, every slide with a heading starts a section and chapter cards and the plan slide join the one
 before. Thumbnails come from the lesson's "thumbs" list (one options object per section, passed to
 tools/thumbnail.mjs) when present.
 
@@ -11,7 +11,7 @@ The cuts are exact: each section's picture is the rendered slide files themselve
 a section can never show a frame of the next or the previous one), and its sound is the finished video's mix cut at
 the same sample. Every file is then checked frame by frame at both ends and for sound from the next slide.
 
-Outputs in out/sections<tag>/: NN-Title.mp4, NN-Title.srt, NN-Title.jpg, sections.txt.
+Outputs in out/sections<tag>/: NN-Title.mp4, NN-Title.srt, NN-Title.jpg, sections.txt (titles, times, descriptions).
 """
 import argparse
 import json
@@ -60,19 +60,19 @@ def plan_sections(lesson, segs):
     spec = lesson.get("sections")
     if spec:
         ids = [s["id"] for s in segs]
-        starts = [(ids.index(sid), title) for sid, title in spec]
-        if [i for i, _ in starts] != sorted(i for i, _ in starts) or starts[0][0] != 0:
+        starts = [(ids.index(row[0]), row[1], row[2] if len(row) > 2 else "") for row in spec]
+        if [r[0] for r in starts] != sorted(r[0] for r in starts) or starts[0][0] != 0:
             raise SystemExit("sections: start ids must be in slide order and the first must be the first slide")
     else:
         starts = []
         for i, s in enumerate(segs):
             joins = s["kind"] == "bumper" or (s.get("heading") or "").lower().startswith("where we") or (i and segs[i - 1]["kind"] == "bumper")
             if i == 0 or not joins:
-                starts.append((i, s.get("heading") or s["id"]))
+                starts.append((i, s.get("heading") or s["id"], ""))
     out = []
-    for k, (i, title) in enumerate(starts):
+    for k, (i, title, desc) in enumerate(starts):
         j = starts[k + 1][0] if k + 1 < len(starts) else len(segs)
-        out.append({"title": title, "segs": segs[i:j]})
+        out.append({"title": title, "desc": desc, "segs": segs[i:j]})
     return out
 
 
@@ -82,6 +82,7 @@ def main():
     ap.add_argument("--segments", default="segments")
     ap.add_argument("--no-thumbs", action="store_true")
     ap.add_argument("--only", type=int, nargs="*", help="section numbers to (re)build")
+    ap.add_argument("--thumbs-only", action="store_true", help="render the thumbnails only (no video cutting)")
     args = ap.parse_args()
 
     lesson = load_script()
@@ -91,7 +92,7 @@ def main():
     dest = ROOT / "out" / f"sections{LESSON_TAG}"
     dest.mkdir(parents=True, exist_ok=True)
     sections = plan_sections(lesson, segs)
-    mix = decode_audio(final)
+    mix = None if args.thumbs_only else decode_audio(final)
     cues = captions(timing)
     thumbs = lesson.get("thumbs") or []
     listing = []
@@ -100,8 +101,13 @@ def main():
         first, last = sec["segs"][0], sec["segs"][-1]
         t0, t1 = first["start"], last["start"] + last["dur"]
         base = dest / f"{n:02d}-{slug(sec['title'])}"
-        listing.append(f"{n:02d}  {int(t0 // 60)}:{int(t0 % 60):02d}  {t1 - t0:5.1f} s  {sec['title']}")
+        listing.append(f"{n:02d}  {int(t0 // 60)}:{int(t0 % 60):02d}  {t1 - t0:5.1f} s  {sec['title']}" + (f"\n    {sec['desc']}" if sec['desc'] else ""))
         if args.only and n not in args.only:
+            continue
+        if args.thumbs_only:
+            if n <= len(thumbs) and thumbs[n - 1]:
+                opts = [x for k, v in thumbs[n - 1].items() for x in (f"--{k}", str(v))]
+                run("node", ROOT / "tools" / "thumbnail.mjs", "--out", base.with_suffix(".jpg"), *opts)
             continue
         files = [BUILD / args.segments / f"{s['id']}.mp4" for s in sec["segs"]]
 

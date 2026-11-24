@@ -10,18 +10,66 @@
   "notes": "v8: a welcome slide (ch00), then Chapter 1 'Starting with the Basics': the plan slide (ch00s02, id kept so its recording still matches) and the material from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. The trainer records the narration.",
   "tail": 4.5,
   "sections": [
-    ["ch00s01", "Welcome"],
-    ["ch01s01", "Reactivity vs. aggression"],
-    ["ch01s02", "Look beyond the label"],
-    ["ch01s03", "Why it's happening"],
-    ["ch01s04", "Genetics and temperament"],
-    ["ch01s05", "Before birth"],
-    ["ch01s06", "Breed history and purpose"],
-    ["ch01s07", "Early life and socialization"],
-    ["ch01s08", "Age"],
-    ["ch01s09", "Past experiences"],
-    ["ch01s10", "Training tools and methods"],
-    ["ch01s12", "Putting it together"]
+    [
+      "ch00s01",
+      "Welcome",
+      "Tori Ganino welcomes you to Understanding Dog Behavior and lays out the chapter plan: what reactivity and aggression really mean, and the ingredients that shape how a dog responds."
+    ],
+    [
+      "ch01s01",
+      "Reactivity vs. aggression",
+      "Learn what aggression and reactivity each mean, how they can overlap, and why a label alone can't tell you what a dog is feeling."
+    ],
+    [
+      "ch01s02",
+      "Look beyond the label",
+      "Learn how the same behavior, like barking, can have very different reasons behind it, and why looking beyond the label matters when we decide how to help a dog."
+    ],
+    [
+      "ch01s03",
+      "Why it's happening",
+      "Learn why there's not just one reason behind a dog's behavior: like a recipe, many factors can contribute to fearful, reactive, aggressive or other responses."
+    ],
+    [
+      "ch01s04",
+      "Genetics and temperament",
+      "Learn how genetics shapes behavior: dogs are born with different temperaments, some more sensitive and some more easygoing, and some start life with a more easily triggered nervous system."
+    ],
+    [
+      "ch01s05",
+      "Before birth",
+      "Learn how a puppy's starting point can be influenced before birth: the mother's health, nutrition and experiences during pregnancy can become part of the puppy's foundation."
+    ],
+    [
+      "ch01s06",
+      "Breed history and purpose",
+      "Learn what the jobs dogs were bred for, from herding and guarding to hunting and retrieving, can tell us about their behavior, and why breed history gives clues, not guarantees."
+    ],
+    [
+      "ch01s07",
+      "Early life and socialization",
+      "Learn how early experiences shape behavior, why a puppy's first few months matter, and why socialization means positive associations with support and choice, not a checklist."
+    ],
+    [
+      "ch01s08",
+      "Age",
+      "Learn how age shapes behavior, from adolescence to social maturity, when reactivity or aggression often shows up, and why adult dogs get pickier and senior dogs less patient."
+    ],
+    [
+      "ch01s09",
+      "Past experiences",
+      "Learn how a single event or repeated experiences can shape your dog's behavior, why practice makes patterns stronger, and the good news: we can build a new path."
+    ],
+    [
+      "ch01s10",
+      "Training tools and methods",
+      "Learn how training tools and methods affect behavior, why harsh methods are linked to more fear, stress, and aggression, and why correcting a growl doesn't help a dog feel better."
+    ],
+    [
+      "ch01s12",
+      "Putting it together",
+      "See how all seven ingredients, from genetics and breed history to past experiences and training methods, come together to shape behavior, and what comes next: your dog's baseline."
+    ]
   ],
   "chapters": [
     {
@@ -499,6 +547,115 @@
           ]
         }
       ]
+    }
+  ],
+  "thumbs": [
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 1",
+      "chapter": "Starting with the Basics",
+      "hook": "Start here: <em>understand your dog</em>",
+      "photo": "trainer_with_dog.jpg",
+      "pos": "50% 50%",
+      "face": "none"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 2",
+      "chapter": "Starting with the Basics",
+      "hook": "Reactive or <em>aggressive?</em>",
+      "photo": "thumbs/ch1_02a.jpg",
+      "pos": "center",
+      "photo2": "thumbs/ch1_02b.jpg",
+      "pos2": "center",
+      "card": "wide"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 3",
+      "chapter": "Starting with the Basics",
+      "hook": "Same bark, <em>different reasons</em>",
+      "photo": "thumbs/ch1_03.png",
+      "pos": "center",
+      "card": "wide"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 4",
+      "chapter": "Starting with the Basics",
+      "hook": "Why is my dog <em>acting this way?</em>",
+      "photo": "photo_why.jpg",
+      "pos": "50% 60%"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 5",
+      "chapter": "Starting with the Basics",
+      "hook": "Dogs are born <em>different</em>",
+      "photo": "temperament_sensitive.jpg",
+      "pos": "55% 50%",
+      "photo2": "temperament_easygoing.jpg",
+      "pos2": "85% 50%",
+      "card": "wide"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 6",
+      "chapter": "Starting with the Basics",
+      "hook": "Influenced <em>before birth</em>",
+      "photo": "thumbs/ch1_06.png",
+      "card": "wide",
+      "pos": "50% 50%"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 7",
+      "chapter": "Starting with the Basics",
+      "hook": "What was your dog <em>bred for?</em>",
+      "photo": "thumbs/ch1_07.jpg",
+      "pos": "center"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 8",
+      "chapter": "Starting with the Basics",
+      "hook": "Socialization <em>isn’t a checklist</em>",
+      "photo": "thumbs/ch1_08.png",
+      "pos": "center",
+      "card": "wide"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 9",
+      "chapter": "Starting with the Basics",
+      "hook": "Teenager <em>with fur</em>",
+      "photo": "thumbs/ch1_09.png",
+      "card": "wide",
+      "pos": "50% 50%"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 10",
+      "chapter": "Starting with the Basics",
+      "hook": "Practice <em>wears&nbsp;a&nbsp;path</em>",
+      "photo": "thumbs/ch1_10.png",
+      "pos": "50% 50%",
+      "card": "wide"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 11",
+      "chapter": "Starting with the Basics",
+      "hook": "Harsh methods <i>backfire</i>",
+      "photo": "thumbs/ch1_11.png",
+      "card": "wide"
+    },
+    {
+      "series": "Understanding Dog Behavior · Chapter 1",
+      "label": "Part 12",
+      "chapter": "Starting with the Basics",
+      "hook": "Seven ingredients, <em>one dog</em>",
+      "photo": "thumbs/ch1_12.png"
     }
   ]
 }

@@ -303,6 +303,88 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Online page (Tori's cloned voice since Nov 5): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 
+## Management: The Basics (Foundations course video; Tori's cloned voice)
+
+- Source: Tori's deck "Management, Part one: the basics" (Master_Management_part_1.pptx, uploaded Nov 4; 19 slides, no
+  speaker notes). Claude wrote all the narration from the slide text and put it in a NEW Google Doc in Tori's Drive,
+  "Management: The Basics: Narration Script (Nov 4)", id 1_fXa1ZaPbhuah0T9OnesaBnyFUJ4uC0IwuoIrtlIg0Q (now titled "draft 1,
+  superseded"). Current script doc: "Management: The Basics: Narration Script (draft 3, Nov 23)", id
+  1nvccovrHcr7flADM9pwcisxmRgvlxvSegY4h3p_Idgg (slide numbers in its headings; draft 2 doc 1Q6ji2K9... renamed "superseded"). The newest doc is the source of truth; sync
+  `script/lesson-management.json` to it before every build. Each round: a new doc version in the Drive folder, old one renamed.
+- Lesson `script/lesson-management.json` (`LESSON=lesson-management.json`), series title "Management: The Basics"
+  (title lines "Management:" / "The Basics"), `"motion": "cinematic"`, ids prefixed `mg`. Chapters use the silent
+  "Part N" cards like Markers and Mechanics: `mg00` Welcome (intro, plan: What you'll learn + Why it matters), `mg01` Where
+  Management Fits (s01 recap triggers and thresholds, s02 the foundation), `mg02` What Management Is (and Isn't) (s01),
+  `mg03` The Golden Rule (s01 100%, s02 everyone, s03 practice/path in the woods, s04 brain pathways, s05 house and
+  crack, s06 exposure myth, s07 calm isn't cured), `mg04` Five Common Mistakes (s00 overview, s01 to s05 one per mistake,
+  s06 close with the logo). Deck order kept.
+- Scene code: `video/scenes/mg_kit.js` (`window.MG`: card, callout, avoid card, mistake slide layout; builds on TM),
+  `mga.js` to `mgd.js`. render.mjs `usesC1.mg = ['c1','c2','tm']`. mg_kit.js also adds a hidden font warm-up so Rubik
+  and Montserrat are loaded before scenes measure text (scenes build before document.fonts.ready; a heading measured
+  in the fallback font wrapped differently and the Mistake 4 chip landed on the heading).
+- Tori's pictures (from the deck, shown whole): `mg_practice.jpg` (boxer, slide 8), `mg_mistake1..5.jpg`, `mg_brain.png`
+  (pathways illustration), `mg_house.png` (cracked house) and `mg_house_clean.png` (Claude removed the crack so it can
+  draw in on cue; tools: scratch inpaint). Picture marks use TM.fx (gaze dots and amber ring on mistake 2, ring on the
+  long line with "Management still on" for mistake 3, ring on the gate + "Protection" for mistake 4, red ring on the
+  barking mouth for mistake 5).
+- Claude's choices to confirm with Tori: on-screen text is condensed from the deck; the deck's "how he feels" is "how
+  they feel" (the myth quote keeps "him"); the deck's slide 13 typo ("Each one quietly foundation") reads "quietly
+  weakens the foundation"; the deck's dashed "Practice makes perfect, ly" pun is "Practice makes perfectly unwanted behaviors" (no dash);
+  mistake 2's chips are short ("Outside sounds", "Shadows at a window", "Routine changes").
+- Draft 2 (Nov 5): 9:29, sent in chat with storyboard and script; preview page republished (same link). Draft 1 (Nov 4): full video 9:19 sent in chat (`out/Management-The-Basics-draft1.mp4`, CRF 26, 25 MB), storyboard and
+  script sent too. Online preview (temporary AI voice): https://claude.ai/artifact/BHXsejnE1aLqyYg2HRsmoa
+  (`out/web/management/`, web_page.py --kicker "Foundations course"; fix the chips line by hand: "4 parts", "19 slides").
+- Round 2 (Nov 5, Tori's draft 1 notes, applied as draft 2): every title is short (Triggers and thresholds, Where
+  management fits, What it is, and isn't, The golden rule, Everyone follows the plan, Practice makes perfect, Rewiring the
+  brain, "Just this once", A dangerous myth, Calm isn't cured, Five common mistakes, Picking and choosing, Missing subtle
+  triggers, Relaxing too soon, Seeing it as punishment, Feeding too late, Bringing it together); Tori wants short titles
+  everywhere. The footer tab now shows the SLIDE number (title = 1, hidden; Part cards show none): mg_kit.js sets it on
+  load, no lib.js change. mg01s02: no repeated "foundation" line (the slab carries it). mg02s01: label clear of the circle.
+  mg03s01: 100% shown once (the ring); text says "every single time". mg03s02: "bring the unwanted behavior back".
+  mg03s03 and mg03s04: say "the neural pathway in the brain", "old pathway in the brain", "new pathway in the brain"; brain
+  picture tagged Old pathway / New pathway; spacing on mg03s03 measured, not fixed. mg03s05: the house is LEVEL and builds
+  floor by floor on a level foundation, then the crack opens in the slab and runs up, and the house shifts (body and slab
+  are separate layers: `mg_house_body.png`, `mg_house_slab.png`, `mg_house_level.png`, made from mg_house_clean.png by
+  rotating the house body 3 degrees upright; the crack is Tori's, mapped onto the level house). Never start with a tilted
+  house; the closing slide uses the level house too. mg03s06: myth quote ends "he'll get over it"; the example is a fearful
+  dog (card "A fearful dog: what happens"); new beat 4 points to WTF, What's the Function?, explained in The ABCs of Behavior
+  (Chapter 3 of Understanding Dog Behavior). mg03s07: "still feel exactly the same about it tomorrow, or possibly worse".
+  mg04s00 is an intro, not a summary: "Let's look at five common mistakes, and how to avoid each one", numbered pictures,
+  no labels. Mistake slides stack their content in one evenly spaced column (MG.mistake m.col); mistake 1 lost the
+  managed/skipped chips (the quote says it); mistake 3 shows the brain picture again (new pathway faint and dashed, old
+  pathway red) instead of bars, less text, "not your own timeline"; mistake 4 has no ring on the picture (Tori found it
+  weird; keep picture marks small and meaningful).
+- Round 3 (Nov 23, Tori's draft 2 notes, applied as draft 3, 11:02): footer has NO number tab and the rule runs to the
+  right margin (series `"footerTab": false`, from the Markers and Mechanics toolkit merged in; the mg_kit.js slide-number
+  code is gone). What it is, and isn't joined Part 1 (now "Understanding Management": mg01s01 recap, s02 where it fits,
+  s03 what it is and isn't); ids RENUMBERED: Part 2 The Golden Rule = mg02s01..s07, Part 3 Five Common Mistakes =
+  mg03s00..s06 (the round 2 notes above use the old ids: their mg03 = now mg02, mg04 = now mg03, mg02s01 = now mg01s03).
+  mg01s02 "Set up your dog's environment". Myth slide (mg02s06): new beat, a fearful dog who doesn't bark or lunge isn't
+  getting over it either, may shut down (amber chip "No barking? They may shut down instead."); callout and WTF are beats 4
+  and 5. Calm isn't cured (mg02s07): three cards, Looks like progress ("over threshold", not under: Tori said under
+  threshold didn't flow), Learned helplessness (new beat 2, Claude's definition: nothing they do makes the scary thing stop,
+  so they stop trying and shut down; calm outside, still afraid), The truth. Mistake 1: gaps also let the emotions we're
+  trying to change keep happening. Mistake titles say the mistake: Underestimating the environment, Relaxing management too
+  soon, Viewing management as punishment (Picking and choosing and Feeding too late kept); mistake headings are 60 px.
+  How to avoid it cards sit right under the content (52 px), not pinned to the bottom (Tori: too big a gap). Mistake 4:
+  protection from rehearsing AND from uncomfortable situations that stall or reverse progress with triggers (two rows, red
+  emphasis for the bad things). Mistake 5: food after the bark or lunge "can" pay for the reaction and teach the dog to
+  keep doing it (never "pays"). Narrated with Tori's ElevenLabs clone (eleven_v4) from now on (`tts_elevenlabs.py`, about
+  8,000 characters for the whole video; build/eleven_narration), assembled as out/Management-The-Basics-PREVIEW-tori-voice.mp4.
+- GoHighLevel delivery (Nov 24, same recipe as Markers and Mechanics): mg00intro rendered at `--scale 2` and scaled down
+  into build/segments (sharper title photo; lanczos, crf 14, bt709, -g 60 -r 30), master re-assembled with chapters as
+  out/Management-The-Basics-Tori-voice.mp4, then one video per chapter cut from it (start to end minus one frame; x264 slow
+  crf 16, aac 192k, faststart) into out/sections-1080p-management/ (Management-00-Welcome 0:29, -01-Understanding-Management
+  2:07, -02-The-Golden-Rule 4:31, -03-Five-Common-Mistakes 3:53). Lesson cards = each section's frame at 2.4 s, 1280x720
+  JPEG q94 (Tori wants cards that show what the video shows, not designed cards), plus GoHighLevel-Management-text.md
+  (module and lesson titles, descriptions; Lesson 1 is "What You'll Learn"), all in out/course-assets-management/. File
+  names start with "Management-" so they don't collide with the Markers and Mechanics downloads. No module card yet
+  (the Markers and Mechanics module card was designed in that session and its files aren't in git).
+- Recordings: `Mg00intro.m4a`, `Mg00plan.m4a`, `Mg01s01.m4a` ... named by scene id.
+- Tori asked (Nov 4) for every draft to be saved in the chat thread: each round, send the video, a storyboard of every
+  slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder
+  "Management: The Basics (video)" (id 10Fqf8KJHhF_Jcwan0sm65bz_VUbiucOV) holds the narration doc.
+
 ## Recordings (Tori's voice)
 
 - One file per slide, named by scene id: `Ch01s05.m4a` (case does not matter). A slide in pieces:

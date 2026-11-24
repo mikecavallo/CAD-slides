@@ -1,0 +1,406 @@
+{
+ "title": "Management: Everyday Manners",
+ "series": {
+  "title": "Management: Everyday Manners",
+  "titleLines": [
+   "Management:",
+   "Everyday Manners"
+  ],
+  "motion": "cinematic",
+  "footerTab": false
+ },
+ "notes": "Foundations course video for puppy and obedience owners (not reactivity). Claude drafted all narration from Tori's brief (Nov 24); the Google Doc is the source of truth. Build with LESSON=lesson-everyday.json.",
+ "tail": 4.0,
+ "chapters": [
+  {
+   "id": "em00",
+   "num": 0,
+   "title": "Welcome",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "em00intro",
+     "heading": "Management: Everyday Manners",
+     "visual_concept": "The shared title slide.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Hi, I’m Tori Ganino with Calling All Dogs. Welcome to Management: Everyday Manners.",
+       "show": "Title slide.",
+       "onscreen": "Management: Everyday Manners"
+      }
+     ]
+    },
+    {
+     "id": "em00plan",
+     "heading": "Where we're headed",
+     "visual_concept": "Plan slide: What you'll learn, Why it matters.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "In this section, we’ll look at why management matters, how practice shapes your dog’s brain, and how to manage five everyday situations: greetings at the door, mealtime, jumping for things in your hands, pulling on walks, and barking at people.",
+       "show": "Card: What you'll learn.",
+       "onscreen": "What you'll learn"
+      },
+      {
+       "say": "Get this right, and the manners you teach will actually stick.",
+       "show": "Card: Why it matters.",
+       "onscreen": "Why it matters"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "em01",
+   "num": 1,
+   "kicker": "Part",
+   "title": "Why Management Matters",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "em01s01",
+     "heading": "Practice makes perfect",
+     "visual_concept": "Tori's boxer picture; green chips for wanted habits, red chips for unwanted ones; callout.",
+     "assets": [
+      "mg_practice.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Every time your puppy or dog does something, they’re practicing it. And what gets practiced gets better.",
+       "show": "Lead line.",
+       "onscreen": "What gets practiced gets better"
+      },
+      {
+       "say": "That’s true for the things we love, like sitting politely or coming when called.",
+       "show": "Green chips.",
+       "onscreen": "Sitting politely, Coming when called"
+      },
+      {
+       "say": "And it’s just as true for the things we don’t want, like jumping on guests, grabbing food off the counter, or pulling on the leash.",
+       "show": "Red chips.",
+       "onscreen": "Jumping on guests, Counter surfing, Pulling on the leash"
+      },
+      {
+       "say": "Your dog isn’t being bad. They’re doing what works for them. And every time it works, they’re more likely to do it again.",
+       "show": "Callout.",
+       "onscreen": "What works gets repeated"
+      }
+     ]
+    },
+    {
+     "id": "em01s02",
+     "heading": "Building pathways",
+     "visual_concept": "Brain picture: the old pathway in red; a path in the woods wears in; the new pathway in green.",
+     "assets": [
+      "mg_brain.png"
+     ],
+     "beats": [
+      {
+       "say": "Here’s what’s happening in the brain. Every time your dog does a behavior, the neural pathway for it gets stronger.",
+       "show": "Brain picture; old pathway lights up.",
+       "onscreen": "The neural pathway gets stronger"
+      },
+      {
+       "say": "Think of a path in the woods. The first time, it’s barely visible. The more it’s walked, the easier it is to follow.",
+       "show": "Path in the woods wears in.",
+       "onscreen": "A path in the woods"
+      },
+      {
+       "say": "Puppies are building these paths every single day. The ones they walk most become their habits.",
+       "show": "Row: the most walked paths become habits.",
+       "onscreen": "Most walked = habits"
+      },
+      {
+       "say": "So the goal is simple: keep your dog off the old path, and help them walk a new one.",
+       "show": "New pathway lights green; banner.",
+       "onscreen": "Off the old path, onto a new one"
+      }
+     ]
+    },
+    {
+     "id": "em01s03",
+     "heading": "Management and training",
+     "visual_concept": "Two cards: Management (prevents practice, tool chips), Training (builds the new behavior); banner.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "That’s where management comes in. Management means setting up your dog’s world so they can’t practice the behavior you don’t want.",
+       "show": "Management card.",
+       "onscreen": "Management: prevents practice"
+      },
+      {
+       "say": "A gate, a leash, a crate, a closed door, food put away. Simple things that prevent the rehearsal.",
+       "show": "Tool chips.",
+       "onscreen": "Gate, Leash, Crate, Closed door, Food put away"
+      },
+      {
+       "say": "Training is the other half. It teaches your dog what to do instead, and makes that choice worth it.",
+       "show": "Training card.",
+       "onscreen": "Training: builds the new behavior"
+      },
+      {
+       "say": "Management stops the old habit from getting stronger. Training builds the new one. You need both.",
+       "show": "Banner.",
+       "onscreen": "You need both"
+      }
+     ]
+    },
+    {
+     "id": "em01s04",
+     "heading": "The foundation",
+     "visual_concept": "Tori's house: the foundation, floors build up (new behaviors), a crack opens and the house shifts; callout.",
+     "assets": [
+      "mg_house_body.png",
+      "mg_house_slab.png"
+     ],
+     "beats": [
+      {
+       "say": "Think of it like building a house. Management is the foundation. Training builds the floors on top of it.",
+       "show": "Foundation, then floors.",
+       "onscreen": "Management = foundation"
+      },
+      {
+       "say": "Every new behavior you teach, like sitting at the door, waiting for the bowl, or walking on a loose leash, is another floor.",
+       "show": "Floor tags.",
+       "onscreen": "Sit at the door, Wait for the bowl, Loose leash walking"
+      },
+      {
+       "say": "But if the foundation has a crack, everything you build on it starts to shift. Every time your dog practices what you don’t want, that’s a crack.",
+       "show": "Crack opens, house shifts.",
+       "onscreen": "Every rehearsal is a crack"
+      },
+      {
+       "say": "Keep the foundation solid, and the new behaviors you teach will hold.",
+       "show": "Green callout.",
+       "onscreen": "A solid foundation holds"
+      }
+     ]
+    },
+    {
+     "id": "em01s05",
+     "heading": "Everyone follows the plan",
+     "visual_concept": "Every time + Every person; red callout; four people cards.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Management only works if everyone follows it, every time.",
+       "show": "Every time + Every person.",
+       "onscreen": "Every time, every person"
+      },
+      {
+       "say": "If one person lets the puppy jump up for a hug, or slips food from the table, your dog learns the rule is optional.",
+       "show": "Red callout.",
+       "onscreen": "The rule is optional"
+      },
+      {
+       "say": "So get the whole household on the same page: family, kids, guests, dog walkers, and sitters.",
+       "show": "People cards.",
+       "onscreen": "Family, Kids, Guests, Walkers and sitters"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "em02",
+   "num": 2,
+   "kicker": "Part",
+   "title": "Everyday Situations",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "em02s01",
+     "heading": "Greetings at the door",
+     "visual_concept": "Situation slide: picture at right (golden jumping on a guest); Practicing / Manage it / Teach instead.",
+     "assets": [
+      "abc_greet_c.jpg"
+     ],
+     "beats": [
+      {
+       "say": "Let’s start at the front door. A guest walks in, and your dog jumps all over them. If that happens again and again, jumping becomes the way your dog says hello.",
+       "show": "Practicing.",
+       "onscreen": "Jumping on guests"
+      },
+      {
+       "say": "To manage it, put up a baby gate or clip on a leash before you open the door, so your dog can’t reach your guest.",
+       "show": "Manage it.",
+       "onscreen": "Baby gate or leash, before the door opens"
+      },
+      {
+       "say": "Then teach what you want instead, like four paws on the floor or going to a mat, and reward that calm hello.",
+       "show": "Teach instead.",
+       "onscreen": "Four paws on the floor, or go to a mat"
+      }
+     ]
+    },
+    {
+     "id": "em02s02",
+     "heading": "Mealtime",
+     "visual_concept": "Situation slide: picture placeholder (mealtime); four red chips; Manage it rows; Teach instead.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Next, food. Counter surfing, mugging you while you cook, jumping up while you make their meal, guarding the bowl. Every time it pays off, it gets stronger.",
+       "show": "Practicing: four red chips.",
+       "onscreen": "Counter surfing, Mugging, Jumping at meal prep, Guarding the bowl"
+      },
+      {
+       "say": "Manage it by keeping food off the counters and out of reach, and by using a gate, crate, or mat while you make meals and while you eat.",
+       "show": "Manage it.",
+       "onscreen": "Food out of reach; gate, crate, or mat during meals"
+      },
+      {
+       "say": "If your dog guards the bowl, give them a quiet spot to eat in peace, with no one hovering or reaching in. If it’s getting worse, reach out for help.",
+       "show": "Manage it: a quiet spot.",
+       "onscreen": "A quiet spot to eat in peace"
+      },
+      {
+       "say": "Then teach a calm sit or wait. The bowl only goes down when your dog is calm.",
+       "show": "Teach instead.",
+       "onscreen": "Calm sit or wait; the bowl goes down when calm"
+      }
+     ]
+    },
+    {
+     "id": "em02s03",
+     "heading": "Jumping for things in hands",
+     "visual_concept": "Situation slide: picture placeholder; Practicing / Manage it / Teach instead.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Then there’s jumping up for whatever’s in your hands: food, toys, shoes, the mail. If jumping gets them the thing even once, they’ll try again, and harder.",
+       "show": "Practicing.",
+       "onscreen": "Jumping for food, toys, shoes, the mail"
+      },
+      {
+       "say": "Manage it by keeping things up and out of reach, and using a leash or tether when people are carrying something your dog wants.",
+       "show": "Manage it.",
+       "onscreen": "Out of reach; leash or tether"
+      },
+      {
+       "say": "Teach a sit or four paws on the floor instead. That calm choice is what earns the toy or the treat.",
+       "show": "Teach instead.",
+       "onscreen": "Sit or four paws on the floor earns it"
+      }
+     ]
+    },
+    {
+     "id": "em02s04",
+     "heading": "Pulling on walks",
+     "visual_concept": "Situation slide: picture placeholder; Practicing / Manage it (harness, head halter conditioned) / Teach instead.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "On walks, every time your dog pulls and gets where they want to go, pulling works. Do that every day, and it becomes how they walk.",
+       "show": "Practicing.",
+       "onscreen": "Pulling gets them there"
+      },
+      {
+       "say": "Manage it with a well fitted harness. A head halter can help too, as long as your dog has been properly conditioned to wear it.",
+       "show": "Manage it: harness, head halter.",
+       "onscreen": "Harness; head halter, once conditioned"
+      },
+      {
+       "say": "While you’re training, keep walks shorter and calmer, so your dog isn’t practicing pulling for an hour every day.",
+       "show": "Manage it: shorter walks.",
+       "onscreen": "Shorter, calmer walks while you train"
+      },
+      {
+       "say": "Then teach loose leash walking, and reward your dog for walking next to you.",
+       "show": "Teach instead.",
+       "onscreen": "Loose leash walking"
+      }
+     ]
+    },
+    {
+     "id": "em02s05",
+     "heading": "Barking at people",
+     "visual_concept": "Situation slide: picture at right (golden barking at a man through the window); reasons; manage it; ABCs course card.",
+     "assets": [
+      "abc_greet_b.jpg"
+     ],
+     "beats": [
+      {
+       "say": "And finally, barking at people, at the window or out on walks.",
+       "show": "Practicing.",
+       "onscreen": "Barking at people"
+      },
+      {
+       "say": "Dogs bark at people for different reasons. Sometimes they really want that person to come closer. And when the person comes over, or the barking gets attention, it works.",
+       "show": "Reason chip; it works.",
+       "onscreen": "They want the person to come closer"
+      },
+      {
+       "say": "Manage it by blocking the view at the window, with film or closed blinds, and by giving people space on walks before your dog starts barking.",
+       "show": "Manage it.",
+       "onscreen": "Block the view; give people space"
+      },
+      {
+       "say": "Why your dog barks matters, because it changes how we train. We cover that in our ABCs of Behavior course.",
+       "show": "ABCs course card.",
+       "onscreen": "The ABCs of Behavior"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "em03",
+   "num": 3,
+   "kicker": "Part",
+   "title": "Putting It Together",
+   "slide_refs": [],
+   "scenes": [
+    {
+     "id": "em03s01",
+     "heading": "“Just this once”",
+     "visual_concept": "Just this once chips drop one by one, each adding a rep on the old path (red meter); callout.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "It’s easy to think, just this once won’t hurt. A quick jump for a hug, one bite from the table.",
+       "show": "Just this once chips.",
+       "onscreen": "Just this once"
+      },
+      {
+       "say": "But your dog doesn’t know it’s just this once. To them, it’s one more rep on the old path.",
+       "show": "Meter fills.",
+       "onscreen": "One more rep on the old path"
+      },
+      {
+       "say": "Small slips add up. Being consistent is what makes new manners stick.",
+       "show": "Green callout.",
+       "onscreen": "Consistency makes manners stick"
+      }
+     ]
+    },
+    {
+     "id": "em03s02",
+     "heading": "Bringing it together",
+     "visual_concept": "Level house on its foundation; three takeaways; closing statement; logo close.",
+     "assets": [
+      "mg_house_level.png"
+     ],
+     "beats": [
+      {
+       "say": "Let’s bring it together. What your dog practices, they get better at. Management keeps the unwanted behaviors from being practiced.",
+       "show": "Takeaway 1.",
+       "onscreen": "Management prevents practice"
+      },
+      {
+       "say": "Training teaches what to do instead, and everyone in your home follows the same plan.",
+       "show": "Takeaways 2 and 3.",
+       "onscreen": "Training, everyone"
+      },
+      {
+       "say": "Management is the foundation. Build on it, and the manners you teach will last.",
+       "show": "Closing statement, logo close.",
+       "onscreen": "Management is the foundation"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

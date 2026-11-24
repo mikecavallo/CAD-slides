@@ -385,6 +385,34 @@ pipeline). This file records the state, decisions and working agreements from ea
   slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder
   "Management: The Basics (video)" (id 10Fqf8KJHhF_Jcwan0sm65bz_VUbiucOV) holds the narration doc.
 
+## Management: Everyday Manners (Foundations course video for puppy and obedience owners; Tori's cloned voice)
+
+- Tori's brief (Nov 24): a management video for general puppies and obedience, NOT reactivity: owners must not let their dog
+  practice unwanted behaviors (door greetings, food and meals, jumping for things in hands, pulling on walks, barking at
+  people); why management matters (practice makes perfect, neural pathways). No triggers, thresholds or reactivity framing.
+  Branch `claude/management-puppy-obedience` (from claude/management-part-1). Course label "Foundations course" (Tori puts
+  it in the right course in GoHighLevel).
+- Lesson `script/lesson-everyday.json` (`LESSON=lesson-everyday.json`), series "Management: Everyday Manners" (title lines
+  "Management:" / "Everyday Manners"), cinematic, footerTab false, ids prefixed `em`. `em00` Welcome (intro, plan: What
+  you'll learn + Why it matters), `em01` Why Management Matters (s01 practice makes perfect, s02 building pathways: brain
+  picture + path in the woods, s03 management and training, s04 the foundation: Tori's house, floors = new behaviors, a crack
+  per rehearsal, s05 everyone follows the plan), `em02` Everyday Situations (s01 door, s02 mealtime, s03 jumping for things
+  in hands, s04 pulling on walks, s05 barking at people), `em03` Putting It Together (s01 "Just this once", s02 close + logo).
+- Scene code: `video/scenes/em_kit.js` (`window.EM`: situation slide layout with What they practice (red) / Manage it /
+  Teach instead (green) sections, picture whole at right or a dashed "Picture coming" placeholder), `ema.js` to `emc.js`.
+  render.mjs `usesC1.em = ['c1','c2','tm','mg']`.
+- Tori's answers (Nov 24): title OK; Foundations course; outline OK; pulling: say "harness" but NOT front clip; a head halter
+  is fine as long as the dog is properly conditioned to it; mealtime covers all of it (counter surfing, mugging, guarding,
+  jumping, making meals); stand-alone, BUT it must have the cracked house (new behaviors fall apart if the dog practices
+  what we don't want); barking at people: they may really want the person to come closer; mention the ABCs course.
+- Pictures: door = abc_greet_c.jpg (golden jumping on a guest), barking = abc_greet_b.jpg (golden barking at a man through
+  the window), both 610 px wide. Waiting on Tori for mealtime, jumping for something in a hand, pulling on the leash
+  (placeholders until then) and optionally a puppy photo.
+- Script doc (source of truth): folder "Management: Everyday Manners (video)" (id 1JffrSV2dqHscYZnp3IUshtClkBvz86ir), doc
+  "Management: Everyday Manners: Narration Script (draft 1, Nov 24)", id 1uz-1Uu1LLhF6cb01FREFuCOwPIt7YpLqY6yfrgTzLGw.
+  All narration is Claude's. Script files for chat: scratchpad script_out.py pattern (build/everyday_script_dN.html for
+  the doc, build/Management-Everyday-Manners-script-draftN.md for chat).
+
 ## Recordings (Tori's voice)
 
 - One file per slide, named by scene id: `Ch01s05.m4a` (case does not matter). A slide in pieces:

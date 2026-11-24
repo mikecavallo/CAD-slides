@@ -2,7 +2,7 @@
 <html><head><meta charset="utf-8">
 <link rel="stylesheet" href="../../assets/fonts/fonts.css">
 <style>
-  :root { --green:#619537; --green-dark:#3f6b22; --green-deep:#2c4a17; --green-pale:#e8f1dc; --ink:#212121; --amber:#d9912b; }
+  :root { --green:#619537; --green-dark:#3f6b22; --green-deep:#2c4a17; --green-pale:#e8f1dc; --ink:#212121; --amber:#d9912b; --red:#b8452d; }
   * { box-sizing: border-box; margin: 0; }
   html, body { width: 1280px; height: 720px; overflow: hidden; }
   body { position: relative; font-family: 'Montserrat', sans-serif; color: var(--ink);
@@ -10,20 +10,24 @@
   .wash { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.75) 52%, rgba(255,255,255,0) 75%); }
   .text { position: absolute; left: 62px; top: 0; bottom: 0; width: 640px; display: flex; flex-direction: column; justify-content: center; gap: 22px; }
   .series { font: 700 25px/1.1 'Montserrat'; color: var(--green-dark); letter-spacing: .02em; }
-  .hook { font: 900 92px/1 'Rubik'; color: var(--green-deep); letter-spacing: -.01em; }
+  .hook { font: 900 92px/1 'Rubik'; color: var(--green-deep); letter-spacing: -.01em; overflow-wrap: normal; }
   .hook em { font-style: normal; color: var(--green); }
+  .hook i { font-style: normal; color: var(--red); }
   .pill { align-self: flex-start; background: var(--green); color: #fff; font: 700 27px/1 'Montserrat'; padding: 13px 26px 13px 13px; border-radius: 999px;
-          box-shadow: 0 8px 22px rgba(40,60,20,.22); display: flex; gap: 14px; align-items: center; }
+          box-shadow: 0 8px 22px rgba(40,60,20,.22); display: flex; gap: 14px; align-items: center; white-space: nowrap; }
   .pill b { background: #fff; color: var(--green-dark); border-radius: 999px; padding: 9px 16px; font: 700 22px/1 'Rubik'; letter-spacing: .03em; text-transform: uppercase; }
   .logo { position: absolute; left: 62px; bottom: 34px; width: 210px; }
-  .photo { position: absolute; right: 54px; top: 92px; width: 520px; height: 520px; border-radius: 34px; overflow: hidden;
-           border: 10px solid #fff; box-shadow: 0 22px 60px rgba(40,60,20,.28); background: center/cover no-repeat; }
+  .card { position: absolute; right: 54px; top: 92px; width: 520px; height: 520px; border-radius: 34px; overflow: hidden;
+          border: 10px solid #fff; box-shadow: 0 22px 60px rgba(40,60,20,.28); background: #fff; display: grid; gap: 8px; }
+  .card.wide { top: 170px; width: 560px; height: 335px; right: 46px; }
+  .card div { background-repeat: no-repeat; background-size: cover; background-position: center; }
   .face { position: absolute; right: 470px; bottom: 54px; width: 190px; height: 190px; border-radius: 50%; border: 8px solid #fff;
           box-shadow: 0 14px 34px rgba(40,60,20,.3); background: center 18%/cover no-repeat; }
+  .card.wide ~ .face { right: 500px; bottom: 70px; width: 170px; height: 170px; }
 </style></head>
 <body>
   <div class="wash"></div>
-  <div class="photo" id="photo"></div>
+  <div class="card" id="card"></div>
   <div class="face" id="face"></div>
   <div class="text">
     <div class="series" id="series"></div>
@@ -32,15 +36,41 @@
   </div>
   <img class="logo" src="../../assets/img/logo.png" alt="">
 <script>
+  // options (URL query): series, hook (<em> light green, <i> red), label, chapter, num, photo, photo2, grid, pos, pos2,
+  // fit (cover|contain), card (square|wide), face (picture or none). Pictures: a file in assets/img or an absolute path.
   const q = new URLSearchParams(location.search);
   const g = (k, d) => q.get(k) ?? d;
+  const src = (f) => f.startsWith('/') ? 'file://' + f : '../../assets/img/' + f;
   document.getElementById('series').textContent = g('series', 'Understanding Dog Behavior');
-  document.getElementById('hook').innerHTML = g('hook', 'Reactive or <em>aggressive?</em>');
-  document.getElementById('pill').innerHTML = `<b>Chapter ${g('num', '1')}</b>${g('chapter', 'Starting with the Basics')}`;
-  document.getElementById('photo').style.backgroundImage = `url(../../assets/img/${g('photo', 'photo_reactivity.jpg')})`;
-  document.getElementById('photo').style.backgroundPosition = g('pos', '60% 40%');
+  const hook = document.getElementById('hook');
+  hook.innerHTML = g('hook', 'Reactive or <em>aggressive?</em>');
+  document.getElementById('pill').innerHTML = `<b>${g('label', 'Chapter ' + g('num', '1'))}</b>${g('chapter', 'Starting with the Basics')}`;
+  const card = document.getElementById('card');
+  if (g('card', 'square') === 'wide') card.classList.add('wide');
+  const pics = g('grid', '') ? g('grid').split(',') : [g('photo', 'photo_reactivity.jpg'), ...(g('photo2', '') ? [g('photo2')] : [])];
+  const poss = [g('pos', '60% 40%'), g('pos2', 'center')];
+  const cols = pics.length <= 2 ? pics.length : pics.length === 4 ? 2 : 3;
+  card.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  pics.forEach((p, i) => {
+    const d = document.createElement('div');
+    d.style.backgroundImage = `url("${src(p.trim())}")`;
+    d.style.backgroundPosition = i < 2 ? poss[i] : 'center';
+    d.style.backgroundSize = g('fit', 'cover');
+    card.appendChild(d);
+  });
   const face = g('face', 'trainer_headshot.jpg');
   if (face === 'none') document.getElementById('face').remove();
-  else document.getElementById('face').style.backgroundImage = `url(../../assets/img/${face})`;
+  else document.getElementById('face').style.backgroundImage = `url("${src(face)}")`;
+  // the hook shrinks until it fits the text column in at most three lines
+  document.fonts.ready.then(() => {
+    const text = document.querySelector('.text');
+    const room = Math.min(640, document.getElementById('card').getBoundingClientRect().left - 62 - 30);
+    text.style.width = room + 'px';
+    let size = Number(g('size', 92));
+    const fits = () => hook.scrollWidth <= room && hook.offsetHeight <= size * 3.05 && document.getElementById('pill').getBoundingClientRect().bottom <= 585;
+    hook.style.fontSize = size + 'px';
+    while (!fits() && size > 48) { size -= 2; hook.style.fontSize = size + 'px'; }
+    document.body.dataset.ready = size;
+  });
 </script>
 </body></html>

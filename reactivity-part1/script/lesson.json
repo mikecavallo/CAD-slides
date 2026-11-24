@@ -9,6 +9,20 @@
   },
   "notes": "v8: a welcome slide (ch00), then Chapter 1 'Starting with the Basics': the plan slide (ch00s02, id kept so its recording still matches) and the material from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. The trainer records the narration.",
   "tail": 4.5,
+  "sections": [
+    ["ch00s01", "Welcome"],
+    ["ch01s01", "Reactivity vs. aggression"],
+    ["ch01s02", "Look beyond the label"],
+    ["ch01s03", "Why it's happening"],
+    ["ch01s04", "Genetics and temperament"],
+    ["ch01s05", "Before birth"],
+    ["ch01s06", "Breed history and purpose"],
+    ["ch01s07", "Early life and socialization"],
+    ["ch01s08", "Age"],
+    ["ch01s09", "Past experiences"],
+    ["ch01s10", "Training tools and methods"],
+    ["ch01s12", "Putting it together"]
+  ],
   "chapters": [
     {
       "id": "ch00",

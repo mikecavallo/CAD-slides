@@ -20,9 +20,6 @@
   const css = stage => { MS.css(stage); if (!stage.querySelector('style[data-msc]')) { const s = K.el('style', null, CSS); s.dataset.msc = '1'; stage.appendChild(s); } };
 
   // ---------------------------------------------------------------- Part 3: resource guarding
-  registerScene('ms03s00', ctx => MS.overview(ctx, { title: 'Resource guarding',
-    lead: 'Reduce conflict over *food, toys, and space* by managing access, so there’s nothing to guard in the first place.',
-    items: ['Remove access to guarded items', 'Feed in a safe, isolated space', 'Prevent stealing opportunities', 'Manage space around the dog'] }));
 
   const RG = [
     { title: 'Remove access to guarded items', src: 'ms_s26.jpg', nat: [1050, 1400],
@@ -47,6 +44,9 @@
       mark: { rings: [[0.74, 0.5, 80, 'var(--amber)']], tag: ['Close to their person', 0.04, 0.05, 'amber'], phrase: 'guards their person' } },
   ];
   RG.forEach((o, i) => registerScene(`ms03s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: 'Resource guarding', icon: 'bone', n: i + 1, ...o })));
+  registerScene('ms03recap', ctx => MS.recap(ctx, { title: 'resource guarding',
+    items: ['Remove access to guarded items', 'Feed in a safe, isolated space', 'Prevent stealing opportunities', 'Manage space around the dog'],
+    summary: 'Manage access to *food, toys, and space*, so there’s nothing to guard in the first place.' }));
 
   // ---------------------------------------------------------------- see it in action: Knox
   registerScene('ms03s05', ctx => {
@@ -92,9 +92,6 @@
   });
 
   // ---------------------------------------------------------------- Part 4: multi-dog conflict
-  registerScene('ms04s00', ctx => MS.overview(ctx, { title: 'Multi-dog conflict',
-    lead: 'Set up *calm routines and separate resources*, so two dogs under one roof stay relaxed around each other.',
-    items: ['Separate during high-risk times', 'Control space & supervise', 'Remove competition', 'Manage arrivals & rotate access'] }));
 
   const MD = [
     { title: 'Separate during high-risk times', src: 'ms_s33.jpg', nat: [1400, 1050],
@@ -119,4 +116,7 @@
       mark: { rings: [[0.6, 0.5, 80]], tag: ['One at a time', 0.04, 0.05], phrase: 'one at a time' } },
   ];
   MD.forEach((o, i) => registerScene(`ms04s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: 'Multi-dog conflict', icon: 'dog', n: i + 1, ...o })));
+  registerScene('ms04recap', ctx => MS.recap(ctx, { title: 'multi-dog conflict',
+    items: ['Separate during high-risk times', 'Control space & supervise', 'Remove competition', 'Manage arrivals & rotate access'],
+    summary: '*Calm routines and separate resources* keep two dogs under one roof relaxed.' }));
 })();

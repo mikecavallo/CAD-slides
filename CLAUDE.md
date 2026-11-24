@@ -327,7 +327,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   button saves it). Claude wrote all the narration from the slide text and put it in a NEW Google Doc,
   "Management: Solutions and Setups: Narration Script (Nov 4)", id 1Zq2RdUwbp6cBYSBfpT4c00a2IUn-1Tl8WMGRZGPHxiU, in the
   Drive folder "Management: Solutions and Setups (video)" (id 1tFQpVyvXjCazVdAH-IcOlJirl3NIciSm). The doc is the source of
-  truth (now the draft 2 doc, see round 1); sync `script/lesson-management2.json` to it before every build.
+  truth (now the draft 3 doc, see round 2); sync `script/lesson-management2.json` to it before every build.
 - Lesson `script/lesson-management2.json` (`LESSON=lesson-management2.json`), series title "Management: Solutions and
   Setups" (title lines "Management:" / "Solutions and Setups"), `"motion": "cinematic"`, ids prefixed `ms`. Deck order kept.
   `ms00` Welcome (intro, plan with six rows + Why it matters, s01 two layers of safety), then silent "Part N" cards:
@@ -373,7 +373,17 @@ pipeline). This file records the state, decisions and working agreements from ea
   Script (draft 2, Nov 24)", id 12UOY1P5Ozl8S4mku8j_G-AgDJ-4qCDBAzZvR2LWkwRM (the Nov 4 doc is renamed OLD). 18:02 long;
   draft 2 video, storyboard and script sent in chat; preview page republished (chips "18:02 min", "7 parts", "51 slides",
   flag "Draft 2"). lib.js changed, so every Part 2 segment re-rendered (18 min with 4 workers).
-- Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s00.m4a` ... named by scene id.
+- Round 2 feedback (Nov 24, applied; draft 3): ms00s01 is about barriers in general: "A layer is any barrier" (closed
+  door, crate, baby gate, leash, muzzle chips), "Two at once, for example" (closed door + baby gate, leash + baby gate,
+  leash + muzzle, muzzle + baby gate; the two generic layer bars get each pair's labels as it is named). Never say "one
+  barrier will eventually fail": the reason for two is that management can fail, so a second layer is there just in
+  case (banner). Layer 1 slips, the other holds; side note on redirection unchanged. ms01s01 adds places with barriers
+  your dog can step behind for a moment (parked car, fence). The section outlines moved to the END of each part as
+  recaps (`msNNrecap`, MS.recap: "Let's recap ...", the numbered setups as they are named, the deck's summary line as a
+  banner); Resource Guarding's recap sits after the Knox clip, before "When surprises keep happening". Each part's
+  first setup now opens with a lead-in ("Let's start with walks.", "Next, sights and sounds at home.", ...). Narration
+  doc: "Narration Script (draft 3, Nov 24)", id 115XcWgJGeEMx9ISa7tbZEOyINwlCV1h5xOysatpo9Gg (draft 2 renamed OLD).
+- Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)
 

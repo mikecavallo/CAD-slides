@@ -5,7 +5,7 @@
 //   MS.chips(stage, x, y, items, o)  a wrapping row of word chips: items [text, variant, icon, cross] or '>' for an arrow
 //   MS.tip(ctx, o)               one setup slide: heading, section chip, Tori's picture whole at right with marks, lead, chips,
 //                                and the green "Why it works" card on the bottom of the content area
-//   MS.overview(ctx, o)          a section opener: the deck's summary line, then the numbered setups
+//   MS.recap(ctx, o)             the recap closing a part: the numbered setups as they are named, then the summary banner
 //   MS.mark(ctx, ph, m, t)       the picture marks of a tip: rings, dotted lines and one tag (fractions of the picture)
 (() => {
   const CSS = `
@@ -136,38 +136,43 @@
     return { hd, ph, ph2, sec, why, parts, X, W };
   }
 
-  /** Section opener. o: { title, lead, items, icon } -> the summary line and the numbered setups. */
-  function overview(ctx, o) {
+  /**
+   * Recap at the end of a part. o: { title, items, summary, phrases } -> the numbered setups land as they are named
+   * ("First, ..."), then the deck's summary line closes the slide as a green banner.
+   */
+  function recap(ctx, o) {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const hd = TM.head(ctx, 'Management in action', o.title);
-    const ld = put(stage, K.el('div', 'mg-lead', K.md(o.lead)), 100, 290, { width: '1700px', fontSize: '38px' });
-    A.in(tl, ld, cue(0) + 0.4, 'fadeUp', { dur: 0.7 });
-    const n = o.items.length, rows = Math.ceil(n / 2);
-    const top = 290 + ld.offsetHeight + 46;
-    const gap = n > 6 ? 18 : 30;
-    const grid = put(stage, K.el('div', 'ms-ov'), 100, top, { width: '1720px', rowGap: gap + 'px' });
+    const hd = TM.head(ctx, 'Recap', 'Recap: ' + o.title);
+    const n = o.items.length, rows = Math.ceil(n / 2), big = n <= 6;
+    const top = hd.h.root.offsetTop + hd.h.root.offsetHeight + 50;
+    const grid = put(stage, K.el('div', 'ms-ov'), 100, top, { width: '1720px', rowGap: (big ? 26 : 14) + 'px' });
     const its = o.items.map((t, i) => {
       const it = K.el('div', 'it', `<span class="n">${i + 1}</span><span>${K.md(t)}</span>`);
-      if (n > 6) { it.style.fontSize = '31px'; it.style.padding = '12px 24px 12px 16px'; }
-      else { it.style.fontSize = '40px'; it.style.padding = '26px 30px 26px 24px'; }
+      if (big) { it.style.fontSize = '40px'; it.style.padding = '24px 30px 24px 24px'; }
+      else { it.style.fontSize = '32px'; it.style.padding = '11px 24px 11px 16px'; }
+      it.style.gridColumn = String(Math.floor(i / rows) + 1);
+      it.style.gridRow = String((i % rows) + 1);
       grid.appendChild(it);
       return it;
     });
-    // column order: down the left column, then the right
-    const order = [];
-    for (let c = 0; c < 2; c++) for (let r = 0; r < rows; r++) { const i = c * rows + r; if (i < n) order.push(i); }
-    its.forEach((it, i) => { it.style.gridColumn = String(Math.floor(i / rows) + 1); it.style.gridRow = String((i % rows) + 1); });
-    // each setup lands as it is named ("First, ...", "Second, ..."): the ordinal word starts it
+    // each setup lands as it is named: the ordinal word starts it
     const ORD = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
     let lo = cue(1) + 0.1;
-    order.forEach((i, k) => {
-      const t = Math.max(lo, at(ctx, 1, (o.phrases || ORD)[i], (k + 1) / (n + 1)));
-      A.in(tl, its[i], t, 'fadeRight', { dur: 0.5 });
+    its.forEach((it, i) => {
+      const t = Math.max(lo, at(ctx, 1, (o.phrases || ORD)[i], (i + 1) / (n + 1)));
+      A.in(tl, it, t, 'fadeRight', { dur: 0.5 });
       lo = t + 0.15;
     });
-    return { hd, ld, grid, its };
+    // the summary line, as a banner under the list
+    const bn = put(stage, K.el('div', 'tm-banner', `${K.icon('circle-check').outerHTML}<span>${K.md(o.summary)}</span>`), 100, 0, { width: '1720px', boxSizing: 'border-box' });
+    // centre the list and the banner together in the area under the heading
+    const G = big ? 56 : 36, block = grid.offsetHeight + G + bn.offsetHeight, y0 = Math.max(top - 20, Math.round(top + (950 - top - block) / 2));
+    grid.style.top = y0 + 'px';
+    bn.style.top = (y0 + grid.offsetHeight + G) + 'px';
+    tl.fromTo(bn, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(2) + 0.05);
+    return { hd, grid, its, bn };
   }
 
-  window.MS = { css, chips, tip, overview, mark };
+  window.MS = { css, chips, tip, recap, mark };
 })();

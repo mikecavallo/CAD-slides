@@ -7,10 +7,6 @@
   const { at, put } = TM;
   const SEC = 'At home', IC = 'house';
 
-  registerScene('ms02s00', ctx => MS.overview(ctx, { title: 'At home: sights & sounds',
-    lead: 'Manage the *windows, the yard, the doorbell, and deliveries*, so the sights and sounds outside stop setting your dog off indoors.',
-    items: ['Turn off the doorbell', 'Have guests wait before entering', 'Create physical barriers', 'Move deliveries away from the house', 'Block visual access to windows',
-      'Manage outdoor time', 'Mask or eliminate sounds', 'Create a safe space', 'Plan around predictable events'] }));
 
   const TIPS = [
     { title: 'Turn off the doorbell', src: 'ms_s14.jpg', nat: [1400, 1050],
@@ -66,6 +62,10 @@
       mark: { rings: [[0.38, 0.67, 60]], tag: ['Frozen Kong first', 0.04, 0.05], phrase: 'frozen kong' } },
   ];
   TIPS.forEach((o, i) => registerScene(`ms02s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: SEC, icon: IC, n: i + 1, ...o })));
+  registerScene('ms02recap', ctx => MS.recap(ctx, { title: 'at home: sights & sounds',
+    items: ['Turn off the doorbell', 'Have guests wait before entering', 'Create physical barriers', 'Move deliveries away from the house', 'Block visual access to windows',
+      'Manage outdoor time', 'Mask or eliminate sounds', 'Create a safe space', 'Plan around predictable events'],
+    summary: 'Manage the *windows, the yard, the doorbell, and deliveries*, so sights and sounds outside stop setting your dog off.' }));
 
   // ---------------------------------------------------------------- see it in action: fence reactivity
   registerScene('ms02s10', ctx => {

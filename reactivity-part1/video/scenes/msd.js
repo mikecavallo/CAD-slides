@@ -4,9 +4,6 @@
 //   ms06s00     going for rides: summary and the five setups
 //   ms06s01-05  one setup each
 (() => {
-  registerScene('ms05s00', ctx => MS.overview(ctx, { title: 'Dog & cat conflict',
-    lead: 'Keep the cat safe by *separating the species* and giving the cat its own dog-free space, so the chase never gets a chance to start.',
-    items: ['Give the cat dog-free zones', 'Put cat resources out of reach', 'Leash & supervise together time', 'Separate when you’re away'] }));
 
   const CAT = [
     { title: 'Give the cat dog-free zones', src: 'ms_s38.jpg', nat: [1050, 1400],
@@ -33,10 +30,10 @@
       mark: { rings: [[0.68, 0.62, 80]], tag: ['Together only when you’re home', 0.04, 0.05], phrase: 'no one’s home' } },
   ];
   CAT.forEach((o, i) => registerScene(`ms05s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: 'Dog & cat conflict', icon: 'cat', n: i + 1, ...o })));
+  registerScene('ms05recap', ctx => MS.recap(ctx, { title: 'dog & cat conflict',
+    items: ['Give the cat dog-free zones', 'Put cat resources out of reach', 'Leash & supervise together time', 'Separate when you’re away'],
+    summary: '*Separate the species* and give the cat its own dog-free space, so the chase never starts.' }));
 
-  registerScene('ms06s00', ctx => MS.overview(ctx, { title: 'Going for rides',
-    lead: '*Cover the windows, secure your dog, and choose calm routes*, so the car stops being a trigger on wheels.',
-    items: ['Block the view', 'Secure your dog properly', 'Choose calm routes', 'Avoid trips & park smart', 'Keep trips short'] }));
 
   const RIDE = [
     { title: 'Block the view', src: 'ms_s43.jpg', nat: [933, 1400],
@@ -65,4 +62,7 @@
       mark: { rings: [[0.42, 0.55, 110]], tag: ['Short and easy', 0.04, 0.05], phrase: 'very brief' } },
   ];
   RIDE.forEach((o, i) => registerScene(`ms06s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: 'Going for rides', icon: 'car', n: i + 1, ...o })));
+  registerScene('ms06recap', ctx => MS.recap(ctx, { title: 'going for rides',
+    items: ['Block the view', 'Secure your dog properly', 'Choose calm routes', 'Avoid trips & park smart', 'Keep trips short'],
+    summary: '*Cover the windows, secure your dog, and choose calm routes*: the car stops being a trigger on wheels.' }));
 })();

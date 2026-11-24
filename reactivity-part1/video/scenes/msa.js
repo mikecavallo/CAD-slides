@@ -3,8 +3,8 @@
 //   ms00plan   plan slide: What you'll learn (six setups), Why it matters, Coming up later (behaviors we'll teach)
 //   ms00s01    always have two layers of safety between the dog and the trigger: layer 1, the backup; layer 1 fails, the backup holds;
 //              side note: a fired-up dog can redirect onto whoever is closest (person on the leash, another dog, the cat)
-//   ms01s00    going for walks: the deck's summary line and the eight setups
 //   ms01s01-08 one setup each on Tori's pictures
+//   ms01recap  recap: the eight setups as they are named, then the deck's summary line
 (() => {
   const { at, put } = TM;
   const CSS = `
@@ -58,7 +58,7 @@
     const { stage, tl, cue, end } = ctx;
     css(stage);
     TM.head(ctx, 'A safety principle', 'Always have two layers of safety');
-    // left: the diagram. The dog at left, the trigger at right, the two layers between them.
+    // left: the diagram. The dog at left, the trigger at right, two layers between them.
     const panel = put(stage, K.el('div', 'msa-panel'), 100, 290, { width: '900px', height: '640px' });
     tl.fromTo(panel, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.35);
     const node = (icon, x, y, cls, lab, size = 150) => {
@@ -68,7 +68,7 @@
       const l = put(stage, K.el('div', 'msa-nlab', lab), x - 120, y + size / 2 + 14, { width: '240px' });
       return { n, l };
     };
-    const DOG = [235, 500], TRIG = [865, 500], WALL = 470, GATE = 640;
+    const DOG = [235, 470], TRIG = [865, 470], L1 = 420, L2 = 660;
     const dog = node('dog', ...DOG, '', 'Your dog');
     const trig = node('zap', ...TRIG, 'amber', 'The trigger');
     A.in(tl, [dog.n, dog.l], 0.6, 'pop', { dur: 0.5, stagger: 0.1 });
@@ -78,51 +78,76 @@
     // beat 0: nothing between them yet
     const tG = at(ctx, 0, 'between your dog', 0.7);
     const gaze = TM.fx.dots(tl, sv, [[DOG[0] + 85, DOG[1]], [TRIG[0] - 85, TRIG[1]]], tG, { color: '#fff', stroke: '#d9912b', r: 6, gap: 22, dur: 0.7, hold: 99 });
-    // right: the cards
+    // right, beat 1: a layer is any barrier
     const X = 1060, W = 760;
-    const c1 = MG.card(stage, { x: X, y: 290, w: W, label: 'First layer', icon: 'door-closed', title: 'A solid separation', body: 'A closed door, a secure crate, or a dog in its own room.', size: 28 });
-    const c2 = MG.card(stage, { x: X, y: 0, w: W, label: 'Backup layer', icon: 'fence', title: 'A second barrier behind it', body: 'A baby gate, or a leash on the dog.', size: 28 });
-    c2.style.top = (290 + c1.offsetHeight + 22) + 'px';
-    const c3 = MG.card(stage, { x: X, y: 0, w: W, variant: 'red', label: 'Why two', icon: 'triangle-alert', body: 'One barrier will eventually fail. Two layers: a *near miss, never a bite*.', size: 28 });
-    c3.style.top = (c2.offsetTop + c2.offsetHeight + 22) + 'px';
-    // beat 1: the first layer drops in between them
-    const wall = put(stage, K.el('div', 'msa-wall'), WALL - 17, 360, { height: '280px' });
-    const n1 = put(stage, K.el('div', 'msa-num', '1'), WALL - 26, 300);
-    const tW = at(ctx, 1, 'first layer', 0.3);
-    tl.fromTo(wall, { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.6, ease: 'power3.out' }, tW);
-    A.in(tl, n1, tW + 0.3, 'pop', { dur: 0.4 });
-    tl.to(gaze, { opacity: 0, duration: 0.4 }, tW + 0.1);
-    tl.fromTo(c1, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, tW + 0.2);
-    // beat 2: the backup layer
-    const gate = put(stage, K.el('div', 'msa-gate'), GATE - 30, 400, { height: '200px' });
-    const n2 = put(stage, K.el('div', 'msa-num', '2'), GATE - 26, 300);
-    const t3 = at(ctx, 2, 'backup layer', 0.2);
-    tl.fromTo(gate, { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, t3);
-    A.in(tl, n2, t3 + 0.3, 'pop', { dur: 0.4 });
-    tl.fromTo(c2, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, t3 + 0.2);
-    // beat 3: the first layer fails (left open); the dog gets to the gate; the backup holds
+    const BAR = [['Closed door', 'door-closed', 'closed door'], ['Crate', 'lock', 'a crate'], ['Baby gate', 'fence', 'baby gate'], ['Leash', 'link', 'a leash'], ['Muzzle', 'shield', 'or a muzzle']];
+    const cA = put(stage, K.el('div', 'mg-card'), X, 290, { width: W + 'px' });
+    cA.innerHTML = `<div class="lab">${K.icon('layers').outerHTML}<span>A layer is any barrier</span></div>`;
+    const rowA = K.el('div', 'ms-row'); Object.assign(rowA.style, { position: 'relative', width: '100%', gap: '12px' }); cA.appendChild(rowA);
+    const chipsA = BAR.map(([t, ic]) => { const c = TM.word(rowA, t, { variant: 'pale', icon: ic, size: 27 }); c.style.position = 'relative'; c.style.left = c.style.top = ''; return c; });
+    tl.fromTo(cA, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, cue(1) + 0.05);
+    BAR.forEach(([, , p], i) => A.in(tl, chipsA[i], at(ctx, 1, p, 0.3 + 0.12 * i), 'pop', { dur: 0.4 }));
+    // right, beat 2: two at once, for example
+    const PAIRS = [[['Closed door', 'door-closed'], ['Baby gate', 'fence'], 'closed door and'], [['Leash', 'link'], ['Baby gate', 'fence'], 'leash and a baby'],
+      [['Leash', 'link'], ['Muzzle', 'shield'], 'leash and a muzzle'], [['Muzzle', 'shield'], ['Baby gate', 'fence'], 'muzzle and a baby']];
+    const cB = put(stage, K.el('div', 'mg-card'), X, 0, { width: W + 'px', gap: '12px' });
+    cB.innerHTML = `<div class="lab">${K.icon('copy-plus').outerHTML}<span>Two at once, for example</span></div>`;
+    const prs = PAIRS.map(([a, b]) => {
+      const r = K.el('div', 'tm-row', `<span class="ic">${K.icon(a[1]).outerHTML}</span><span class="ic">${K.icon(b[1]).outerHTML}</span><span>${a[0]} <b>+</b> ${b[0].toLowerCase()}</span>`);
+      r.style.fontSize = '31px'; r.style.gap = '12px';
+      r.querySelectorAll('.ic').forEach(ic => { ic.style.width = ic.style.height = '52px'; });
+      cB.appendChild(r);
+      return r;
+    });
+    cB.style.top = (290 + cA.offsetHeight + 20) + 'px';
+    const t2 = cue(2) + 0.05;
+    tl.fromTo(cB, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, t2);
+    // the two layers drop in between the dog and the trigger
+    const bar1 = put(stage, K.el('div', 'msa-wall'), L1 - 17, 340, { height: '260px' });
+    const bar2 = put(stage, K.el('div', 'msa-wall'), L2 - 17, 340, { height: '260px', background: 'var(--green)' });
+    const n1 = put(stage, K.el('div', 'msa-num', '1'), L1 - 26, 300 - 6);
+    const n2 = put(stage, K.el('div', 'msa-num', '2'), L2 - 26, 300 - 6);
+    tl.fromTo([bar1, bar2], { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.6, ease: 'power3.out', stagger: 0.25 }, at(ctx, 2, 'two at once', 0.1));
+    A.in(tl, [n1, n2], at(ctx, 2, 'two at once', 0.1) + 0.3, 'pop', { dur: 0.4, stagger: 0.25 });
+    tl.to(gaze, { opacity: 0, duration: 0.4 }, at(ctx, 2, 'two at once', 0.1));
+    // each example lands on the card and names the two layers
+    const chipAt = (txt, ic, cx, y) => { const c = TM.word(stage, txt, { variant: 'pale', icon: ic, size: 26 }); c.style.top = y + 'px'; c.style.left = Math.round(cx - c.offsetWidth / 2) + 'px'; return c; };
+    let prev = null;
+    const tP = PAIRS.map(([a, b, p], k) => {
+      const t = at(ctx, 2, p, 0.3 + 0.17 * k);
+      A.in(tl, prs[k], t, 'fadeRight', { dur: 0.5 });
+      const c1 = chipAt(a[0], a[1], L1, 622), c2 = chipAt(b[0], b[1], L2, 684);
+      A.in(tl, [c1, c2], t + 0.1, 'pop', { dur: 0.4, stagger: 0.1 });
+      if (prev) tl.to(prev, { opacity: 0, duration: 0.25 }, t);
+      A.pulse(tl, prs[k], t + 0.4, { scale: 1.04 });
+      prev = [c1, c2];
+      return t;
+    });
+    // beat 3: management can fail; layer 1 slips, the dog gets to layer 2, which holds
     const tF = at(ctx, 3, 'door gets left open', 0.35);
-    const ghost = put(stage, K.el('div'), WALL - 17, 360, { position: 'absolute', width: '34px', height: '280px', boxSizing: 'border-box', border: '4px dashed #d9912b', borderRadius: '10px' });
+    const ghost = put(stage, K.el('div'), L1 - 17, 340, { position: 'absolute', width: '34px', height: '260px', boxSizing: 'border-box', border: '4px dashed #d9912b', borderRadius: '10px' });
     tl.set(ghost, { opacity: 0 }, 0);
-    tl.to(wall, { opacity: 0, y: -30, duration: 0.5, ease: 'power2.in' }, tF);
+    tl.to(bar1, { opacity: 0, y: -30, duration: 0.5, ease: 'power2.in' }, tF);
     tl.to(ghost, { opacity: 1, duration: 0.4 }, tF + 0.2);
-    const open = put(stage, K.el('div', 'msa-lab amber', 'Left open'), 0, 660);
-    open.style.left = Math.round(WALL - open.offsetWidth / 2) + 'px';
-    A.in(tl, open, tF + 0.3, 'pop', { dur: 0.4 });
-    tl.to(dog.n, { x: (GATE - 42 - 150) - (DOG[0] - 75), duration: 0.8, ease: 'power2.in' }, tF + 0.6);
+    tl.to(prev, { opacity: 0, duration: 0.4 }, tF);
+    const slip = put(stage, K.el('div', 'msa-lab amber', 'One slips'), 0, 626);
+    slip.style.left = Math.round(L1 - slip.offsetWidth / 2) + 'px';
+    A.in(tl, slip, tF + 0.3, 'pop', { dur: 0.4 });
+    tl.to(dog.n, { x: (L2 - 25 - 150) - (DOG[0] - 75), duration: 0.8, ease: 'power2.in' }, tF + 0.6);
     tl.to(dog.l, { opacity: 0, duration: 0.3 }, tF + 0.6);
-    A.pulse(tl, gate, tF + 1.4, { scale: 1.08 });
-    const hold = put(stage, K.el('div', 'msa-lab green', 'The backup holds'), 0, 620);
-    hold.style.left = Math.round(GATE + 60 - hold.offsetWidth / 2) + 'px';
+    A.pulse(tl, bar2, tF + 1.4, { scale: 1.08 });
+    const hold = put(stage, K.el('div', 'msa-lab green', 'The other holds'), 0, 688);
+    hold.style.left = Math.round(L2 - hold.offsetWidth / 2) + 'px';
     A.in(tl, hold, tF + 1.5, 'pop', { dur: 0.4 });
-    tl.fromTo(c3, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 3, 'two layers', 0.6));
+    const bn = put(stage, K.el('div', 'tm-banner', `${K.icon('shield-check').outerHTML}<span>Management can fail. The second layer is there <b>just in case</b>.</span>`), 130, 790, { width: '840px', boxSizing: 'border-box', fontSize: '32px', padding: '20px 30px' });
+    tl.fromTo(bn, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 3, 'second layer', 0.6));
     const tBack = Math.max(tF + 3.2, end(3) - 0.9);
     tl.to(dog.n, { x: 0, duration: 0.9, ease: 'power2.inOut' }, tBack);
     tl.to(dog.l, { opacity: 1, duration: 0.4 }, tBack + 0.6);
-    tl.to([open, hold], { opacity: 0, duration: 0.4 }, tBack + 0.3);
     // beat 4, a side note: a fired-up dog can redirect onto whoever is closest
     const t4 = cue(4) + 0.05;
-    tl.to([c1, c2, c3], { opacity: 0, y: -20, duration: 0.5, ease: 'power2.in' }, t4);
+    tl.to([cA, cB], { opacity: 0, y: -20, duration: 0.5, ease: 'power2.in' }, t4);
+    tl.to([bn, slip, hold, ...prev], { opacity: 0, duration: 0.4 }, t4);
     const tUp = at(ctx, 4, 'fired up', 0.15);
     tl.to(dog.n, { borderColor: '#b8452d', duration: 0.3 }, tUp);
     A.pulse(tl, dog.n, tUp + 0.05, { scale: 1.1 });
@@ -149,14 +174,11 @@
 
   // ---------------------------------------------------------------- Part 1: going for walks
   const SEC = 'Going for walks', IC = 'paw-print';
-  registerScene('ms01s00', ctx => MS.overview(ctx, { title: 'Going for walks',
-    lead: 'Plan the *route, the timing, and the distance*, so most encounters never happen. When one does, *make space fast*.',
-    items: ['Choose strategic routes', 'Skip tight, no-exit spaces', 'Increase distance fast', 'Use visual barriers', 'Control greetings',
-      'Walk at quieter times of day', 'Avoid high-risk areas', 'Drive to a calmer spot'] }));
 
   const TIPS = [
     { title: 'Choose strategic routes', src: 'ms_s05.jpg', nat: [1400, 1050],
       lead: 'Pick routes with *fewer dogs*. Scout low-traffic streets where you can *easily cross*.',
+      chips: [['Barriers to step behind', 'green', 'fence', false, 'barriers your dog']],
       why: 'Plan the route, and *most encounters never happen* in the first place.',
       mark: { rings: [[0.47, 0.56, 54]], tag: ['Quiet, open space', 0.04, 0.05], phrase: 'fewer dogs' } },
     { title: 'Skip tight, no-exit spaces', src: 'ms_s06.jpg', nat: [1026, 1400],
@@ -199,4 +221,8 @@
       mark: { rings: [[0.5, 0.56, 44]], tag: ['A calmer spot', 0.04, 0.05], phrase: 'quieter park' } },
   ];
   TIPS.forEach((o, i) => registerScene(`ms01s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: SEC, icon: IC, n: i + 1, ...o })));
+  registerScene('ms01recap', ctx => MS.recap(ctx, { title: 'going for walks',
+    items: ['Choose strategic routes', 'Skip tight, no-exit spaces', 'Increase distance fast', 'Use visual barriers', 'Control greetings',
+      'Walk at quieter times of day', 'Avoid high-risk areas', 'Drive to a calmer spot'],
+    summary: '*Plan the route, the timing, and the distance*, so most encounters never happen. When one does, *make space fast*.' }));
 })();

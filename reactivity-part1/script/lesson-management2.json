@@ -57,7 +57,7 @@
     {
      "id": "ms00s01",
      "heading": "Always have two layers of safety",
-     "visual_concept": "Two independent barriers between the dog and the trigger; the first fails, the backup holds. Side note: a fired-up dog can redirect onto whoever is closest (the person on the leash, another dog, the cat).",
+     "visual_concept": "Two layers between the dog and the trigger. A layer is any barrier (door, crate, baby gate, leash, muzzle); example pairs cycle on the two layers; management can fail, so the second layer is there just in case. Side note: redirection onto whoever is closest.",
      "assets": [],
      "beats": [
       {
@@ -66,19 +66,19 @@
        "onscreen": "Always have two layers of safety"
       },
       {
-       "say": "Never lean on a single barrier. Your first layer is a solid separation, like a closed door, a secure crate, or a dog kept in its own room.",
-       "show": "First layer drops in between them; card.",
-       "onscreen": "First layer: a solid separation"
+       "say": "A layer is any barrier that keeps your dog from getting to the trigger, like a closed door, a crate, a baby gate, a leash, or a muzzle.",
+       "show": "Barriers card: five chips land as named.",
+       "onscreen": "A layer is any barrier"
       },
       {
-       "say": "Your backup layer is a second barrier behind it, like a baby gate, or a leash on the dog.",
-       "show": "Backup layer drops in; card.",
-       "onscreen": "Backup layer: a second barrier"
+       "say": "Use two at once. For example, a closed door and a baby gate. A leash and a baby gate. A leash and a muzzle. Or a muzzle and a baby gate.",
+       "show": "Two layers drop in; example pairs land as named and the layers' labels follow.",
+       "onscreen": "Two at once"
       },
       {
-       "say": "One barrier will eventually fail. A door gets left open, or a leash slips. With two layers, a single mistake stays a near miss, never a bite.",
-       "show": "The first layer opens; the dog reaches the backup, which holds; Why two card.",
-       "onscreen": "Near miss, never a bite"
+       "say": "Why two? Because management can fail. A door gets left open, or a leash slips. With a second layer already in place, one slip stays a near miss, never a bite.",
+       "show": "Layer 1 slips; the dog reaches layer 2, which holds; banner.",
+       "onscreen": "Management can fail"
       },
       {
        "say": "One more thing to know: a dog that’s fired up at a trigger doesn’t always aim at it. That arousal can redirect onto whoever is closest, like the person holding the leash, another dog in the yard, or the cat in the room while your dog barks at the window.",
@@ -107,24 +107,6 @@
    ],
    "scenes": [
     {
-     "id": "ms01s00",
-     "heading": "Going for walks",
-     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "Let’s start with walks. Plan the route, the timing, and the distance, so most encounters never happen. And when one does, make space fast.",
-       "show": "Heading and summary line.",
-       "onscreen": "Going for walks"
-      },
-      {
-       "say": "We’ll cover eight setups. First, choose strategic routes. Second, skip tight, no-exit spaces. Third, increase distance fast. Fourth, use visual barriers. Fifth, control greetings. Sixth, walk at quieter times of day. Seventh, avoid high-risk areas. And eighth, drive to a calmer spot.",
-       "show": "Each setup lands as it is named.",
-       "onscreen": "Choose strategic routes / Skip tight, no-exit spaces / Increase distance fast / Use visual barriers / Control greetings / Walk at quieter times of day / Avoid high-risk areas / Drive to a calmer spot"
-      }
-     ]
-    },
-    {
      "id": "ms01s01",
      "heading": "Choose strategic routes",
      "visual_concept": "Ring on the dog resting in a quiet, open park.",
@@ -133,12 +115,12 @@
      ],
      "beats": [
       {
-       "say": "Number one: choose strategic routes.",
+       "say": "Let’s start with walks. Number one: choose strategic routes.",
        "show": "Heading, topic chip, Tori's picture whole at right.",
        "onscreen": "Choose strategic routes"
       },
       {
-       "say": "Pick routes with fewer dogs, and scout low-traffic streets where you can easily cross to the other side.",
+       "say": "Pick routes with fewer dogs, and scout low-traffic streets where you can easily cross to the other side. And look for places with barriers your dog can step behind for a moment if something does appear, like a parked car or a fence.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -323,6 +305,29 @@
        "onscreen": "Why it works"
       }
      ]
+    },
+    {
+     "id": "ms01recap",
+     "heading": "Recap: going for walks",
+     "visual_concept": "Recap at the end of the part: the numbered setups land as they are named, then the deck's summary line as a banner.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let’s recap going for walks.",
+       "show": "Heading.",
+       "onscreen": "Recap"
+      },
+      {
+       "say": "First, choose strategic routes. Second, skip tight, no-exit spaces. Third, increase distance fast. Fourth, use visual barriers. Fifth, control greetings. Sixth, walk at quieter times of day. Seventh, avoid high-risk areas. And eighth, drive to a calmer spot.",
+       "show": "Each setup lands as it is named.",
+       "onscreen": "Choose strategic routes / Skip tight, no-exit spaces / Increase distance fast / Use visual barriers / Control greetings / Walk at quieter times of day / Avoid high-risk areas / Drive to a calmer spot"
+      },
+      {
+       "say": "Plan the route, the timing, and the distance, so most encounters never happen. And when one does, make space fast.",
+       "show": "Summary banner.",
+       "onscreen": "Summary"
+      }
+     ]
     }
    ],
    "kicker": "Part"
@@ -347,24 +352,6 @@
    ],
    "scenes": [
     {
-     "id": "ms02s00",
-     "heading": "At home: sights & sounds",
-     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "At home, manage the windows, the yard, the doorbell, and deliveries, so the sights and sounds outside stop setting your dog off indoors.",
-       "show": "Heading and summary line.",
-       "onscreen": "At home: sights & sounds"
-      },
-      {
-       "say": "We’ll cover nine setups. First, turn off the doorbell. Second, have guests wait before entering. Third, create physical barriers. Fourth, move deliveries away from the house. Fifth, block visual access to windows. Sixth, manage outdoor time. Seventh, mask or eliminate sounds. Eighth, create a safe space. And ninth, plan around predictable events.",
-       "show": "Each setup lands as it is named.",
-       "onscreen": "Turn off the doorbell / Have guests wait before entering / Create physical barriers / Move deliveries away from the house / Block visual access to windows / Manage outdoor time / Mask or eliminate sounds / Create a safe space / Plan around predictable events"
-      }
-     ]
-    },
-    {
      "id": "ms02s01",
      "heading": "Turn off the doorbell",
      "visual_concept": "Doorbell chip struck out; Text or knock quietly chip; ring on the dog resting.",
@@ -373,7 +360,7 @@
      ],
      "beats": [
       {
-       "say": "Number one: turn off the doorbell.",
+       "say": "Next, sights and sounds at home. Number one: turn off the doorbell.",
        "show": "Heading, topic chip, Tori's picture whole at right.",
        "onscreen": "Turn off the doorbell"
       },
@@ -651,6 +638,29 @@
        "onscreen": "Simple, every day"
       }
      ]
+    },
+    {
+     "id": "ms02recap",
+     "heading": "Recap: at home: sights & sounds",
+     "visual_concept": "Recap at the end of the part: the numbered setups land as they are named, then the deck's summary line as a banner.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let’s recap sights and sounds at home.",
+       "show": "Heading.",
+       "onscreen": "Recap"
+      },
+      {
+       "say": "First, turn off the doorbell. Second, have guests wait before entering. Third, create physical barriers. Fourth, move deliveries away from the house. Fifth, block visual access to windows. Sixth, manage outdoor time. Seventh, mask or eliminate sounds. Eighth, create a safe space. And ninth, plan around predictable events.",
+       "show": "Each setup lands as it is named.",
+       "onscreen": "Turn off the doorbell / Have guests wait before entering / Create physical barriers / Move deliveries away from the house / Block visual access to windows / Manage outdoor time / Mask or eliminate sounds / Create a safe space / Plan around predictable events"
+      },
+      {
+       "say": "Manage the windows, the yard, the doorbell, and deliveries, so the sights and sounds outside stop setting your dog off indoors.",
+       "show": "Summary banner.",
+       "onscreen": "Summary"
+      }
+     ]
     }
    ],
    "kicker": "Part"
@@ -670,24 +680,6 @@
    ],
    "scenes": [
     {
-     "id": "ms03s00",
-     "heading": "Resource guarding",
-     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "Next, resource guarding. Reduce conflict over food, toys, and space by managing access, so there’s nothing for your dog to guard in the first place.",
-       "show": "Heading and summary line.",
-       "onscreen": "Resource guarding"
-      },
-      {
-       "say": "We’ll cover four setups. First, remove access to guarded items. Second, feed in a safe, isolated space. Third, prevent stealing opportunities. And fourth, manage space around the dog.",
-       "show": "Each setup lands as it is named.",
-       "onscreen": "Remove access to guarded items / Feed in a safe, isolated space / Prevent stealing opportunities / Manage space around the dog"
-      }
-     ]
-    },
-    {
      "id": "ms03s01",
      "heading": "Remove access to guarded items",
      "visual_concept": "Three rows; ring on the food toy.",
@@ -696,7 +688,7 @@
      ],
      "beats": [
       {
-       "say": "Number one: remove access to guarded items.",
+       "say": "Next, resource guarding. Number one: remove access to guarded items.",
        "show": "Heading, topic chip, Tori's picture whole at right.",
        "onscreen": "Remove access to guarded items"
       },
@@ -816,6 +808,29 @@
      ]
     },
     {
+     "id": "ms03recap",
+     "heading": "Recap: resource guarding",
+     "visual_concept": "Recap at the end of the part: the numbered setups land as they are named, then the deck's summary line as a banner.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let’s recap resource guarding.",
+       "show": "Heading.",
+       "onscreen": "Recap"
+      },
+      {
+       "say": "First, remove access to guarded items. Second, feed in a safe, isolated space. Third, prevent stealing opportunities. And fourth, manage space around the dog.",
+       "show": "Each setup lands as it is named.",
+       "onscreen": "Remove access to guarded items / Feed in a safe, isolated space / Prevent stealing opportunities / Manage space around the dog"
+      },
+      {
+       "say": "Manage access to food, toys, and space, so there’s nothing for your dog to guard in the first place.",
+       "show": "Summary banner.",
+       "onscreen": "Summary"
+      }
+     ]
+    },
+    {
      "id": "ms03s06",
      "heading": "When surprises keep happening",
      "visual_concept": "The deck's statement; a few calm days with one surprise, then many surprises: adjust the plan.",
@@ -854,24 +869,6 @@
    ],
    "scenes": [
     {
-     "id": "ms04s00",
-     "heading": "Multi-dog conflict",
-     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "When there’s more than one dog in the home, set up calm routines and separate resources, so two dogs under one roof stay relaxed around each other.",
-       "show": "Heading and summary line.",
-       "onscreen": "Multi-dog conflict"
-      },
-      {
-       "say": "We’ll cover four setups. First, separate during high-risk times. Second, control space and supervise. Third, remove competition. And fourth, manage arrivals and rotate access.",
-       "show": "Each setup lands as it is named.",
-       "onscreen": "Separate during high-risk times / Control space & supervise / Remove competition / Manage arrivals & rotate access"
-      }
-     ]
-    },
-    {
      "id": "ms04s01",
      "heading": "Separate during high-risk times",
      "visual_concept": "Three flashpoint chips; rings on both dogs.",
@@ -880,7 +877,7 @@
      ],
      "beats": [
       {
-       "say": "Number one: separate during high-risk times.",
+       "say": "Next, homes with more than one dog. Number one: separate during high-risk times.",
        "show": "Heading, topic chip, Tori's picture whole at right.",
        "onscreen": "Separate during high-risk times"
       },
@@ -970,6 +967,29 @@
        "onscreen": "Why it works"
       }
      ]
+    },
+    {
+     "id": "ms04recap",
+     "heading": "Recap: multi-dog conflict",
+     "visual_concept": "Recap at the end of the part: the numbered setups land as they are named, then the deck's summary line as a banner.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let’s recap homes with more than one dog.",
+       "show": "Heading.",
+       "onscreen": "Recap"
+      },
+      {
+       "say": "First, separate during high-risk times. Second, control space and supervise. Third, remove competition. And fourth, manage arrivals and rotate access.",
+       "show": "Each setup lands as it is named.",
+       "onscreen": "Separate during high-risk times / Control space & supervise / Remove competition / Manage arrivals & rotate access"
+      },
+      {
+       "say": "Calm routines and separate resources keep two dogs under one roof relaxed around each other.",
+       "show": "Summary banner.",
+       "onscreen": "Summary"
+      }
+     ]
     }
    ],
    "kicker": "Part"
@@ -987,24 +1007,6 @@
    ],
    "scenes": [
     {
-     "id": "ms05s00",
-     "heading": "Dog & cat conflict",
-     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "With dogs and cats, keep the cat safe by separating the species and giving the cat its own dog-free space, so the chase never gets a chance to start.",
-       "show": "Heading and summary line.",
-       "onscreen": "Dog & cat conflict"
-      },
-      {
-       "say": "We’ll cover four setups. First, give the cat dog-free zones. Second, put the cat’s resources out of reach. Third, leash and supervise together time. And fourth, separate when you’re away.",
-       "show": "Each setup lands as it is named.",
-       "onscreen": "Give the cat dog-free zones / Put cat resources out of reach / Leash & supervise together time / Separate when you’re away"
-      }
-     ]
-    },
-    {
      "id": "ms05s01",
      "heading": "Give the cat dog-free zones",
      "visual_concept": "Rings on the cats up high; tag Up and away.",
@@ -1013,7 +1015,7 @@
      ],
      "beats": [
       {
-       "say": "Number one: give the cat dog-free zones.",
+       "say": "Next, dogs and cats. Number one: give the cat dog-free zones.",
        "show": "Heading, topic chip, Tori's picture whole at right.",
        "onscreen": "Give the cat dog-free zones"
       },
@@ -1103,6 +1105,29 @@
        "onscreen": "Why it works"
       }
      ]
+    },
+    {
+     "id": "ms05recap",
+     "heading": "Recap: dog & cat conflict",
+     "visual_concept": "Recap at the end of the part: the numbered setups land as they are named, then the deck's summary line as a banner.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let’s recap dogs and cats.",
+       "show": "Heading.",
+       "onscreen": "Recap"
+      },
+      {
+       "say": "First, give the cat dog-free zones. Second, put the cat’s resources out of reach. Third, leash and supervise together time. And fourth, separate when you’re away.",
+       "show": "Each setup lands as it is named.",
+       "onscreen": "Give the cat dog-free zones / Put cat resources out of reach / Leash & supervise together time / Separate when you’re away"
+      },
+      {
+       "say": "Keep the species separated, and give the cat its own dog-free space, so the chase never gets a chance to start.",
+       "show": "Summary banner.",
+       "onscreen": "Summary"
+      }
+     ]
     }
    ],
    "kicker": "Part"
@@ -1121,24 +1146,6 @@
    ],
    "scenes": [
     {
-     "id": "ms06s00",
-     "heading": "Going for rides",
-     "visual_concept": "Section opener: the deck's summary line, then the numbered list of setups.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "Finally, going for rides. Cover the windows, secure your dog, and choose calm routes, so the car stops being a trigger on wheels.",
-       "show": "Heading and summary line.",
-       "onscreen": "Going for rides"
-      },
-      {
-       "say": "We’ll cover five setups. First, block the view. Second, secure your dog properly. Third, choose calm routes. Fourth, avoid extra trips and park smart. And fifth, keep trips short.",
-       "show": "Each setup lands as it is named.",
-       "onscreen": "Block the view / Secure your dog properly / Choose calm routes / Avoid trips & park smart / Keep trips short"
-      }
-     ]
-    },
-    {
      "id": "ms06s01",
      "heading": "Block the view",
      "visual_concept": "Three chips; ring on the dog at the window.",
@@ -1147,7 +1154,7 @@
      ],
      "beats": [
       {
-       "say": "Number one: block the view.",
+       "say": "Finally, going for rides. Number one: block the view.",
        "show": "Heading, topic chip, Tori's picture whole at right.",
        "onscreen": "Block the view"
       },
@@ -1260,6 +1267,29 @@
        "say": "Short, easy trips keep your dog under threshold, where calm is possible.",
        "show": "Why it works card.",
        "onscreen": "Why it works"
+      }
+     ]
+    },
+    {
+     "id": "ms06recap",
+     "heading": "Recap: going for rides",
+     "visual_concept": "Recap at the end of the part: the numbered setups land as they are named, then the deck's summary line as a banner.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let’s recap going for rides.",
+       "show": "Heading.",
+       "onscreen": "Recap"
+      },
+      {
+       "say": "First, block the view. Second, secure your dog properly. Third, choose calm routes. Fourth, avoid extra trips and park smart. And fifth, keep trips short.",
+       "show": "Each setup lands as it is named.",
+       "onscreen": "Block the view / Secure your dog properly / Choose calm routes / Avoid trips & park smart / Keep trips short"
+      },
+      {
+       "say": "Cover the windows, secure your dog, and choose calm routes, so the car stops being a trigger on wheels.",
+       "show": "Summary banner.",
+       "onscreen": "Summary"
       }
      ]
     }

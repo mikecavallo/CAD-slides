@@ -303,13 +303,13 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Online page (Tori's cloned voice since Nov 5): https://claude.ai/artifact/B8pBdUZTzKtNcMKikyfiXf (`out/web/mechanics/`).
 - Recordings: `Tm00intro.m4a`, `Tm00plan.m4a`, `Tm01s01.m4a` ... named by scene id.
 
-## Management: The Basics (Foundations course video; preview voice only)
+## Management: The Basics (Foundations course video; Tori's cloned voice)
 
 - Source: Tori's deck "Management, Part one: the basics" (Master_Management_part_1.pptx, uploaded Nov 4; 19 slides, no
   speaker notes). Claude wrote all the narration from the slide text and put it in a NEW Google Doc in Tori's Drive,
   "Management: The Basics: Narration Script (Nov 4)", id 1_fXa1ZaPbhuah0T9OnesaBnyFUJ4uC0IwuoIrtlIg0Q (now titled "draft 1,
-  superseded"). Current script doc: "Management: The Basics: Narration Script (draft 2, Nov 5)", id
-  1Q6ji2K9_KzjrbpkCATQM_Ky6z8nVcoXDZqu844t7e0k (slide numbers in its headings). The newest doc is the source of truth; sync
+  superseded"). Current script doc: "Management: The Basics: Narration Script (draft 3, Nov 23)", id
+  1nvccovrHcr7flADM9pwcisxmRgvlxvSegY4h3p_Idgg (slide numbers in its headings; draft 2 doc 1Q6ji2K9... renamed "superseded"). The newest doc is the source of truth; sync
   `script/lesson-management.json` to it before every build. Each round: a new doc version in the Drive folder, old one renamed.
 - Lesson `script/lesson-management.json` (`LESSON=lesson-management.json`), series title "Management: The Basics"
   (title lines "Management:" / "The Basics"), `"motion": "cinematic"`, ids prefixed `mg`. Chapters use the silent
@@ -354,6 +354,23 @@ pipeline). This file records the state, decisions and working agreements from ea
   managed/skipped chips (the quote says it); mistake 3 shows the brain picture again (new pathway faint and dashed, old
   pathway red) instead of bars, less text, "not your own timeline"; mistake 4 has no ring on the picture (Tori found it
   weird; keep picture marks small and meaningful).
+- Round 3 (Nov 23, Tori's draft 2 notes, applied as draft 3, 11:02): footer has NO number tab and the rule runs to the
+  right margin (series `"footerTab": false`, from the Markers and Mechanics toolkit merged in; the mg_kit.js slide-number
+  code is gone). What it is, and isn't joined Part 1 (now "Understanding Management": mg01s01 recap, s02 where it fits,
+  s03 what it is and isn't); ids RENUMBERED: Part 2 The Golden Rule = mg02s01..s07, Part 3 Five Common Mistakes =
+  mg03s00..s06 (the round 2 notes above use the old ids: their mg03 = now mg02, mg04 = now mg03, mg02s01 = now mg01s03).
+  mg01s02 "Set up your dog's environment". Myth slide (mg02s06): new beat, a fearful dog who doesn't bark or lunge isn't
+  getting over it either, may shut down (amber chip "No barking? They may shut down instead."); callout and WTF are beats 4
+  and 5. Calm isn't cured (mg02s07): three cards, Looks like progress ("over threshold", not under: Tori said under
+  threshold didn't flow), Learned helplessness (new beat 2, Claude's definition: nothing they do makes the scary thing stop,
+  so they stop trying and shut down; calm outside, still afraid), The truth. Mistake 1: gaps also let the emotions we're
+  trying to change keep happening. Mistake titles say the mistake: Underestimating the environment, Relaxing management too
+  soon, Viewing management as punishment (Picking and choosing and Feeding too late kept); mistake headings are 60 px.
+  How to avoid it cards sit right under the content (52 px), not pinned to the bottom (Tori: too big a gap). Mistake 4:
+  protection from rehearsing AND from uncomfortable situations that stall or reverse progress with triggers (two rows, red
+  emphasis for the bad things). Mistake 5: food after the bark or lunge "can" pay for the reaction and teach the dog to
+  keep doing it (never "pays"). Narrated with Tori's ElevenLabs clone (eleven_v4) from now on (`tts_elevenlabs.py`, about
+  8,000 characters for the whole video; build/eleven_narration), assembled as out/Management-The-Basics-PREVIEW-tori-voice.mp4.
 - Recordings: `Mg00intro.m4a`, `Mg00plan.m4a`, `Mg01s01.m4a` ... named by scene id.
 - Tori asked (Nov 4) for every draft to be saved in the chat thread: each round, send the video, a storyboard of every
   slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder

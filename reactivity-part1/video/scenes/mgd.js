@@ -162,7 +162,7 @@
   registerScene('mg03s04', ctx => {
     const { stage, tl, cue } = ctx;
     const m = mistake(ctx, { n: 4, title: 'Viewing management as punishment', src: 'mg_mistake4.jpg', nat: [1050, 1400] });
-    const lead = txtIn(m.col, 'Feeling guilty, as if you’re depriving your dog of <b>freedom or fun</b>? That mindset makes the plan <b style="color:var(--red)">hard to stick to</b>.');
+    const lead = txtIn(m.col, 'Feeling guilty? That makes the plan <b style="color:var(--red)">hard to stick to</b>.');
     A.in(tl, lead, cue(1) + 0.05, 'fadeUp', { dur: 0.6 });
     const { els } = rowIn(m.col, [['Punishment', 'red', null, true], '>', ['Protection', 'green', 'shield-check']], 36);
     const tP = at(ctx, 2, 'isn’t punishment', 0.4);
@@ -172,8 +172,8 @@
     // what it protects your dog from: rehearsing, and uncomfortable situations that stall or reverse progress with triggers
     const prot = K.el('div'); Object.assign(prot.style, { position: 'relative', display: 'flex', flexDirection: 'column', gap: '18px', width: '100%' });
     m.col.appendChild(prot);
-    const p1 = TM.row(prot, 'repeat', 'Rehearsing behaviors that <b>make life harder</b>', { size: 30 });
-    const p2 = TM.row(prot, 'trending-down', 'Uncomfortable situations, where progress with triggers <b>stalls or goes backward</b>', { size: 30 });
+    const p1 = TM.row(prot, 'repeat', 'Rehearsing behaviors that <b style="color:var(--red)">make life harder</b>', { size: 30 });
+    const p2 = TM.row(prot, 'trending-down', 'Uncomfortable situations that <b style="color:var(--red)">stall or reverse</b> our progress', { size: 30 });
     A.in(tl, p1, at(ctx, 2, 'from rehearsing', 0.6), 'fadeRight', { dur: 0.5 });
     A.in(tl, p2, at(ctx, 2, 'situations that make them', 0.75), 'fadeRight', { dur: 0.5 });
     avoid(ctx, m, 'Reframe your thinking. Management is *a gift*: a chance to feel safe, learn new skills, and build a better future. *Temporary, and essential.*');

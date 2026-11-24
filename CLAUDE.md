@@ -383,6 +383,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   banner); Resource Guarding's recap sits after the Knox clip, before "When surprises keep happening". Each part's
   first setup now opens with a lead-in ("Let's start with walks.", "Next, sights and sounds at home.", ...). Narration
   doc: "Narration Script (draft 3, Nov 24)", id 115XcWgJGeEMx9ISa7tbZEOyINwlCV1h5xOysatpo9Gg (draft 2 renamed OLD).
+  Draft 3 (18:16) sent in chat with storyboard and script; preview republished (now five web parts; chips "18:16 min",
+  "7 parts", "51 slides", flag "Draft 3").
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

@@ -371,6 +371,15 @@ pipeline). This file records the state, decisions and working agreements from ea
   emphasis for the bad things). Mistake 5: food after the bark or lunge "can" pay for the reaction and teach the dog to
   keep doing it (never "pays"). Narrated with Tori's ElevenLabs clone (eleven_v4) from now on (`tts_elevenlabs.py`, about
   8,000 characters for the whole video; build/eleven_narration), assembled as out/Management-The-Basics-PREVIEW-tori-voice.mp4.
+- GoHighLevel delivery (Nov 24, same recipe as Markers and Mechanics): mg00intro rendered at `--scale 2` and scaled down
+  into build/segments (sharper title photo; lanczos, crf 14, bt709, -g 60 -r 30), master re-assembled with chapters as
+  out/Management-The-Basics-Tori-voice.mp4, then one video per chapter cut from it (start to end minus one frame; x264 slow
+  crf 16, aac 192k, faststart) into out/sections-1080p-management/ (Management-00-Welcome 0:29, -01-Understanding-Management
+  2:07, -02-The-Golden-Rule 4:31, -03-Five-Common-Mistakes 3:53). Lesson cards = each section's frame at 2.4 s, 1280x720
+  JPEG q94 (Tori wants cards that show what the video shows, not designed cards), plus GoHighLevel-Management-text.md
+  (module and lesson titles, descriptions; Lesson 1 is "What You'll Learn"), all in out/course-assets-management/. File
+  names start with "Management-" so they don't collide with the Markers and Mechanics downloads. No module card yet
+  (the Markers and Mechanics module card was designed in that session and its files aren't in git).
 - Recordings: `Mg00intro.m4a`, `Mg00plan.m4a`, `Mg01s01.m4a` ... named by scene id.
 - Tori asked (Nov 4) for every draft to be saved in the chat thread: each round, send the video, a storyboard of every
   slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder

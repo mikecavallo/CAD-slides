@@ -412,6 +412,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   "Management: Everyday Manners: Narration Script (draft 1, Nov 24)", id 1uz-1Uu1LLhF6cb01FREFuCOwPIt7YpLqY6yfrgTzLGw.
   All narration is Claude's. Script files for chat: scratchpad script_out.py pattern (build/everyday_script_dN.html for
   the doc, build/Management-Everyday-Manners-script-draftN.md for chat).
+- Draft 1 (Nov 24): 6:49, sent in chat (CRF 26 copy, storyboard, script). Online preview:
+  https://claude.ai/artifact/17PQ1RYbnb42P4x65qoLTE (`out/web/everyday/`; web_page.py --kicker "Foundations course"; publish
+  without the .vtt files, captions are inlined in the page). Draft PR #12 (base claude/management-part-1).
 
 ## Recordings (Tori's voice)
 

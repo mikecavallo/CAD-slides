@@ -13,7 +13,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   `1VeX1aR2GQ8YyCE-HKw2FjvIqkRiDuozWOY6vZRDfkZA`. Claude made it (Tori asked Claude to do the script edits, not Tori):
   Chapter 1 from v4 minus the Pain slide ch01s11 and typo fixes, Chapter 2 as built (round 16), Chapter 3 round 8.
   The Drive connector can read and create files but not edit a doc in place, so each script change = Claude makes a
-  new version (v6, ...) and gives Tori the link; never ask Tori to paste. Older: Script v4
+  new version (v6, ...) and gives Tori the link; never ask Tori to paste. Chapter 2 on its own (Nov 24, Tori asked): "Chapter 2: Your Dog's
+  Baseline (script, current)" `15co4wbpXFrpNEpNGrtktISFn5HgIoXIlxYN4vbSDyaA` (same text as v5's Chapter 2). Older: Script v4
   `13FHWVCWAWskM90w2_UFwAlC1o68YjxhpX_XuGuxaYDE` (Chapter 2 in it is the first draft). Everything above "END OF FIRST CHAPTER MATERIAL" is Chapter 1. Between
   that line and "END CHAPTER 2 MATERIAL" is **Chapter 2: Your Dog's Baseline** (renamed from "Understanding Your Dog's Baseline") (CH02,S01 to S12, the
   water-in-a-pot chapter). Below that is older draft material (ABCs, function, four directions, leash walks,

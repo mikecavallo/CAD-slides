@@ -121,5 +121,5 @@
   registerScene('ms04recap', ctx => MS.recap(ctx, { title: 'multi-dog conflict',
     items: ['Separate during high-risk times', 'Control space & supervise', 'Remove competition', 'Manage arrivals & rotate access'],
     phrases: ['separate during', 'control space', 'remove competition', 'manage arrivals'],
-    summary: '*Calm routines and separate resources* help keep two dogs under one roof relaxed.' }));
+    summary: '*Calm routines and separate resources* help keep multiple dogs under one roof relaxed.' }));
 })();

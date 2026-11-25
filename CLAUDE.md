@@ -424,6 +424,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   with their align.py, assemble.py and web_parts.py fixes; the key is the Default environment's network secret for
   api.elevenlabs.io), about 15,300 characters; then `align.py --dir build/eleven_narration`, `timing.py --mode narration`,
   `clip_ends.py`, render, assemble. 22:36 with the clone and the clips.
+  Draft 6 (Nov 25): `out/Management-Solutions-and-Setups-tori-voice-draft6.mp4` (22:34); sent Tori only the two video
+  slides (8:54 fence, 12:17 Knox) as a reel; preview republished in six web parts (chips "22:34 min", "7 parts",
+  "51 slides", "Tori's voice", flag "Draft 6"). One Artifact publish sends at most 64 MB: publish the page with parts 1 to 4,
+  then parts 5 and 6 in a second publish to the same url.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

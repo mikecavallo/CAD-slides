@@ -434,6 +434,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   (row "The owner's leash: his safety setup around people"). Re-voiced with the clone (`--only ms03s05`). Tori asked for
   the entire presentation this time: send the full video (CRF 26) plus the preview. Narration doc: "Narration Script
   (draft 6, Nov 25)", id 1cCJzVmFTXR_1v9U8_xF487GCOku3VhDyk-lTAhvI04g (draft 5 renamed OLD).
+  Draft 7 delivered: full video `out/Management-Solutions-and-Setups-tori-voice-draft7.mp4` (22:46; chat copy CRF 26 =
+  78 MB, near the chat limit) and the script sent in chat; preview republished in six parts (chips "22:46 min", "Tori's
+  voice", flag "Draft 7"). Fence clip at 8:55, Knox at 12:17.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

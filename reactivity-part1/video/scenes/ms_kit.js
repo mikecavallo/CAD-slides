@@ -18,7 +18,9 @@
   .ms-ov { position: absolute; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 40px; }
   .ms-ov .it { display: flex; align-items: center; gap: 22px; box-sizing: border-box; padding: 18px 26px 18px 20px; border-radius: 22px; background: #fff;
     border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); font: 700 34px/1.2 var(--font-head); color: var(--ink); }
-  .ms-ov .it .n { width: 58px; height: 58px; border-radius: 50%; background: var(--green); color: #fff; font: 700 30px/58px var(--font-head); text-align: center; flex: 0 0 auto; }
+  .ms-ov .it .n { width: 58px; height: 58px; border-radius: 50%; background: var(--green); color: #fff; font: 700 30px/58px var(--font-head); text-align: center; flex: 0 0 auto;
+    display: grid; place-items: center; }
+  .ms-ov .it .n svg { width: 32px; height: 32px; stroke-width: 3; }
   `;
   const css = stage => {
     MG.css(stage);
@@ -148,7 +150,7 @@
     const top = hd.h.root.offsetTop + hd.h.root.offsetHeight + 50;
     const grid = put(stage, K.el('div', 'ms-ov'), 100, top, { width: '1720px', rowGap: (big ? 26 : 14) + 'px' });
     const its = o.items.map((t, i) => {
-      const it = K.el('div', 'it', `<span class="n">${i + 1}</span><span>${K.md(t)}</span>`);
+      const it = K.el('div', 'it', `<span class="n">${K.icon('check').outerHTML}</span><span>${K.md(t)}</span>`);
       if (big) { it.style.fontSize = '40px'; it.style.padding = '24px 30px 24px 24px'; }
       else { it.style.fontSize = '32px'; it.style.padding = '11px 24px 11px 16px'; }
       it.style.gridColumn = String(Math.floor(i / rows) + 1);

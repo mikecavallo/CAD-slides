@@ -327,7 +327,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   button saves it). Claude wrote all the narration from the slide text and put it in a NEW Google Doc,
   "Management: Solutions and Setups: Narration Script (Nov 4)", id 1Zq2RdUwbp6cBYSBfpT4c00a2IUn-1Tl8WMGRZGPHxiU, in the
   Drive folder "Management: Solutions and Setups (video)" (id 1tFQpVyvXjCazVdAH-IcOlJirl3NIciSm). The doc is the source of
-  truth (now the draft 3 doc, see round 2); sync `script/lesson-management2.json` to it before every build.
+  truth (now the draft 4 doc, see round 3); sync `script/lesson-management2.json` to it before every build.
 - Lesson `script/lesson-management2.json` (`LESSON=lesson-management2.json`), series title "Management: Solutions and
   Setups" (title lines "Management:" / "Solutions and Setups"), `"motion": "cinematic"`, ids prefixed `ms`. Deck order kept.
   `ms00` Welcome (intro, plan with six rows + Why it matters, s01 two layers of safety), then silent "Part N" cards:
@@ -385,6 +385,28 @@ pipeline). This file records the state, decisions and working agreements from ea
   doc: "Narration Script (draft 3, Nov 24)", id 115XcWgJGeEMx9ISa7tbZEOyINwlCV1h5xOysatpo9Gg (draft 2 renamed OLD).
   Draft 3 (18:16) sent in chat with storyboard and script; preview republished (now five web parts; chips "18:16 min",
   "7 parts", "51 slides", flag "Draft 3").
+- Round 3 feedback (Nov 25, applied; draft 4). Tori now wants review videos of ONLY what changed (tools/changes_reel.py),
+  plus the full video on the online preview. Recaps: narration names the setups with no ordinals, each lands on its own
+  phrase (recap `phrases`), check marks instead of numbers; ms02recap is "Recap: sights & sounds at home" (no double
+  colon) and its banner is about the dog's foundation not cracking (no "indoors"); ms01recap banner: when a trigger does
+  appear, make space, use your training, or both; ms04recap "help keep"; ms06recap "so the car doesn't become a
+  triggering environment on wheels". "Repeats at the start" of ms01recap and ms05s01 were the web preview's part
+  boundaries: forced keyframes landed a frame late and the stream-copy cut began at the keyframe before (seconds of
+  the previous slide replayed). Fixed in tools/web_parts.py (keyframes forced 5 ms early); the full MP4 never had it.
+  Other content: ms01s01 parks or schools with big open fields; ms01s03 "See a trigger approaching?"; ms01s04 "can't see
+  the trigger"; ms01s05 declined greetings also spare the dog feeling helpless in a forced interaction, even if quiet;
+  ms02s05 the bottom portion, where your dog can see out, stays covered (never "too short to see"); ms02s06 neighbors
+  letting their dog out / a neighbor in the yard; "noise machines" (also the toolkit card); ms02s08 condition the dog to
+  love the safe space so they choose it and learn to calm themselves; ms02s09 run a sound machine; ms02s10 the two
+  leashes (one keeps the dog off the fence, the other reaches the door, the dog is transferred between them); ms02s11
+  banner "It doesn't have to cost a lot to work in your home"; ms03s05 Knox = someone entering while he eats + the empty
+  bowl picked up; ms04s04 "keeps tension from building in the first place"; ms06s01 calming cap (ThunderCap: stretchy hood,
+  see-through panel over the eyes, softer view; introduce slowly with treats), whyBeat 3; ms07s01 "In these early
+  phases, your dog should never meet the trigger uncontrolled"; toolkit basket muzzle "Condition it first. Never just
+  put it on." When surprises keep happening moved to Part 7 as `ms07s00` (first slide of Set Up for Success, after all
+  the examples; scene code still in msc.js). Each part ends with its recap. Narration doc: "Narration Script (draft 4,
+  Nov 25)", id 1DLOTUt7SnJABHyrVCEPQo-6NgJpMmwFgE6sNgrwyTfY (draft 3 renamed OLD). The two client clips still need
+  Tori's MP4 files (YouTube downloads are blocked here and the Drive has no copies); ask Tori to share them from Proton.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

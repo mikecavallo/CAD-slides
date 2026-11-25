@@ -443,7 +443,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   cleanest). The Part-card chime is quieter: lesson series `"chimeDb": -8` (assemble.py, or `--chime-db`; other lessons
   unchanged at 0). No narration text changed, so no new doc. Tori's printable Weekly Tally Sheet (the deck's sheet, US
   Letter, three weeks, notes lines): `handouts/tally-sheet.html`, `node handouts/build.mjs` writes
-  `out/Weekly-Tally-Sheet.pdf` and `.png`.
+  `out/Weekly-Tally-Sheet.pdf` and `.png`. Tori: the notes area is a green outlined box (no ruled lines).
+  Draft 8 delivered: reel of ms04recap + the Part 5 card (`out/...-draft8-changes-round6.mp4`) and the PDF in chat;
+  preview republished (22:46, flag "Draft 8").
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

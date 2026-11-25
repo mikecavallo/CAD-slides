@@ -1,6 +1,9 @@
 // Management: Everyday Manners, Part 2 (everyday situations). Each slide: heading and a content column at left (what your dog
 // practices in red, Manage it and Teach instead in green), Tori's picture whole at right, or a placeholder frame until it arrives.
-//   em02s01  greetings at the door (abc_greet_c: the golden jumping on a guest at the door)
+//   em02s00  teach what you want instead: a clear picture, other options we prefer, practice in many places
+//   em02s01  greetings at the door (abc_greet_c): the greeting ritual loop with the jump built in
+//   em02s01v Tori's dachshund clip: jumping, then four paws on the floor
+//   em02s04v the loose leash walking clip (vertical)
 //   em02s02  mealtime (picture pending): counter surfing, mugging, jumping at meal prep, guarding the bowl
 //   em02s03  jumping for things in hands (picture pending)
 //   em02s04  pulling on walks (picture pending): harness; head halter, once conditioned; shorter walks while training
@@ -19,30 +22,83 @@
   const show = (tl, n, t, type = 'fadeUp') => A.in(tl, n, t, type, { dur: 0.55 });
   const PRACT = ['red', 'What they practice', 'repeat'], MANAGE = ['green', 'Manage it', 'shield-check'], TEACH = ['green', 'Teach instead', 'graduation-cap'];
 
+  // ---------------------------------------------------------------- teach what you want instead (applies to every situation)
+  registerScene('em02s00', ctx => {
+    const { stage, tl, cue } = ctx;
+    css(stage);
+    TM.head(ctx, 'Everyday situations', 'Teach what you want instead');
+    const no = MG.card(stage, { x: 100, y: 300, w: 820, variant: 'red', label: 'Only what you don’t want', icon: 'circle-x', body: '“No!” tells your dog what to stop, but !!not what to do!!.' });
+    tl.fromTo(no, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 0, 'not just what', 0.2));
+    const yes = MG.card(stage, { x: 1000, y: 300, w: 820, variant: 'green', label: 'A clear picture', icon: 'eye', body: 'Know exactly *what you want your dog to do* instead.' });
+    tl.fromTo(yes, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 0, 'clear picture', 0.2));
+    const H = Math.max(no.offsetHeight, yes.offsetHeight); no.style.height = yes.style.height = H + 'px';
+    // beat 1: telling them no isn't fair; other options we prefer
+    const row = put(stage, K.el('div', 'em-chips'), 100, 300 + H + 44, { position: 'absolute', width: '1720px', alignItems: 'center' });
+    const nf = TM.word(row, 'Just “no” isn’t fair', { variant: 'red', icon: 'ban', size: 30 });
+    const ar = K.iconBadge(row, 'arrow-right', { size: 46 });
+    const op = TM.word(row, 'Other options we prefer, that pay off', { variant: 'green', icon: 'check', size: 30 });
+    [nf, ar, op].forEach(n => { n.style.position = 'relative'; n.style.left = n.style.top = ''; });
+    A.in(tl, nf, at(ctx, 1, 'isn’t fair', 0.3), 'pop', { dur: 0.4 });
+    A.in(tl, [ar, op], at(ctx, 1, 'other options', 0.3), 'fadeRight', { dur: 0.5, stagger: 0.15 });
+    // beat 2: practice the choices in many places
+    const ctxRow = put(stage, K.el('div', 'em-chips'), 100, row.offsetTop + row.offsetHeight + 40, { position: 'absolute', width: '1720px', alignItems: 'center' });
+    const lab = K.el('div', 'tm-lab', 'Practice it:'); Object.assign(lab.style, { position: 'relative', fontSize: '32px', color: 'var(--green-dark)' }); ctxRow.appendChild(lab);
+    const ctxs = [['At home', 'house'], ['In the yard', 'trees'], ['On walks', 'route'], ['With visitors', 'users']].map(([t, ic]) => { const n = TM.word(ctxRow, t, { variant: 'pale', icon: ic, size: 28 }); n.style.position = 'relative'; n.style.left = n.style.top = ''; return n; });
+    A.in(tl, lab, cue(2) + 0.1, 'fadeUp', { dur: 0.5 });
+    A.in(tl, ctxs, at(ctx, 2, 'different places', 0.2), 'pop', { dur: 0.4, stagger: 0.15 });
+    // beat 3: how each situation slide is laid out
+    const prev = put(stage, K.el('div', 'em-chips'), 100, ctxRow.offsetTop + ctxRow.offsetHeight + 50, { position: 'absolute', width: '1720px', gap: '20px' });
+    const secs = [PRACT, MANAGE, TEACH].map(([v, l, ic]) => { const sct = EM.section(prev, v, l, ic); sct.style.width = 'auto'; return sct; });
+    A.in(tl, secs, cue(3) + 0.2, 'fadeRight', { dur: 0.5, stagger: 0.35 });
+  });
+
   // ---------------------------------------------------------------- greetings at the door
   registerScene('em02s01', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const m = EM.situation(ctx, { title: 'Greetings at the door', src: 'abc_greet_c.jpg', nat: [611, 364], maxW: 760, maxH: 560 });
-    const s1 = EM.section(m.col, ...PRACT);
-    EM.text(s1, 'Jumping on guests becomes !!the way your dog says hello!!.');
-    show(tl, s1, at(ctx, 0, 'jumps all over', 0.4));
+    const m = EM.situation(ctx, { title: 'Greetings at the door', src: 'abc_greet_c.jpg', nat: [611, 364], maxW: 600, maxH: 520, gap: 34 });
     TM.fx.ring(tl, m.ph.sv, m.ph.P(0.36, 0.55), at(ctx, 0, 'jumps all over', 0.6), { r: 46, n: 2, color: 'var(--red)' });
+    const s1 = EM.section(m.col, ...PRACT);
+    const lead = EM.text(s1, 'A greeting ritual, with !!the jump built in!!:');
+    // the ritual loop: jumps, asked to sit, sits, gets attention, and round again
+    const loop = K.el('div', 'em-chips'); loop.style.alignItems = 'center'; loop.style.gap = '8px'; loop.style.flexWrap = 'nowrap'; s1.appendChild(loop);
+    const step = (t, v, ic) => { const n = TM.word(loop, t, { variant: v, icon: ic, size: 24 }); n.style.padding = '10px 18px'; n.style.position = 'relative'; n.style.left = n.style.top = ''; return n; };
+    const arrow = () => { const a = K.iconBadge(loop, 'arrow-right', { size: 30 }); a.style.position = 'relative'; a.style.left = a.style.top = ''; return a; };
+    const L = [step('Jumps', 'red', 'repeat'), arrow(), step('Asked to sit', 'pale', 'message-circle'), arrow(), step('Sits', 'pale', 'paw-print'), arrow(), step('Gets attention', 'pale', 'heart')];
+    const back = K.iconBadge(loop, 'rotate-ccw', { size: 30 }); back.style.position = 'relative'; back.style.left = back.style.top = '';
+    show(tl, s1.querySelector('.lab'), cue(1) + 0.05);
+    show(tl, lead, cue(1) + 0.1);
+    [['jumps', 0], ['asks for a sit', 2], ['dog sits', 4], ['attention', 6]].forEach(([p, i]) => {
+      const t = at(ctx, 1, p, 0.2 + 0.15 * i);
+      A.in(tl, L[i], t, 'pop', { dur: 0.4 });
+      if (i) A.in(tl, L[i - 1], t - 0.1, 'fade', { dur: 0.3 });
+    });
+    A.in(tl, back, at(ctx, 1, 'part of the routine', 0.3), 'pop', { dur: 0.4 });
+    A.pulse(tl, L[0], at(ctx, 1, 'part of the routine', 0.3) + 0.3, { scale: 1.12 });
     const s2 = EM.section(m.col, ...MANAGE);
     EM.text(s2, 'A *baby gate* or a *leash*, before the door opens.');
-    show(tl, s2, cue(1) + 0.1);
+    show(tl, s2, at(ctx, 2, 'baby gate', 0.2));
     const s3 = EM.section(m.col, ...TEACH);
-    EM.chips(s3, [['Four paws on the floor', 'pale', 'paw-print'], ['Go to a mat', 'pale', 'square']], 28);
-    show(tl, s3, cue(2) + 0.1);
+    EM.chips(s3, [['For example: four paws on the floor', 'pale', 'paw-print'], ['Go to a mat', 'pale', 'square']], 27);
+    show(tl, s3, cue(3) + 0.1);
+  });
+
+  // ---------------------------------------------------------------- the dachshund clip: from jumping to four paws on the floor
+  registerScene('em02s01v', ctx => {
+    css(ctx.stage);
+    TM.videoSlide(ctx, { kicker: 'Everyday situations', heading: 'Four paws on the floor', rows: [
+      { icon: 'repeat', html: 'Starts out *jumping up*', beat: 0, phrase: 'jumping up', fb: 0.4 },
+      { icon: 'paw-print', html: 'Four paws on the floor *earns the treat*', beat: 0, phrase: 'what earns', fb: 0.75 },
+    ] });
   });
 
   // ---------------------------------------------------------------- mealtime
   registerScene('em02s02', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const m = EM.situation(ctx, { title: 'Mealtime', hold: 'Mealtime', maxW: 560, maxH: 600, gap: 28 });
+    const m = EM.situation(ctx, { title: 'Mealtime', hold: 'Mealtime', maxW: 560, maxH: 600, gap: 30 });
     const s1 = EM.section(m.col, ...PRACT);
-    const ch = EM.chips(s1, [['Counter surfing', 'red', 'cookie'], ['Mugging', 'red', 'hand'], ['Jumping at meal prep', 'red', 'utensils'], ['Guarding the bowl', 'red', 'shield-alert']], 26);
+    const ch = EM.chips(s1, [['Counter surfing', 'red', 'cookie'], ['Mugging and grabbing', 'red', 'hand'], ['Jumping at meal prep', 'red', 'utensils'], ['Guarding the bowl', 'red', 'shield-alert']], 26);
     show(tl, s1.querySelector('.lab'), cue(0) + 0.1);
     [['counter surfing', 0], ['mugging', 1], ['jumping up', 2], ['guarding', 3]].forEach(([p, i]) => A.in(tl, ch[i], at(ctx, 0, p, 0.15 + 0.2 * i), 'pop', { dur: 0.4 }));
     const s2 = EM.section(m.col, ...MANAGE);
@@ -54,7 +110,7 @@
     show(tl, r2, at(ctx, 1, 'gate', 0.5));
     show(tl, r3, cue(2) + 0.1);
     const s3 = EM.section(m.col, ...TEACH);
-    EM.text(s3, 'A calm *sit or wait*. The bowl goes down *when your dog is calm*.', 31);
+    EM.text(s3, '*Teach what you want instead.* For example: settle on a mat while you cook.', 31);
     show(tl, s3, cue(3) + 0.1);
   });
 
@@ -64,16 +120,19 @@
     css(stage);
     const m = EM.situation(ctx, { title: 'Jumping for things in hands', hold: 'Jumping for something in a hand', maxW: 560, maxH: 600, hsize: 58 });
     const s1 = EM.section(m.col, ...PRACT);
-    const ch = EM.chips(s1, [['Food', 'red', 'cookie'], ['Toys', 'red', 'bone'], ['Shoes', 'red', 'footprints'], ['The mail', 'red', 'mail']], 28);
+    const ch = EM.chips(s1, [['Food', 'red', 'cookie'], ['Toys', 'red', 'bone'], ['The mail', 'red', 'mail']], 28);
     show(tl, s1.querySelector('.lab'), cue(0) + 0.1);
-    [['food', 0], ['toys', 1], ['shoes', 2], ['the mail', 3]].forEach(([p, i]) => A.in(tl, ch[i], at(ctx, 0, p, 0.1 + 0.1 * i), 'pop', { dur: 0.4 }));
+    [['food', 0], ['toys', 1], ['the mail', 2]].forEach(([p, i]) => A.in(tl, ch[i], at(ctx, 0, p, 0.1 + 0.1 * i), 'pop', { dur: 0.4 }));
     const w = EM.text(s1, 'If jumping gets it even once, they’ll !!try again, and harder!!.', 31);
     show(tl, w, at(ctx, 0, 'even once', 0.5));
     const s2 = EM.section(m.col, ...MANAGE);
-    EM.text(s2, 'Keep things *up and out of reach*. A *leash or tether* when people are carrying something your dog wants.', 31);
-    show(tl, s2, cue(1) + 0.1);
+    const a1 = EM.text(s2, 'Keep things *up and out of reach*.', 31);
+    const a2 = EM.text(s2, 'Carrying in the groceries? If it’s too exciting, your dog waits *behind a baby gate*.', 31);
+    show(tl, s2.querySelector('.lab'), cue(1) + 0.05);
+    show(tl, a1, cue(1) + 0.2);
+    show(tl, a2, at(ctx, 1, 'groceries', 0.3));
     const s3 = EM.section(m.col, ...TEACH);
-    EM.text(s3, 'A *sit* or *four paws on the floor* earns the toy or the treat.', 31);
+    EM.text(s3, 'For example: a *sit* or *four paws on the floor* earns the toy or the treat.', 31);
     show(tl, s3, cue(2) + 0.1);
   });
 
@@ -81,20 +140,33 @@
   registerScene('em02s04', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const m = EM.situation(ctx, { title: 'Pulling on walks', hold: 'Pulling on the leash', maxW: 560, maxH: 600, gap: 30 });
+    const m = EM.situation(ctx, { title: 'Pulling on walks', hold: 'Pulling on the leash', maxW: 560, maxH: 600, gap: 40 });
     const s1 = EM.section(m.col, ...PRACT);
     EM.text(s1, 'Pulling gets them where they want to go, so !!pulling works!!.');
     show(tl, s1, cue(0) + 0.1);
     const s2 = EM.section(m.col, ...MANAGE);
     const ch = EM.chips(s2, [['A well fitted harness', 'pale', 'shield-check'], ['A head halter, once conditioned', 'pale', 'check']], 27);
-    const r3 = EM.text(s2, '*Shorter, calmer walks* while you’re training.', 31);
     show(tl, s2.querySelector('.lab'), cue(1) + 0.05);
     A.in(tl, ch[0], at(ctx, 1, 'harness', 0.3), 'pop', { dur: 0.4 });
     A.in(tl, ch[1], at(ctx, 1, 'head halter', 0.5), 'pop', { dur: 0.4 });
-    show(tl, r3, cue(2) + 0.1);
     const s3 = EM.section(m.col, ...TEACH);
-    EM.text(s3, '*Loose leash walking*: reward your dog for walking next to you.', 31);
-    show(tl, s3, cue(3) + 0.1);
+    EM.text(s3, 'For example: *loose leash walking*, rewarded right next to you.', 31);
+    show(tl, s3, cue(2) + 0.1);
+  });
+
+  // ---------------------------------------------------------------- the loose leash walking clip (vertical, tall frame at the right)
+  registerScene('em02s04v', ctx => {
+    const { stage, tl } = ctx;
+    css(stage);
+    TM.head(ctx, 'Everyday situations', 'Loose leash walking');
+    const vf = TM.videoFrame(ctx);
+    vf.cap.style.display = 'none';
+    const col = put(stage, K.el('div', 'tm-col'), 100, 0, { width: '1000px', gap: '34px' });
+    [['link', 'A *loose leash*', 'loose leash'], ['paw-print', 'Walking *right next to the handler*', 'right next to'], ['cookie', 'Rewarded *for being there*', 'rewarded']].forEach(([ic, h, p]) => {
+      A.in(tl, TM.row(col, ic, h, { size: 36 }), at(ctx, 0, p, 0.3), 'fadeRight', { dur: 0.5 });
+    });
+    const [, by, , bh] = vf.box;
+    col.style.top = Math.round(by + bh / 2 - col.offsetHeight / 2) + 'px';
   });
 
   // ---------------------------------------------------------------- barking at people

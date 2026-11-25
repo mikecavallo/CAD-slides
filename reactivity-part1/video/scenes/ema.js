@@ -77,7 +77,7 @@
       return g;
     };
     const g1 = grp(410, 'green', 'The things we love', [['Sitting politely', 'paw-print', 'sitting'], ['Coming when called', 'arrow-left', 'coming']], 1);
-    const g2 = grp(g1.offsetTop + g1.offsetHeight + 40, 'red', 'The things we don’t want', [['Jumping on guests', 'repeat', 'jumping'], ['Counter surfing', 'cookie', 'counter'], ['Pulling on the leash', 'move-right', 'pulling']], 2);
+    const g2 = grp(g1.offsetTop + g1.offsetHeight + 40, 'red', 'The things we don’t want', [['They get better too', 'repeat', 'just as true']], 2);
     const call = MG.callout(stage, 'Your dog isn’t being bad. <b>What works gets repeated.</b>', { x: X, y: g2.offsetTop + g2.offsetHeight + 50, w: W, size: 36 });
     tl.fromTo(call, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, cue(3) + 0.05);
     A.pulse(tl, g2, at(ctx, 3, 'every time it works', 0.3), { scale: 1.03 });
@@ -103,7 +103,7 @@
     const old = K.path(ph.sv, 'M ' + OLD.map(p => p.join(' ')).join(' L '), { fill: 'none', stroke: '#b8452d', 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
     A.draw(tl, old, t0, 0.9);
     tl.to(old, { attr: { 'stroke-width': 12 }, duration: 0.8 }, at(ctx, 0, 'gets stronger', 0.3));
-    const lead = put(stage, K.el('div', 'mg-lead', 'Every time your dog does a behavior, <b>its pathway in the brain gets stronger</b>.'), 760, 300, { width: '1060px', fontSize: '38px' });
+    const lead = put(stage, K.el('div', 'mg-lead', 'Every time your dog does a behavior, <b>the neural pathway in the brain gets stronger</b>.'), 760, 300, { width: '1060px', fontSize: '38px' });
     A.in(tl, lead, cue(0) + 0.3, 'fadeUp', { dur: 0.7 });
 
     // beat 1: a path in the woods wears in
@@ -137,7 +137,7 @@
     pass('Walked often: easy to follow', tB + 1.4);
 
     // beat 2: the most walked paths become habits
-    const r = TM.row(stage, 'paw-print', 'The paths they walk most <b>become their habits</b>.', { size: 34 });
+    const r = TM.row(stage, 'paw-print', 'The paths used most often <b>become their habits</b>.', { size: 34 });
     put(stage, r, X, PY + PH + 40, { position: 'absolute', width: W + 'px' });
     A.in(tl, r, cue(2) + 0.1, 'fadeRight', { dur: 0.6 });
 
@@ -150,14 +150,14 @@
     tl.to(fog, { opacity: 0.85, duration: 1.2, ease: 'power1.inOut' }, at(ctx, 3, 'off the old path', 0.3));
     tl.to(old, { opacity: 0.25, duration: 1.2 }, at(ctx, 3, 'off the old path', 0.3));
     const nl = K.path(ph.sv, 'M ' + NEW.map(p => p.join(' ')).join(' L '), { fill: 'none', stroke: '#619537', 'stroke-width': 12, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
-    const tN = at(ctx, 3, 'walk a new one', 0.1);
+    const tN = at(ctx, 3, 'develop a new one', 0.1);
     A.draw(tl, nl, tN, 1.3);
     NEW.slice(1).forEach((p, i) => TM.fx.ring(tl, ph.sv, p, tN + 0.3 + i * 0.4, { r: 22 }));
     TM.fx.tag(tl, ph.wrap, 'Old path', Math.round(w * 0.0), Math.round(h * 0.86), t0 + 0.5, 'red').style.fontSize = '26px';
     TM.fx.tag(tl, ph.wrap, 'New path', Math.round(w * 0.62), Math.round(h * 0.86), tN + 0.4, 'green').style.fontSize = '26px';
     const bn = put(stage, K.el('div', 'tm-banner'), X, 0, { width: W + 'px', boxSizing: 'border-box', fontSize: '33px' });
     bn.appendChild(K.icon('route'));
-    bn.appendChild(K.el('span', null, 'Off the old path. <b>Onto a new one.</b>'));
+    bn.appendChild(K.el('span', null, 'Off the old path. <b>Help them develop a new one.</b>'));
     bn.style.top = (r.offsetTop + r.offsetHeight + 40) + 'px';
     tl.fromTo(bn, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, t3);
   });
@@ -172,22 +172,17 @@
       b.innerHTML = `<div class="top"><div class="ic">${K.icon(ic).outerHTML}</div><div class="t">${t}</div></div><div class="s">${K.md(s)}</div>`;
       return b;
     };
-    const mg = blk('mgmt', 'shield-check', 'Management', 'Set up your dog’s world so they <b style="color:#fff">can’t practice</b> the behavior you don’t want.', 100, 300, 840, 480);
-    const tools = K.el('div', 'ema-tools'); mg.appendChild(tools);
+    const mg = blk('mgmt', 'shield-check', 'Management', 'Set up your dog’s world so they <b style="color:#fff">can’t practice</b> the behavior you don’t want.', 100, 320, 840, 380);
     tl.fromTo(mg, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(0) + 0.3);
-    [['A gate', 'fence', 'gate'], ['A leash', 'link', 'leash'], ['A crate', 'box', 'crate'], ['A closed door', 'door-closed', 'closed door'], ['Food put away', 'cookie', 'food put away']].forEach(([t, ic, p]) => {
-      const n = flow(TM.word(tools, t, { icon: ic, size: 28 }));
-      A.in(tl, n, at(ctx, 1, p, 0.3), 'pop', { dur: 0.4 });
-    });
-    const tr = blk('trn', 'graduation-cap', 'Training', 'Teaches your dog *what to do instead*, and makes that choice *worth it*.', 980, 300, 840, 480);
-    tl.fromTo(tr, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(2) + 0.05);
+    const tr = blk('trn', 'graduation-cap', 'Training', 'Teaches your dog *what to do instead*, and makes that choice *worth it*.', 980, 320, 840, 380);
+    tl.fromTo(tr, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(1) + 0.05);
     const sub = (b, html, t) => { const n = K.el('div', 's', html); n.style.marginTop = 'auto'; n.style.fontWeight = 700; b.appendChild(n); A.in(tl, n, t, 'fadeUp', { dur: 0.6 }); };
-    sub(mg, '<span style="display:inline-flex;align-items:center;gap:12px">Stops the old habit from <b style="color:#fff">getting stronger</b></span>', at(ctx, 3, 'stops the old habit', 0.3));
-    sub(tr, 'Builds <b style="color:var(--green-dark)">the new one</b>', at(ctx, 3, 'builds the new one', 0.3));
-    const bn = put(stage, K.el('div', 'tm-banner'), 100, 830, { width: '1720px', boxSizing: 'border-box', justifyContent: 'center', fontSize: '38px', background: 'var(--green-deep)' });
+    sub(mg, '<span style="display:inline-flex;align-items:center;gap:12px">Stops the old habit from <b style="color:#fff">getting stronger</b></span>', at(ctx, 2, 'stops the old habit', 0.3));
+    sub(tr, 'Builds <b style="color:var(--green-dark)">the new one</b>', at(ctx, 2, 'builds the new one', 0.3));
+    const bn = put(stage, K.el('div', 'tm-banner'), 100, 760, { width: '1720px', boxSizing: 'border-box', justifyContent: 'center', fontSize: '38px', background: 'var(--green-deep)' });
     bn.appendChild(K.icon('handshake'));
     bn.appendChild(K.el('span', null, 'You need <b>both</b>.'));
-    tl.fromTo(bn, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 3, 'you need both', 0.2));
+    tl.fromTo(bn, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, at(ctx, 2, 'you need both', 0.2));
   });
 
   // ---------------------------------------------------------------- the foundation: Tori's house (levelled layers from Management: The Basics)

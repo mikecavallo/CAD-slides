@@ -71,10 +71,10 @@
       A.in(tl, r, at(ctx, b, p, 0.1), 'fadeRight', { dur: 0.6 });
     });
     const st = put(stage, K.el('div', 'emc-statement'), X, 0, { width: W + 'px' });
-    st.innerHTML = '<span class="k">The foundation</span>Management is the foundation. <b>Build on it, and the manners you teach will last.</b>';
+    st.innerHTML = '<span class="k">The foundation</span>Build on a strong foundation, <b>one without cracks</b> from management slipping, and <b>the manners you teach will last.</b>';
     st.style.top = Math.max(col.offsetTop + col.offsetHeight + 36, 330 + h - st.offsetHeight) + 'px';
     tl.fromTo(st, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(2) + 0.05);
-    A.pulse(tl, tag, at(ctx, 2, 'foundation', 0.3), { scale: 1.12 });
+    A.pulse(tl, tag, at(ctx, 2, 'without cracks', 0.3), { scale: 1.12 });
     SKIT.logoClose(ctx, end(2) + 0.6, [ph.wrap, ...hd.all, col, st]);
   });
 })();

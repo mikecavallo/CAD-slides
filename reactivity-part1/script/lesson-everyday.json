@@ -77,9 +77,9 @@
        "onscreen": "Sitting politely, Coming when called"
       },
       {
-       "say": "And it’s just as true for the things we don’t want, like jumping on guests, grabbing food off the counter, or pulling on the leash.",
-       "show": "Red chips.",
-       "onscreen": "Jumping on guests, Counter surfing, Pulling on the leash"
+       "say": "And it’s just as true for the things we don’t want.",
+       "show": "Red label, no list.",
+       "onscreen": "The things we don’t want"
       },
       {
        "say": "Your dog isn’t being bad. They’re doing what works for them. And every time it works, they’re more likely to do it again.",
@@ -97,9 +97,9 @@
      ],
      "beats": [
       {
-       "say": "Here’s what’s happening in the brain. Every time your dog does a behavior, the neural pathway for it gets stronger.",
+       "say": "Here’s what’s happening in the brain. Every time your dog does a behavior, the neural pathway in the brain gets stronger.",
        "show": "Brain picture; old pathway lights up.",
-       "onscreen": "The neural pathway gets stronger"
+       "onscreen": "The neural pathway in the brain gets stronger"
       },
       {
        "say": "Think of a path in the woods. The first time, it’s barely visible. The more it’s walked, the easier it is to follow.",
@@ -107,32 +107,27 @@
        "onscreen": "A path in the woods"
       },
       {
-       "say": "Puppies are building these paths every single day. The ones they walk most become their habits.",
+       "say": "Puppies are building these paths every day. The paths used most often become their habits.",
        "show": "Row: the most walked paths become habits.",
-       "onscreen": "Most walked = habits"
+       "onscreen": "The paths used most often become habits"
       },
       {
-       "say": "So the goal is simple: keep your dog off the old path, and help them walk a new one.",
+       "say": "So the goal is simple: keep your dog off the old path, and help them develop a new one.",
        "show": "New pathway lights green; banner.",
-       "onscreen": "Off the old path, onto a new one"
+       "onscreen": "Off the old path, develop a new one"
       }
      ]
     },
     {
      "id": "em01s03",
      "heading": "Management and training",
-     "visual_concept": "Two cards: Management (prevents practice, tool chips), Training (builds the new behavior); banner.",
+     "visual_concept": "Two cards: Management (prevents practice), Training (builds the new behavior); banner.",
      "assets": [],
      "beats": [
       {
        "say": "That’s where management comes in. Management means setting up your dog’s world so they can’t practice the behavior you don’t want.",
        "show": "Management card.",
        "onscreen": "Management: prevents practice"
-      },
-      {
-       "say": "A gate, a leash, a crate, a closed door, food put away. Simple things that prevent the rehearsal.",
-       "show": "Tool chips.",
-       "onscreen": "Gate, Leash, Crate, Closed door, Food put away"
       },
       {
        "say": "Training is the other half. It teaches your dog what to do instead, and makes that choice worth it.",
@@ -210,40 +205,97 @@
    "slide_refs": [],
    "scenes": [
     {
+     "id": "em02s00",
+     "heading": "Teach what you want instead",
+     "visual_concept": "Two cards: What you don't want (red, a crossed 'No!') vs What you want (green, a clear picture); context chips; preview of the three blocks.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Before we look at each situation, one rule applies to all of them. You need a clear picture of what you want your dog to do, not just what you don’t want them to do.",
+       "show": "Red card then green card.",
+       "onscreen": "A clear picture of what you want"
+      },
+      {
+       "say": "Just telling your dog no isn’t fair. They need to learn that there are other options, ones we prefer, and that those choices pay off.",
+       "show": "'No!' struck; Other options we prefer.",
+       "onscreen": "Other options we prefer"
+      },
+      {
+       "say": "Then practice those choices in lots of different places and situations, so your dog really understands them wherever you are.",
+       "show": "Context chips.",
+       "onscreen": "Different places and situations"
+      },
+      {
+       "say": "For each situation, we’ll look at what your dog practices, how to manage it, and some examples of what you can teach instead.",
+       "show": "Three block labels.",
+       "onscreen": "What they practice, Manage it, Teach instead"
+      }
+     ]
+    },
+    {
      "id": "em02s01",
      "heading": "Greetings at the door",
-     "visual_concept": "Situation slide: picture at right (golden jumping on a guest); Practicing / Manage it / Teach instead.",
+     "visual_concept": "Situation slide: the golden jumping on a guest; the greeting ritual loop (Jumps, Asked to sit, Sits, Gets attention); Manage it; Teach instead examples.",
      "assets": [
       "abc_greet_c.jpg"
      ],
      "beats": [
       {
-       "say": "Let’s start at the front door. A guest walks in, and your dog jumps all over them. If that happens again and again, jumping becomes the way your dog says hello.",
-       "show": "Practicing.",
+       "say": "Let’s start at the front door. A guest walks in, and your dog jumps all over them.",
+       "show": "Picture; ring on the jump.",
        "onscreen": "Jumping on guests"
       },
       {
-       "say": "To manage it, put up a baby gate or clip on a leash before you open the door, so your dog can’t reach your guest.",
+       "say": "This can turn into a greeting ritual. Your dog jumps, the person asks for a sit, your dog sits, and then gets attention. Now the jump is part of the routine.",
+       "show": "The ritual loop.",
+       "onscreen": "Jumps, Asked to sit, Sits, Gets attention"
+      },
+      {
+       "say": "Manage it so the jump never becomes part of the ritual. Put up a baby gate or clip on a leash before you open the door, so your dog can’t reach your guest.",
        "show": "Manage it.",
        "onscreen": "Baby gate or leash, before the door opens"
       },
       {
-       "say": "Then teach what you want instead, like four paws on the floor or going to a mat, and reward that calm hello.",
+       "say": "Then teach what you want instead. For example, four paws on the floor or going to a mat, and reward that calm hello.",
        "show": "Teach instead.",
-       "onscreen": "Four paws on the floor, or go to a mat"
+       "onscreen": "For example: four paws on the floor, or go to a mat"
       }
      ]
     },
     {
-     "id": "em02s02",
-     "heading": "Mealtime",
-     "visual_concept": "Situation slide: picture placeholder (mealtime); four red chips; Manage it rows; Teach instead.",
+     "id": "em02s01v",
+     "heading": "Four paws on the floor",
+     "visual_concept": "Tori's dachshund clip (jumping, then four paws on the floor) in the frame; two rows; the clip plays with its own sound after the line.",
      "assets": [],
      "beats": [
       {
-       "say": "Next, food. Counter surfing, mugging you while you cook, jumping up while you make their meal, guarding the bowl. Every time it pays off, it gets stronger.",
+       "say": "Here’s an example. This little dachshund starts out jumping up on me. Watch what earns the treat: all four paws on the floor.",
+       "show": "Video frame; rows.",
+       "onscreen": "Four paws on the floor"
+      }
+     ],
+     "clip": {
+      "box": [
+       900,
+       330,
+       920,
+       518
+      ],
+      "poster": "em_clip_paws.jpg",
+      "afterNarration": true,
+      "volume": 1.0
+     }
+    },
+    {
+     "id": "em02s02",
+     "heading": "Mealtime",
+     "visual_concept": "Situation slide: picture placeholder (mealtime); four red chips; Manage it rows; Teach instead example.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Next, food. Counter surfing, mugging you or grabbing food from your hands, jumping up while you make their meal, guarding the bowl. Every time it pays off, it gets stronger.",
        "show": "Practicing: four red chips.",
-       "onscreen": "Counter surfing, Mugging, Jumping at meal prep, Guarding the bowl"
+       "onscreen": "Counter surfing, Mugging and grabbing, Jumping at meal prep, Guarding the bowl"
       },
       {
        "say": "Manage it by keeping food off the counters and out of reach, and by using a gate, crate, or mat while you make meals and while you eat.",
@@ -256,39 +308,39 @@
        "onscreen": "A quiet spot to eat in peace"
       },
       {
-       "say": "Then teach a calm sit or wait. The bowl only goes down when your dog is calm.",
+       "say": "Then teach what you want your dog to do instead, like settling on a mat while you cook.",
        "show": "Teach instead.",
-       "onscreen": "Calm sit or wait; the bowl goes down when calm"
+       "onscreen": "Teach what you want instead"
       }
      ]
     },
     {
      "id": "em02s03",
      "heading": "Jumping for things in hands",
-     "visual_concept": "Situation slide: picture placeholder; Practicing / Manage it / Teach instead.",
+     "visual_concept": "Situation slide: picture placeholder; Practicing / Manage it (out of reach; baby gate for the groceries) / Teach instead examples.",
      "assets": [],
      "beats": [
       {
-       "say": "Then there’s jumping up for whatever’s in your hands: food, toys, shoes, the mail. If jumping gets them the thing even once, they’ll try again, and harder.",
+       "say": "Then there’s jumping up for whatever’s in your hands: food, toys, the mail. If jumping gets them the thing even once, they’ll try again, and harder.",
        "show": "Practicing.",
-       "onscreen": "Jumping for food, toys, shoes, the mail"
+       "onscreen": "Jumping for food, toys, the mail"
       },
       {
-       "say": "Manage it by keeping things up and out of reach, and using a leash or tether when people are carrying something your dog wants.",
+       "say": "Manage it by keeping things up and out of reach. If you’re carrying in the groceries and your dog can’t handle that excitement, have your dog behind a baby gate.",
        "show": "Manage it.",
-       "onscreen": "Out of reach; leash or tether"
+       "onscreen": "Out of reach; a baby gate for the groceries"
       },
       {
-       "say": "Teach a sit or four paws on the floor instead. That calm choice is what earns the toy or the treat.",
+       "say": "Then teach what you want instead. For example, a sit or four paws on the floor, and that calm choice earns the toy or the treat.",
        "show": "Teach instead.",
-       "onscreen": "Sit or four paws on the floor earns it"
+       "onscreen": "For example: a sit, or four paws on the floor"
       }
      ]
     },
     {
      "id": "em02s04",
      "heading": "Pulling on walks",
-     "visual_concept": "Situation slide: picture placeholder; Practicing / Manage it (harness, head halter conditioned) / Teach instead.",
+     "visual_concept": "Situation slide: picture placeholder; Practicing / Manage it (harness, head halter once conditioned) / Teach instead.",
      "assets": [],
      "beats": [
       {
@@ -302,16 +354,41 @@
        "onscreen": "Harness; head halter, once conditioned"
       },
       {
-       "say": "While you’re training, keep walks shorter and calmer, so your dog isn’t practicing pulling for an hour every day.",
-       "show": "Manage it: shorter walks.",
-       "onscreen": "Shorter, calmer walks while you train"
-      },
-      {
-       "say": "Then teach loose leash walking, and reward your dog for walking next to you.",
+       "say": "Then teach what you want instead, like walking on a loose leash, and reward your dog for walking next to you.",
        "show": "Teach instead.",
-       "onscreen": "Loose leash walking"
+       "onscreen": "For example: loose leash walking"
       }
      ]
+    },
+    {
+     "id": "em02s04v",
+     "heading": "Loose leash walking",
+     "visual_concept": "The loose leash walking clip (vertical) in a tall frame at the right; rows at left; plays with its own sound after the line.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Here’s what we’re working toward: a dog walking on a loose leash, and getting rewarded for staying right next to the handler.",
+       "show": "Video frame; rows.",
+       "onscreen": "Loose leash walking"
+      }
+     ],
+     "clip": {
+      "box": [
+       1250,
+       240,
+       570,
+       710
+      ],
+      "poster": "em_clip_walk.jpg",
+      "afterNarration": true,
+      "volume": 1.0,
+      "crop": [
+       0,
+       285,
+       1080,
+       1350
+      ]
+     }
     },
     {
      "id": "em02s05",
@@ -394,9 +471,9 @@
        "onscreen": "Training, everyone"
       },
       {
-       "say": "Management is the foundation. Build on it, and the manners you teach will last.",
+       "say": "Management is the foundation. Build on a strong foundation, one without cracks from management slipping, and the manners you teach will last.",
        "show": "Closing statement, logo close.",
-       "onscreen": "Management is the foundation"
+       "onscreen": "A strong foundation, without cracks"
       }
      ]
     }

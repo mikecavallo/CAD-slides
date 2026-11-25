@@ -415,6 +415,21 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Draft 1 (Nov 24): 6:49, sent in chat (CRF 26 copy, storyboard, script). Online preview:
   https://claude.ai/artifact/17PQ1RYbnb42P4x65qoLTE (`out/web/everyday/`; web_page.py --kicker "Foundations course"; publish
   without the .vtt files, captions are inlined in the page). Draft PR #12 (base claude/management-part-1).
+- Round 2 (Nov 25, Tori's draft 1 notes, applied as draft 2, 8:20): don't list the behaviors that get their own management
+  example later (em01s01 no longer lists jumping/counter/pulling; em01s03 lost the gate/leash/crate tools beat); s02 says
+  "the neural pathway in the brain gets stronger", "The paths used most often become their habits", "help them DEVELOP a new
+  one" (never "walk a new one"). NEW em02s00 "Teach what you want instead" opens Part 2: a clear picture of what you want,
+  not just what you don't; just "no" isn't fair, other options we prefer; practice in many places and situations. Every
+  Teach instead block gives EXAMPLES ("For example: ..."), never the only answer. Door: the greeting ritual loop (Jumps,
+  Asked to sit, Sits, Gets attention, round again); manage so the jump never joins the ritual. NEW em02s01v plays Tori's
+  dachshund clip (R+ Drive folder 11XwpH538JsWoCwsfvthN2UVJROTu_t8i: "Jumping.MP4" 1.8 s + "4 on floor extended.mp4",
+  joined at 1280x720 into clips/em02s01v.mp4, own sound, after the line). Mealtime: "Mugging and grabbing" (mugging and
+  grabbing from hands); teach line is "teach what you want your dog to do instead, like settling on a mat". Hands: no
+  shoes; manage = out of reach + baby gate when carrying in groceries (never leash or tether). Pulling: "shorter, calmer
+  walks" is GONE; NEW em02s04v plays "walking.MOV" (R+ folder, loose leash walking, vertical, tall frame [1250,240,570,710],
+  crop [0,285,1080,1350]). Close: "Build on a strong foundation, one without cracks from management slipping".
+  Clips and clips/src are gitignored: re-download from Drive with curl in a new container, then tools/clip_ends.py.
+  Script doc now "... (draft 2, Nov 24)", id 1gt8mSHvzARcBzf0ezK0eKvT-iogCJf0WhQfuy_8pOGE; draft 1 renamed superseded.
 
 ## Recordings (Tori's voice)
 

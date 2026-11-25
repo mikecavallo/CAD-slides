@@ -407,6 +407,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   the examples; scene code still in msc.js). Each part ends with its recap. Narration doc: "Narration Script (draft 4,
   Nov 25)", id 1DLOTUt7SnJABHyrVCEPQo-6NgJpMmwFgE6sNgrwyTfY (draft 3 renamed OLD). The two client clips still need
   Tori's MP4 files (YouTube downloads are blocked here and the Drive has no copies); ask Tori to share them from Proton.
+  Draft 4: 19:26; sent the changes reel only (23 slides, 9:30, `out/...-draft4-changes-round3.mp4`, CRF 26 = 31 MB) and the
+  script; preview republished (chips "19:26 min", "7 parts", "51 slides", flag "Draft 4"). Second web_parts.py fix: the
+  stream-copy cut is made 4 ms after each part's start (a start written to 3 decimals could round to just before its
+  keyframe and the cut jumped back seconds); part durations now match the plan.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

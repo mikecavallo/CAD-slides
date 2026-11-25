@@ -88,7 +88,9 @@ def main():
         a = segs[g[0]]["start"]
         b = segs[g[-1]]["start"] + segs[g[-1]]["dur"] if g[-1] < len(segs) - 1 else total
         name = f"part{p + 1}.mp4"
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{a:.3f}", "-i", str(web), "-t", f"{b - a:.3f}", "-c", "copy",
+        # cut a few ms after the start: written to 3 decimals, the start can round to just before its keyframe, and a
+        # stream-copy cut then begins at the keyframe before it (seconds early)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{a + 0.004:.3f}", "-i", str(web), "-t", f"{b - a:.3f}", "-c", "copy",
                         "-avoid_negative_ts", "make_zero", "-movflags", "+faststart", str(out / name)], check=True)
         vtt = ["WEBVTT", ""]
         for (ca, cb, txt) in cues:

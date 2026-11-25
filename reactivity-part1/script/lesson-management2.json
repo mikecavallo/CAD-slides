@@ -7,7 +7,8 @@
    "Solutions and Setups"
   ],
   "motion": "cinematic",
-  "footer": "line"
+  "footer": "line",
+  "chimeDb": -8
  },
  "notes": "Foundations course video, rebuilt from Tori's deck 'Management, Part two: solutions and set ups' (3-Master_Management part 2.pptx, Nov 4). The deck had no narration: Claude drafted it from the slide text; Tori gets paste-ready copy. Build with LESSON=lesson-management2.json.",
  "tail": 4.0,
@@ -973,7 +974,8 @@
       {
        "say": "Calm routines and separate resources help keep multiple dogs under one roof relaxed around each other.",
        "show": "Summary banner.",
-       "onscreen": "Summary"
+       "onscreen": "Summary",
+       "speak": "Calm routines and sep-er-it resources help keep multiple dogs under one roof relaxed around each other."
       }
      ]
     }

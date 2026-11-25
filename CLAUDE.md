@@ -437,6 +437,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   Draft 7 delivered: full video `out/Management-Solutions-and-Setups-tori-voice-draft7.mp4` (22:46; chat copy CRF 26 =
   78 MB, near the chat limit) and the script sent in chat; preview republished in six parts (chips "22:46 min", "Tori's
   voice", flag "Draft 7"). Fence clip at 8:55, Knox at 12:17.
+- Round 6 (Nov 25, draft 8): ms04recap's "separate resources" is the adjective ("SEP-er-it"), not the verb. A beat can carry
+  `"speak"`: the line respelled for the voice only (`tts_elevenlabs.py` sends it and caches by it; `say` stays the script and
+  the doc text); ms04recap beat 2 speaks "sep-er-it resources" (checked against "seprit" and "SEP-er-it"; this take reads
+  cleanest). The Part-card chime is quieter: lesson series `"chimeDb": -8` (assemble.py, or `--chime-db`; other lessons
+  unchanged at 0). No narration text changed, so no new doc. Tori's printable Weekly Tally Sheet (the deck's sheet, US
+  Letter, three weeks, notes lines): `handouts/tally-sheet.html`, `node handouts/build.mjs` writes
+  `out/Weekly-Tally-Sheet.pdf` and `.png`.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

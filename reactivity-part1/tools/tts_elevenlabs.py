@@ -150,7 +150,8 @@ def main():
     for sc in scenes:
         if sc["id"] in recorded:
             continue
-        says = [b["say"].strip() for b in sc["beats"]]
+        # a beat may carry "speak": the same line respelled for the voice (pronunciation), while "say" stays the script
+        says = [b.get("speak", b["say"]).strip() for b in sc["beats"]]
         for i, text in enumerate(says):
             for j, piece in enumerate(pieces(text)):
                 if not piece:
@@ -185,7 +186,7 @@ def main():
         for i, b in enumerate(sc["beats"]):
             if i:
                 parts.append(np.zeros(int(SR * PAUSE_BEAT), np.float32))
-            for j, piece in enumerate(pieces(b["say"])):
+            for j, piece in enumerate(pieces(b.get("speak", b["say"]))):
                 if j:
                     parts.append(np.zeros(int(SR * PAUSE_SEC), np.float32))
                 if piece:

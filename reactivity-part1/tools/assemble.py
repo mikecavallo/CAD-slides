@@ -185,6 +185,7 @@ def main():
     ap.add_argument("--no-chapters", action="store_true")
     ap.add_argument("--music", help="optional background music file, looped and ducked under the voice")
     ap.add_argument("--music-db", type=float, default=-24, help="music level in dB (default -24)")
+    ap.add_argument("--chime-db", type=float, default=None, help="chapter-card chime level change in dB (default: the lesson series \"chimeDb\", else 0)")
     ap.add_argument("--segments", default="segments", help="segment folder inside build/ (segments@2x for the 4K render)")
     ap.add_argument("--silent", action="store_true", help="leave the narration out (a visuals-only preview; captions are still written)")
     ap.add_argument("--chapter-max-mb", type=float, default=29, help="re-encode any chapter file bigger than this (default 29 MB)")
@@ -206,6 +207,8 @@ def main():
     mix = np.zeros(int(SR * (total + 1)), dtype=np.float32)
     cache = {}
     ch = chime()
+    chime_db = args.chime_db if args.chime_db is not None else float(load_script().get("series", {}).get("chimeDb", 0))
+    ch = ch * (10 ** (chime_db / 20))
     for s in segs:
         if s["kind"] == "bumper":
             a = int(SR * (s["start"] + 0.05))

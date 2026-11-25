@@ -320,7 +320,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder
   "Management: The Basics (video)" (id 10Fqf8KJHhF_Jcwan0sm65bz_VUbiucOV) holds the narration doc.
 
-## Management: Solutions and Setups (Foundations course video, Management part 2; preview voice only)
+## Management: Solutions and Setups (Foundations course video, Management part 2; Tori's cloned voice since Nov 25)
 
 - Source: Tori's deck "Management, Part two: solutions and set ups" (3-Master_Management part 2.pptx, 51 slides, 43 MB, no
   speaker notes; Tori shared it from Proton Drive: the public link opens in headless Chromium and the LAST "Download"
@@ -416,6 +416,14 @@ pipeline). This file records the state, decisions and working agreements from ea
   (draft 5, Nov 25)", id 1HNHrKbs3rFy_Jjp5gH0RE_2WizGoCPGllzbgCMl_PdU (draft 4 renamed OLD). Tori asked whether her videos
   play: not until she sends the two MP4s (Proton link); then put them in clips/ms02s10.mp4 and clips/ms03s05.mp4, run
   timing.py (stretches those slides to the clips), tools/clip_ends.py, render, assemble, rebuild the preview.
+- Nov 25: Tori sent both clips by Proton link (videos show a "Download / Scan & Download" choice: click Download in it):
+  clips/ms02s10.mp4 = "Management of Fence Reactivity" (34 s, 1280x720), clips/ms03s05.mp4 = "Knox RG: Leaving the feeding
+  area/seeing empty bowl picked up" (50 s, 1280x720); gitignored, so re-download in a new container. Both play in the
+  frame after the slide's lines, with their own sound. Tori asked for her voice: narrated with her ElevenLabs Professional
+  clone "Tori" (voice eE0zFMDzghsOgwS1dEwn, eleven_v4), `tools/tts_elevenlabs.py` (brought over from the other branches
+  with their align.py, assemble.py and web_parts.py fixes; the key is the Default environment's network secret for
+  api.elevenlabs.io), about 15,300 characters; then `align.py --dir build/eleven_narration`, `timing.py --mode narration`,
+  `clip_ends.py`, render, assemble. 22:36 with the clone and the clips.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

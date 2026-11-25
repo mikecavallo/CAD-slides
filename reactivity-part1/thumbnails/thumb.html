@@ -1,0 +1,86 @@
+<!doctype html>
+<!-- One section thumbnail, 1920x1080. build.mjs opens it with the section's data in the URL hash:
+     {course, num, label, title, pic, nat, welcome} -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Section thumbnail</title>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+  :root { --green: #619537; --green-dark: #3f6b22; --green-light: #b8d99a; --ink: #212121; --soft: #4d5a42; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  body { position: relative; font-family: 'Montserrat', sans-serif; color: var(--ink);
+    background: radial-gradient(1200px 900px at 78% 40%, #ffffff 0%, rgba(255,255,255,0) 70%),
+                radial-gradient(900px 700px at 10% 100%, #eef4e6 0%, rgba(238,244,230,0) 70%), #f4f7f0; }
+  /* the slides' soft swirl */
+  .swirl { position: absolute; border-radius: 50%; border: 90px solid rgba(255,255,255,0.55); }
+  .logo { position: absolute; left: 110px; top: 64px; width: 300px; }
+  .col { position: absolute; left: 110px; top: 0; bottom: 0; width: 920px; display: flex; flex-direction: column; justify-content: center; padding-top: 70px; }
+  .kicker { font: 700 30px/1.2 'Montserrat', sans-serif; letter-spacing: 6px; text-transform: uppercase; color: var(--green); }
+  .num { font: 900 280px/0.82 'Rubik', sans-serif; color: var(--green-light); margin-top: 34px; letter-spacing: -6px; }
+  .bar { width: 150px; height: 13px; border-radius: 7px; background: var(--green); margin-top: 34px; }
+  .label { margin-top: 24px; font: 700 42px/1 'Montserrat', sans-serif; letter-spacing: 14px; text-transform: uppercase; color: var(--green); }
+  .title { margin-top: 26px; font: 800 124px/1.02 'Rubik', sans-serif; color: var(--ink); letter-spacing: -1px; }
+  .by { margin-top: 30px; font: 600 40px/1.25 'Montserrat', sans-serif; color: var(--soft); }
+  .by b { color: var(--green-dark); }
+  .foot { position: absolute; left: 76px; right: 76px; bottom: 50px; display: flex; align-items: center; gap: 28px; font: 500 26px/1 'Montserrat', sans-serif; color: #3a3a3a; }
+  .foot i { flex: 1; height: 2px; background: var(--green); }
+
+  .frame { position: absolute; }
+  .back { position: absolute; border-radius: 34px; background: var(--green-light); transform: rotate(-4deg); }
+  .photo { position: absolute; border: 18px solid #fff; border-radius: 30px; background: #fff; box-shadow: 0 34px 80px rgba(40,60,20,0.25); transform: rotate(2.5deg); overflow: hidden; }
+  .photo img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 14px; }
+  .ring { position: absolute; border-radius: 50%; border: 12px solid var(--green); background: #fff; overflow: hidden; box-shadow: 0 30px 70px rgba(40,60,20,0.2); }
+  .ring img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+</style>
+</head>
+<body>
+  <div class="swirl" style="left: 980px; top: -380px; width: 1500px; height: 1500px;"></div>
+  <img class="logo" src="../assets/img/logo.png" alt="">
+  <div class="col" id="col"></div>
+  <div class="foot"><span>www.callingalldogsny.com</span><i></i></div>
+<script>
+  const d = JSON.parse(decodeURIComponent(location.hash.slice(1)));
+  const col = document.getElementById('col');
+  const add = (cls, html) => { const e = document.createElement('div'); e.className = cls; e.innerHTML = html; col.appendChild(e); return e; };
+  add('kicker', d.course);
+  if (d.welcome) {
+    add('bar', ''); add('label', d.label);
+    add('title', d.title);
+    add('by', 'with <b>Tori Ganino</b><br>BS, CDBC, CPDT-KA');
+  } else {
+    add('num', String(d.num).padStart(2, '0'));
+    add('bar', ''); add('label', d.label);
+    add('title', d.title);
+  }
+  const el = (tag, cls, css) => { const e = document.createElement(tag); e.className = cls; Object.assign(e.style, css); document.body.appendChild(e); return e; };
+  // the right side: the section's picture, whole (never cropped), framed and tilted, on a green card
+  const AREA = { x: 1060, y: 120, w: 760, h: 820 };
+  if (d.welcome) {
+    const R = 640, rx = AREA.x + AREA.w - R + 10, ry = AREA.y + 10;
+    el('div', 'ring', { left: rx + 'px', top: ry + 'px', width: R + 'px', height: R + 'px' }).innerHTML = '<img src="../assets/img/trainer_headshot.jpg">';
+    const pw = 440, ph = Math.round(pw * 1050 / 1400);
+    const p = el('div', 'photo', { left: (AREA.x - 20) + 'px', top: (AREA.y + AREA.h - ph + 40) + 'px', width: pw + 'px', height: ph + 'px', transform: 'rotate(-3deg)' });
+    p.innerHTML = '<img src="../assets/img/trainer_with_dog.jpg">';
+  } else {
+    const [nw, nh] = d.nat, B = 18;
+    const k = Math.min((AREA.w - 2 * B) / nw, (AREA.h - 2 * B) / nh);
+    const w = Math.round(nw * k) + 2 * B, h = Math.round(nh * k) + 2 * B;
+    const x = AREA.x + (AREA.w - w) / 2, y = AREA.y + (AREA.h - h) / 2;
+    el('div', 'back', { left: (x - 26) + 'px', top: (y + 30) + 'px', width: w + 'px', height: h + 'px' });
+    el('div', 'photo', { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' }).innerHTML = `<img src="../assets/img/${d.pic}">`;
+  }
+  // titles break after a colon ("At Home:" / "Sights & Sounds"); measured once the fonts are in, a title shrinks
+  // until it fits in two lines (each part on its own line when it has a colon)
+  const t = col.querySelector('.title');
+  const colon = d.title.includes(': ');
+  t.innerHTML = d.title.replace(': ', ':<br>');
+  document.fonts.ready.then(() => {
+    let fs = 124;
+    while (t.offsetHeight > fs * 1.02 * 2 + 4 && fs > 70) { fs -= 2; t.style.fontSize = fs + 'px'; }
+    document.body.dataset.ready = '1';
+  });
+</script>
+</body>
+</html>

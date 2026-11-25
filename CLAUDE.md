@@ -446,6 +446,14 @@ pipeline). This file records the state, decisions and working agreements from ea
   `out/Weekly-Tally-Sheet.pdf` and `.png`. Tori: the notes area is a green outlined box (no ruled lines).
   Draft 8 delivered: reel of ms04recap + the Part 5 card (`out/...-draft8-changes-round6.mp4`) and the PDF in chat;
   preview republished (22:46, flag "Draft 8").
+- Section videos (Nov 25, Tori asked for a video per section plus a thumbnail for each): `tools/section_videos.py --video
+  out/NAME.mp4 --prefix Management-Solutions-and-Setups` cuts the master at each section's first segment (the Part card
+  and its chime open every section after the welcome; frame-accurate, CRF 18, audio eased out at the end) and shifts the
+  .srt per section -> `out/sections/<prefix>-NN-<Title>.mp4/.srt`. `node thumbnails/build.mjs management2` makes the
+  1920x1080 JPG thumbnails in the same folder (`thumbnails/thumb.html`: course kicker, big number, "Part N" as on the
+  video's card, the title, one of Tori's pictures whole on a tilted frame; the welcome shows the headshot ring and the
+  training photo). Pictures per section are in build.mjs (s09 space vest, s15 shepherd, s26 puzzle, s33 two heelers,
+  s40 dog and cat tree, s44 golden in the car crate, s39 sleeping dog behind the gate).
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

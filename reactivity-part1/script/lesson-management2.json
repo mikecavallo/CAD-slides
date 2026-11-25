@@ -786,7 +786,7 @@
     {
      "id": "ms03s05",
      "heading": "See it in action",
-     "visual_concept": "Video slide: Knox, leaving the feeding area and seeing the empty bowl picked up.",
+     "visual_concept": "Video slide: Knox with someone entering while he eats and the bowl picked up while he's next to it; the owner's leash is his safety setup (he is also working on reactivity to people).",
      "assets": [
       "ms_clip_knox.jpg"
      ],
@@ -805,9 +805,14 @@
      },
      "beats": [
       {
-       "say": "Here’s a client session with Knox, practicing two moments that can set off guarding: someone entering the area while he’s eating, and seeing the empty bowl picked up.",
+       "say": "Here’s a client session with Knox, practicing two moments that can set off guarding: someone entering the area while he’s eating, and seeing the bowl picked up while he’s next to it.",
        "show": "Rows; the video frame.",
        "onscreen": "See it in action"
+      },
+      {
+       "say": "You’ll see the owner is using a leash. That’s because we’re also working on Knox’s reactivity to people, including me, and the leash is part of his safety setup for that situation.",
+       "show": "Row: the leash is his safety setup.",
+       "onscreen": "Leash: his safety setup"
       }
      ]
     },

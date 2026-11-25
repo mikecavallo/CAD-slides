@@ -428,6 +428,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   slides (8:54 fence, 12:17 Knox) as a reel; preview republished in six web parts (chips "22:34 min", "7 parts",
   "51 slides", "Tori's voice", flag "Draft 6"). One Artifact publish sends at most 64 MB: publish the page with parts 1 to 4,
   then parts 5 and 6 in a second publish to the same url.
+- Round 5 (Nov 25, draft 7): ms03s05 Knox = "someone entering the area while he's eating, and seeing the bowl picked up
+  while he's next to it" (not "empty bowl"); new beat: "You'll see the owner is using a leash. That's because we're also
+  working on Knox's reactivity to people, including me, and the leash is part of his safety setup for that situation."
+  (row "The owner's leash: his safety setup around people"). Re-voiced with the clone (`--only ms03s05`). Tori asked for
+  the entire presentation this time: send the full video (CRF 26) plus the preview. Narration doc: "Narration Script
+  (draft 6, Nov 25)", id 1cCJzVmFTXR_1v9U8_xF487GCOku3VhDyk-lTAhvI04g (draft 5 renamed OLD).
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

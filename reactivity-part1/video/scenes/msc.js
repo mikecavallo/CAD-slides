@@ -55,7 +55,8 @@
     TM.videoSlide(ctx, { kicker: 'See it in action', heading: 'See it in action', rows: [
       { icon: 'video', html: 'Client session with *Knox*', beat: 0, phrase: 'knox' },
       { icon: 'door-open', html: 'Someone *entering* while he eats', beat: 0, phrase: 'someone entering' },
-      { icon: 'utensils', html: 'Seeing the *empty bowl* picked up', beat: 0, phrase: 'empty bowl' },
+      { icon: 'utensils', html: 'The *bowl picked up* while he’s next to it', beat: 0, phrase: 'bowl picked up' },
+      { icon: 'link', html: 'The owner’s *leash*: his safety setup around people', beat: 1, phrase: 'using a leash' },
     ] });
   });
 

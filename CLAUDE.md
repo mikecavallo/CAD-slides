@@ -453,6 +453,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   screen grab, as in Management part 1 (NOT designed cards; a designed set was rejected and removed): each section's
   opening slide (Part card, or the title slide for the welcome) at 2.4 s from build/segments, 1280x720 JPEG q94, written
   by the same tool as `<prefix>-NN-<Title>.jpg` (`--cards-only` for just those).
+  GoHighLevel text (Nov 25, Part 1's format: module title and one-sentence description, then per lesson the title, video,
+  card and a one-sentence description; Lesson 1 is "What You'll Learn"; Lesson 8 lists Weekly-Tally-Sheet.pdf as a
+  download): `out/sections/GoHighLevel-Management-Solutions-and-Setups-text.md` (gitignored; sent in chat).
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

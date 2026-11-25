@@ -7,12 +7,19 @@ ends where the next section's card starts; the last one runs to the end (logo cl
 is re-encoded at the master's quality, CRF 18), the audio eases out over its last 0.3 s, and the master's .srt is
 shifted into one .srt per section. Writes out/sections/<prefix>-NN-<Title>.mp4 and .srt. Uses build/timing.json, so
 run it right after the build of the same lesson.
+
+Thumbnails (lesson cards): Tori wants each to look exactly like the video, not a designed card, so each section's
+thumbnail is the frame of its opening slide (the Part card, or the title slide for the welcome) at 2.4 s, taken from the
+rendered segment in build/segments, 1280x720 JPEG quality 94: <prefix>-NN-<Title>.jpg. --cards-only skips the videos.
 """
 import argparse
+import io
 import json
 import re
 import subprocess
 from pathlib import Path
+
+from PIL import Image
 
 from common import BUILD, ROOT
 
@@ -42,6 +49,8 @@ def main():
     ap.add_argument("--prefix", required=True, help="file name prefix, e.g. the course title with dashes")
     ap.add_argument("--out", default=str(ROOT / "out" / "sections"))
     ap.add_argument("--only", help="comma-separated section numbers")
+    ap.add_argument("--cards-only", action="store_true", help="only the thumbnails")
+    ap.add_argument("--card-at", type=float, default=2.4, help="seconds into the opening slide (default 2.4)")
     args = ap.parse_args()
 
     timing = json.loads((BUILD / "timing.json").read_text())
@@ -49,7 +58,7 @@ def main():
     sections = []
     for s in segs:
         if not sections or sections[-1]["chapter"] != s["chapter"]:
-            sections.append({"chapter": s["chapter"], "num": s["chapterNum"], "title": s["chapterTitle"], "start": s["start"]})
+            sections.append({"chapter": s["chapter"], "num": s["chapterNum"], "title": s["chapterTitle"], "start": s["start"], "first": s["id"]})
     for i, c in enumerate(sections):
         c["end"] = sections[i + 1]["start"] if i + 1 < len(sections) else total
 
@@ -65,6 +74,14 @@ def main():
         slug = re.sub(r"[^A-Za-z0-9]+", "-", c["title"].replace("&", "and")).strip("-")
         dest = out / f"{args.prefix}-{c['num']:02d}-{slug}.mp4"
         dur = c["end"] - c["start"]
+        card = dest.with_suffix(".jpg")
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{args.card_at:.2f}", "-i", str(BUILD / "segments" / f"{c['first']}.mp4"),
+                              "-frames:v", "1", "-vf", "scale=1280:720:flags=lanczos", "-f", "image2pipe", "-vcodec", "png", "-"],
+                             capture_output=True, check=True).stdout
+        Image.open(io.BytesIO(raw)).convert("RGB").save(card, quality=94)
+        if args.cards_only:
+            print(f"{card.name}", flush=True)
+            continue
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{c['start']:.3f}", "-i", str(video), "-t", f"{dur:.3f}",
                         "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-tune", "animation", "-pix_fmt", "yuv420p", "-r", "30",
                         "-af", f"afade=t=out:st={max(0, dur - 0.3):.3f}:d=0.3", "-c:a", "aac", "-b:a", "192k",

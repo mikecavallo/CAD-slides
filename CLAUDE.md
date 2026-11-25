@@ -449,11 +449,10 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Section videos (Nov 25, Tori asked for a video per section plus a thumbnail for each): `tools/section_videos.py --video
   out/NAME.mp4 --prefix Management-Solutions-and-Setups` cuts the master at each section's first segment (the Part card
   and its chime open every section after the welcome; frame-accurate, CRF 18, audio eased out at the end) and shifts the
-  .srt per section -> `out/sections/<prefix>-NN-<Title>.mp4/.srt`. `node thumbnails/build.mjs management2` makes the
-  1920x1080 JPG thumbnails in the same folder (`thumbnails/thumb.html`: course kicker, big number, "Part N" as on the
-  video's card, the title, one of Tori's pictures whole on a tilted frame; the welcome shows the headshot ring and the
-  training photo). Pictures per section are in build.mjs (s09 space vest, s15 shepherd, s26 puzzle, s33 two heelers,
-  s40 dog and cat tree, s44 golden in the car crate, s39 sleeping dog behind the gate).
+  .srt per section -> `out/sections/<prefix>-NN-<Title>.mp4/.srt`. Thumbnails: Tori wants them to look just like the
+  screen grab, as in Management part 1 (NOT designed cards; a designed set was rejected and removed): each section's
+  opening slide (Part card, or the title slide for the welcome) at 2.4 s from build/segments, 1280x720 JPEG q94, written
+  by the same tool as `<prefix>-NN-<Title>.jpg` (`--cards-only` for just those).
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

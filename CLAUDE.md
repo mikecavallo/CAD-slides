@@ -411,6 +411,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   script; preview republished (chips "19:26 min", "7 parts", "51 slides", flag "Draft 4"). Second web_parts.py fix: the
   stream-copy cut is made 4 ms after each part's start (a start written to 3 decimals could round to just before its
   keyframe and the cut jumped back seconds); part durations now match the plan.
+- Round 4 (Nov 25, draft 5): ms04recap says "help keep multiple dogs under one roof relaxed" (narration and banner; never
+  "two dogs"). Sent only that slide's reel; preview republished (19:27, flag "Draft 5"). Narration doc: "Narration Script
+  (draft 5, Nov 25)", id 1HNHrKbs3rFy_Jjp5gH0RE_2WizGoCPGllzbgCMl_PdU (draft 4 renamed OLD). Tori asked whether her videos
+  play: not until she sends the two MP4s (Proton link); then put them in clips/ms02s10.mp4 and clips/ms03s05.mp4, run
+  timing.py (stretches those slides to the clips), tools/clip_ends.py, render, assemble, rebuild the preview.
 - Recordings: `Ms00intro.m4a`, `Ms00plan.m4a`, `Ms00s01.m4a`, `Ms01s01.m4a` ... `Ms01recap.m4a` ... named by scene id.
 
 ## Recordings (Tori's voice)

@@ -28,14 +28,18 @@
     const { stage, tl, cue } = ctx;
     css(stage);
     TM.head(ctx, 'Key reminders', 'Be proactive, not reactive');
-    const W = (1720 - 2 * 40) / 3;
+    const W = (1720 - 2 * 40) / 3, cards = [];
     [['shield-check', 'It’s not avoidance', 'These strategies build the *stable environment* your dog needs to learn new, better responses.'],
       ['calendar-check', 'Plan ahead', 'Anticipate situations and set your dog up for success *before the trigger ever appears*.'],
-      ['circle-check', 'Prevent the rehearsal', 'Your dog should *never meet the trigger* in an uncontrolled way.']].forEach(([ic, t, b], i) => {
-      const c = put(stage, K.el('div', 'mse-card'), 100 + i * (W + 40), 340, { width: W + 'px', height: '500px' });
+      ['circle-check', 'Prevent the rehearsal', 'In these early phases, your dog should *never meet the trigger* uncontrolled. Training prepares them for later.']].forEach(([ic, t, b], i) => {
+      const c = put(stage, K.el('div', 'mse-card'), 100 + i * (W + 40), 340, { width: W + 'px' });
       c.innerHTML = `<div class="ic">${K.icon(ic).outerHTML}</div><div class="t">${t}</div><div class="b">${K.md(b)}</div>`;
       tl.fromTo(c, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(i + 1) + 0.05);
+      cards.push(c);
     });
+    // the three cards share the tallest one's height
+    const H = Math.max(500, ...cards.map(c => c.offsetHeight));
+    cards.forEach(c => { c.style.height = H + 'px'; });
   });
 
   // ---------------------------------------------------------------- your management toolkit
@@ -52,9 +56,9 @@
       ['fence', 'Baby gates & barriers', 'Block rooms and doorways in seconds.', 2, 'baby gates'],
       ['lock', 'Crate or pen', 'A safe den for rest and visitors.', 2, 'crate or pen'],
       ['app-window', 'Window film or covers', 'No moving sights outside.', 2, 'window film'],
-      ['volume-2', 'White noise machine', 'Masks the sounds outside.', 2, 'white noise'],
+      ['volume-2', 'Noise machine', 'Masks the sounds outside.', 2, 'noise machine'],
       ['cookie', 'Treat pouch & treats', 'Pay calm the instant it counts.', 3, 'treat pouch'],
-      ['shield', 'Basket muzzle', 'A comfortable safety layer.', 3, 'basket muzzle'],
+      ['shield', 'Basket muzzle', 'Condition it first. Never just put it on.', 3, 'basket muzzle'],
     ];
     const W = (1720 - 2 * 28) / 3, H = 170, Y = 270 + ld.offsetHeight + 40;
     T.forEach(([ic, t, b, beat, p], i) => {

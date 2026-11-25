@@ -51,7 +51,9 @@ def main():
 
     # 1) web encode with a keyframe at every segment start
     web = out / "_web.mp4"
-    kf = ",".join(f"{t:.3f}" for t in starts)
+    # a hair before each start: a keyframe forced at a rounded time can land one frame late, and a stream-copy cut
+    # at that start then begins at the keyframe before it (seconds of the previous slide replayed at the part's start)
+    kf = ",".join(f"{max(0.0, t - 0.005):.3f}" for t in starts)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", args.video, "-c:v", "libx264", "-preset", "slow", "-crf", str(args.crf),
                     "-tune", "animation", "-maxrate", "1400k", "-bufsize", "2800k", "-pix_fmt", "yuv420p", "-force_key_frames", kf,
                     "-c:a", "aac", "-b:a", "96k", "-ac", "1", "-movflags", "+faststart", str(web)], check=True)

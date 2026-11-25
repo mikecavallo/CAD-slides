@@ -178,7 +178,7 @@
   const TIPS = [
     { title: 'Choose strategic routes', src: 'ms_s05.jpg', nat: [1400, 1050],
       lead: 'Pick routes with *fewer dogs*. Scout low-traffic streets where you can *easily cross*.',
-      chips: [['Barriers to step behind', 'green', 'fence', false, 'barriers your dog']],
+      chips: [['Big open fields: parks, schools', 'green', 'trees', false, 'big open fields'], ['Barriers to step behind', 'green', 'fence', false, 'barriers your dog']],
       why: 'Plan the route, and *most encounters never happen* in the first place.',
       mark: { rings: [[0.47, 0.56, 54]], tag: ['Quiet, open space', 0.04, 0.05], phrase: 'fewer dogs' } },
     { title: 'Skip tight, no-exit spaces', src: 'ms_s06.jpg', nat: [1026, 1400],
@@ -188,7 +188,7 @@
       mark: { dots: [[[[0.27, 0.99], [0.40, 0.66], [0.47, 0.44]]], [[[0.82, 0.99], [0.62, 0.66], [0.55, 0.44]]]], rings: [[0.5, 0.49, 30, 'var(--amber)']],
         tag: ['No room to pass', 0.04, 0.05, 'red'], phrase: 'no room to pass' } },
     { title: 'Increase distance fast', src: 'ms_s07.jpg', nat: [933, 1400],
-      lead: 'See a dog approaching? *Make space right away.*',
+      lead: 'See a trigger approaching? *Make space right away.*',
       chips: [['Cross the street', 'green', 'move-horizontal', false, 'cross the street'], ['Turn around', 'green', 'undo-2', false, 'turn around'],
         ['Step behind a parked car', 'green', 'car', false, 'parked car']],
       why: 'Distance *lowers the intensity* of the trigger. The farther away, the calmer your dog.',
@@ -196,12 +196,12 @@
     { title: 'Use visual barriers', src: 'ms_s08.jpg', nat: [1120, 1400],
       lead: 'Can’t get distance? *Block the line of sight.*',
       chips: [['Step in between', 'green', 'user', false, 'between your dog'], ['A car', 'green', 'car', false, 'a car'], ['A fence', 'green', 'fence', false, 'a fence'], ['A bush', 'green', 'trees', false, 'a bush']],
-      why: 'If your dog can’t see the other dog, *there’s nothing to react to*.',
+      why: 'If your dog can’t see the trigger, *there’s nothing to react to*.',
       mark: { rings: [[0.55, 0.14, 80]], tag: ['Out of sight', 0.04, 0.95], phrase: 'a car' } },
     { title: 'Control greetings', src: 'ms_s09.jpg', nat: [1050, 1400],
       lead: 'Don’t let strangers pet your dog, *even when they ask*.',
       chips: [['Politely decline', 'green', 'hand', false, 'politely decline'], ['Keep moving', 'green', 'paw-print', false, 'keep moving']],
-      why: 'Every declined greeting is *a reaction that never gets practiced*.',
+      why: 'No reaction practiced, and *no feeling helpless* in a forced greeting, even if your dog isn’t barking.',
       mark: { rings: [[0.31, 0.63, 80]], tag: ['No petting, thanks', 0.04, 0.05], phrase: 'politely decline' } },
     { title: 'Walk at quieter times of day', src: 'ms_s10.jpg', nat: [1400, 1067],
       lead: 'Fewer dogs, people, and delivery trucks *out and about*.',
@@ -224,5 +224,6 @@
   registerScene('ms01recap', ctx => MS.recap(ctx, { title: 'going for walks',
     items: ['Choose strategic routes', 'Skip tight, no-exit spaces', 'Increase distance fast', 'Use visual barriers', 'Control greetings',
       'Walk at quieter times of day', 'Avoid high-risk areas', 'Drive to a calmer spot'],
-    summary: '*Plan the route, the timing, and the distance*, so most encounters never happen. When one does, *make space fast*.' }));
+    phrases: ['choose strategic', 'skip tight', 'increase distance', 'use visual', 'control greetings', 'walk at', 'avoid high', 'drive to'],
+    summary: '*Plan the route, the timing, and the distance*. When a trigger does appear, *make space, use your training, or both*.' }));
 })();

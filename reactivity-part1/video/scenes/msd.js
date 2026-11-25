@@ -32,13 +32,15 @@
   CAT.forEach((o, i) => registerScene(`ms05s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: 'Dog & cat conflict', icon: 'cat', n: i + 1, ...o })));
   registerScene('ms05recap', ctx => MS.recap(ctx, { title: 'dog & cat conflict',
     items: ['Give the cat dog-free zones', 'Put cat resources out of reach', 'Leash & supervise together time', 'Separate when you’re away'],
+    phrases: ['give the', 'put the', 'leash and', 'separate when'],
     summary: '*Separate the species* and give the cat its own dog-free space, so the chase never starts.' }));
 
 
   const RIDE = [
     { title: 'Block the view', src: 'ms_s43.jpg', nat: [933, 1400],
       lead: 'So your dog *simply can’t see out the windows*:',
-      chips: [['Window shades', 'green', 'blinds', false, 'window shades'], ['A crate cover', 'green', 'panel-top', false, 'crate cover'], ['Crate placement', 'green', 'car', false, 'position the crate']],
+      chips: [['Window shades', 'green', 'blinds', false, 'window shades'], ['A crate cover', 'green', 'panel-top', false, 'crate cover'], ['Crate placement', 'green', 'car', false, 'position the crate'],
+        ['Calming cap: a softer view', 'green', 'eye', false, 'calming cap', 2]], whyBeat: 3,
       why: 'Removing the visual trigger is *the single most effective change* in the car.',
       mark: { rings: [[0.5, 0.52, 110, 'var(--amber)']], tag: ['Block this view', 0.04, 0.05, 'amber'], phrase: 'see out' } },
     { title: 'Secure your dog properly', src: 'ms_s44.jpg', nat: [1050, 1400],
@@ -64,5 +66,6 @@
   RIDE.forEach((o, i) => registerScene(`ms06s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: 'Going for rides', icon: 'car', n: i + 1, ...o })));
   registerScene('ms06recap', ctx => MS.recap(ctx, { title: 'going for rides',
     items: ['Block the view', 'Secure your dog properly', 'Choose calm routes', 'Avoid trips & park smart', 'Keep trips short'],
-    summary: '*Cover the windows, secure your dog, and choose calm routes*: the car stops being a trigger on wheels.' }));
+    phrases: ['block the', 'secure your', 'choose calm', 'avoid extra', 'keep trips'],
+    summary: '*Cover the windows, secure your dog, and choose calm routes*, so the car doesn’t become a triggering environment on wheels.' }));
 })();

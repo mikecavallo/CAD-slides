@@ -120,7 +120,7 @@
        "onscreen": "Choose strategic routes"
       },
       {
-       "say": "Pick routes with fewer dogs, and scout low-traffic streets where you can easily cross to the other side. And look for places with barriers your dog can step behind for a moment if something does appear, like a parked car or a fence.",
+       "say": "Pick routes with fewer dogs, and scout low-traffic streets where you can easily cross to the other side. Parks or schools with big, open fields are good options too: you can get plenty of distance if a trigger appears, and it’s less likely the trigger will be extremely close when it does. And look for places with barriers your dog can step behind for a moment if something does appear, like a parked car or a fence.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -170,7 +170,7 @@
        "onscreen": "Increase distance fast"
       },
       {
-       "say": "See a dog approaching? Make space right away. Cross the street, turn around, or step behind a parked car.",
+       "say": "See a trigger approaching? Make space right away. Cross the street, turn around, or step behind a parked car.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -200,7 +200,7 @@
        "onscreen": ""
       },
       {
-       "say": "If your dog can’t see the other dog, there’s nothing to react to.",
+       "say": "If your dog can’t see the trigger, there’s nothing to react to.",
        "show": "Why it works card.",
        "onscreen": "Why it works"
       }
@@ -225,7 +225,7 @@
        "onscreen": ""
       },
       {
-       "say": "Every declined greeting is a reaction that never gets practiced.",
+       "say": "Every declined greeting is a moment your dog doesn’t practice a reaction, or feel helpless being forced into an interaction, even if they aren’t barking.",
        "show": "Why it works card.",
        "onscreen": "Why it works"
       }
@@ -318,12 +318,12 @@
        "onscreen": "Recap"
       },
       {
-       "say": "First, choose strategic routes. Second, skip tight, no-exit spaces. Third, increase distance fast. Fourth, use visual barriers. Fifth, control greetings. Sixth, walk at quieter times of day. Seventh, avoid high-risk areas. And eighth, drive to a calmer spot.",
+       "say": "Choose strategic routes. Skip tight, no-exit spaces. Increase distance fast. Use visual barriers. Control greetings. Walk at quieter times of day. Avoid high-risk areas. And drive to a calmer spot.",
        "show": "Each setup lands as it is named.",
        "onscreen": "Choose strategic routes / Skip tight, no-exit spaces / Increase distance fast / Use visual barriers / Control greetings / Walk at quieter times of day / Avoid high-risk areas / Drive to a calmer spot"
       },
       {
-       "say": "Plan the route, the timing, and the distance, so most encounters never happen. And when one does, make space fast.",
+       "say": "Plan the route, the timing, and the distance, so most encounters never happen. And when a trigger does appear, make space, put your training to work, or both.",
        "show": "Summary banner.",
        "onscreen": "Summary"
       }
@@ -471,7 +471,7 @@
        "onscreen": ""
       },
       {
-       "say": "Another option: shades that cover just the bottom half of the window. Sunlight still comes in through the top, and your dog is too short to see out of it.",
+       "say": "Another option: shades that cover just the bottom half of the window. Sunlight still comes in through the top, while the bottom portion, where your dog can see out, stays covered.",
        "show": "Tori's bay window picture replaces the first; tags Sunlight in (top) and View blocked (bottom).",
        "onscreen": "Bottom-half shades"
       },
@@ -496,7 +496,7 @@
        "onscreen": "Manage outdoor time"
       },
       {
-       "say": "Don’t leave a yard barker outside unsupervised. Bring them in when delivery drivers are due, or when the street is busy.",
+       "say": "Don’t leave a yard barker outside unsupervised. Bring them in when delivery drivers are due, when the street is busy, when you know your neighbors usually let their dog out, or when a neighbor might be in the yard.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -521,7 +521,7 @@
        "onscreen": "Mask or eliminate sounds"
       },
       {
-       "say": "Use white noise machines, fans, or calming music to cover triggers. And if the doorbell is still a problem, swap in a quieter chime.",
+       "say": "Use noise machines, fans, or calming music to cover triggers. And if the doorbell is still a problem, swap in a quieter chime.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -546,7 +546,7 @@
        "onscreen": "Create a safe space"
       },
       {
-       "say": "Set up a quiet room or crate in the most soundproof part of your home, for predictable noisy events.",
+       "say": "Set up a quiet room or crate in the most soundproof part of your home, for predictable noisy events. Then condition your dog to love this space, so it becomes a place they choose to go, where they can learn to calm themselves, and never feel stressed just because they’re in it.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -571,7 +571,7 @@
        "onscreen": "Plan around predictable events"
       },
       {
-       "say": "Garbage truck every Tuesday at ten? Give your dog a frozen Kong in their safe space first.",
+       "say": "Garbage truck every Tuesday at ten? Give your dog a frozen Kong in their safe space first, and run a sound machine, so they can’t really hear the truck, or at least it’s muffled.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
       },
@@ -607,6 +607,11 @@
        "say": "Here’s what that looks like in a real client session: managing fence reactivity in the yard.",
        "show": "Rows; the video frame.",
        "onscreen": "See it in action"
+      },
+      {
+       "say": "Notice there are two leashes. One is set up so the dog can’t get close to the fence. But the owners also needed the dog to reach the door, to clip on and unclip going in and out. A second leash solves that: the dog is transferred from one leash to the other.",
+       "show": "Rows: two leashes, one keeps the dog off the fence, the other reaches the door.",
+       "onscreen": "Two leashes"
       }
      ]
     },
@@ -633,15 +638,15 @@
        "onscreen": "Tags"
       },
       {
-       "say": "None of it is fancy. It just works, every single day.",
+       "say": "It doesn’t have to cost a lot of money to make it work in your home.",
        "show": "A green banner.",
-       "onscreen": "Simple, every day"
+       "onscreen": "It doesn’t have to cost a lot"
       }
      ]
     },
     {
      "id": "ms02recap",
-     "heading": "Recap: at home: sights & sounds",
+     "heading": "Recap: sights & sounds at home",
      "visual_concept": "Recap at the end of the part: the numbered setups land as they are named, then the deck's summary line as a banner.",
      "assets": [],
      "beats": [
@@ -651,12 +656,12 @@
        "onscreen": "Recap"
       },
       {
-       "say": "First, turn off the doorbell. Second, have guests wait before entering. Third, create physical barriers. Fourth, move deliveries away from the house. Fifth, block visual access to windows. Sixth, manage outdoor time. Seventh, mask or eliminate sounds. Eighth, create a safe space. And ninth, plan around predictable events.",
+       "say": "Turn off the doorbell. Have guests wait before entering. Create physical barriers. Move deliveries away from the house. Block visual access to windows. Manage outdoor time. Mask or eliminate sounds. Create a safe space. And plan around predictable events.",
        "show": "Each setup lands as it is named.",
        "onscreen": "Turn off the doorbell / Have guests wait before entering / Create physical barriers / Move deliveries away from the house / Block visual access to windows / Manage outdoor time / Mask or eliminate sounds / Create a safe space / Plan around predictable events"
       },
       {
-       "say": "Manage the windows, the yard, the doorbell, and deliveries, so the sights and sounds outside stop setting your dog off indoors.",
+       "say": "Manage the windows, the yard, the doorbell, and deliveries, so your dog’s foundation doesn’t crack, and they don’t practice unwanted behaviors.",
        "show": "Summary banner.",
        "onscreen": "Summary"
       }
@@ -675,8 +680,7 @@
     27,
     28,
     29,
-    30,
-    31
+    30
    ],
    "scenes": [
     {
@@ -801,7 +805,7 @@
      },
      "beats": [
       {
-       "say": "Here’s a client session with Knox, practicing two moments that can set off guarding: leaving the feeding area, and seeing the empty bowl picked up.",
+       "say": "Here’s a client session with Knox, practicing two moments that can set off guarding: someone entering the area while he’s eating, and seeing the empty bowl picked up.",
        "show": "Rows; the video frame.",
        "onscreen": "See it in action"
       }
@@ -819,7 +823,7 @@
        "onscreen": "Recap"
       },
       {
-       "say": "First, remove access to guarded items. Second, feed in a safe, isolated space. Third, prevent stealing opportunities. And fourth, manage space around the dog.",
+       "say": "Remove access to guarded items. Feed in a safe, isolated space. Prevent stealing opportunities. And manage space around the dog.",
        "show": "Each setup lands as it is named.",
        "onscreen": "Remove access to guarded items / Feed in a safe, isolated space / Prevent stealing opportunities / Manage space around the dog"
       },
@@ -827,29 +831,6 @@
        "say": "Manage access to food, toys, and space, so there’s nothing for your dog to guard in the first place.",
        "show": "Summary banner.",
        "onscreen": "Summary"
-      }
-     ]
-    },
-    {
-     "id": "ms03s06",
-     "heading": "When surprises keep happening",
-     "visual_concept": "The deck's statement; a few calm days with one surprise, then many surprises: adjust the plan.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "An occasional surprise is normal.",
-       "show": "Statement; a week with one amber surprise.",
-       "onscreen": "An occasional surprise is normal"
-      },
-      {
-       "say": "But if unexpected triggers happen often, or they keep catching you off guard, that’s a sign your management plan needs a small adjustment.",
-       "show": "More surprises; the adjust line.",
-       "onscreen": "Your plan needs a small adjustment"
-      },
-      {
-       "say": "Let me know, and we’ll adjust it together.",
-       "show": "Green banner.",
-       "onscreen": "We’ll adjust it together"
       }
      ]
     }
@@ -962,7 +943,7 @@
        "onscreen": ""
       },
       {
-       "say": "Staggering excitement and access defuses the moments when conflict flares.",
+       "say": "Staggering excitement and access keeps tension from building in the first place.",
        "show": "Why it works card.",
        "onscreen": "Why it works"
       }
@@ -980,12 +961,12 @@
        "onscreen": "Recap"
       },
       {
-       "say": "First, separate during high-risk times. Second, control space and supervise. Third, remove competition. And fourth, manage arrivals and rotate access.",
+       "say": "Separate during high-risk times. Control space and supervise. Remove competition. And manage arrivals and rotate access.",
        "show": "Each setup lands as it is named.",
        "onscreen": "Separate during high-risk times / Control space & supervise / Remove competition / Manage arrivals & rotate access"
       },
       {
-       "say": "Calm routines and separate resources keep two dogs under one roof relaxed around each other.",
+       "say": "Calm routines and separate resources help keep two dogs under one roof relaxed around each other.",
        "show": "Summary banner.",
        "onscreen": "Summary"
       }
@@ -1118,7 +1099,7 @@
        "onscreen": "Recap"
       },
       {
-       "say": "First, give the cat dog-free zones. Second, put the cat’s resources out of reach. Third, leash and supervise together time. And fourth, separate when you’re away.",
+       "say": "Give the cat dog-free zones. Put the cat’s resources out of reach. Leash and supervise together time. And separate when you’re away.",
        "show": "Each setup lands as it is named.",
        "onscreen": "Give the cat dog-free zones / Put cat resources out of reach / Leash & supervise together time / Separate when you’re away"
       },
@@ -1148,7 +1129,7 @@
     {
      "id": "ms06s01",
      "heading": "Block the view",
-     "visual_concept": "Three chips; ring on the dog at the window.",
+     "visual_concept": "Three chips; ring on the dog at the window. Calming cap (ThunderCap): see-through panel softens the view.",
      "assets": [
       "ms_s43.jpg"
      ],
@@ -1162,6 +1143,11 @@
        "say": "Use window shades or a crate cover, or position the crate so your dog simply can’t see out the windows.",
        "show": "Lead text and chips; a mark on the picture.",
        "onscreen": ""
+      },
+      {
+       "say": "You can also try a calming cap, like the ThunderCap. It’s a stretchy hood with a see-through panel over the eyes. Your dog can still see, just less clearly, so passing dogs and people are less intense. Introduce it slowly, with treats, before you use it in the car.",
+       "show": "Calming cap chip and note.",
+       "onscreen": "Calming cap"
       },
       {
        "say": "Removing the visual trigger entirely is the single most effective change in the car.",
@@ -1282,12 +1268,12 @@
        "onscreen": "Recap"
       },
       {
-       "say": "First, block the view. Second, secure your dog properly. Third, choose calm routes. Fourth, avoid extra trips and park smart. And fifth, keep trips short.",
+       "say": "Block the view. Secure your dog properly. Choose calm routes. Avoid extra trips and park smart. And keep trips short.",
        "show": "Each setup lands as it is named.",
        "onscreen": "Block the view / Secure your dog properly / Choose calm routes / Avoid trips & park smart / Keep trips short"
       },
       {
-       "say": "Cover the windows, secure your dog, and choose calm routes, so the car stops being a trigger on wheels.",
+       "say": "Cover the windows, secure your dog, and choose calm routes, so the car doesn’t become a triggering environment on wheels.",
        "show": "Summary banner.",
        "onscreen": "Summary"
       }
@@ -1307,6 +1293,29 @@
     51
    ],
    "scenes": [
+    {
+     "id": "ms07s00",
+     "heading": "When surprises keep happening",
+     "visual_concept": "The deck's statement; a few calm days with one surprise, then many surprises: adjust the plan.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "As you put these setups in place, an occasional surprise is normal.",
+       "show": "Statement; a week with one amber surprise.",
+       "onscreen": "An occasional surprise is normal"
+      },
+      {
+       "say": "But if unexpected triggers happen often, or they keep catching you off guard, that’s a sign your management plan needs a small adjustment.",
+       "show": "More surprises; the adjust line.",
+       "onscreen": "Your plan needs a small adjustment"
+      },
+      {
+       "say": "Let me know, and we’ll adjust it together.",
+       "show": "Green banner.",
+       "onscreen": "We’ll adjust it together"
+      }
+     ]
+    },
     {
      "id": "ms07s01",
      "heading": "Be proactive, not reactive",
@@ -1329,7 +1338,7 @@
        "onscreen": "Plan ahead"
       },
       {
-       "say": "And prevent the rehearsal. The goal is for your dog to never meet the trigger in an uncontrolled way.",
+       "say": "And prevent the rehearsal. In these early phases of training, your dog should never meet the trigger in an uncontrolled way, so we can prepare them for the future through training.",
        "show": "Card 3.",
        "onscreen": "Prevent the rehearsal"
       }
@@ -1352,12 +1361,12 @@
        "onscreen": "Harness / Fixed-length leash / Long line"
       },
       {
-       "say": "At home: baby gates and barriers, a crate or pen, window film or covers, and a white noise machine.",
+       "say": "At home: baby gates and barriers, a crate or pen, window film or covers, and a noise machine.",
        "show": "Home cards land as named.",
        "onscreen": "Gates / Crate / Window film / White noise"
       },
       {
-       "say": "And always: a treat pouch with high-value rewards, to pay calm the instant it counts, and a basket muzzle, a comfortable safety layer for close or unavoidable encounters.",
+       "say": "And always: a treat pouch with high-value rewards, to pay calm the instant it counts, and a basket muzzle, a comfortable safety layer for close or unavoidable encounters. A muzzle needs to be properly conditioned first, never just put on.",
        "show": "Last two cards.",
        "onscreen": "Treat pouch / Basket muzzle"
       }

@@ -2,7 +2,7 @@
 //   ms03s00     resource guarding: the deck's summary line and the four setups
 //   ms03s01-04  one setup each on Tori's pictures
 //   ms03s05     see it in action: Knox at mealtime (video slide; Tori's clip plays in the frame once it is in clips/)
-//   ms03s06     when surprises keep happening: two weeks of days; one surprise is normal, many mean adjust the plan
+//   ms07s00     (plays at the start of Part 7) when surprises keep happening: two weeks of days; one surprise is normal, many mean adjust the plan
 //   ms04s00     multi-dog conflict: summary and the four setups
 //   ms04s01-04  one setup each
 (() => {
@@ -46,6 +46,7 @@
   RG.forEach((o, i) => registerScene(`ms03s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: 'Resource guarding', icon: 'bone', n: i + 1, ...o })));
   registerScene('ms03recap', ctx => MS.recap(ctx, { title: 'resource guarding',
     items: ['Remove access to guarded items', 'Feed in a safe, isolated space', 'Prevent stealing opportunities', 'Manage space around the dog'],
+    phrases: ['remove access', 'feed in', 'prevent stealing', 'manage space'],
     summary: 'Manage access to *food, toys, and space*, so there’s nothing to guard in the first place.' }));
 
   // ---------------------------------------------------------------- see it in action: Knox
@@ -53,13 +54,14 @@
     MS.css(ctx.stage);
     TM.videoSlide(ctx, { kicker: 'See it in action', heading: 'See it in action', rows: [
       { icon: 'video', html: 'Client session with *Knox*', beat: 0, phrase: 'knox' },
-      { icon: 'door-open', html: 'Leaving the *feeding area*', beat: 0, phrase: 'leaving the feeding' },
+      { icon: 'door-open', html: 'Someone *entering* while he eats', beat: 0, phrase: 'someone entering' },
       { icon: 'utensils', html: 'Seeing the *empty bowl* picked up', beat: 0, phrase: 'empty bowl' },
     ] });
   });
 
   // ---------------------------------------------------------------- when surprises keep happening
-  registerScene('ms03s06', ctx => {
+  // shown at the start of Part 7 (Set Up for Success), after all the setups
+  registerScene('ms07s00', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
     TM.head(ctx, 'When surprises keep happening', 'When surprises keep happening');
@@ -112,11 +114,12 @@
     { title: 'Manage arrivals & rotate access', src: 'ms_s36.jpg', nat: [960, 720],
       lead: 'Put one dog away *before* letting the other out.',
       chips: [['The couch: one at a time', 'green', 'sofa', false, 'couch'], ['The bed: one at a time', 'green', 'bed', false, 'one at a time']],
-      why: 'Staggering excitement and access *defuses the moments* when conflict flares.',
+      why: 'Staggering excitement and access *keeps tension from building* in the first place.',
       mark: { rings: [[0.6, 0.5, 80]], tag: ['One at a time', 0.04, 0.05], phrase: 'one at a time' } },
   ];
   MD.forEach((o, i) => registerScene(`ms04s${String(i + 1).padStart(2, '0')}`, ctx => MS.tip(ctx, { sec: 'Multi-dog conflict', icon: 'dog', n: i + 1, ...o })));
   registerScene('ms04recap', ctx => MS.recap(ctx, { title: 'multi-dog conflict',
     items: ['Separate during high-risk times', 'Control space & supervise', 'Remove competition', 'Manage arrivals & rotate access'],
-    summary: '*Calm routines and separate resources* keep two dogs under one roof relaxed.' }));
+    phrases: ['separate during', 'control space', 'remove competition', 'manage arrivals'],
+    summary: '*Calm routines and separate resources* help keep two dogs under one roof relaxed.' }));
 })();

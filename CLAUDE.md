@@ -155,6 +155,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   (Real-ESRGAN x4plus, then Lanczos to 2x; originals in `assets/img/archive/abc_lowres/`). s11 says "from another
   chapter" (no chapter named); s14 opens "Now that we have the missing piece, the ABCs, we can go back to the pot and add
   temperature in the next section." First build in Tori's ElevenLabs voice (eleven_v4), about 9.8 minutes.
+  GHL card thumbnail: out/full/Understanding-Dog-Behavior-Ch3.jpg = ch03card segment at 1.6 s, 1280x720 (like Chapter 1).
 - Online preview (temporary AI voice): https://claude.ai/artifact/LgEH4FvtiMGM1FG7V3iDuz (`out/web/chapter3/`; publish
   without the .vtt files, captions are inline).
 

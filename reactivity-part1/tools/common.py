@@ -18,8 +18,9 @@ LEAD = 0.7          # scene starts this long before its first beat
 GAP = 0.45          # silence between beats (scratch voice)
 SCENE_GAP = 0.35    # extra breath between scenes (scratch voice)
 TAIL = 3.0          # hold after the last beat of a chapter (room for the logo close)
-HOLD = 1.6          # narration mode: minimum time from a scene's last word to its cut. The trainer's own pause counts;
-                    # silence is only added when her pause is shorter, so deliberate pauses play exactly as recorded
+HOLD = 2.4          # narration mode: minimum time from a scene's last word to its cut (Tori asked for more pause between
+                    # slides; was 1.6). A pause already in the recording counts; silence is only added when that pause is
+                    # shorter, so deliberate pauses play exactly as recorded
 BUMPER = 2.8        # chapter title card length
 
 
@@ -32,7 +33,7 @@ def words(s):
 
 
 # "[pause]" in a beat's text marks a deliberate pause: shown in the doc and the script PDF, silent in the
-# preview voice, and ignored when matching the trainer's recording (her own pause is what plays).
+# preview voice, and ignored when matching the trainer's recording (the recorded pause is what plays).
 PAUSE_RE = re.compile(r"\s*\[pause\]\s*", re.I)
 PAUSE_SEC = 1.5
 

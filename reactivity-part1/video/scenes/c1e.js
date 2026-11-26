@@ -136,7 +136,7 @@
 
   // dog silhouettes for "individual variation": cut from real dog photos and from the Calling All Dogs logo
   // (assets/img/sil_*.png, brand green), shown at different heights so size varies too
-  const DOGS = [['standing', 70], ['chihuahua', 44], ['golden', 80], ['terrier', 40], ['collie', 62], ['dane', 92]];
+  const DOGS = [['standing', 70], ['chihuahua', 44], ['golden', 80], ['terrier', 40], ['lab', 66], ['dane', 92]];
 
   // ================================================================== ch01s06 Breed history and purpose
   registerScene('ch01s06', ctx => {

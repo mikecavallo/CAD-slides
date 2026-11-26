@@ -226,10 +226,21 @@ def trim_bounds(beats, heard, audio):
     "slide two", a false start, the first word of an abandoned retake. Cuts land in the silence that separates that
     from the real take, so a first word the recogniser missed is never clipped. Returns (start, end) in seconds."""
     dur = len(audio) / SR
-    idx = [j for j in align([w for _, ws in beats for w in ws], heard) if j >= 0]
+    script = [w for _, ws in beats for w in ws]
+    m = align(script, heard)
+    idx = [j for j in m if j >= 0]
     if not idx:
         return 0.0, dur
     j0, j1 = min(idx), max(idx)
+    # The recogniser can mishear a take's first or last words ("ingredient two" heard as "edredient to"). When script
+    # words before the first match (or after the last) went unmatched, the heard words right next to it are those
+    # words, not a slate: keep as many as went unmatched, while they follow on with less than a second between them.
+    k0 = next(i for i, j in enumerate(m) if j >= 0)
+    while k0 > 0 and j0 > 0 and heard[j0]["t"] - heard[j0 - 1]["e"] < 1.0:
+        j0, k0 = j0 - 1, k0 - 1
+    k1 = len(m) - 1 - max(i for i, j in enumerate(m) if j >= 0)
+    while k1 > 0 and j1 < len(heard) - 1 and heard[j1 + 1]["t"] - heard[j1]["e"] < 1.0:
+        j1, k1 = j1 + 1, k1 - 1
     win = int(0.02 * SR)
     n = len(audio) // win
     rms = np.sqrt(np.mean(audio[: n * win].reshape(n, win) ** 2, axis=1) + 1e-12)

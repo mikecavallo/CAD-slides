@@ -8,6 +8,69 @@
     ]
   },
   "notes": "v8: a welcome slide (ch00), then Chapter 1 'Starting with the Basics': the plan slide (ch00s02, id kept so its recording still matches) and the material from the trainer's edited Google Doc (pages 1 to 7, everything above 'END OF FIRST CHAPTER MATERIAL'). Material below that line is not part of this video. The trainer records the narration.",
+  "tail": 4.5,
+  "sections": [
+    [
+      "ch00s01",
+      "Welcome",
+      "Tori Ganino welcomes you to Understanding Dog Behavior and lays out the chapter plan: what reactivity and aggression really mean, and the ingredients that shape how a dog responds."
+    ],
+    [
+      "ch01s01",
+      "Reactivity vs. aggression",
+      "Learn what aggression and reactivity each mean, how they can overlap, and why a label alone can't tell you what a dog is feeling."
+    ],
+    [
+      "ch01s02",
+      "Look beyond the label",
+      "Learn how the same behavior, like barking, can have very different reasons behind it, and why looking beyond the label matters when we decide how to help a dog."
+    ],
+    [
+      "ch01s03",
+      "Why it's happening",
+      "Learn why there's not just one reason behind a dog's behavior: like a recipe, many factors can contribute to fearful, reactive, aggressive or other responses."
+    ],
+    [
+      "ch01s04",
+      "Genetics and temperament",
+      "Learn how genetics shapes behavior: dogs are born with different temperaments, some more sensitive and some more easygoing, and some start life with a more easily triggered nervous system."
+    ],
+    [
+      "ch01s05",
+      "Before birth",
+      "Learn how a puppy's starting point can be influenced before birth: the mother's health, nutrition and experiences during pregnancy can become part of the puppy's foundation."
+    ],
+    [
+      "ch01s06",
+      "Breed history and purpose",
+      "Learn what the jobs dogs were bred for, from herding and guarding to hunting and retrieving, can tell us about their behavior, and why breed history gives clues, not guarantees."
+    ],
+    [
+      "ch01s07",
+      "Early life and socialization",
+      "Learn how early experiences shape behavior, why a puppy's first few months matter, and why socialization means positive associations with support and choice, not a checklist."
+    ],
+    [
+      "ch01s08",
+      "Age",
+      "Learn how age shapes behavior, from adolescence to social maturity, when reactivity or aggression often shows up, and why adult dogs get pickier and senior dogs less patient."
+    ],
+    [
+      "ch01s09",
+      "Past experiences",
+      "Learn how a single event or repeated experiences can shape your dog's behavior, why practice makes patterns stronger, and the good news: we can build a new path."
+    ],
+    [
+      "ch01s10",
+      "Training tools and methods",
+      "Learn how training tools and methods affect behavior, why harsh methods are linked to more fear, stress, and aggression, and why correcting a growl doesn't help a dog feel better."
+    ],
+    [
+      "ch01s12",
+      "Putting it together",
+      "See how all seven ingredients, from genetics and breed history to past experiences and training methods, come together to shape behavior, and what comes next: your dog's baseline."
+    ]
+  ],
   "chapters": [
     {
       "id": "ch00",
@@ -58,7 +121,7 @@
               "onscreen": "Why you're here"
             },
             {
-              "say": "By the end, you'll understand the various factors that set the stage for your dog's behavior.",
+              "say": "By the end, you'll understand various factors that set the stage for your dog's behavior.",
               "show": "The 'What you'll gain' card slides up, and the promise appears as it is said: Understand the factors that set the stage for your dog's behavior.",
               "onscreen": "What you'll gain"
             },
@@ -81,7 +144,7 @@
           ],
           "beats": [
             {
-              "say": "Let's start with two words you'll hear a lot: aggression and reactivity. They're not the same thing, and they can overlap.",
+              "say": "Let's start with two words you'll hear a lot: aggression and reactivity. They're not the same thing, but they can overlap.",
               "show": "The heading 'Aggression and reactivity' writes on in green; the snarling dog photo and the barking white dog photo slide in as two large circles side by side, labeled 'Aggression' and 'Reactivity'.",
               "onscreen": "Aggression and reactivity"
             },
@@ -121,7 +184,7 @@
           ],
           "beats": [
             {
-              "say": "A dog may bark, growl, lunge, snap, freeze, cower, move away, or bite. These behaviors matter, but the behavior alone does not tell us why the dog is responding that way.",
+              "say": "A dog may bark, growl, lunge, snap, freeze, cower, move away, or even bite. These behaviors matter, but the behavior alone does not tell us why the dog is responding that way.",
               "show": "The heading 'Look beyond the label' writes on in green and eight behavior chips pop in a row, one per word: Bark, Growl, Lunge, Snap, Freeze, Cower, Move away, Bite.",
               "onscreen": "Look beyond the label"
             },
@@ -158,12 +221,12 @@
               "onscreen": "Why?"
             },
             {
-              "say": "The answer? It's not just one reason. A dog's behavior is influenced by many factors, which can contribute to fearful, reactive, aggressive, or other responses.",
+              "say": "And the answer? It's not just one reason. A dog's behavior is influenced by many factors, which can contribute to fearful, reactive, aggressive, or other responses.",
               "show": "The photo slides away; a large mixing bowl appears center right with eight blank ingredient chips hovering above it.",
               "onscreen": "It's not just one reason"
             },
             {
-              "say": "Think of it like a recipe. There are several ingredients that can contribute to the behavior we see.",
+              "say": "Think of it like a recipe. There are several ingredients that contribute to the behavior we see.",
               "show": "The blank ingredient chips begin drifting down toward the bowl as the section transitions into the factors covered in this video.",
               "onscreen": "Several things come together"
             }
@@ -205,7 +268,7 @@
           ],
           "beats": [
             {
-              "say": "Ingredient two: prenatal environment. A puppy's starting point can be influenced before it is even born. The mother's health, nutrition, and experiences during pregnancy can influence fetal development. These early influences can become part of the foundation a puppy starts life with.",
+              "say": "Ingredient two: prenatal environment. A puppy's starting point can be influenced before it's even born. The mother's health, nutrition, and experiences during pregnancy can influence fetal development. These early influences can become part of the puppy's foundation that it starts life with.",
               "show": "The DNA chip stays in the bowl as a second chip labeled 'Prenatal environment' drops in. Simple icons appear around it, one per word: a pregnant dog (health), a food bowl (nutrition), and a stress symbol (experiences).",
               "onscreen": "Before birth matters too"
             }
@@ -242,12 +305,12 @@
               "onscreen": ""
             },
             {
-              "say": "A dog bred for hunting and pursuit may be especially interested in tracking, chasing, or following something that has captured its attention.",
+              "say": "A dog bred for hunting and pursuit may be interested in tracking, chasing, or following something that has captured its attention.",
               "show": "The Hunting and pursuit card enlarges. A moving animal and scent trail appear.",
               "onscreen": ""
             },
             {
-              "say": "A terrier may be especially motivated to notice and pursue small, fast-moving animals.",
+              "say": "A terrier may be motivated to notice and pursue small, fast-moving animals.",
               "show": "The Terrier work card enlarges. A small animal moves quickly across the screen.",
               "onscreen": ""
             },
@@ -257,7 +320,7 @@
               "onscreen": ""
             },
             {
-              "say": "Dogs bred for working and assistance roles may have been selected for traits that help them perform specialized tasks for people.",
+              "say": "And dogs bred for working and assistance roles may have been selected for traits that help them perform specialized tasks for people.",
               "show": "The Working and assistance card enlarges. Simple icons appear for rescue, pulling, and assistance.",
               "onscreen": ""
             },
@@ -267,7 +330,7 @@
               "onscreen": "Breed history gives us clues, not guarantees"
             },
             {
-              "say": "When we're trying to understand a dog's behavior, knowing what those breeds were developed to do gives us another ingredient to consider.",
+              "say": "When we're trying to understand a dog's behavior, knowing what those breeds are developed to do gives us another ingredient to consider.",
               "show": "All six cards move into the mixing bowl and become the 'Breed history and purpose' chip, which settles beside 'Genetics and temperament' and 'Prenatal environment'.",
               "onscreen": ""
             }
@@ -309,17 +372,17 @@
               "onscreen": "Pass the puppy"
             },
             {
-              "say": "Even when the people involved have good intentions, repeated handling without an opportunity to pause, move away, or choose whether to interact can make those experiences overwhelming rather than helpful.",
+              "say": "Even when the people involved have good intentions, repeated handling without an opportunity to pause, move away, or even choose if they want the interactions in the first place can make those experiences overwhelming rather than helpful.",
               "show": "The puppy stays surrounded by reaching hands while a pause icon and an exit arrow sit just out of reach.",
               "onscreen": "No choice, no break"
             },
             {
-              "say": "And then there is the dog who learned that every dog or person means a party. Often as a puppy, these dogs were running up to meet dog after dog, person after person, which can make seeing them extremely exciting, until the leash prevents the dog from getting there. Hello, frustration. If that was your puppy, you were probably following common advice.",
+              "say": "And then there's the dog who learned that every other dog or person means a party. Often as a puppy, these dogs were running up to meet dog after dog, person after person, which can make seeing them extremely exciting, until the leash prevents the dog from getting there. Hello, frustration. If that was your puppy, you were probably following common advice.",
               "show": "A row of happy dog icons appears, then a leash tightens between the puppy and the next dog and a small red label appears: 'Frustration'.",
               "onscreen": "Every dog means a party"
             },
             {
-              "say": "Socialization isn't about checking off a list of people, dogs, places, and experiences. It's about helping a puppy build positive associations in a variety of situations, while giving them appropriate support and choice. Socialization is one ingredient in the larger picture we need to consider when we're trying to understand behavior.",
+              "say": "Socialization isn't about checking off a list of people, dogs, places, and experiences. It's about helping a puppy build positive associations in a variety of situations, while giving them the appropriate support and choice. Socialization is one ingredient in the larger picture we need to consider when we're trying to understand behavior.",
               "show": "The party row clears and the 'Socialization' chip drops into the bowl beside the earlier chips.",
               "onscreen": "Socialization is one ingredient"
             }
@@ -358,12 +421,12 @@
               "onscreen": "More selective with age"
             },
             {
-              "say": "That's normal, not a problem. But the dog who loved the dog park at one may not want it at three, and pushing them can end in a fight.",
+              "say": "That's normal, not a problem. But the dog who loved the dog park as a one-year-old may not want it as a three-year-old, and pushing them can end in a fight.",
               "show": "A small dog park card appears with a trees icon: 'Age 1: loved it' with a green check, then 'Age 3: not anymore' with an amber caution badge.",
               "onscreen": "Normal, not a problem"
             },
             {
-              "say": "Senior dogs change too. Sore joints, fading senses, or changes in memory can affect how much they want to deal with the little things they used to tolerate. A dog who once ignored being bumped, crowded, startled, or bothered may have less patience for those interactions as they get older.",
+              "say": "Senior dogs change too. Sore joints, fading senses, or changes in memory can affect how much they want to deal with the little things that they used to tolerate. A dog who once ignored being bumped, crowded, startled, or bothered may have less patience for those interactions as they get older.",
               "show": "The cards clear; an older dog appears with small icons for sore joints, fading vision, hearing and memory. Around the dog, everyday interactions appear one per word: Bumped, Crowded, Startled, Bothered. A 'Tolerance' meter gradually lowers.",
               "onscreen": "Senior dogs change too"
             }
@@ -383,12 +446,12 @@
           ],
           "beats": [
             {
-              "say": "Ingredient six, past experiences. A single event can be enough: if an off-leash dog rushes yours once, they may never forget it.",
+              "say": "Ingredient six, past experiences. A single event can be enough: if your dog has big emotions about an off-leash dog that rushes them, they may never forget it.",
               "show": "The 'Past experiences' chip drops in and a lightning bolt strikes a single point on a short timeline labeled 'One event'.",
               "onscreen": "One event can be enough"
             },
             {
-              "say": "Repeated experiences can shape behavior too. Imagine someone repeatedly takes an item away from your dog. Your dog may start reacting when that person approaches while they have something.",
+              "say": "Repeated experiences can shape behavior too. Imagine someone repeatedly taking an item away from your dog. Your dog may start reacting when that person approaches when they have something.",
               "show": "A person icon approaches a dog icon with a toy and takes the toy away. The sequence repeats three times, and each time the dog's warning marks grow bigger as the person approaches.",
               "onscreen": "Repeated experiences shape responses"
             },
@@ -398,7 +461,7 @@
               "onscreen": "Practice makes patterns stronger"
             },
             {
-              "say": "It's like a path across a lawn: walk it every day and it wears in, until it's the way you go without thinking. The good news is we can build a new path.",
+              "say": "It's like a path across a lawn: walk it every day and it wears in, until it's the way you go without even thinking. The good news is we can build a new path.",
               "show": "The rows fade into a faint dotted line across a green lawn that thickens into a worn path, and on 'the good news' a fresh green dotted path sketches in beside it.",
               "onscreen": "Every rehearsal deepens the path"
             }
@@ -429,7 +492,7 @@
               "onscreen": "Training can affect behavior too"
             },
             {
-              "say": "And when a dog reacts to something in their environment, it is not because they're trying to be the boss. Think about how much of your dog's life you already control. You decide where they sleep, when they go outside, where they go, how long they stay there, when they eat, and when they get access to the things they need and enjoy.",
+              "say": "And when a dog reacts to something in their environment, it's not because they're trying to be the boss. Think about how much of your dog's life you already control. You decide where they sleep, when they go outside, where they go, how long they stay there, when they eat, and when they get access to the things they need and enjoy.",
               "show": "The tags clear; a dog icon sits at center and icons appear around it one per phrase: Bed, Door, Walk, Time, Food, Toys, Outside. Each connects to a small 'Human decides' label.",
               "onscreen": "You already control most of their world"
             },
@@ -439,9 +502,14 @@
               "onscreen": "A reaction isn't a power struggle"
             },
             {
-              "say": "The idea that dogs need to be dominated has led to tools and techniques designed to suppress behavior through force or intimidation. But suppressing behavior isn't the same as understanding why a dog is responding that way and helping them change that response. We will get into this much more later.",
+              "say": "The idea that dogs need to be dominated has led to tools and techniques designed to suppress behavior through force or intimidation. But suppressing behavior isn't the same as understanding why a dog is responding that way in the first place and helping them to change that response.",
               "show": "'Suppress' appears in red over the dog icon and fades away; the words 'Understand' and 'Help' replace it in green.",
               "onscreen": "Suppressing behavior ≠ changing behavior"
+            },
+            {
+              "say": "For example, take resource guarding. If a person approaches a dog that has an item, and the dog starts to growl or show its teeth, and we correct the dog for doing that, like with a squirt bottle or a shock collar, the dog may stop growling or showing its teeth, but it doesn't feel better about the situation. We've actually validated that people approaching are a bad thing. We will get into this much more later.",
+              "show": "Example strip: A person approaches (white), Dog growls, shows teeth (amber, the dog has an item), Corrected for it (red) with Squirt bottle and Shock collar tags beside it as they are named; then The growl stops (grey); then Still doesn't feel better (amber) and Confirmed: people approaching are a bad thing (red).",
+              "onscreen": "Example: resource guarding"
             },
             {
               "say": "If you've used any of these, be kind to yourself. You did your best, and now you know more.",
@@ -480,5 +548,11 @@
         }
       ]
     }
-  ]
+  ],
+  "cardAt": {
+    "ch00s01": 6,
+    "ch01s02": 9,
+    "ch01s06": 12,
+    "ch01s12": 5
+  }
 }

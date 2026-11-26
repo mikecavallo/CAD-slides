@@ -385,6 +385,86 @@ pipeline). This file records the state, decisions and working agreements from ea
   slide and the narration script as files in chat, numbered (`Management-The-Basics-...-draftN`). The Drive folder
   "Management: The Basics (video)" (id 10Fqf8KJHhF_Jcwan0sm65bz_VUbiucOV) holds the narration doc.
 
+## Management: Everyday Manners (Foundations course video for puppy and obedience owners; Tori's cloned voice)
+
+- Tori's brief (Nov 24): a management video for general puppies and obedience, NOT reactivity: owners must not let their dog
+  practice unwanted behaviors (door greetings, food and meals, jumping for things in hands, pulling on walks, barking at
+  people); why management matters (practice makes perfect, neural pathways). No triggers, thresholds or reactivity framing.
+  Branch `claude/management-puppy-obedience` (from claude/management-part-1). Course label "Foundations course" (Tori puts
+  it in the right course in GoHighLevel).
+- Lesson `script/lesson-everyday.json` (`LESSON=lesson-everyday.json`), series "Management: Everyday Manners" (title lines
+  "Management:" / "Everyday Manners"), cinematic, footerTab false, ids prefixed `em`. `em00` Welcome (intro, plan: What
+  you'll learn + Why it matters), `em01` Why Management Matters (s01 practice makes perfect, s02 building pathways: brain
+  picture + path in the woods, s03 management and training, s04 the foundation: Tori's house, floors = new behaviors, a crack
+  per rehearsal, s05 everyone follows the plan), `em02` Everyday Situations (s01 door, s02 mealtime, s03 jumping for things
+  in hands, s04 pulling on walks, s05 barking at people), `em03` Putting It Together (s01 "Just this once", s02 close + logo).
+- Scene code: `video/scenes/em_kit.js` (`window.EM`: situation slide layout with What they practice (red) / Manage it /
+  Teach instead (green) sections, picture whole at right or a dashed "Picture coming" placeholder), `ema.js` to `emc.js`.
+  render.mjs `usesC1.em = ['c1','c2','tm','mg']`.
+- Tori's answers (Nov 24): title OK; Foundations course; outline OK; pulling: say "harness" but NOT front clip; a head halter
+  is fine as long as the dog is properly conditioned to it; mealtime covers all of it (counter surfing, mugging, guarding,
+  jumping, making meals); stand-alone, BUT it must have the cracked house (new behaviors fall apart if the dog practices
+  what we don't want); barking at people: they may really want the person to come closer; mention the ABCs course.
+- Pictures: door = abc_greet_c.jpg (golden jumping on a guest), barking = abc_greet_b.jpg (golden barking at a man through
+  the window), both 610 px wide. Waiting on Tori for mealtime, jumping for something in a hand, pulling on the leash
+  (placeholders until then) and optionally a puppy photo.
+- Script doc (source of truth): folder "Management: Everyday Manners (video)" (id 1JffrSV2dqHscYZnp3IUshtClkBvz86ir), doc
+  "Management: Everyday Manners: Narration Script (draft 1, Nov 24)", id 1uz-1Uu1LLhF6cb01FREFuCOwPIt7YpLqY6yfrgTzLGw.
+  All narration is Claude's. Script files for chat: scratchpad script_out.py pattern (build/everyday_script_dN.html for
+  the doc, build/Management-Everyday-Manners-script-draftN.md for chat).
+- Draft 1 (Nov 24): 6:49, sent in chat (CRF 26 copy, storyboard, script). Online preview:
+  https://claude.ai/artifact/17PQ1RYbnb42P4x65qoLTE (`out/web/everyday/`; web_page.py --kicker "Foundations course"; publish
+  without the .vtt files, captions are inlined in the page). Draft PR #12 (base claude/management-part-1).
+- Round 2 (Nov 25, Tori's draft 1 notes, applied as draft 2, 8:20): don't list the behaviors that get their own management
+  example later (em01s01 no longer lists jumping/counter/pulling; em01s03 lost the gate/leash/crate tools beat); s02 says
+  "the neural pathway in the brain gets stronger", "The paths used most often become their habits", "help them DEVELOP a new
+  one" (never "walk a new one"). NEW em02s00 "Teach what you want instead" opens Part 2: a clear picture of what you want,
+  not just what you don't; just "no" isn't fair, other options we prefer; practice in many places and situations. Every
+  Teach instead block gives EXAMPLES ("For example: ..."), never the only answer. Door: the greeting ritual loop (Jumps,
+  Asked to sit, Sits, Gets attention, round again); manage so the jump never joins the ritual. NEW em02s01v plays Tori's
+  dachshund clip (R+ Drive folder 11XwpH538JsWoCwsfvthN2UVJROTu_t8i: "Jumping.MP4" 1.8 s + "4 on floor extended.mp4",
+  joined at 1280x720 into clips/em02s01v.mp4, own sound, after the line). Mealtime: "Mugging and grabbing" (mugging and
+  grabbing from hands); teach line is "teach what you want your dog to do instead, like settling on a mat". Hands: no
+  shoes; manage = out of reach + baby gate when carrying in groceries (never leash or tether). Pulling: "shorter, calmer
+  walks" is GONE; NEW em02s04v plays "walking.MOV" (R+ folder, loose leash walking, vertical, tall frame [1250,240,570,710],
+  crop [0,285,1080,1350]). Close: "Build on a strong foundation, one without cracks from management slipping".
+  Clips and clips/src are gitignored: re-download from Drive with curl in a new container, then tools/clip_ends.py.
+  Script doc now "... (draft 2, Nov 24)", id 1gt8mSHvzARcBzf0ezK0eKvT-iogCJf0WhQfuy_8pOGE; draft 1 renamed superseded.
+- Round 3 (Nov 26, applied as draft 3, 8:00): NO separate video slides: em02s01v and em02s04v are gone. The dachshund clip
+  (clips/em02s01.mp4, trimmed to 11 s) plays MUTED in the door slide's picture spot from the Teach instead beat (clip
+  atBeat 3, box [1220,391,600,338]; the golden picture fades out); the loose leash clip (clips/em02s04.mp4) plays MUTED in a
+  tall frame at the right of the pulling slide from beat 1 (box [1340,300,480,600], crop [0,285,1080,1350]; no pulling
+  placeholder any more). Narration points at them ("like this little dachshund is learning", "the way this dog is doing").
+  NEW last slide em03s03 "Your assignment" (Tori asked): list the behaviors you don't want to continue and the situations
+  they happen in (be specific), then how to manage the environment temporarily so they can't be practiced while teaching
+  new ones; worksheet with three columns and one example row (Jumping on guests / At the front door, when guests arrive /
+  Baby gate up before the door opens); logo close moved here from em03s02. Narration Claude-written.
+  Script doc "... (draft 3, Nov 26)", id 1oc7R59tUnIifZGeek-XN7x-XqUINpMqDleV7g12X3uY; draft 2 renamed superseded.
+- Round 4 (Nov 26, draft 4): Tori chose a husky licking bread off a table for the mealtime slide instead of the Dalmatian
+  (`em_meal.jpg`, 1333x2000, whole at right, red ring on the grab); first chip and narration "Grabbing food off the table or
+  counter" (was counter surfing). Script doc "... (draft 4, Nov 26)", id 1fLRU8U132zs-BVIR_e2UW0wgU0fKNjS3ww6bqHy7PfQ; draft 3
+  renamed superseded.
+- Round 5 (Nov 26, draft 5): Tori's picture for jumping for things in hands, `em_hands.jpg` (1329x2000, a Malinois puppy
+  sitting and looking up at the person's hands): whole at right; at Teach instead, green gaze dots from the puppy to the
+  hands, a green ring on the sit and a "Four paws on the floor" tag. No narration change (script doc draft 4 still current).
+  Every picture is now in; no placeholders left.
+- Round 6 (Nov 26, draft 6): door slide has NO picture: the dachshund video fills the picture spot for the whole slide
+  (muted; box [1220,391,600,338], clip "at" 1.0): clips/em02s01.mp4 is built from clips/src: "Jumping.MP4" looped and slowed
+  to 0.8x until the Teach instead beat, then "4 on floor extended.mp4" (calm by the door, Tori giving treats) for the rest;
+  rebuild it with the beat times if the narration changes (A = beat 3 start minus 1.0 s, B = to narration end). Tags above
+  the frame: red "Practicing the jump", then green "Calm by the door: treats". Narration names the dachshund in beats 0
+  and 3. Loose leash clip trimmed to 0..11 s (the dog pulls ahead after 11.5 s; never show it). Barking slide: the AI
+  golden-at-the-window illustration is OUT (Tori: messy, unclear, weird); it now shows `mg_mistake5.jpg` (Tori's fluffy white
+  dog barking on leash, from Management: The Basics), red ring on the mouth. Don't use the abc_* illustrations in this video.
+  Script doc "... (draft 6, Nov 26)" (draft 4 renamed superseded; draft 5 had no doc change).
+- Round 7 (Nov 26, draft 7, no narration change): door clip = "Jumping.MP4" 3 times at 0.8x (6.7 s), then FROZEN on its last
+  frame until the Teach instead beat, then "4 on floor extended" (Tori: don't show the jump looping on and on). Rebuild:
+  freeze length = beat 3 start - 1.0 - 6.7. Loose leash clip starts later (clip "at" 16.4 s, near Teach instead) so the dog
+  is still walking when the narration ends (clip 0..11 s ends just after the last word; keep that relation if timing moves).
+- Final (Nov 26, Tori approved draft 7): sent the full 1080p master (out/Management-Everyday-Manners.mp4, 47 MB), the
+  script as .docx (pandoc from the draft 7 markdown) and a 1920x1080 thumbnail of the title slide (frame at 6 s). GoHighLevel
+  section files not made yet.
+
 ## Recordings (Tori's voice)
 
 - One file per slide, named by scene id: `Ch01s05.m4a` (case does not matter). A slide in pieces:

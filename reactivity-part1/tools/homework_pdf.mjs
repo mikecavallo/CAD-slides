@@ -8,7 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { PDFDocument, PDFName, PDFBool } from 'pdf-lib';
+import { PDFDocument, PDFName, PDFBool, rgb } from 'pdf-lib';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
@@ -40,7 +40,7 @@ ${font('Montserrat', 500, 'Montserrat-500i.woff2', 'italic')}${font('Montserrat'
 ${font('Montserrat', 700, 'Montserrat-700.woff2')}${font('Rubik', 700, 'Rubik-700.woff2')}${font('Rubik', 800, 'Rubik-800.woff2')}
 @page { size: Letter landscape; margin: 0.4in 0.45in; }
 * { box-sizing: border-box; margin: 0; }
-body { font-family: Montserrat; color: #212121; -webkit-print-color-adjust: exact; }
+body { width: 10.1in; font-family: Montserrat; color: #212121; -webkit-print-color-adjust: exact; }
 header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2.5pt solid #619537; padding-bottom: 7pt; }
 .kicker { font: 700 8pt Montserrat; letter-spacing: 3pt; text-transform: uppercase; color: #619537; }
 h1 { font: 800 25pt/1.05 Rubik; color: #3f6b22; margin-top: 3pt; }
@@ -84,7 +84,7 @@ footer .goal span { color: #619537; }
 </body></html>`;
 
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 1056, height: 816 } });
+const page = await browser.newPage({ viewport: { width: 970, height: 816 }  /* = the printable area, so screen layout matches print */ });
 await page.emulateMedia({ media: 'print' });
 await page.setContent(html, { waitUntil: 'load' });
 await page.evaluate(() => document.fonts.ready);
@@ -103,8 +103,9 @@ const PT = 0.75, ML = 0.45 * 72, MT = 0.4 * 72; // px -> pt, @page margins
 const form = doc.getForm();
 for (const c of cells) {
   const f = form.createTextField(c.name);
-  f.addToPage(pg, { x: ML + c.x * PT + 2, y: PH - MT - (c.y + c.h) * PT + 2, width: c.w * PT - 4, height: c.h * PT - 4,
-    borderWidth: 0, backgroundColor: undefined, borderColor: undefined });
+  const dx = c.name.endsWith('c1') ? 12 : 0; // keep the row number visible
+  f.addToPage(pg, { x: ML + c.x * PT + 2 + dx, y: PH - MT - (c.y + c.h) * PT + 2, width: c.w * PT - 4 - dx, height: c.h * PT - 4,
+    borderWidth: process.env.HW_DEBUG ? 1 : 0, backgroundColor: undefined, borderColor: process.env.HW_DEBUG ? rgb(1, 0, 0) : undefined });
   if (!c.name.endsWith('c1')) f.enableMultiline();
   f.setFontSize(9);
 }

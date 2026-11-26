@@ -235,13 +235,11 @@
     {
      "id": "em02s01",
      "heading": "Greetings at the door",
-     "visual_concept": "Situation slide: the golden jumping on a guest; the greeting ritual loop; Manage it; Teach instead examples while Tori's dachshund clip (jumping, then four paws on the floor) plays muted in the picture's place.",
-     "assets": [
-      "abc_greet_c.jpg"
-     ],
+     "visual_concept": "Situation slide: Tori's dachshund video fills the picture spot the whole slide (muted): the jumping (looped, slowed) until Teach instead, then calm by the door earning treats; tags above the frame.",
+     "assets": [],
      "beats": [
       {
-       "say": "Let’s start at the front door. A guest walks in, and your dog jumps all over them.",
+       "say": "Let’s start at the front door. A guest walks in, and your dog jumps all over them, like this little dachshund.",
        "show": "Picture; ring on the jump.",
        "onscreen": "Jumping on guests"
       },
@@ -256,7 +254,7 @@
        "onscreen": "Baby gate or leash, before the door opens"
       },
       {
-       "say": "Then teach what you want instead. For example, four paws on the floor, like this little dachshund is learning, or going to a mat. Reward that calm hello.",
+       "say": "Then teach what you want instead. For example, four paws on the floor or going to a mat. Here, the same little dachshund stays calm by the door and earns treats for it.",
        "show": "Teach instead; the dachshund clip plays muted in the picture's place.",
        "onscreen": "For example: four paws on the floor, or go to a mat"
       }
@@ -268,9 +266,8 @@
        600,
        338
       ],
-      "poster": "em_clip_paws.jpg",
-      "atBeat": 3,
-      "to": 11.0
+      "poster": "em_clip_jump.jpg",
+      "at": 1.0
      }
     },
     {
@@ -364,15 +361,16 @@
        285,
        1080,
        1350
-      ]
+      ],
+      "to": 11.0
      }
     },
     {
      "id": "em02s05",
      "heading": "Barking at people",
-     "visual_concept": "Situation slide: picture at right (golden barking at a man through the window); reasons; manage it; ABCs course card.",
+     "visual_concept": "Situation slide: Tori's photo of a fluffy white dog barking on leash (mg_mistake5.jpg, from Management: The Basics), red ring on the mouth; reasons; manage it; ABCs course card.",
      "assets": [
-      "abc_greet_b.jpg"
+      "mg_mistake5.jpg"
      ],
      "beats": [
       {

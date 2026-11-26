@@ -448,6 +448,15 @@ pipeline). This file records the state, decisions and working agreements from ea
   sitting and looking up at the person's hands): whole at right; at Teach instead, green gaze dots from the puppy to the
   hands, a green ring on the sit and a "Four paws on the floor" tag. No narration change (script doc draft 4 still current).
   Every picture is now in; no placeholders left.
+- Round 6 (Nov 26, draft 6): door slide has NO picture: the dachshund video fills the picture spot for the whole slide
+  (muted; box [1220,391,600,338], clip "at" 1.0): clips/em02s01.mp4 is built from clips/src: "Jumping.MP4" looped and slowed
+  to 0.8x until the Teach instead beat, then "4 on floor extended.mp4" (calm by the door, Tori giving treats) for the rest;
+  rebuild it with the beat times if the narration changes (A = beat 3 start minus 1.0 s, B = to narration end). Tags above
+  the frame: red "Practicing the jump", then green "Calm by the door: treats". Narration names the dachshund in beats 0
+  and 3. Loose leash clip trimmed to 0..11 s (the dog pulls ahead after 11.5 s; never show it). Barking slide: the AI
+  golden-at-the-window illustration is OUT (Tori: messy, unclear, weird); it now shows `mg_mistake5.jpg` (Tori's fluffy white
+  dog barking on leash, from Management: The Basics), red ring on the mouth. Don't use the abc_* illustrations in this video.
+  Script doc "... (draft 6, Nov 26)" (draft 4 renamed superseded; draft 5 had no doc change).
 
 ## Recordings (Tori's voice)
 

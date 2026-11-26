@@ -57,7 +57,15 @@
     const { stage, tl, cue } = ctx;
     css(stage);
     const m = EM.situation(ctx, { title: 'Greetings at the door', src: 'abc_greet_c.jpg', nat: [611, 364], maxW: 600, maxH: 520, gap: 34 });
-    TM.fx.ring(tl, m.ph.sv, m.ph.P(0.36, 0.55), at(ctx, 0, 'jumps all over', 0.6), { r: 46, n: 2, color: 'var(--red)' });
+    // Tori's dachshund video fills this spot for the whole slide: the jumping first, then calm by the door, earning treats
+    m.ph.wrap.style.visibility = 'hidden';
+    const vf = TM.videoFrame(ctx, 0.3); vf.cap.style.display = 'none';
+    const [bx, by] = vf.box;
+    const tagJ = put(stage, K.el('div', 'tm-word red', K.md('Practicing the jump')), bx, by - 72, { fontSize: '24px', padding: '8px 18px' });
+    A.in(tl, tagJ, 0.9, 'pop', { dur: 0.4 });
+    const tagC = put(stage, K.el('div', 'tm-word green', K.md('Calm by the door: treats')), bx, by - 72, { fontSize: '24px', padding: '8px 18px' });
+    tl.to(tagJ, { opacity: 0, duration: 0.3 }, cue(3) - 0.2);
+    A.in(tl, tagC, cue(3) + 0.1, 'pop', { dur: 0.4 });
     const s1 = EM.section(m.col, ...PRACT);
     const lead = EM.text(s1, 'A greeting ritual, with !!the jump built in!!:');
     // the ritual loop: jumps, asked to sit, sits, gets attention, and round again
@@ -81,10 +89,6 @@
     const s3 = EM.section(m.col, ...TEACH);
     EM.chips(s3, [['For example: four paws on the floor', 'pale', 'paw-print'], ['Go to a mat', 'pale', 'square']], 27);
     show(tl, s3, cue(3) + 0.1);
-    // the dachshund clip takes the picture's place (muted, from the lesson's clip block)
-    const tV = ctx.info.clip ? ctx.info.clip.at - 0.7 : cue(3);
-    tl.to(m.ph.wrap, { opacity: 0, scale: 0.97, duration: 0.5, ease: 'power2.in' }, tV - 0.2);
-    TM.videoFrame(ctx, tV).cap.style.display = 'none';
   });
 
   // ---------------------------------------------------------------- mealtime
@@ -161,14 +165,13 @@
   registerScene('em02s05', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const m = EM.situation(ctx, { title: 'Barking at people', src: 'abc_greet_b.jpg', nat: [610, 364], maxW: 760, maxH: 560, gap: 28 });
+    const m = EM.situation(ctx, { title: 'Barking at people', src: 'mg_mistake5.jpg', nat: [1400, 1050], maxW: 700, maxH: 560, gap: 28 });
     const s1 = EM.section(m.col, ...PRACT);
     EM.chips(s1, [['At the window', 'red', 'app-window'], ['On walks', 'red', 'footprints']], 27).forEach((c, i) => A.in(tl, c, cue(0) + 0.5 + 0.2 * i, 'pop', { dur: 0.4 }));
     show(tl, s1.querySelector('.lab'), cue(0) + 0.1);
-    TM.fx.ring(tl, m.ph.sv, m.ph.P(0.5, 0.33), cue(0) + 0.4, { r: 36, n: 2, color: 'var(--red)' });
+    TM.fx.ring(tl, m.ph.sv, m.ph.P(0.595, 0.40), cue(0) + 0.4, { r: 34, n: 2, color: 'var(--red)' });
     const why = EM.text(s1, 'Sometimes they *want the person to come closer*. When that happens, !!barking works!!.', 31);
     show(tl, why, at(ctx, 1, 'come closer', 0.3));
-    TM.fx.dots(tl, m.ph.sv, [m.ph.P(0.56, 0.3), m.ph.P(0.8, 0.3)], at(ctx, 1, 'come closer', 0.3), { color: '#fff', stroke: '#619537', r: 5, gap: 18, dur: 0.6, hold: 2.5 });
     const s2 = EM.section(m.col, ...MANAGE);
     EM.text(s2, '*Block the view* with window film or closed blinds. On walks, *give people space* before the barking starts.', 31);
     show(tl, s2, cue(2) + 0.1);

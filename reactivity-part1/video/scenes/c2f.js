@@ -260,14 +260,18 @@
     tl.to(p2, { opacity: 0, duration: 0.3 }, t5 + 0.5);
     tl.fromTo(p2b, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t5 + 0.7);
     const hot = C2.put(stage, 'c2f-hot', 'Now, how<br><b>hot</b> is it?', { x: 1020, y: 580, w: 780, align: 'center' });
-    A.in(tl, hot, t5 + 0.9, 'fadeUp', { dur: 0.7 });
+    const tHot = t5 + 0.9;
+    A.in(tl, hot, tHot, 'fadeUp', { dur: 0.7 });
     const th2 = C2.badge(stage, 'thermometer', 1410, 470, 130, C.redPale, C.red);
     A.in(tl, th2, t5 + 0.7, 'pop', { dur: 0.5 });
 
     // ---------- close: the Calling All Dogs logo
     // ---------- beat 5: the bridge: temperature later; the next chapter steps away from the pot for the ABCs
+    // "Now, how hot is it?" stays up at least 2 s after it lands and is fully gone before the next-chapter card comes in
+    // (a short "Temperature." beat used to start the fade-out while the fade-in was still running, so the two overlapped)
     const t6 = cue(5);
-    tl.to([hot, th2], { opacity: 0, duration: 0.4 }, t6);
+    const tHotOut = Math.max(t6, tHot + 0.7 + 2.0);
+    tl.to([hot, th2], { opacity: 0, duration: 0.4, immediateRender: false }, tHotOut);
     const nx = K.el('div');
     Object.assign(nx.style, { position: 'absolute', left: '1060px', top: '560px', width: '700px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '22px' });
     nx.appendChild(K.el('div', 'c2f-nk', 'Next chapter'));
@@ -277,7 +281,7 @@
     const lets = ['A', 'B', 'C'].map(l => { const d = K.el('div', 'c2f-abc', l); abc.appendChild(d); return d; });
     nx.appendChild(abc);
     stage.appendChild(nx);
-    const tNx = clamp(sayAt(ctx, 5, 'next chapter', 0.45, 0.3), t6 + 0.3, end(5) - 1.5);
+    const tNx = Math.max(clamp(sayAt(ctx, 5, 'next chapter', 0.45, 0.3), t6 + 0.3, end(5) - 1.5), tHotOut + 0.5);
     A.in(tl, nx, tNx, 'fadeUp', { dur: 0.6 });
     A.in(tl, lets, clamp(sayAt(ctx, 5, 'ABCs', 0.85, 0.3), tNx + 0.4, end(5)), 'pop', { dur: 0.45, stagger: 0.15 });
     const tL = Math.max(end(5) + 0.6, Math.min(end(5) + 1.6, dur - 2.4));

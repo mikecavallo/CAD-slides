@@ -153,6 +153,7 @@ pipeline). This file records the state, decisions and working agreements from ea
   let its fade-in finish after the fade-out, so it sat under the card). The "glitch and repeat" after s10 was the old
   web_parts.py keyframe cut (fixed on the main branch, merged here); the MP4 and the new web parts are clean there.
   Master out/Understanding-Dog-Behavior-Ch2.mp4, chat copy -small (CRF 26).
+  Chapter thumbnail (Nov 26, like Chapter 1's): out/full/Understanding-Dog-Behavior-Ch2.jpg = ch02card segment at 2.0 s, 1280x720.
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

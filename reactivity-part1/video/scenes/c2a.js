@@ -142,7 +142,9 @@
     const def = K.el('div', 'c2a-def');
     Object.assign(def.style, { left: '100px', top: '286px', width: '1720px' });
     def.appendChild(K.el('div', 'eq', 'Baseline'));
-    def.appendChild(K.el('div', 'tx', K.md('the dog’s overall *starting state* before *something new* happens')));
+    const defTx = K.el('div', 'tx', K.md('the dog’s starting level of *stress and arousal* before *a trigger* appears'));
+    defTx.style.fontSize = '35px';
+    def.appendChild(defTx);
     stage.appendChild(def);
     A.in(tl, def, cue(0) + 0.2, 'fadeUp', { dur: 0.8 });
 
@@ -170,10 +172,10 @@
     // something new happens
     const evL = K.line(sv, EV, 600, EV, AY, { stroke: C2.C.amber, 'stroke-width': 6, 'stroke-dasharray': '14 12' });
     const ev = C2.badge(stage, 'bell-ring', EV, 560, 104, C2.C.amber, '#fff');
-    const evT = C2.put(stage, 'c2a-axis', '**Something new happens**', { x: EV + 70, y: 540 });
+    const evT = C2.put(stage, 'c2a-axis', '**A trigger appears**', { x: EV + 70, y: 540 });
     evT.style.color = 'var(--ink)';
     evT.style.fontSize = '32px';
-    const tEv = clamp(at(0, 'something new', 0.85, 0.3), tLine + 1.6, end(0) - 0.2);
+    const tEv = clamp(at(0, 'trigger appears', 0.88, 0.3), tLine + 1.6, end(0) - 0.2);
     A.draw(tl, evL, tEv, 0.5);
     tl.fromTo(ev, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.6)' }, tEv);
     A.in(tl, evT, tEv + 0.3, 'fadeRight', { dur: 0.6 });

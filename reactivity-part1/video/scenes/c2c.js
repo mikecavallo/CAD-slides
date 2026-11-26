@@ -373,7 +373,7 @@
     A.in(tl, D2.outer, t3 + 0.1, 'fadeUp', { dur: 0.6 });
     A.draw(tl, ring, t3 + 0.3, 1.0);
     const EX = [['hand', 'Touch', 'touch'], ['move', 'Movement', 'movement'], ['hand-helping', 'Handling', 'handling'], ['users', 'People', 'people'],
-      ['dog', 'Other dogs', 'other dogs'], ['volume-2', 'Noise', 'noise'], ['volleyball', 'Activity', 'activity'], ['calendar-days', 'Everyday events', 'everyday events']];
+      ['paw-print', 'Other animals', 'other animals'], ['volume-2', 'Noise', 'noise'], ['volleyball', 'Activity', 'activity'], ['calendar-days', 'Everyday events', 'everyday events']];
     const ANG = [-155, -115, -65, -25, 25, 155, 115, 65].map(a => a * Math.PI / 180);
     lo = t3 + 0.5;
     EX.forEach(([ic, t, p], k) => {

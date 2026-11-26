@@ -457,6 +457,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   golden-at-the-window illustration is OUT (Tori: messy, unclear, weird); it now shows `mg_mistake5.jpg` (Tori's fluffy white
   dog barking on leash, from Management: The Basics), red ring on the mouth. Don't use the abc_* illustrations in this video.
   Script doc "... (draft 6, Nov 26)" (draft 4 renamed superseded; draft 5 had no doc change).
+- Round 7 (Nov 26, draft 7, no narration change): door clip = "Jumping.MP4" 3 times at 0.8x (6.7 s), then FROZEN on its last
+  frame until the Teach instead beat, then "4 on floor extended" (Tori: don't show the jump looping on and on). Rebuild:
+  freeze length = beat 3 start - 1.0 - 6.7. Loose leash clip starts later (clip "at" 16.4 s, near Teach instead) so the dog
+  is still walking when the narration ends (clip 0..11 s ends just after the last word; keep that relation if timing moves).
 
 ## Recordings (Tori's voice)
 

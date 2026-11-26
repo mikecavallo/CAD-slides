@@ -42,7 +42,8 @@ for (const s of scenes) {
   if (k >= 0 || !lessons.length) lessons.push({ title: k >= 0 ? L.sections[k][1] : s.chapter.title, desc: k >= 0 ? L.sections[k][2] || '' : '', scenes: [] });
   lessons.at(-1).scenes.push(s);
 }
-const chapter = L.chapters.find((c) => /\d/.test(c.id) && Number(c.id.replace(/\D/g, '')) > 0) || L.chapters[0];
+const numbered = L.chapters.filter((c) => /\d/.test(c.id) && Number(c.id.replace(/\D/g, '')) > 0);
+const chapter = numbered.find((c) => c.title !== 'Welcome') || numbered[0] || L.chapters[0]; // a welcome chapter can carry the number too
 const chNum = Number(chapter.id.replace(/\D/g, ''));
 
 const lessonMeta = (l, i) => {

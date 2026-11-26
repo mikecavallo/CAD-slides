@@ -597,5 +597,37 @@
     }
    ]
   }
+ ],
+ "sections": [
+  [
+   "ch03intro",
+   "Welcome",
+   ""
+  ],
+  [
+   "ch03s01",
+   "The ABCs",
+   ""
+  ],
+  [
+   "ch03s03",
+   "WTF? What's the Function?",
+   ""
+  ],
+  [
+   "ch03s08",
+   "Why the Pattern Repeats",
+   ""
+  ],
+  [
+   "ch03s10",
+   "How Training Changes the Pattern",
+   ""
+  ],
+  [
+   "ch03s13",
+   "Your Homework",
+   ""
+  ]
  ]
 }

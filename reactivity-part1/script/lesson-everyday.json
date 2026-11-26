@@ -235,7 +235,7 @@
     {
      "id": "em02s01",
      "heading": "Greetings at the door",
-     "visual_concept": "Situation slide: the golden jumping on a guest; the greeting ritual loop (Jumps, Asked to sit, Sits, Gets attention); Manage it; Teach instead examples.",
+     "visual_concept": "Situation slide: the golden jumping on a guest; the greeting ritual loop; Manage it; Teach instead examples while Tori's dachshund clip (jumping, then four paws on the floor) plays muted in the picture's place.",
      "assets": [
       "abc_greet_c.jpg"
      ],
@@ -256,34 +256,21 @@
        "onscreen": "Baby gate or leash, before the door opens"
       },
       {
-       "say": "Then teach what you want instead. For example, four paws on the floor or going to a mat, and reward that calm hello.",
-       "show": "Teach instead.",
+       "say": "Then teach what you want instead. For example, four paws on the floor, like this little dachshund is learning, or going to a mat. Reward that calm hello.",
+       "show": "Teach instead; the dachshund clip plays muted in the picture's place.",
        "onscreen": "For example: four paws on the floor, or go to a mat"
-      }
-     ]
-    },
-    {
-     "id": "em02s01v",
-     "heading": "Four paws on the floor",
-     "visual_concept": "Tori's dachshund clip (jumping, then four paws on the floor) in the frame; two rows; the clip plays with its own sound after the line.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "Here’s an example. This little dachshund starts out jumping up on me. Watch what earns the treat: all four paws on the floor.",
-       "show": "Video frame; rows.",
-       "onscreen": "Four paws on the floor"
       }
      ],
      "clip": {
       "box": [
-       900,
-       330,
-       920,
-       518
+       1220,
+       391,
+       600,
+       338
       ],
       "poster": "em_clip_paws.jpg",
-      "afterNarration": true,
-      "volume": 1.0
+      "atBeat": 3,
+      "to": 11.0
      }
     },
     {
@@ -340,7 +327,7 @@
     {
      "id": "em02s04",
      "heading": "Pulling on walks",
-     "visual_concept": "Situation slide: picture placeholder; Practicing / Manage it (harness, head halter once conditioned) / Teach instead.",
+     "visual_concept": "Situation slide: Practicing / Manage it (harness, head halter once conditioned) / Teach instead; the loose leash walking clip plays muted in a tall frame at right.",
      "assets": [],
      "beats": [
       {
@@ -354,34 +341,20 @@
        "onscreen": "Harness; head halter, once conditioned"
       },
       {
-       "say": "Then teach what you want instead, like walking on a loose leash, and reward your dog for walking next to you.",
+       "say": "Then teach what you want instead, like walking on a loose leash, the way this dog is doing, and reward your dog for walking next to you.",
        "show": "Teach instead.",
        "onscreen": "For example: loose leash walking"
-      }
-     ]
-    },
-    {
-     "id": "em02s04v",
-     "heading": "Loose leash walking",
-     "visual_concept": "The loose leash walking clip (vertical) in a tall frame at the right; rows at left; plays with its own sound after the line.",
-     "assets": [],
-     "beats": [
-      {
-       "say": "Here’s what we’re working toward: a dog walking on a loose leash, and getting rewarded for staying right next to the handler.",
-       "show": "Video frame; rows.",
-       "onscreen": "Loose leash walking"
       }
      ],
      "clip": {
       "box": [
-       1250,
-       240,
-       570,
-       710
+       1340,
+       300,
+       480,
+       600
       ],
       "poster": "em_clip_walk.jpg",
-      "afterNarration": true,
-      "volume": 1.0,
+      "atBeat": 1,
       "crop": [
        0,
        285,
@@ -455,7 +428,7 @@
     {
      "id": "em03s02",
      "heading": "Bringing it together",
-     "visual_concept": "Level house on its foundation; three takeaways; closing statement; logo close.",
+     "visual_concept": "Level house on its foundation; three takeaways; closing statement (no logo close: the assignment comes next).",
      "assets": [
       "mg_house_level.png"
      ],
@@ -474,6 +447,29 @@
        "say": "Management is the foundation. Build on a strong foundation, one without cracks from management slipping, and the manners you teach will last.",
        "show": "Closing statement, logo close.",
        "onscreen": "A strong foundation, without cracks"
+      }
+     ]
+    },
+    {
+     "id": "em03s03",
+     "heading": "Your assignment",
+     "visual_concept": "A worksheet: three columns (Behavior I don't want / When and where it happens / How I'll manage it), one example row fills in; two numbered steps; logo close.",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Now it’s your turn. Here’s your assignment.",
+       "show": "Worksheet card appears.",
+       "onscreen": "Your assignment"
+      },
+      {
+       "say": "First, make a list of the behaviors you don’t want to continue, and the situations they happen in. Be specific. Not just jumping, but jumping on guests when they come through the front door.",
+       "show": "Step 1; example row: behavior and situation.",
+       "onscreen": "List the behaviors and the situations. Be specific."
+      },
+      {
+       "say": "Then, for each one, look at what you can do to manage the environment temporarily, so those behaviors can’t get practiced while you’re teaching new ones.",
+       "show": "Step 2; example row: how I'll manage it; logo close.",
+       "onscreen": "Manage the environment, temporarily"
       }
      ]
     }

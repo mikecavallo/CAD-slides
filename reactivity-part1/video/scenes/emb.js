@@ -2,8 +2,8 @@
 // practices in red, Manage it and Teach instead in green), Tori's picture whole at right, or a placeholder frame until it arrives.
 //   em02s00  teach what you want instead: a clear picture, other options we prefer, practice in many places
 //   em02s01  greetings at the door (abc_greet_c): the greeting ritual loop with the jump built in
-//   em02s01v Tori's dachshund clip: jumping, then four paws on the floor
-//   em02s04v the loose leash walking clip (vertical)
+//   em02s01 and em02s04 play Tori's clips (muted) in the picture's place: the dachshund (jumping, then four paws on the floor)
+//            and the loose leash walk (vertical)
 //   em02s02  mealtime (picture pending): counter surfing, mugging, jumping at meal prep, guarding the bowl
 //   em02s03  jumping for things in hands (picture pending)
 //   em02s04  pulling on walks (picture pending): harness; head halter, once conditioned; shorter walks while training
@@ -81,15 +81,10 @@
     const s3 = EM.section(m.col, ...TEACH);
     EM.chips(s3, [['For example: four paws on the floor', 'pale', 'paw-print'], ['Go to a mat', 'pale', 'square']], 27);
     show(tl, s3, cue(3) + 0.1);
-  });
-
-  // ---------------------------------------------------------------- the dachshund clip: from jumping to four paws on the floor
-  registerScene('em02s01v', ctx => {
-    css(ctx.stage);
-    TM.videoSlide(ctx, { kicker: 'Everyday situations', heading: 'Four paws on the floor', rows: [
-      { icon: 'repeat', html: 'Starts out *jumping up*', beat: 0, phrase: 'jumping up', fb: 0.4 },
-      { icon: 'paw-print', html: 'Four paws on the floor *earns the treat*', beat: 0, phrase: 'what earns', fb: 0.75 },
-    ] });
+    // the dachshund clip takes the picture's place (muted, from the lesson's clip block)
+    const tV = ctx.info.clip ? ctx.info.clip.at - 0.7 : cue(3);
+    tl.to(m.ph.wrap, { opacity: 0, scale: 0.97, duration: 0.5, ease: 'power2.in' }, tV - 0.2);
+    TM.videoFrame(ctx, tV).cap.style.display = 'none';
   });
 
   // ---------------------------------------------------------------- mealtime
@@ -140,7 +135,9 @@
   registerScene('em02s04', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const m = EM.situation(ctx, { title: 'Pulling on walks', hold: 'Pulling on the leash', maxW: 560, maxH: 600, gap: 40 });
+    const m = EM.situation(ctx, { title: 'Pulling on walks', hold: ' ', maxW: 480, maxH: 600, gap: 40 });
+    m.ph.wrap.style.visibility = 'hidden';  // the loose leash walking clip sits in this spot instead
+    TM.videoFrame(ctx, 0.35).cap.style.display = 'none';
     const s1 = EM.section(m.col, ...PRACT);
     EM.text(s1, 'Pulling gets them where they want to go, so !!pulling works!!.');
     show(tl, s1, cue(0) + 0.1);
@@ -152,21 +149,6 @@
     const s3 = EM.section(m.col, ...TEACH);
     EM.text(s3, 'For example: *loose leash walking*, rewarded right next to you.', 31);
     show(tl, s3, cue(2) + 0.1);
-  });
-
-  // ---------------------------------------------------------------- the loose leash walking clip (vertical, tall frame at the right)
-  registerScene('em02s04v', ctx => {
-    const { stage, tl } = ctx;
-    css(stage);
-    TM.head(ctx, 'Everyday situations', 'Loose leash walking');
-    const vf = TM.videoFrame(ctx);
-    vf.cap.style.display = 'none';
-    const col = put(stage, K.el('div', 'tm-col'), 100, 0, { width: '1000px', gap: '34px' });
-    [['link', 'A *loose leash*', 'loose leash'], ['paw-print', 'Walking *right next to the handler*', 'right next to'], ['cookie', 'Rewarded *for being there*', 'rewarded']].forEach(([ic, h, p]) => {
-      A.in(tl, TM.row(col, ic, h, { size: 36 }), at(ctx, 0, p, 0.3), 'fadeRight', { dur: 0.5 });
-    });
-    const [, by, , bh] = vf.box;
-    col.style.top = Math.round(by + bh / 2 - col.offsetHeight / 2) + 'px';
   });
 
   // ---------------------------------------------------------------- barking at people

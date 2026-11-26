@@ -430,6 +430,18 @@ pipeline). This file records the state, decisions and working agreements from ea
   crop [0,285,1080,1350]). Close: "Build on a strong foundation, one without cracks from management slipping".
   Clips and clips/src are gitignored: re-download from Drive with curl in a new container, then tools/clip_ends.py.
   Script doc now "... (draft 2, Nov 24)", id 1gt8mSHvzARcBzf0ezK0eKvT-iogCJf0WhQfuy_8pOGE; draft 1 renamed superseded.
+- Round 3 (Nov 26, applied as draft 3, 8:00): NO separate video slides: em02s01v and em02s04v are gone. The dachshund clip
+  (clips/em02s01.mp4, trimmed to 11 s) plays MUTED in the door slide's picture spot from the Teach instead beat (clip
+  atBeat 3, box [1220,391,600,338]; the golden picture fades out); the loose leash clip (clips/em02s04.mp4) plays MUTED in a
+  tall frame at the right of the pulling slide from beat 1 (box [1340,300,480,600], crop [0,285,1080,1350]; no pulling
+  placeholder any more). Narration points at them ("like this little dachshund is learning", "the way this dog is doing").
+  NEW last slide em03s03 "Your assignment" (Tori asked): list the behaviors you don't want to continue and the situations
+  they happen in (be specific), then how to manage the environment temporarily so they can't be practiced while teaching
+  new ones; worksheet with three columns and one example row (Jumping on guests / At the front door, when guests arrive /
+  Baby gate up before the door opens); logo close moved here from em03s02. Narration Claude-written.
+  Script doc "... (draft 3, Nov 26)", id 1oc7R59tUnIifZGeek-XN7x-XqUINpMqDleV7g12X3uY; draft 2 renamed superseded.
+  Pictures still pending: mealtime (Tori sent a Dalmatian lying by the table while a man eats, mid-task, so not saved:
+  needs resending) and jumping for something in a hand.
 
 ## Recordings (Tori's voice)
 

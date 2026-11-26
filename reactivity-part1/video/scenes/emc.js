@@ -1,6 +1,7 @@
 // Management: Everyday Manners, Part 3 (putting it together) and the close.
 //   em03s01  "Just this once": five small slips drop in, each one more rep on the old path (a red meter fills); consistency callout
-//   em03s02  bringing it together: Tori's level house on its foundation; three takeaways; the closing statement; logo close
+//   em03s02  bringing it together: Tori's level house on its foundation; three takeaways; the closing statement
+//   em03s03  your assignment: two steps and a worksheet with one example row; logo close
 (() => {
   const { at, put } = TM;
   const CSS = `
@@ -13,6 +14,16 @@
   .emc-statement { position: absolute; box-sizing: border-box; padding: 30px 40px; border-radius: 26px; background: var(--green-deep); color: #fff; font: 700 44px/1.2 var(--font-head);
     box-shadow: 0 18px 40px rgba(44,74,23,0.3); }
   .emc-statement b { color: #d6e9a8; }
+  .emc-ws { position: absolute; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-radius: 24px; overflow: hidden; background: #fff;
+    border: 1px solid #e6e9e1; box-shadow: var(--shadow-soft); }
+  .emc-ws .h { display: flex; align-items: center; gap: 12px; padding: 22px 28px; background: var(--green-mist); font: 700 27px/1.2 var(--font-body); color: var(--ink); }
+  .emc-ws .h svg { width: 30px; height: 30px; stroke-width: 2.4; flex: 0 0 auto; color: var(--green-dark); }
+  .emc-ws .h.red svg { color: var(--red); }
+  .emc-ws .c { padding: 22px 28px; min-height: 64px; border-top: 1px solid #e6e9e1; font: 600 30px/1.3 var(--font-body); color: var(--ink); }
+  .emc-ws .c.red { color: var(--red); }
+  .emc-ws .c.green { color: var(--green-dark); }
+  .emc-ws .c + .c, .emc-ws .h + .h { border-left: 1px solid #e6e9e1; }
+  .emc-ws .c.blank { min-height: 70px; background: repeating-linear-gradient(180deg, transparent 0 68px, #eef1ea 68px 70px); }
   .emc-statement .k { display: block; margin-bottom: 14px; font: 700 26px/1 var(--font-body); letter-spacing: 5px; text-transform: uppercase; color: var(--green-light); }
   `;
   const css = stage => { EM.css(stage); if (!stage.querySelector('style[data-emc]')) { const s = K.el('style', null, CSS); s.dataset.emc = '1'; stage.appendChild(s); } };
@@ -75,6 +86,29 @@
     st.style.top = Math.max(col.offsetTop + col.offsetHeight + 36, 330 + h - st.offsetHeight) + 'px';
     tl.fromTo(st, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(2) + 0.05);
     A.pulse(tl, tag, at(ctx, 2, 'without cracks', 0.3), { scale: 1.12 });
-    SKIT.logoClose(ctx, end(2) + 0.6, [ph.wrap, ...hd.all, col, st]);
+  });
+
+  // ---------------------------------------------------------------- the assignment, then the logo close
+  registerScene('em03s03', ctx => {
+    const { stage, tl, cue, end } = ctx;
+    css(stage);
+    const hd = TM.head(ctx, 'Putting it together', 'Your assignment');
+    const steps = put(stage, K.el('div', 'tm-col'), 100, 300, { width: '1720px', gap: '22px' });
+    const r1 = TM.row(steps, null, 'List the behaviors you don’t want to continue, and *the situations they happen in*. Be specific.', { num: 1, size: 32 });
+    const r2 = TM.row(steps, null, 'For each one, *manage the environment temporarily*, so it can’t be practiced while you teach something new.', { num: 2, size: 32 });
+    A.in(tl, r1, cue(1) + 0.05, 'fadeRight', { dur: 0.6 });
+    A.in(tl, r2, cue(2) + 0.05, 'fadeRight', { dur: 0.6 });
+    // the worksheet: three columns, one example row
+    const ws = put(stage, K.el('div', 'emc-ws'), 100, steps.offsetTop + steps.offsetHeight + 46, { width: '1720px' });
+    const H = [['Behavior I don’t want', 'circle-x', 'red'], ['When and where it happens', 'map-pin', ''], ['How I’ll manage it', 'shield-check', 'green']];
+    const cells = [['Jumping on guests', 'red'], ['At the front door, when guests arrive', ''], ['Baby gate up before the door opens', 'green']];
+    H.forEach(([t, ic, v]) => { const h = K.el('div', 'h ' + v, K.icon(ic).outerHTML + '<span>' + t + '</span>'); ws.appendChild(h); });
+    const cs = cells.map(([t, v]) => { const c = K.el('div', 'c ' + v, t); ws.appendChild(c); return c; });
+    [0, 1, 2].forEach(() => { const c = K.el('div', 'c blank'); ws.appendChild(c); });
+    tl.fromTo(ws, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, cue(0) + 0.3);
+    A.in(tl, cs[0], at(ctx, 1, 'not just jumping', 0.4), 'fadeUp', { dur: 0.5 });
+    A.in(tl, cs[1], at(ctx, 1, 'front door', 0.3), 'fadeUp', { dur: 0.5 });
+    A.in(tl, cs[2], at(ctx, 2, 'manage the environment', 0.3), 'fadeUp', { dur: 0.5 });
+    SKIT.logoClose(ctx, end(2) + 0.8, [...hd.all, steps, ws]);
   });
 })();

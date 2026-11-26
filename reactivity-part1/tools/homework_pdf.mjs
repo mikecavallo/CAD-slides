@@ -56,7 +56,7 @@ th .p { font: 500 7.5pt/1.3 Montserrat; color: #4a4a4a; margin-top: 3pt; }
 td { border-bottom: 1pt solid #c9d2bf; border-right: 1pt dashed #d6ddcc; vertical-align: top; padding: 4pt 7pt; }
 td:last-child { border-right: 0; }
 tr.ex td { height: 0.36in; font: italic 500 8.5pt/1.25 Montserrat; color: #2f5f8f; background: #f3f8ec; }
-tr.blank td { height: ${(4.7 / rows).toFixed(3)}in; }
+tr.blank td { height: ${(4.9 / rows).toFixed(3)}in; }
 tr.blank td:first-child { font: 700 9pt Rubik; color: #b8d99a; }
 footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8pt; font: 500 8pt Montserrat; color: #7a7a7a; }
 footer .goal { font: 700 9.5pt Rubik; color: #3f6b22; }
@@ -65,9 +65,9 @@ footer .goal span { color: #619537; }
 <header>
   <div>
     <div class="kicker">Understanding Dog Behavior · Chapter 3: The ABCs of Behavior</div>
-    <h1>Your Homework: Your Dog's ABCs</h1>
+    <h1>Your Dog's ABCs</h1>
     <p class="sub">Each time you see the behavior, fill in one row. Look at the whole picture: what happened before, what your dog did,
-      and what happened after. Then ask: <b>WTF? What's the function?</b> It doesn't have to be perfect. I'll help you with that.</p>
+      and what happened after. Then ask: <b>WTF? What's the function?</b></p>
   </div>
   <img src="${img('logo.png')}" alt="Calling All Dogs">
 </header>
@@ -110,7 +110,7 @@ for (const c of cells) {
   f.setFontSize(9);
 }
 doc.catalog.lookup(PDFName.of('AcroForm')).set(PDFName.of('NeedAppearances'), PDFBool.True);
-doc.setTitle("Your Dog's ABCs: Chapter 3 homework");
+doc.setTitle("Your Dog's ABCs");
 doc.setAuthor('Tori Ganino, Calling All Dogs');
 fs.mkdirSync(path.dirname(out), { recursive: true });
 fs.writeFileSync(out, await doc.save());

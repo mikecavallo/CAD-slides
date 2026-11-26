@@ -151,6 +151,10 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Scene code: `c3a.js` (intro, card, plan, s01 to s03; `C3.potWithThermo`), `c3b.js` (s04 to s06), `c3c.js` (s07),
   `c3d.js` (s08 to s12), `c3e.js` (s13, s14); kit `c3_abc.js` (photo ABC strip, function tag, tiles, chips, rows).
 - Colours: A olive, B green, C deep green; the emotional response is plum (`#8b5d8f`); function green with a target icon.
+- Round 9 (Nov 26): the abc_*.jpg panels were only about 600 px wide and looked soft; they are now 2x AI upscales
+  (Real-ESRGAN x4plus, then Lanczos to 2x; originals in `assets/img/archive/abc_lowres/`). s11 says "from another
+  chapter" (no chapter named); s14 opens "Now that we have the missing piece, the ABCs, we can go back to the pot and add
+  temperature in the next section." First build in Tori's ElevenLabs voice (eleven_v4), about 9.8 minutes.
 - Online preview (temporary AI voice): https://claude.ai/artifact/LgEH4FvtiMGM1FG7V3iDuz (`out/web/chapter3/`; publish
   without the .vtt files, captions are inline).
 

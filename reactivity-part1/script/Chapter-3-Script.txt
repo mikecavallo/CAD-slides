@@ -109,7 +109,7 @@ And third, teaching new behaviors, so the dog has something else they can do ins
 CH03,S11: Building a New Path
 On-screen text: Old path: e.g. barking, lunging / New path: e.g. looks back at you, checks in / Management / Back to the old path
 Narration:
-Remember the path across the lawn from the first chapter? The old path is worn in because the dog has used it so many times.
+Remember the path across the lawn from another chapter? The old path is worn in because the dog has used it so many times.
 Training builds a new path. With practice, the new path becomes stronger.
 At the same time, the old path begins to fade. That's not only because the old behavior is practiced less. Management keeps the dog out of the situations that bring up those old emotions, so the grass has a chance to grow back.
 But that old path hasn't vanished.
@@ -141,6 +141,6 @@ The goal is to start finding the thing, noticing the context, and seeing the pat
 CH03,S14: Now We Can Add Temperature
 On-screen text: Now we can add temperature. / Back to the pot / As a response builds / The dog's ability to think / Getting closer to the rim
 Narration:
-Now we have the missing piece.
-Now we can go back to our pot and add temperature.
+Now that we have the missing piece, the ABCs,
+we can go back to the pot and add temperature in the next section.
 That will help us look at what happens with arousal and stress as a response builds, what happens to the dog's ability to think, and what happens as the water gets closer to the rim of the pot.

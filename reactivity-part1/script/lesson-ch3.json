@@ -444,7 +444,7 @@
      ],
      "beats": [
       {
-       "say": "Remember the path across the lawn from the first chapter? The old path is worn in because the dog has used it so many times.",
+       "say": "Remember the path across the lawn from another chapter? The old path is worn in because the dog has used it so many times.",
        "show": "The lawn: the old path deep and brown, footprints walking it.",
        "onscreen": "Old path: e.g. barking, lunging"
       },
@@ -579,12 +579,12 @@
      ],
      "beats": [
       {
-       "say": "Now we have the missing piece.",
+       "say": "Now that we have the missing piece, the ABCs,",
        "show": "Heading; four check rows flash in as a quick recap (no narration for them).",
        "onscreen": "Now we can add temperature."
       },
       {
-       "say": "Now we can go back to our pot and add temperature.",
+       "say": "we can go back to the pot and add temperature in the next section.",
        "show": "The rows step left and shrink; the pot from Chapter 2 with its thermometer returns; the thermometer's line warms up.",
        "onscreen": "Back to the pot"
       },

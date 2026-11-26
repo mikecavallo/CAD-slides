@@ -114,7 +114,12 @@
   registerScene('em02s03', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const m = EM.situation(ctx, { title: 'Jumping for things in hands', hold: 'Jumping for something in a hand', maxW: 560, maxH: 600, hsize: 58 });
+    const m = EM.situation(ctx, { title: 'Jumping for things in hands', src: 'em_hands.jpg', nat: [1329, 2000], maxW: 440, maxH: 660, hsize: 58 });
+    // at Teach instead: the puppy sits and looks up at the hands (green: what we want)
+    const tT = cue(2) + 0.4;
+    TM.fx.dots(tl, m.ph.sv, [m.ph.P(0.40, 0.36), m.ph.P(0.25, 0.09)], tT, { color: '#fff', stroke: '#619537', r: 5, gap: 16, dur: 0.6, hold: 0 });
+    TM.fx.ring(tl, m.ph.sv, m.ph.P(0.42, 0.80), tT + 0.5, { r: 46, n: 2 });
+    TM.fx.tag(tl, m.ph.wrap, 'Four paws on the floor', 16, Math.round(m.ph.h * 0.9), at(ctx, 2, 'four paws', 0.4), 'green').style.fontSize = '22px';
     const s1 = EM.section(m.col, ...PRACT);
     const ch = EM.chips(s1, [['Food', 'red', 'cookie'], ['Toys', 'red', 'bone'], ['The mail', 'red', 'mail']], 28);
     show(tl, s1.querySelector('.lab'), cue(0) + 0.1);

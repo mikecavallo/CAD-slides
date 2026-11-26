@@ -306,8 +306,10 @@
     {
      "id": "em02s03",
      "heading": "Jumping for things in hands",
-     "visual_concept": "Situation slide: picture placeholder; Practicing / Manage it (out of reach; baby gate for the groceries) / Teach instead examples.",
-     "assets": [],
+     "visual_concept": "Situation slide: Tori's picture of a puppy sitting and looking up at the person's hands (green gaze dots and a ring on the sit at Teach instead); Practicing / Manage it / Teach instead.",
+     "assets": [
+      "em_hands.jpg"
+     ],
      "beats": [
       {
        "say": "Then there’s jumping up for whatever’s in your hands: food, toys, the mail. If jumping gets them the thing even once, they’ll try again, and harder.",

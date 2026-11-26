@@ -443,8 +443,11 @@ pipeline). This file records the state, decisions and working agreements from ea
 - Round 4 (Nov 26, draft 4): Tori chose a husky licking bread off a table for the mealtime slide instead of the Dalmatian
   (`em_meal.jpg`, 1333x2000, whole at right, red ring on the grab); first chip and narration "Grabbing food off the table or
   counter" (was counter surfing). Script doc "... (draft 4, Nov 26)", id 1fLRU8U132zs-BVIR_e2UW0wgU0fKNjS3ww6bqHy7PfQ; draft 3
-  renamed superseded. Pending: Tori's picture for jumping for things in hands (a Malinois puppy sitting and looking up at
-  a person's hands, sent mid-task, not saved; needs resending).
+  renamed superseded.
+- Round 5 (Nov 26, draft 5): Tori's picture for jumping for things in hands, `em_hands.jpg` (1329x2000, a Malinois puppy
+  sitting and looking up at the person's hands): whole at right; at Teach instead, green gaze dots from the puppy to the
+  hands, a green ring on the sit and a "Four paws on the floor" tag. No narration change (script doc draft 4 still current).
+  Every picture is now in; no placeholders left.
 
 ## Recordings (Tori's voice)
 

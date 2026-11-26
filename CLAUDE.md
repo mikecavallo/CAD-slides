@@ -199,6 +199,13 @@ pipeline). This file records the state, decisions and working agreements from ea
   the narration re-encoded mono AAC 96k from build/mix.f32 (same highpass + loudnorm as assemble.py), 82 MB so it fits
   the chat limit; its thumbnail out/full/Understanding-Dog-Behavior-Ch1.jpg is the Chapter 1 card (bumper_ch01) at
   1.6 s, 1280x720. Welcome lesson card is ch00s01 at 6 s (cardAt), when the training photo has finished fading in.
+- Learner script download (Nov 26): `node tools/script_pdf.mjs --learn "<what you'll learn>"` writes
+  out/full/Understanding-Dog-Behavior-Ch1-Script.pdf: branded, one heading per lesson (the lesson's "sections"), the
+  narration only (no scene ids or directions; the recording script is still tools/export_script.py). 6 pages.
+  What you'll learn (Tori approved): "In this chapter, you'll learn the difference between reactivity and aggression, and
+  why a behavior on its own doesn't tell you what your dog is feeling. You'll also discover the seven ingredients that
+  shape every dog's behavior, from genetics and breed history to socialization, age, past experiences and the training
+  methods used."
 
 ## Decisions already made (do not undo without asking)
 

@@ -461,6 +461,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   frame until the Teach instead beat, then "4 on floor extended" (Tori: don't show the jump looping on and on). Rebuild:
   freeze length = beat 3 start - 1.0 - 6.7. Loose leash clip starts later (clip "at" 16.4 s, near Teach instead) so the dog
   is still walking when the narration ends (clip 0..11 s ends just after the last word; keep that relation if timing moves).
+- Final (Nov 26, Tori approved draft 7): sent the full 1080p master (out/Management-Everyday-Manners.mp4, 47 MB), the
+  script as .docx (pandoc from the draft 7 markdown) and a 1920x1080 thumbnail of the title slide (frame at 6 s). GoHighLevel
+  section files not made yet.
 
 ## Recordings (Tori's voice)
 

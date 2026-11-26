@@ -147,6 +147,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   (long arrow stays under) and higher level = less room (short arrow spills) in one beat; "Goal: a lower baseline" + "More
   room to handle stress or arousal"; flame bookmark "We'll add heat in a later chapter". The "lower/higher water level"
   line and "Why does that matter?" are gone. s08 pill is "An unpleasant or stressful experience" (no "even one").
+- Round 17 (Nov 26): Chapter 2 is narrated with Tori's ElevenLabs clone (Tori, eleven_v4) and the Chapter 1/Management
+  pacing (tts_elevenlabs.py defaults: --beat-pause 1.0, --stretch 0.32; common.HOLD 2.4), about 7,000 credits; 10:12.
+  s12: "Now, how hot is it?" holds 2 s and clears before the Next chapter / ABCs card (a short "Temperature." beat used to
+  let its fade-in finish after the fade-out, so it sat under the card). The "glitch and repeat" after s10 was the old
+  web_parts.py keyframe cut (fixed on the main branch, merged here); the MP4 and the new web parts are clean there.
+  Master out/Understanding-Dog-Behavior-Ch2.mp4, chat copy -small (CRF 26).
 - Decisions: the pot is glass so the level shows; no heat or thermometer until ch02s12's last beat (doc says so);
   s01 reuses the Chapter 1 bowl (Breed history, Past experiences, Training tools, Pain return); s07 shows the
   doc's eight examples split Too little / Too much under a balance beam. Two lines Claude wrote are not in the doc

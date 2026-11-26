@@ -91,11 +91,12 @@
   registerScene('em02s02', ctx => {
     const { stage, tl, cue } = ctx;
     css(stage);
-    const m = EM.situation(ctx, { title: 'Mealtime', hold: 'Mealtime', maxW: 560, maxH: 600, gap: 30 });
+    const m = EM.situation(ctx, { title: 'Mealtime', src: 'em_meal.jpg', nat: [1333, 2000], maxW: 440, maxH: 660, gap: 30 });
+    TM.fx.ring(tl, m.ph.sv, m.ph.P(0.5, 0.58), at(ctx, 0, 'grabbing food', 0.3), { r: 44, n: 2, color: 'var(--red)' });
     const s1 = EM.section(m.col, ...PRACT);
-    const ch = EM.chips(s1, [['Counter surfing', 'red', 'cookie'], ['Mugging and grabbing', 'red', 'hand'], ['Jumping at meal prep', 'red', 'utensils'], ['Guarding the bowl', 'red', 'shield-alert']], 26);
+    const ch = EM.chips(s1, [['Grabbing from the table', 'red', 'cookie'], ['Mugging and grabbing', 'red', 'hand'], ['Jumping at meal prep', 'red', 'utensils'], ['Guarding the bowl', 'red', 'shield-alert']], 26);
     show(tl, s1.querySelector('.lab'), cue(0) + 0.1);
-    [['counter surfing', 0], ['mugging', 1], ['jumping up', 2], ['guarding', 3]].forEach(([p, i]) => A.in(tl, ch[i], at(ctx, 0, p, 0.15 + 0.2 * i), 'pop', { dur: 0.4 }));
+    [['grabbing food', 0], ['mugging', 1], ['jumping up', 2], ['guarding', 3]].forEach(([p, i]) => A.in(tl, ch[i], at(ctx, 0, p, 0.15 + 0.2 * i), 'pop', { dur: 0.4 }));
     const s2 = EM.section(m.col, ...MANAGE);
     const r1 = EM.text(s2, '*Food out of reach*, off the counters.', 31);
     const r2 = EM.text(s2, 'A *gate, crate, or mat* while you make meals and eat.', 31);

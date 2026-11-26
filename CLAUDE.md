@@ -440,8 +440,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   new ones; worksheet with three columns and one example row (Jumping on guests / At the front door, when guests arrive /
   Baby gate up before the door opens); logo close moved here from em03s02. Narration Claude-written.
   Script doc "... (draft 3, Nov 26)", id 1oc7R59tUnIifZGeek-XN7x-XqUINpMqDleV7g12X3uY; draft 2 renamed superseded.
-  Pictures still pending: mealtime (Tori sent a Dalmatian lying by the table while a man eats, mid-task, so not saved:
-  needs resending) and jumping for something in a hand.
+- Round 4 (Nov 26, draft 4): Tori chose a husky licking bread off a table for the mealtime slide instead of the Dalmatian
+  (`em_meal.jpg`, 1333x2000, whole at right, red ring on the grab); first chip and narration "Grabbing food off the table or
+  counter" (was counter surfing). Script doc "... (draft 4, Nov 26)", id 1fLRU8U132zs-BVIR_e2UW0wgU0fKNjS3ww6bqHy7PfQ; draft 3
+  renamed superseded. Pending: Tori's picture for jumping for things in hands (a Malinois puppy sitting and looking up at
+  a person's hands, sent mid-task, not saved; needs resending).
 
 ## Recordings (Tori's voice)
 

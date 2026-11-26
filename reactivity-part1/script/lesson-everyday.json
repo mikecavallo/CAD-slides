@@ -276,13 +276,15 @@
     {
      "id": "em02s02",
      "heading": "Mealtime",
-     "visual_concept": "Situation slide: picture placeholder (mealtime); four red chips; Manage it rows; Teach instead example.",
-     "assets": [],
+     "visual_concept": "Situation slide: Tori's picture of a husky licking bread off the table (red ring on the grab); four red chips; Manage it rows; Teach instead example.",
+     "assets": [
+      "em_meal.jpg"
+     ],
      "beats": [
       {
-       "say": "Next, food. Counter surfing, mugging you or grabbing food from your hands, jumping up while you make their meal, guarding the bowl. Every time it pays off, it gets stronger.",
+       "say": "Next, food. Grabbing food off the table or counter, mugging you or grabbing food from your hands, jumping up while you make their meal, guarding the bowl. Every time it pays off, it gets stronger.",
        "show": "Practicing: four red chips.",
-       "onscreen": "Counter surfing, Mugging and grabbing, Jumping at meal prep, Guarding the bowl"
+       "onscreen": "Grabbing from the table, Mugging and grabbing, Jumping at meal prep, Guarding the bowl"
       },
       {
        "say": "Manage it by keeping food off the counters and out of reach, and by using a gate, crate, or mat while you make meals and while you eat.",

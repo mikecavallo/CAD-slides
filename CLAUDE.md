@@ -194,7 +194,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   lesson's `"cardAt"` moves the grab later where 2.4 s is still mid-animation (ch01s02 9 s, ch01s06 12 s, ch01s12 5 s);
   `--thumbs-only` makes just those. Cuts are frame exact by construction (each section is its own slide renders
   joined, never a seek into the full video) and checked at both ends, because Tori does not want any glimpse of the
-  next section at the end of a section video. Full-chapter thumbnail: out/Understanding-Dog-Behavior-Ch1-thumbnail.jpg.
+  next section at the end of a section video.
+- Whole chapter for GHL (Nov 26): out/full/Understanding-Dog-Behavior-Ch1.mp4 is the master's video stream untouched with
+  the narration re-encoded mono AAC 96k from build/mix.f32 (same highpass + loudnorm as assemble.py), 82 MB so it fits
+  the chat limit; its thumbnail out/full/Understanding-Dog-Behavior-Ch1.jpg is the Chapter 1 card (bumper_ch01) at
+  1.6 s, 1280x720. Welcome lesson card is ch00s01 at 6 s (cardAt), when the training photo has finished fading in.
 
 ## Decisions already made (do not undo without asking)
 

@@ -188,9 +188,11 @@ pipeline). This file records the state, decisions and working agreements from ea
   route first. Tori said not to make it until Chapter 1 edits are final.
 - YouTube sections (Nov 24, Tori asked): one video per section plus a thumbnail and one-sentence description each.
   `python3 tools/sections.py --name Understanding-Dog-Behavior-Ch1` (run from tools/ or the project folder) writes
-  out/sections/NN-Title.mp4/.srt/.jpg. Sections are the lesson's `"sections"` list; thumbnails the lesson's `"thumbs"`
-  list (options for `tools/thumbnail.mjs`, template `tools/thumb/thumb.html`: series line, big hook, "Part N" pill,
-  picture card, Tori's headshot, logo). Cuts are frame exact by construction (each section is its own slide renders
+  out/sections/NN-Title.mp4/.srt/.jpg (for GHL lessons). Sections are the lesson's `"sections"` list (id, title,
+  one-sentence description). Thumbnails (Nov 26, Tori: "look like the management ones") are screen grabs of each
+  section's opening slide at 2.4 s, 1280x720, NOT designed cards (the designed set was rejected and removed); the
+  lesson's `"cardAt"` moves the grab later where 2.4 s is still mid-animation (ch01s02 9 s, ch01s06 12 s, ch01s12 5 s);
+  `--thumbs-only` makes just those. Cuts are frame exact by construction (each section is its own slide renders
   joined, never a seek into the full video) and checked at both ends, because Tori does not want any glimpse of the
   next section at the end of a section video. Full-chapter thumbnail: out/Understanding-Dog-Behavior-Ch1-thumbnail.jpg.
 

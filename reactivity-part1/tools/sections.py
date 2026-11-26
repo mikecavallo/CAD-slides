@@ -4,8 +4,9 @@
 
 Sections come from the lesson's "sections" list: [[first slide id, title, one-sentence description], ...]; each
 runs until the next one starts. Without it, every slide with a heading starts a section and chapter cards and the plan slide join the one
-before. Thumbnails come from the lesson's "thumbs" list (one options object per section, passed to
-tools/thumbnail.mjs) when present.
+before. Thumbnails (lesson cards) are screen grabs, like the Management courses (Tori wants cards that show what the
+video shows, not designed cards): the section's opening slide at 2.4 s, or at the lesson's "cardAt" seconds for that
+section ({"ch01s02": 9}) when 2.4 s is still mid-animation; 1280x720 JPEG.
 
 The cuts are exact: each section's picture is the rendered slide files themselves joined end to end (no seeking, so
 a section can never show a frame of the next or the previous one), and its sound is the finished video's mix cut at
@@ -94,7 +95,13 @@ def main():
     sections = plan_sections(lesson, segs)
     mix = None if args.thumbs_only else decode_audio(final)
     cues = captions(timing)
-    thumbs = lesson.get("thumbs") or []
+    card_at = lesson.get("cardAt") or {}
+
+    def card(sec, dest):
+        sid = sec["segs"][0]["id"]
+        run("ffmpeg", "-v", "error", "-y", "-ss", f"{card_at.get(sid, 2.4):.2f}", "-i", BUILD / args.segments / f"{sid}.mp4",
+            "-frames:v", "1", "-vf", "scale=1280:720:flags=lanczos", "-q:v", "2", dest)
+        print(dest.relative_to(ROOT))
     listing = []
 
     for n, sec in enumerate(sections, 1):
@@ -105,9 +112,7 @@ def main():
         if args.only and n not in args.only:
             continue
         if args.thumbs_only:
-            if n <= len(thumbs) and thumbs[n - 1]:
-                opts = [x for k, v in thumbs[n - 1].items() for x in (f"--{k}", str(v))]
-                run("node", ROOT / "tools" / "thumbnail.mjs", "--out", base.with_suffix(".jpg"), *opts)
+            card(sec, base.with_suffix(".jpg"))
             continue
         files = [BUILD / args.segments / f"{s['id']}.mp4" for s in sec["segs"]]
 
@@ -155,9 +160,8 @@ def main():
                                    capture_output=True, text=True, check=True).stdout)
         print(f"{out.relative_to(ROOT)}  {dur:6.2f} s  {nframes} frames  {out.stat().st_size / 1e6:5.1f} MB  ok")
 
-        if not args.no_thumbs and n <= len(thumbs) and thumbs[n - 1]:
-            opts = [x for k, v in thumbs[n - 1].items() for x in (f"--{k}", str(v))]
-            run("node", ROOT / "tools" / "thumbnail.mjs", "--out", base.with_suffix(".jpg"), *opts)
+        if not args.no_thumbs:
+            card(sec, base.with_suffix(".jpg"))
 
     (dest / "sections.txt").write_text("\n".join(listing) + "\n")
     print("\n".join(listing))

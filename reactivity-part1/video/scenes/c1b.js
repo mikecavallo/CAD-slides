@@ -2,7 +2,7 @@
 //   ch01s03  Why?                          photo + 'Why?', the bowl with eight blank chips, the chips start drifting down
 //   ch01s04  Genetics and temperament      genetics chip drops in, sensitive and easygoing dog portraits, a tiny smoke alarm
 //   ch01s05  Before birth                  prenatal chip drops in; health, nutrition and experiences gather around it
-//   ch01s07  Early life and socialization  timeline window, gaps, how we expose, pass the puppy, no break, party and leash
+//   ch01s07  Early life and socialization  timeline window, missed experiences, how we expose, pass the puppy, no break, party and leash
 (() => {
   const CSS = `
   .c1b-sub { position: absolute; font: 600 54px/1.16 var(--font-head); color: var(--ink); white-space: nowrap; }
@@ -245,7 +245,7 @@
     A.in(tl, cap1, land1 - 0.2, 'fadeUp', { dur: 0.6 });
 
     const sub = C1.put(stage, 'c1b-sub', 'Before birth *matters too*', { x: 100, y: SUB_Y });
-    A.in(tl, sub, clamp(sayAt(ctx, 0, 'before it is even born', 0.3), land1 + 0.3, dur - 6), 'fadeUp', { dur: 0.8 });
+    A.in(tl, sub, clamp(sayAt(ctx, 0, 'before it\'s even born', 0.3), land1 + 0.3, dur - 6), 'fadeUp', { dur: 0.8 });
 
     // a hub for the prenatal environment with health, nutrition and experiences around it, one per word
     const HX = 600, HY = 580;
@@ -337,14 +337,15 @@
     const tCells = Math.max(tFew + 0.9, at(0, 'especially influenced', 0.85));
     tl.fromTo(cells, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.14, ease: 'back.out(2)' }, tCells);
 
-    // ---------- beat 1: too little exposure. Gaps open in the window; the missing experiences are named
+    // ---------- beat 1: too little exposure. The window stays whole; the experiences the puppy missed leave empty
+    // dashed slots in it (Tori: light stripes cut into the window read as gaps in time, which made no sense)
     const sub1 = C1.put(stage, 'c1b-sub', 'Too little *exposure*', { x: 100, y: SUB_Y });
     swap(tl, sub0, sub1, cue(1));
     const GAP = [1, 2, 3, 4];
-    const gaps = GAP.map(k => K.rect(tsvg, cx(k) - 36, TY, 72, TH, { fill: '#e1e7d9' }));
+    const slots = GAP.map(k => K.circle(tsvg, cx(k), TY + TH / 2, 21, { fill: 'none', stroke: '#fff', 'stroke-width': 3, 'stroke-dasharray': '5 6', opacity: 0.75 }));
     const tGap = Math.max(cue(1) + 0.3, at(1, "don't have enough", 0.05));
-    tl.to(GAP.map(k => cells[k]), { opacity: 0, y: 30, duration: 0.4, stagger: 0.12, ease: 'power2.in' }, tGap);
-    tl.fromTo(gaps, { scaleY: 0, transformOrigin: '50% 50%' }, { scaleY: 1, duration: 0.45, stagger: 0.12, ease: 'power2.out' }, tGap + 0.2);
+    tl.to(GAP.map(k => cells[k]), { opacity: 0, scale: 0.6, transformOrigin: '50% 50%', duration: 0.4, stagger: 0.12, ease: 'power2.in' }, tGap);
+    tl.fromTo(slots, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }, { opacity: 0.75, scale: 1, duration: 0.45, stagger: 0.12, ease: 'power2.out' }, tGap + 0.25);
     // tags in the order the narration names them: people, places, experiences
     const TAGS = [['user', 'Strangers', 'people'], ['map-pin', 'New places', 'places'], ['bus', 'Buses', 'experiences'], ['skateboard', 'Skateboards', 'experiences']];
     const trow = K.el('div', null);
@@ -524,7 +525,7 @@
       A.in(tl, u.lab, tOut + 0.15, 'fadeUp', { dur: 0.5 });
     });
     // the puppy leans toward them, a hand closes the gap, and it is back in the middle
-    const tLean = clamp(at(4, 'choose whether', 0.6), tOut + 0.8, cue(5) - 3);
+    const tLean = clamp(at(4, 'choose if they', 0.6), tOut + 0.8, cue(5) - 3);
     const la = ((180 - ang(5)) * Math.PI) / 180;
     tl.to(pupPos, { x: CX + Math.cos(la) * 70, y: CY + Math.sin(la) * 70, duration: 0.45, ease: 'power2.out' }, tLean);
     tl.to(pupPos, { x: CX, y: CY, duration: 0.45, ease: 'power2.in' }, tLean + 0.75);
@@ -549,7 +550,7 @@
       const pop = sIcon(it.inner, 'party-popper', 52, -52, 46, { stroke: C.amber, 'stroke-width': 2.2 });
       return { it, pop, x };
     });
-    const tRow = Math.max(cue(5) + 0.3, at(5, 'every dog or person', 0.15));
+    const tRow = Math.max(cue(5) + 0.3, at(5, 'every other dog', 0.15));
     tl.fromTo(party.map(p => p.it.inner), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.12, ease: 'back.out(2)' }, tRow);
     // the party puppy
     const pup = K.group(qsvg);
@@ -621,15 +622,43 @@
     const cap2 = C1.caption(stage, 3, STD.cx, CAP_Y);
     A.in(tl, cap2, land - 0.2, 'fadeUp', { dur: 0.6 });
     const LZ = C1.layer(stage);
+    // "isn't about checking off a list ... positive associations ... support and choice": two lines while it is said
+    const pre = K.el('div', 'c1-card');
+    Object.assign(pre.style, { left: '100px', top: '400px', width: '1000px', height: '250px', display: 'flex', flexDirection: 'column',
+      justifyContent: 'center', gap: '30px', padding: '0 48px', boxSizing: 'border-box' });
+    const preRow = (icon, col, text) => {
+      const r = K.el('div');
+      Object.assign(r.style, { display: 'flex', alignItems: 'center', gap: '24px', font: '600 40px/1.15 var(--font-head)', color: 'var(--ink)', whiteSpace: 'nowrap' });
+      const ic = K.el('div');
+      Object.assign(ic.style, { width: '66px', height: '66px', borderRadius: '50%', background: col, color: '#fff', display: 'grid', placeItems: 'center', flex: '0 0 auto' });
+      const svg = K.icon(icon);
+      Object.assign(svg.style, { width: '38px', height: '38px', strokeWidth: 2.8 });
+      ic.appendChild(svg);
+      r.appendChild(ic);
+      r.appendChild(K.el('span', null, text));
+      pre.appendChild(r);
+      return r;
+    };
+    const rNot = preRow('x', C.red, 'Not a checklist');
+    const rPos = preRow('check', 'var(--green)', 'Positive associations, support and choice');
+    LZ.appendChild(pre);
+    const tNot = clamp(at(6, 'checking off', 0.12), land - 0.2, dur - 6);
+    const tPos = clamp(at(6, 'positive associations', 0.45), tNot + 1.2, dur - 5);
+    const tCard = clamp(at(6, 'socialization is one', 0.62), tPos + 1.5, dur - 3);
+    A.in(tl, pre, tNot - 0.3, 'fadeUp', { dur: 0.6 });
+    A.in(tl, rNot, tNot, 'fadeRight', { dur: 0.5 });
+    A.in(tl, rPos, tPos, 'fadeRight', { dur: 0.5 });
+    A.out(tl, pre, tCard - 0.6, 'fade', { dur: 0.45 });
+    // "Socialization is one ingredient": the card lands as it is said
     const card = K.el('div', 'c1-card');
     Object.assign(card.style, { left: '100px', top: '400px', width: '1000px', height: '250px' });
     LZ.appendChild(card);
     const hb = C1.badge(LZ, ING[3].icon, 206, 525, 130, ING[3].col, '#fff');
     const htxt = C1.put(LZ, 'c1-big', 'Socialization is<br>*one ingredient*', { x: 310, y: 458 });
-    A.in(tl, card, land - 0.3, 'fadeUp', { dur: 0.7 });
-    A.in(tl, hb, land - 0.1, 'pop', { dur: 0.6 });
-    A.in(tl, htxt, land, 'fadeUp', { dur: 0.7 });
+    A.in(tl, card, tCard - 0.2, 'fadeUp', { dur: 0.7 });
+    A.in(tl, hb, tCard, 'pop', { dur: 0.6 });
+    A.in(tl, htxt, tCard + 0.1, 'fadeUp', { dur: 0.7 });
     // "in the larger picture": every ingredient so far glows together
-    glowTokens(tl, B, 4, clamp(at(6, 'one ingredient', 0.72), land + 1.5, dur - 1.8));
+    glowTokens(tl, B, 4, clamp(at(6, 'one ingredient', 0.72), tCard + 1.0, dur - 1.8));
   });
 })();

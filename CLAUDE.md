@@ -160,9 +160,29 @@ pipeline). This file records the state, decisions and working agreements from ea
   `Ch01s07_part_1`, `Ch01s07_part_2`. Files go in `reactivity-part1/narration/`.
 - `narration/` is gitignored (the repo is public), so **recordings are not in GitHub**. In a new session, ask
   Tori to re-upload the takes for any slide being rebuilt with voice.
-- Chapter 1 takes still needed (Oct 4): `Ch00s01` (new title) and `Ch01s12` (pain gone, water ending). Until then
-  the Chapter 1 build uses the stand-in voice for those two slides (narration/ch00s01.wav, ch01s12.wav, made from the
-  scratch clips; delete them when Tori's takes arrive).
+- Chapter 1 (Nov 4): rebuilt with voice. ch00s01 (welcome) and ch01s12 (last slide) are narrated by Tori's ElevenLabs
+  Pro clone, so no re-record is needed unless Tori wants one. The other slides are Tori's real takes; the original files
+  were not in the container, so they were recovered from the published narrated video (artifact Q4WnoBBniuysUrV4ssy7hT,
+  parts cut at the ~2 s silences between slides) into narration/Ch00s02.wav, Ch01s01.wav ... Ch01s10.wav (gitignored).
+  If Tori re-uploads the originals, drop them in narration/ and re-run the voiced build.
+  Nov 5 (Tori: "take the exact words that I use in the recording and re-record with my AI voice, so all videos sound
+  consistent"): the whole chapter is now the clone (tts_elevenlabs.py --all-clone). lesson.json carries Tori's recorded
+  wording (Whisper medium.en + sherpa transcripts of the takes, reconciled and verified per slide; 20 beats changed,
+  slips such as a half word, a dropped "can" and "with" for "within" were not kept); old text in git history.
+  Cue phrases updated to match (why it's, before it's even born, choose if they, every other dog, as a three,
+  rushes them, without even thinking). Build voiced Chapter 1 with --all-clone so the real takes are not mixed back in.
+  Nov 5 round 2 (Tori): ch01s06 silhouette row's 5th dog is now sil_lab.png (GrabCut cut of breed_working.jpg; the
+  old sil_collie had stub legs, deleted); ch01s07 beat 1 keeps the first-months window solid and shows dashed empty
+  slots for missed experiences (light stripes cut into it made no sense); ch01s08 "as a one-year-old"; ch01s10 has a
+  new beat 4, a resource-guarding example of suppression (person approaches, growl, corrected, growl stops / still
+  doesn't feel better / confirmed: people approaching are a bad thing; narration from Tori's own words), old beat 4
+  is beat 5; footer has no chapter-number tab any more, the rule runs to 76 px from the right edge (lib.js, base.css,
+  all videos on this branch). The "repetition" Tori heard was web_parts.py: stream-copy cuts at the rounded slide
+  start landed on the keyframe before it, so each web part replayed the end of the previous slide; fixed (seek
+  +10 ms, length check). The downloaded MP4 never repeated. QA fixes in the same round:
+  align.py no longer trims a misheard first word ("Ingredient two" was cut), the chapter chime fades out, ch01s07's
+  last beat shows "Not a checklist" / "Positive associations, support and choice" before the "Socialization is one
+  ingredient" card (which now lands on its words), and lesson.json "tail": 4.5 holds the logo close longer.
 - Build with voice: `python3 tools/align.py && python3 tools/timing.py --mode narration && node tools/render.mjs
   --workers 3 && python3 tools/assemble.py --name Getting-Started-with-Dog-Behavior`.
   align.py levels each take, trims lead-in/tail noise and slates (voiced-sound based), and cuts slides exactly
@@ -181,6 +201,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   sessions through the proxy, so ELEVENLABS_API_KEY is not set and the tool says so; that is fine. The key is restricted
   to Text to Speech + Voices read (no user_read, so /v1/user calls fail by design). First test sent: ch01s01, Tori's real
   take vs multilingual_v2 vs eleven_v4. Tori chose eleven_v4 ("sounds more like me"): it is the tool's default.
+  Pacing (Nov 24, Tori: "needs some talking pauses ... the breed purposes are read out fast"): slides hold at least
+  2.4 s after the last word (common.HOLD, was 1.6), beats are 1 s apart (--beat-pause, was 0.45), and the clone's own
+  comma/sentence pauses are lengthened (--stretch 0.32 s). eleven_v4 ignores the speed setting, so do not rely on it.
+  Chapter 1 is now 13:26.
   Voiced builds now use the clone by default (skills updated); a slide Tori records replaces the clone
   (the tool copies takes from narration/ into the output; --all-clone ignores them).
 - When the recording differs from the script, check the doc; usually Tori changed the wording on purpose.
@@ -196,6 +220,28 @@ pipeline). This file records the state, decisions and working agreements from ea
 - YouTube: Tori uploads there. For crisp text, upload a true 4K render: `node tools/render.mjs --scale 2`
   then `python3 tools/assemble.py --segments segments@2x --no-chapters`. Too big for chat; agree a delivery
   route first. Tori said not to make it until Chapter 1 edits are final.
+- YouTube sections (Nov 24, Tori asked): one video per section plus a thumbnail and one-sentence description each.
+  `python3 tools/sections.py --name Understanding-Dog-Behavior-Ch1` (run from tools/ or the project folder) writes
+  out/sections/NN-Title.mp4/.srt/.jpg (for GHL lessons). Sections are the lesson's `"sections"` list (id, title,
+  one-sentence description). Thumbnails (Nov 26, Tori: "look like the management ones") are screen grabs of each
+  section's opening slide at 2.4 s, 1280x720, NOT designed cards (the designed set was rejected and removed); the
+  lesson's `"cardAt"` moves the grab later where 2.4 s is still mid-animation (ch01s02 9 s, ch01s06 12 s, ch01s12 5 s);
+  `--thumbs-only` makes just those. Cuts are frame exact by construction (each section is its own slide renders
+  joined, never a seek into the full video) and checked at both ends, because Tori does not want any glimpse of the
+  next section at the end of a section video.
+- Whole chapter for GHL (Nov 26): out/full/Understanding-Dog-Behavior-Ch1.mp4 is the master's video stream untouched with
+  the narration re-encoded mono AAC 96k from build/mix.f32 (same highpass + loudnorm as assemble.py), 82 MB so it fits
+  the chat limit; its thumbnail out/full/Understanding-Dog-Behavior-Ch1.jpg is the Chapter 1 card (bumper_ch01) at
+  1.6 s, 1280x720. Welcome lesson card is ch00s01 at 6 s (cardAt), when the training photo has finished fading in.
+- Script PDF (Nov 26): Tori wants it for Tori's own records, not for students. `node tools/script_pdf.mjs --records
+  --learn "<what you'll learn>"` writes out/full/Understanding-Dog-Behavior-Ch1-Script.pdf (8 pages): branded, one heading per
+  lesson (the lesson's "sections") with its start time in the full video, length, video file name and GHL description,
+  slide subheads with times, then the narration as it plays (no directions; the recording script is still
+  tools/export_script.py). Without --records it is a 6-page learner copy.
+  What you'll learn (Tori approved): "In this chapter, you'll learn the difference between reactivity and aggression, and
+  why a behavior on its own doesn't tell you what your dog is feeling. You'll also discover the seven ingredients that
+  shape every dog's behavior, from genetics and breed history to socialization, age, past experiences and the training
+  methods used."
 
 ## Decisions already made (do not undo without asking)
 

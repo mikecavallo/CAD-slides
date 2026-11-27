@@ -2,8 +2,9 @@
 // Several sightings fit on the page; every blank cell is also a fillable form field, so it can be typed into or printed.
 //
 //   node tools/homework_pdf.mjs [--rows 5] [--out out/full/Understanding-Dog-Behavior-Ch3-ABC-Tracker.pdf]
+//   node tools/homework_pdf.mjs --everyday      (The ABCs of Everyday Behavior, its homework slide vabcs13)
 //
-// The questions and the example row follow the homework slide (ch03s13).
+// The questions and the example row follow the homework slide (ch03s13, or vabcs13 with --everyday).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,14 +15,15 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
 const opt = (k, d) => { const i = argv.indexOf('--' + k); return i >= 0 ? argv[i + 1] : d; };
 const rows = Number(opt('rows', 5));
-const out = path.resolve(opt('out', 'out/full/Understanding-Dog-Behavior-Ch3-ABC-Tracker.pdf'));
+const EVERYDAY = argv.includes('--everyday');
+const out = path.resolve(opt('out', EVERYDAY ? 'out/full/The-ABCs-of-Everyday-Behavior-Tracker.pdf' : 'out/full/Understanding-Dog-Behavior-Ch3-ABC-Tracker.pdf'));
 
 const font = (family, weight, file, style = 'normal') => `@font-face{font-family:'${family}';font-weight:${weight};font-style:${style};src:url(data:font/woff2;base64,${
   fs.readFileSync(path.join(ROOT, 'assets/fonts', file)).toString('base64')}) format('woff2');}`;
 const img = (f) => `data:image/png;base64,${fs.readFileSync(path.join(ROOT, 'assets/img', f)).toString('base64')}`;
 
 // [tile letter or '' for the function target, tile colour, column heading, prompt]
-const COLS = [
+let COLS = [
   ['', '', 'When', 'Date and time'],
   ['A', '#4b5a1e', 'The thing', 'What happened before the behavior?'],
   ['A', '#4b5a1e', 'The context', 'Where were you? How close was it? What else was happening?'],
@@ -29,8 +31,19 @@ const COLS = [
   ['C', '#2c4a17', 'What happened as a result', 'Did someone move away? Did your dog get something?'],
   ['fn', '#619537', "WTF? What's the Function?", 'What did the behavior accomplish?'],
 ];
-const EX = ['e.g. Tues, 8 am walk', 'e.g. Another dog appears', 'e.g. Same corner, dogs too close', 'e.g. Barked and lunged',
+if (EVERYDAY) {
+  COLS[1] = ['A', '#4b5a1e', 'Just before', 'What happened just before the behavior?'];
+  COLS[2] = ['A', '#4b5a1e', 'Where and what', 'Where were you? What was going on around you?'];
+  COLS[4] = ['C', '#2c4a17', 'As a result', 'What happened right after? Did your dog get something?'];
+}
+const EX = EVERYDAY ? ['e.g. Tues, 8 am walk', 'e.g. Stepped outside', 'e.g. Front walk, a tree up ahead', 'e.g. Pulled toward the tree',
+  'e.g. Reached the tree', 'e.g. Get to the tree?'] : ['e.g. Tues, 8 am walk', 'e.g. Another dog appears', 'e.g. Same corner, dogs too close', 'e.g. Barked and lunged',
   'e.g. The other dog moved away', 'e.g. More distance?'];
+const KICK = EVERYDAY ? 'The ABCs of Everyday Behavior' : 'Understanding Dog Behavior · Chapter 3: The ABCs of Behavior';
+const SUB = EVERYDAY ? `Choose one everyday behavior you'd like to change. Each time it happens, fill in one row. Then ask: <b>WTF? What's the function?</b>
+      After a few days, look back over your notes for the pattern.` : `Each time you see the behavior, fill in one row. Look at the whole picture: what happened before, what your dog did,
+      and what happened after. Then ask: <b>WTF? What's the function?</b>`;
+const GOAL = EVERYDAY ? 'One behavior. <span>Every time it happens.</span> Look for the pattern.' : 'Find the thing. <span>Notice the context.</span> See the pattern.';
 const target = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`;
 const tile = (l, c) => l === '' ? '' : `<span class="tile" style="background:${c}">${l === 'fn' ? target : l}</span>`;
 
@@ -64,10 +77,9 @@ footer .goal span { color: #619537; }
 </style></head><body>
 <header>
   <div>
-    <div class="kicker">Understanding Dog Behavior · Chapter 3: The ABCs of Behavior</div>
+    <div class="kicker">${KICK}</div>
     <h1>Your Dog's ABCs</h1>
-    <p class="sub">Each time you see the behavior, fill in one row. Look at the whole picture: what happened before, what your dog did,
-      and what happened after. Then ask: <b>WTF? What's the function?</b></p>
+    <p class="sub">${SUB}</p>
   </div>
   <img src="${img('logo.png')}" alt="Calling All Dogs">
 </header>
@@ -78,7 +90,7 @@ footer .goal span { color: #619537; }
   ${Array.from({ length: rows }, (_, r) => `<tr class="blank">${COLS.map((_, k) => `<td data-f="r${r + 1}c${k + 1}">${k === 0 ? r + 1 : ''}</td>`).join('')}</tr>`).join('')}
 </table>
 <footer>
-  <div class="goal">Find the thing. <span>Notice the context.</span> See the pattern.</div>
+  <div class="goal">${GOAL}</div>
   <div>Tori Ganino, BS, CDBC, CPDT-KA · callingalldogsny.com</div>
 </footer>
 </body></html>`;

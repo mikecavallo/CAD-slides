@@ -304,6 +304,12 @@ pipeline). This file records the state, decisions and working agreements from ea
   frame and shared slides, no chapter number or card, `script/video-<slug>.json` + `video/scenes/v_<slug>.js`.
   Template: `script/video-example.json` / `v_example.js` ("Spot It First", title slide, one tip slide, logo close with
   a call to action). 16:9 only.
+- The ABCs of Everyday Behavior (Nov 27, Tori asked): `script/video-abcs.json` + `video/scenes/v_abcs.js`, Chapter 3's
+  look (C3 kit) for everyday behaviors only (pulling, counter surfing, recall, attention barking; no reactivity, no pot).
+  Narration is Tori's edited doc "The ABCs of Everyday Behavior: Narration Script" (claude.ai/artifact/L4VxFcWPfUAXiBq1zwEWT4,
+  a Claude Doc Tori edits in place). No photos: the ABC panels are drawn scenes (`pic()`: backdrop, C2.dog, Lucide
+  icons); Tori can send pictures to replace them. Recall example: B = runs back, C = leash on and park time over (Tori).
+  The path slide adds a neural pathway (neurons, pulses, the link thickening). ElevenLabs voice, about 8.5 minutes.
 
 ## Working with Tori
 

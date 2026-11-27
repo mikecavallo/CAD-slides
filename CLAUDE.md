@@ -219,6 +219,10 @@ pipeline). This file records the state, decisions and working agreements from ea
   6.50 s (the dog has faded out) with its first frame held 0.3 s, sound from 6.20 s (first word at 6.66 s), so 61.3 s.
   Then (Nov 27) to start at the stoic graph instead: picture from 28.567 s of the 67.5 s cut (beat 3 has faded out,
   'Dogs can be very stoic' is up), first frame held 0.3 s, sound from 28.267 s (first word at 28.78 s), so 39.2 s.
+  B-roll for the same post (Tori's own client footage, gitignored, not in git): the hip dysplasia dog's run, 36.9 to
+  41.2 s of Tori's 44 s upload, at full speed then again at half speed, muted (silent track):
+  out/social/Hip-Dysplasia-Run-16x9.mp4 and -Vertical.mp4 (static 405x720 crop at x 330). Tori will send the CCL dog's
+  tug-play video next.
 
 ## Decisions already made (do not undo without asking)
 

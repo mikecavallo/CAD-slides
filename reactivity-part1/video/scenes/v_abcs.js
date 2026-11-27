@@ -91,17 +91,8 @@
   // the pictures for each example (A, B, C)
   const P = {
     pull: [{ img: 'abcs_loose.jpg' }, { img: 'abcs_pull_b.jpg' }, { img: 'abcs_pull_c.jpg' }],
-    counter: [
-      { bg: 'in', counter: [210, 120, 170], icons: [['sandwich', 290, 100, 56, '#b5772f'], ['door-open', 70, 105, 92, '#8c7a5c']] },
-      { bg: 'in', counter: [230, 120, 150], dog: [190, 140, 0.36], rot: -28, icons: [['sandwich', 300, 100, 56, '#b5772f']] },
-      { bg: 'in', counter: [260, 120, 130], dog: [150, 152, 0.36], icons: [['sandwich', 245, 120, 48, '#b5772f'], ['check', 70, 60, 56, C.green]] },
-    ],
-    recall: [
-      { dog: [230, 160, 0.36], rot: 14, icons: [['flower-2', 330, 160, 44, '#c46a8a'], ['flower', 120, 166, 36, '#d39b2a'], ['volume-2', 60, 60, 58, C.amber]] },
-      { dog: [230, 150, 0.36], flip: true, icons: [['user', 50, 120, 96, '#4a4a4a']], marks: ['M 330 100 l 30 0', 'M 324 120 l 40 0', 'M 330 140 l 30 0'], markCol: '#9bb7c9' },
-      { dog: [190, 150, 0.36], flip: true, icons: [['user', 50, 120, 96, '#4a4a4a'], ['tree-deciduous', 335, 112, 110, '#b6c7a4'], ['circle-x', 335, 112, 60, C.red]],
-        marks: ['M 70 128 C 100 150, 120 140, 150 130'], markCol: '#8c7a5c' },
-    ],
+    counter: [{ img: 'abcs_counter_a.jpg' }, { img: 'abcs_counter_b.jpg' }, { img: 'abcs_counter_c.jpg' }],
+    recall: [{ img: 'abcs_recall_a.jpg' }, { img: 'abcs_recall_b.jpg' }, { img: 'abcs_recall_c.jpg' }],
     bark: { bg: 'in', dog: [150, 150, 0.36], marks: ['M 262 70 q 12 16 0 32', 'M 280 60 q 18 26 0 52', 'M 298 50 q 24 36 0 72'], markCol: C.red },
   };
 
@@ -547,8 +538,8 @@
     // beat 4: recall
     const t4 = cue(4);
     tl.to([...Object.values(r1), ...Object.values(r2), same], { opacity: 0, duration: 0.4 }, t4);
-    const r3 = row('Recall', C.greenDark, 'undo-2', 'Comes when called', 'gift', 'A reward, and often<br>back to sniffing', 470, t4 + 0.5);
-    const worth = C3.chip(stage, 'check', 'Coming when called is *worth it*', 960, 720, { center: true, size: 36, col: C.green });
+    const r3 = rowPic('Recall', C.greenDark, 'abcs_recall_b.jpg', '<b>Comes when called</b>', 'abcs_recall_a.jpg', 'A reward, and often back to sniffing', 400, t4 + 0.5);
+    const worth = C3.chip(stage, 'check', 'Coming when called is *worth it*', 960, 680, { center: true, size: 36, col: C.green });
     worth.style.borderColor = C.green;
     A.in(tl, worth, clamp(at(4, 'worth it', 0.4), t4 + 2.0, end(4) - 0.3), 'pop', { dur: 0.5 });
   });

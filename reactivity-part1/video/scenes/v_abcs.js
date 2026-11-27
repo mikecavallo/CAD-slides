@@ -600,6 +600,10 @@
     gsap.set(gIn, { opacity: 0 });
     K.rect(lawn, 2, 2, VW - 4, VH - 4, { rx: 25, fill: 'none', stroke: '#ffffff', 'stroke-width': 4, opacity: 0.7 });
     lawn.style.filter = 'drop-shadow(0 18px 40px rgba(40,60,20,0.16))';
+    const wrap = K.el('div');
+    Object.assign(wrap.style, { position: 'absolute', left: '0', top: '0', width: '1920px', height: '1080px' });
+    stage.insertBefore(wrap, lawn);
+    wrap.appendChild(lawn);
     const st = (x, y) => [LX + x * S, LY + y * S];
     const pill = (icon, text, col, x, y) => {
       const n = K.el('div', 'c3p-pill');
@@ -608,7 +612,7 @@
       n.appendChild(K.el('span', null, text));
       const [sx, sy] = st(x, y);
       Object.assign(n.style, { left: sx + 'px', top: sy + 'px' });
-      stage.appendChild(n);
+      wrap.appendChild(n);
       return n;
     };
     const oldP = pill('dog', 'Old path: e.g. pulling', C.red, 640, 110);
@@ -627,46 +631,70 @@
     tl.to(dotted, { opacity: 0.25, duration: 0.6 }, w3);
     A.in(tl, oldP, w1 + 0.5, 'fadeUp', { dur: 0.5 });
 
-    // beat 1: the brain: a neural pathway that strengthens with every repeat
+    // beat 1: the lawn steps left; Tori's brain picture (mg_brain.png, as in the Management videos) sits beside it for the rest of the slide.
+    // The old pathway (red) strengthens with every repeat; beat 2 draws the new one (green); beat 3 fades the old one; beat 4 brings it back.
     const t1 = cue(1);
-    // Tori's brain picture (mg_brain.png, from the Management videos): the pathway lights up and thickens with each repeat
-    const card = C3.put(stage, 'c3-card', null, { x: 260, y: 270, w: 1400, h: 640 });
-    const NAT = [682, 788], BH = 580, BW = Math.round(BH * NAT[0] / NAT[1]);
+    tl.to(wrap, { scale: 0.7, x: -149, y: 126, transformOrigin: '0 0', duration: 0.9, ease: 'power2.inOut' }, t1 + 0.1);
+    const NAT = [682, 788], BH = 520, BW = Math.round(BH * NAT[0] / NAT[1]), BX = 1010, BY = 280;
     const bimg = K.el('img');
     bimg.src = '../assets/img/mg_brain.png';
-    Object.assign(bimg.style, { position: 'absolute', left: '40px', top: '30px', width: BW + 'px', height: BH + 'px' });
-    card.appendChild(bimg);
-    const nv = K.svg(card, { x: 40, y: 30, w: BW, h: BH, viewBox: `0 0 ${NAT[0]} ${NAT[1]}` });
-    const ROUTE = [[330, 140], [318, 295], [218, 352], [160, 460], [145, 570]];
-    const routeD = 'M ' + ROUTE.map(p => p.join(' ')).join(' L ');
-    const link = K.path(nv, routeD, { fill: 'none', stroke: '#d9963a', 'stroke-width': 0, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', opacity: 0.9 });
-    const pulses = [0, 1, 2].map(() => K.circle(nv, ROUTE[0][0], ROUTE[0][1], 16, { fill: C.amber, stroke: '#fff', 'stroke-width': 5, opacity: 0 }));
-    const nt = K.el('div', null, '<span style="font:700 52px/1.1 var(--font-head);color:#3f6b22">The neural pathway<br>in the brain</span>');
-    Object.assign(nt.style, { position: 'absolute', left: (BW + 110) + 'px', top: '120px' });
-    card.appendChild(nt);
-    const ns = K.el('div', null, `<span style="font:600 36px/1.35 var(--font-body);color:${C.inkSoft}">Each repeat makes it<br><b style="color:${C.greenDark}">stronger, faster,<br>more automatic</b></span>`);
-    Object.assign(ns.style, { position: 'absolute', left: (BW + 110) + 'px', top: '300px' });
-    card.appendChild(ns);
+    Object.assign(bimg.style, { position: 'absolute', left: BX + 'px', top: BY + 'px', width: BW + 'px', height: BH + 'px' });
+    stage.appendChild(bimg);
+    const nv = K.svg(stage, { x: BX, y: BY, w: BW, h: BH, viewBox: `0 0 ${NAT[0]} ${NAT[1]}` });
+    const bt = K.el('div', null, 'The neural pathway <b style="color:#3f6b22">in the brain</b>');
+    Object.assign(bt.style, { position: 'absolute', left: BX + 'px', top: '200px', width: '820px', font: `700 44px/1.1 var(--font-head)`, color: C.ink });
+    stage.appendChild(bt);
+    const TOP = [330, 140];
+    const OLD = [TOP, [318, 295], [218, 352], [160, 460], [145, 570]];
+    const NEW = [TOP, [330, 283], [440, 352], [500, 460], [533, 568]];
+    const dOf = R => 'M ' + R.map(q => q.join(' ')).join(' L ');
+    const RED = '#b8452d', GRN = '#619537';
+    const link = K.path(nv, dOf(OLD), { fill: 'none', stroke: RED, 'stroke-width': 0, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', opacity: 0.9 });
+    const fog = K.group(nv);
+    OLD.slice(1).forEach(q => K.circle(fog, q[0], q[1], 40, { fill: '#e3ecd6', stroke: 'none' }));
+    K.path(fog, dOf(OLD.slice(1)), { fill: 'none', stroke: '#e3ecd6', 'stroke-width': 44, 'stroke-linecap': 'round' });
+    gsap.set(fog, { opacity: 0 });
+    // the picture already shows the new route: keep it under a wash until beat 2 builds it
+    const fogNew = K.group(nv);
+    NEW.slice(1).forEach(q => K.circle(fogNew, q[0], q[1], 44, { fill: '#e3ecd6', stroke: 'none' }));
+    K.path(fogNew, dOf(NEW.slice(1)), { fill: 'none', stroke: '#e3ecd6', 'stroke-width': 48, 'stroke-linecap': 'round' });
+    gsap.set(fogNew, { opacity: 0.9 });
+    const nl = K.path(nv, dOf(NEW), { fill: 'none', stroke: GRN, 'stroke-width': 10, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    gsap.set(nl, { opacity: 0 });
+    const nodes = NEW.slice(2).map(q => K.circle(nv, q[0], q[1], 15, { fill: GRN, stroke: '#fff', 'stroke-width': 5, opacity: 0 }));
+    const pulse = (R, col, t0, step) => {
+      const c = K.circle(nv, R[0][0], R[0][1], 16, { fill: col, stroke: '#fff', 'stroke-width': 5, opacity: 0 });
+      tl.set(c, { opacity: 1 }, t0);
+      R.slice(1).forEach((q, k) => tl.to(c, { attr: { cx: q[0], cy: q[1] }, duration: step, ease: 'none' }, t0 + k * step));
+      tl.to(c, { opacity: 0, duration: 0.2 }, t0 + 4 * step);
+    };
+    // right column: repeats, then what happens to each pathway
+    const CX = BX + BW + 30, CW = 1880 - CX;
     const rep = K.el('div', null, '');
-    Object.assign(rep.style, { position: 'absolute', left: (BW + 110) + 'px', top: '500px', display: 'flex', gap: '18px' });
-    card.appendChild(rep);
-    const reps = [0, 1, 2].map(k => { const d = K.el('div', 'va-try'); Object.assign(d.style, { position: 'relative', width: '70px', height: '70px', background: C.amber });
+    Object.assign(rep.style, { position: 'absolute', left: CX + 'px', top: '300px', display: 'flex', gap: '14px' });
+    stage.appendChild(rep);
+    const reps = [0, 1, 2].map(() => { const d = K.el('div', 'va-try'); Object.assign(d.style, { position: 'relative', width: '66px', height: '66px', background: RED });
       d.appendChild(K.icon('repeat')); rep.appendChild(d); return d; });
-    gsap.set(ns, { opacity: 0 });
-    tl.to([lawn, oldP], { opacity: 0.15, duration: 0.5 }, t1 + 0.1);
-    A.in(tl, card, t1 + 0.4, 'fadeUp', { dur: 0.6 });
-    const tN = clamp(at(1, 'neural pathway', 0.2), t1 + 1.0, end(1) - 6);
-    pulses.forEach((p, r) => {
-      const t0 = tN + r * 1.6, step = 0.28 - r * 0.06;
-      tl.set(p, { attr: { cx: ROUTE[0][0], cy: ROUTE[0][1] }, opacity: 1 }, t0);
-      ROUTE.slice(1).forEach((pt, k) => tl.to(p, { attr: { cx: pt[0], cy: pt[1] }, duration: step, ease: 'none' }, t0 + k * step));
-      tl.to(p, { opacity: 0, duration: 0.2 }, t0 + 4 * step);
-      tl.to(link, { attr: { 'stroke-width': 8 + r * 9 }, duration: 0.5 }, t0 + 0.4);
+    const txt = (html, y, col) => { const n = K.el('div', null, html);
+      Object.assign(n.style, { position: 'absolute', left: CX + 'px', top: y + 'px', width: CW + 'px', font: '600 30px/1.3 var(--font-body)', color: col || C.inkSoft });
+      stage.appendChild(n); gsap.set(n, { opacity: 0 }); return n; };
+    const ns = txt(`Each repeat makes the old one <b style="color:${RED}">stronger, faster, more automatic</b>`, 390);
+    const tagRow = (icon, html, col, y) => { const n = K.el('div', 'c3p-pill'); n.style.color = col; n.style.fontSize = '28px';
+      n.appendChild(K.icon(icon)); n.appendChild(K.el('span', null, html));
+      Object.assign(n.style, { left: CX + 'px', top: y + 'px' }); stage.appendChild(n); gsap.set(n, { opacity: 0 }); return n; };
+    const tagNew = tagRow('arrow-up', 'New pathway: <b>forms</b>', C.greenDark, 560);
+    const tagOld = tagRow('arrow-down', 'Old pathway: <b>fades</b>', RED, 650);
+    gsap.set(nv, { opacity: 0 });
+    tl.to(nv, { opacity: 1, duration: 0.6 }, t1 + 0.7);
+    A.in(tl, [bt, bimg], t1 + 0.6, 'fadeUp', { dur: 0.6, stagger: 0.1 });
+    const tN = clamp(at(1, 'neural pathway', 0.2), t1 + 1.2, end(1) - 6);
+    [0, 1, 2].forEach(r => {
+      const t0 = tN + r * 1.6;
+      pulse(OLD, RED, t0, 0.28 - r * 0.06);
+      tl.to(link, { attr: { 'stroke-width': 8 + r * 8 }, duration: 0.5 }, t0 + 0.4);
       A.in(tl, reps[r], t0, 'pop', { dur: 0.35 });
     });
     A.in(tl, ns, clamp(at(1, 'more automatic', 0.4), tN + 3.5, end(1) - 0.5), 'fadeUp', { dur: 0.5 });
-    tl.to(card, { opacity: 0, y: 20, duration: 0.5 }, end(1) - 0.2);
-    tl.to([lawn, oldP], { opacity: 1, duration: 0.5 }, end(1));
 
     // beat 2: the new path appears, then wears in with practice
     const t2 = cue(2);
@@ -676,6 +704,15 @@
     tl.set(newWorn, { attr: { 'stroke-width': 10 } }, tS - 0.6);
     A.draw(tl, newWorn, tS - 0.6, 0.6);
     tl.to(newWorn, { attr: { 'stroke-width': 60 }, duration: 1.0, ease: 'power2.out' }, tS);
+    // the brain: the new pathway forms, node by node, then strengthens with practice
+    const tB = clamp(at(2, 'new pathway', 0.2), t2 + 0.3, end(2) - 4);
+    tl.to([rep, ns], { opacity: 0.35, duration: 0.5 }, tB);
+    tl.to(fogNew, { opacity: 0, duration: 0.6 }, tB);
+    tl.set(nl, { opacity: 1, attr: { 'stroke-width': 6 } }, tB);
+    A.draw(tl, nl, tB, 1.6);
+    nodes.forEach((n, i) => tl.fromTo(n, { opacity: 0, scale: 0.3, svgOrigin: `${NEW[i + 2][0]} ${NEW[i + 2][1]}` }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)', immediateRender: false }, tB + 0.5 + i * 0.45));
+    A.in(tl, tagNew, tB + 0.4, 'fadeRight', { dur: 0.5 });
+    [0, 1].forEach(r => { pulse(NEW, GRN, tS + r * 1.3, 0.24); tl.to(nl, { attr: { 'stroke-width': 12 + r * 6 }, duration: 0.5 }, tS + r * 1.3 + 0.4); });
 
     // beat 3: management gates the old path; the grass grows back
     const t3 = cue(3);
@@ -688,6 +725,19 @@
     tl.to(wornIn, { attr: { 'stroke-width': 0 }, duration: 1.2 }, tGr);
     tl.to(dotted, { opacity: 0, duration: 0.8 }, tGr);
     tl.to(oldP, { opacity: 0.5, duration: 0.6 }, tGr);
+    const tF = clamp(at(3, 'old pathway', 0.2), t3 + 0.6, end(3) - 4);
+    tl.to(link, { attr: { 'stroke-width': 6 }, duration: 1.2 }, tF);
+    tl.to(fog, { opacity: 0.85, duration: 1.4, ease: 'power1.inOut' }, tF + 0.2);
+    tl.to([rep, ns], { opacity: 0, duration: 0.5 }, tF);
+    A.in(tl, tagOld, tF + 0.3, 'fadeRight', { dur: 0.5 });
+    const bn = K.el('div', 'c3p-pill');
+    bn.style.color = C.greenDark; bn.style.fontSize = '34px';
+    bn.appendChild(K.icon('brain'));
+    bn.appendChild(K.el('span', null, `<span style="color:${C.ink}">Management weakens the old pathway.</span> Training builds the new one.`));
+    Object.assign(bn.style, { left: '960px', top: '880px' });
+    stage.appendChild(bn);
+    gsap.set(bn, { xPercent: -50, opacity: 0 });
+    tl.fromTo(bn, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', immediateRender: false }, clamp(at(3, 'Management weakens', 0.2), tF + 1.5, end(3) - 1));
 
     // beat 4: a faint trace; one success wears it back in
     const t4 = cue(4);
@@ -701,7 +751,12 @@
     tl.to(worn, { attr: { 'stroke-width': 78 }, opacity: 1, duration: 1.8, ease: 'power2.out' }, tA + 0.6);
     tl.to(wornIn, { attr: { 'stroke-width': 34 }, duration: 1.6 }, tA + 0.9);
     tl.to(oldP, { opacity: 1, duration: 0.4 }, tA + 0.6);
-    const cb = C3.chip(stage, 'triangle-alert', 'Consistency matters', 0, 0, { col: C.amber, size: 30 });
+    tl.to(bn, { opacity: 0, duration: 0.4 }, t4);
+    tl.to(fog, { opacity: 0.15, duration: 1.2 }, tA + 0.6);
+    pulse(OLD, RED, tA + 0.6, 0.25);
+    tl.to(link, { attr: { 'stroke-width': 18 }, duration: 1.2 }, tA + 0.9);
+    tl.to(tagOld, { opacity: 0.4, duration: 0.5 }, tA + 0.6);
+    const cb = C3.chip(wrap, 'triangle-alert', 'Consistency matters', 0, 0, { col: C.amber, size: 30 });
     const [cx, cy] = st(40, 30);
     Object.assign(cb.style, { left: cx + 'px', top: cy + 'px' });
     A.in(tl, cb, clamp(at(4, 'consistency', 0.4), tA + 1.4, end(4) - 0.3), 'pop', { dur: 0.45 });

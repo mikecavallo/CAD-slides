@@ -209,6 +209,14 @@ pipeline). This file records the state, decisions and working agreements from ea
   shape every dog's behavior, from genetics and breed history to socialization, age, past experiences and the training
   methods used."
 
+- Social clip (Nov 27, Tori's post about pain and reactivity: Tori on camera, then a course excerpt): ch02s06 "Pain &
+  Discomfort" (Chapter 2 had only the preview voice) voiced with Tori's clone on its own: `LESSON=lesson-ch2.json
+  tts_elevenlabs.py --only ch02s06 --all-clone --out build/social_pain`, align.py --dir build/social_pain, timing, render,
+  assemble (a one-slide video). Back up build/timing.json, align.json, mix.f32 and narration.m4a first and restore them
+  after (Chapter 1's section and full-video tools read them; copies in build/ch1_backup/). Cut to 67.5 s (2.4 s after the
+  last word): out/social/Pain-and-Behavior-Course-Clip-16x9.mp4, a captioned 1080x1920 version made with
+  tools/social_vertical.mjs (-Vertical.mp4) and the .srt.
+
 ## Decisions already made (do not undo without asking)
 
 - Ingredient bowl metaphor and the seven chips (Pain moved to Chapter 2 in round 12); photo portraits for genetics (barking Sheltie = more

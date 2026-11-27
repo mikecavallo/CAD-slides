@@ -46,6 +46,13 @@
     const box = K.el('div', 'pic');
     Object.assign(box.style, { position: 'absolute', left: '0', top: '0', width: w + 'px', height: h + 'px', overflow: 'hidden' });
     host.appendChild(box);
+    if (o.img) {
+      const im = K.el('img');
+      im.src = '../assets/img/' + o.img;
+      Object.assign(im.style, { width: '100%', height: '100%', objectFit: 'cover', objectPosition: o.pos || '50% 50%', display: 'block' });
+      box.appendChild(im);
+      return { box };
+    }
     const sv = K.svg(box, { x: 0, y: 0, w, h, viewBox: `0 0 ${VB[0]} ${VB[1]}` });
     sv.setAttribute('preserveAspectRatio', 'xMidYMid slice');
     const id = 'va' + Math.random().toString(36).slice(2, 8);
@@ -83,12 +90,7 @@
   }
   // the pictures for each example (A, B, C)
   const P = {
-    pull: [
-      { dog: [110, 150, 0.36], icons: [['tree-deciduous', 310, 112, 120, '#4f7f2a']], marks: ['M 170 70 l 14 -10', 'M 176 84 l 18 -4'] },
-      { dog: [180, 150, 0.36], rot: 10, icons: [['tree-deciduous', 330, 112, 120, '#4f7f2a'], ['arrow-right', 270, 60, 46, C.amber]],
-        marks: ['M 20 120 C 60 120, 90 128, 128 136'], markCol: '#8c7a5c' },
-      { dog: [250, 150, 0.36], icons: [['tree-deciduous', 340, 112, 120, '#4f7f2a'], ['check', 80, 70, 56, C.green]] },
-    ],
+    pull: [{ img: 'abcs_loose.jpg' }, { img: 'abcs_pull_b.jpg' }, { img: 'abcs_pull_c.jpg' }],
     counter: [
       { bg: 'in', counter: [210, 120, 170], icons: [['sandwich', 290, 100, 56, '#b5772f'], ['door-open', 70, 105, 92, '#8c7a5c']] },
       { bg: 'in', counter: [230, 120, 150], dog: [190, 140, 0.36], rot: -28, icons: [['sandwich', 300, 100, 56, '#b5772f']] },
@@ -159,9 +161,9 @@
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
     C3.head(ctx, 'Everyday Behavior', { size: 72 });
     const CARDS = [
-      ['Pulling on the leash', { dog: [180, 150, 0.4], rot: 10, icons: [['tree-deciduous', 340, 110, 110, '#4f7f2a']], marks: ['M 10 120 C 60 120, 100 130, 140 138'], markCol: '#8c7a5c' }, 'pulling'],
-      ['Jumping on guests', { bg: 'in', dog: [170, 140, 0.4], rot: -30, icons: [['user', 320, 110, 130, '#4a4a4a']] }, 'jumping'],
-      ['Running off with a sock', { bg: 'in', dog: [220, 150, 0.4], flip: true, icons: [['shirt', 60, 140, 50, '#5d86b5']], marks: ['M 330 110 l 34 0', 'M 324 132 l 44 0'], markCol: '#9bb7c9' }, 'sock'],
+      ['Pulling on the leash', { img: 'abcs_pull_b.jpg' }, 'pulling'],
+      ['Jumping on guests', { img: 'abcs_jump.jpg' }, 'jumping'],
+      ['Running off with a sock', { img: 'abcs_sock.jpg', pos: '55% 40%' }, 'sock'],
     ];
     const W = 500, H = 380, G = 60, X0 = (1920 - 3 * W - 2 * G) / 2, Y = 300;
     const cards = CARDS.map(([lab, o, p], k) => {
@@ -333,10 +335,10 @@
     const at = (i, p, fb, lead) => sayAt(ctx, i, p, fb, lead);
     C3.head(ctx, 'Same Behavior. Different Job.', { size: 72 });
     const ROWS = [
-      { y: 260, ctx: 'While you’re making dinner', icon: 'cookie', res: 'Barking got them *food*', p: 'making dinner', pr: 'got them food' },
-      { y: 560, ctx: 'While you’re on a video call', icon: 'eye', res: 'Barking got them *attention*', p: 'video call', pr: 'got them attention' },
+      { y: 270, ctx: 'While you’re making dinner', b: 'abcs_dinner_b.jpg', c: 'abcs_dinner_c.jpg', res: 'Barking got them *food*', p: 'making dinner', pr: 'got them food' },
+      { y: 590, ctx: 'While you’re on a video call', b: 'abcs_call_b.jpg', c: 'abcs_call_c.jpg', res: 'Barking got them *attention*', p: 'video call', pr: 'got them attention' },
     ];
-    const W = 400, H = 230, CX = 380;
+    const W = 420, H = 236, CX = 380, CX2 = CX + W + 220;
     const all = [];
     // beat 0: one behavior, barking, before the two situations
     const intro = C3.chip(stage, 'volume-2', 'Same behavior: *barking*', 960, 470, { center: true, size: 48, col: COL.B });
@@ -346,17 +348,28 @@
       const t = cue(1 + k);
       const c = C3.put(stage, 'va-card', null, { x: CX, y: r.y, w: W, h: H });
       c.style.border = '6px solid ' + C.olive;
-      pic(c, W - 12, H - 12, k ? { ...P.bark, icons: [['laptop', 355, 140, 70, '#4a4a4a']] } : { ...P.bark, icons: [['chef-hat', 355, 120, 60, '#8c7a5c']] });
+      pic(c, W - 12, H - 12, { img: r.b });
+      const tb = C3.tile(stage, 'B', CX - 26, r.y - 26, 62, COL.B);
       const cl = C2.put(stage, 'c3-lab', r.ctx, { x: CX, y: r.y + H + 10, w: W, align: 'center' });
       cl.style.fontSize = '26px';
       const bk = C3.chip(stage, 'volume-2', 'Bark', CX + W - 20, r.y - 26, { col: COL.B, center: true, size: 30 });
-      const ar = arrowSvg(stage, CX + W + 40, CX + W + 200, r.y + H / 2);
-      const res = flow(stage, r.icon, r.res, CX + W + 240, r.y + H / 2 - 52, C.green);
+      const ar = arrowSvg(stage, CX + W + 40, CX2 - 40, r.y + H / 2);
+      const res = C3.put(stage, 'va-card', null, { x: CX2, y: r.y, w: W, h: H });
+      res.style.border = '6px solid ' + C.olive;
+      pic(res, W - 12, H - 12, { img: r.c });
+      const tc = C3.tile(stage, 'C', CX2 - 26, r.y - 26, 62, COL.C);
+      const rl = C3.chip(stage, 'check', r.res, CX2 + W / 2, r.y + H + 6, { center: true, size: 28, col: C.green });
+      rl.style.borderColor = C.green;
+      gsap.set([tb, tc], { opacity: 0 });
+      A.in(tl, tb, t + 0.3, 'pop', { dur: 0.4 });
       tl.fromTo(c, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, t + 0.1);
       A.in(tl, [cl, bk], t + 0.5, 'fadeUp', { dur: 0.5 });
       A.draw(tl, ar, clamp(at(1 + k, r.pr, 0.4), t + 1.2, end(1 + k) - 1.2), 0.5);
-      A.in(tl, res, clamp(at(1 + k, r.pr, 0.5), t + 1.5, end(1 + k) - 0.6), 'fadeLeft', { dur: 0.5 });
-      all.push(c, cl, bk, ar.ownerSVGElement, res);
+      const tR = clamp(at(1 + k, r.pr, 0.5), t + 1.5, end(1 + k) - 0.6);
+      tl.fromTo(res, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, tR - 0.6);
+      A.in(tl, tc, tR - 0.3, 'pop', { dur: 0.4 });
+      A.in(tl, rl, tR, 'fadeUp', { dur: 0.5 });
+      all.push(c, cl, bk, ar.ownerSVGElement, res, tb, tc, rl);
     });
     // beat 3: same, different, different
     const t3 = cue(3);
@@ -377,7 +390,7 @@
     const t4 = cue(4);
     tl.to(box, { opacity: 0, scale: 0.96, duration: 0.4 }, t4);
     tl.to(all, { opacity: 0.3, duration: 0.5 }, t4 + 0.1);
-    const pl = C3.chip(stage, 'search', 'Look at the *whole picture* with the ABCs', 960, 470, { center: true, size: 42, col: C.green });
+    const pl = C3.chip(stage, 'search', 'Look at the *whole picture* with the ABCs', 960, 890, { center: true, size: 42, col: C.green });
     pl.style.borderColor = C.green;
     A.in(tl, pl, clamp(at(4, 'whole picture', 0.4), t4 + 0.4, end(4) - 0.4), 'pop', { dur: 0.6 });
   });
@@ -500,13 +513,35 @@
       A.in(tl, c, t + 0.9, 'fadeLeft', { dur: 0.5 });
       return { tg, b, ar: ar.ownerSVGElement, c };
     };
-    const r1 = row('Before', C.red, 'dog', 'Pulling<i>the old behavior</i>', 'tree-deciduous', 'Reaches the tree', 400, clamp(at(2, 'Before', 0.1), t2 + 0.2, end(2) - 3));
-    const r2 = row('Now', C.green, 'footprints', 'Loose leash walking<i>the new behavior</i>', 'tree-deciduous', 'Reaches the tree', 600, clamp(at(2, 'Now', 0.1), t2 + 2.0, end(2) - 1.2));
+    const PW = 330, PH = 186;
+    const rowPic = (tag, tagCol, bImg, bTx, cImg, cTx, y, t) => {
+      const tg = C2.put(stage, 'va-tag', tag, { x: 300, y: y + PH / 2 - 26 });
+      tg.style.background = tagCol;
+      const card = (img, x, L, tx) => {
+        const c = C3.put(stage, 'va-card', null, { x, y, w: PW, h: PH });
+        c.style.border = '5px solid ' + C.olive;
+        pic(c, PW - 10, PH - 10, { img });
+        const tt = C3.tile(c, L, 10, 10, 46, L === 'B' ? COL.B : COL.C);
+        const lb = C2.put(stage, 'c3-lab', tx, { x, y: y + PH + 6, w: PW, align: 'center' });
+        lb.style.fontSize = '26px';
+        return [c, lb];
+      };
+      const b = card(bImg, 560, 'B', bTx);
+      const ar = arrowSvg(stage, 560 + PW + 30, 1100 - 30, y + PH / 2);
+      const c = card(cImg, 1100, 'C', cTx);
+      A.in(tl, tg, t, 'fadeRight', { dur: 0.4 });
+      A.in(tl, b, t + 0.2, 'fadeUp', { dur: 0.5 });
+      A.draw(tl, ar, t + 0.6, 0.4);
+      A.in(tl, c, t + 0.9, 'fadeLeft', { dur: 0.5 });
+      return { tg, b: b[0], bl: b[1], ar: ar.ownerSVGElement, c: c[0], cl: c[1] };
+    };
+    const r1 = rowPic('Before', C.red, 'abcs_pull_b.jpg', '<b>Pulling</b>', 'abcs_pull_c.jpg', 'Reaches the tree', 330, clamp(at(2, 'Before', 0.1), t2 + 0.2, end(2) - 3));
+    const r2 = rowPic('Now', C.green, 'abcs_loose.jpg', '<b>Loose leash walking</b>', 'abcs_pull_c.jpg', 'Reaches the tree', 590, clamp(at(2, 'Now', 0.1), t2 + 2.0, end(2) - 1.2));
     // beat 3: same consequence
     const t3 = cue(3);
-    [r1.c, r2.c].forEach(c => tl.to(c, { borderColor: C.green, duration: 0.4 }, t3 + 0.2));
+    [r1.c, r2.c].forEach(c => tl.to(c, { borderColor: C.green, boxShadow: '0 0 0 6px rgba(97,149,55,0.35)', duration: 0.4 }, t3 + 0.2));
     tl.to(r1.b, { opacity: 0.45, duration: 0.4 }, t3 + 0.2);
-    const same = C3.chip(stage, 'repeat', 'Same consequence. *A better behavior* in its place.', 960, 820, { center: true, size: 34, col: C.green });
+    const same = C3.chip(stage, 'repeat', 'Same consequence. *A better behavior* in its place.', 960, 860, { center: true, size: 34, col: C.green });
     same.style.borderColor = C.green;
     A.in(tl, same, clamp(at(3, 'better behavior', 0.4), t3 + 0.6, end(3) - 0.3), 'pop', { dur: 0.5 });
     // beat 4: recall

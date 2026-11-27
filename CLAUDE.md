@@ -309,7 +309,9 @@ pipeline). This file records the state, decisions and working agreements from ea
   Narration is Tori's edited doc "The ABCs of Everyday Behavior: Narration Script" (claude.ai/artifact/L4VxFcWPfUAXiBq1zwEWT4,
   a Claude Doc Tori edits in place). No photos: the ABC panels are drawn scenes (`pic()`: backdrop, C2.dog, Lucide
   icons); Tori can send pictures to replace them. Recall example: B = runs back, C = leash on and park time over (Tori).
-  The path slide adds a neural pathway (neurons, pulses, the link thickening). ElevenLabs voice, about 8.5 minutes.
+  The path slide (vabcs12) puts the lawn on the left and Tori's brain picture (mg_brain.png) on the right, like Management's
+  "Rewiring the brain": old pathway red, strengthens with repeats, then fades; new pathway green forms; banner "Management
+  weakens the old pathway. Training builds the new one." All panels are Tori's pictures (abcs_*.jpg). ElevenLabs voice, about 8.5 minutes.
 
 ## Working with Tori
 

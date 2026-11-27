@@ -215,7 +215,8 @@ pipeline). This file records the state, decisions and working agreements from ea
   assemble (a one-slide video). Back up build/timing.json, align.json, mix.f32 and narration.m4a first and restore them
   after (Chapter 1's section and full-video tools read them; copies in build/ch1_backup/). Cut to 67.5 s (2.4 s after the
   last word): out/social/Pain-and-Behavior-Course-Clip-16x9.mp4, a captioned 1080x1920 version made with
-  tools/social_vertical.mjs (-Vertical.mp4) and the .srt.
+  tools/social_vertical.mjs (-Vertical.mp4) and the .srt. Tori then asked to start at the headache line: picture from
+  6.50 s (the dog has faded out) with its first frame held 0.3 s, sound from 6.20 s (first word at 6.66 s), so 61.3 s.
 
 ## Decisions already made (do not undo without asking)
 

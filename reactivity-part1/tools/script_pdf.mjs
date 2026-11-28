@@ -21,6 +21,7 @@ const lessonFile = opt('lesson', process.env.LESSON || 'lesson.json');
 const L = JSON.parse(fs.readFileSync(path.join(ROOT, 'script', lessonFile), 'utf8'));
 const out = path.resolve(opt('out', 'out/full/Understanding-Dog-Behavior-Ch1-Script.pdf'));
 const learn = opt('learn', '');
+const video = opt('video', 'Understanding-Dog-Behavior-Ch1.mp4'); // the full video's file name, for --records
 const records = argv.includes('--records');
 const timing = records ? JSON.parse(fs.readFileSync(path.join(ROOT, 'build/timing.json'), 'utf8')) : null;
 const segStart = (id) => timing?.segments.find((g) => g.id === id)?.start;
@@ -37,18 +38,21 @@ const img = (f) => `data:image/${f.endsWith('.png') ? 'png' : 'jpeg'};base64,${f
 const scenes = L.chapters.flatMap((c) => c.scenes.map((s) => ({ ...s, chapter: c })));
 const starts = (L.sections || []).map((r) => r[0]);
 const lessons = [];
+const standalone = !L.sections && L.chapters.length === 1 && !Number(L.chapters[0].num); // a one-off video, no chapter number
 for (const s of scenes) {
   const k = starts.indexOf(s.id);
   if (k >= 0 || !lessons.length) lessons.push({ title: k >= 0 ? L.sections[k][1] : s.chapter.title, desc: k >= 0 ? L.sections[k][2] || '' : '', scenes: [] });
   lessons.at(-1).scenes.push(s);
 }
-const chapter = L.chapters.find((c) => /\d/.test(c.id) && Number(c.id.replace(/\D/g, '')) > 0) || L.chapters[0];
+const numbered = L.chapters.filter((c) => /\d/.test(c.id) && Number(c.id.replace(/\D/g, '')) > 0);
+const chapter = numbered.find((c) => c.title !== 'Welcome') || numbered[0] || L.chapters[0]; // a welcome chapter can carry the number too
 const chNum = Number(chapter.id.replace(/\D/g, ''));
 
 const lessonMeta = (l, i) => {
   if (!records) return '';
   const t0 = segStart(l.scenes[0].id);
   const next = lessons[i + 1] ? segStart(lessons[i + 1].scenes[0].id) : timing.total;
+  if (standalone) return `<div class="meta">${mmss(next - t0)} · ${esc(video)}</div>`;
   return `<div class="meta">Starts ${mmss(t0)} in the full video · ${Math.round(next - t0)} s · ${String(i + 1).padStart(2, '0')}-${slug(l.title)}.mp4</div>
     ${l.desc ? `<div class="desc"><b>Lesson description</b>${esc(l.desc)}</div>` : ''}`;
 };
@@ -61,7 +65,7 @@ const sceneBody = (l) => l.scenes.map((s) => {
 const body = lessons.map((l, i) => {
   const parts = sceneBody(l);
   const first = parts[0];
-  const head = `<div class="num">Lesson ${i + 1}</div>
+  const head = `${standalone ? "" : `<div class="num">Lesson ${i + 1}</div>`}
     <h2>${esc(l.title)}</h2>
     ${lessonMeta(l, i)}`;
   return `
@@ -73,8 +77,8 @@ const body = lessons.map((l, i) => {
   </section>`;
 }).join('\n');
 const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-const recordBox = records ? `<div class="record"><b>Script record</b>Full video: Understanding-Dog-Behavior-Ch1.mp4, ${mmss(timing.total)}, ${lessons.length} lessons.
-  Narration as it plays in the video (Tori's recorded wording, voiced with Tori's AI voice). Saved ${today}.</div>` : '';
+const recordBox = records ? `<div class="record"><b>Script record</b>Full video: ${video}, ${mmss(timing.total)}${standalone ? '' : `, ${lessons.length} lessons`}.
+  Narration as it plays in the video (voiced with Tori's AI voice). Saved ${today}.</div>` : '';
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 ${font('Montserrat', 400, 'Montserrat-400.woff2')}${font('Montserrat', 500, 'Montserrat-500.woff2')}${font('Montserrat', 600, 'Montserrat-600.woff2')}
@@ -108,7 +112,7 @@ ${font('Montserrat', 700, 'Montserrat-700.woff2')}${font('Rubik', 700, 'Rubik-70
     <div>
       <div class="kicker">Calling All Dogs</div>
       <h1>${(L.series?.titleLines || [L.series?.title || L.title]).map(esc).join('<br>')}</h1>
-      <div class="chapter">Chapter ${chNum}: ${esc(chapter.title)}</div>
+      ${standalone ? '' : `<div class="chapter">Chapter ${chNum}: ${esc(chapter.title)}</div>`}
       <div class="by">Tori Ganino<span>BS, CDBC, CPDT-KA</span></div>
     </div>
     <img src="${img('logo.png')}" alt="Calling All Dogs">
@@ -127,7 +131,7 @@ await page.pdf({
   path: out, format: 'Letter', printBackground: true, preferCSSPageSize: true, displayHeaderFooter: true,
   headerTemplate: '<span></span>',
   footerTemplate: `<div style="width:100%;font:500 7.5pt Montserrat,sans-serif;color:#7a7a7a;padding:0 0.85in;display:flex;justify-content:space-between">
-    <span>callingalldogsny.com</span><span>${esc(L.series?.title || L.title)} · Chapter ${chNum}</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
+    <span>callingalldogsny.com</span><span>${esc(L.series?.title || L.title)}${standalone ? '' : ` · Chapter ${chNum}`}</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
 });
 await browser.close();
 console.log('script:', path.relative(ROOT, out), `(${lessons.length} lessons)`);

@@ -1,0 +1,414 @@
+{
+ "title": "The ABCs of Everyday Behavior",
+ "notes": "Standalone video (build-branded-video). Narration from Tori's doc 'The ABCs of Everyday Behavior: Narration Script' (claude.ai/artifact/L4VxFcWPfUAXiBq1zwEWT4). Build with LESSON=video-abcs.json.",
+ "series": {
+  "title": "The ABCs of Everyday Behavior",
+  "titleLines": [
+   "The ABCs of",
+   "Everyday Behavior"
+  ]
+ },
+ "tail": 3.0,
+ "chapters": [
+  {
+   "id": "vabcs",
+   "num": 0,
+   "title": "The ABCs of Everyday Behavior",
+   "bumper": false,
+   "scenes": [
+    {
+     "id": "vabcs01",
+     "heading": "The ABCs of Everyday Behavior",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Hi, I'm Tori Ganino with Calling All Dogs, and welcome to The ABCs of Everyday Behavior.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs02",
+     "heading": "Everyday Behavior",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Pulling on the leash, jumping on guests, grabbing a sock and running off with it.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Everyday behaviors like these are some of the most common reasons people reach out for help.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "In this video, I'll show you a clear, practical framework for understanding why these behaviors happen, why they continue, and how to change them.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs03",
+     "heading": "The ABCs",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Every behavior has three main parts, known as the ABCs.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "The A is the antecedent. It's what happens right before the behavior, along with the context around it: where you are, who's present, and what's going on.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "The B is the behavior, which is what your dog actually does. For example, pulling, jumping, or barking.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Between the antecedent and the behavior, your dog has an emotional response. With everyday behaviors, that response is often excitement, frustration, or anticipation.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "The C is the consequence, meaning what happens as a direct result of the behavior.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs04",
+     "heading": "Pulling on the Leash",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Let's apply the ABCs to pulling.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "You step outside, and your dog notices a tree they want to investigate. That's the antecedent.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Your dog becomes excited and pulls toward the tree. That's the behavior.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "You continue walking, and your dog reaches the tree. That's the consequence.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs05",
+     "heading": "Counter Surfing",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Counter surfing is a good example.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "You leave a sandwich on the counter and step into another room.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Your dog catches the scent, gets excited, and jumps up to the counter.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "The result is a sandwich.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Your dog got the sandwich, so they're likely to check the counter again.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs06",
+     "heading": "Coming When Called",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Recall shows us the other side of the ABCs.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Your dog is sniffing at the park, and you call them. That's the antecedent.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Your dog runs back to you. That's the behavior.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "You clip on the leash, and time at the park is over. That's the consequence.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "From your dog's point of view, coming when called just ended the fun.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "When a consequence takes away something your dog values, that behavior becomes less likely over time. That's often why recall gets slower, or stops altogether.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs07",
+     "heading": "WTF? What's the Function?",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Once we've identified the ABCs, we can ask the most important question: WTF? What's the function?",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "In other words, what did the behavior accomplish?",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "In this case, pulling got your dog to the tree, and took in all the interesting smells.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Your dog isn't pulling to be stubborn or to be in charge. Pulling simply works.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs08",
+     "heading": "Same Behavior. Different Job.",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "It's also important to understand that the same behavior can serve different purposes. Let's use barking as an example.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "A dog might bark at you while you're making dinner, and you toss them a piece of food to keep them quiet. In that situation, barking got them food.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Another dog might bark while you're on a video call, and you turn and tell them to hush. Here, barking got them attention.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "The behavior looks the same, but the outcome and the function are different.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "That's why we look at the whole picture with the ABCs, rather than the behavior on its own.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs09",
+     "heading": "Why It Keeps Happening",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "So why does a behavior keep happening? Because it works.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "When a behavior gets your dog something they want, they're more likely to repeat it.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "It doesn't need to work every time, either. A behavior that pays off only occasionally can actually be the hardest to change, because your dog keeps trying in case this is the time it works.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs10",
+     "heading": "What Changing It Includes",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Changing an everyday behavior starts with three things.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "First is management: arranging the environment so the old behavior can't keep working. That might mean clearing the counter, using a gate when guests arrive, or keeping your dog on a long line at the park while you practice.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Second is changing the emotional response. A dog who is overly excited or frustrated has a hard time thinking clearly. Helping your dog stay calmer in those moments puts them in a better position to learn.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Third is teaching new behaviors that give your dog another way to get what they want, such as walking on a loose leash, keeping four paws on the floor, or settling on a mat while you cook.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs11",
+     "heading": "The Consequence Still Needs to Work",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Throughout this process, the consequence still needs to work for your dog.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Your dog still wants to explore, get attention, or find something good to eat. We aren't taking that away. Instead, we're changing which behavior earns it.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Before, pulling got your dog to the tree. Now, walking on a loose leash gets them there.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "The consequence stays the same, but a better behavior takes the old one's place.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Recall works the same way. When coming to you earns a reward, and is often followed by the chance to go back to sniffing, your dog learns that coming when called is worth it.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs12",
+     "heading": "Building a New Path",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Each time a behavior works, it becomes stronger, much like a path worn across a lawn. The more often the same route is walked, the more defined the path becomes, and the easier it is to follow.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "The brain works in a similar way. Every time your dog repeats a behavior, the neural pathway behind it is strengthened. The connections involved become more efficient, so the behavior becomes faster and more automatic, especially when your dog is excited.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "When we teach a new behavior, we're building a new pathway in the brain. At first it takes more effort, like walking through tall grass. With practice, that new pathway strengthens and becomes your dog's easier, go-to choice.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Meanwhile, management keeps the old behavior from being practiced. Like a path that's no longer walked, the old pathway in the brain is used less, and it begins to fade as the grass grows over it. Management weakens the old pathway, while training builds the new one.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "That old pathway doesn't disappear completely, though. Even an occasional success can strengthen it again, which is why consistency matters, especially early on.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs13",
+     "heading": "Your Homework",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Choose one everyday behavior you'd like to change.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Each time it happens, write down what happened just before, where you were and what was going on around you, what your dog did, and what happened as a result.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "Then ask: WTF? What's the function? What did the behavior accomplish?",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "After a few days, review your notes and look for the pattern.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    },
+    {
+     "id": "vabcs14",
+     "heading": "See the Whole Picture",
+     "visual_concept": "",
+     "assets": [],
+     "beats": [
+      {
+       "say": "Every behavior makes sense once you see the whole picture.",
+       "show": "",
+       "onscreen": ""
+      },
+      {
+       "say": "When you can identify the antecedent, understand the context, and recognize the pattern, you're in a position to change it.",
+       "show": "",
+       "onscreen": ""
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
